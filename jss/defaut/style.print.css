@@ -1,0 +1,138 @@
+/*#########################################################################
+#
+#   name :       Print.css
+#   desc :       CSS style for printing
+#   categorie :  CSS Style
+#   ID :  	 $Id$
+#
+#   copyright:   See licence.txt for this script licence
+#########################################################################*/
+
+
+@page {
+    size: landscape;
+    margin: 0cm;
+}
+/**
+ *  GENERIC STYLES
+ *  Generic tag definition for defaut display
+*/
+body	{
+    background: white;
+    color: #115;
+    font: normal 12pt Times, Serif;
+}
+
+img {
+    border: 0px;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#ZunoWorkspace,
+#HeaderBandeau,
+#ZWBody {
+    width: 85%;
+}
+
+#HeaderBandeau {
+    height: 2cm;
+}
+
+#HeaderIcone,
+#HeaderMenu,
+#HeaderEnd,
+#HeaderMenuTool #Tools #logout,
+#HeaderMenuTool #Tools #menuChannel,
+#marquee,
+#ZWHBar,
+#ZWHBar2,
+#ZWHBar3,
+#ZWFooter,
+#debug,
+.ZBox .header .options,
+.ZBox .body .footer {
+    display: none;
+}
+
+#ZWHead {
+    background: none;
+}
+
+
+#ZWBody {
+    top: 0cm;
+    height: 27cm;
+    z-index: 5000;
+
+}
+
+#ZWBody > h1 {
+    float: right;
+}
+#ZWBody > h1 > img {
+    float: right;
+    vertical-align: text-top;
+}
+
+.ZBox .body .block  {
+    margin-left: 1cm
+}
+
+.ZBox .body .block legend {
+    background-color: white;
+}
+.ZBox input[type="text"],
+.ZBox input[type="file"],
+.ZBox select,
+.ZBox textarea {
+    background-color: white !important;
+    border: 0px solid transparent !important;
+    font-family: serif;
+}
+.ZBox input[type="file"],
+.ZBox input[type="checkbox"],
+.ZBox input[type="radio"],
+.ZBox input[type="submit"],
+.ZBox input[type="reset"],
+.ZBox button {
+    display: none;
+}
+/**
+ *  BODY CONTENT
+ *  Define style to apply for body content output
+ *  This part doesn't define style to use for particular
+ *  portlet. For this purpose, please use ManagePortlet.css
+
+
+
+#ZWBody {
+    top: 0px;
+    z-index: 5000;
+    width: 25cm;
+}
+
+.ZBox .header .title,
+.ZBox .body .block fieldset legend {
+    font-size: 1.5em;
+}
+
+.ZBox {
+    width: 27cm;
+    height: 3cm;
+}
+.ZBox .body .block fieldset {
+    border-color: #999;
+}
+
+#ZWBody > h1 {
+    float: right;
+
+}
+
+
+
+*/
+

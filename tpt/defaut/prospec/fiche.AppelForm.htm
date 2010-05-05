@@ -1,0 +1,34 @@
+<form method='post' action="javascript: zuno.business.formTools.sendAjaxForm('###[formName]###','FormProcess.Appel.php');" name='###[formName]###'>
+###[action]###
+<span class="important" style="display:none">###[message]###</span> 
+	<div class="block width50">
+		<fieldset class="form">
+			<legend>Période de l'appel</legend>
+			<div class="row"> 
+				<div class="label">Date d'appel</div>
+				<div class="field">###[appel_app]###</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Date de rappel</div>
+				<div class="field">###[rappel_app]###</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Premier contact</div>
+				<div class="field">###[premcont]###</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Projet</div>
+				<div class="field"><a href="#" onclick="return zuno.popup.open('PopupProjet.php','id_cont=###[contact_app]###&action=new',750,575,'','','resize','projet');">cr&eacute;er un projet</a> </div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width50">
+		<fieldset class="form">
+			<legend>Commentaire de l'appel</legend>
+			<div class="row"> 
+				<div class="label">détail</div>
+				<div class="field">###[comm]###</div>
+			</div>
+		</fieldset>
+	</div>
+</form>

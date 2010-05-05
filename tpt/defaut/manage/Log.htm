@@ -1,0 +1,40 @@
+<div class="Portlet2">
+<fieldset>
+		<legend>Rechercher dans les logs : </legend>
+		<form method=post>
+			<label for="" title="from">de :</label>
+			<input type="hidden" name="action" value="search"/>
+			###[input_date_from]###
+			###[select_heure_from]### 
+
+			<br class="clear"/>
+			<label for="" title="to">é :</label>
+			###[input_date_to]###
+			###[select_heure_to]###
+
+			<br class="clear"/>
+			<label for="" title="type">Type de log :</label>
+			<select name="type_slog">
+				<option value =""></option>
+				<option value ="INFO">INFO</option>
+				<option value ="CORE">CORE</option>
+				<option value ="ERROR">ERROR</option>
+			</select>
+			<br class="clear"/>
+			<label for="" title="level">Niveau :</label>
+			<select name="level_slog">
+				<option value =""></option>
+				<option value ="0">0</option>
+				<option value ="1">1</option>
+				<option value ="2">2</option>
+			</select>
+			<br class="clear"/>
+
+			<br>
+			<input type="submit" name="bouton" class="" value="Rechercher">
+			<input type="reset" name="bouton" class="" value="reinitialiser la recherche">
+			<br>
+		</form>
+
+	</fieldset>
+</div>

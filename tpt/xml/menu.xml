@@ -1,0 +1,19 @@
+	<menu id="###[id_pg]###" droit="###[droit_pg]###" channel="###[channel_pg]###" menuon="###[menuon_pg]###" actif="###[actif_pg]###" sousmenu="###[sousmenu_pg]###" order="###[order_pg]###">
+		<id>###[id_pg]###</id>
+		<uri>###[page_pg]###</uri>
+		<modif>
+			<date>###[modif_date_pg]###</date>
+			<user>###[modif_user_pg]###</user>
+		</modif>
+		<stat>
+			<visited>###[stat_pg]###</visited>
+			<from>###[stat_date_pg]###</from>
+		</stat>
+		<icone>###[img_menu_pg]###</icone>
+		<img>###[img_pg]###</img>
+		<nom>###[nom_pg]###</nom>
+		<desc>###[desc_pg]###</desc>
+		<header>###[header_pg]###</header>
+		###[enfant]###
+	</menu>
+	

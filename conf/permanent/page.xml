@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       page.xml					-->
+<!-- desc :       page content and management init file		-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="PAGE_HEADER" title="Informations d'en-tête">
+	<value id="keyword" title="Mot clef pour le référencement">aucun</value>
+	<value id="description" title="Texte de déscription du site">Progiciel de gestion STARTX</value>
+    </group>
+    <group name="PAGE" modifRight="0" title="Configuration des répertoires">
+	<value id="REP_doc">download/doc/</value>
+	<value id="REP_newsletter">download/newsletter/</value>
+	<value id="REP_phototeque">img/imgbank/</value>
+	<value id="REP_page">img/page/</value>
+	<value id="REP_pagemenu">img/page.menu/</value>
+	<!-- Display a message if no translated content -->
+		<!-- is found for the requested language 	-->
+	<value id="LANG_TxtNoTrans">TRUE</value>
+    </group>
+</configuration>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       lang.xml					-->
+<!-- desc :       Language init file				-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="LANGUE" modifRight="0" title="Langues supportées">
+	<!-- Don't put space bettwen supported language	-->
+	<value id="supported">fr</value>
+	<!-- Default language used			-->
+	<value id="default">fr</value>
+    </group>
+    <group name="LANGUE_fr" modifRight="1" title="Langues en français">
+	<value id="fr">Français</value>
+    </group>
+</configuration>

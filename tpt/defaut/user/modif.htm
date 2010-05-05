@@ -1,0 +1,90 @@
+<form enctype="multipart/form-data" method="post" name="###[FormName]###">
+<div id="###[PortletName]###">
+	<input type="hidden" name="action" value="create" />
+	<input type="hidden" name="valider" value="save">
+	###[message]###
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Informations personnelles</legend>
+			<div class="row"> 
+				<div class="label">Nom</div>
+				<div class="field">
+					###[selectciv]###<input type="text" name="nom" value="###[nom]###" class="nextciv"/>
+					<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="absmiddle"/>
+				</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Prenom</div>
+				<div class="field">
+					<input type="text" name="prenom" size="20" value="###[prenom]###" />
+				</div>
+			</div>
+			<div class="row"> 
+				<div class="label">e-mail</div>
+				<div class="field">
+					<input type="text" name="mail" size="20" value="###[mail]###"/>
+					<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="absmiddle"/>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Photo du profil</legend>
+			<div class="row"> 
+				<div class="label">Photo</div>
+				<div class="field">
+					<input type="file" name="image" maxlength="64" size="20"/>
+					<input type="hidden" name="imguri" value="###[imguri]###"/>###[image]###
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Informations de connexion</legend>
+			<div class="row"> 
+				<div class="label">Identifiant</div>
+				<div class="field">
+					<input type="hidden" name="login" size="20" value="###[login]###" />
+					<span class="txt">###[login]###</span>
+				</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Mot de passe</div>
+				<div class="field">
+					<input type="password" name="pass" size="20"/>
+				</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Confirmation</div>
+				<div class="field">					
+					<input type="password" name="pass1" size="20"/>
+				</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Langue</div>
+				<div class="field">###[selectlang]###</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Permissions</legend>
+			<div class="row"> 
+				<div class="label">Actif</div>
+				<div class="field">
+					Oui <input type="radio" name="actif" value="1" ###[actif]### />
+					- 
+					Non <input type="radio" name="actif" value="0" ###[nonactif]###/>
+				</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Droit</div>
+				<div class="field">###[selectdroit]###</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+</form>

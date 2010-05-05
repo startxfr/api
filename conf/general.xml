@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       general.xml					-->
+<!-- desc :       general init file				-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="PROJET">
+	<value id="nom">STARTX.SXA</value>
+	<value id="nommail">STARTX.FR</value>
+	<value id="auteur">STARTX</value>
+	<value id="mail">sxa@startx.fr</value>
+	<value id="copyright">2010 STARTX</value>
+	<value id="version">3.0</value>
+	<value id="revision">$Rev$</value>
+	<value id="contact">Christophe LARUE</value>
+	<value id="footeradd">un service édité par STARTX</value>
+	<value id="pageOutputEncoding">UTF-8</value>
+    </group>
+    <group name="EXT">
+	<value id="template">.htm</value>
+	<value id="plugin">.inc</value>
+	<value id="lib">.lib.php</value>
+	<value id="class">.class.php</value>
+	<value id="conf">.xml</value>
+	<value id="init">.ini</value>
+	<value id="cache">.cache.xml</value>
+    </group>
+    <group name="REP">
+	<value id="plugin">plugin/</value>
+	<value id="moduleHF">plugin/modulesHF/</value>
+	<value id="lib">core/lib/</value>
+	<value id="class">core/class/</value>
+	<value id="template">tpt/</value>
+	<value id="cache_template">tpt/xml/</value>
+	<value id="img">img/</value>
+	<value id="tmp">tmp/</value>
+	<value id="js">jss/</value>
+	<value id="css">jss/</value>
+	<value id="xsl">xsl/</value>
+	<value id="MimeTypeFile">/etc/mime.types</value>
+    </group>
+    <group name="URL">
+	<value id="Dir">/</value>
+	<value id="Domain">sxa.startx.fr</value>
+	<value id="appli">sxa.startx.fr/</value>
+	<value id="login">Login.php</value>
+    </group>
+    <group name="CACHEXML">
+	<value id="version">1.0</value>
+	<value id="encoding">UTF-8</value>
+    </group>
+    <group name="SESS" modifRight="0" title="Configuration de session">
+	<value id="table" title="Table utilisée pour la session. Le reste est configuré dans le channel">session</value>
+    </group>
+</configuration>

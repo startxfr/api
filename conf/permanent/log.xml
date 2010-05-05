@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       log.xml					-->
+<!-- desc :       log content and management init file		-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="LOG" modifRight="0" title="Configuration des log">
+	<!-- Name of logs coming from this application	-->
+	<value id="Name">ZUNO-SXA</value>
+	<value id="DisplayDebug">FALSE</value>
+	<!-- Type of output				-->
+		<!-- 	TIME    => Display only time of processing-->
+		<!--	STAT    => Display time and process statistics-->
+		<!--	QUIET   => Display time and incomming var GET, POST, SESSION and FILE-->
+		<!--	NORMAL  => Display time, statistics, incomming vars and DB, XSLT and SVN query-->
+		<!--    TCHAT   => Display NORMAL + Server informations-->
+		<!--	VERBOSE => Display everything including $GLOBALS-->
+	<value id="DisplayDebugType">NORMAL</value>
+	<!-- Error are also printed on screen 		-->
+	<value id="DisplayError">TRUE</value>
+    </group>
+    <!-- Level of error to store
+	1	E_ERROR
+	2	E_WARNING
+	4	E_PARSE
+	8	E_NOTICE
+	16	E_CORE_ERROR
+	32	E_CORE_WARNING
+	64	E_COMPILE_ERROR
+	128	E_COMPILE_WARNING
+	256	E_USER_ERROR
+	512	E_USER_WARNING
+	1024    E_USER_NOTICE
+	2048    E_STRICT
+	4096    E_RECOVERABLE_ERROR
+	8192    E_DEPRECATED
+	16384   E_USER_DEPRECATED
+	30719   E_ALL
+    -->
+    <group name="LOG_DB" modifRight="0" title="Configuration des log sql">
+	<value id="activate">TRUE</value>
+	<value id="level">0,1,2,4,16,32,64,128,256,512,2048,4096,8192</value>
+	<value id="base_pool">1</value>
+	<value id="base_table">log</value>
+    </group>
+    <group name="LOG_FILE" modifRight="0" title="Configuration des log fichiers">
+	<value id="activate">FALSE</value>
+	<value id="level">0,1,2,4,16,32,64,128,256,512,2048,4096,8192</value>
+	<value id="file_path">tmp/</value>
+	<value id="file_extention">.log</value>
+	<value id="file_nameDate">Ymd</value>
+	<value id="file_ligneDate">His</value>
+    </group>
+    <group name="LOG_SYS" modifRight="0" title="Configuration des log systeme">
+	<value id="activate">FALSE</value>
+	<value id="level">0,1,2,4,16,32,64,128,256,512,2048,4096,8192</value>
+    </group>
+    <group name="LOG_MAIL" modifRight="0" title="Configuration des log par mail">
+	<value id="activate">TRUE</value>
+	<value id="level">0,1,16,64,256</value>
+    </group>
+</configuration>

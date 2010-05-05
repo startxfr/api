@@ -1,0 +1,9 @@
+
+	<menu id="###[id_pg]###" droit="###[droit_pg]###" channel="###[channel_pg]###" menuon="###[menuon_pg]###" actif="###[actif_pg]###" sousmenu="###[sousmenu_pg]###">
+		<id>###[id_pg]###</id>
+		<uri>###[page_pg]###</uri>
+		<icone>###[img_menu_pg]###</icone>
+		<nom>###[nom_pg]###</nom>
+		<desc>###[desc_pg]###</desc>
+		<header>###[header_pg]###</header>
+	</menu>

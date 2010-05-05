@@ -1,0 +1,61 @@
+<form enctype="multipart/form-data" method="post" name="###[FormName]###">
+<div id="###[PortletName]###">
+	<input type="hidden" name="login" value="###[login]###">
+	<input type="hidden" name="valider" value="remove">
+	###[message]###
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Informations personnelles</legend>
+			<div class="row"> 
+				<div class="label">Nom</div>
+				<div class="field">###[civ]### ###[nom]###</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Prenom</div>
+				<div class="field">###[prenom]###
+				</div>
+			</div>
+			<div class="row"> 
+				<div class="label">e-mail</div>
+				<div class="field">###[mail]###</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Photo du profil</legend>
+			<div class="row"> 
+				<div class="label">Photo</div>
+				<div class="field">###[image]###</div>
+			</div>
+		</fieldset>
+	</div>
+	
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Informations de connexion</legend>
+			<div class="row"> 
+				<div class="label">Identifiant</div>
+				<div class="field">###[login]###</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Langue</div>
+				<div class="field">###[selectlang]###</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width50">
+		<fieldset class="form">
+		<legend>Permissions</legend>
+			<div class="row"> 
+				<div class="label">Actif</div>
+				<div class="field">###[actif]###</div>
+			</div>
+			<div class="row"> 
+				<div class="label">Droit</div>
+				<div class="field">###[droit]###</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+</form>
