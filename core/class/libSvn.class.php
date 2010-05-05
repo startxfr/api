@@ -44,7 +44,7 @@ class libSvn {
 	$CmdBase = "export LANG=\"en_US.UTF-8\"; export LC_CTYPE=\"en_US.UTF-8\"; svn status  --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool'.$SVNPool]['ConfigDir']." ";
 
 	foreach($files as $key => $uri) {
-	    Logg::loggerInfo('SVN::SVNStatus() ~ Commande : '.$CmdBase.$uri,'',__FILE__.'@'.__LINE__);
+	    Logg::loggerNotice('SVN::SVNStatus() ~ Commande : '.$CmdBase.$uri,'',__FILE__.'@'.__LINE__);
 	    if ($GLOBALS['LOG']['DisplayDebug']) {
 		$GLOBALS['LogSVNProcess'][] = $CmdBase.$uri;
 	    }
@@ -107,7 +107,7 @@ class libSvn {
 	}
 
 	foreach($files as $key => $uri) {
-	    Logg::loggerInfo('SVN::SVNInfo() ~ Commande : '.$CmdBase.$uri,'',__FILE__.'@'.__LINE__);
+	    Logg::loggerNotice('SVN::SVNInfo() ~ Commande : '.$CmdBase.$uri,'',__FILE__.'@'.__LINE__);
 	    if ($GLOBALS['LOG']['DisplayDebug']) {
 		$GLOBALS['LogSVNProcess'][] = $CmdBase.$uri." --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool'.$SVNPool]['ConfigDir'];
 	    }
@@ -231,7 +231,7 @@ class libSvn {
 	    $decompuri= explode("/", $val);
 	    $compuri= count($decompuri);
 	    //echo $CmdBase.$val;
-	    Logg::loggerInfo('SVN::SVNPropList() ~ Commande : '.$CmdBase.$val,'',__FILE__.'@'.__LINE__);
+	    Logg::loggerNotice('SVN::SVNPropList() ~ Commande : '.$CmdBase.$val,'',__FILE__.'@'.__LINE__);
 	    if ($GLOBALS['LOG']['DisplayDebug']) {
 		$GLOBALS['LogSVNProcess'][] = $CmdBase.$val;
 	    }
@@ -364,7 +364,7 @@ class libSvn {
 
 	foreach($files as $key => $val) {
 	    //echo $CmdBase.$val;
-	    Logg::loggerInfo('SVN::SVNLog() ~ Commande : '.$CmdBase.$val,'',__FILE__.'@'.__LINE__);
+	    Logg::loggerNotice('SVN::SVNLog() ~ Commande : '.$CmdBase.$val,'',__FILE__.'@'.__LINE__);
 	    if ($GLOBALS['LOG']['DisplayDebug']) {
 		$GLOBALS['LogSVNProcess'][] = $CmdBase.$val;
 	    }

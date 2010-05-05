@@ -297,6 +297,22 @@ abstract class GeneralModel extends Bdd_mysql_2 {
     }
 
     /**
+     * Filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la description de table fournit
+     * @param <array> $data les données brut
+     * @param <array> $tableDesc la table des clefs autorisées
+     * @return <array> le tableau filtré
+     */
+
+    public function bindVar($data,$tableDesc) {
+	$out = array();
+	if(is_array($tableDesc) and is_array($data))
+	    foreach($data as $k => $v)
+		if(in_array($k,$tableDesc))
+		    $out[$k] = $v;
+	return $out;
+    }
+
+    /**
      * Méthode qui insert une actualité correspondate à une action sur une fiche
      * @param string $id L'id de la fiche
      * @param string $action L'action réalisée [add/update/delete/clone/avoir/WS]

@@ -40,14 +40,14 @@ class XmlCache {
 
     /** Delete all xml cache files. */
     function flushCache() {
-	Logg::loggerInfo('XmlCache::flushCache() ~ Nettoyage du cache XML','',__FILE__.'@'.__LINE__);
+	Logg::loggerNotice('XmlCache::flushCache() ~ Nettoyage du cache XML','',__FILE__.'@'.__LINE__);
 	rm($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp']."*");
     }
 
     /** Delete the xml cache file of the present instance. */
     function flushMe() {
 	if($this->doesCacheExist()) {
-	    Logg::loggerInfo('XmlCache::flushMe() ~ nettoyage du fichier de cache '.$this->fileURI,'',__FILE__.'@'.__LINE__);
+	    Logg::loggerNotice('XmlCache::flushMe() ~ nettoyage du fichier de cache '.$this->fileURI,'',__FILE__.'@'.__LINE__);
 	    unlink($GLOBALS['REP']['appli'].$this->fileURI);
 	}
     }

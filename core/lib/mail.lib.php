@@ -95,6 +95,7 @@ function MailAttach($to,$messager,$file,$filetype = '',$messagetype = '',$subjec
     $out	= mp_new_message($message);
 
     $o	= mail($to, $subject, $out[0],$heads.$out[1]);
+    Logg::loggerInfo('function MailAttach() ~ Envoi d\'un mail à '.$to,array($to, $subject, $out[0],$heads.$out[1]),__FILE__.'@'.__LINE__);
     return array($o, $to);
 }
 

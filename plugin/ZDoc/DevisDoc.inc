@@ -92,11 +92,13 @@ class devisGnose {
 		    $total = $total+$totalRow;
 		}
 	    }
+	    else Logg::loggerNotice('devisGnose::DevisGenerateDocument() ~ Impossible de trouver les produits du devis '.$id_dev,$id_dev,__FILE__.'@'.__LINE__);
 
 	    $entreprise['totalHT'] = number_format(round($total,2),2,',',' ');
 	    $entreprise['totalTVA'] = number_format(round(($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
 	    $entreprise['totalTTC'] = number_format(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
 	}
+	else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible de trouver les informations sur le devis '.$id_dev,$id_dev,__FILE__.'@'.__LINE__);
 
 	if(is_file($cannevasFile) and
 		count($entreprise) > 0 and
@@ -152,10 +154,14 @@ class devisGnose {
 			if(is_string($retour))
 			    return false;
 		    }
+		    else Logg::loggerInfo('devisGnose::DevisGenerateDocument() ~ Génération du document pour le devis '.$id_dev.' (fichier '.$PDFName.')',$cannevasFile,__FILE__.'@'.__LINE__);
 		    return $PDFName;
 		}
+		else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible de trouver la sequence {LIGNE_PROD} dans le cannevas '.$cannevasFile,$cannevasFile,__FILE__.'@'.__LINE__);
 	    }
+	    else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible d\'ouvrir le cannevas '.$cannevasFile,$extract,__FILE__.'@'.__LINE__);
 	}
+	else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible de trouver le cannevas '.$cannevasFile.' ou les informations sur le devis '.$id_dev,$entreprise,__FILE__.'@'.__LINE__);
     }
 
     /**
@@ -181,15 +187,12 @@ class devisGnose {
 	if(copy($fileFrom,$PathTo.$fileName)) {
 	    if(!$FileExist) {
 		$CmdBase = "svn add --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." ";
-		if ($GLOBALS['LOG']['DisplayDebug']) {
+		if ($GLOBALS['LOG']['DisplayDebug'])
 		    $GLOBALS['LogSVNProcess'][] = $CmdBase.$PathTo.$fileName;
-		}
 		shell_exec($CmdBase.$PathTo.$fileName);
 		chmod($PathTo.$fileName,0770);
 	    }
-
-
-	    $uri		= " -m \"".$message."\" ".$PathTo.$fileName;
+	    $uri	= " -m \"".$message."\" ".$PathTo.$fileName;
 	    $CmdBase	= "export EDITOR=\"vi\"; export LC_CTYPE=\"fr_FR.UTF-8\"; export LANG=\"fr_FR.UTF-8\"; svn ci --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." --username ".$_SESSION["user"]["id"]." ";
 	    $CmdBase1	= "export LANG=\"en_US.UTF-8\"; export LC_CTYPE=\"en_US.UTF-8\"; export EDITOR=\"vi\"; svn update --non-interactive --no-auth-cache --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." --username ".$_SESSION["user"]["id"]." ";
 	    if ($GLOBALS['LOG']['DisplayDebug']) {
@@ -198,9 +201,11 @@ class devisGnose {
 	    }
 	    shell_exec($CmdBase.$uri);
 	    shell_exec($CmdBase1.$GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir']." &");
+	    Logg::loggerInfo('devisGnose::DevisSaveDocInGnose() ~ Sauvegarde du devis '.$fileName.' dans l\'affaire '.$affaire,array($fileFrom,$fileName,$affaire,$message),__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	else {
+	    Logg::loggerError('devisGnose::DevisSaveDocInGnose() ~ Erreur lors de la sauvegarde du devis '.$fileName.' dans l\'affaire '.$affaire,array($fileFrom,$fileName,$affaire,$message),__FILE__.'@'.__LINE__);
 	    return "ERREUR LORS DE LA COPIE";
 	}
     }
@@ -286,6 +291,7 @@ class devisGnose {
 		    unset($output);
 		}
 	    }
+	    else Logg::loggerError('devisGnose::DevisExportTableur() ~ Impossible de trouver des devis à afficher ',count($devis),__FILE__.'@'.__LINE__);
 	    $xmlContent = $exportDebutDocument.$outDevis.$exportFinDocument;
 	    unset($outDevis);
 
@@ -297,8 +303,10 @@ class devisGnose {
 	    $archive = new PclZip($ArchivePath.$ODTName);
 	    $archive->add($ExportTmpPath,PCLZIP_OPT_REMOVE_PATH,$ExportTmpPath.'/');
 	    $outputFile = $ODTName;
+	    Logg::loggerInfo('devisGnose::DevisExportTableur() ~ Export de la liste des devis '.$ODTName,count($devis),__FILE__.'@'.__LINE__);
 	    return $outputFile;
 	}
+	else Logg::loggerError('devisGnose::DevisExportTableur() ~ Impossible de trouver le cannevas '.$cannevasFile,count($devis),__FILE__.'@'.__LINE__);
     }
 }
 ?>

@@ -11,8 +11,8 @@
 	<value id="select_blank_line">  </value>
     </group>
     <group name="HOURS" modifRight="2" title="Plages horaires (listes de temps)">
-	<value id="min">9</value>
-	<value id="max">18</value>
+	<value id="min">7</value>
+	<value id="max">20</value>
     </group>
     <group name="CIV_fr" modifRight="2" title="Civilité en Français">
 	<value id="M.">M.</value>

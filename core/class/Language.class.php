@@ -38,7 +38,7 @@ class Language {
 		$_SESSION["language"] = $GLOBALS['LANGUE']['default'];
 	    }
 	}
-	Logg::loggerInfo('Language::LanguageDetect() ~ detection du language '.$_SESSION["language"],'',__FILE__.'@'.__LINE__);
+	Logg::loggerNotice('Language::LanguageDetect() ~ detection du language '.$_SESSION["language"],'',__FILE__.'@'.__LINE__);
 	Language::LoadInit($_SESSION["language"]);
     }
 
@@ -49,7 +49,7 @@ class Language {
 	$listesupported = explode(",",$GLOBALS['LANGUE']['supported']);
 	foreach ($listesupported as $val) {
 	    if ($val == $newlang) {
-		Logg::loggerInfo('Language::LanguageSwitch() ~ changement de la langue utilisée pour '.$newlang,'',__FILE__.'@'.__LINE__);
+		Logg::loggerNotice('Language::LanguageSwitch() ~ changement de la langue utilisée pour '.$newlang,'',__FILE__.'@'.__LINE__);
 		$_SESSION["language"] = $newlang;
 		Language::LoadInit($_SESSION["language"]);
 	    }
@@ -106,7 +106,7 @@ class Language {
      * this file give translated content to use in this page
      */
     static function LoadInit($lang = '') {
-	Logg::loggerInfo('Language::LoadInit() ~ chargement de la langue '.$lang,'',__FILE__.'@'.__LINE__);
+	Logg::loggerNotice('Language::LoadInit() ~ chargement de la langue '.$lang,'',__FILE__.'@'.__LINE__);
 	if ($lang == '') {
 	    if (isset($_SESSION) and $_SESSION["language"] != "") {
 		$lang = $_SESSION["language"];

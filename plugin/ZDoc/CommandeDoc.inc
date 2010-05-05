@@ -80,12 +80,14 @@ class commandeGnose {
 		    $total += $totalRow;
 		}
 	    }
+	    else Logg::loggerNotice('commandeGnose::CommandeGenerateBDC() ~ Impossible de trouver les produits pour la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
 	    if($type == 'BC' or $type == 'BDL') {
 		$entreprise['totalHT'] = number_format(round($total,2),2,',',' ');
 		$entreprise['totalTVA'] = number_format(round(($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
 		$entreprise['totalTTC'] = number_format(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
 	    }
 	}
+	else Logg::loggerError('commandeGnose::CommandeGenerateBDC() ~ Impossible de trouver les informations sur la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
 	if(is_file($cannevasFile) and
 		count($entreprise) > 0 and
 		FileGetExtention($cannevasFile) == "odt") {
@@ -158,10 +160,14 @@ class commandeGnose {
 			if(is_string($retour))
 			    return false;
 		    }
+		    else Logg::loggerInfo('commandeGnose::CommandeGenerateBDC() ~ Génération du document bon de commande client '.$id_cmd.' (fichier '.$PDFName.')',$cannevasFile,__FILE__.'@'.__LINE__);
 		    return $PDFName;
 		}
+		else Logg::loggerError('commandeGnose::CommandeGenerateBDC() ~ Impossible de trouver la sequence {LIGNE_PROD} dans le cannevas '.$cannevasFile,$cannevasFile,__FILE__.'@'.__LINE__);
 	    }
+	    else Logg::loggerError('commandeGnose::CommandeGenerateBDC() ~ Impossible d\'ouvrir le cannevas '.$cannevasFile,$extract,__FILE__.'@'.__LINE__);
 	}
+	else Logg::loggerError('commandeGnose::CommandeGenerateBDC() ~ Impossible de trouver le cannevas '.$cannevasFile.' ou les informations sur la commande '.$id_cmd,$entreprise,__FILE__.'@'.__LINE__);
     }
 
 
@@ -218,10 +224,12 @@ class commandeGnose {
 		    $total += $totalRow;
 		}
 	    }
+	    else Logg::loggerNotice('commandeGnose::CommandeGenerateBDCF() ~ Impossible de trouver les produits pour la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
 	    $entreprise['totalHT'] = number_format(round($total,2),2,',',' ');
 	    $entreprise['totalTVA'] = number_format(round(($total*$fournisseur['tauxTVA_entF']/100),2),2,',',' ');
 	    $entreprise['totalTTC'] = number_format(round($total+($total*$fournisseur['tauxTVA_entF']/100),2),2,',',' ');
 	}
+	else Logg::loggerError('commandeGnose::CommandeGenerateBDCF() ~ Impossible de trouver les informations sur la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
 
 	if(is_file($cannevasFile) and
 		count($entreprise) > 0 and
@@ -278,10 +286,14 @@ class commandeGnose {
 			if(is_string($retour))
 			    return false;
 		    }
+		    else Logg::loggerInfo('commandeGnose::CommandeGenerateBDCF() ~ Génération du document bon de commande fournisseur '.$id_cmd.' (fichier '.$PDFName.')',$cannevasFile,__FILE__.'@'.__LINE__);
 		    return $PDFName;
 		}
+		else Logg::loggerError('commandeGnose::CommandeGenerateBDCF() ~ Impossible de trouver la sequence {LIGNE_PROD} dans le cannevas '.$cannevasFile,$cannevasFile,__FILE__.'@'.__LINE__);
 	    }
+	    else Logg::loggerError('commandeGnose::CommandeGenerateBDCF() ~ Impossible d\'ouvrir le cannevas '.$cannevasFile,$extract,__FILE__.'@'.__LINE__);
 	}
+	else Logg::loggerError('commandeGnose::CommandeGenerateBDCF() ~ Impossible de trouver le cannevas '.$cannevasFile.' ou les informations sur la commande '.$id_cmd,$entreprise,__FILE__.'@'.__LINE__);
     }
 
     static function CommandeSaveDocInGnose($fileFrom,$commande,$message = "") {
@@ -292,6 +304,7 @@ class commandeGnose {
 	foreach ($fileFrom as $in => $file) {
 	    $FileExist = file_exists($PathTo.$file);
 	    if(copy($PathFrom.$file,$PathTo.$file)) {
+		Logg::loggerInfo('commandeGnose::CommandeSaveDocInGnose() ~ Sauvegarde du fichier '.$file.' de la commande '.$commande,array($fileFrom,$commande,$message),__FILE__.'@'.__LINE__);
 		if(!$FileExist) {
 		    $fileAdd[] = $PathTo.$file;
 		    chmod($PathTo.$file,0770);
@@ -325,6 +338,7 @@ class commandeGnose {
 	    return true;
 	}
 	else {
+	    Logg::loggerError('commandeGnose::CommandeSaveDocInGnose() ~ Sauvegarde des fichiers de la commande '.$commande.' impossible. Pas de fichiers',array($fileFrom,$commande,$message),__FILE__.'@'.__LINE__);
 	    return "ERREUR PAS DE FICHIER EN";
 	}
     }
@@ -411,6 +425,7 @@ class commandeGnose {
 		    unset($output);
 		}
 	    }
+	    else Logg::loggerError('commandeGnose::CommandeExportTableur() ~ Impossible de trouver des commandes à afficher ',count($contacts),__FILE__.'@'.__LINE__);
 	    $xmlContent = $exportDebutDocument.$outCommande.$exportFinDocument;
 	    unset($outCommande);
 
@@ -422,8 +437,10 @@ class commandeGnose {
 	    $archive = new PclZip($ArchivePath.$ODTName);
 	    $archive->add($ExportTmpPath,PCLZIP_OPT_REMOVE_PATH,$ExportTmpPath.'/');
 	    $outputFile = $ODTName;
+	    Logg::loggerInfo('commandeGnose::CommandeExportTableur() ~ Export de la liste des commandes '.$ODTName,count($commande),__FILE__.'@'.__LINE__);
 	    return $outputFile;
 	}
+	else Logg::loggerError('commandeGnose::CommandeExportTableur() ~ Impossible de trouver le cannevas '.$cannevasFile,count($commande),__FILE__.'@'.__LINE__);
     }
 
 

@@ -53,10 +53,12 @@ class zunoWsdlServer {
 	if (md5($GLOBALS['DBPool_1']['pass']) == $token)
 	    return true;
 	else $zunoLastError = "ERREUR : Le jeton présenté ne corespond pas au jeton autorisé. ";
+	Logg::loggerError('zunoWsdlServer::checkServerCredentials() ~  Accès refusé à '.$managerName.' : '.$zunoLastError,array($managerName,$managerKey),$file.'@'.$line);
 	return false;
     }
 
-    static function raiseFault($code,$actor,$message,$params = '') {
+    static function raiseFault($code,$actor,$message,$params = '',$file = __FILE__,$line = __LINE__) {
+	Logg::loggerAlert($actor.'() ~  '.$code.' : '.$message,serialize($params),$file.'@'.$line);
 	return new soap_fault($code,$actor,$message,$params);
     }
 }
@@ -109,6 +111,7 @@ class zunoWsdlClient {
     }
 
     protected function raiseError($message) {
+	Logg::loggerError('zunoWsdlClient::raiseError() ~ '.$message,$this->client->getDebug(),__FILE__.'@'.__LINE__);
 	$this->message  = $message."\n";
 	return false;
     }
@@ -144,6 +147,7 @@ class zunoWsdlClient {
     public function call($action) {
 	try {
 	    $this->reponse = $this->client->call($action,$this->params);
+	    Logg::loggerInfo('zunoWsdlClient::call() ~ Appel au webservice '.$this->serviceName.'.'.$action.' sur '.$this->serviceHost,array($this->params,$this->reponse),__FILE__.'@'.__LINE__);
 	    if ($this->reponse->fault)
 		return $this->raiseError("Erreur métier : ".$this->reponse->faultcode.'-'.$this->reponse->faultactor." : ".$this->reponse->faultstring);
 	    else {

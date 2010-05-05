@@ -31,11 +31,8 @@ class RenouvellementModel extends GeneralModel {
 	unset($datas['id_ren']);
 	if(!array_key_exists('actif_ren', $datas))
 	    $datas['actif_ren'] = 1;
-
-	foreach($datas as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert($this->sqlTableName, $in);
-	Logg::loggerAlert('RenouvellementModel::insert() ~ ajout d\'un renouvellement de type '.$datas['type_ren'].' pour la ressource '.$datas['idChamp_ren'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarRenouvellement($datas));
+	Logg::loggerInfo('RenouvellementModel::insert() ~ ajout d\'un renouvellement de type '.$datas['type_ren'].' pour la ressource '.$datas['idChamp_ren'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -46,7 +43,7 @@ class RenouvellementModel extends GeneralModel {
      */
     public function desactiver($id) {
 	$sql = $this->makeRequeteUpdate($this->sqlTableName, $this->sqlIdField, $id, array("actif_ren" => "0"));
-	Logg::loggerAlert('RenouvellementModel::desactiver() ~ désactivation du renouvellement '.$id,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('RenouvellementModel::desactiver() ~ désactivation du renouvellement '.$id,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -57,7 +54,7 @@ class RenouvellementModel extends GeneralModel {
      */
     public function delete($id) {
 	$sql = $this->makeRequeteDelete($this->sqlTableName, array($this->sqlIdField => $id));
-	Logg::loggerAlert('RenouvellementModel::delete() ~ Suppression du renouvellement '.$id,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('RenouvellementModel::delete() ~ Suppression du renouvellement '.$id,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -69,10 +66,8 @@ class RenouvellementModel extends GeneralModel {
      */
     public function update($id, $datas) {
 	unset($datas['id_ren']);
-	foreach($datas as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate($this->sqlTableName, $this->sqlIdField, $id, $in);
-	Logg::loggerAlert('RenouvellementModel::update() ~ Mise à jour du renouvellement '.$id,$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteUpdate($this->sqlTableName, $this->sqlIdField, $id, $this->bindVarRenouvellement($datas));
+	Logg::loggerInfo('RenouvellementModel::update() ~ Mise à jour du renouvellement '.$id,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -121,7 +116,7 @@ class RenouvellementModel extends GeneralModel {
 	    unset($datas[1][0]['id_aff']);
 	    unset($datas[1][0]['modif_aff']);
 	    $datas[1][0]['status_aff'] = $status;
-	    Logg::loggerAlert('RenouvellementModel::clonerAffaire() ~ Clonnage de l\'affaire '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('RenouvellementModel::clonerAffaire() ~ Clonnage de l\'affaire '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
 	    $rs = $model->insert($datas[1][0],'cloner', $id);
 	}
 	return array(0);
@@ -140,7 +135,7 @@ class RenouvellementModel extends GeneralModel {
 	    $datas[1][0]['id_dev'] = $model->createId($datas[1][0]['affaire_dev']);
 	    $prod = $model->getProduitsFromID($id);
 	    $datas[1][0]['status_dev'] = $status;
-	    Logg::loggerAlert('RenouvellementModel::clonerDevis() ~ Clonnage du devis '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('RenouvellementModel::clonerDevis() ~ Clonnage du devis '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
 	    $res = $model->insert($datas[1][0], 'cloner', $prod[1]);
 	    if($status > 2) {
 		include_once('../ZDoc/DevisDoc.inc');
@@ -177,7 +172,7 @@ class RenouvellementModel extends GeneralModel {
 	    $datas[1][0]['id_fact'] = $model->getLastId()+1;
 	    $prod = $model->getProduitsFromID($id);
 	    $datas[1][0]['status_fact'] = $status;
-	    Logg::loggerAlert('RenouvellementModel::clonerFacture() ~ Clonnage de la facture '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('RenouvellementModel::clonerFacture() ~ Clonnage de la facture '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
 	    $res = $model->insert($datas[1][0], 'cloner', $prod[1]);
 	    if($status > 2) {
 		include_once('../ZDoc/FactureDoc.inc');
@@ -209,7 +204,7 @@ class RenouvellementModel extends GeneralModel {
 	    }
 	    unset($datas[1][0]['id_factfourn']);
 	    unset($datas[1][0]['fichier_factfourn']);
-	    Logg::loggerAlert('RenouvellementModel::clonerFactureFournisseur() ~ Clonnage de la facture fournisseur '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('RenouvellementModel::clonerFactureFournisseur() ~ Clonnage de la facture fournisseur '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
 	    $rs = $model->insert($datas[1][0]);
 	    if($rs[0])
 		$this->addActualite($datas[1][0]['id_factfourn'], 'clone', '', '', $id);
@@ -230,11 +225,20 @@ class RenouvellementModel extends GeneralModel {
 	$datas = $model->getDataFromID($id);
 	if($datas[0]) {
 	    unset($datas[1][0]['id_proj']);
-	    Logg::loggerAlert('RenouvellementModel::clonerProjet() ~ Clonnage du projet '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('RenouvellementModel::clonerProjet() ~ Clonnage du projet '.$id.' lors d\'un renouvellement',$datas[1][0],__FILE__.'@'.__LINE__);
 	    return $model->insert($datas[1][0]);
 	}
 	return array(0);
 
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table transaction
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarRenouvellement($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 ?>

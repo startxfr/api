@@ -41,24 +41,24 @@ class commandeModel extends GeneralModel {
     public function getDataForSearch($search,$limit = 10, $from = 0, $plus = '') {
 	$qTag = " LIKE '%".$search."%' ";
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*) " .
-		    "FROM commande " .
-		    "LEFT JOIN entreprise ON entreprise.id_ent = commande.entreprise_cmd
-			 LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
-			 LEFT JOIN contact ON contact.id_cont = commande.contact_cmd " .
-		    "WHERE (nom_ent $qTag OR ville_ent $qTag OR nom_cont $qTag OR prenom_cont $qTag " .
-		    "OR mail_cont $qTag OR id_cmd $qTag OR titre_cmd $qTag OR devis_cmd $qTag )" .$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*)
+		    FROM commande
+		    LEFT JOIN entreprise ON entreprise.id_ent = commande.entreprise_cmd
+		    LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
+		    LEFT JOIN contact ON contact.id_cont = commande.contact_cmd
+		    WHERE (nom_ent $qTag OR ville_ent $qTag OR nom_cont $qTag OR prenom_cont $qTag
+		    OR mail_cont $qTag OR id_cmd $qTag OR titre_cmd $qTag OR devis_cmd $qTag )" .$plus);
 	}
 	else {
-	    $this->makeRequeteFree("SELECT titre_cmd, nom_ent, type_ent, nom_cont, prenom_cont, civ_cont, id_cmd " .
-		    "FROM commande " .
-		    "LEFT JOIN entreprise ON entreprise.id_ent = commande.entreprise_cmd
-			 LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
-			 LEFT JOIN contact ON contact.id_cont = commande.contact_cmd " .
-		    "WHERE (nom_ent $qTag OR ville_ent $qTag OR nom_cont $qTag OR prenom_cont $qTag " .
-		    "OR mail_cont $qTag OR id_cmd $qTag OR titre_cmd $qTag OR devis_cmd $qTag )" .$plus.
-		    "ORDER BY id_cmd DESC " .
-		    "LIMIT $from , $limit");
+	    $this->makeRequeteFree("SELECT titre_cmd, nom_ent, type_ent, nom_cont, prenom_cont, civ_cont, id_cmd
+		    FROM commande
+		    LEFT JOIN entreprise ON entreprise.id_ent = commande.entreprise_cmd
+		    LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
+		    LEFT JOIN contact ON contact.id_cont = commande.contact_cmd
+		    WHERE (nom_ent $qTag OR ville_ent $qTag OR nom_cont $qTag OR prenom_cont $qTag
+		    OR mail_cont $qTag OR id_cmd $qTag OR titre_cmd $qTag OR devis_cmd $qTag ) $plus
+		    ORDER BY id_cmd DESC
+		    LIMIT $from , $limit");
 	}
 	return $this->process2();
     }
@@ -77,26 +77,19 @@ class commandeModel extends GeneralModel {
 	$archives = 0;
 	if(is_array($conditions)) {
 	    foreach($conditions as $k => $v) {
-		if($k == 'cp_ent')
-		    $where .= "$k LIKE '".$v."%' AND ";
-		elseif($k == 'sommeFHT_cmd')
-		    $where .= " $k >= '$v' AND ";
-		elseif($k == 'sommeFHT_cmd2')
-		    $where .= " sommeFHT_cmd < '$v' AND ";
+		if($k == 'cp_ent')		$where .= "$k LIKE '".$v."%' AND ";
+		elseif($k == 'sommeFHT_cmd')	$where .= " $k >= '$v' AND ";
+		elseif($k == 'sommeFHT_cmd2')	$where .= " sommeFHT_cmd < '$v' AND ";
 		elseif($k == 'status_cmd' and $v == '9') {
 		    $where .= "$k = '".$v."' AND ";
 		    $archives = $v;
 		}
-		elseif($k == 'status_cmd')
-		    $where .= "$k = '".$v."' AND ";
-		elseif($k == 'entreprise_cmd')
-		    $where .= "$k = '".$v."' AND ";
-		else
-		    $where .= "$k LIKE '%".$v."%' AND ";
+		elseif($k == 'status_cmd')	$where .= "$k = '".$v."' AND ";
+		elseif($k == 'entreprise_cmd')	$where .= "$k = '".$v."' AND ";
+		else				$where .= "$k LIKE '%".$v."%' AND ";
 	    }
 	}
-	if($archives != '9')
-	    $where .= " status_cmd != '10' ";
+	if($archives != '9')			$where .= " status_cmd != '10' ";
 
 
 	if($limit != 'ALL')
@@ -142,19 +135,19 @@ class commandeModel extends GeneralModel {
 	$sqlList = '('.substr($listSql,0,-1).')';
 
 	$this->makeRequeteFree("SELECT *, c2.id_cont AS id_achat, c2.civ_cont AS civ_achat, c2.prenom_cont AS prenom_achat, c2.nom_cont AS nom_achat, c2.mail_cont AS mail_achat, c2.fax_cont AS fax_achat
-			FROM commande c
-			LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd
-			LEFT JOIN contact c2 ON c2.id_cont = c.contact_achat_cmd
-			LEFT JOIN contact c1 ON c1.id_cont = c.contact_cmd
-			LEFT JOIN devis ON devis.id_dev = c.devis_cmd
-			LEFT JOIN affaire ON affaire.id_aff = devis.affaire_dev
-			LEFT JOIN ref_statuscommande rsd ON rsd.id_stcmd = c.status_cmd
-			LEFT JOIN ref_pays rfp ON rfp.id_pays = c.paysdelivery_cmd
-			LEFT JOIN user ON user.login = c.commercial_cmd
-			LEFT JOIN ref_condireglement rc ON rc.id_condreg = c.condireglement_cmd
-			LEFT JOIN ref_modereglement rm ON rm.id_modereg = c.modereglement_cmd
-		WHERE id_cmd IN $sqlList
-		ORDER BY id_cmd ASC,nom_ent ASC");
+				FROM commande c
+				LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd
+				LEFT JOIN contact c2 ON c2.id_cont = c.contact_achat_cmd
+				LEFT JOIN contact c1 ON c1.id_cont = c.contact_cmd
+				LEFT JOIN devis ON devis.id_dev = c.devis_cmd
+				LEFT JOIN affaire ON affaire.id_aff = devis.affaire_dev
+				LEFT JOIN ref_statuscommande rsd ON rsd.id_stcmd = c.status_cmd
+				LEFT JOIN ref_pays rfp ON rfp.id_pays = c.paysdelivery_cmd
+				LEFT JOIN user ON user.login = c.commercial_cmd
+				LEFT JOIN ref_condireglement rc ON rc.id_condreg = c.condireglement_cmd
+				LEFT JOIN ref_modereglement rm ON rm.id_modereg = c.modereglement_cmd
+				WHERE id_cmd IN $sqlList
+				ORDER BY id_cmd ASC,nom_ent ASC");
 	return $this->process2();
     }
 
@@ -192,7 +185,7 @@ class commandeModel extends GeneralModel {
      * @return array Le status
      */
     public function getStatusCommande($id) {
-	$this->makeRequeteFree("Select status_cmd, tva_cmd from commande where id_cmd = '".$id."' ; ");
+	$this->makeRequeteFree("SELECT status_cmd, tva_cmd FROM commande WHERE id_cmd = '".$id."' ; ");
 	return $this->process2();
     }
 
@@ -205,13 +198,12 @@ class commandeModel extends GeneralModel {
      */
     public function getDataForSearchProd($search,$limit = 10, $from = 0) {
 	$qTag = " LIKE '%".$search."%' ";
-	$this->makeRequeteFree(
-		"SELECT  nom_prod, id_prod, nom_prodfam, prix_prod " .
-		"FROM produit " .
-		"LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod ".
-		"WHERE nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag " .
-		"ORDER BY id_prod ASC " .
-		"LIMIT $from , $limit");
+	$this->makeRequeteFree("SELECT  nom_prod, id_prod, nom_prodfam, prix_prod
+				FROM produit
+				LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod
+				WHERE nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag
+				ORDER BY id_prod ASC
+				LIMIT $from , $limit");
 	//Fonction appelée lors d'une recherche simple.
 	return $this->process2();
     }
@@ -226,18 +218,17 @@ class commandeModel extends GeneralModel {
      */
     public function getDataForSearchFacture($search,$limit = 10, $from = 0, $plus = '') {
 	$qTag = " LIKE '%".$search."%' ";
-	$this->makeRequeteFree(
-		"SELECT titre_cmd, nom_ent, nom_cont, prenom_cont, civ_cont, id_cmd " .
-		"FROM commande c " .
-		"LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd
-			 LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
-			 LEFT JOIN contact ON contact.id_cont = c.contact_cmd " .
-		"LEFT JOIN facture ON facture.commande_fact = id_cmd ".
-		"WHERE (nom_ent $qTag OR ville_ent $qTag OR nom_cont $qTag OR prenom_cont $qTag " .
-		"OR mail_cont $qTag OR id_cmd $qTag OR titre_cmd $qTag OR devis_cmd $qTag) " .
-		"AND facture.id_fact IS NULL AND sommeHT_cmd > '0' ".$plus.
-		" ORDER BY id_cmd DESC " .
-		"LIMIT $from , $limit ");
+	$this->makeRequeteFree("SELECT titre_cmd, nom_ent, nom_cont, prenom_cont, civ_cont, id_cmd
+				FROM commande c
+				LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd
+				LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
+				LEFT JOIN contact ON contact.id_cont = c.contact_cmd
+				LEFT JOIN facture ON facture.commande_fact = id_cmd
+				WHERE (nom_ent $qTag OR ville_ent $qTag OR nom_cont $qTag OR prenom_cont $qTag
+				OR mail_cont $qTag OR id_cmd $qTag OR titre_cmd $qTag OR devis_cmd $qTag)
+				AND facture.id_fact IS NULL AND sommeHT_cmd > '0' $plus
+				ORDER BY id_cmd DESC
+				LIMIT $from , $limit ");
 	//Fonction appelée lors d'une recherche simple.
 	return $this->process2();
     }
@@ -413,7 +404,7 @@ class commandeModel extends GeneralModel {
     public function getProduitsDevis($id) {
 	$this->makeRequeteFree("SELECT *
 		FROM devis_produit dp
-		left join produit ON produit.id_prod = dp.id_produit
+		LEFT JOIN produit ON produit.id_prod = dp.id_produit
 		WHERE id_devis = '".trim($id)."'");
 	return $this->process2();
     }
@@ -439,9 +430,7 @@ class commandeModel extends GeneralModel {
      * @return Les infos du contact
      */
     public function getContactData($id) {
-	$this->makeRequeteFree("SELECT *
-		FROM contact
-		WHERE id_cont = '".trim($id)."'");
+	$this->makeRequeteFree("SELECT * FROM contact WHERE id_cont = '".trim($id)."'");
 	return $this->process2();
     }
 
@@ -451,9 +440,7 @@ class commandeModel extends GeneralModel {
      * @return array Les données
      */
     public function getDataFromDevis($id) {
-	$this->makeRequeteFree("SELECT *
-		FROM devis
-		WHERE id_dev = '".trim($id)."'");
+	$this->makeRequeteFree("SELECT * FROM devis WHERE id_dev = '".trim($id)."'");
 	return $this->process2();
     }
 
@@ -464,7 +451,7 @@ class commandeModel extends GeneralModel {
      */
     public function addProduit($data) {
 	$sql = $this->makeRequeteInsert('produit',$data);
-	Logg::loggerAlert('commandeModel::addProduit() ~ ajout du produit '.$data['id_prod'].' intitulé : '.$data['nom_prod'],$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('commandeModel::addProduit() ~ ajout du produit '.$data['id_prod'].' intitulé : '.$data['nom_prod'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -475,20 +462,15 @@ class commandeModel extends GeneralModel {
      * @return array Indique si la requète s'est bien exécutée
      */
     public function insertProduits($data, $actu = true) {
-	if($data['quantite'] == NULL) {
+	if($data['quantite'] == NULL)
 	    $data['quantite'] = 1;
-	}
-	if($data['remise'] == NULL) {
+	if($data['remise'] == NULL)
 	    $data['remise'] = 0;
-	}
-	if($data['remiseF'] == NULL) {
+	if($data['remiseF'] == NULL)
 	    $data['remiseF'] = 0;
-	}
 	$data['prix']=number_format($data['prix'],2,'.','');
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProduit)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert('commande_produit', $in);
-	Logg::loggerAlert('commandeModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour la commande '.$data['id_commande'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteInsert('commande_produit',$this->bindVarCommandeProduit($data));
+	Logg::loggerInfo('commandeModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour la commande '.$data['id_commande'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	$this->updateMontant($data['id_commande']);
 	if($rs[0] and $actu)
@@ -510,7 +492,7 @@ class commandeModel extends GeneralModel {
 	elseif($id_produit != NULL)
 	    $sql = $this->makeRequeteFree("delete from commande_produit where id_commande='".$data['id_commande']."' AND id_produit='".$id_produit."';");
 	else $sql = $this->makeRequeteFree("delete from commande_produit where id='".$data['id']."';");
-	Logg::loggerAlert('commandeModel::deleteProduits() ~ suppression de produits sur la commande '.$data['id_commande'],$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('commandeModel::deleteProduits() ~ suppression de produits sur la commande '.$data['id_commande'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $this->updateMontant($data['id_commande']);
@@ -525,10 +507,8 @@ class commandeModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function updateProduits($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProduit)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate('commande_produit', 'id', $data['id'], $in);
-	Logg::loggerAlert('commandeModel::updateProduits() ~ mise à jour du produit '.$data['id'].' sur la commande',$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteUpdate('commande_produit', 'id', $data['id'],$this->bindVarCommandeProduit($data));
+	Logg::loggerInfo('commandeModel::updateProduits() ~ mise à jour du produit '.$data['id'].' sur la commande',$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $this->updateMontant($data['id_commande']);
@@ -562,23 +542,21 @@ class commandeModel extends GeneralModel {
 	$data['datemodif_cmd']=date('Y-m-d');
 	$data['daterecord_cmd']=date('Y-m-d');
 	$data['tva_cmd']=number_format($data['tva_cmd'], 1, '.', '');
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
 	if($fait == 'creation') {
-	    $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	    Logg::loggerAlert('commandeModel::insert() ~ ajout de la commande '.$data['id_cmd'],$sql,__FILE__.'@'.__LINE__);
+	    $sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarCommande($data));
+	    Logg::loggerInfo('commandeModel::insert() ~ ajout de la commande '.$data['id_cmd'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0])
-		$this->addActualite($in['id_cmd'], 'add');
+		$this->addActualite($data['id_cmd'], 'add');
 	    return $rs;
 	}
 	elseif($fait == 'cloner') {
-	    $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	    Logg::loggerAlert('commandeModel::insert() ~ ajout de la commande '.$data['id_cmd'].' par clonnage',$sql,__FILE__.'@'.__LINE__);
+	    $sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarCommande($data));
+	    Logg::loggerInfo('commandeModel::insert() ~ ajout de la commande '.$data['id_cmd'].' par clonnage',$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    $a = 2;
 	    foreach($prod as $v) {
-		$temp['id_commande'] = $in['id_cmd'];
+		$temp['id_commande'] = $data['id_cmd'];
 		$temp['id_produit'] = $v['id_produit'];
 		$temp['desc'] = $v['desc'];
 		$temp['quantite'] = $v['quantite'];
@@ -593,7 +571,7 @@ class commandeModel extends GeneralModel {
 		$a++;
 	    }
 	    if($rs[0])
-		$this->addActualite($in['id_cmd'], 'add');
+		$this->addActualite($data['id_cmd'], 'add');
 	    return $rs;
 	}
     }
@@ -612,23 +590,20 @@ class commandeModel extends GeneralModel {
 	    $data['sommeHT_cmd']=prepareNombreTraitement($data['sommeHT_cmd']);
 	if(array_key_exists('sommeFHT_cmd', $data))
 	    $data['sommeFHT_cmd']=prepareNombreTraitement($data['sommeFHT_cmd']);
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	if(!array_key_exists($this->sqlIdField,$in)) {
-	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_cmd",$id_cmd,$in);
-	    Logg::loggerAlert('commandeModel::update() ~ mise à jour de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
+	if(!array_key_exists($this->sqlIdField,$data)) {
+	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_cmd",$id_cmd,$this->bindVarCommande($data));
+	    Logg::loggerInfo('commandeModel::update() ~ mise à jour de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_cmd'] != '')
 		$this->addActualite($id_cmd, 'update');
 	    return $rs;
-	    ;
 	}
 	else {
-	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_cmd",$in['id_cmd'],$in);
-	    Logg::loggerAlert('commandeModel::update() ~ mise à jour de la commande '.$in['id_cmd'],$sql,__FILE__.'@'.__LINE__);
+	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_cmd",$data['id_cmd'],$this->bindVarCommande($data));
+	    Logg::loggerInfo('commandeModel::update() ~ mise à jour de la commande '.$data['id_cmd'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_cmd'] != '')
-		$this->addActualite($in['id_cmd'], 'update');
+		$this->addActualite($data['id_cmd'], 'update');
 	    return $rs;
 	}
     }
@@ -641,7 +616,7 @@ class commandeModel extends GeneralModel {
      */
     public function delete($id_cmd, $facture = 'no') {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_cmd = '".$id_cmd."'");
-	Logg::loggerAlert('commandeModel::delete() ~ suppression de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('commandeModel::delete() ~ suppression de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($facture == 'yes') {
 	    $this->makeRequeteFree("select id_fact FROM facture Where commande_fact = '".$id_cmd."'");
@@ -654,7 +629,7 @@ class commandeModel extends GeneralModel {
 	    }
 	    $sql.= $this->makeRequeteFree("DELETE FROM facture Where commande_fact = '".$id_cmd."'");
 	    $result = $this->process2();
-	    Logg::loggerAlert('commandeModel::delete() ~ suppression des ressources liées à la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::delete() ~ suppression des ressources liées à la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	}
 	if($rs[0])
 	    $this->addActualite($id_cmd, 'delete');
@@ -832,8 +807,7 @@ class commandeModel extends GeneralModel {
      */
     static function ScoreCommande($id, $bureau = false) {
 
-	$req = 'SELECT  * FROM commande,ref_statuscommande
-			WHERE id_stcmd = status_cmd AND id_cmd = \''.$id.'\'';
+	$req = 'SELECT  * FROM commande,ref_statuscommande WHERE id_stcmd = status_cmd AND id_cmd = \''.$id.'\'';
 	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	$bddtmp->makeRequeteFree($req);
 	$res = $bddtmp->process();
@@ -858,8 +832,7 @@ class commandeModel extends GeneralModel {
 	$out['score'] = $score;
 	if($bureau)
 	    $out['img'] = imageTag('Img.CommandeScore.php?score='.$score,$score.'%');
-	else
-	    $out['img'] = imageTag('../Img.CommandeScore.php?score='.$score,$score.'%');
+	else $out['img'] = imageTag('../Img.CommandeScore.php?score='.$score,$score.'%');
 	$out['color'] = $color;
 	$out['desc'] = $desc;
 	$out['LinkBox'] = ContextBox($out['img'],$desc,"Scoring de la commande ".$cmd['id_cmd']);
@@ -888,9 +861,8 @@ class commandeModel extends GeneralModel {
 	    // On prépare les tableaux pour le JS produits
 	    $total = 0;
 	    foreach ($produits as $key => $produit) {
-		if($produit['fournisseur'] == '') {
+		if($produit['fournisseur'] == '')
 		    $produit['remiseF'] = 100;
-		}
 		$Sum=($produit['quantite']*$produit['prix'])-((($produit['quantite']*$produit['prix'])*$produit['remise'])/100);
 		$total = $total+round($Sum,2);
 		$Sum1=($produit['quantite']*$produit['prixF'])-((($produit['quantite']*$produit['prixF'])*$produit['remiseF'])/100);
@@ -898,10 +870,14 @@ class commandeModel extends GeneralModel {
 	    }
 	    $var_out['sommeHT_cmd'] = round($total,2);
 	    $var_out['sommeFHT_cmd'] = round($total1,2);
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$var_out);
-	    Logg::loggerAlert('commandeModel::updateTotalInDB() ~ mise à jour du total de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
-	    $bddtmp->process();
 	}
+	else {
+	    $var_out['sommeHT_cmd'] = 0.00;
+	    $var_out['sommeFHT_cmd'] = 0.00;
+	}
+	$sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$var_out);
+	Logg::loggerInfo('commandeModel::updateTotalInDB() ~ mise à jour du total de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
+	$bddtmp->process();
     }
 
 
@@ -939,7 +915,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::changeAttributeCommandeInDB() ~ changement d\'attribut de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::changeAttributeCommandeInDB() ~ changement d\'attribut de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::changeAttributeCommandeInDB() ~ impossible de changer les attributs de la commande '.$id_cmd,'',__FILE__.'@'.__LINE__);
@@ -957,7 +933,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'archive', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::archivateCommandeInDB() ~ Commande '.$id_cmd.' marquée comme archivée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::archivateCommandeInDB() ~ Commande '.$id_cmd.' marquée comme archivée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::archivateCommandeInDB() ~ impossible de marquer comme archivée la commande '.$id_cmd,'',__FILE__.'@'.__LINE__);
@@ -976,7 +952,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::markRecuCommandeInDB() ~ Commande '.$id_cmd.' marquée comme supprimée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::markRecuCommandeInDB() ~ Commande '.$id_cmd.' marquée comme supprimée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::markRecuCommandeInDB() ~ impossible de marquer comme supprimée la commande '.$id_cmd,'',__FILE__.'@'.__LINE__);
@@ -997,7 +973,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme envoyé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme envoyé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::markBDCFEnvoyeCommandeInDB() ~ impossible de marquer le bon de commande fournisseur '.$id_cmd.' comme envoyé','',__FILE__.'@'.__LINE__);
@@ -1016,7 +992,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::markBDCFRecuCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme reçu',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::markBDCFRecuCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme reçu',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::markBDCFRecuCommandeInDB() ~ impossible de marquer le bon de commande fournisseur '.$id_cmd.' comme reçu','',__FILE__.'@'.__LINE__);
@@ -1035,7 +1011,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme validé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme validé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::markBDCFEnvoyeCommandeInDB() ~ impossible de marquer le bon de commande fournisseur '.$id_cmd.' comme validé','',__FILE__.'@'.__LINE__);
@@ -1054,7 +1030,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::markExpedieCommandeInDB() ~ Commande '.$id_cmd.' marquée comme expédiée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::markExpedieCommandeInDB() ~ Commande '.$id_cmd.' marquée comme expédiée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::markExpedieCommandeInDB() ~ impossible de marquer la commande '.$id_cmd.' comme expédiée','',__FILE__.'@'.__LINE__);
@@ -1073,7 +1049,7 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::markReceptionneCommandeInDB() ~ Commande '.$id_cmd.' marquée comme réceptionnée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::markReceptionneCommandeInDB() ~ Commande '.$id_cmd.' marquée comme réceptionnée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::markReceptionneCommandeInDB() ~ impossible de marquer la commande '.$id_cmd.' comme réceptionnée','',__FILE__.'@'.__LINE__);
@@ -1092,12 +1068,28 @@ class commandeModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('commandeModel::markTermineCommandeInDB() ~ Commande '.$id_cmd.' marquée comme terminée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('commandeModel::markTermineCommandeInDB() ~ Commande '.$id_cmd.' marquée comme terminée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('commandeModel::markTermineCommandeInDB() ~ impossible de marquer la commande '.$id_cmd.' comme terminée','',__FILE__.'@'.__LINE__);
     }
 
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table commande
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarCommande($data) {
+	return $this->bindVar($data,$this->availableFields);
+    }
 
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table commande_produit
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFieldsProduit
+     */
+    public function bindVarCommandeProduit($data) {
+	return $this->bindVar($data,$this->availableFieldsProduit);
+    }
 }
 ?>

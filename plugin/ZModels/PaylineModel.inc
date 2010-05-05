@@ -28,10 +28,8 @@ class PaylineModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insert($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	Logg::loggerAlert('PaylineModel::insert() ~ ajout de la transaction Payline '.$data['transaction_hp'].' de type '.$data['type_hp'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarPayline($data));
+	Logg::loggerInfo('PaylineModel::insert() ~ ajout de la transaction Payline '.$data['transaction_hp'].' de type '.$data['type_hp'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -41,7 +39,11 @@ class PaylineModel extends GeneralModel {
      * @return array Les informations
      */
     public function getInfosContact($id) {
-	$this->makeRequeteFree("select id_cont, nom_cp as nom_cont, prenom_cp as prenom_cont, wallet_cp as wallet_cont, date_cp as dateCarte_cont, cvv_cp as cvvCarte_cont, fin_cp as finCarte_cont from contact left join contact_payline on contact_cp = id_cont where id_cont = '".$id."'");
+	$this->makeRequeteFree("select contact.*, nom_cp as nom_cont, prenom_cp as prenom_cont, wallet_cp as wallet_cont, date_cp as dateCarte_cont, cvv_cp as cvvCarte_cont, fin_cp as finCarte_cont, type_cp as typeCarte_cont, entreprise.*
+				from contact
+				left join contact_payline on contact_cp = id_cont
+				left join entreprise on entreprise_cont = id_ent
+				where id_cont = '".$id."'");
 	$rs = $this->process2();
 	if($rs[0])
 	    return $rs[1][0];
@@ -56,25 +58,26 @@ class PaylineModel extends GeneralModel {
     public function saveInfosContact($array) {
 	$this->makeRequeteFree("select COUNT(*) from contact_payline where contact_cp = '".$array['id']."'");
 	$c = $this->process2();
-	if(array_key_exists("nom_cont", $array))
+	if(array_key_exists("nom_cont", $array) and $array["nom_cont"] != "")
 	    $in["nom_cp"] = $array['nom_cont'];
 	if(array_key_exists("prenom_cont", $array))
 	    $in["prenom_cp"] = $array['prenom_cont'];
-	if(array_key_exists("wallet_cont", $array))
+	if(array_key_exists("wallet_cont", $array) and $array["wallet_cont"] != "")
 	    $in['wallet_cp'] = $this->pack_str($this->zEncrypt($array['wallet_cont']));
-	if(array_key_exists("dateCarte_cont", $array))
+	if(array_key_exists("dateCarte_cont", $array) and $array["dateCarte_cont"] != "")
 	    $in["date_cp"] = $array['dateCarte_cont'];
-	if(array_key_exists("cvvCarte_cont", $array))
+	if(array_key_exists("typeCarte_cont", $array) and $array["typeCarte_cont"] != "")
+	    $in["type_cp"] = $array['typeCarte_cont'];
+	if(array_key_exists("cvvCarte_cont", $array) and $array["cvvCarte_cont"] != "")
 	    $in['cvv_cp'] = $this->pack_str($this->zEncrypt($array['cvvCarte_cont']));
-	if(array_key_exists("carte", $array))
+	if(array_key_exists("carte", $array) and $array["carte"] != "")
 	    $in['fin_cp'] = substr($array['carte'], strlen($array['carte'])-6, 6);
 	if($c[1][0]['COUNT(*)'] == 0) {
 	    $in['contact_cp'] = $array['id'];
 	    $sql = $this->makeRequeteInsert('contact_payline', $in);
 	}
-	else
-	    $sql = $this->makeRequeteUpdate("contact_payline", "contact_cp", $array['id'], $in);
-	Logg::loggerAlert('PaylineModel::saveInfosContact() ~ mise à jour des informations de paiement pour le contact '.$array['id'],$sql,__FILE__.'@'.__LINE__);
+	else $sql = $this->makeRequeteUpdate("contact_payline", "contact_cp", $array['id'], $in);
+	Logg::loggerInfo('PaylineModel::saveInfosContact() ~ mise à jour des informations de paiement pour le contact '.$array['id'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -96,6 +99,15 @@ class PaylineModel extends GeneralModel {
     public function getDatasFromId($id) {
 	$this->makeRequeteSelect($this->sqlTableName, $this->sqlIdField, $id);
 	return $this->process2();
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table historique_payline
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarPayline($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 ?>

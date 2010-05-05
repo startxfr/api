@@ -1,4 +1,5 @@
 <?php
+include_once('GeneralModel.inc');
 
 /**
  * Classe qui gère la table des messages
@@ -112,17 +113,14 @@ class MessageModel extends GeneralModel {
      * @return array Le résultat
      */
     public function addMess($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-
-	if(array_key_exists('id_mess', $in))
-	    unset($in['id_mess']);
-	if(array_key_exists('debut_mess', $in))
-	    $in['debut_mess'] = substr($in['debut_mess'], 6,4).substr($in['debut_mess'], 3,2).substr($in['debut_mess'],0,2);
-	if(array_key_exists('fin_mess', $in))
-	    $in['fin_mess'] = substr($in['fin_mess'], 6,4).substr($in['fin_mess'], 3,2).substr($in['fin_mess'],0,2);
-
-	$this->makeRequeteInsert('message', $in);
+	if(array_key_exists('id_mess', $data))
+	    unset($data['id_mess']);
+	if(array_key_exists('debut_mess', $data))
+	    $data['debut_mess'] = substr($data['debut_mess'], 6,4).substr($data['debut_mess'], 3,2).substr($data['debut_mess'],0,2);
+	if(array_key_exists('fin_mess', $data))
+	    $data['fin_mess'] = substr($data['fin_mess'], 6,4).substr($data['fin_mess'], 3,2).substr($data['fin_mess'],0,2);
+	$this->makeRequeteInsert('message', $this->bindVarMessage($data));
+	Logg::loggerInfo('MessageModel::addMess() ~ ajout du message '.$data['titre_mess'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -145,9 +143,10 @@ class MessageModel extends GeneralModel {
 	}
 	foreach($user as $v) {
 	    $data['user_mess'] = $v;
-	    $this->makeRequeteInsert('message', $data);
+	    $sql = $this->makeRequeteInsert('message', $data);
 	    $this->process2();
 	}
+	Logg::loggerInfo('MessageModel::addTodayMess() ~ ajout du message '.$data['titre_mess'],$sql,__FILE__.'@'.__LINE__);
     }
 
     /**
@@ -160,13 +159,20 @@ class MessageModel extends GeneralModel {
 	    $id = $data['id_mess'];
 	    unset($data['id_mess']);
 	}
-	else {
-	    return array(0,'Il manque l\'identifiant du message');
-	}
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$this->makeRequeteUpdate('message', 'id_mess', $id, $in);
+	else return array(0,'Il manque l\'identifiant du message');
+	$sql = $this->makeRequeteUpdate('message', 'id_mess', $id, $this->bindVarMessage($data));
+	Logg::loggerInfo('MessageModel::updateMess() ~ modification du message n°'.$data['id_mess'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
+    }
+
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table historique_payline
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarMessage($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 ?>

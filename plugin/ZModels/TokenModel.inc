@@ -15,8 +15,6 @@ class TokenModel extends GeneralModel {
     public function __construct() {
 	$this->sqlTableName = 'token';
 	$this->sqlIdField = 'id_token';
-	$this->availableFields = array(
-		'id_token','user_token','action_token','used_token');
 	parent::__construct();
     }
 
@@ -32,7 +30,8 @@ class TokenModel extends GeneralModel {
 	$data['user_token'] = $user;
 	$data['action_token'] = $action;
 	$data['used_token'] = 0;
-	$this->makeRequeteInsert($this->sqlTableName, $data);
+	$sql = $this->makeRequeteInsert($this->sqlTableName, $data);
+	Logg::loggerInfo('tokenModel::insert() ~ ajout du token n°'.$data['id_token'],$sql,__FILE__.'@'.__LINE__);
 	$res = $this->process2();
 	if($res[0]) {
 	    return array(1, $data['id_token']);
@@ -66,7 +65,8 @@ class TokenModel extends GeneralModel {
      * @return array Indique si la requète s'est bien déroulée
      */
     public function delete($id) {
-	$this->makeRequeteDelete($this->sqlTableName, array($this->sqlIdField => $id));
+	$sql = $this->makeRequeteDelete($this->sqlTableName, array($this->sqlIdField => $id));
+	Logg::loggerInfo('tokenModel::delete() ~ suppression du token n°'.$id,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 }

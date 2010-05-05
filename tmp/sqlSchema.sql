@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.44, for redhat-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.45, for redhat-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: ZunoDev_sxa
 -- ------------------------------------------------------
--- Server version	5.1.44
+-- Server version	5.1.45
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -55,7 +55,7 @@ CREATE TABLE `actualite` (
   KEY `user` (`user`),
   KEY `type` (`type`),
   KEY `date_2` (`date`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11380 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `appel` (
   KEY `utilisateur_app` (`utilisateur_app`),
   KEY `appel_app` (`appel_app`),
   KEY `affaire_app` (`affaire_app`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4470 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +197,7 @@ CREATE TABLE `commande_produit` (
   `comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fournisseur` (`fournisseur`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Detail des produits d''un bon de commande ';
+) ENGINE=InnoDB AUTO_INCREMENT=492 DEFAULT CHARSET=utf8 COMMENT='Detail des produits d''un bon de commande ';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,10 +227,6 @@ CREATE TABLE `contact` (
   `fax_cont` varchar(16) DEFAULT NULL,
   `www_cont` varchar(128) DEFAULT NULL,
   `mob_cont` varchar(16) DEFAULT NULL,
-  `wallet_cont` varbinary(50) DEFAULT NULL,
-  `dateCarte_cont` varchar(4) DEFAULT NULL,
-  `cvvCarte_cont` varbinary(4) DEFAULT NULL,
-  `finCarte_cont` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id_cont`),
   KEY `nom_cont` (`nom_cont`),
   KEY `prenom_cont` (`prenom_cont`),
@@ -238,7 +234,7 @@ CREATE TABLE `contact` (
   KEY `relactive_cont` (`relactive_cont`),
   KEY `mail_cont` (`mail_cont`),
   KEY `LD_cont` (`LD_cont`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=134910 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,12 +246,13 @@ DROP TABLE IF EXISTS `contact_payline`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contact_payline` (
   `contact_cp` int(11) NOT NULL,
-  `nom_cp` varchar(32) NOT NULL,
-  `prenom_cp` varchar(32) NOT NULL,
+  `nom_cp` varchar(64) NOT NULL,
+  `prenom_cp` varchar(32) DEFAULT NULL,
   `wallet_cp` varbinary(50) NOT NULL,
   `cvv_cp` varbinary(4) NOT NULL,
-  `date_cp` varchar(4) NOT NULL,
+  `date_cp` date DEFAULT NULL,
   `fin_cp` varchar(6) NOT NULL,
+  `type_cp` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`contact_cp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -320,7 +317,7 @@ CREATE TABLE `devis_produit` (
   `remise` decimal(4,2) NOT NULL DEFAULT '0.00',
   `prix` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Detail des produits devisés ';
+) ENGINE=InnoDB AUTO_INCREMENT=1332 DEFAULT CHARSET=utf8 COMMENT='Detail des produits devisés ';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +350,7 @@ CREATE TABLE `droit` (
   `nom_dt` varchar(64) NOT NULL DEFAULT '',
   `desc_dt` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_dt`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,7 +394,7 @@ CREATE TABLE `entreprise` (
   KEY `groupe_ent` (`groupe_ent`),
   KEY `siege_ent` (`siege_ent`),
   KEY `type_ent` (`type_ent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9984 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -494,7 +491,7 @@ CREATE TABLE `facture_produit` (
   `remise` decimal(4,2) NOT NULL DEFAULT '0.00',
   `prix` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Detail des produits d''une facture ';
+) ENGINE=InnoDB AUTO_INCREMENT=1275 DEFAULT CHARSET=utf8 COMMENT='Detail des produits d''une facture ';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -562,7 +559,7 @@ CREATE TABLE `log` (
   `channel_log` varchar(16) DEFAULT NULL,
   `trace_log` text,
   PRIMARY KEY (`id_log`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10286 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -581,7 +578,7 @@ CREATE TABLE `message` (
   `lu_mess` tinyint(1) NOT NULL DEFAULT '0',
   `user_mess` varchar(20) NOT NULL,
   PRIMARY KEY (`id_mess`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -702,7 +699,6 @@ CREATE TABLE `projet` (
   `titre_proj` varchar(254) NOT NULL DEFAULT '-- sujet non defini --',
   `detect_proj` date NOT NULL DEFAULT '0000-00-00',
   `rdv_proj` date DEFAULT NULL,
-  `rdv_idgrpw_proj` int(6) DEFAULT NULL,
   `heure_proj` int(2) DEFAULT NULL,
   `actif_proj` enum('0','1') NOT NULL DEFAULT '1',
   `desc_proj` text,
@@ -717,7 +713,7 @@ CREATE TABLE `projet` (
   `utilisateur_proj` varchar(64) NOT NULL DEFAULT 'cl',
   `ren_proj` int(8) DEFAULT NULL,
   PRIMARY KEY (`id_proj`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -731,7 +727,7 @@ CREATE TABLE `redhat_archi` (
   `id_arch` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `nom_arch` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_arch`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Type d''architecture materiel pour les produits REDHAT';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type d''architecture materiel pour les produits REDHAT';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -745,7 +741,7 @@ CREATE TABLE `redhat_contrat` (
   `id_cont` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `nom_cont` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_cont`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Type de contrat proposé par REDHAT';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type de contrat proposé par REDHAT';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -847,7 +843,7 @@ CREATE TABLE `ref_fonction` (
   `nom_fct` varchar(32) NOT NULL DEFAULT '',
   `idsuperieur_fct` char(2) DEFAULT NULL,
   PRIMARY KEY (`id_fct`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -892,7 +888,7 @@ CREATE TABLE `ref_prodfamille` (
   `livrable` enum('0','1') NOT NULL DEFAULT '1',
   `revente` enum('0','1') NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_prodfam`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='Type de produit';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='Type de produit';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1005,7 +1001,7 @@ CREATE TABLE `ref_typeentreprise` (
   `id_tyent` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
   `nom_tyent` varchar(254) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_tyent`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1034,7 +1030,7 @@ CREATE TABLE `ref_typeproj` (
   `nom_typro` varchar(254) NOT NULL DEFAULT '',
   `score_typro` char(2) NOT NULL DEFAULT '4',
   PRIMARY KEY (`id_typro`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1070,7 +1066,7 @@ CREATE TABLE `send` (
   `type_send` enum('mail','fax','courrier') DEFAULT NULL,
   `date_send` date DEFAULT NULL,
   PRIMARY KEY (`id_send`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

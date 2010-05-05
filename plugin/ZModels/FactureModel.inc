@@ -470,13 +470,13 @@ class factureModel extends GeneralModel {
      * @param int $id l'id de la facture
      * @return string L'id du contact
      */
-    public function getContactFromFacture($id){
-        $this->makeRequeteFree("select contact_fact from facture where id_fact = '".$id."'");
-        $rs = $this->process2();
-        if($rs[0])
-            return $rs[1][0]['contact_fact'];
-        else
-            return '';
+    public function getContactFromFacture($id) {
+	$this->makeRequeteFree("select contact_fact from facture where id_fact = '".$id."'");
+	$rs = $this->process2();
+	if($rs[0])
+	    return $rs[1][0]['contact_fact'];
+	else
+	    return '';
     }
 
     /**
@@ -498,7 +498,7 @@ class factureModel extends GeneralModel {
      */
     public function addProduit($data) {
 	$sql = $this->makeRequeteInsert('produit',$data);
-	Logg::loggerAlert('factureModel::addProduit() ~ ajout du produit '.$data['id_prod'],$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::addProduit() ~ ajout du produit '.$data['id_prod'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -509,17 +509,13 @@ class factureModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insertProduits($data, $actu = true) {
-	if($data['quantite'] == NULL) {
+	if($data['quantite'] == NULL)
 	    $data['quantite'] = 1;
-	}
-	if($data['remise'] == NULL) {
+	if($data['remise'] == NULL)
 	    $data['remise'] = 0;
-	}
 	$data['prix']=number_format($data['prix'],2,'.','');
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProduit)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert('facture_produit', $in);
-	Logg::loggerAlert('factureModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteInsert('facture_produit', $this->bindVarFactureProduit($data));
+	Logg::loggerInfo('factureModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	$this->updateMontant($data['id_facture']);
 	if($rs[0] and $actu)
@@ -540,7 +536,7 @@ class factureModel extends GeneralModel {
 	elseif($id_produit != NULL)
 	    $sql = $this->makeRequeteFree("DELETE FROM facture_produit WHERE id_facture='".$data['id_facture']."' AND id_produit='".$id_produit."';");
 	else $sql = $this->makeRequeteFree("DELETE FROM facture_produit WHERE id='".$data['id']."';");
-	Logg::loggerAlert('factureModel::deleteProduits() ~ suppression d\'un produit sur la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::deleteProduits() ~ suppression d\'un produit sur la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $this->updateMontant($data['id_facture']);
@@ -555,10 +551,8 @@ class factureModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function updateProduits($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProduit)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate('facture_produit', 'id', $data['id'], $in);
-	Logg::loggerAlert('factureModel::updateProduits() ~ modification d\'un produit sur la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteUpdate('facture_produit', 'id', $data['id'], $this->bindVarFactureProduit($data));
+	Logg::loggerInfo('factureModel::updateProduits() ~ modification d\'un produit sur la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $this->updateMontant($data['id_facture']);
@@ -573,6 +567,7 @@ class factureModel extends GeneralModel {
 	foreach($prod[1] as $v) {
 	    $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
 	}
+	Logg::loggerInfo('factureModel::updateMontant() ~ modification de la valeur de la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
 	$this->update(array('sommeHT_fact' => $sommeHT), $id);
     }
 
@@ -585,153 +580,151 @@ class factureModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insert($data, $fait = 'creation', $prod = array(), $id = '') {
-        $data['datemodif_fact']=date('Y-m-d');
-        $data['daterecord_fact']=date('Y-m-d');
-        switch($data['condireglement_fact']) {
-            case '4':
-                $jour = time()+(60*60*24*30);
-                $data['datereglement_fact']=date('Y-m-d',$jour);
-                break;
-            case '5':
-                $jour = time()+(60*60*24*30);
-                $data['datereglement_fact']=finDeMois($jour);
-                break;
-            case '6':
-                $jour = time()+(60*60*24*30);
-                $data['datereglement_fact']=le10DuMois($jour);
-                break;
-            case '7':
-                $jour = time()+(60*60*24*60);
-                $data['datereglement_fact']=date('Y-m-d',$jour);
-                break;
-            case '8':
-                $jour = time()+(60*60*24*60);
-                $data['datereglement_fact']=finDeMois($jour);
-                break;
-            case '9':
-                $jour = time()+(60*60*24*60);
-                $data['datereglement_fact']=le10DuMois($jour);
-                break;
-            case '10':
-                $jour = time()+(60*60*24*90);
-                $data['datereglement_fact']=date('Y-m-d',$jour);
-                break;
-            case '11':
-                $jour = time()+(60*60*24*90);
-                $data['datereglement_fact']=finDeMois($jour);
-                break;
-            case '12':
-                $jour = time()+(60*60*24*90);
-                $data['datereglement_fact']=le10DuMois($jour);
-                break;
-            case '13':
-                $jour = time()+(60*60*24*120);
-                $data['datereglement_fact']=date('Y-m-d',$jour);
-                break;
-            case '14':
-                $jour = time()+(60*60*24*45);
-                $data['datereglement_fact']=date('Y-m-d',$jour);
-                break;
-            default:
-                $data['datereglement_fact'] = date('Y-m-d');
-                break;
-        }
-        $data['tauxTVA_fact']=number_format($data['tauxTVA_fact'], 1, '.', '');
-        foreach($data as $k => $v)
-            if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-        if($fait == 'creation') {
-            $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-            Logg::loggerAlert('factureModel::insert() ~ ajout de la facture '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
-            $rs = $this->process2();
-            if($rs[0])
-                $this->addActualite($in['id_fact'], 'add');
-            return $rs;
-        }
-        elseif($fait == 'cloner') {
-            $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-            Logg::loggerAlert('factureModel::insert() ~ ajout de la facture '.$data['id_fact'].' par clonnage',$sql,__FILE__.'@'.__LINE__);
-            $rs = $this->process2();
-            $a = 2;
-            foreach($prod as $v) {
-                $temp['id_facture'] = $in['id_fact'];
-                $temp['id_produit'] = $v['id_produit'];
-                $temp['desc'] = $v['desc'];
-                $temp['quantite'] = $v['quantite'];
-                $temp['remise'] = $v['remise'];
-                $temp['prix'] = $v['prix'];
-                $resultprod = $this->insertProduits($temp, false);
-                $rs[$a]=$resultprod;
-                $a++;
-            }
-            if($rs[0] and $id == '')
-                $this->addActualite($in['id_fact'], 'add');
-            elseif($rs[0] and $id != '')
-                $this->addActualite($in['id_fact'], 'clone', '', '', $id);
-            return $rs;
-        }
-        elseif($fait == 'toAvoir') {
-            $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-            Logg::loggerAlert('factureModel::insert() ~ ajout de l\'avoir '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
-            $rs = $this->process2();
-            $a = 2;
-            foreach($prod as $v) {
-                $temp['id_facture'] = $in['id_fact'];
-                $temp['id_produit'] = $v['id_produit'];
-                $temp['desc'] = $v['desc'];
-                $temp['quantite'] = $v['quantite'];
-                $temp['remise'] = $v['remise'];
-                $temp['prix'] = (-1)*abs($v['prix']);
-                $resultprod = $this->insertProduits($temp, false);
-                $rs[$a]=$resultprod;
-                $a++;
-            }
-            if($rs[0] and $id == '')
-                $this->addActualite($in['id_fact'], 'add');
-            elseif($rs[0] and $id != '')
-                $this->addActualite($in['id_fact'], 'avoir', '', '', $id);
-            return $rs;
-        }
-        elseif($fait == 'express') {
-            $temp = $this->getLastId();
-            $temp ++;
-            $_SESSION['factureExpress']['id'] = $temp;
-            $in['id_fact'] = $temp;
-            $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-            Logg::loggerAlert('factureModel::insert() ~ ajout de la facture '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
-            $rs = $this->process2();
-            foreach($prod as $v) {
-                $tempon['id_facture'] = $in['id_fact'];
-                $tempon['id_produit'] = $v['id_produit'];
-                $tempon['desc'] = $v['desc'];
-                $tempon['quantite'] = $v['quantite'];
-                $tempon['remise'] = $v['remise'];
-                $tempon['prix'] = $v['prix'];
-                $resultat = $this->insertProduits($tempon, false);
-            }
-            if($rs[0])
-                $this->addActualite($data['id_fact'], 'add');
-            return $rs;
-        }
-        elseif($fait == 'WS'){
-            $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-            Logg::loggerAlert('factureModel::insert() ~ ajout de la facture '.$data['id_fact'].' par web service',$sql,__FILE__.'@'.__LINE__);
-            $rs = $this->process2();
-            $a = 2;
-            foreach($prod as $v) {
-                $temp['id_facture'] = $in['id_fact'];
-                $temp['id_produit'] = $v['id_produit'];
-                $temp['desc'] = $v['desc'];
-                $temp['quantite'] = $v['quantite'];
-                $temp['remise'] = $v['remise'];
-                $temp['prix'] = $v['prix'];
-                $resultprod = $this->insertProduits($temp, false);
-                $rs[$a]=$resultprod;
-                $a++;
-            }
-            if($rs[0])
-                $this->addActualite($in['id_fact'], 'WS');
-            return $rs;
-        }
+	$data['datemodif_fact']=date('Y-m-d');
+	$data['daterecord_fact']=date('Y-m-d');
+	switch($data['condireglement_fact']) {
+	    case '4':
+		$jour = time()+(60*60*24*30);
+		$data['datereglement_fact']=date('Y-m-d',$jour);
+		break;
+	    case '5':
+		$jour = time()+(60*60*24*30);
+		$data['datereglement_fact']=finDeMois($jour);
+		break;
+	    case '6':
+		$jour = time()+(60*60*24*30);
+		$data['datereglement_fact']=le10DuMois($jour);
+		break;
+	    case '7':
+		$jour = time()+(60*60*24*60);
+		$data['datereglement_fact']=date('Y-m-d',$jour);
+		break;
+	    case '8':
+		$jour = time()+(60*60*24*60);
+		$data['datereglement_fact']=finDeMois($jour);
+		break;
+	    case '9':
+		$jour = time()+(60*60*24*60);
+		$data['datereglement_fact']=le10DuMois($jour);
+		break;
+	    case '10':
+		$jour = time()+(60*60*24*90);
+		$data['datereglement_fact']=date('Y-m-d',$jour);
+		break;
+	    case '11':
+		$jour = time()+(60*60*24*90);
+		$data['datereglement_fact']=finDeMois($jour);
+		break;
+	    case '12':
+		$jour = time()+(60*60*24*90);
+		$data['datereglement_fact']=le10DuMois($jour);
+		break;
+	    case '13':
+		$jour = time()+(60*60*24*120);
+		$data['datereglement_fact']=date('Y-m-d',$jour);
+		break;
+	    case '14':
+		$jour = time()+(60*60*24*45);
+		$data['datereglement_fact']=date('Y-m-d',$jour);
+		break;
+	    default:
+		$data['datereglement_fact'] = date('Y-m-d');
+		break;
+	}
+	$data['tauxTVA_fact']=number_format($data['tauxTVA_fact'], 1, '.', '');
+	if($fait == 'creation') {
+	    $sql = $this->makeRequeteInsert($this->sqlTableName, $this->bindVarFacture($data));
+	    Logg::loggerInfo('factureModel::insert() ~ ajout de la facture '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
+	    $rs = $this->process2();
+	    if($rs[0])
+		$this->addActualite($data['id_fact'], 'add');
+	    return $rs;
+	}
+	elseif($fait == 'cloner') {
+	    $sql = $this->makeRequeteInsert($this->sqlTableName, $this->bindVarFacture($data));
+	    Logg::loggerInfo('factureModel::insert() ~ ajout de la facture '.$data['id_fact'].' par clonnage',$sql,__FILE__.'@'.__LINE__);
+	    $rs = $this->process2();
+	    $a = 2;
+	    foreach($prod as $v) {
+		$temp['id_facture'] = $data['id_fact'];
+		$temp['id_produit'] = $v['id_produit'];
+		$temp['desc'] = $v['desc'];
+		$temp['quantite'] = $v['quantite'];
+		$temp['remise'] = $v['remise'];
+		$temp['prix'] = $v['prix'];
+		$resultprod = $this->insertProduits($temp, false);
+		$rs[$a]=$resultprod;
+		$a++;
+	    }
+	    if($rs[0] and $id == '')
+		$this->addActualite($data['id_fact'], 'add');
+	    elseif($rs[0] and $id != '')
+		$this->addActualite($data['id_fact'], 'clone', '', '', $id);
+	    return $rs;
+	}
+	elseif($fait == 'toAvoir') {
+	    $sql = $this->makeRequeteInsert($this->sqlTableName, $this->bindVarFacture($data));
+	    Logg::loggerInfo('factureModel::insert() ~ ajout de l\'avoir '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
+	    $rs = $this->process2();
+	    $a = 2;
+	    foreach($prod as $v) {
+		$temp['id_facture'] = $data['id_fact'];
+		$temp['id_produit'] = $v['id_produit'];
+		$temp['desc'] = $v['desc'];
+		$temp['quantite'] = $v['quantite'];
+		$temp['remise'] = $v['remise'];
+		$temp['prix'] = (-1)*abs($v['prix']);
+		$resultprod = $this->insertProduits($temp, false);
+		$rs[$a]=$resultprod;
+		$a++;
+	    }
+	    if($rs[0] and $id == '')
+		$this->addActualite($data['id_fact'], 'add');
+	    elseif($rs[0] and $id != '')
+		$this->addActualite($data['id_fact'], 'avoir', '', '', $id);
+	    return $rs;
+	}
+	elseif($fait == 'express') {
+	    $temp = $this->getLastId();
+	    $temp ++;
+	    $_SESSION['factureExpress']['id'] = $temp;
+	    $data['id_fact'] = $temp;
+	    $sql = $this->makeRequeteInsert($this->sqlTableName, $this->bindVarFacture($data));
+	    Logg::loggerInfo('factureModel::insert() ~ ajout de la facture '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
+	    $rs = $this->process2();
+	    foreach($prod as $v) {
+		$tempon['id_facture'] = $data['id_fact'];
+		$tempon['id_produit'] = $v['id_produit'];
+		$tempon['desc'] = $v['desc'];
+		$tempon['quantite'] = $v['quantite'];
+		$tempon['remise'] = $v['remise'];
+		$tempon['prix'] = $v['prix'];
+		$resultat = $this->insertProduits($tempon, false);
+	    }
+	    if($rs[0])
+		$this->addActualite($data['id_fact'], 'add');
+	    return $rs;
+	}
+	elseif($fait == 'WS') {
+	    $sql = $this->makeRequeteInsert($this->sqlTableName, $this->bindVarFacture($data));
+	    Logg::loggerInfo('factureModel::insert() ~ ajout de la facture '.$data['id_fact'].' par web service',$sql,__FILE__.'@'.__LINE__);
+	    $rs = $this->process2();
+	    $a = 2;
+	    foreach($prod as $v) {
+		$temp['id_facture'] = $data['id_fact'];
+		$temp['id_produit'] = $v['id_produit'];
+		$temp['desc'] = $v['desc'];
+		$temp['quantite'] = $v['quantite'];
+		$temp['remise'] = $v['remise'];
+		$temp['prix'] = $v['prix'];
+		$resultprod = $this->insertProduits($temp, false);
+		$rs[$a]=$resultprod;
+		$a++;
+	    }
+	    if($rs[0])
+		$this->addActualite($data['id_fact'], 'WS');
+	    return $rs;
+	}
     }
 
     /**
@@ -795,22 +788,20 @@ class factureModel extends GeneralModel {
 	    $data['tauxTVA_fact']=prepareNombreTraitement($data['tauxTVA_fact']);
 	if($data['sommeHT_fact'] != NULL and $data['sommeHT_fact'] != '')
 	    $data['sommeHT_fact']=prepareNombreTraitement($data['sommeHT_fact']);
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	if(!array_key_exists($this->sqlIdField,$in)) {
-	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_fact",$id_fact,$in);
-	    Logg::loggerAlert('factureModel::updateProduits() ~ modification de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
+	if(!array_key_exists($this->sqlIdField,$data)) {
+	    $sql = $this->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($data));
+	    Logg::loggerInfo('factureModel::updateProduits() ~ modification de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_fact'] != '')
 		$this->addActualite($id_fact, 'update');
 	    return $rs;
 	}
 	else {
-	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_fact",$in['id_fact'],$in);
-	    Logg::loggerAlert('factureModel::updateProduits() ~ modification de la facture '.$in['id_fact'],$sql,__FILE__.'@'.__LINE__);
+	    $sql = $this->makeRequeteUpdate($this->sqlTableName,'id_fact',$data['id_fact'], $this->bindVarFacture($data));
+	    Logg::loggerInfo('factureModel::updateProduits() ~ modification de la facture '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['id_fact'] != '')
-		$this->addActualite($in['id_fact'], 'update');
+		$this->addActualite($data['id_fact'], 'update');
 	    return $rs;
 	}
     }
@@ -822,7 +813,7 @@ class factureModel extends GeneralModel {
      */
     public function delete($id_fact) {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_fact = '".$id_fact."'");
-	Logg::loggerAlert('factureModel::delete() ~ suppression de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::delete() ~ suppression de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0])
 	    $this->addActualite($data['id_fact'], 'delete');
@@ -936,9 +927,9 @@ class factureModel extends GeneralModel {
      * @param int $id L'id du contact dont on veut les factures
      * @return array Les factures du contact
      */
-    public function getListeFactureFromContact($id){
-        $this->makeRequeteFree("Select * from facture where contact_fact = '".$id."'");
-        return $this->process2();
+    public function getListeFactureFromContact($id) {
+	$this->makeRequeteFree("Select * from facture where contact_fact = '".$id."'");
+	return $this->process2();
     }
 
     /**
@@ -947,9 +938,9 @@ class factureModel extends GeneralModel {
      * @param string $date La date d'envoi
      * @return array L'id de la facture
      */
-    public function getIdFromContactDate($id, $date){
-        $this->makeRequeteFree("Select id_fact from facture where contact_fact = '".$id."' and dateenvoi_fact = '".$date."'");
-        return $this->process2();
+    public function getIdFromContactDate($id, $date) {
+	$this->makeRequeteFree("Select id_fact from facture where contact_fact = '".$id."' and dateenvoi_fact = '".$date."'");
+	return $this->process2();
     }
 
     /**
@@ -983,14 +974,13 @@ class factureModel extends GeneralModel {
 		$newData['condireglement_fact'] = $newAttribList['condireglement_fact'];
 	    if($newAttribList['commercial_fact'] != '')
 		$newData['commercial_fact'] = $newAttribList['commercial_fact'];
-
-	    $sql = $bddtmp->makeRequeteUpdate('facture','id_fact',$id_fact,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('factureModel::changeAttributeFactureInDB() ~ changement d\'attribut de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('factureModel::changeAttributeFactureInDB() ~ changement d\'attribut de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
-	Logg::loggerAlert('factureModel::changeAttributeFactureInDB() ~ impossible de changer les attributs de la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::changeAttributeFactureInDB() ~ impossible de changer les attributs de la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
     }
 
 
@@ -1001,14 +991,13 @@ class factureModel extends GeneralModel {
 	    $fact = $bddtmp->process();
 	    $fact = $fact[0];
 	    $newData['status_fact'] = '7';
-
-	    $sql = $bddtmp->makeRequeteUpdate('facture','id_fact',$id_fact,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'archive', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('factureModel::markEnvoyeFactureInDB() ~ Facture '.$id_fact.' marqué comme archivé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('factureModel::markEnvoyeFactureInDB() ~ Facture '.$id_fact.' marqué comme archivé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
-	Logg::loggerAlert('factureModel::markEnvoyeFactureInDB() ~ impossible de marquer comme archivé la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::markEnvoyeFactureInDB() ~ impossible de marquer comme archivé la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
     }
     static function markValideFactureInDB($id_fact,$newAttribList = array()) {
 	if ($id_fact != '') {
@@ -1019,14 +1008,13 @@ class factureModel extends GeneralModel {
 	    if($newAttribList['commentaireValid'] != '')
 		$newData['commentaire_fact'] = ($fact['commentaire_fact'] != '') ? $fact['commentaire_fact'].'. '.$newAttribList['commentaireValid'] : $newAttribList['commentaireValid'];
 	    $newData['status_fact'] = '2';
-
-	    $sql = $bddtmp->makeRequeteUpdate('facture','id_fact',$id_fact,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('factureModel::markValideFactureInDB() ~ Facture '.$id_fact.' marquée comme validée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('factureModel::markValideFactureInDB() ~ Facture '.$id_fact.' marquée comme validée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
-	Logg::loggerAlert('factureModel::markValideFactureInDB() ~ impossible de marquer comme validée la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::markValideFactureInDB() ~ impossible de marquer comme validée la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
     }
 
     static function markEnvoyeFactureInDB($id_fact,$newAttribList = array()) {
@@ -1038,14 +1026,13 @@ class factureModel extends GeneralModel {
 	    if($newAttribList['commentaireEnvoye'] != '')
 		$newData['commentaire_fact'] = ($fact['commentaire_fact'] != '') ? $fact['commentaire_fact'].'. '.$newAttribList['commentaireEnvoye'] : $newAttribList['commentaireEnvoye'];
 	    $newData['status_fact'] = '4';
-
-	    $sql = $bddtmp->makeRequeteUpdate('facture','id_fact',$id_fact,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('factureModel::markEnvoyeFactureInDB() ~ Facture '.$id_fact.' marqué comme envoyée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('factureModel::markEnvoyeFactureInDB() ~ Facture '.$id_fact.' marqué comme envoyée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
-	Logg::loggerAlert('factureModel::markEnvoyeFactureInDB() ~ impossible de marquer comme envoyée la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::markEnvoyeFactureInDB() ~ impossible de marquer comme envoyée la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
     }
 
 
@@ -1060,14 +1047,13 @@ class factureModel extends GeneralModel {
 	    if($newAttribList['commentaireRegle'] != '')
 		$newData['commentaire_fact'] = ($fact['commentaire_fact'] != '') ? $fact['commentaire_fact'].'. '.$newAttribList['commentaireRegle'] : $newAttribList['commentaireRegle'];
 	    $newData['status_fact'] = '6';
-
-	    $sql = $bddtmp->makeRequeteUpdate('facture','id_fact',$id_fact,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('factureModel::markRegleFactureInDB() ~ Facture '.$id_fact.' marquée comme réglée',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('factureModel::markRegleFactureInDB() ~ Facture '.$id_fact.' marquée comme réglée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
-	Logg::loggerAlert('factureModel::markRegleFactureInDB() ~ impossible de marquer comme réglée la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::markRegleFactureInDB() ~ impossible de marquer comme réglée la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
     }
 
     static function markReinitFactureInDB($id_fact,$newAttribList = array()) {
@@ -1077,14 +1063,32 @@ class factureModel extends GeneralModel {
 	    $fact = $bddtmp->process();
 	    $fact = $fact[0];
 	    $newData['status_fact'] = '1';
-
-	    $sql = $bddtmp->makeRequeteUpdate('facture','id_fact',$id_fact,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('factureModel::markReinitFactureInDB() ~ Re-initialisation de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('factureModel::markReinitFactureInDB() ~ Re-initialisation de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
-	Logg::loggerAlert('factureModel::markReinitFactureInDB() ~ impossible de Re-initialiser la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('factureModel::markReinitFactureInDB() ~ impossible de Re-initialiser la facture '.$id_fact,'',__FILE__.'@'.__LINE__);
+    }
+
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table facture
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarFacture($data) {
+	return $this->bindVar($data,$this->availableFields);
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table facture_produit
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFieldsProduit
+     */
+    public function bindVarFactureProduit($data) {
+	return $this->bindVar($data,$this->availableFieldsProduit);
     }
 }
 ?>

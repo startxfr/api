@@ -40,7 +40,7 @@ function loadPlugin($plugins) {
     if(count($plugins) > 0) {
 	foreach ($plugins as $name) {
 	    include_once ($GLOBALS['REP']['appli'].$GLOBALS['REP']['plugin'].$name.$GLOBALS['EXT']['plugin']);
-	    Logg::loggerInfo('loadPlugin() ~ Chargement du plugin '.$name.$GLOBALS['EXT']['plugin'],'',__FILE__.'@'.__LINE__);
+	    Logg::loggerNotice('loadPlugin() ~ Chargement du plugin '.$name.$GLOBALS['EXT']['plugin'],'',__FILE__.'@'.__LINE__);
 	}
 
     }

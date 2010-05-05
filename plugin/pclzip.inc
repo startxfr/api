@@ -181,7 +181,7 @@
 
     if (class_exists('Logg'))
     {
-      Logg::loggerInfo('PclZip::__construct() ~ Lancement de PclZip avec le fichier '.$p_zipname,'',__FILE__.'@'.__LINE__);
+      Logg::loggerNotice('PclZip::__construct() ~ Lancement de PclZip avec le fichier '.$p_zipname,'',__FILE__.'@'.__LINE__);
     }
     // ----- Tests the zlib
     if (!function_exists('gzopen'))

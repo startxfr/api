@@ -45,7 +45,7 @@ class Session {
     function CatchSession() {
         session_name($GLOBALS['CHANNEL_'.$this->Channel]['SessName']);
         session_start();
-        Logg::loggerInfo('Session::CatchSession() ~ capture de la session '.session_id(),'',__FILE__.'@'.__LINE__);
+        Logg::loggerNotice('Session::CatchSession() ~ capture de la session '.session_id(),'',__FILE__.'@'.__LINE__);
     }
 
     /**
@@ -100,7 +100,7 @@ class Session {
                 $to = "index.php?mess=welcome";
         }
         else  $to = "index.php";
-        Logg::loggerInfo('Session::RedirectSession() ~  redirection de session de type '.$type.' pour la session '.session_id(),'',__FILE__.'@'.__LINE__);
+        Logg::loggerNotice('Session::RedirectSession() ~  redirection de session de type '.$type.' pour la session '.session_id(),'',__FILE__.'@'.__LINE__);
         header("Location: ".$to);
         exit();
     }

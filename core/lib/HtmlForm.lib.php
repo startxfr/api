@@ -163,13 +163,10 @@ class HtmlForm {
 		$is = "0".$i;
 	    else  $is = $i;
 	    $champ[$is.":00"] = $is.":00";
+	    $champ[$is.":30"] = $is.":30";
 	}
 
-	if ($select != '') {
-	    $sel = $select.":00";
-	}
-
-	$output = selectTag($nom,$champ,$sel,$class,'');
+	$output = selectTag($nom,$champ,$select,$class,'');
 	if(isset($this))
 	    $this->output .= $output;
 	return $output;

@@ -458,7 +458,7 @@ class devisModel extends GeneralModel {
      */
     public function addProduit($data) {
 	$sql = $this->makeRequeteInsert('produit',$data);
-	Logg::loggerAlert('devisModel::addProduit() ~ ajout du produit '.$data['id_prod'],$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('devisModel::addProduit() ~ ajout du produit '.$data['id_prod'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	return $rs;
     }
@@ -470,19 +470,15 @@ class devisModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insertProduits($data, $actu = true) {
-	if($data['quantite'] == NULL) {
+	if($data['quantite'] == NULL)
 	    $data['quantite'] = 1;
-	}
-	if($data['remise'] == NULL) {
+	if($data['remise'] == NULL)
 	    $data['remise'] = 0;
-	}
 	$data['quantite'] = prepareNombreTraitement($data['quantite']);
 	$data['prix']=prepareNombreTraitement($data['prix']);
 	$data['remise']=prepareNombreTraitement($data['remise']);
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProduit)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert('devis_produit', $in);
-	Logg::loggerAlert('devisModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour le devis '.$data['id_devis'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteInsert('devis_produit', $this->bindVarDevisProduit($data));
+	Logg::loggerInfo('devisModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour le devis '.$data['id_devis'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	$this->updateMontant($data['id_devis']);
 	if($rs[0] and $actu) {
@@ -501,7 +497,7 @@ class devisModel extends GeneralModel {
 	if($id_produit != NULL)
 	    $sql = $this->makeRequeteFree("delete from devis_produit where id_devis='".$data['id_devis']."' AND id_produit='".$id_produit."';");
 	else $sql = $this->makeRequeteFree("delete from devis_produit where id='".$data['id']."';");
-	Logg::loggerAlert('devisModel::deleteProduits() ~ suppression du produit '.$id_produit.' pour le devis '.$data['id_devis'],$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('devisModel::deleteProduits() ~ suppression du produit '.$id_produit.' pour le devis '.$data['id_devis'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $this->updateMontant($data['id_devis']);
@@ -516,19 +512,15 @@ class devisModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function updateProduits($data) {
-	if($data['quantite'] == NULL) {
+	if($data['quantite'] == NULL)
 	    $data['quantite'] = 1;
-	}
-	if($data['remise'] == NULL) {
+	if($data['remise'] == NULL)
 	    $data['remise'] = 0;
-	}
 	$data['quantite'] = prepareNombreTraitement($data['quantite']);
 	$data['prix']=prepareNombreTraitement($data['prix']);
 	$data['remise']=prepareNombreTraitement($data['remise']);
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProduit)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate('devis_produit', 'id', $data['id'], $in);
-	Logg::loggerAlert('devisModel::updateProduits() ~ modification du produit pour le devis (id='.$data['id_devis'].')',$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteUpdate('devis_produit', 'id', $data['id'], $this->bindVarDevisProduit($data));
+	Logg::loggerInfo('devisModel::updateProduits() ~ modification du produit pour le devis (id='.$data['id_devis'].')',$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $this->updateMontant($data['id_devis']);
@@ -563,22 +555,20 @@ class devisModel extends GeneralModel {
 	$data['datemodif_dev']=date('Y-m-d');
 	$data['daterecord_dev']=date('Y-m-d');
 	$data['tva_dev']=number_format($data['tva_dev'], 1, '.', '');
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
 	if($fait == 'creation') {
-	    $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	    Logg::loggerAlert('devisModel::insert() ~ ajout du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
+	    $sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarDevis($data));
+	    Logg::loggerInfo('devisModel::insert() ~ ajout du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0])
-		$this->addActualite($in['id_dev'], 'add');
+		$this->addActualite($data['id_dev'], 'add');
 	    return $rs;
 	}
 	elseif($fait == 'cloner') {
-	    $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	    Logg::loggerAlert('devisModel::insert() ~ ajout du devis '.$data['id_dev'].' par clonage',$sql,__FILE__.'@'.__LINE__);
+	    $sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarDevis($data));
+	    Logg::loggerInfo('devisModel::insert() ~ ajout du devis '.$data['id_dev'].' par clonage',$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    foreach($prod as $v) {
-		$temp['id_devis'] = $in['id_dev'];
+		$temp['id_devis'] = $data['id_dev'];
 		$temp['id_produit'] = $v['id_produit'];
 		$temp['desc'] = $v['desc'];
 		$temp['quantite'] = $v['quantite'];
@@ -587,21 +577,21 @@ class devisModel extends GeneralModel {
 		$this->insertProduits($temp, false);
 	    }
 	    if($rs[0])
-		$this->addActualite($in['id_dev'], 'clone', '', '', $id);
+		$this->addActualite($data['id_dev'], 'clone', '', '', $id);
 	    return $rs;
 	}
 	elseif($fait == 'express') {
 
 	    $temp = affaireModel::affaireGenerateID();
-	    if(!array_key_exists($this->sqlIdField,$in)) $in[$this->sqlIdField] = self::createId($temp);
-	    $_SESSION['devisExpress']['id'] = $in[$this->sqlIdField];
-	    $in['affaire_dev'] = $temp;
-	    $sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	    Logg::loggerAlert('devisModel::insert() ~ ajout du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
+	    if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = self::createId($temp);
+	    $_SESSION['devisExpress']['id'] = $data[$this->sqlIdField];
+	    $data['affaire_dev'] = $temp;
+	    $sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarDevis($data));
+	    Logg::loggerInfo('devisModel::insert() ~ ajout du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    $aff['id_aff'] = $temp;
-	    $aff['entreprise_aff'] = $in['entreprise_dev'];
-	    $aff['contact_aff'] = $in['contact_dev'];
+	    $aff['entreprise_aff'] = $data['entreprise_dev'];
+	    $aff['contact_aff'] = $data['contact_dev'];
 	    $aff['actif_aff'] = '1';
 	    $aff['archived_aff'] = '0';
 	    $aff['titre_aff'] = 'Affaire';
@@ -609,11 +599,11 @@ class devisModel extends GeneralModel {
 	    $aff['detect_aff'] = date('Y-m-d');
 	    $aff['status_aff'] = '3';
 	    $aff['typeproj_aff'] = '1';
-	    $aff['commercial_aff'] = $in['commercial_dev'];
-	    $aff['technique_aff'] = $in['commercial_dev'];
+	    $aff['commercial_aff'] = $data['commercial_dev'];
+	    $aff['technique_aff']  = $data['commercial_dev'];
 	    affaireModel::createNewAffaireInDB($aff,TRUE, 'creation', '');
 	    foreach($prod as $v) {
-		$tempon['id_devis'] = $in['id_dev'];
+		$tempon['id_devis'] = $data['id_dev'];
 		$tempon['id_produit'] = $v['id_produit'];
 		$tempon['desc'] = $v['desc'];
 		$tempon['quantite'] = $v['quantite'];
@@ -622,7 +612,7 @@ class devisModel extends GeneralModel {
 		$resultat = $this->insertProduits($tempon, false);
 	    }
 	    if($rs[0])
-		$this->addActualite($in['id_dev'], 'add');
+		$this->addActualite($data['id_dev'], 'add');
 	    return $rs;
 	}
     }
@@ -639,20 +629,17 @@ class devisModel extends GeneralModel {
 	    $data['tva_dev']=number_format($data['tva_dev'], 1, '.', '');
 	if(array_key_exists('sommeHT_dev', $data))
 	    $data['sommeHT_dev']=prepareNombreTraitement($data['sommeHT_dev']);
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-
-	if(!array_key_exists($this->sqlIdField,$in)) {
-	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_dev",$id_dev,$in);
-	    Logg::loggerAlert('devisModel::update() ~ modification du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
+	if(!array_key_exists($this->sqlIdField,$data)) {
+	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_dev",$id_dev,$this->bindVarDevis($data));
+	    Logg::loggerInfo('devisModel::update() ~ modification du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_dev'] != '' and $addActu)
 		$this->addActualite($id_dev, 'update');
 	    return $rs;
 	}
 	else {
-	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_dev",$in['id_dev'],$in);
-	    Logg::loggerAlert('devisModel::update() ~ modification du devis '.$in['id_dev'],$sql,__FILE__.'@'.__LINE__);
+	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_dev",$data['id_dev'],$this->bindVarDevis($data));
+	    Logg::loggerInfo('devisModel::update() ~ modification du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_dev'] != '')
 		$this->addActualite($din['id_dev'], 'update');
@@ -667,7 +654,7 @@ class devisModel extends GeneralModel {
      */
     public function delete($id_dev) {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_dev = '".$id_dev."'");
-	Logg::loggerAlert('devisModel::delete() ~ suppression du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('devisModel::delete() ~ suppression du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0])
 	    $this->addActualite($data['id_devis'], 'delete');
@@ -796,7 +783,7 @@ class devisModel extends GeneralModel {
 	    }
 	    $var_out['sommeHT_dev'] = round($total,2);
 	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$var_out);
-	    Logg::loggerAlert('devisModel::updateTotal() ~ mise à jour du total pour le devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('devisModel::updateTotal() ~ mise à jour du total pour le devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
 	}
     }
@@ -960,7 +947,7 @@ class devisModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('devisModel::changeAttributeDevisInDB() ~ changement d\'attribut du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('devisModel::changeAttributeDevisInDB() ~ changement d\'attribut du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('devisModel::changeAttributeDevisInDB() ~ impossible de changer les attributs du devis '.$id_dev,'',__FILE__.'@'.__LINE__);
@@ -978,7 +965,7 @@ class devisModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'archive', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('devisModel::markEnvoyeDevisInDB() ~ Devis '.$id_dev.' marqué comme archivé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('devisModel::markEnvoyeDevisInDB() ~ Devis '.$id_dev.' marqué comme archivé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('devisModel::markEnvoyeDevisInDB() ~ impossible de marqué comme archivé le devis '.$id_dev,'',__FILE__.'@'.__LINE__);
@@ -996,7 +983,7 @@ class devisModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('devisModel::markDeleteDevisInDB() ~ Devis '.$id_dev.' marqué comme supprimé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('devisModel::markDeleteDevisInDB() ~ Devis '.$id_dev.' marqué comme supprimé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('devisModel::markDeleteDevisInDB() ~ impossible de marqué comme supprimé le devis '.$id_dev,'',__FILE__.'@'.__LINE__);
@@ -1017,7 +1004,7 @@ class devisModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('devisModel::markEnvoyeDevisInDB() ~ Devis '.$id_dev.' marqué comme envoyé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('devisModel::markEnvoyeDevisInDB() ~ Devis '.$id_dev.' marqué comme envoyé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('devisModel::markEnvoyeDevisInDB() ~ impossible de marqué comme envoyé le devis '.$id_dev,'',__FILE__.'@'.__LINE__);
@@ -1037,7 +1024,7 @@ class devisModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('devisModel::markPerduDevisInDB() ~ Devis '.$id_dev.' marqué comme perdu',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('devisModel::markPerduDevisInDB() ~ Devis '.$id_dev.' marqué comme perdu',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('devisModel::markPerduDevisInDB() ~ impossible de marqué comme perdu le devis '.$id_dev,'',__FILE__.'@'.__LINE__);
@@ -1054,10 +1041,28 @@ class devisModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('devisModel::markReinitDevisInDB() ~ Re-initialisation du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('devisModel::markReinitDevisInDB() ~ Re-initialisation du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('devisModel::markReinitDevisInDB() ~ impossible de Re-initialiser le devis '.$id_dev,'',__FILE__.'@'.__LINE__);
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table devis
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarDevis($data) {
+	return $this->bindVar($data,$this->availableFields);
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table devis_produit
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFieldsProduit
+     */
+    public function bindVarDevisProduit($data) {
+	return $this->bindVar($data,$this->availableFieldsProduit);
     }
 }
 ?>

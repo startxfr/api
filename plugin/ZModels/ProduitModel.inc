@@ -205,9 +205,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function insertProduit($data, $fourn = 'non') {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert($this->sqlTableName,$in);
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarProduit($data));
 	Logg::loggerAlert('ProduitModel::insertProduit() ~ ajout du produit '.$data['id_prod'].' '.$data['nom_prod'],$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] && $fourn == 'oui') {
@@ -224,9 +222,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insertFournisseur($data, $prod = 'non') {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsFournisseur)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert('fournisseur',$in);
+	$sql = $this->makeRequeteInsert('fournisseur',$this->bindVarFournisseur($data));
 	Logg::loggerAlert('ProduitModel::insertFournisseur() ~ ajout du fournisseur '.$data['id_fourn'],$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] && $prod == 'oui') {
@@ -244,9 +240,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function updateProduit($data, $fourn = 'non', $id = null) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate($this->sqlTableName,"id_prod", $id, $in);
+	$sql = $this->makeRequeteUpdate($this->sqlTableName,"id_prod", $id, $this->bindVarProduit($data));
 	Logg::loggerAlert('produitModel::updateProduit() ~ mise à jour du produit '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] && $fourn != 'non') {
@@ -267,9 +261,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function updateFournisseur($data, $prod = 'non', $id = null) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsFournisseur)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate('fournisseur', "id_fourn", $id, $in);
+	$sql = $this->makeRequeteUpdate('fournisseur', "id_fourn", $id, $this->bindVarFournisseur($data));
 	Logg::loggerAlert('produitModel::updateFournisseur() ~ mise à jour du fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] && $prod != 'non') {
@@ -288,9 +280,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insertProduitFournisseur($data = array()) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProdFourn)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert('produit_fournisseur',$in);
+	$sql = $this->makeRequeteInsert('produit_fournisseur',$this->bindVarProdFourn($data));
 	Logg::loggerAlert('ProduitModel::insertProduitFournisseur() ~ ajout du fournisseur '.$data['fournisseur_id'].' pour le produit '.$data['produit_id'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
@@ -301,10 +291,8 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function updateProduitFournisseur($data = array()) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFieldsProdFourn)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate('produit_fournisseur','produit_id',$in['produit_id'],$in, " AND fournisseur_id = '".$in['fournisseur_id']."'");
-	Logg::loggerAlert('produitModel::updateProduitFournisseur() ~ mise à jour des conditions d\'achat  du produit '.$in['produit_id'].' avec le fournisseur '.$in['fournisseur_id'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteUpdate('produit_fournisseur','produit_id',$data['produit_id'],$this->bindVarProdFourn($data), " AND fournisseur_id = '".$data['fournisseur_id']."'");
+	Logg::loggerAlert('produitModel::updateProduitFournisseur() ~ mise à jour des conditions d\'achat  du produit '.$data['produit_id'].' avec le fournisseur '.$data['fournisseur_id'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -610,10 +598,9 @@ class produitModelOriginal extends GeneralModel {
 		$newData['remisefournisseur_prod'] = $newAttribList['remisefournisseur_prod'];
 	    if(trim($newAttribList['bestsell_prod']) != '')
 		$newData['bestsell_prod'] = $newAttribList['bestsell_prod'];
-
 	    $sql = $bddtmp->makeRequeteUpdate('produit','id_prod',$id_prod,$newData);
 	    $bddtmp->process();
-	    Logg::loggerAlert('produitModel::changeAttributeProduitInDB() ~ changement d\'attribut du produit '.$id_prod,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('produitModel::changeAttributeProduitInDB() ~ changement d\'attribut du produit '.$id_prod,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('produitModel::changeAttributeProduitInDB() ~ impossible de changer les attributs du produit '.$id_prod,'',__FILE__.'@'.__LINE__);
@@ -641,10 +628,9 @@ class produitModelOriginal extends GeneralModel {
 		$newData['prixF'] = $newAttribList['prixF'];
 	    if(trim($newAttribList['actifF']) != '')
 		$newData['actif'] = $newAttribList['actifF'];
-
 	    $sql = $bddtmp->makeRequeteUpdate('produit_fournisseur','produit_id',$id_prod,$newData," AND fournisseur_id = '".$id_fourn."'");
 	    $bddtmp->process();
-	    Logg::loggerAlert('produitModel::changeFournisseurProduitProduitInDB() ~ changement d\'attribut du produit '.$id_prod.' avec le fournisseur '.$id_fourn,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('produitModel::changeFournisseurProduitProduitInDB() ~ changement d\'attribut du produit '.$id_prod.' avec le fournisseur '.$id_fourn,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('produitModel::changeFournisseurProduitProduitInDB() ~ impossible de changer les attributs du produit '.$id_prod.' avec le fournisseur '.$id_fourn,'',__FILE__.'@'.__LINE__);
@@ -657,7 +643,7 @@ class produitModelOriginal extends GeneralModel {
 	    $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	    $sql = $bddtmp->makeRequeteDelete('produit',array('id_prod'=>$id_prod));
 	    $bddtmp->process();
-	    Logg::loggerAlert('produitModel::markDeleteProduitInDB() ~ Produit '.$id_prod.'supprimé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('produitModel::markDeleteProduitInDB() ~ Produit '.$id_prod.'supprimé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('produitModel::markDeleteProduitInDB() ~ impossible de supprimer le produit '.$id_prod,'',__FILE__.'@'.__LINE__);
@@ -670,10 +656,9 @@ class produitModelOriginal extends GeneralModel {
 	    $prod = $bddtmp->process();
 	    $prod = $prod[0];
 	    $newData['stillAvailable_prod'] = '1';
-
 	    $sql = $bddtmp->makeRequeteUpdate('produit','id_prod',$id_prod,$newData);
 	    $bddtmp->process();
-	    Logg::loggerAlert('produitModel::markActivateProduitInDB() ~ Produit '.$id_prod.' marqué comme activé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('produitModel::markActivateProduitInDB() ~ Produit '.$id_prod.' marqué comme activé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('produitModel::markActivateProduitInDB() ~ impossible de marquer comme activé le produit '.$id_prod,'',__FILE__.'@'.__LINE__);
@@ -686,13 +671,48 @@ class produitModelOriginal extends GeneralModel {
 	    $prod = $bddtmp->process();
 	    $prod = $prod[0];
 	    $newData['stillAvailable_prod'] = '0';
-
 	    $sql = $bddtmp->makeRequeteUpdate('produit','id_prod',$id_prod,$newData);
 	    $bddtmp->process();
-	    Logg::loggerAlert('produitModel::markDesactivateProduitInDB() ~ Produit '.$id_prod.' marqué comme désactivé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('produitModel::markDesactivateProduitInDB() ~ Produit '.$id_prod.' marqué comme désactivé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('produitModel::markDesactivateProduitInDB() ~ impossible de marquer comme désactivé le produit '.$id_prod,'',__FILE__.'@'.__LINE__);
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table produit
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarProduit($data) {
+	return $this->bindVar($data,$this->availableFields);
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table ref_prodfamille
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFieldsFamille
+     */
+    public function bindVarFamille($data) {
+	return $this->bindVar($data,$this->availableFieldsFamille);
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table fournisseur
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFieldsFournisseur
+     */
+    public function bindVarFournisseur($data) {
+	return $this->bindVar($data,$this->availableFieldsFournisseur);
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table produit_fournisseur
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFieldsProdFourn
+     */
+    public function bindVarProdFourn($data) {
+	return $this->bindVar($data,$this->availableFieldsProdFourn);
     }
 }
 ?>

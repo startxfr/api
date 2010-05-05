@@ -125,7 +125,7 @@ class PageContextData {
     }
 
     function getData() {
-	Logg::loggerInfo('PageContextData::getData() ~ Recherche des informations pour la page '.$this->id,'',__FILE__.'@'.__LINE__);
+	Logg::loggerNotice('PageContextData::getData() ~ Recherche des informations pour la page '.$this->id,'',__FILE__.'@'.__LINE__);
 	$resultat = array();
 	$translatable 	= array('nom_pg','desc_pg','header_pg');
 	$datable 	= array('modif_date_pg'=>'shortdetail','create_date_pg'=>'simple','stat_date_pg'=>'simple');

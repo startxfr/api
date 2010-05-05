@@ -284,11 +284,9 @@ class Sender {
 		$this->addHistoriqueEnvoiInManager();
 		return array(true,$addSynt);
 	    }
-	    else	 return array(false,'Erreur lors de l\'envoi du mail vers le service de fax.');
+	    else return array(false,'Erreur lors de l\'envoi du mail vers le service de fax.');
 	}
-	else {
-	    return array(false,'Il manque des informations pour l\'envoi par fax. ');
-	}
+	else return array(false,'Il manque des informations pour l\'envoi par fax. ');
     }
 
     /**
@@ -452,9 +450,8 @@ class Sender {
 	    $heads .= "Cc: ".$this->cc."\r\n";
 	elseif($this->cc !== false and is_array($this->cc)) {
 	    $heads .= "Cc: ";
-	    foreach($this->cc as $v) {
+	    foreach($this->cc as $v)
 		$heads .= $v.",";
-	    }
 	    $heads = rtrim($heads, ",");
 	    $heads .= "\r\n";
 	}
@@ -467,13 +464,10 @@ class Sender {
 	    if (!is_array($this->fichier))
 		$fileIn[] = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$this->dossierPrincipal.$this->fichier;
 	    else
-		foreach($this->fichier as $v) {
+		foreach($this->fichier as $v)
 		    $fileIn[] = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$this->dossierPrincipal.$v;
-		}
 	}
-	else {
-	    $fileIn = $this->fichier;
-	}
+	else $fileIn = $this->fichier;
 	$id_mess = 2;
 	foreach($fileIn as $fichier) {
 	    $filetype = trim(shell_exec("file -bi ".$fichier));
@@ -487,6 +481,7 @@ class Sender {
 	}
 	$out	= $this->mp_new_message($message);
 	$o	= mail($this->email, $this->sujet, $out[0],$heads.$out[1]);
+	Logg::loggerInfo('Sender::MailAttach() ~ Envoi d\'un mail à '.$this->email,serialize($this),__FILE__.'@'.__LINE__);
 	return array($o, $this->email);
     }
 
@@ -617,8 +612,6 @@ class Sender {
 
 	//1 ligne = maxi 54 caractères
 	//17 lignes maxi par le calcul précédent
-
-
 	if(is_file($cannevasFile) and
 		count($datas) > 0 and
 		FileGetExtention($cannevasFile) == "odt") {

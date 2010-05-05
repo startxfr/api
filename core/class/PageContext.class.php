@@ -60,7 +60,7 @@ class PageContext {
      * Process analyse of the CHANNEL context
      */
     function GetChannelContext() {
-	Logg::loggerInfo('PageContext::getChannelContext() ~ informations sur le channel '.$this->channel,'',__FILE__.'@'.__LINE__);
+	Logg::loggerNotice('PageContext::getChannelContext() ~ informations sur le channel '.$this->channel,'',__FILE__.'@'.__LINE__);
 	$this->channelData = $GLOBALS['CHANNEL_'.$this->channel];
     }
 
@@ -112,7 +112,7 @@ class PageContext {
      * this mean SESSION, VAR, CHANNEL and PAGE context
      */
     function GetFullContext() {
-	Logg::loggerInfo('PageContext::GetFullContext() ~ Récupération du context complet de la page','',__FILE__.'@'.__LINE__);
+	Logg::loggerNotice('PageContext::GetFullContext() ~ Récupération du context complet de la page','',__FILE__.'@'.__LINE__);
 	// Var context
 	$this->GetVarContext();
 	// Channel context

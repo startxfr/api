@@ -52,13 +52,11 @@ class affaireModel extends GeneralModel {
 	if ($search['nom_ent'] != '')		$reqAdd .= 'AND nom_ent LIKE \'%'.$search['nom_ent'].'%\' ';
 	if ($search['status_aff'] != '')	$reqAdd .= 'AND status_aff = \''.$search['status_aff'].'\' ';
 
-	if($search['order'] != '')
-	    $reqOrder = $search['order'].' '.((strtolower($search['orderSens']) == 'asc') ? 'ASC' : 'DESC').', ';
+	if($search['order'] != '')		$reqOrder = $search['order'].' '.((strtolower($search['orderSens']) == 'asc') ? 'ASC' : 'DESC').', ';
 
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree(
-		    "SELECT COUNT(*)
-                     FROM entreprise
+	    $this->makeRequeteFree("SELECT COUNT(*)
+			FROM entreprise
 			LEFT JOIN ref_activite ON entreprise.activite_ent = ref_activite.id_act
 			LEFT JOIN ref_typeentreprise ON ref_typeentreprise.id_tyent = entreprise.type_ent
 			LEFT JOIN ref_pays ON entreprise.pays_ent = ref_pays.id_pays
@@ -292,11 +290,10 @@ class affaireModel extends GeneralModel {
      * @return array
      */
     public function insert($data, $fait = 'creation', $origine = '') {
-
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	if(!array_key_exists($this->sqlIdField,$in)) $in[$this->sqlIdField] = affaireModel::affaireGenerateID();
-	affaireModel::createNewAffaireInDB($in,TRUE, $fait, $origine);
+	$data = $this->bindVarAffaire($data);
+	if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = affaireModel::affaireGenerateID();
+	Logg::loggerInfo('affaireModel::insert() ~ ajout de l\'affaire '.$data['id_aff'].' intitulé : '.$data['titre_aff'],$data,__FILE__.'@'.__LINE__);
+	affaireModel::createNewAffaireInDB($data,TRUE, $fait, $origine);
 	return $in;
     }
 
@@ -311,17 +308,11 @@ class affaireModel extends GeneralModel {
 	if($entreprise_aff != "")
 	    $data['entreprise_aff']=$entreprise_aff;
 	$data['modif_aff']=date('Y-m-d');
-
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-
-
-	if(array_key_exists('echeance_aff', $in))
-	    $in['echeance_aff'] = substr($in['echeance_aff'], 6,4).substr($in['echeance_aff'], 3,2).substr($in['echeance_aff'],0,2);
-
-	if(!array_key_exists($this->sqlIdField,$in)) {
-	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_aff",$id_aff,$in);
-	    Logg::loggerAlert('affaireModel::update() ~ mise à jour de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	if(array_key_exists('echeance_aff', $data))
+	    $data['echeance_aff'] = substr($data['echeance_aff'], 6,4).substr($data['echeance_aff'], 3,2).substr($data['echeance_aff'],0,2);
+	if(!array_key_exists($this->sqlIdField,$data)) {
+	    $sql = $this->makeRequeteUpdate($this->sqlTableName,"id_aff",$id_aff,$this->bindVarAffaire($data));
+	    Logg::loggerInfo('affaireModel::update() ~ mise à jour de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $result = $this->process2();
 	    if($result[0] and $data['status_aff'] != '')
 		$this->addActualite($id_aff, 'update');
@@ -336,7 +327,7 @@ class affaireModel extends GeneralModel {
      */
     public function delete($id_aff) {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_aff = $id_aff");
-	Logg::loggerAlert('affaireModel::delete() ~ suppression de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('affaireModel::delete() ~ suppression de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0])
 	    $this->addActualite($id_aff, 'delete');
@@ -361,7 +352,7 @@ class affaireModel extends GeneralModel {
 	    }
 	    $sql.= $this->makeRequeteFree("DELETE FROM facture Where commande_fact = '".$id_dev."BC"."'");
 	    $result = $this->process2();
-	    Logg::loggerAlert('affaireModel::delete() ~ suppression de toutes les ressources associées à l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::delete() ~ suppression de toutes les ressources associées à l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	}
 	return $result;
 
@@ -761,7 +752,7 @@ class affaireModel extends GeneralModel {
 		$action = 'Clonage de l\'affaire '.$origine.' en l\'affaire ';
 	    }
 	    $sql = $bddtmp->makeRequeteInsert('affaire',$data);
-	    Logg::loggerAlert('affaireModel::createNewAffaireInDB() ~ ajout de l\'affaire '.$data['id_aff'],$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::createNewAffaireInDB() ~ ajout de l\'affaire '.$data['id_aff'],$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_aff, 'add');
 
@@ -772,7 +763,7 @@ class affaireModel extends GeneralModel {
 		if ($GLOBALS['LOG']['DisplayDebug']) {
 		    $GLOBALS['LogSVNProcess'][] = $CmdBase.$uri;
 		}
-		Logg::loggerAlert('affaireModel::createNewAffaireInDB() ~ création du répertoire de travail de l\'affaire '.$data['id_aff'],$CmdBase.$uri,__FILE__.'@'.__LINE__);
+		Logg::loggerInfo('affaireModel::createNewAffaireInDB() ~ création du répertoire de travail de l\'affaire '.$data['id_aff'],$CmdBase.$uri,__FILE__.'@'.__LINE__);
 		shell_exec($CmdBase.$uri);
 		//chmod($uri,0770);
 		$uri		= " -m \"Création de l'affaire ".$id_aff." réalisée par ".$_SESSION["user"]["fullnom"]."\" ".$uri;
@@ -799,10 +790,10 @@ class affaireModel extends GeneralModel {
 	    $aff = $bddtmp->process();
 	    $aff = $aff[0];
 	    $sql = $bddtmp->makeRequeteDelete('affaire',array('id_aff' => $id_aff));
-	    Logg::loggerAlert('affaireModel::deleteAffaireInDB() ~ suppression de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::deleteAffaireInDB() ~ suppression de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
 	    $sql = $bddtmp->makeRequeteUpdate('projet','affaire_proj',$id_aff,array('affaire_proj' => ''));
-	    Logg::loggerAlert('affaireModel::deleteAffaireInDB() ~ suppression des projets liées à l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::deleteAffaireInDB() ~ suppression des projets liées à l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_aff, 'delete');
 
@@ -813,7 +804,7 @@ class affaireModel extends GeneralModel {
 		if ($GLOBALS['LOG']['DisplayDebug']) {
 		    $GLOBALS['LogSVNProcess'][] = $CmdBase.$uri;
 		}
-		Logg::loggerAlert('affaireModel::deleteAffaireInDB() ~ suppression du répertoire de travail de l\'affaire '.$id_aff,$CmdBase.$uri,__FILE__.'@'.__LINE__);
+		Logg::loggerInfo('affaireModel::deleteAffaireInDB() ~ suppression du répertoire de travail de l\'affaire '.$id_aff,$CmdBase.$uri,__FILE__.'@'.__LINE__);
 		shell_exec($CmdBase.$uri);
 		$uri		= " -m \"Suppression de l'affaire ".$id_aff." réalisée par ".$_SESSION["user"]["fullnom"]."\" ".$uri;
 		$CmdBase	= "export EDITOR=\"vi\"; export LC_CTYPE=\"fr_FR.UTF-8\"; export LANG=\"fr_FR.UTF-8\"; svn ci --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." --username ".$_SESSION["user"]["id"]." ";
@@ -839,7 +830,7 @@ class affaireModel extends GeneralModel {
 	    $aff = $bddtmp->process();
 	    $aff = $aff[0];
 	    $sql = $bddtmp->makeRequeteUpdate('affaire','id_aff',$id_aff,array('archived_aff' => '1','actif_aff' => '0','status_aff' => '18'));
-	    Logg::loggerAlert('affaireModel::archivateAffaireInDB() ~ archivage de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::archivateAffaireInDB() ~ archivage de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_aff, 'archive', 'L\'affaire '.$id_aff.' est maintenant archivée. Cette affaire ne pleut plus être modifiée. Les documents sont dorénavant consultables dans le répertoire '.$aff['dir_aff'].' des affaires archivés.', 'changement par lot', '',false);
 
@@ -850,7 +841,7 @@ class affaireModel extends GeneralModel {
 		if ($GLOBALS['LOG']['DisplayDebug']) {
 		    $GLOBALS['LogSVNProcess'][] = $CmdBase.$uri." ".$uriTo;
 		}
-		Logg::loggerAlert('affaireModel::deleteAffaireInDB() ~ archivage du répertoire de travail de l\'affaire '.$id_aff,$CmdBase." ".$uriTo,__FILE__.'@'.__LINE__);
+		Logg::loggerInfo('affaireModel::deleteAffaireInDB() ~ archivage du répertoire de travail de l\'affaire '.$id_aff,$CmdBase." ".$uriTo,__FILE__.'@'.__LINE__);
 		shell_exec($CmdBase.$uri." ".$uriTo);
 		$uri		= " -m \"Archivage de l'affaire ".$id_aff." réalisée par ".$_SESSION["user"]["fullnom"]."\" ".$uri." ".$uriTo;
 		$CmdBase	= "export EDITOR=\"vi\"; export LC_CTYPE=\"fr_FR.UTF-8\"; export LANG=\"fr_FR.UTF-8\"; svn ci --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." --username ".$_SESSION["user"]["id"]." ";
@@ -876,7 +867,7 @@ class affaireModel extends GeneralModel {
 	    $aff = $bddtmp->process();
 	    $aff = $aff[0];
 	    $sql = $bddtmp->makeRequeteUpdate('affaire','id_aff',$id_aff,array('actif_aff' => '1','status_aff' => '20'));
-	    Logg::loggerAlert('affaireModel::activateAffaireInDB() ~ activation de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::activateAffaireInDB() ~ activation de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_aff, 'update', 'L\'affaire '.$id_aff.' est maintenant activée. Vous pouvez de nouveau travailler sur cette affaire', 'changement par lot', '',false);
 	    return true;
@@ -895,7 +886,7 @@ class affaireModel extends GeneralModel {
 	    $aff = $bddtmp->process();
 	    $aff = $aff[0];
 	    $sql = $bddtmp->makeRequeteUpdate('affaire','id_aff',$id_aff,array('actif_aff' => '0','status_aff' => '19'));
-	    Logg::loggerAlert('affaireModel::activateAffaireInDB() ~ désactivation de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::activateAffaireInDB() ~ désactivation de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_aff, 'update', 'L\'affaire '.$id_aff.' est maintenant désactivée. Vous ne pouvez plus travailler sur cette affaire', 'changement par lot', '',false);
 	    return true;
@@ -929,7 +920,7 @@ class affaireModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate('affaire','id_aff',$id_aff,$newData);
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
-	    Logg::loggerAlert('affaireModel::changeAttributeAffaireInDB() ~ changement d\'attribut de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('affaireModel::changeAttributeAffaireInDB() ~ changement d\'attribut de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('affaireModel::changeAttributeAffaireInDB() ~ impossible de changer les attributs de l\'affaire '.$id_aff,'',__FILE__.'@'.__LINE__);
@@ -1055,6 +1046,15 @@ class affaireModel extends GeneralModel {
 	    $outputFile = $ODTName;
 	    return $outputFile;
 	}
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table affaire
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarAffaire($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 ?>

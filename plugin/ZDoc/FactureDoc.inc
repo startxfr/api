@@ -51,7 +51,7 @@ class factureGnose {
 	loadPlugin(array('OOConverter','docGenerator'));
 	if (array_key_exists($cannevas,$GLOBALS['ZunoFacture']))
 	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture'][$cannevas];
-	else  $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture']['cannevas.defaut'];
+	else $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture']['cannevas.defaut'];
 
 	$entreprise = $this->bddtmp->getDataFromID($id_fact);
 	$entreprise = $entreprise[1][0];
@@ -72,7 +72,7 @@ class factureGnose {
 	    $entreprise['nom_commercial'] = $entreprise['civ']." ".$entreprise['prenom']." ".$entreprise['nom'];
 	    $entreprise['mail_commercial'] = $entreprise['mail'];
 	    $entreprise['id_fact'] = $entreprise['id_fact'];
- $this->bddtmp = new factureModel();
+	    $this->bddtmp = new factureModel();
 	    $produits = $this->bddtmp->getProduitsFromID($id_fact);
 	    $produits = $produits[1];
 	    $total = 0;
@@ -102,11 +102,14 @@ class factureGnose {
 		    $total = $total+$totalRow;
 		}
 	    }
+	    else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux lignes produits de la facture '.$id_fact,serialize($entreprise),__FILE__.'@'.__LINE__);
 
 	    $entreprise['totalHT'] = number_format(round($total,2),2,',',' ');
 	    $entreprise['totalTVA'] = number_format(round(($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
 	    $entreprise['totalTTC'] = number_format(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
 	}
+	else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux données de la facture '.$id_fact,serialize($entreprise),__FILE__.'@'.__LINE__);
+
 
 	if(is_file($cannevasFile) and
 		count($entreprise) > 0 and
@@ -159,13 +162,19 @@ class factureGnose {
 		    if($outputExt != 'odt' and $fileClose[0]) {
 			@rm($ArchivePath.$PDFName);
 			$retour = OOConverter($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt);
-			if(is_string($retour))
+			if(is_string($retour)) {
+			    Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la conversion en '.$outputExt.' du fichier '.$ODTName,serialize($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
 			    return false;
+			}
 		    }
+		    Logg::loggerInfo('factureGnose::FactureGenerateDocument() ~ Génération du document de la facture '.$id_fact.' (fichier '.$PDFName.')',serialize($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
 		    return $PDFName;
 		}
+		else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' aucune Ligne produit disponible dans le cannevas',serialize($cannevasFile),__FILE__.'@'.__LINE__);
 	    }
+	    else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible d\'extraire le cannevas',serialize($cannevasFile),__FILE__.'@'.__LINE__);
 	}
+	else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible de trouver le cannevas ou le tableau des informations sur la facture'.$cannevasFile,serialize($cannevasFile,$entreprise),__FILE__.'@'.__LINE__);
     }
 
     /**
@@ -200,14 +209,16 @@ class factureGnose {
 	// Si le fichier existe, on le remplace
 	if($FileExist) {
 	    if(!copy($PathFrom.$fileFrom,$PathTo.$fileFrom))
-		Logg::loggerError('ZunoFacture::FactureSaveDocInGnose() ~ Impossible de copier le fichier '.$PathTo,'',__FILE__.'@'.__LINE__);
+		Logg::loggerError('factureGnose::FactureSaveDocInGnose() ~ Impossible de copier le fichier '.$PathTo,'',__FILE__.'@'.__LINE__);
+	    else Logg::loggerInfo('factureGnose::FactureSaveDocInGnose() ~ Sauvegarde du document de la facture '.$facture,$factData,__FILE__.'@'.__LINE__);
 	    chmod($PathTo.$fileFrom,0770);
 	    $fileCI.= $PathTo.$fileFrom.' ';
 	    // S'il y a une affaire
 	    if($factData['dir_aff'] != '') {
 		// On copie le fichier dans l'affaire
 		if(!copy($PathFrom.$fileFrom,$PathToAff.$fileFrom))
-		    Logg::loggerError('ZunoFacture::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$PathToAff,'',__FILE__.'@'.__LINE__);
+		    Logg::loggerError('factureGnose::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$PathToAff,'',__FILE__.'@'.__LINE__);
+		else Logg::loggerInfo('factureGnose::FactureSaveDocInGnose() ~ Sauvegarde du document de la facture '.$facture.' dans l\'affaire '.$factData['dir_aff'],$factData,__FILE__.'@'.__LINE__);
 		// Si le fichier n'existait pas avant, on l'ajoute
 		if(!$FileExistAff) {
 		    $CmdBase = 'svn add ';
@@ -235,7 +246,8 @@ class factureGnose {
 		if ($GLOBALS['LOG']['DisplayDebug']) $GLOBALS['LogSVNProcess'][] = $CmdBase;
 		shell_exec($CmdBase);
 		if(!copy($PathFrom.$fileFrom,$PathTo.$fileFrom))
-		    Logg::loggerError('ZunoFacture::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$pathTo,'',__FILE__.'@'.__LINE__);
+		    Logg::loggerError('factureGnose::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$pathTo,'',__FILE__.'@'.__LINE__);
+		else Logg::loggerInfo('factureGnose::FactureSaveDocInGnose() ~ Sauvegarde du document de la facture '.$facture.' après un changement de nom de fichier',array($factData,$fileFrom),__FILE__.'@'.__LINE__);
 		$bddtmp->makeRequeteUpdate('facture','id_fact',$facture,array('file_fact'=>$fileFrom));
 		$bddtmp->process();
 		$return = 'Changement de '.$typeDocLa.' '.$facture.' en changement de son nom de '.$factData['file_fact'].' vers '.$fileFrom;
@@ -245,8 +257,8 @@ class factureGnose {
 		if($factData['dir_aff'] != '') {
 		    // On copie le fichier dans l'affaire
 		    if(!copy($PathFrom.$fileFrom,$PathToAff.$fileFrom))
-			Logg::loggerError('ZunoFacture::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$PathToAff,'',__FILE__.'@'.__LINE__);
-		    ;
+			Logg::loggerError('factureGnose::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$PathToAff,'',__FILE__.'@'.__LINE__);
+		    else Logg::loggerInfo('factureGnose::FactureSaveDocInGnose() ~ Sauvegarde du document de la facture '.$facture.' dans l\'affaire '.$factData['dir_aff'],$factData,__FILE__.'@'.__LINE__);
 		    // Si le fichier n'existait pas avant, on l'ajoute
 		    if(!$FileExistAff) {
 			$CmdBase = 'svn add ';
@@ -263,7 +275,8 @@ class factureGnose {
 	    // sinon le fichier n'as jamais existé
 	    else {
 		if(!copy($PathFrom.$fileFrom,$PathTo.$fileFrom))
-		    Logg::loggerError('ZunoFacture::FactureSaveDocInGnose()::Cant_copy_file_to:'.$PathTo);
+		    Logg::loggerError('factureGnose::FactureSaveDocInGnose()::Cant_copy_file_to:'.$PathTo);
+		else Logg::loggerInfo('factureGnose::FactureSaveDocInGnose() ~ Sauvegarde du document de la facture '.$facture.' pour la première fois',array($factData,$fileFrom),__FILE__.'@'.__LINE__);
 		$CmdBase = 'svn add ';
 		$CmdBase.= '--config-dir '.$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir'].' ';
 		$CmdBase.= $PathTo.$fileFrom.' ';
@@ -278,7 +291,8 @@ class factureGnose {
 		if($factData['dir_aff'] != '') {
 		    // On copie le fichier dans l'affaire
 		    if(!copy($PathFrom.$fileFrom,$PathToAff.$fileFrom))
-			Logg::loggerError('ZunoFacture::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$PathToAff,'',__FILE__.'@'.__LINE__);
+			Logg::loggerError('factureGnose::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$PathToAff,'',__FILE__.'@'.__LINE__);
+		    else Logg::loggerInfo('factureGnose::FactureSaveDocInGnose() ~ Sauvegarde du document de la facture '.$facture.' dans l\'affaire '.$factData['dir_aff'],$factData,__FILE__.'@'.__LINE__);
 		    // on ajoute le fichier a l'entrepot
 		    $CmdBase = 'svn add ';
 		    $CmdBase.= '--config-dir '.$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir'].' ';
@@ -301,15 +315,12 @@ class factureGnose {
 	    $CmdBase.= '--username '.$_SESSION["user"]["id"].' ';
 	    $CmdBase.= '-m "'.$message.'" ';
 	    $CmdBase.= $fileCI.' ';
-	    if ($GLOBALS['LOG']['DisplayDebug']) {
+	    if ($GLOBALS['LOG']['DisplayDebug'])
 		$GLOBALS['LogSVNProcess'][] = $CmdBase;
-	    }
 	    shell_exec($CmdBase);
 	    return $return;
 	}
-	else {
-	    return "ERREUR PAS DE FACTURE A ENREGISTRER";
-	}
+	else return "ERREUR PAS DE FACTURE A ENREGISTRER";
     }
 
     /**
@@ -393,6 +404,7 @@ class factureGnose {
 		    unset($output);
 		}
 	    }
+	    else Logg::loggerError('factureGnose::FactureExportTableur() ~ Impossible de trouver des factures à afficher ',count($facture),__FILE__.'@'.__LINE__);
 	    $xmlContent = $exportDebutDocument.$outFacture.$exportFinDocument;
 	    unset($outFacture);
 
@@ -404,8 +416,10 @@ class factureGnose {
 	    $archive = new PclZip($ArchivePath.$ODTName);
 	    $archive->add($ExportTmpPath,PCLZIP_OPT_REMOVE_PATH,$ExportTmpPath.'/');
 	    $outputFile = $ODTName;
+	    Logg::loggerInfo('factureGnose::FactureExportTableur() ~ Export de la liste des factures '.$ODTName,count($facture),__FILE__.'@'.__LINE__);
 	    return $outputFile;
 	}
+	else Logg::loggerError('factureGnose::FactureExportTableur() ~ Impossible de trouver le cannevas '.$cannevasFile,count($facture),__FILE__.'@'.__LINE__);
     }
 }
 ?>

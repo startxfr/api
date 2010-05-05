@@ -84,6 +84,7 @@ class contactGnose {
 		    unset($output);
 		}
 	    }
+	    else Logg::loggerError('contactGnose::ContactExportTableur() ~ Impossible de trouver des contacts à afficher ',count($contacts),__FILE__.'@'.__LINE__);
 	    $xmlContent = $exportDebutDocument.$outContact.$exportFinDocument;
 	    unset($outContact);
 
@@ -95,8 +96,10 @@ class contactGnose {
 	    $archive = new PclZip($ArchivePath.$ODTName);
 	    $archive->add($ExportTmpPath,PCLZIP_OPT_REMOVE_PATH,$ExportTmpPath.'/');
 	    $outputFile = $ODTName;
+	    Logg::loggerInfo('contactGnose::ContactExportTableur() ~ Export de la liste des contacts '.$ODTName,count($contacts),__FILE__.'@'.__LINE__);
 	    return $outputFile;
 	}
+	else Logg::loggerError('contactGnose::ContactExportTableur() ~ Impossible de trouver le cannevas '.$cannevasFile,count($contacts),__FILE__.'@'.__LINE__);
     }
 }
 ?>

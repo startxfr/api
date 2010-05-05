@@ -9,6 +9,7 @@
 #   copyright:   See licence.txt for this script licence
 #########################################################################*/
 error_reporting(E_ALL ^ E_NOTICE);
+define('E_USER_INFO', 1500);
 
 class Logg extends Singleton {
     protected $errortype = array (
@@ -23,6 +24,7 @@ class Logg extends Singleton {
             E_USER_ERROR       => "Erreur Zuno",
             E_USER_WARNING     => "Alerte Zuno",
             E_USER_NOTICE      => "Notice Zuno",
+            E_USER_INFO        => "Info Zuno",
             E_STRICT           => "Notice PHP (syntax)"
     );
     public $conf = array ();
@@ -43,9 +45,15 @@ class Logg extends Singleton {
     /**
      * Constructeur rendu obligatoire pour rétro-compatibilité avec php < 5.3
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->initSingleton();
+    }
+
+    /**
+     * destructeur pour des log plus clair (virable en prod)
+     */
+    public function  __destruct() {
+	Logg::loggerInfo('==============FIN================== ~ ',null,__FILE__.'@'.__LINE__);
     }
 
     /**
@@ -194,9 +202,22 @@ compostant:  ".$content['component_log']."
      * @param $level	criticity level. From 0 (high) to 2 (low)
      * @param $logchannel	Force to use the given channel instead of log.ini configuration
      */
-    static function loggerInfo($texte, $vars = '', $filename = '', $logchannel = '') {
+    static function loggerNotice($texte, $vars = '', $filename = '', $logchannel = '') {
         $instance = self::getInstance();
         return $instance->processLog($texte,E_USER_NOTICE,$vars,$filename,$logchannel);
+    }
+    /**
+     *
+     * Log given information regarding criticity level and type of information
+     * Analyse data respecting rules defined in log.ini
+     *
+     * @param $texte	information (must begin with information type: CORE,ERROR or INFO *
+     * @param $level	criticity level. From 0 (high) to 2 (low)
+     * @param $logchannel	Force to use the given channel instead of log.ini configuration
+     */
+    static function loggerInfo($texte, $vars = '', $filename = '', $logchannel = '') {
+        $instance = self::getInstance();
+        return $instance->processLog($texte,E_USER_INFO,$vars,$filename,$logchannel);
     }
 
     /**

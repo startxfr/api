@@ -71,10 +71,8 @@ class PayboxModel extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function insert($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	Logg::loggerAlert('PayboxModel::insert() ~ ajout de la transaction Paybox '.$data['numTrans_pb'].' de type '.$data['type_pb'],$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarPaybox($data));
+	Logg::loggerInfo('PayboxModel::insert() ~ ajout de la transaction Paybox '.$data['numTrans_pb'].' de type '.$data['type_pb'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -94,7 +92,7 @@ class PayboxModel extends GeneralModel {
 	$in['contact_cb'] = $contact;
 
 	$sql = $this->makeRequeteInsert("contact_banque", $in);
-	Logg::loggerAlert('PayboxModel::insertCoordonnesBancaires() ~ ajout du portefeuille client '.$data['refAbonne_cb'].' pour le porteur '.$data['porteur_cb'],$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('PayboxModel::insertCoordonnesBancaires() ~ ajout du portefeuille client '.$data['refAbonne_cb'].' pour le porteur '.$data['porteur_cb'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -113,7 +111,7 @@ class PayboxModel extends GeneralModel {
 	$in['cvv_cb'] = $this->pack_str($this->zEncrypt($data['CVV']), strlen($this->zEncrypt($data['CVV'])));
 
 	$sql = $this->makeRequeteUpdate("contact_banque", "contact_cb", $contact, $in, " AND refAbonne_cb = '".$data['REFABONNE']."'");
-	Logg::loggerAlert('PayboxModel::updateCoordonnesBancaires() ~ mise à jour des coordonnées bancaires pour le contact '.$contact,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('PayboxModel::updateCoordonnesBancaires() ~ mise à jour des coordonnées bancaires pour le contact '.$contact,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
 
@@ -131,10 +129,17 @@ class PayboxModel extends GeneralModel {
 	    $retour['CVV'] = $this->unpack_str($this->zDecrypt($rs[1][0]['cvv_cb']), strlen($this->zDecrypt($rs[1][0]['cvv_cb'])));
 	    $retour['REFABONNE'] = $this->unpack_str($this->zDecrypt($rs[1][0]['refAbonne_cb']), strlen($this->zDecrypt($rs[1][0]['refAbonne_cb'])));
 	}
-	else {
-	    $retour['ERROR'] = $rs[1];
-	}
+	else $retour['ERROR'] = $rs[1];
 	return $retour;
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table historique_payline
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarPaybox($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 
 

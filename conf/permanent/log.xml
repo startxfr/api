@@ -18,7 +18,7 @@
 		<!--	VERBOSE => Display everything including $GLOBALS-->
 	<value id="DisplayDebugType">NORMAL</value>
 	<!-- Error are also printed on screen 		-->
-	<value id="DisplayError">TRUE</value>
+	<value id="DisplayError">FALSE</value>
     </group>
     <!-- Level of error to store
 	1	E_ERROR
@@ -32,6 +32,7 @@
 	256	E_USER_ERROR
 	512	E_USER_WARNING
 	1024    E_USER_NOTICE
+	1500    E_USER_INFO
 	2048    E_STRICT
 	4096    E_RECOVERABLE_ERROR
 	8192    E_DEPRECATED
@@ -40,7 +41,7 @@
     -->
     <group name="LOG_DB" modifRight="0" title="Configuration des log sql">
 	<value id="activate">TRUE</value>
-	<value id="level">0,1,2,4,16,32,64,128,256,512,2048,4096,8192</value>
+	<value id="level">0,1,2,4,16,32,64,128,256,512,1500,2048,4096,8192</value>
 	<value id="base_pool">1</value>
 	<value id="base_table">log</value>
     </group>

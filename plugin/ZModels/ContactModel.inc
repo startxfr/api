@@ -112,14 +112,12 @@ class contactParticulierModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insert($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	if(!array_key_exists($this->sqlIdField,$in)) $in[$this->sqlIdField] = ($this->getLastId()+1);
-	$in['nom_cont'] = strtoupper($in['nom_cont']);
-	$in['ville_cont'] = strtoupper($in['ville_cont']);
-	$in['pays_cont'] = ($in['pays_cont'] != '') ? $in['pays_cont'] : '1';
-	$sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	Logg::loggerAlert('contactParticulierModel::insert() ~ ajout du contact '.$data['id_cont'].' : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'],$sql,__FILE__.'@'.__LINE__);
+	if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = ($this->getLastId()+1);
+	$data['nom_cont'] = strtoupper($data['nom_cont']);
+	$data['ville_cont'] = strtoupper($data['ville_cont']);
+	$data['pays_cont'] = ($data['pays_cont'] != '') ? $data['pays_cont'] : '1';
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarContact($data));
+	Logg::loggerInfo('contactParticulierModel::insert() ~ ajout du contact '.$data['id_cont'].' : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'],$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -131,21 +129,17 @@ class contactParticulierModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function update($data,$id_cont) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
+	if(array_key_exists($this->sqlIdField,$data))
+	    unset($data['id_cont']);
+	if(array_key_exists('nom_cont', $data))
+	    $data['nom_cont'] = strtoupper($data['nom_cont']);
+	if(array_key_exists('ville_cont', $data))
+	    $data['ville_cont'] = strtoupper($data['ville_cont']);
+	if(array_key_exists('pays_cont', $data))
+	    $data['pays_cont'] = ($data['pays_cont'] != '') ? $data['pays_cont'] : '1';
 
-	if(array_key_exists($this->sqlIdField,$in)) {
-	    unset($in['id_cont']);
-	}
-	if(array_key_exists('nom_cont', $in))
-	    $in['nom_cont'] = strtoupper($in['nom_cont']);
-	if(array_key_exists('ville_cont', $in))
-	    $in['ville_cont'] = strtoupper($in['ville_cont']);
-	if(array_key_exists('pays_cont', $in))
-	    $in['pays_cont'] = ($in['pays_cont'] != '') ? $in['pays_cont'] : '1';
-
-	$sql = $this->makeRequeteUpdate($this->sqlTableName,"id_cont",$id_cont,$in);
-	Logg::loggerAlert('contactParticulierModel::update() ~ mise à jour du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteUpdate($this->sqlTableName,"id_cont",$id_cont,$this->bindVarContact($data));
+	Logg::loggerInfo('contactParticulierModel::update() ~ mise à jour du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
 
@@ -158,7 +152,7 @@ class contactParticulierModel extends GeneralModel {
      */
     public function delete($id_cont) {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_cont = $id_cont");
-	Logg::loggerAlert('contactParticulierModel::delete() ~ suppression du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('contactParticulierModel::delete() ~ suppression du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
 
     }
@@ -289,7 +283,7 @@ class contactParticulierModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate('contact','id_cont',$id_cont,$newData);
 	    $bddtmp->process();
-	    Logg::loggerAlert('contactParticulierModel::changeAttributeInDB() ~ changement d\'attribut du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('contactParticulierModel::changeAttributeInDB() ~ changement d\'attribut du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('contactParticulierModel::changeAttributeInDB() ~ impossible de changer les attributs du contact '.$id_cont,'',__FILE__.'@'.__LINE__);
@@ -301,7 +295,7 @@ class contactParticulierModel extends GeneralModel {
 	    $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	    $sql = $bddtmp->makeRequeteDelete('contact',array('id_cont'=>$id_cont));
 	    $bddtmp->process();
-	    Logg::loggerAlert('contactParticulierModel::deleteInDB() ~ Contact '.$id_cont.'supprimé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('contactParticulierModel::deleteInDB() ~ Contact '.$id_cont.'supprimé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('contactParticulierModel::deleteInDB() ~ impossible de supprimer le contact '.$id_cont,'',__FILE__.'@'.__LINE__);
@@ -336,6 +330,15 @@ class contactParticulierModel extends GeneralModel {
 	return $this->process2();
     }
 
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table contact
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarContact($data) {
+	return $this->bindVar($data,$this->availableFields);
+    }
 }
 
 
@@ -599,13 +602,11 @@ class contactEntrepriseModel extends GeneralModel {
     public function insert($data) {
 	if($data['www_ent'] == "http://")
 	    unset($data['www_ent']);
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	if(!array_key_exists($this->sqlIdField,$in)) $in[$this->sqlIdField] = ($this->getLastId()+1);
-	$in['nom_ent'] = strtoupper(str_replace(" ","",trim($in['nom_ent'])));
-	$in['ville_ent'] = strtoupper($in['ville_ent']);
-	$sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	Logg::loggerAlert('contactEntrepriseModel::insert() ~ ajout de l\'entreprise '.$data['id_ent'].' : '.$data['nom_ent'],$sql,__FILE__.'@'.__LINE__);
+	if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = ($this->getLastId()+1);
+	$data['nom_ent'] = strtoupper(str_replace(" ","",trim($data['nom_ent'])));
+	$data['ville_ent'] = strtoupper($data['ville_ent']);
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarEntreprise($data));
+	Logg::loggerInfo('contactEntrepriseModel::insert() ~ ajout de l\'entreprise '.$data['id_ent'].' : '.$data['nom_ent'],$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -617,14 +618,10 @@ class contactEntrepriseModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function update($data,$id_ent) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-
-	$in['nom_ent'] = strtoupper(str_replace(" ","",trim($in['nom_ent'])));
-	$in['ville_ent'] = strtoupper($in['ville_ent']);
-
-	$sql = $this->makeRequeteUpdate($this->sqlTableName,"id_ent",$id_ent,$in);
-	Logg::loggerAlert('contactEntrepriseModel::update() ~ mise à jour de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
+	$data['nom_ent'] = strtoupper(str_replace(" ","",trim($data['nom_ent'])));
+	$data['ville_ent'] = strtoupper($data['ville_ent']);
+	$sql = $this->makeRequeteUpdate($this->sqlTableName,"id_ent",$id_ent,$this->bindVarEntreprise($data));
+	Logg::loggerInfo('contactEntrepriseModel::update() ~ mise à jour de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -637,11 +634,11 @@ class contactEntrepriseModel extends GeneralModel {
      */
     public function delete($id_ent, $recursif = false) {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_ent = $id_ent");
-	Logg::loggerAlert('contactEntrepriseModel::delete() ~ suppression de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('contactEntrepriseModel::delete() ~ suppression de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] and $recursif) {
 	    $sql = $this->makeRequeteFree("Delete from contact where entreprise_cont = ".$id_ent.";");
-	    Logg::loggerAlert('contactEntrepriseModel::delete() ~ suppression des contacts de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('contactEntrepriseModel::delete() ~ suppression des contacts de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
 	    $result2 = $this->process2();
 	}
 	return $result;
@@ -837,7 +834,7 @@ class contactEntrepriseModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate('entreprise','id_ent',$id_ent,$newData);
 	    $bddtmp->process();
-	    Logg::loggerAlert('contactEntrepriseModel::changeAttributeInDB() ~ changement d\'attribut de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('contactEntrepriseModel::changeAttributeInDB() ~ changement d\'attribut de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('contactEntrepriseModel::changeAttributeInDB() ~ impossible de changer les attributs de l\'entreprise '.$id_ent,'',__FILE__.'@'.__LINE__);
@@ -851,12 +848,20 @@ class contactEntrepriseModel extends GeneralModel {
 	    $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	    $sql = $bddtmp->makeRequeteDelete('entreprise',array('id_ent'=>$id_ent));
 	    $bddtmp->process();
-	    Logg::loggerAlert('contactEntrepriseModel::deleteInDB() ~ Entreprise '.$id_ent.'supprimé',$sql,__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo('contactEntrepriseModel::deleteInDB() ~ Entreprise '.$id_ent.'supprimé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
 	Logg::loggerAlert('contactEntrepriseModel::deleteInDB() ~ impossible de supprimer l\'entreprise '.$id_ent,'',__FILE__.'@'.__LINE__);
     }
 
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table entreprise
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarEntreprise($data) {
+	return $this->bindVar($data,$this->availableFields);
+    }
 }
 
 /**
@@ -886,15 +891,13 @@ class appelModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insert($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	if(!array_key_exists($this->sqlIdField,$in)) $in[$this->sqlIdField] = ($this->getLastId()+1);
-	if(array_key_exists('appel_app', $in))
-	    $in['appel_app'] = substr($in['appel_app'], 6,4).substr($in['appel_app'], 3,2).substr($in['appel_app'],0,2);
-	if(array_key_exists('rappel_app', $in))
-	    $in['rappel_app'] = substr($in['rappel_app'], 6,4).substr($in['rappel_app'], 3,2).substr($in['rappel_app'],0,2);
-	$sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	Logg::loggerAlert('appelModel::insert() ~ ajout d\'un appel avec le contact '.$data['contact_app'],$sql,__FILE__.'@'.__LINE__);
+	if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = ($this->getLastId()+1);
+	if(array_key_exists('appel_app', $data))
+	    $data['appel_app'] = substr($data['appel_app'], 6,4).substr($data['appel_app'], 3,2).substr($data['appel_app'],0,2);
+	if(array_key_exists('rappel_app', $data))
+	    $data['rappel_app'] = substr($data['rappel_app'], 6,4).substr($data['rappel_app'], 3,2).substr($data['rappel_app'],0,2);
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarAppel($data));
+	Logg::loggerInfo('appelModel::insert() ~ ajout d\'un appel avec le contact '.$data['contact_app'],$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -906,18 +909,14 @@ class appelModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function update($data, $id) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-
-	if(array_key_exists($this->sqlIdField,$in)) {
-	    unset($in['id_app']);
-	}
-	if(array_key_exists('appel_app', $in))
-	    $in['appel_app'] = substr($in['appel_app'], 6,4).substr($in['appel_app'], 3,2).substr($in['appel_app'],0,2);
-	if(array_key_exists('rappel_app', $in))
-	    $in['rappel_app'] = substr($in['rappel_app'], 6,4).substr($in['rappel_app'], 3,2).substr($in['rappel_app'],0,2);
-	$sql = $this->makeRequeteUpdate($this->sqlTableName,$this->sqlIdField,$id,$in);
-	Logg::loggerAlert('appelModel::update() ~ mise à jour de l\'appel '.$id,$sql,__FILE__.'@'.__LINE__);
+	if(array_key_exists($this->sqlIdField,$data))
+	    unset($data['id_app']);
+	if(array_key_exists('appel_app', $data))
+	    $data['appel_app'] = substr($data['appel_app'], 6,4).substr($data['appel_app'], 3,2).substr($data['appel_app'],0,2);
+	if(array_key_exists('rappel_app', $data))
+	    $data['rappel_app'] = substr($data['rappel_app'], 6,4).substr($data['rappel_app'], 3,2).substr($data['rappel_app'],0,2);
+	$sql = $this->makeRequeteUpdate($this->sqlTableName,$this->sqlIdField,$id,$this->bindVarAppel($data));
+	Logg::loggerInfo('appelModel::update() ~ mise à jour de l\'appel '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -929,7 +928,7 @@ class appelModel extends GeneralModel {
      */
     public function delete($id) {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where $this->sqlIdField = $id");
-	Logg::loggerAlert('appelModel::delete() ~ suppression de l\'appel '.$id,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('appelModel::delete() ~ suppression de l\'appel '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -942,6 +941,15 @@ class appelModel extends GeneralModel {
     public function getDataFromID($id) {
 	$this->makeRequeteFree("SELECT * from appel LEFT JOIN contact c on c.id_cont = appel.contact_app LEFT JOIN entreprise e ON e.id_ent = c.entreprise_cont LEFT JOIN projet ON projet.id_proj = appel.projet_app LEFT JOIN affaire a ON a.id_aff = appel.affaire_app where id_app = $id ;");
 	return $this->process2();
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table appel
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarAppel($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 
@@ -1033,15 +1041,12 @@ class projetModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function insert($data) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-
-	if(!array_key_exists($this->sqlIdField,$in)) $in[$this->sqlIdField] = ($this->getLastId()+1);
-	if(array_key_exists('rdv_proj', $in))
-	    $in['rdv_proj'] = substr($in['rdv_proj'], 6,4).substr($in['rdv_proj'], 3,2).substr($in['rdv_proj'],0,2);
-	$in['detect_proj'] = date('Y-m-d');
-	$sql = $this->makeRequeteInsert($this->sqlTableName,$in);
-	Logg::loggerAlert('projetModel::insert() ~ ajout du projet '.$data['id_proj'].' intitulé : '.$data['titre_proj'],$sql,__FILE__.'@'.__LINE__);
+	if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = ($this->getLastId()+1);
+	if(array_key_exists('rdv_proj', $data))
+	    $data['rdv_proj'] = substr($data['rdv_proj'], 6,4).substr($data['rdv_proj'], 3,2).substr($data['rdv_proj'],0,2);
+	$data['detect_proj'] = date('Y-m-d');
+	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarProjet($data));
+	Logg::loggerInfo('projetModel::insert() ~ ajout du projet '.$data['id_proj'].' intitulé : '.$data['titre_proj'],$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -1053,13 +1058,11 @@ class projetModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function update($data, $id) {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	if(array_key_exists($this->sqlIdField,$in)) unset($in['id_proj']);
-	if(array_key_exists('rdv_proj', $in))
-	    $in['rdv_proj'] = substr($in['rdv_proj'], 6,4).substr($in['rdv_proj'], 3,2).substr($in['rdv_proj'],0,2);
-	$sql = $this->makeRequeteUpdate($this->sqlTableName,$this->sqlIdField,$id,$in);
-	Logg::loggerAlert('projetModel::update() ~ mise à jour du projet '.$id,$sql,__FILE__.'@'.__LINE__);
+	if(array_key_exists($this->sqlIdField,$data)) unset($data['id_proj']);
+	if(array_key_exists('rdv_proj', $data))
+	    $data['rdv_proj'] = substr($data['rdv_proj'], 6,4).substr($data['rdv_proj'], 3,2).substr($data['rdv_proj'],0,2);
+	$sql = $this->makeRequeteUpdate($this->sqlTableName,$this->sqlIdField,$id,$this->bindVarProjet($data));
+	Logg::loggerInfo('projetModel::update() ~ mise à jour du projet '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -1071,7 +1074,7 @@ class projetModel extends GeneralModel {
      */
     public function delete($id) {
 	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where $this->sqlIdField = $id");
-	Logg::loggerAlert('projetModel::delete() ~ suppression du projet '.$id,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('projetModel::delete() ~ suppression du projet '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
     }
@@ -1084,6 +1087,15 @@ class projetModel extends GeneralModel {
     public function getDataFromID($id) {
 	$this->makeRequeteFree("SELECT * from projet LEFT JOIN contact c on c.id_cont = projet.contact_proj LEFT JOIN entreprise e ON e.id_ent = c.entreprise_cont LEFT JOIN affaire a ON a.id_aff = projet.affaire_proj where id_proj = $id ;");
 	return $this->process2();
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table projet
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarProjet($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 

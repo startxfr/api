@@ -27,8 +27,6 @@ class FactureFournisseurModel extends GeneralModel {
      * @return array Indique si la requète s'est bien déroulée ou non.
      */
     public function insert($datas) {
-	$in = array();
-
 	$datas['id_factfourn'] = "FF".date('ym');
 	$this->makeRequeteFree("SELECT id_factfourn FROM facture_fournisseur WHERE id_factfourn LIKE '".$datas['id_factfourn']."%' ORDER BY id_factfourn DESC LIMIT 1");
 	$res = $this->process();
@@ -40,16 +38,12 @@ class FactureFournisseurModel extends GeneralModel {
 	}
 	else $lastDigit = "01";
 	$datas['id_factfourn'] .= $lastDigit;
-
 	$datas['montantTTC_factfourn'] = prepareNombreTraitement($datas['montantTTC_factfourn']);
 	if($datas['tauxTVA_factfourn'] != '')
 	    $datas['tauxTVA_factfourn'] = prepareNombreTraitement($datas['tauxTVA_factfourn']);
-	foreach($datas as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-
-	$in['user_factfourn'] = ($_SESSION['user']['id'] != '') ? $_SESSION['user']['id'] : $in['user_factfourn'];
-	$sql = $this->makeRequeteInsert($this->sqlTableName, $in);
-	Logg::loggerAlert('FactureFournisseurModel::insert() ~ ajout de la facture fournisseur '.$data['id_factfourn'],$sql,__FILE__.'@'.__LINE__);
+	$datas['user_factfourn'] = ($_SESSION['user']['id'] != '') ? $_SESSION['user']['id'] : $datas['user_factfourn'];
+	$sql = $this->makeRequeteInsert($this->sqlTableName, $this->bindVarFactureFournisseur($datas));
+	Logg::loggerInfo('FactureFournisseurModel::insert() ~ ajout de la facture fournisseur '.$data['id_factfourn'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0])
 	    $this->addActualite($data['id_factfourn'], 'add');
@@ -69,10 +63,8 @@ class FactureFournisseurModel extends GeneralModel {
 	    $datas['tauxTVA_factfourn'] = prepareNombreTraitement($datas['tauxTVA_factfourn']);
 	if($datas['montantTTC_factfourn'] != '')
 	    $datas['montantTTC_factfourn'] = prepareNombreTraitement($datas['montantTTC_factfourn']);
-	foreach($datas as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$sql = $this->makeRequeteUpdate($this->sqlTableName, $this->sqlIdField, $id, $in);
-	Logg::loggerAlert('FactureFournisseurModel::update() ~ modification de la facture fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
+	$sql = $this->makeRequeteUpdate($this->sqlTableName, $this->sqlIdField, $id, $this->bindVarFactureFournisseur($datas));
+	Logg::loggerInfo('FactureFournisseurModel::update() ~ modification de la facture fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0] and ($datas['montantTTC_factfourn'] != '' or $datas['tauxTVA_factfourn'] != ''))
 	    $this->addActualite($id, 'update');
@@ -87,7 +79,7 @@ class FactureFournisseurModel extends GeneralModel {
     public function delete($id) {
 	$liste[$this->sqlIdField] = $id;
 	$sql = $this->makeRequeteDelete($this->sqlTableName, $liste);
-	Logg::loggerAlert('FactureFournisseurModel::delete() ~ suppression de la facture fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
+	Logg::loggerInfo('FactureFournisseurModel::delete() ~ suppression de la facture fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0])
 	    $this->addActualite($id, 'delete');
@@ -189,6 +181,16 @@ class FactureFournisseurModel extends GeneralModel {
 	    return $temp[1][0];
 	}
 	else return $temp;
+    }
+
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table facture_fournisseur
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarFactureFournisseur($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 ?>

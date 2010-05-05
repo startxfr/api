@@ -110,9 +110,7 @@ class actualiteModel extends GeneralModel {
 	$data['date'] = date('Y-m-d H:i:s');
 	$data['user'] = $_SESSION['user']['id'];
 	$data['type'] = (!array_key_exists('type', $data)) ? 'general' : $data['type'];
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$this->makeRequeteInsert('actualite', $in);
+	$this->makeRequeteInsert('actualite', $this->bindVarActualite($data));
 	$result = $this->process2();
 
 	return $result;
@@ -125,9 +123,7 @@ class actualiteModel extends GeneralModel {
      * @return array Indique si la requète s'est bien passée.
      */
     public function update($id, $data='') {
-	foreach($data as $k => $v)
-	    if(in_array($k,$this->availableFields)) $in[$k] = stripslashes($v);
-	$this->makeRequeteUpdate('actualite','id',$id, $in);
+	$this->makeRequeteUpdate('actualite','id',$id, $this->bindVarActualite($data));
 	$result = $this->process2();
 
 	return $result;
@@ -138,12 +134,17 @@ class actualiteModel extends GeneralModel {
      * @param array $value Les données à insérer
      */
     public function insertAuto ($value = array()) {
-	foreach($value as $k => $v)
-	    if(in_array($k,$this->availableFields)) {
-		$in[$k] = stripslashes($v);
-	    }
-	$this->makeRequeteInsert('actualite', $in);
+	$this->makeRequeteInsert('actualite', $this->bindVarActualite($value));
 	$result = $this->process2();
+    }
+
+    /**
+     * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table actualite
+     * @param <array> $data tableau avec les données brut
+     * @return <array> données filtrées selon la propriété $this->availableFields
+     */
+    public function bindVarActualite($data) {
+	return $this->bindVar($data,$this->availableFields);
     }
 }
 ?>

@@ -18,6 +18,7 @@ class Payement {
     private $prenom; //Prenom du propriétaire de la carte
     private $carte; //Numéro de la carte
     private $date; //Date de fin de validité de la carte
+    private $typeCarte; //Type de carte
     private $cvv; //Cryptogramme de la carte
     private $montant; //Montant du payement
     private $articles; //Articles à facturer
@@ -51,6 +52,15 @@ class Payement {
      */
     public function setFacture($facture) {
         $this->facture = $facture;
+    }
+
+
+    /**
+     * Setter de l'id du type de carte
+     * @param int $typeCarte
+     */
+    public function setTypeCarte($typeCarte) {
+        $this->typeCarte = $typeCarte;
     }
 
     /**
@@ -122,7 +132,6 @@ class Payement {
             $fhandle = fopen ($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].'Facture.'.$this->facture.'.pdf', 'rb');
             $fcontent = fread ($fhandle, filesize($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].'Facture.'.$this->facture.'.pdf'));
             fclose($fhandle);
-
             $this->facturePDF = base64_encode($fcontent);
         }
     }
@@ -135,9 +144,8 @@ class Payement {
     public function getFacture($date) {
         if($date == 'last' or $date == 0)
             $date = 1;
-        if($this->contact == '' or $date == '') {
+        if($this->contact == '' or $date == '')
             return array(false, 'Paramètres manquants');
-        }
         $sql = new factureModel();
         $liste = $sql->getIdFromContactDate($this->contact, $date);
         if(!$liste[0])
@@ -147,8 +155,7 @@ class Payement {
         $this->encodeFacture();
         if(is_null($this->facturePDF))
             return array(false, 'Aucune facture générée');
-        else
-            return array(true, $this->facturePDF);
+        else return array(true, $this->facturePDF);
     }
 
     /**
@@ -161,8 +168,7 @@ class Payement {
         $this->encodeFacture();
         if(is_null($this->facturePDF))
             return array(false, 'Aucune facture générée', true);
-        else
-            return array(true, $this->facturePDF);
+        else return array(true, $this->facturePDF);
     }
 
     /**
@@ -200,7 +206,8 @@ class Payement {
      * @param bool $save Précie si on sauvegarde les données ou pas
      * @return array Le retour du payement
      */
-    public function doPayement($save = false) {
+    public function doPayement() {
+        Logg::loggerInfo('Payement.doPayement() ~ Execution du paiement pour le contact  '.$this->contact,serialize($this),__FILE__.'@'.__LINE__);
         if($this->nom == '' and $this->contact != '') {
             if($this->dataContact['wallet_cont'] != '') {
                 $pl = new Payline();
@@ -210,47 +217,26 @@ class Payement {
                 $out = $pl->doWalletPayement();
             }
             else {
+                Logg::loggerError('Payement.doPayement() ~ Erreur: Aucune donnée bancaire pour ce contact ',serialize($this),__FILE__.'@'.__LINE__);
                 return array(false, 'Aucune donnée bancaire pour ce contact');
             }
         }
         elseif($this->nom != '' and $this->prenom != '' and $this->carte != '' and $this->cvv != '' and $this->date != '') {
             $pl = new Payline();
-            if($save) {
-                $data = $this->pm->getInfosContact($this->contact);
-                if($data['id_cont'] == '') {
-                    return array(false, 'Contact inconnu');
-                }
-                else {
-                    $pl->setNom($this->nom);
-                    $pl->setPrenom($this->prenom);
-                    $pl->setCarte($this->carte);
-                    $pl->setDateCarte($this->date);
-                    $pl->setCvvCarte($this->cvv);
-                    $pl->setContact($this->contact, false);
-                    $wallet = substr($this->nom, 0, 5).substr($this->cvv,0,1).substr($this->prenom, 0, 2).substr($this->carte, strlen($this->carte)-4,2);
-                    $pl->setWallet($wallet);
-                    $pl->saveCarteDatas();
-                    $pl->setContact($this->contact, true);
-                    $out = $pl->createWallet();
-                    if($out[0]) {
-                        $pl->setMontant($this->montant);
-                        $pl->setReference($this->reference);
-                        $out = $pl->doWalletPayement();
-                    }
-                }
+            $data = $this->pm->getInfosContact($this->contact);
+            if($data['id_cont'] == '') {
+                Logg::loggerError('Payement.doPayement() ~ Erreur: Contact inconnu ',serialize(array($data,$this->contact)),__FILE__.'@'.__LINE__);
+                return array(false, 'Contact inconnu');
             }
             else {
-                $pl->setNom($this->nom);
-                $pl->setPrenom($this->prenom);
-                $pl->setCarte($this->carte);
-                $pl->setDateCarte($this->date);
-                $pl->setCvvCarte($this->cvv);
+                $pl->setContact($this->contact, true);
                 $pl->setMontant($this->montant);
                 $pl->setReference($this->reference);
-                $out = $pl->doPayement();
+                $out = $pl->doWalletPayement();
             }
         }
         else {
+            Logg::loggerError('Payement.doPayement() ~ Erreur: Données manquantes ',serialize(array($this,$this->contact)),__FILE__.'@'.__LINE__);
             return array(false, 'Données manquantes');
         }
 
@@ -258,9 +244,7 @@ class Payement {
             $this->saveTransaction();
             $this->sendConfirmMail(true);
         }
-        else {
-            $this->sendConfirmMail(false);
-        }
+        else $this->sendConfirmMail(false);
         return $out;
     }
 
@@ -269,8 +253,12 @@ class Payement {
      * @param bool $done Précise si le paiement a été effectué ou pas
      */
     private function sendConfirmMail($done = false) {
+        Logg::loggerInfo('Payement.sendConfirmMail() ~ Envoi du mail de confirmation de règlement pour la facture '.$this->facture,serialize($this),__FILE__.'@'.__LINE__);
         loadPlugin('Send/Send');
-        $array['id'] = $this->facture;
+        if($this->facture != "")
+            $array['id'] = $this->facture;
+        else
+            $array['id'] = $this->reference;
         $array['partie'] = "send";
         $array['typeE'] = "mail";
         $array['typeEmail'] = "html";
@@ -301,6 +289,7 @@ class Payement {
      * @return string Les données de la facture sérialisée
      */
     private function getFactureDatas() {
+        Logg::loggerInfo('Payement.getFactureDatas() ~ Recuperation des informations sur la facture '.$this->facture,serialize($this),__FILE__.'@'.__LINE__);
         $sql = new factureModel();
         $fact = $sql->getDataFromID($this->facture);
         if($fact[0]) {
@@ -311,11 +300,9 @@ class Payement {
                 $fact['produits'] = $prod[1];
                 $this->dataFact = serialize($fact);
             }
-            else
-                $this->dataFact = $prod;
+            else $this->dataFact = $prod;
         }
-        else
-            $this->dataFact = $fact;
+        else $this->dataFact = $fact;
         return $this->dataFact;
     }
 
@@ -324,11 +311,13 @@ class Payement {
      * @return array Indique si tout s'est bien déroulé
      */
     public function updateDatas() {
+        Logg::loggerInfo('Payement.updateDatas() ~ Mise a jour des informations de paiement pour le contact '.$this->contact,serialize($this),__FILE__.'@'.__LINE__);
         $pl = new Payline();
         $pl->setNom($this->nom);
         $pl->setPrenom($this->prenom);
         $pl->setCarte($this->carte);
         $pl->setDateCarte($this->date);
+        $pl->setTypeCarte($this->typeCarte);
         $pl->setCvvCarte($this->cvv);
         $pl->setContact($this->contact, false);
         $rs = $pl->updateWallet();
@@ -336,12 +325,10 @@ class Payement {
             $rs = $pl->saveCarteDatas();
             if($rs[0])
                 $rs[2] = false;
-            else
-                $rs[2] = true;
+            else $rs[2] = true;
         }
-        else {
-            $rs[2] = false;
-        }
+        else $rs[2] = false;
+        $rs[0] = (bool) $rs[0];
         return $rs;
     }
 
@@ -350,6 +337,7 @@ class Payement {
      * @return array L'ID de la facture créée
      */
     private function creerFacture() {
+        Logg::loggerInfo('Payement.creerFacture() ~ Creation de la facture pour le contact '.$this->contact,serialize($this),__FILE__.'@'.__LINE__);
         $liste = unserialize($this->articles);
         if(!is_array($liste)) {
             return array(false, 'La facture ne peut être vide');
@@ -372,9 +360,8 @@ class Payement {
         $data['ville_fact'] = ($this->dataContact['ville_ent'] != '') ? $this->dataContact['ville_ent'] : $this->dataContact['ville_cont'];
 
         $rs = $sql->insert($data, 'WS', $liste);
-        if(!$rs[0]) {
+        if(!$rs[0])
             return array(false, 'Erreur SQL : '.$rs[1], true);
-        }
         $this->facture = $data['id_fact'];
         return array(true, $data['id_fact']);
     }
@@ -385,20 +372,17 @@ class Payement {
      * @return array Indique le résultat des actions.
      */
     private function genererFacture($status = 'non paye') {
-
+        Logg::loggerInfo('Payement.genererFacture() ~ Generation de la facture '.$this->facture,serialize($this),__FILE__.'@'.__LINE__);
         if($status == 'paye') {
             $sql = new factureModel();
             $sql->update(array('commentreglement_fact' => 'Facture prélevée le '.date('d/m/Y')), $this->facture);
             $mess = "<br />Le prélèvement du montant TTC de votre facture (".prepareNombreAffichage($this->montant)." €)  a été réalisé.";
         }
-        else {
-            $mess = "<br />Le prélèvement du montant TTC de votre facture (".prepareNombreAffichage($this->montant)." €) n'a pas pu être réalisé.<br/>Nous avons rencontré l'erreur suivante : ".$status;
-        }
+        else $mess = "<br />Le prélèvement du montant TTC de votre facture (".prepareNombreAffichage($this->montant)." €) n'a pas pu être réalisé.<br/>Nous avons rencontré l'erreur suivante : ".$status;
         $gnose = new factureGnose();
         $data['fichier'] = $gnose->FactureGenerateDocument($this->facture);
-        if(!is_string($data['fichier'])) {
+        if(!is_string($data['fichier']))
             return array(false, 'Impossible de générer le document');
-        }
         $gnose->FactureSaveDocInGnose($data['fichier'],$this->facture,"Facture générée par le web service payement");
         $data['id'] = 0;
         $data['partie'] = 'send';
@@ -418,7 +402,8 @@ class Payement {
             $sql->update(array('dateenvoi_fact' => date('Y-m-d H:i:s'), 'status_fact' => '4'), $this->facture);
         }
         else {
-            $rs[2] = true;
+            Logg::loggerNotice('Payement.genererFacture() ~ Erreur dans l\'envoi du mail de confirmation  ',serialize($rs),__FILE__.'@'.__LINE__);
+            $rs[0] = $rs[2] = true;
         }
         return $rs;
     }
@@ -430,6 +415,7 @@ class Payement {
      * @return array Indique le bon déroulement
      */
     public function facturer($payer = false, $save = false) {
+        Logg::loggerInfo('Payement.facturer() ~ Facturation du contact '.$this->contact,serialize($this),__FILE__.'@'.__LINE__);
         $rs = $this->creerFacture();
         if(!$rs[0])
             return array_merge($rs, array('2'=>true), array('3' => $this->getFactureDatas()));
@@ -468,6 +454,7 @@ class Payement {
      * @return array Indique si tout s'est bien déroulé
      */
     public function payerFacture($save = false) {
+        Logg::loggerInfo('Payement.payerFacture() ~ Paiement de la facture '.$this->facture,serialize($this),__FILE__.'@'.__LINE__);
         if($this->facture != '') {
             $this->reference = "Fact".$this->facture;
             $sql = new factureModel();
@@ -492,30 +479,33 @@ class Payement {
 
     /**
      * Méthode qui débite un client avant de générer la facture
-     * @param bool $save Précise si on sauvegarde les données du client en local
      * @return array Indique si tout s'est bien déroulé
      */
-    public function payerPuisFacturer($save = false) {
+    public function payerPuisFacturer() {
+        Logg::loggerInfo('Payement.payerPuisFacturer() ~ Paiement puis facturation pour le contact '.$this->contact,serialize($this),__FILE__.'@'.__LINE__);
         $liste = unserialize($this->articles);
         $montant = 0;
-        foreach($liste as $v) {
+        foreach($liste as $v)
             $montant += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
-        }
         $tva = 1.196;//Todo récup tva
         $this->montant = prepareNombreTraitement($montant*$tva);
         $sql = new factureModel();
         $this->reference = "Fact".($sql->getLastId() +1);
-        $rs1 = $this->doPayement($save);
+        $rs1 = $this->doPayement();
         if($rs1[0]) {
             $rs = $this->creerFacture();
-            if(!$rs[0])
+            if(!$rs[0]) {
+                Logg::loggerError('Payement.payerPuisFacturer() ~ Erreur dans la création de la facture  ',serialize($rs),__FILE__.'@'.__LINE__);
                 return $rs;
+            }
             $rs = $this->genererFacture('paye');
-            if(!$rs[0])
+            if(!$rs[0]) {
+                Logg::loggerError('Payement.payerPuisFacturer() ~ Erreur dans la generation de la facture  ',serialize($rs),__FILE__.'@'.__LINE__);
                 return array_merge($rs, array('2'=>true));
-            else
-                $sql->update(array('status_fact' => '6'), $this->facture);
+            }
+            else $sql->update(array('status_fact' => '6'), $this->facture);
         }
+        else Logg::loggerError('Payement.payerPuisFacturer() ~ Erreur dans le paiement  ',serialize($rs1),__FILE__.'@'.__LINE__);
         $this->getFactureDatas();
         if(!is_bool($rs[2]))
             $rs[2] = false;
