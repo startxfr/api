@@ -61,7 +61,7 @@
         </group>
 	<group name="zunoWebService" modifRight="0" title="Configuration de prospec">
 		<value id="instance_code">75_SXA01</value>
-		<value id="managerWebServicePath">http://manager1.zuno.fr/ws/</value>
+		<value id="managerWebServicePath">https://manager1.zuno.fr/ws/</value>
 		<value id="wsdlCacheEnabled">1</value>
 	</group>
         <group name="zunoManagerWebService" modifRight="0" title="Configuration de prospec">

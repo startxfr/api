@@ -6,25 +6,29 @@ TRUNCATE `appel`;
 TRUNCATE `commande`;
 TRUNCATE `commande_produit`;
 TRUNCATE `contact`;
+TRUNCATE `contact_payline`;
 TRUNCATE `devis`;
 TRUNCATE `devis_produit`;
 TRUNCATE `devis_renew`;
 TRUNCATE `entreprise`;
 TRUNCATE `facture`;
+TRUNCATE `facture_fournisseur`;
 TRUNCATE `facture_produit`;
 TRUNCATE `fournisseur`;
+TRUNCATE `historique_payline`;
+TRUNCATE `log`;
+TRUNCATE `message`;
 TRUNCATE `produit`;
 TRUNCATE `produit_fournisseur`;
 TRUNCATE `projet`;
+TRUNCATE `renouvellement`;
+TRUNCATE `send`;
 TRUNCATE `session`;
+TRUNCATE `token`;
+TRUNCATE `transaction`;
 TRUNCATE `user`;
 TRUNCATE `user_droits`;
 TRUNCATE `user_iphoneConfig`;
-TRUNCATE `facture_fournisseur`;
-TRUNCATE `message`;
-TRUNCATE `renouvellement`;
-TRUNCATE `token`;
-TRUNCATE `send`;
 
 
 

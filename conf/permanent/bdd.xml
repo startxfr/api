@@ -10,28 +10,28 @@
 	<!-- Only First DBPool is required and used as default Database		-->
 	<!-- This Database should contain required table for your framework	-->
 	<!-- Additional pool can be used regarding plugin configuration file	-->
-	<group name="DBPool_1" modifRight="0" title="Premier POOL de connexion">
-		<value id="type">mysql</value>
-		<value id="serveur">127.0.0.1</value>
-		<value id="login">zunoSxaProd</value>
-		<value id="pass">zunoSxaProd</value>
-		<value id="base">PROD_sxa</value>
-		<value id="persistant">TRUE</value>
-	</group>
-	<group name="DBPool_2" modifRight="0" title="second POOL de connexion">
-		<value id="type">mysql</value>
-		<value id="serveur">127.0.0.1</value>
-		<value id="login">zunoSxaProd</value>
-		<value id="pass">zunoSxaProd</value>
-		<value id="base">zuno_sxaOld</value>
-		<value id="persistant">TRUE</value>
-	</group>
-	<group name="DBPool_10" modifRight="0" title="POOL de connexion de reference">
-	    <value id="type">mysql</value>
-	    <value id="serveur">localhost</value>
-	    <value id="login">zunoref</value>
-	    <value id="pass">zunoref</value>
-	    <value id="base">zuno_ref</value>
-	    <value id="persistant">FALSE</value>
-	</group>
+    <group name="DBPool_1" modifRight="0" title="Premier POOL de connexion">
+	<value id="type">mysql</value>
+	<value id="serveur">127.0.0.1</value>
+	<value id="login">zunoSxaProd</value>
+	<value id="pass">zunoSxaProd</value>
+	<value id="base">PROD_sxa</value>
+	<value id="persistant">TRUE</value>
+    </group>
+    <group name="DBPool_2" modifRight="0" title="second POOL de connexion">
+	<value id="type">mysql</value>
+	<value id="serveur">127.0.0.1</value>
+	<value id="login">zunoSxaProd</value>
+	<value id="pass">zunoSxaProd</value>
+	<value id="base">zuno_sxaOld</value>
+	<value id="persistant">TRUE</value>
+    </group>
+    <group name="DBPool_10" modifRight="0" title="POOL de connexion de reference">
+	<value id="type">mysql</value>
+	<value id="serveur">localhost</value>
+	<value id="login">zunoref</value>
+	<value id="pass">zunoref</value>
+	<value id="base">zuno_ref</value>
+	<value id="persistant">FALSE</value>
+    </group>
 </configuration>
