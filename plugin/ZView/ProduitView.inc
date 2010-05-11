@@ -47,6 +47,7 @@ class ProduitViewOriginal extends generalView {
 	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'var REM = new Array();';
+        $this->script .= "\n".'function synchToSB(){zuno.ajax.get.json(\'../ajaxRef.php\', \'action=synchToSB\', function(xhr){var json = xhr.responseText.evalJSON(); if (json.good == \'true\') {alert(json.message);} else{alert(json.message);} } );}';
 	$this->script .= '</script>';
     }
 
@@ -376,6 +377,7 @@ class ProduitViewOriginal extends generalView {
 	else
 	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProduitResultPage",$suffixeLink);
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
+        $bouton .= '<a name="synchroProduit" onclick="synchToSB();"><img alt="produit" src="../img/prospec/produit.png"/> Synchroniser les produits sur Superbase</a>';
 
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeProduit",'');
     }

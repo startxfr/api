@@ -37,7 +37,20 @@ class ProduitView extends ProduitViewOriginal {
 // Remplacement par surcharge de la classe produitModel
 class produitModel extends produitModelOriginal {
 
+    
 
+    /**
+     * Méthode qui récupère tous les produits de la famille ZUNO
+     * @param string $nom Le nom de la famille ZUNO
+     * @return array Les produits
+     */
+    public function getAllZunoProduits($nom = "ZUNO") {
+        if($nom != "")
+            $this->makeRequeteFree("SELECT * FROM produit LEFT JOIN ref_prodfamille ON id_prodfam = famille_prod WHERE nom_prodfam = '$nom'");
+        else
+            $this->makeRequeteFree("SELECT * FROM produit");
+        return $this->process2();
+    }
 
     /**
      * Méthode qui récupère les périodes de renouvellement de la base

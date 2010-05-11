@@ -49,7 +49,7 @@ if($PC->rcvP['action'] == 'searchProduit') {
     if($PC->rcvP['pxmax_prod'] != '')
         $data['pxmax_prod'] = $PC->rcvP['pxmax_prod'];
     // Ajout d'un hook pour SXA
-    sxaFilterVar4SearchProduit(&$PC->rcvP,&$data);
+    sxaFilterVar4SearchProduit($PC->rcvP,$data);
     if($PC->rcvP['ordre_prod'] != '')
         $ordre = 'ORDER BY '.$PC->rcvP['ordre_prod'];
     if($PC->rcvP['limit'] != '')

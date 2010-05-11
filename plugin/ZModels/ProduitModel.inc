@@ -557,10 +557,6 @@ class produitModelOriginal extends GeneralModel {
 	}
     }
 
-
-
-
-
     /**
      * Create portlet for calling list
      * @return Next affaire ID according to last inserted Affaire

@@ -25,7 +25,7 @@ if(array_key_exists('action', $PC->rcvG)) {
     //Affichage des villes par code postal
     if($PC->rcvG['action'] == 'villeForCp') {
         $sql = new Bdd($GLOBALS['referenceBase']['dbPool']);
-	if(array_key_exists('cp', $PC->rcvG)) {
+        if(array_key_exists('cp', $PC->rcvG)) {
             $sql->makeRequeteFree("SELECT Ville from ".$GLOBALS['referenceBase']['tableCP']." where CP = '".$PC->rcvG['cp']."' ");
             $resultat = $sql->process2();
             if($resultat[0] and is_array($resultat[1]))
@@ -225,6 +225,29 @@ if(array_key_exists('action', $PC->rcvG)) {
             exit;
         }
     }
+    elseif($PC->rcvG['action'] == 'synchToSB') {
+        loadPlugin('ZA.Wsdl');
+        $client = new zunoWsdlClient('tools', $GLOBALS['zunoManagerWebService']['superBaseWebServicePath']);
+        $client->setParam('manager_name', $GLOBALS['zunoManagerWebService']['manager_name']);
+        $client->setParam('manager_key', $GLOBALS['zunoManagerWebService']['manager_key']);
+        $client->setParam('all',false);
+        if($client->call('updateProduit')) {
+            $rs = unserialize($client->reponse);
+            if($rs['good']) {
+                $good = 'true';
+            }
+            else {
+                $good = 'false';
+                $mess = $rs[1];
+            }
+        }
+        else {
+            $good = 'false';
+            $mess = $client->message;
+        }
+        echo json_encode(array('good' => $good, "message" => $mess));
+        exit;
+    }
     elseif($PC->rcvG['action'] == 'listeMail') {
 
         if($PC->rcvP['value'] == '**')
@@ -234,9 +257,9 @@ if(array_key_exists('action', $PC->rcvG)) {
         $sql->makeRequeteFree("Select mail_cont from contact where (mail_cont LIKE '".$search."%' or nom_cont LIKE '".$search."%') and mail_cont is not null group by mail_cont order by mail_cont limit 0,10");
         $result = $sql->process2();
         if($result[0]) {
-            foreach($result[1] as $v){
+            foreach($result[1] as $v) {
                 if($v['mail_cont'] != "")
-                $out .='<li title="'.$v['mail_cont'].'">'.$v['mail_cont'].'</li>';
+                    $out .='<li title="'.$v['mail_cont'].'">'.$v['mail_cont'].'</li>';
             }
         }
     }
