@@ -76,15 +76,15 @@ class PageContextData {
 	$DBconnection = new Bdd();
 	if(($uriref == 'page.php')or($uriref == 'popup.php')or($uriref == 'test.php')) {
 	    $searchvar['id_pg'] = $_GET['id'];
-	    $DBconnection->makeRequeteAuto('page',$searchvar);
+	    $sql = $DBconnection->makeRequeteAuto('ref_page',$searchvar);
 	    $tmpresult = $DBconnection->process();
 	    if($tmpresult[0]['id_pg'] == '') {
 		$lid = "NotFound";
-		Logg::loggerError('PageContextData::PageGetID() ~ Aucun identifiant de page n\'as pu être trouvé','',__FILE__.'@'.__LINE__);
+		Logg::loggerError('PageContextData::PageGetID() ~ Aucun identifiant de page n\'as pu être trouvé',$sql,__FILE__.'@'.__LINE__);
 	    }
 	    else {
 		$newstat = $tmpresult[0]['stat_pg']+1;
-		$DBconnection->makeRequeteFree("UPDATE page SET stat_pg = ".$newstat." WHERE id_pg = '".$tmpresult[0]['id_pg']."';");
+		$DBconnection->makeRequeteFree("UPDATE ref_page SET stat_pg = ".$newstat." WHERE id_pg = '".$tmpresult[0]['id_pg']."';");
 		$DBconnection->process();
 		$this->SQLOutputPage = $tmpresult[0];
 		$lid = $_GET['id'];
@@ -93,17 +93,17 @@ class PageContextData {
 	else {
 	    $var['page_pg'] 	= $uriref1;
 	    $var['channel_pg']	= $this->channel;
-	    $DBconnection->makeRequeteAuto('page',$var);
+	    $DBconnection->makeRequeteAuto('ref_page',$var);
 	    $resultat = $DBconnection->process();
 	    //Si pas de result à partir du REQUEST_URI, on test avec SCRIPT_NAME
 	    if(count($resultat) == 0) {
 		$var['page_pg'] 	= $uriref;
 		$var['channel_pg'] 	= $this->channel;
-		$DBconnection->makeRequeteAuto('page',$var);
+		$DBconnection->makeRequeteAuto('ref_page',$var);
 		$resultat1 = $DBconnection->process();
 		if(count($resultat1) > 0) {
 		    $newstat = $resultat1[0]['stat_pg']+1;
-		    $DBconnection->makeRequeteFree("UPDATE page SET stat_pg = ".$newstat." WHERE id_pg = '".$resultat1[0]['id_pg']."';");
+		    $DBconnection->makeRequeteFree("UPDATE ref_page SET stat_pg = ".$newstat." WHERE id_pg = '".$resultat1[0]['id_pg']."';");
 		    $DBconnection->process();
 		    $this->SQLOutputPage = $resultat1[0];
 		    $lid = $resultat1[0]['id_pg'];
@@ -115,7 +115,7 @@ class PageContextData {
 	    }
 	    else {
 		$newstat = $resultat[0]['stat_pg']+1;
-		$DBconnection->makeRequeteFree("UPDATE page SET stat_pg = ".$newstat." WHERE id_pg = '".$resultat[0]['id_pg']."';");
+		$DBconnection->makeRequeteFree("UPDATE ref_page SET stat_pg = ".$newstat." WHERE id_pg = '".$resultat[0]['id_pg']."';");
 		$DBconnection->process();
 		$this->SQLOutputPage = $resultat[0];
 		$lid = $resultat[0]['id_pg'];
@@ -132,7 +132,7 @@ class PageContextData {
 
 	if($this->SQLOutputPage == '') {
 	    $dbConnexion = new Bdd();
-	    $dbConnexion->makeRequeteSelect('page', 'id_pg', $this->id);
+	    $dbConnexion->makeRequeteSelect('ref_page', 'id_pg', $this->id);
 	    $result = $dbConnexion->process();
 	    $this->SQLOutputPage = $result[0];
 	}

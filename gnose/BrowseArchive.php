@@ -73,7 +73,7 @@ elseif($_GET['action'] == 'suppF')
 elseif($_GET['action'] == 'modifD')
 {
 	$sortie = '<div class="titre">Renomer</div>';
-	$sortie .= '<form method="POST" action="masuperpage.php?action=doModifD&path='.$_GET['path'].'">';
+	$sortie .= '<form method="POST" action="BrowseArchive.php?action=doModifD&path='.$_GET['path'].'">';
 	$sortie .= 'Nouveau nom : <input type="text" name="nom" />';
 	$sortie .= '<input type="submit" value="Valider" />';
 	$sortie .= '</form>';
@@ -88,7 +88,7 @@ elseif($_GET['action'] == 'copierD')
 {
 	$temp = explode('/', $_GET['path']);
 	$sortie = '<div class="titre">Copier</div>';
-	$sortie .= '<form method="POST" action="masuperpage.php?action=doCopierD&path='.$_GET['path'].'">';
+	$sortie .= '<form method="POST" action="BrowseArchive.php?action=doCopierD&path='.$_GET['path'].'">';
 	$sortie .= '<div>Nom du nouveau dossier : <input type="text" name="nom" /><div>';
 	$sortie .= 'Dans quel dossier : ';
 	$sortie .= '<input type="submit" value="Valider" />';

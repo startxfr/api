@@ -28,18 +28,18 @@ $PC->GetVarContext();
 +------------------------------------------------------------------------*/
 if ($PC->rcvP['act'] != '')
 {
-	if ($PC->rcvP['act'] == 'page')
+	if ($PC->rcvP['act'] == 'ref_page')
 	{
 		$in['stat_pg']		= 0;
 		$in['stat_date_pg']	= DateTimestamp2Univ('');
 		$tmpreq 		= new Bdd();
-		$tmpreq->MakeRequeteUpdate('page','id_pg',$id,$in);
+		$tmpreq->MakeRequeteUpdate('ref_page','id_pg',$id,$in);
 		$tmpreq->process();
 	}
 	elseif ($PC->rcvP['act'] == 'reset')
 	{
 		$tmpreq 		= new Bdd();
-		$tmpreq->MakeRequeteFree("UPDATE `page` SET `stat_pg` = NULL, `stat_date_pg` = '".DateTimestamp2Univ('')."' WHERE channel_pg = '".$PC->rcvP['channel']."'");
+		$tmpreq->MakeRequeteFree("UPDATE `ref_page` SET `stat_pg` = NULL, `stat_date_pg` = '".DateTimestamp2Univ('')."' WHERE channel_pg = '".$PC->rcvP['channel']."'");
 		$tmpreq->process();
 	}
 }

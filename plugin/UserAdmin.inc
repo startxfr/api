@@ -75,7 +75,7 @@ class UserAdminPortlet {
 	    $tmp['selectciv']	= HtmlForm::addSelectCiv('civ', $data['civ']);
 	    $tmp['selectlang']	= HtmlForm::addSelectLang('lang', $data['lang'] );
 	    $bddtmp			= new Bdd();
-	    $bddtmp->makeRequeteAuto('droit');
+	    $bddtmp->makeRequeteAuto('ref_droit');
 	    $listeDroit		= $bddtmp->process();
 	    $tmp['selectdroit']	= '<select name="droit"><option value ="5"> Choisissez un droit </option>';
 	    foreach ($listeDroit as $key => $val)
@@ -106,7 +106,7 @@ class UserAdminPortlet {
 	    $tmp['selectlang'] = HtmlForm::addSelectLang('lang', $data['lang'] );
 
 	    $bddtmp = new Bdd();
-	    $bddtmp->makeRequeteAuto('droit');
+	    $bddtmp->makeRequeteAuto('ref_droit');
 	    $listeDroit = $bddtmp->process();
 	    $tmp['selectdroit'] = '<select name="droit"><option value ="5"> Choisissez un droit </option>';
 	    foreach ($listeDroit as $key => $val) {
@@ -159,7 +159,7 @@ class UserAdminPortlet {
 		$order = $command.' droit = id_dt ORDER BY '.$this->orderField." ".$this->orderDirection.', nom ASC';
 	    else  $order = $command.' droit = id_dt';
 
-	    $tables = array("user","droit");
+	    $tables = array("user","ref_droit");
 	    $bddtmp->makeRequeteAuto($tables, $etat, $order);
 	    $res = $bddtmp->process();
 
@@ -189,7 +189,7 @@ class UserAdminPortlet {
 	}
 	elseif($type == 'MANAGEFORM') {
 	    $bddtmp = new Bdd();
-	    $bddtmp->makeRequeteAuto('droit');
+	    $bddtmp->makeRequeteAuto('ref_droit');
 	    $listeDroit = $bddtmp->process();
 	    $tmp['selectdroit'] = '<select name="droit"><option value =""> Choisissez un droit </option>';
 	    foreach ($listeDroit as $key => $val) {

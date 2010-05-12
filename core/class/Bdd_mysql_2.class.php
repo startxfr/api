@@ -224,7 +224,7 @@ class Bdd_mysql_2 {
      */
     protected function AnalyseTableStructure($table,$type = "total",$detail = "") {
 	if($table == "")
-	    $table[]   = "page";
+	    $table[]   = "ref_page";
 	if(!is_array($table)) {
 	    $tmp = $table;
 	    unset($table);

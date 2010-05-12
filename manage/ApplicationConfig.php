@@ -39,7 +39,7 @@ elseif ($PC->rcvP['action'] == 'SearchReplace')
 {
 
 	$dbConnexion = new Bdd();
-	$liste = $dbConnexion->AnalyseTableStructure('page');
+	$liste = $dbConnexion->AnalyseTableStructure('ref_page');
 	$exclude = array( 'id_pg','owner_pg','droit_pg','modif_date_pg','modif_user_pg',
 			'create_date_pg','create_user_pg','img_pg','img_menu_pg','page_pg',
 			'channel_pg','parent_pg','order_pg','menuon_pg','sousmenu_pg',
@@ -53,7 +53,7 @@ elseif ($PC->rcvP['action'] == 'SearchReplace')
 	}
 	$SQLAdd   = " AND (".substr($SQLAdd, 0, -3).")";
 	$varsql['channel_pg'] = $PC->rcvP['channel'];
-	$dbConnexion->makeRequeteAuto('page',$varsql,$SQLAdd.' ORDER BY order_pg, nom_pg ASC');
+	$dbConnexion->makeRequeteAuto('ref_page',$varsql,$SQLAdd.' ORDER BY order_pg, nom_pg ASC');
 	$HResult = $dbConnexion->process();
 	if(count($HResult) > 0)
 	{
@@ -72,7 +72,7 @@ elseif ($PC->rcvP['action'] == 'SearchReplace')
 			}
 			if ($activateUpdate == 'ok')
 			{
-				$dbConnexion->makeRequeteUpdate('page','id_pg',$ligne['id_pg'],$listeUpdate);
+				$dbConnexion->makeRequeteUpdate('ref_page','id_pg',$ligne['id_pg'],$listeUpdate);
 				$dbConnexion->process();
 				unset($activateUpdate);
 				unset($listeUpdate);
@@ -90,7 +90,7 @@ elseif ($PC->rcvP['action'] == 'CreateChannel')
 {
 	//Création du channel en base de donnée
 	$dbConnexion = new Bdd();
-	$liste = $dbConnexion->AnalyseTableStructure('page');
+	$liste = $dbConnexion->AnalyseTableStructure('ref_page');
 	$typeListe = explode("','",substr($liste['channel_pg']['Type'],6,-2));
 	if(!in_array($PC->rcvP['channel'],$typeListe))
 	{
@@ -100,7 +100,7 @@ elseif ($PC->rcvP['action'] == 'CreateChannel')
 			$stringEnum .= "'".$chanlist."',";
 		}
 		$stringEnum = substr($stringEnum,0,-1);
-		$SQL = "ALTER TABLE `page` CHANGE `channel_pg` `channel_pg` ENUM(".$stringEnum.") NOT NULL DEFAULT 'normal';";
+		$SQL = "ALTER TABLE `ref_page` CHANGE `channel_pg` `channel_pg` ENUM(".$stringEnum.") NOT NULL DEFAULT 'normal';";
 		$dbConnexion->makeRequeteFree($SQL);
 		$dbConnexion->process();
 	}

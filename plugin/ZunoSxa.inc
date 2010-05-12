@@ -57,7 +57,7 @@ class produitModel extends produitModelOriginal {
      * @return array Les périodes de renouvellement
      */
     public function getRedhatArchi() {
-        $this->makeRequeteFree("SELECT * from redhat_archi order by id_arch ASC ");
+        $this->makeRequeteFree("SELECT * from ref_redhat_archi order by id_arch ASC ");
         $rs = $this->process2();
         if($rs[0]) {
             $rs=$rs[1];
@@ -72,7 +72,7 @@ class produitModel extends produitModelOriginal {
      * @return array Les périodes de renouvellement
      */
     public function getRedhatContrat() {
-        $this->makeRequeteFree("SELECT * from redhat_contrat order by id_cont ASC ");
+        $this->makeRequeteFree("SELECT * from ref_redhat_contrat order by id_cont ASC ");
         $rs = $this->process2();
         if($rs[0]) {
             $rs=$rs[1];

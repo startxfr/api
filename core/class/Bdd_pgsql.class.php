@@ -231,7 +231,7 @@ class Bdd_pgsql {
      */
     function AnalyseTableStructure($table,$type = "total") {
 	if($table == "") {
-	    $table[]   = "page";
+	    $table[]   = "ref_page";
 	}
 	if(!is_array($table)) {
 	    $tmp = $table;

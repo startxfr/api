@@ -3,7 +3,7 @@
 #
 #   name :       SendFax.inc
 #   desc :       Prospection list for sxprospec
-#   categorie :  prospec page
+#   categorie :  plugin module
 #   ID :  	 $Id$
 #
 #   copyright:   See licence.txt for this script licence

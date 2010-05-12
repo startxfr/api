@@ -105,10 +105,10 @@ class SessionUser {
     function GetDBUser($user) {
 	$toto = new Bdd();
 	if($toto->baseType == 'pgsql') {
-	    $query = "SELECT * FROM public.user u, droit d WHERE u.droit = d.id_dt AND u.login = '".$user."'";
+	    $query = "SELECT * FROM public.user u, ref_droit d WHERE u.droit = d.id_dt AND u.login = '".$user."'";
 	}
 	else {
-	    $query = "SELECT * FROM user, droit WHERE droit = id_dt AND login = '".$user."' ";
+	    $query = "SELECT * FROM user, ref_droit WHERE droit = id_dt AND login = '".$user."' ";
 	}
 	$toto->makeRequeteFree($query);
 	$titi = $toto->process();

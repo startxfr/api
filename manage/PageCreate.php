@@ -46,7 +46,7 @@ if ($PC->rcvP['action'] != '')
 			$PC->rcvP['id_pg'] = FileCleanFileName($PC->rcvP['id_pg']);
 			$in['id_pg']= $PC->rcvP['id_pg'];
 			$dbConnexion = new Bdd();
-			$dbConnexion->makeRequeteAuto('page',$in);
+			$dbConnexion->makeRequeteAuto('ref_page',$in);
 			$testID = $dbConnexion->process();
 			if($testID[0]['id_pg'] != '')
 			{
@@ -59,7 +59,7 @@ if ($PC->rcvP['action'] != '')
 			$PC->rcvP['page_pg'] = FileCleanFileName($PC->rcvP['page_pg']);
 			$in['page_pg']= $PC->rcvP['page_pg'];
 			$dbConnexion = new Bdd();
-			$dbConnexion->makeRequeteAuto('page',$in);
+			$dbConnexion->makeRequeteAuto('ref_page',$in);
 			$testPage = $dbConnexion->process();
 			if($testPage[0]['id_pg'] != '')
 			{

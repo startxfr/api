@@ -29,9 +29,9 @@ if($PC->rcvG['type'] == '')
 	$PC->rcvG['type'] = 'normal';
 }
 
-$tmpreq->MakeRequeteFree("SELECT * FROM `page` WHERE channel_pg = '".$PC->rcvG['type']."' ORDER BY stat_pg DESC");
+$tmpreq->MakeRequeteFree("SELECT * FROM `ref_page` WHERE channel_pg = '".$PC->rcvG['type']."' ORDER BY stat_pg DESC");
 $result  = $tmpreq->process();
-$tmpreq->MakeRequeteFree("SELECT SUM(stat_pg) AS SUM FROM `page` WHERE channel_pg = '".$PC->rcvG['type']."'");
+$tmpreq->MakeRequeteFree("SELECT SUM(stat_pg) AS SUM FROM `ref_page` WHERE channel_pg = '".$PC->rcvG['type']."'");
 $resultc  = $tmpreq->process();
 
 	

@@ -31,7 +31,7 @@ class PageXMLCache {
 
     /** Constructor. */
     function __construct($lang = '') {
-	$this->table 		= 'page';
+	$this->table 		= 'ref_page';
 	$this->tableSuffix 	= '_pg';
 	$this->translatable 	= array('nom','desc','header');
 	$this->datable 		= array('modif_date'=>'shortdetail','create_date'=>'simple','stat_date'=>'simple');
@@ -71,7 +71,7 @@ class PageXMLCache {
 	$newCacheContent = new Xml();
 	$resultat = array();
 	if ($this->cacheName != '') {
-	    $newCacheContent->getXmlFile($GLOBALS['REP']['cache_template'].$this->table.'.detail.xml');
+	    $newCacheContent->getXmlFile($GLOBALS['REP']['cache_template'].'page.detail.xml');
 	    $dbConnexion->makeRequeteSelect($this->table, 'id'.$this->tableSuffix, $this->docID);
 	    $result = $dbConnexion->process();
 	    $lapage = $result[0];
@@ -127,10 +127,10 @@ class PageXMLCache {
 	    // Get info for parent page
 	    if($lapage['parent'.$this->tableSuffix] != '') {
 		$CacheParent = new Xml();
-		$CacheParent->getXmlFile($GLOBALS['REP']['cache_template'].$this->table.'.detail.child.xml');
+		$CacheParent->getXmlFile($GLOBALS['REP']['cache_template'].'page.detail.child.xml');
 
 		$var['id'.$this->tableSuffix]	= $lapage['parent'.$this->tableSuffix];
-		$dbConnexion->makeRequeteAuto('page',$var);
+		$dbConnexion->makeRequeteAuto('ref_page',$var);
 		$resultparenttmp = $dbConnexion->process();
 		$resultparent = $resultparenttmp[0];
 		foreach($resultparent as $idlp => $vallp) {
@@ -165,11 +165,11 @@ class PageXMLCache {
 
 	    // Get sub-page data
 	    $var1['parent'.$this->tableSuffix] = $lapage['id'.$this->tableSuffix];
-	    $dbConnexion->makeRequeteAuto('page',$var1,' ORDER BY order_pg, nom_pg ASC');
+	    $dbConnexion->makeRequeteAuto('ref_page',$var1,' ORDER BY order_pg, nom_pg ASC');
 	    $resultatchilddb = $dbConnexion->process();
 	    if(count($resultatchilddb) > 0) {
 		$CacheChild = new Xml();
-		$CacheChild->getXmlFile($GLOBALS['REP']['cache_template'].$this->table.'.detail.child.xml');
+		$CacheChild->getXmlFile($GLOBALS['REP']['cache_template'].'page.detail.child.xml');
 
 		foreach($resultatchilddb as $kk => $resultatchild1) {
 		    foreach($resultatchild1 as $idlp => $vallp) {
@@ -196,7 +196,7 @@ class PageXMLCache {
 		    $CacheChild->preProcess($resultatchild);
 		    $lapage['enfant'] .= $CacheChild->Process();
 		    $CacheChild->cleanXml();
-		    $CacheChild->getXmlFile($GLOBALS['REP']['cache_template'].$this->table.'.detail.child.xml');
+		    $CacheChild->getXmlFile($GLOBALS['REP']['cache_template'].'page.detail.child.xml');
 		}
 	    }
 	    else {

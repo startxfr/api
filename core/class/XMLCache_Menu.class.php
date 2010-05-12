@@ -35,7 +35,7 @@ class XMLCache_Menu {
 
     /** Constructor. */
     function __construct($channel='normal',$lang='') {
-	$this->table 		= 'page';
+	$this->table 		= 'ref_page';
 	$this->channel 		= $channel;
 	$this->availableChannel = array('normal','prospec','draco', 'produit','pegase','gnose','facturier','admin','iPhone');
 	$this->tableSuffix 	= '_pg';

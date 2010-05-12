@@ -164,9 +164,9 @@ class PageAdminPortlet {
 		$cmb4Channel .= $val."<input type=\"radio\" name=\"channel_pg\" value=\"".$key."\"  onFocus=\"".$cmbFocus."\"".$chk."/> -";
 		unset($cmbFocus);
 	    }
-	    //on prepare le combo de droit
+	    //on prepare le combo de ref_droit
 	    $dbConnexion = new Bdd();
-	    $dbConnexion->makeRequeteAuto('droit');
+	    $dbConnexion->makeRequeteAuto('ref_droit');
 	    $testDroit = $dbConnexion->process();
 	    foreach($testDroit as $key => $val) {
 		$cmb4droit .= "<option id=\"droit_".$val['id_dt']."\" value=\"".$val['id_dt']."\">".htmlspecialchars($val['nom_dt'],ENT_QUOTES)."</option>";
@@ -252,9 +252,9 @@ class PageAdminPortlet {
 		$cmb4Channel .= $val."<input type=\"radio\" name=\"channel_pg\" value=\"".$key."\"  onFocus=\"".$cmbFocus."\"".$chk."/> -";
 		unset($cmbFocus);
 	    }
-	    //on prepare le combo de droit
+	    //on prepare le combo de ref_droit
 	    $dbConnexion = new Bdd();
-	    $dbConnexion->makeRequeteAuto('droit');
+	    $dbConnexion->makeRequeteAuto('ref_droit');
 	    $testDroit = $dbConnexion->process();
 
 	    $menuSelect = trim(str_replace("<?xml version='".$GLOBALS['CACHEXML']['version']."' encoding='".$GLOBALS['CACHEXML']['encoding']."'?>", "",$menuSelect));
@@ -356,7 +356,7 @@ class PageAdminPortlet {
 	    $combobj->xslFile("admin/PageAdmin.GetSelected.xsl");
 	    $combobj->xmlFile($this->xml);
 	    $selected = trim($combobj->Process());
-	    //on prï¿½pare les combo de page
+	    //on prépare les combo de page
 	    //on initilialise le cache de menu et la transfo
 	    $cacheMenu = new XMLCache_Menu('normal',$this->Lang);
 	    //on prepare les variable pour ce fichier XSL
@@ -374,9 +374,9 @@ class PageAdminPortlet {
 	    $combobj->xmlFile($cacheMenu->Process());
 	    //on transforme et on enregistre pour le channel admin
 	    $cmb4admin = stripslashs($combobj->Process());
-	    //on prepare le combo de droit
+	    //on prepare le combo de ref_droit
 	    $dbConnexion = new Bdd();
-	    $dbConnexion->makeRequeteAuto('droit');
+	    $dbConnexion->makeRequeteAuto('ref_droit');
 	    $testDroit = $dbConnexion->process();
 	    foreach($testDroit as $key => $val) {
 		$cmb4droit .= "<option id=\"droit_".$val['id_dt']."\" value=\"".$val['id_dt']."\">".$val['nom_dt']."</option>";
@@ -491,7 +491,7 @@ class PageAdminToolkit {
 	if (isset($data['parent_pg'])) {
 	    $in['parent_pg'] 	= $data['parent_pg'];
 	}
-	//Changement de variables si utilisï¿½ avec une autre langue
+	//Changement de variables si utilisé avec une autre langue
 	if ($uselang and ($_SESSION["language"] != $GLOBALS['LANGUE']['default'])) {
 	    $extlang = "_".$_SESSION["language"];
 	    $lang = $_SESSION["language"];
@@ -522,9 +522,9 @@ class PageAdminToolkit {
 	    if ($in['channel_pg'] == "") {
 		$in['channel_pg'] 	= "normal";
 	    }
-	    $dbConnexion->makeRequeteInsert('page',$in);
+	    $dbConnexion->makeRequeteInsert('ref_page',$in);
 	}
-	else $dbConnexion->makeRequeteUpdate('page','id_pg',$data['id_pg'],$in);
+	else $dbConnexion->makeRequeteUpdate('ref_page','id_pg',$data['id_pg'],$in);
 	$dbConnexion->process();
 	if ($in['channel_pg'] == "")
 	    $in['channel_pg'] 	= "normal";
@@ -596,7 +596,7 @@ class PageAdminToolkit {
 	if($id != '') {
 	    $in['id_pg']= $id;
 	    $dbConnexion = new Bdd();
-	    $dbConnexion->makeRequeteDelete('page',$in);
+	    $dbConnexion->makeRequeteDelete('ref_page',$in);
 	    $dbConnexion->process();
 	    //on flush le cache de ce fichier
 	    $cache = new PageXMLCache();
@@ -623,7 +623,7 @@ class PageAdminToolkit {
 	//on prepare les vars
 	$in['id_pg']	= $pageid;
 	$tmpreq = new Bdd($GLOBALS['CHANNEL_'.$this->Channel]['SessDBPool']);
-	$tmpreq->MakeRequeteDelete('page',$in);
+	$tmpreq->MakeRequeteDelete('ref_page',$in);
 	$tmpreq->process();
 
 	$docliste = PageDBImportDocument($pageid);
@@ -687,9 +687,9 @@ class PageAdminToolkit {
 */
 function Stat4Channel($channel = "normal",$type = "") {
     $tmpreq = new Bdd();
-    $tmpreq->MakeRequeteFree("SELECT * FROM `page` WHERE channel_pg = '".$channel."' ORDER BY stat_pg DESC");
+    $tmpreq->MakeRequeteFree("SELECT * FROM `ref_page` WHERE channel_pg = '".$channel."' ORDER BY stat_pg DESC");
     $result  = $tmpreq->process();
-    $tmpreq->MakeRequeteFree("SELECT SUM(stat_pg) AS SUM FROM `page` WHERE channel_pg = '".$channel."'");
+    $tmpreq->MakeRequeteFree("SELECT SUM(stat_pg) AS SUM FROM `ref_page` WHERE channel_pg = '".$channel."'");
     $resultc  = $tmpreq->process();
 
     if($resultc[0]['SUM'] == 0) {
@@ -715,7 +715,7 @@ function Stat4Channel($channel = "normal",$type = "") {
 	$intt['ratio']	= round((($page['stat_pg']/$tot1)*100),2);
 	$intt['date']	= DateUniv2Human($page['stat_date_pg'],'simple');
 	$cache['id']   =$page["id_pg"];
-	$cache['act']  ='page';
+	$cache['act']  ='ref_page';
 	$intt['action']	= buttonTag('StatRAZ.php',$cache,'','RAZ');
 	$liste_row    .= templating('page/StatView.Row',$intt);
     }
@@ -729,7 +729,7 @@ function Stat4Channel($channel = "normal",$type = "") {
     $outc = templating('page/StatView',$fin1);
     $img = "<center><img src=\"Img.PageVisit.php?type=".$channel."\"/><br/></center>";
 
-    // On prï¿½pare la mise en boite
+    // On prépare la mise en boite
     $titre 	= 'Graphique des statistiques pour le channel '.$channel;
     $titre1 = 'Tableau des statistiques pour le channel '.$channel;
     $titreC	= 'Statistiques pour le channel '.$channel;

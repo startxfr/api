@@ -55,7 +55,7 @@ CREATE TABLE `actualite` (
   KEY `user` (`user`),
   KEY `type` (`type`),
   KEY `date_2` (`date`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,21 +339,6 @@ CREATE TABLE `devis_renew` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `droit`
---
-
-DROP TABLE IF EXISTS `droit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `droit` (
-  `id_dt` tinyint(2) unsigned NOT NULL AUTO_INCREMENT,
-  `nom_dt` varchar(64) NOT NULL DEFAULT '',
-  `desc_dt` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_dt`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `entreprise`
 --
 
@@ -559,7 +544,7 @@ CREATE TABLE `log` (
   `channel_log` varchar(16) DEFAULT NULL,
   `trace_log` text,
   PRIMARY KEY (`id_log`)
-) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -592,51 +577,6 @@ CREATE TABLE `module` (
   `nom_mod` varchar(16) NOT NULL,
   `acces_mod` enum('oui','non') NOT NULL DEFAULT 'non'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `page`
---
-
-DROP TABLE IF EXISTS `page`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `page` (
-  `id_pg` varchar(64) NOT NULL DEFAULT '',
-  `owner_pg` varchar(64) NOT NULL DEFAULT 'cl',
-  `droit_pg` varchar(32) DEFAULT NULL,
-  `modif_date_pg` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `modif_user_pg` varchar(32) DEFAULT 'cl',
-  `create_date_pg` timestamp NULL DEFAULT NULL,
-  `create_user_pg` varchar(64) NOT NULL DEFAULT 'cl',
-  `nom_pg` varchar(128) NOT NULL DEFAULT 'new page',
-  `nom_pg_en` varchar(128) DEFAULT NULL,
-  `nom_pg_de` varchar(128) DEFAULT NULL,
-  `img_pg` varchar(64) DEFAULT NULL,
-  `img_menu_pg` varchar(64) DEFAULT NULL,
-  `desc_pg` varchar(255) DEFAULT NULL,
-  `desc_pg_en` varchar(255) DEFAULT NULL,
-  `desc_pg_de` varchar(255) DEFAULT NULL,
-  `header_pg` varchar(128) DEFAULT NULL,
-  `header_pg_en` varchar(128) DEFAULT NULL,
-  `header_pg_de` varchar(128) DEFAULT NULL,
-  `page_pg` varchar(64) DEFAULT NULL,
-  `channel_pg` enum('normal','admin','gnose','prospec','pegase','draco','facturier','iPhone','produit') NOT NULL DEFAULT 'normal',
-  `parent_pg` varchar(64) DEFAULT NULL,
-  `order_pg` tinyint(2) unsigned DEFAULT '1',
-  `menuon_pg` enum('0','1') NOT NULL DEFAULT '1',
-  `sousmenu_pg` enum('0','1') NOT NULL DEFAULT '0',
-  `frameset_pg` varchar(32) DEFAULT NULL,
-  `style_pg` varchar(32) DEFAULT NULL,
-  `stat_pg` int(4) DEFAULT NULL,
-  `stat_date_pg` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `content_pg` longtext,
-  `content_pg_en` longtext,
-  `content_pg_de` longtext,
-  `actif_pg` enum('-1','0','1','2') NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id_pg`),
-  KEY `owner_pg` (`owner_pg`,`nom_pg`,`page_pg`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='liste des pages disponibles pour l''application';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -717,34 +657,6 @@ CREATE TABLE `projet` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `redhat_archi`
---
-
-DROP TABLE IF EXISTS `redhat_archi`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `redhat_archi` (
-  `id_arch` tinyint(2) unsigned NOT NULL DEFAULT '0',
-  `nom_arch` varchar(32) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id_arch`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type d''architecture materiel pour les produits REDHAT';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `redhat_contrat`
---
-
-DROP TABLE IF EXISTS `redhat_contrat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `redhat_contrat` (
-  `id_cont` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `nom_cont` varchar(32) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id_cont`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type de contrat proposé par REDHAT';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `ref_activite`
 --
 
@@ -790,17 +702,18 @@ CREATE TABLE `ref_departement` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `ref_droit_user`
+-- Table structure for table `ref_droit`
 --
 
-DROP TABLE IF EXISTS `ref_droit_user`;
+DROP TABLE IF EXISTS `ref_droit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ref_droit_user` (
-  `id_du` int(11) NOT NULL,
-  `desc_du` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`id_du`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ref_droit` (
+  `id_dt` tinyint(2) unsigned NOT NULL AUTO_INCREMENT,
+  `nom_dt` varchar(64) NOT NULL DEFAULT '',
+  `desc_dt` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_dt`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -833,6 +746,51 @@ CREATE TABLE `ref_modereglement` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `ref_page`
+--
+
+DROP TABLE IF EXISTS `ref_page`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ref_page` (
+  `id_pg` varchar(64) NOT NULL DEFAULT '',
+  `owner_pg` varchar(64) NOT NULL DEFAULT 'cl',
+  `droit_pg` varchar(32) DEFAULT NULL,
+  `modif_date_pg` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `modif_user_pg` varchar(32) DEFAULT 'cl',
+  `create_date_pg` timestamp NULL DEFAULT NULL,
+  `create_user_pg` varchar(64) NOT NULL DEFAULT 'cl',
+  `nom_pg` varchar(128) NOT NULL DEFAULT 'new page',
+  `nom_pg_en` varchar(128) DEFAULT NULL,
+  `nom_pg_de` varchar(128) DEFAULT NULL,
+  `img_pg` varchar(64) DEFAULT NULL,
+  `img_menu_pg` varchar(64) DEFAULT NULL,
+  `desc_pg` varchar(255) DEFAULT NULL,
+  `desc_pg_en` varchar(255) DEFAULT NULL,
+  `desc_pg_de` varchar(255) DEFAULT NULL,
+  `header_pg` varchar(128) DEFAULT NULL,
+  `header_pg_en` varchar(128) DEFAULT NULL,
+  `header_pg_de` varchar(128) DEFAULT NULL,
+  `page_pg` varchar(64) DEFAULT NULL,
+  `channel_pg` enum('normal','admin','gnose','prospec','pegase','draco','facturier','iPhone','produit') NOT NULL DEFAULT 'normal',
+  `parent_pg` varchar(64) DEFAULT NULL,
+  `order_pg` tinyint(2) unsigned DEFAULT '1',
+  `menuon_pg` enum('0','1') NOT NULL DEFAULT '1',
+  `sousmenu_pg` enum('0','1') NOT NULL DEFAULT '0',
+  `frameset_pg` varchar(32) DEFAULT NULL,
+  `style_pg` varchar(32) DEFAULT NULL,
+  `stat_pg` int(4) DEFAULT NULL,
+  `stat_date_pg` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `content_pg` longtext,
+  `content_pg_en` longtext,
+  `content_pg_de` longtext,
+  `actif_pg` enum('-1','0','1','2') NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_pg`),
+  KEY `owner_pg` (`owner_pg`,`nom_pg`,`page_pg`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='liste des pages disponibles pour l''application';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `ref_pays`
 --
 
@@ -861,6 +819,34 @@ CREATE TABLE `ref_prodfamille` (
   `revente` enum('0','1') NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_prodfam`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='Type de produit';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ref_redhat_archi`
+--
+
+DROP TABLE IF EXISTS `ref_redhat_archi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ref_redhat_archi` (
+  `id_arch` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `nom_arch` varchar(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id_arch`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type d''architecture materiel pour les produits REDHAT';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ref_redhat_contrat`
+--
+
+DROP TABLE IF EXISTS `ref_redhat_contrat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ref_redhat_contrat` (
+  `id_cont` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `nom_cont` varchar(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id_cont`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type de contrat proposé par REDHAT';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1168,4 +1154,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-06 16:48:54
+-- Dump completed on 2010-05-12  1:44:17

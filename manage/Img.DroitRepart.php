@@ -28,7 +28,7 @@ $PC = new PageContextVar();
 +------------------------------------------------------------------------*/
 
 	$tmpreq = new Bdd();
-	$tmpreq->MakeRequeteAuto('droit');
+	$tmpreq->MakeRequeteAuto('ref_droit');
 	$result  = $tmpreq->process();
 	foreach ($result as $key => $droit)
 		{

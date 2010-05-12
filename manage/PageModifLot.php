@@ -41,7 +41,7 @@ if (is_array($PC->rcvP['pageDo']) and  $PC->rcvP['bouton'] != '')
 	$sqladd = "(".substr($sql,0,-2).")";
 
 	$bddtmp = new Bdd("");
-	$bddtmp->makeRequeteFree("SELECT * FROM page WHERE ".$sqladd." ORDER BY nom_pg ASC");
+	$bddtmp->makeRequeteFree("SELECT * FROM ref_page WHERE ".$sqladd." ORDER BY nom_pg ASC");
 	$res = $bddtmp->process();
 
 	// remplissage du tableau

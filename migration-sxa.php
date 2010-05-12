@@ -45,13 +45,13 @@ ini_set("memory_limit","200M");
 $sqlCleanOld = "UPDATE commande SET contact_cmd =  '134814' WHERE id_cmd = '090608-01BC';";
 $bddOld->makeRequeteFree($sqlCleanOld);
 $bddOld->process();
-$bddNew->makeRequeteFree("CREATE TABLE IF NOT EXISTS `redhat_archi` (
+$bddNew->makeRequeteFree("CREATE TABLE IF NOT EXISTS `ref_redhat_archi` (
   `id_arch` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `nom_arch` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_arch`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type d''architecture materiel pour les produits REDHAT';");
 $bddNew->process();
-$bddNew->makeRequeteFree("CREATE TABLE IF NOT EXISTS `redhat_contrat` (
+$bddNew->makeRequeteFree("CREATE TABLE IF NOT EXISTS `ref_redhat_contrat` (
   `id_cont` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `nom_cont` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_cont`)
@@ -68,13 +68,16 @@ $tablesAImporter = array('actualite','affaire','appel','commande','commande_prod
 			 'redhat_contrat','ref_prodfamille','session');
 foreach($tablesAImporter as $table) {
     sleep(3);
+    if($table == 'redhat_archi' or $table == 'redhat_contrat')
+	 $tableNew = 'ref_'.$table;
+    else $tableNew = $table;
     echo "================== table $table $end";
     $bddOld->makeRequeteFree('SELECT * FROM '.$table);
     $list = $bddOld->process();
     if(count($list) > 0) {
 	$count = 0;
 	$bddNew = new Bdd(1);
-	$bddNew->makeRequeteFree("TRUNCATE TABLE $table;");
+	$bddNew->makeRequeteFree("TRUNCATE TABLE $tableNew;");
 	$bddNew->process();
 	foreach($list as $k => $v) {
 	    if($table == 'actualite') {
@@ -134,13 +137,13 @@ foreach($tablesAImporter as $table) {
 	    }
 	    elseif($table == 'ref_fonction') {
 	    }
-	    $q = $bddNew->makeRequeteInsert($table,$v);
+	    $q = $bddNew->makeRequeteInsert($tableNew,$v);
 	    $r = $bddNew->process2();
 	    if($r[0]) $count++;
 	    else { echo "ERREUR sur la requête: $q $end";
 		   echo '===> '.mysql_error().$end; }
 	}
-	echo "================== table $table = $count enregistrements $end";
+	echo "================== table $tableNew = $count enregistrements $end";
 
     }
 }

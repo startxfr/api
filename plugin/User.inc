@@ -26,7 +26,7 @@ class UserToolkit {
 	$orderDirection	= 'ASC';
 
 	$bddtmp	= new Bdd();
-	$table  = array('user','droit');
+	$table  = array('user','ref_droit');
 	$search = array('login'=>$id,'droit'=>'`id_dt');
 	$bddtmp->makeRequeteAuto($table,$search);
 	$usertmp= $bddtmp->process();
