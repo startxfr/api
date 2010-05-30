@@ -5,77 +5,77 @@
 <!-- ID :  	 $Id$	-->
 <!-- copyright:   See licence.txt for this script licence	-->
 <configuration>
-	<group name="zunoClientCoordonnee" modifRight="0" title="Configuration de l'utilisateur et des droits">
-		<value id="nom">STARTX</value>
-		<value id="nom_court">STARTX</value>
-		<value id="adresse">83 rue de Reuilly</value>
-		<value id="adresse2"></value>
-		<value id="cp">75012</value>
-		<value id="ville">PARIS</value>
-		<value id="tel">+33 (0)1 48 25 03 64</value>
-		<value id="fax">+33 (0)1 46 99 89 97</value>
-		<value id="mail">info@startx.fr</value>
-		<value id="url">www.startx.fr</value>
-	</group>
-	<group name="zunoClientStatut" modifRight="0" title="Configuration de l'utilisateur et des droits">
-		<value id="rs">STARTX</value>
-		<value id="statut">SARL</value>
-		<value id="capital">7500</value>
-		<value id="rcs">RCS B Paris 449 970 524 00012</value>
-		<value id="ape">6202A</value>
-		<value id="tva">FR 26 449 970 524</value>
-                <value id="tauxTVA">19.6</value>
-	</group>
-	<group name="zunoClientBanque" modifRight="0" title="Configuration de l'utilisateur et des droits">
-		<value id="titulaire">STARTX</value>
-		<value id="domiciliation">FORTIS Banque (Boulogne)</value>
-		<value id="banque">30488</value>
-		<value id="guichet">000 05</value>
-		<value id="compte">000 205 277 47</value>
-		<value id="cle">90</value>
-		<value id="iban">FR76 3048 8000 0500 0205 2774 790</value>
-		<value id="swift">BPARFRPP</value>
-		<value id="telex">BAPCO 280 150F</value>
-	</group>
-        <group name="zunoPayline" modifRight="0" title="Configuration de Payline">
-            <value id="CONTRACT_NUMBER">1234567</value>
-            <value id="CONTRACT_NUMBER_LIST">1234567</value>
-            <value id="MERCHANT_ID">42991416362969</value>
-            <value id="ACCESS_KEY">Ue3Ayz1z5tL4ERlfqfge</value>
-            <value id="PRODUCTION">FALSE</value>
-            <value id="PAYMENT_CURRENCY">978</value>
-            <value id="ORDER_CURRENCY">978</value>
-            <value id="SECURITY_MODE">SSL</value>
-            <value id="LANGUAGE_CODE">fra</value>
-            <value id="PAYMENT_ACTION">100</value>
-            <value id="PAYMENT_MODE">CPT</value>
-            <value id="CANCEL_URL">http://www.payline.com</value>
-            <value id="NOTIFICATION_URL">http://www.payline.com</value>
-            <value id="RETURN_URL">http://www.payline.com</value>
-            <value id="CUSTOM_PAYMENT_TEMPLATE_URL"></value>
-            <value id="CUSTOM_PAYMENT_PAGE_CODE"></value>
-            <value id="PROXY_HOST">null</value>
-            <value id="PROXY_PORT">null</value>
-            <value id="PROXY_LOGIN"></value>
-            <value id="PROXY_PASSWORD"></value>
-        </group>
-	<group name="zunoWebService" modifRight="0" title="Configuration de prospec">
-		<value id="instance_code">75_SXA01</value>
-		<value id="managerWebServicePath">https://manager1.zuno.fr/ws/</value>
-		<value id="wsdlCacheEnabled">1</value>
-	</group>
-        <group name="zunoManagerWebService" modifRight="0" title="Configuration de prospec">
-		<value id="manager_name">sxa</value>
-		<value id="manager_key">00011bd1c6da921c60cfd5ea110f0844</value>
-		<value id="superBase_token">000189ed278331b20e41758e77fc5582</value>
-		<value id="superBaseWebServicePath">https://superbase.zuno.fr/ws/</value>
-		<value id="webServicePath">https://sxa.startx.fr/ws/</value>
-		<value id="wsdlCacheEnabled">1</value>
-		<value id="wsdlClientHttpAccess">false</value>
-		<value id="wsdlClientHttpAccesstype"></value>
-		<value id="wsdlClientHttpAccessUser"></value>
-		<value id="wsdlClientHttpAccessPass"></value>
-	</group>
+    <group name="zunoClientCoordonnee" modifRight="0" title="Configuration de l'utilisateur et des droits">
+	<value id="nom">STARTX</value>
+	<value id="nom_court">STARTX</value>
+	<value id="adresse">83 rue de Reuilly</value>
+	<value id="adresse2"></value>
+	<value id="cp">75012</value>
+	<value id="ville">PARIS</value>
+	<value id="tel">+33 (0)1 48 25 03 64</value>
+	<value id="fax">+33 (0)1 46 99 89 97</value>
+	<value id="mail">info@startx.fr</value>
+	<value id="url">www.startx.fr</value>
+    </group>
+    <group name="zunoClientStatut" modifRight="0" title="Configuration de l'utilisateur et des droits">
+	<value id="rs">STARTX</value>
+	<value id="statut">SARL</value>
+	<value id="capital">7500</value>
+	<value id="rcs">RCS B Paris 449 970 524 00012</value>
+	<value id="ape">6202A</value>
+	<value id="tva">FR 26 449 970 524</value>
+	<value id="tauxTVA">19.6</value>
+    </group>
+    <group name="zunoClientBanque" modifRight="0" title="Configuration de l'utilisateur et des droits">
+	<value id="titulaire">STARTX</value>
+	<value id="domiciliation">FORTIS Banque (Boulogne)</value>
+	<value id="banque">30488</value>
+	<value id="guichet">000 05</value>
+	<value id="compte">000 205 277 47</value>
+	<value id="cle">90</value>
+	<value id="iban">FR76 3048 8000 0500 0205 2774 790</value>
+	<value id="swift">BPARFRPP</value>
+	<value id="telex">BAPCO 280 150F</value>
+    </group>
+    <group name="zunoPayline" modifRight="0" title="Configuration de Payline">
+	<value id="CONTRACT_NUMBER">1234567</value>
+	<value id="CONTRACT_NUMBER_LIST">1234567</value>
+	<value id="MERCHANT_ID">42991416362969</value>
+	<value id="ACCESS_KEY">Ue3Ayz1z5tL4ERlfqfge</value>
+	<value id="PRODUCTION">FALSE</value>
+	<value id="PAYMENT_CURRENCY">978</value>
+	<value id="ORDER_CURRENCY">978</value>
+	<value id="SECURITY_MODE">SSL</value>
+	<value id="LANGUAGE_CODE">fra</value>
+	<value id="PAYMENT_ACTION">100</value>
+	<value id="PAYMENT_MODE">CPT</value>
+	<value id="CANCEL_URL">http://www.payline.com</value>
+	<value id="NOTIFICATION_URL">http://www.payline.com</value>
+	<value id="RETURN_URL">http://www.payline.com</value>
+	<value id="CUSTOM_PAYMENT_TEMPLATE_URL"></value>
+	<value id="CUSTOM_PAYMENT_PAGE_CODE"></value>
+	<value id="PROXY_HOST">null</value>
+	<value id="PROXY_PORT">null</value>
+	<value id="PROXY_LOGIN"></value>
+	<value id="PROXY_PASSWORD"></value>
+    </group>
+    <group name="zunoWebService" modifRight="0" title="Configuration de prospec">
+	<value id="instance_code">75_SXA01</value>
+	<value id="managerWebServicePath">https://manager1.zuno.fr/ws/</value>
+	<value id="wsdlCacheEnabled">1</value>
+    </group>
+    <group name="zunoManagerWebService" modifRight="0" title="Configuration de prospec">
+	<value id="manager_name">sxa</value>
+	<value id="manager_key">00011bd1c6da921c60cfd5ea110f0844</value>
+	<value id="superBase_token">000189ed278331b20e41758e77fc5582</value>
+	<value id="superBaseWebServicePath">https://superbase.zuno.fr/ws/</value>
+	<value id="webServicePath">https://sxa.startx.fr/ws/</value>
+	<value id="wsdlCacheEnabled">1</value>
+	<value id="wsdlClientHttpAccess">false</value>
+	<value id="wsdlClientHttpAccesstype"></value>
+	<value id="wsdlClientHttpAccessUser"></value>
+	<value id="wsdlClientHttpAccessPass"></value>
+    </group>
     <group name="zunoPontComptable" modifRight="0" title="Configuration de prospec">
 	<value id="histoDir">PontComptable/</value>
 	<value id="fileExt">.csv</value>
