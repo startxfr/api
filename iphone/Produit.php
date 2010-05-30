@@ -85,7 +85,7 @@ elseif($PC->rcvG['action'] == 'familleProduitAdd')
 	foreach($val['1'] as $v)
 	{
 		$outJS .= 'famille["'.$number.'"] = new Array();'."\n";
-		$outJS .= ($v['nom_prodfam'] != NULL) ? 'famille["'.$number.'"]["nom_prodfam"] = "'.$v['nom_prodfam'].'"'.";\n" : '';
+		$outJS .= ($v['nom_prodfam'] != NULL) ? 'famille["'.$number.'"]["nom_prodfam"] = "'.$v['treePathKey'].' '.$v['nom_prodfam'].'"'.";\n" : '';
         $outJS .= ($v['id_prodfam'] != NULL) ? 'famille["'.$number.'"]["id_prodfam"] = "'.$v['id_prodfam'].'"'.";\n" : '';
         $number++;
      }

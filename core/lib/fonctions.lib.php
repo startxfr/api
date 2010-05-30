@@ -223,6 +223,9 @@ function viewFiche($id, $partie, $mode = '', $fournisseur = 'non', $channel = 'i
             if($datas['data']['ren_dev'] != "")
                 $datas['ren'] = $info->getRenouvellement($datas['data']['ren_dev']);
         }
+        elseif($partie == 'pontComptable') {
+            
+        }
         else {
             $result = $info->getProduitsFromID($id);
             $datas['produits'] = $result[1];

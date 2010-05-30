@@ -10,13 +10,13 @@
 #########################################################################*/
 
 // AATTEENNTTIIOONN changer ca pour les appels réalisés a la ligne de commande
-chdir('/var/www/html/zuno/manage/');
+//chdir('/var/www/html/zuno/manage/');
 /*------------------------------------------------------------------------+
 | FRAMEWORK LOADING	& LOG ACTIVITY
 +------------------------------------------------------------------------*/
 include ('../inc/conf.inc');		// Declare global variables from config files
 include ('../inc/core.inc');		// Load required plugins library
-loadPlugin(array("Send/Send", "ZModels/TokenModel", "ZModels/RenouvellementModel"));
+loadPlugin(array("Send/Send", "ZModels/TokenModel", "ZModels/RenouvellementModel", "ZModels/TransactionModel"));
 
 /*------------------------------------------------------------------------+
 | INITIALIZE PAGE CONTEXT
@@ -277,6 +277,46 @@ if($res[0]) {
         }
     }
     $outRapport .= "Traitement des renouvellements terminé. \n";
+}
+
+$model = new TransactionModel();
+$datas = $model->getTodayDatas();
+if($datas[0]) {
+    $outRapport .="Début du traitement du mail de récap des transactions paylines. \n";
+    if(count($datas[1]) < 1) {
+        $outRapport .= "Aucune transaction Payline ce jour. \n";
+    }else {
+        $mail = "Bonsoir.<br />Ceci est un récapitulatif de toutes les transactions payline du jour<br />";
+        $mail .= "<table><tr><th>Facture</th><th>Type</th><th>Montant</th></tr>";
+        $total = 0;
+        foreach($datas[1] as $v) {
+            if($v['type_hp'] == 11 or $v['type_hp'] == 12) {
+                $type = "Debit";
+                $total -= $v['montant_trans'];
+            }
+            else {
+                $type = "Crédit";
+                $total += $v['montant_trans'];
+            }
+            $mail .= "<tr><td>".$v['facture_trans']."</td><td>".$type."</td><td>".$v['montant_trans']."</td></tr>";
+        }
+        $mail .= "</table>";
+        $mail .= "<br />Le tout pour un montant de : ".$total;
+        $data['id'] = 0;
+        $data['partie'] = 'renouvellement';
+        $data['typeE'] = 'mail';
+        $data['sujet'] = 'Zuno : Rapport sur les transactions du jour';
+        $data['expediteur'] = 'Zuno';
+        $data['from'] = "";
+        $data['typeEmail'] = 'html';
+        $data['mail'] = "nm@startx.fr";
+        $data['bug'] = true;
+        $email = new Sender($data);
+        $email->setMessage($mail);
+        $email->send();
+    }
+    $outRapport .= "Fin du traitement du récap des transactions paylines. \n";
+
 }
 
 $outRapport .= "Tache cron terminée\n";

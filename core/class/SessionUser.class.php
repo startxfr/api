@@ -48,7 +48,7 @@ class SessionUser {
      * Normal initialized ONLY by Login.php page after authentication control
      * If a previous session is found, merge old session data with new one
      */
-    function CreateSession($user,$doRedirect = true) {
+    function CreateSession($user,$doRedirect = true, $to = "") {
 	//On crée la session
 	$this->InitSession->CreateSession($user);
 
@@ -96,7 +96,7 @@ class SessionUser {
 	    foreach($r[1] as $k => $d)
 		$_SESSION['user']['module'][$d['nom_mod']] = $d['acces_mod'];
 
-	if($doRedirect) $this->InitSession->RedirectSession('USER_WELCOME');
+	if($doRedirect) $this->InitSession->RedirectSession('USER_WELCOME', $to);
     }
 
     /**

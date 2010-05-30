@@ -111,28 +111,22 @@ class FactureFournisseurModel extends GeneralModel {
      */
     public function getDataForSearch($search ='', $from = '0', $limit ='30', $order='ORDER BY id_factfourn DESC', $conditions = '') {
 	$where = " WHERE ";
-	$archive = false;
 	if(is_array($conditions) and $search == '') {
 	    foreach($conditions as $k => $v) {
 		if($k == 'cp_ent')
-		    $where .= "$k LIKE '".$v."%' AND ";
+		    $where .= "$k LIKE '".$v."%' AND  ";
 		elseif($k == 'montantHT_factfourn')
-		    $where .= " $k >= '$v' AND ";
+		    $where .= " $k >= '$v' AND  ";
 		elseif($k == 'montantHT_factfourn2')
-		    $where .= " montantHT_factfourn < '$v' AND ";
-		elseif($k == 'status_factfourn') {
-		    $where .= "$k = '".$v."' AND ";
-		    $archive = true;
-		}
+		    $where .= " montantHT_factfourn < '$v' AND  ";
+		elseif($k == 'status_factfourn')
+		    $where .= "$k = '".$v."' AND  ";
 		elseif($k == 'entreprise_factfourn')
-		    $where .= "$k = '".$v."' AND ";
+		    $where .= "$k = '".$v."' AND  ";
 		else
-		    $where .= "$k LIKE '%".$v."%' AND ";
+		    $where .= "$k LIKE '%".$v."%' AND  ";
 	    }
-	    if(!$archive)
-		$where = substr($where, 0, (strlen($where)-5));
-	    else
-		$where .= " status_factfourn != 5 ";
+	    $where = substr($where, 0, (strlen($where)-6));
 	}
 	else {
 	    $where .= "titre_factfourn LIKE'%".$search."%' OR desc_factfourn LIKE'%".$search."%' OR nom_ent LIKE'%".$search."%' OR nom_cont LIKE'%".$search."%' or cp_ent LIKE'%".$search."%' ";

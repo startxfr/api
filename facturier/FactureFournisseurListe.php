@@ -71,11 +71,18 @@ if($PC->rcvP['action'] == 'searchFactFourn') {
     exit;
 }
 else {
+    if($PC->rcvG['status_factfourn'] != '')
+        $data['status_factfourn'] = $PC->rcvG['status_factfourn'];
+    $datas['from'] = 0;
+    $datas['limit'] = 30;
+    $datas['order'] = 'id_factfourn';
+    $datas['orderSens'] = 'DESC';
+    $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
     $req = new FactureFournisseurModel();
-    $total = $req->getDataForSearch('', '0', 'ALL');
+    $total = $req->getDataForSearch('', '0', 'ALL',$ordre, $data);
     $total = $total[1][0]['COUNT(*)'];
     $datas['total'] = $total;
-    $result = $req->getDataForSearch('');
+    $result = $req->getDataForSearch('', $datas['from'], $datas['limit'],$ordre, $data);
     foreach($result[1] as $k => $v)
         $datas['ren'][$k] = $req->getRenouvellement($v['ren_factfourn']);
     $datas['data'] = $result[1];

@@ -493,6 +493,7 @@ CREATE TABLE `fournisseur` (
   `ContactADV_fourn` int(8) unsigned DEFAULT NULL,
   `contactFact_fourn` int(8) unsigned DEFAULT NULL,
   `BDCCannevas_fourn` varchar(128) DEFAULT NULL,
+  `remise_fourn` float(5,2) DEFAULT '0.00',
   `actif` binary(1) DEFAULT '1',
   PRIMARY KEY (`id_fourn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -544,7 +545,7 @@ CREATE TABLE `log` (
   `channel_log` varchar(16) DEFAULT NULL,
   `trace_log` text,
   PRIMARY KEY (`id_log`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=852 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -580,6 +581,28 @@ CREATE TABLE `module` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `pontcomptable_histo`
+--
+
+DROP TABLE IF EXISTS `pontcomptable_histo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pontcomptable_histo` (
+  `id_pcth` int(4) unsigned NOT NULL AUTO_INCREMENT,
+  `date_pcth` datetime NOT NULL,
+  `nom_pcth` varchar(254) DEFAULT NULL,
+  `fichier_pcth` varchar(64) DEFAULT NULL,
+  `config_statutFact_pcth` varchar(12) DEFAULT NULL,
+  `config_statutFactFourn_pcth` varchar(12) DEFAULT NULL,
+  `config_dateDebut_pcth` datetime DEFAULT NULL,
+  `config_dateFin_pcth` datetime DEFAULT NULL,
+  `config_hasFactureClient_pcth` enum('0','1') NOT NULL DEFAULT '1',
+  `config_hasFactureFourn_pcth` enum('0','1') NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_pcth`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `produit`
 --
 
@@ -601,6 +624,8 @@ CREATE TABLE `produit` (
   `contrat_prod` tinyint(1) DEFAULT NULL,
   `familleredhat_prod` varchar(6) DEFAULT NULL,
   `prodredhat_prod` enum('0','1') DEFAULT NULL,
+  `compteComptable_prod` varchar(32) DEFAULT NULL,
+  `refExterne` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id_prod`),
   KEY `nom_prod` (`nom_prod`),
   KEY `famille_prod` (`famille_prod`)
@@ -717,6 +742,20 @@ CREATE TABLE `ref_droit` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `ref_droit_user`
+--
+
+DROP TABLE IF EXISTS `ref_droit_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ref_droit_user` (
+  `id_du` int(11) NOT NULL,
+  `desc_du` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id_du`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `ref_fonction`
 --
 
@@ -817,8 +856,11 @@ CREATE TABLE `ref_prodfamille` (
   `nom_prodfam` varchar(32) NOT NULL DEFAULT '',
   `livrable` enum('0','1') NOT NULL DEFAULT '1',
   `revente` enum('0','1') NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id_prodfam`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='Type de produit';
+  `treePathKey` varchar(6) DEFAULT NULL,
+  PRIMARY KEY (`id_prodfam`),
+  KEY `nom_prodfam` (`nom_prodfam`),
+  KEY `treePathKey` (`treePathKey`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COMMENT='Type de produit';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -832,7 +874,7 @@ CREATE TABLE `ref_redhat_archi` (
   `id_arch` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `nom_arch` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_arch`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type d''architecture materiel pour les produits REDHAT';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Type d''architecture materiel pour les produits REDHAT';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -846,7 +888,7 @@ CREATE TABLE `ref_redhat_contrat` (
   `id_cont` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `nom_cont` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_cont`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Type de contrat proposé par REDHAT';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Type de contrat proposé par REDHAT';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -927,6 +969,7 @@ CREATE TABLE `ref_statusfacture` (
   `nom_stfact` varchar(128) NOT NULL DEFAULT '',
   `description_stfact` text,
   `color_stfact` varchar(16) DEFAULT NULL,
+  `pontComptableExportable_stfact` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_stfact`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='etat possible d''une facture';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -944,6 +987,7 @@ CREATE TABLE `ref_statusfacturefournisseur` (
   `nom_stfactfourn` varchar(128) NOT NULL,
   `desc_stfactfourn` text,
   `color_stfactfourn` varchar(16) DEFAULT NULL,
+  `pontComptableExportable_stfactfourn` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_stfactfourn`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1154,4 +1198,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-12  1:44:17
+-- Dump completed on 2010-05-30 12:35:28

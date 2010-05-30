@@ -47,7 +47,7 @@ class ProduitViewOriginal extends generalView {
 	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'var REM = new Array();';
-        $this->script .= "\n".'function synchToSB(){zuno.ajax.get.json(\'../ajaxRef.php\', \'action=synchToSB\', function(xhr){var json = xhr.responseText.evalJSON(); if (json.good == \'true\') {alert(json.message);} else{alert(json.message);} } );}';
+	$this->script .= "\n".'function synchToSB(){zuno.ajax.get.json(\'../ajaxRef.php\', \'action=synchToSB\', function(xhr){var json = xhr.responseText.evalJSON(); if (json.good == \'true\') {alert(json.message);} else{alert(json.message);} } );}';
 	$this->script .= '</script>';
     }
 
@@ -99,7 +99,7 @@ class ProduitViewOriginal extends generalView {
 	$this->fieldset3 = new ZunoFieldset('Description');
 	$this->fieldset1->ligneInput('Référence', 'id_prod', $datas['data']['id_prod'],'','ZTips.produit.reference');
 	$this->fieldset1->ligneInput('Nom', 'nom_prod', $datas['data']['nom_prod'],'','ZTips.produit.nom');
-	$this->fieldset1->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id="selectFamilleProd"','ZTips.produit.famille','', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 300,250)");
+	$this->fieldset1->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id="selectFamilleProd"', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 300,250)"), 'ZTips.produit.famille');
 	$this->fieldset3->ligneTArea('Description', 'description_prod',$datas['data']['description_prod'],'','ZTips.produit.desc');
 	$this->fieldset1->ligneInput('Prix (€)', 'prix_prod', $datas['data']['prix_prod'],'','ZTips.produit.prix');
 	$this->fieldset2->ligneInput('Stock', 'stock_prod', $datas['data']['stock_prod'],'','ZTips.produit.stock');
@@ -282,7 +282,9 @@ class ProduitViewOriginal extends generalView {
 	if($datas['data']['remiseF'] == '' and is_array($datas['remise']))
 	    $datas['data']['remiseF'] = current($datas['remise']);
 	$fieldset = new ZunoFieldset('Ajout Fournisseur');
-	$fieldset->ligneSelect('Fournisseur', 'fournisseur_id', $datas['data']['fournisseur_id'], $datas['fourn'],false,'onchange="$(\'rem5597\').value = REM[this.value]; autoCalcul(\'5597\');"','ZTips.produit.fournEntreprise');
+	if(count( $datas['fourn']) > 0)
+	     $fieldset->ligneSelect('Fournisseur', 'fournisseur_id', $datas['data']['fournisseur_id'], $datas['fourn'],false,'onchange="$(\'rem5597\').value = REM[this.value]; autoCalcul(\'5597\');"','ZTips.produit.fournEntreprise');
+	else $fieldset->ligneFree('Fournisseur', '<i>Aucun fournisseur disponible</i>','ZTips.produit.fournEntreprise');
 	$fieldset->ligneInput("Px public (€)", 'prixF', $datas['data']['prixF'], 'id="px5597" onchange="autoCalcul(\'5597\');" ','ZTips.produit.fournPxPub');
 	$fieldset->ligneInput("Remise (%)", 'remiseF', $datas['data']['remiseF'], 'id="rem5597" onchange="autoCalcul(\'5597\');" ','ZTips.produit.fournRemise');
 	$fieldset->ligneInput("Px achat (€)", 'pxRevient', '0', 'disabled="disabled", id="tot5597"','ZTips.produit.fournPxAchat');
@@ -352,18 +354,18 @@ class ProduitViewOriginal extends generalView {
 	    if($result['stillAvailable_prod'] == '1')
 		$imgActif = imageTag($suffixeLink.'img/valid.png','Produit en vente');
 	    else $imgActif = imageTag($suffixeLink.'img/unvalid.png','Produit désactivé');
-	    $out .= '<tr class="altern'.$alternance.'">';
+	    $out .= '<tr class="altern'.($alternance % 2).'">';
 	    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$result['id_prod'].'" checked="checked"/></td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['id_prod'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['nom_prod'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['nom_prodfam'].'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['treePathKey'].' '.$result['nom_prodfam'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['description_prod'].'</td>';
 	    $out .= '<td class="barre right" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['prix_prod'].' &euro;</td>';
 	    $out .= '<td class="right" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['stock_prod'].'</td>';
 	    $out .= '<td class="right" style="cursor : pointer;" onclick="'.$onclick.'">'.$imgBest.'</td>';
 	    $out .= '<td class="right" style="cursor : pointer;" onclick="'.$onclick.'">'.$imgActif.'</td>';
 	    $out .= '</tr>';
-	    $alternance = ($alternance++ % 2);
+	    $alternance++;
 	}
 
 	$out .= '</tbody></table>';
@@ -377,7 +379,7 @@ class ProduitViewOriginal extends generalView {
 	else
 	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProduitResultPage",$suffixeLink);
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
-        $bouton .= '<a name="synchroProduit" onclick="synchToSB();"><img alt="produit" src="../img/prospec/produit.png"/> Synchroniser les produits sur Superbase</a>';
+	$bouton .= '<a name="synchroProduit" onclick="synchToSB();"><img alt="produit" src="../img/prospec/produit.png"/> Synchroniser les produits sur Superbase</a>';
 
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeProduit",'');
     }
@@ -413,7 +415,7 @@ class ProduitViewOriginal extends generalView {
 	$out.= $fieldset->generateFieldset();
 	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute');
 	$fieldset->ligneInput('Nom du produit', 'nom_prod');
-	$fieldset->ligneSelect('Famille', 'famille_prod','',$sql->getAllFamille());
+	$fieldset->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', '', $sql->getAllFamille(), true));
 	$fieldset->ligneInput('Déscription du produit', 'description_prod');
 	$fieldset->ligneSelect('Renouvellement', 'dureeRenouvellement_prod','',$sql->getRenews());
 	$fieldset->ligneInput('Prix public', 'prix_prod');
@@ -474,7 +476,7 @@ class ProduitViewOriginal extends generalView {
 	$fieldset = new ZunoFieldset('Recherche');
 	$fieldset->ligneInput('Référence', 'id_prod', $datas['form']['id_prod'],'','ZTips.produit.searchReference');
 	$fieldset->ligneInput('Nom', 'nom_prod', $datas['form']['nom_prod'],'','ZTips.produit.searchNom');
-	$fieldset->ligneSelect('Famille', 'famille_prod', $datas['form']['famille_prod'], $datas['famille'], true,'','ZTips.produit.searchFamille');
+	$fieldset->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', $datas['form']['famille_prod'], $datas['famille'], true), 'ZTips.produit.searchFamille');
 	$fieldset->ligneSelect('Fournisseur', 'fournisseur_prod', $datas['form']['fournisseur_prod'], $datas['fournisseur'], true,'','ZTips.produit.searchFournisseur');
 	$fieldset->ligneCheckBox('Disponible', 'stillAvailable_prod', true,'','ZTips.produit.searchDisponible');
 	$fieldset->ligneInput('Prix minimal', 'pxmin_prod', $datas['pxmin_prod'],'','ZTips.produit.searchPrixMin');
@@ -517,10 +519,109 @@ class ProduitViewOriginal extends generalView {
 	$rendu->generateZBox('Nouvelle Famille', 'Nouvelle Fammille', $form->generateForm(), $form->generateButtons('', 'Annuler', 'Créer', 'popup'), 'idPopupAddFamille');
 	return $rendu->generateInterneRendu();
     }
-}
-// Pour SXA la class produitView se trouve dans le plugin ZunoSxa
-loadPlugin('ZunoSxa');
 
+
+
+    /**
+     * Méthode selectTagProdFamille qui génère une ligne avec un select pour les familles de produit
+     * @param string $nom Le nom du champ
+     * @param string $value La valeur initiale du champ
+     * @param array $liste La liste des options du champ
+     * @param bool $withBlank Précise si une ligne vide doit être dans le champ
+     * @param string $autre D'autres tags si nécessaires
+     * @param bool $plus Permet de préciser si on veut le petit plus
+     * @param string $actionplus Précise l'action à faire après click sur le plus
+     */
+    public function selectTagProdFamille($nom, $value, $liste = array(), $withBlank = true, $autre = '', $plus = false, $actionplus = '') {
+	$indenteur = '&nbsp;&nbsp;&nbsp;&nbsp;';
+	// generate le select
+	if ($nom != '') {
+	    if(!is_array($value))
+		$value = array($value=>$value);
+	    $chaine_class =  '';
+	    if($plus) {
+		$class .= "icon ";
+		$img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
+	    }
+	    else $class = $img = "";
+	    $chaine = "<select ";
+	    // Select  field name
+	    if ($nom != '')
+		$chaine .=  'name=\''.$nom.'\' ';
+	    // Select  CSS class
+	    if ($class != '') {
+		$chaine .=  'class=\''.$class.'\' ';
+		$chaine_class =  ' class=\''.$class.'\' ';
+	    }
+	    // Ad other element into the select tag
+	    if ($autre != '')
+		$chaine .=  $autre." ";
+	    $chaine .=  ">";
+	    // Select  detect select row
+	    if ($withBlank) {
+		if ($value == '')
+		    $chaine .=  "<option".$chaine_class." value='' selected='selected'> </option>";
+		else $chaine .=  "<option".$chaine_class." value=''> </option>";
+	    }
+	    // Loop for values
+	    if(is_array($liste)) {
+		$sortedOther = $sorted = array();
+		foreach( $liste as $key => $val ) {
+		    $d = explode(' ', $val, 2);
+		    if ($d[0] != '' and $d[1] != '' ) {
+			if(strlen($d[0]) == 1)
+			    $sorted[substr($d[0],0,1)] = array('nom'=>$d[1],'id'=>$key);
+			elseif(strlen($d[0]) == 2)
+			    $sorted[substr($d[0],0,1)]['d'][substr($d[0],0,2)] = array('nom'=>$d[1],'id'=>$key);
+			elseif(strlen($d[0]) == 3)
+			    $sorted[substr($d[0],0,1)]['d'][substr($d[0],0,2)]['d'][substr($d[0],0,3)] = array('nom'=>$d[1],'id'=>$key);
+		    }
+		    else $sortedOther[] = array('nom'=>$val,'id'=>$key);
+		}
+		if(count($sorted)) {
+		    foreach( $sorted as $k1 => $val1 ) {
+			$chaine .= "<option value='".$val1['id']."' style='font-style: italic;font-weight: bold'";
+			if ((is_array($value) and (in_array($val1['id'], $value))) or (($value == $val1['id'])and($value != "")))
+			    $chaine .= ' selected="selected"';
+			$chaine .= "> ".$val1['nom']."</option>";
+			if(array_key_exists('d',$val1)) {
+			    foreach( $val1['d'] as $k2 => $val2 ) {
+				$chaine .= "<option value='".$val2['id']."' style='font-style: italic'";
+				if ((is_array($value) and (in_array($val2['id'], $value))) or (($value == $val2['id'])and($value != "")))
+				    $chaine .= ' selected="selected"';
+				$chaine .= ">".$indenteur." ".$val2['nom']."</option>";
+				if(array_key_exists('d',$val2)) {
+				    foreach( $val2['d'] as $k3 => $val3 ) {
+					$chaine .= "<option value='".$val3['id']."'";
+					if ((is_array($value) and (in_array($val3['id'], $value))) or (($value == $val3['id'])and($value != "")))
+					    $chaine .= ' selected="selected"';
+					$chaine .= ">".$indenteur.$indenteur." ".$val3['nom']."</option>";
+				    }
+				}
+			    }
+			}
+		    }
+		}
+		if(count($sortedOther)) {
+		    foreach( $sortedOther as $key => $val ) {
+			$chaine .= "<option value='".$val['id']."'";
+			if ((is_array($value) and (in_array($val['id'], $value))) or (($value == $val['id'])and($value != "")))
+			    $chaine .= ' selected="selected"';
+			$chaine .= ">".$val['nom']."</option>";
+		    }
+		}
+	    }
+	    $chaine .= "</select>".$img;
+	}
+	else {
+	    Logg::error('HTML::AUTO_TAG_GENERATOR::SELECT_TAG::no_tag_name',FALSE);
+	    $chaine = 'erreur select';
+	}
+
+	return $chaine;
+    }
+}
+loadPlugin('ZunoSxa');
 
 
 function BureauMyProduit() {

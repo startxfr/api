@@ -5,12 +5,12 @@
 <!-- ID :  	 $Id$	-->
 <!-- copyright:   See licence.txt for this script licence	-->
 <configuration>
-	<!-- Pool de connexion SVN 				-->
-	<group name="SVN_Pool1" modifRight="0" title="Entrepot principal">
-		<value id="WorkCopy">/data/ged.sxa/wc/</value>
-		<value id="Reposito">file:///data/ged.sxa/db/</value>
-		<value id="WorkDir">/</value>
-		<value id="ConfigDir">conf/permanent/.subversion.pool1/</value>
-		<value id="NbCharAffIphone">25</value>
-	</group>
+    <!-- Pool de connexion SVN 				-->
+    <group name="SVN_Pool1" modifRight="0" title="Entrepot principal">
+	<value id="WorkCopy">/data/ged.sxa/wc/</value>
+	<value id="Reposito">file:///data/ged.sxa/db/</value>
+	<value id="WorkDir">WORK/</value>
+	<value id="ConfigDir">conf/permanent/.subversion.pool1/</value>
+	<value id="NbCharAffIphone">25</value>
+    </group>
 </configuration>

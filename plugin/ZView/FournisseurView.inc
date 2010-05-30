@@ -293,7 +293,7 @@ class FournisseurView extends generalView {
 	foreach($datas['prod'] as $v) {
 	    $ligne[$v['id_prod']] = '';
 	    $ligne[$v['nom_prod']] = '';
-	    $ligne[$v['nom_prodfam']] = '';
+	    $ligne[$v['treePathKey'].' '.$v['nom_prodfam']] = '';
 	    $ligne['okou0'.prepareNombreAffichage($v['prixF'])] = '+ right';
 	    $ligne['okou1'.prepareNombreAffichage($v['remiseF'])] = '+ right';
 	    $ligne['okou2'.prepareNombreAffichage($v['prixF']*(1-$v['remiseF']/100))] = '+ right';

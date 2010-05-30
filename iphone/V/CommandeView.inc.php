@@ -195,7 +195,7 @@ class commandeView
 				$out .='<li><label>Référence : </label>'.$v['id_produit'].'</li>';
 				$out .='<li><label>Libellé : </label>'.$v['desc'].'</li>';
 				if($v['nom_prodfam'] != '')
-					$out .='<li><label>Famille : </label>'.$v['nom_prodfam'].'</li>';
+					$out .='<li><label>Famille : </label>'.$v['treePathKey'].' '.$v['nom_prodfam'].'</li>';
 				if($v['id_ent'] != '')
 					$out .='<li><label>Fournisseur : </label>'.$v['nom_ent'].'</li>';
 				$out .='<li><label>Quantité client : </label>'.$v['quantite'].'</li>';

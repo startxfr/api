@@ -227,6 +227,21 @@ class factureModel extends GeneralModel {
     }
 
     /**
+     * Méthode qui récupère le statut d'une facture
+     * @param string $id L'id de la facture dont on veut le statut
+     * @return array Le statut de la facture
+     */
+    public function getAllStatusFacture() {
+	$out = array();
+	$this->makeRequeteFree("SELECT * from ref_statusfacture;");
+	$status = $this->process2();
+	if(is_array($status[1]))
+	    foreach($status[1] as $v)
+		$out[$v['id_stfact']] = $v['nom_stfact'];
+	return $out;
+    }
+
+    /**
      * Méthode qui recherche des produits
      * @param string $search Ce que l'on cherche
      * @param int $limit Le nombre maximum de résultat
@@ -235,10 +250,10 @@ class factureModel extends GeneralModel {
      */
     public function getDataForSearchProd($search,$limit = 10, $from = 0) {
 	$qTag = " LIKE '%".$search."%' ";
-	$this->makeRequeteFree("SELECT  nom_prod, id_prod, nom_prodfam, prix_prod " .
+	$this->makeRequeteFree("SELECT  nom_prod, id_prod, nom_prodfam, treePathKey, prix_prod " .
 		"FROM produit " .
 		"LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod ".
-		"WHERE nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag " .
+		"WHERE nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag " .
 		"ORDER BY id_prod ASC " .
 		"LIMIT $from , $limit");
 	return $this->process2();
@@ -974,7 +989,7 @@ class factureModel extends GeneralModel {
 		$newData['condireglement_fact'] = $newAttribList['condireglement_fact'];
 	    if($newAttribList['commercial_fact'] != '')
 		$newData['commercial_fact'] = $newAttribList['commercial_fact'];
-	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_fact, $bddtmp->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('factureModel::changeAttributeFactureInDB() ~ changement d\'attribut de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
@@ -991,7 +1006,7 @@ class factureModel extends GeneralModel {
 	    $fact = $bddtmp->process();
 	    $fact = $fact[0];
 	    $newData['status_fact'] = '7';
-	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_fact, $bddtmp->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'archive', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('factureModel::markEnvoyeFactureInDB() ~ Facture '.$id_fact.' marqué comme archivé',$sql,__FILE__.'@'.__LINE__);
@@ -1008,7 +1023,7 @@ class factureModel extends GeneralModel {
 	    if($newAttribList['commentaireValid'] != '')
 		$newData['commentaire_fact'] = ($fact['commentaire_fact'] != '') ? $fact['commentaire_fact'].'. '.$newAttribList['commentaireValid'] : $newAttribList['commentaireValid'];
 	    $newData['status_fact'] = '2';
-	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_fact, $bddtmp->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('factureModel::markValideFactureInDB() ~ Facture '.$id_fact.' marquée comme validée',$sql,__FILE__.'@'.__LINE__);
@@ -1026,7 +1041,7 @@ class factureModel extends GeneralModel {
 	    if($newAttribList['commentaireEnvoye'] != '')
 		$newData['commentaire_fact'] = ($fact['commentaire_fact'] != '') ? $fact['commentaire_fact'].'. '.$newAttribList['commentaireEnvoye'] : $newAttribList['commentaireEnvoye'];
 	    $newData['status_fact'] = '4';
-	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_fact, $bddtmp->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('factureModel::markEnvoyeFactureInDB() ~ Facture '.$id_fact.' marqué comme envoyée',$sql,__FILE__.'@'.__LINE__);
@@ -1047,7 +1062,7 @@ class factureModel extends GeneralModel {
 	    if($newAttribList['commentaireRegle'] != '')
 		$newData['commentaire_fact'] = ($fact['commentaire_fact'] != '') ? $fact['commentaire_fact'].'. '.$newAttribList['commentaireRegle'] : $newAttribList['commentaireRegle'];
 	    $newData['status_fact'] = '6';
-	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_fact, $bddtmp->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('factureModel::markRegleFactureInDB() ~ Facture '.$id_fact.' marquée comme réglée',$sql,__FILE__.'@'.__LINE__);
@@ -1063,7 +1078,7 @@ class factureModel extends GeneralModel {
 	    $fact = $bddtmp->process();
 	    $fact = $fact[0];
 	    $newData['status_fact'] = '1';
-	    $sql = $bddtmp->makeRequeteUpdate($this->sqlTableName,'id_fact',$id_fact, $this->bindVarFacture($newData));
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_fact, $bddtmp->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('factureModel::markReinitFactureInDB() ~ Re-initialisation de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);

@@ -459,12 +459,39 @@ class ZunoFieldset {
 	    $class = "icon";
 	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
 	}
-	else {
-	    $class = $img = "";
-	}
+	else $class = $img = "";
 	$out ='<div class="row" '.$attRow.'>' .
 		'<div class="label" '.$tips.' >'.$label.'</div>' .
 		'<div class="field">'.$this->selectTag($nom, $liste, $value, $class, $autre, $withBlank).$img.'</div>'
+		.'</div>';
+	$this->lastLigne = $out;
+	$this->listeLignes[] = $out;
+    }
+
+    /**
+     * Méthode ligneSelect qui génère une ligne avec un select pour Zuno
+     * @param string $label Le label du champ
+     * @param string $nom Le nom du champ
+     * @param string $value La valeur initiale du champ
+     * @param array $liste La liste des options du champ
+     * @param bool $withBlank Précise si une ligne vide doit être dans le champ
+     * @param string $autre D'autres tags si nécessaires
+     * @param string $tips Permet d'ajouter si besoin un tips au champ
+     * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param bool $plus Permet de préciser si on veut le petit plus
+     * @param string $actionplus Précise l'action à faire après click sur le plus
+     */
+    public function ligneSelectMultiple($label, $nom, $value, $liste = array(), $withBlank = true, $autre = '', $tips='', $attRow='', $plus = false, $actionplus = '') {
+	if($tips != '')
+	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
+	if($plus) {
+	    $class = "icon";
+	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
+	}
+	else $class = $img = "";
+	$out ='<div class="row" '.$attRow.'>' .
+		'<div class="label" '.$tips.' >'.$label.'</div>' .
+		'<div class="field">'.$this->selectTag($nom, $liste, $value, $class, $autre, $withBlank,true).$img.'</div>'
 		.'</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
@@ -727,40 +754,39 @@ class ZunoFieldset {
      * @param  string $autre	free information
      * @return string filled html select tag
      */
-    private function selectTag($name,$champ,$id_select="",$class="",$autre="",$withBlank = TRUE) {
+    private function selectTag($name,$champ,$id_select="",$class="",$autre="",$withBlank = true, $withMultiple = false) {
 	if ($name != '') {
 	    $chaine_class =  '';
 	    $chaine = "<select ";
 	    // Select  field name
-	    if ($name != '') {
-		$chaine .=  'name=\''.$name.'\' ';
+	    if ($withMultiple) {
+		$nameAdd =  '[]';
+		$chaine .=  'multiple=\'multiple\' ';
 	    }
+	    // Select  field name
+	    if ($name != '')
+		$chaine .=  'name=\''.$name.$nameAdd.'\' ';
 	    // Select  CSS class
 	    if ($class != '') {
 		$chaine .=  'class=\''.$class.'\' ';
 		$chaine_class =  ' class=\''.$class.'\' ';
 	    }
 	    // Ad other element into the select tag
-	    if ($autre != '') {
+	    if ($autre != '')
 		$chaine .=  $autre." ";
-	    }
 	    $chaine .=  ">";
 	    // Select  detect select row
 	    if ($withBlank) {
-		if ($id_select == '') {
-		    $chaine .=  "<option".$chaine_class." value='' selected='selected'> </option>";
-		}
-		else {
-		    $chaine .=  "<option".$chaine_class." value=''> </option>";
-		}
+		if ($id_select == '')
+		     $chaine .=  "<option".$chaine_class." value='' selected='selected'> </option>";
+		else $chaine .=  "<option".$chaine_class." value=''> </option>";
 	    }
 	    // Loop for values
 	    if(is_array($champ))
 		foreach( $champ as $key => $val ) {
 		    $chaine .= "<option".$chaine_class." value='".$key."'";
-		    if (($id_select == $key)and($id_select != "")) {
+		    if ((is_array($id_select) and (/*array_key_exists($key, $id_select) or*/ in_array($key, $id_select))) or (($id_select == $key)and($id_select != "")))
 			$chaine .= ' selected="selected"';
-		    }
 		    //$chaine .= ">".htmlentities($val)."</option>";
 		    $chaine .= ">".$val."</option>";
 		}
@@ -923,7 +949,8 @@ class ZunoForm {
      * @param string $plus Permet de rajouter des éléments sur l'image d'anulation
      * @return string Le code HTML du pied de formulaire
      */
-    public function generateButtons($retour = '', $annuler = 'Annuler', $valider = 'Valider', $popup = '', $plus = 'onload="autoCompletage();"') {
+    public function generateButtons($retour = '', $annuler = 'Annuler', $valider = 'Valider', $popup = '', $plus = 'onload="autoCompletage();"', $previous = false) {
+	$pied = '';
 	$close = '';
 	if($retour == '')
 	    $retour = $this->retour;
@@ -933,7 +960,9 @@ class ZunoForm {
 	}
 	else
 	    $popup = '';
-	$pied = '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();" '.$close.' ><img '.$plus.' align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> '.$annuler.'</a>';
+	if($previous)
+	    $pied .= '<a name="submit" onclick="window.history.back();" style="cursor: pointer;"><img '.$plus.' align="middle" title="Arrière" alt="Arrière" src="../img/prospec/cancel.png"/> Ecran précédent</a>';
+	$pied.= '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();" '.$close.' ><img '.$plus.' align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> '.$annuler.'</a>';
 	if($this->droit)
 	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\''.$this->nom.'\', \''.$this->action.'\',\''.$retour.'\''.$popup.');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> '.$valider.'</a>';
 	$this->pied = $pied.$this->pied;

@@ -32,7 +32,7 @@ class produitModelOriginal extends GeneralModel {
 		'remisefournisseur_prod','bestsell_prod','stillAvailable_prod');
 
 	$this->availableFieldsFamille = array(
-		'id_prodfam', 'nom_prodfam', 'livrable', 'revente');
+		'id_prodfam', 'nom_prodfam', 'livrable', 'revente', 'treePathKey');
 	$this->availableFieldsFournisseur = array(
 		'id_fourn', 'entreprise_fourn', 'contactComm_fourn', 'ContactADV_fourn', 'contactFact_fourn',
 		'BDCCannevas_fourn', 'remise_fourn', 'actif');
@@ -51,18 +51,18 @@ class produitModelOriginal extends GeneralModel {
     public function getDataForSearchProduit($search,$limit = 10, $from = 0) {
 	$qTag = " LIKE '%".$search."%' ";
 	if($limit != "ALL") {
-	    $this->makeRequeteFree("SELECT id_prod, nom_prod, prix_prod, nom_prodfam, description_prod, stock_prod, "
+	    $this->makeRequeteFree("SELECT id_prod, nom_prod, prix_prod, treePathKey, nom_prodfam, description_prod, stock_prod, "
 		    ."(select prixF*(1-remiseF/100) as PFourn from produit_fournisseur where produit_id = id_prod order by PFourn ASC limit 0,1) as PF "
 		    ." FROM produit "
 		    ."LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod "
-		    ."WHERE (nom_prod $qTag OR nom_prodfam $qTag OR description_prod $qTag OR id_prod $qTag) AND stillAvailable_prod != '0' "
+		    ."WHERE (nom_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag OR description_prod $qTag OR id_prod $qTag) AND stillAvailable_prod != '0' "
 		    ."Order by nom_prod "
 		    ."LIMIT $from , $limit");
 	}
 	else {
 	    $this->makeRequeteFree("SELECT COUNT(*) FROM produit "
 		    ."LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod "
-		    ."WHERE (nom_prod $qTag OR nom_prodfam $qTag OR description_prod $qTag OR id_prod $qTag) AND stillAvailable_prod != '0' ");
+		    ."WHERE (nom_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag OR description_prod $qTag OR id_prod $qTag) AND stillAvailable_prod != '0' ");
 	}
 	return $this->process2();
     }
@@ -456,7 +456,7 @@ class produitModelOriginal extends GeneralModel {
      */
     public function getDataForFamille($search) {
 	$qTag = " LIKE '".$search."%' ";
-	$this->makeRequeteFree("SELECT * from ref_prodfamille where id_prodfam $qTag OR nom_prodfam $qTag ORDER BY nom_prodfam LIMIT 0, 5 ");
+	$this->makeRequeteFree("SELECT * from ref_prodfamille where id_prodfam $qTag OR nom_prodfam $qTag OR treePathKey $qTag ORDER BY nom_prodfam LIMIT 0, 5 ");
 	return $this->process2();
     }
 
@@ -468,7 +468,7 @@ class produitModelOriginal extends GeneralModel {
     public function insertFamille($nom_prodfam) {
 	$this->makeRequeteFree("SELECT COUNT(*) from ref_prodfamille ");
 	$total = $this->process2();
-	$sql = $this->makeRequeteInsert('ref_prodfamille', array('nom_prodfam' => $nom_prodfam));
+	$sql = $this->makeRequeteInsert('ref_prodfamille', array('nom_prodfam' => $nom_prodfam, 'treePathKey' => $GLOBALS['zunoProduit']['defautNewFamilleCode']));
 	Logg::loggerAlert('ProduitModel::insertFamille() ~ ajout de la famille produit '.$nom_prodfam,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $total['1']['0']['COUNT(*)'];
@@ -511,7 +511,11 @@ class produitModelOriginal extends GeneralModel {
      * @return array La liste des fournisseurs potentiels
      */
     public function getPotentielFournisseur($id) {
-	$this->makeRequeteFree("select id_fourn, produit_id, nom_ent, remise_fourn from fournisseur left join entreprise e on e.id_ent = entreprise_fourn left join produit_fournisseur pf ON pf.fournisseur_id = id_fourn where (produit_id != '$id' or produit_id is null ) and id_fourn not in (select f.id_fourn from fournisseur f left join produit_fournisseur pff on pff.fournisseur_id = f.id_fourn where pff.produit_id = '$id');");
+	$this->makeRequeteFree("SELECT id_fourn, produit_id, nom_ent, remise_fourn
+				FROM fournisseur
+				LEFT JOIN entreprise e ON e.id_ent = entreprise_fourn
+				LEFT JOIN produit_fournisseur pf ON pf.fournisseur_id = id_fourn AND pf.produit_id = '$id'
+				WHERE  pf.produit_id IS NULL");
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $rs=$rs[1];

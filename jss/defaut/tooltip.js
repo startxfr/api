@@ -303,5 +303,23 @@ var ZTips = {
 	searchActif:		'Le fournisseur recherché est-il actif',
 	produitNewPrix:		'Saisissez un nouveau prix a appliquer sur l\'ensemble des produits séléctionnés',
 	produitNewRemise:	'Saisissez une nouvelle remise a appliquer sur l\'ensemble des produits séléctionnés'
+    }  ,
+
+    pontComptable: {
+	reference:		    'Identifiant unique du fichier généré',
+	nom:			    'Résumé du fichier d\'échange',
+	date:			    'Date de création du fichier',
+	config_dateDebut:	    'Date de début de la recherche',
+	config_dateFin:		    'Date de fin de la recherche',
+	hasFactureClient:	    'Ce fichier doit-il inclure les factures clients. En cochant cette case, vous ajoutez les factures clients dans le fichier d\'export.<br/>Veuillez à bien choisir les status de facture autorisés',
+	config_statutFact:	    'Vous devez choisir les statuts de facture qui seront autorisés dans le fichier d\'export',
+	hasFactureFourn:	    'Ce fichier doit-il inclure les factures fournisseurs. En cochant cette case, vous ajoutez les factures fournisseurs dans le fichier d\'export.<br/>Veuillez à bien choisir les status de facture fournisseurs autorisés',
+	config_statutFactFourn:	    'Vous devez choisir les statuts de facture fournisseur qui seront autorisés dans le fichier d\'export',
+	groupActionDelete:	    'Suppression du lot de fichiers d\'export',
+	groupActionChangeAttribute: 'Changer un attribut pour tout le lot de fichier d\'export',
+	groupActionDeleteWithFile:  'Cocher cette case pour supprimer les fichiers d\'export du Disque Dur Virtuel',
+	searchDateStart:	    'Date de génération du fichier. Si une date de fin est définie, ce champs sera la date de démarage de votre période de recherche',
+	searchDateEnd:		    'Date de fin de génération du fichier. Si aucune date de début n\'est définie, tous les fichiers générés jusqu\'à cette date seront retournés.',
+	searchNom:		    'Vous pouvez saisir un mot ou une phrase pour trouver tous les fichiers contenant votre saisie'
     }
 };

@@ -79,5 +79,14 @@ class TransactionModel extends GeneralModel {
     public function bindVarTransaction($data) {
 	return $this->bindVar($data,$this->availableFields);
     }
+
+    /**
+     * Récupère toutes les transactions du jour
+     * @return array Les transactions du jour
+     */
+    public function getTodayDatas() {
+	$this->makeRequeteFree("SELECT * FROM ".$this->sqlTableName." LEFT JOIN historique_payline ON id_hp = payline_trans WHERE DATEDIFF(date_hp, CURDATE())");
+	return $this->process2();
+    }
 }
 ?>

@@ -217,7 +217,7 @@ class devisView
 				$out .='<li>'.$v['desc'].'</li>';
 
 				if($v['nom_prodfam'] != '')
-					$out .='<li><label>Famille : </label>'.$v['nom_prodfam'].'</li>';
+					$out .='<li><label>Famille : </label>'.$v['treePathKey'].' '.$v['nom_prodfam'].'</li>';
 				$out .='<li><label>Qté x P.U. : </label>'.$v['quantite'].' x '.$v['prix'].' &euro;</li>';
 				if($v['remise'] > 0)
 					$out .='<li><label>Remise : </label>'.$v['remise'].'%</li>';

@@ -38,7 +38,7 @@ function FileCleanFileName($filename, $type="") {
 	$tableSign = array(
 		'{'=>'_', '}'=>'_', '<'=>'_', '>'=>'_', '('=>'_', ')'=>'_', ','=>'_', '*'=>'_', '!'=>'_', '%'=>'_',
 		'µ'=>'_', '¥'=>'_', '#'=>'_', '~'=>'_', '|'=>'_', '@'=>'_', '`'=>'_', '£'=>'_', '°'=>'_', '€'=>'_',
-		';'=>'_', '\\'=>'_'
+		';'=>'_', '\\'=>'_', ':'=>'_'
 	);
 	$tableApos = array(
 		'`'=>'_', '""'=>'_', '\''=>'_', '\\'=>'_'
@@ -49,6 +49,7 @@ function FileCleanFileName($filename, $type="") {
 	    $table = array_merge($tableToLower,$tableSign);
 	elseif ($type == 'APOSTROPHE')
 	    $table = $tableApos;
+	else $table = array_merge($table,$tableSign,$tableApos,array(' '=>'_'));
 
 	$out = strtr($filename, $table);
 	$out = str_replace('__','_',$out);

@@ -154,7 +154,7 @@ class factureView {
                 $out .='<li><label>Référence : </label>'.$v['id_produit'].'</li>';
                 $out .='<li><label>Libellé : </label>'.$v['desc'].'</li>';
                 if($v['nom_prodfam'] != '')
-                    $out .='<li><label>Famille : </label>'.$v['nom_prodfam'].'</li>';
+                    $out .='<li><label>Famille : </label>'.$v['treePathKey'].' '.$v['nom_prodfam'].'</li>';
                 $out .='<li><label>Qté x P.U. : </label>'.$v['quantite'].' x '.$v['prix'].' &euro;</li>';
                 $out .='<li><label>Remise Client : </label>'.$v['remise'].'%</li>';
                 $out .='<li><label>Total Client : </label>'.$total.' &euro;</li>';

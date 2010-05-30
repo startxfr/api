@@ -10,7 +10,7 @@ class produitView
 			{
 				if($letter != strtoupper($v['nom_prod']{0})) { $letter = strtoupper($v['nom_prod']{0}) ; $list .= '</ul><h2>'.$letter.'</h2><ul class="iArrow">'; }
 				elseif($from != 0) {$list .= '</ul><ul class="iArrow">';}
-				$list .= '<li><a href="Produit.php?action=viewProd&id_prod='.$v['id_prod'].'" rev="async"><em>'.$v['nom_prod'].'</em><small>'.$v['nom_prodfam'].'</small></a></li>';
+				$list .= '<li><a href="Produit.php?action=viewProd&id_prod='.$v['id_prod'].'" rev="async"><em>'.$v['nom_prod'].'</em><small>'.$v['treePathKey'].' '.$v['nom_prodfam'].'</small></a></li>';
 			}
 			$list = substr($list,5).'</ul>';
 			if ($from == 0)
@@ -126,7 +126,7 @@ class produitView
 		$out .= '<div class="iPanel"><fieldset>';
 		$out .= '<ul><li>Nom : '.$value['nom_prod'].'</li>';
 		$out .= '<li>Description : '.$value['description_prod'].'</li>';
-		$out .= '<li>Famille : '.$value['nom_prodfam'].'</li>';
+		$out .= '<li>Famille : '.$value['treePathKey'].' '.$value['nom_prodfam'].'</li>';
 		$out .= '<li>Prix de vente : '.$value['prix_prod'].' €</li>';
 		$out .= '<li>Stock : '.$value['stock_prod'].'</li>';
 		$out .= '<li>Devisé '.$value['nbreDevis'].' fois</li>';

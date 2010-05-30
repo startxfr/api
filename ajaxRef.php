@@ -63,7 +63,7 @@ if(array_key_exists('action', $PC->rcvG)) {
         $result = $req->getDataForSearchProduit($search,25);
         if(is_array($result[1])) {
             foreach($result[1] as $v)
-                $out .= '<li title="'.$v['id_prod'].'-_-'.$v['nom_prodfam'].'-_-'.$v['prix_prod'].'-_-'.$v['description_prod'].'-_-'.$v['PF'].'">['.$v['id_prod'].'] '.$v['nom_prod'].' <span class="informal">('.number_format((double)$v['prix_prod'],2,',',' ').' €)</span></li>';
+                $out .= '<li title="'.$v['id_prod'].'-_-'.$v['treePathKey'].' '.$v['nom_prodfam'].'-_-'.$v['prix_prod'].'-_-'.$v['description_prod'].'-_-'.$v['PF'].'">['.$v['id_prod'].'] '.$v['nom_prod'].' <span class="informal">('.number_format((double)$v['prix_prod'],2,',',' ').' €)</span></li>';
         }
     }
     elseif($PC->rcvG['action'] == 'listeAffaire') {
@@ -202,11 +202,11 @@ if(array_key_exists('action', $PC->rcvG)) {
             $search = '';
         else
             $search = $PC->rcvP['value'];
-        $sql->makeRequeteFree("SELECT * FROM ref_prodfamille where nom_prodfam LIKE '".$search."%' order by nom_prodfam");
+        $sql->makeRequeteFree("SELECT * FROM ref_prodfamille where nom_prodfam LIKE '".$search."%' or treePathKey LIKE '".$search."%' order by nom_prodfam");
         $result = $sql->process2();
         if($result[0]) {
             foreach($result[1] as $v)
-                $out .='<li title="'.$v['id_prodfam'].'">'.$v['nom_prodfam'].'</li>';
+                $out .='<li title="'.$v['id_prodfam'].'">'.$v['treePathKey'].' '.$v['nom_prodfam'].'</li>';
         }
     }
     elseif($PC->rcvG['action'] == 'listeContactFournisseur') {

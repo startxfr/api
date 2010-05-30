@@ -75,22 +75,14 @@ class commandeModel extends GeneralModel {
     public function getDataForSearchWeb($search, $from = '0', $limit ='30', $order='ORDER BY id_cmd DESC', $conditions = '') {
 	$where = " WHERE ";
 	$archives = 0;
-	if(is_array($conditions)) {
-	    foreach($conditions as $k => $v) {
+	if(is_array($conditions))
+	    foreach($conditions as $k => $v)
 		if($k == 'cp_ent')		$where .= "$k LIKE '".$v."%' AND ";
 		elseif($k == 'sommeFHT_cmd')	$where .= " $k >= '$v' AND ";
 		elseif($k == 'sommeFHT_cmd2')	$where .= " sommeFHT_cmd < '$v' AND ";
-		elseif($k == 'status_cmd' and $v == '9') {
-		    $where .= "$k = '".$v."' AND ";
-		    $archives = $v;
-		}
 		elseif($k == 'status_cmd')	$where .= "$k = '".$v."' AND ";
 		elseif($k == 'entreprise_cmd')	$where .= "$k = '".$v."' AND ";
 		else				$where .= "$k LIKE '%".$v."%' AND ";
-	    }
-	}
-	if($archives != '9')			$where .= " status_cmd != '10' ";
-
 
 	if($limit != 'ALL')
 	    $this->makeRequeteFree("SELECT *, c2.id_cont AS id_achat, c2.civ_cont AS civ_achat, c2.prenom_cont AS prenom_achat, c2.nom_cont AS nom_achat, c2.mail_cont AS mail_achat, c2.fax_cont AS fax_achat
@@ -102,7 +94,7 @@ class commandeModel extends GeneralModel {
 			LEFT JOIN affaire ON affaire.id_aff = devis.affaire_dev
 			LEFT JOIN ref_statuscommande rsd ON rsd.id_stcmd = c.status_cmd
 			LEFT JOIN ref_pays rfp ON rfp.id_pays = c.paysdelivery_cmd
-			LEFT JOIN user ON user.login = c.commercial_cmd $where $order LIMIT $from , $limit ");
+			LEFT JOIN user ON user.login = c.commercial_cmd $where id_cmd IS NOT NULL $order LIMIT $from , $limit ");
 	else
 	    $this->makeRequeteFree("SELECT COUNT(*)
 			FROM commande c
@@ -113,7 +105,7 @@ class commandeModel extends GeneralModel {
 			LEFT JOIN affaire ON affaire.id_aff = devis.affaire_dev
 			LEFT JOIN ref_statuscommande rsd ON rsd.id_stcmd = c.status_cmd
 			LEFT JOIN ref_pays rfp ON rfp.id_pays = c.paysdelivery_cmd
-			LEFT JOIN user ON user.login = c.commercial_cmd $where $order ");
+			LEFT JOIN user ON user.login = c.commercial_cmd $where id_cmd IS NOT NULL $order ");
 	return $this->process2();
     }
 
@@ -190,6 +182,21 @@ class commandeModel extends GeneralModel {
     }
 
     /**
+     * Méthode qui récupère le statut d'une commande
+     * @param string $id L'id de la commande dont on veut le statut
+     * @return array Le statut de la commande
+     */
+    public function getAllStatusCommande() {
+	$out = array();
+	$this->makeRequeteFree("SELECT * from ref_statuscommande;");
+	$status = $this->process2();
+	if(is_array($status[1]))
+	    foreach($status[1] as $v)
+		$out[$v['id_stcmd']] = $v['nom_stcmd'];
+	return $out;
+    }
+
+    /**
      * Fonction de recherche de données produit à partir d'un nom, un id ou une famille de produits.
      * @param string $search Ce que l'on cherche
      * @param int $limit Le nombre max de résultat (defaut 10)
@@ -198,10 +205,10 @@ class commandeModel extends GeneralModel {
      */
     public function getDataForSearchProd($search,$limit = 10, $from = 0) {
 	$qTag = " LIKE '%".$search."%' ";
-	$this->makeRequeteFree("SELECT  nom_prod, id_prod, nom_prodfam, prix_prod
+	$this->makeRequeteFree("SELECT  nom_prod, id_prod, nom_prodfam, treePathKey, prix_prod
 				FROM produit
 				LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod
-				WHERE nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag
+				WHERE nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag
 				ORDER BY id_prod ASC
 				LIMIT $from , $limit");
 	//Fonction appelée lors d'une recherche simple.
@@ -912,7 +919,7 @@ class commandeModel extends GeneralModel {
 	    if($newAttribList['condireglement_cmd'] != '')
 		$newData['condireglement_cmd'] = $newAttribList['condireglement_cmd'];
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::changeAttributeCommandeInDB() ~ changement d\'attribut de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
@@ -930,7 +937,7 @@ class commandeModel extends GeneralModel {
 	    $cmd = $cmd[0];
 	    $newData['status_cmd'] = '10';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'archive', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::archivateCommandeInDB() ~ Commande '.$id_cmd.' marquée comme archivée',$sql,__FILE__.'@'.__LINE__);
@@ -949,7 +956,7 @@ class commandeModel extends GeneralModel {
 		$newData['commentaire_cmd'] = $cmd['commentaire_cmd'].'. '.$newAttribList['commentaireRecu'];
 	    $newData['status_cmd'] = '2';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markRecuCommandeInDB() ~ Commande '.$id_cmd.' marquée comme supprimée',$sql,__FILE__.'@'.__LINE__);
@@ -970,7 +977,7 @@ class commandeModel extends GeneralModel {
 		$newData['commentaire_cmd'] = $cmd['commentaire_cmd'].'. '.$newAttribList['commentaireBDCFEnvoye'];
 	    $newData['status_cmd'] = '4';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme envoyé',$sql,__FILE__.'@'.__LINE__);
@@ -989,7 +996,7 @@ class commandeModel extends GeneralModel {
 		$newData['commentaire_cmd'] = $cmd['commentaire_cmd'].'. '.$newAttribList['commentaireBDCFRecu'];
 	    $newData['status_cmd'] = '5';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markBDCFRecuCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme reçu',$sql,__FILE__.'@'.__LINE__);
@@ -1008,7 +1015,7 @@ class commandeModel extends GeneralModel {
 		$newData['commentaire_cmd'] = $cmd['commentaire_cmd'].'. '.$newAttribList['commentaireBDCFValid'];
 	    $newData['status_cmd'] = '6';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme validé',$sql,__FILE__.'@'.__LINE__);
@@ -1027,7 +1034,7 @@ class commandeModel extends GeneralModel {
 		$newData['commentaire_cmd'] = $cmd['commentaire_cmd'].'. '.$newAttribList['commentaireExpedie'];
 	    $newData['status_cmd'] = '7';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markExpedieCommandeInDB() ~ Commande '.$id_cmd.' marquée comme expédiée',$sql,__FILE__.'@'.__LINE__);
@@ -1046,7 +1053,7 @@ class commandeModel extends GeneralModel {
 		$newData['commentaire_cmd'] = $cmd['commentaire_cmd'].'. '.$newAttribList['commentaireReceptionne'];
 	    $newData['status_cmd'] = '8';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markReceptionneCommandeInDB() ~ Commande '.$id_cmd.' marquée comme réceptionnée',$sql,__FILE__.'@'.__LINE__);
@@ -1065,7 +1072,7 @@ class commandeModel extends GeneralModel {
 		$newData['commentaire_cmd'] = $cmd['commentaire_cmd'].'. '.$newAttribList['commentaireTermine'];
 	    $newData['status_cmd'] = '9';
 
-	    $sql = $bddtmp->makeRequeteUpdate('commande','id_cmd',$id_cmd,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markTermineCommandeInDB() ~ Commande '.$id_cmd.' marquée comme terminée',$sql,__FILE__.'@'.__LINE__);

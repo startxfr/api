@@ -51,8 +51,15 @@ if($PC->rcvP['action'] == 'searchFacture') {
         $data['sommeHT_fact2'] = $PC->rcvP['sommeHT_fact2'];
     if($PC->rcvP['type_fact'] != '')
         $data['type_fact'] = $PC->rcvP['type_fact'];
-    if($PC->rcvP['order'] != '')
-	$ordre = 'ORDER BY '.$PC->rcvP['order'].' '.$PC->rcvP['orderSens'];
+    if($PC->rcvP['order'] != '') {
+	$datas['order'] = $PC->rcvP['order'];
+	$datas['orderSens'] = $PC->rcvP['orderSens'];
+    }
+    else {
+	$datas['order'] = 'id_fact';
+	$datas['orderSens'] = 'DESC';
+    }
+    $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
     if($PC->rcvP['limit'] != '')
          $datas['limit'] = $PC->rcvP['limit'];
     else $datas['limit'] = '30';
@@ -66,8 +73,6 @@ if($PC->rcvP['action'] == 'searchFacture') {
         $datas['limit'] = $datas['total'];
         $datas['from'] = 0;
     }
-    $datas['order'] = $PC->rcvP['order'];
-    $datas['orderSens'] = $PC->rcvP['orderSens'];
     $result = $req->getDataForSearchWeb('', $datas['from'], $datas['limit'], $ordre, $data);
     $datas['data'] = $result[1];
     $view = new factureView();
@@ -233,25 +238,19 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
     $message = $message.'<script type="text/javascript">setTimeout("window.location.href = \'FactureListe.php\';",1000);</script>';
 }
 else {
-    if($PC->rcvG['status_fact'] != '') {
+    if($PC->rcvG['status_fact'] != '')
         $data['status_fact'] = $PC->rcvG['status_fact'];
-    }
-    $req = new factureModel();
-    $total = $req->getDataForSearchWeb('', 0, 'ALL', '', $data);
-    $total = $total[1][0]['COUNT(*)'];
-    $datas['total'] = $total;
-    $result = $req->getDataForSearchWeb('', 0, 30, '', $data);
-    $result = $result[1];
-    $datas['data'] = $result;
-    $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-    $req = "SELECT * from ref_statusfacture ";
-    $sqlConn->makeRequeteFree($req);
-    $status = $sqlConn->process2();
-    if(is_array($status[1]))
-        foreach($status[1] as $v)
-            $datas['status'][$v['id_stfact']] = $v['nom_stfact'];
     $datas['from'] = 0;
     $datas['limit'] = 30;
+    $datas['order'] = 'id_fact';
+    $datas['orderSens'] = 'DESC';
+    $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
+    $req = new factureModel();
+    $total = $req->getDataForSearchWeb('', $datas['from'], 'ALL', $ordre, $data);
+    $datas['total'] = $total[1][0]['COUNT(*)'];
+    $result = $req->getDataForSearchWeb('', $datas['from'], $datas['limit'],$ordre, $data);
+    $datas['data'] = $result[1];
+    $datas['status'] = $req->getAllStatusFacture();
     $view = new factureView();
     $mess = ($PC->rcvG['mess']!='') ? $PC->rcvG['mess'] : '';
     $sortie = $view->searchResult($datas, $mess);

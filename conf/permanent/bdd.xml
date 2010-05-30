@@ -31,7 +31,7 @@
 	<value id="serveur">localhost</value>
 	<value id="login">zunoref</value>
 	<value id="pass">zunoref</value>
-	<value id="base">zuno_ref</value>
+	<value id="base">zunoRef</value>
 	<value id="persistant">FALSE</value>
     </group>
 </configuration>

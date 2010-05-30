@@ -355,10 +355,15 @@ class Bdd_mysql {
 	$this->connect();
 	$generate_time_begin = microtime(true);
 	$this->requete = trim($this->requete);
-	$pos = strpos($this->requete, ';');
-	$taille = strlen($this->requete);
-	if(($pos+1 != $taille) && ($pos !== false)) {
-	    return $this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete).' /';
+	if(substr($this->requete,-1, 1) == ';')
+	    $this->requete = substr($this->requete,0,-1);
+	if(strpos($this->requete, '; SELECT') !== false or strpos($this->requete, ';SELECT') !== false or
+	   strpos($this->requete, '; INSERT') !== false or strpos($this->requete, ';INSERT') !== false or
+	   strpos($this->requete, '; UPDATE') !== false or strpos($this->requete, ';UPDATE') !== false or
+	   strpos($this->requete, '; DELETE') !== false or strpos($this->requete, ';DELETE') !== false or
+	   strpos($this->requete, '; ALTER')  !== false or strpos($this->requete, ';ALTER')  !== false or
+	   strpos($this->requete, '; DROP')   !== false or strpos($this->requete, ';DROP')   !== false) {
+	    return array(false,$this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete).' /');
 	}
 	$resultat = mysql_query($this->requete);
 	$generate_time_end = microtime(true);

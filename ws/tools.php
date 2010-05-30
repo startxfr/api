@@ -29,11 +29,9 @@ function getProduits($token, $all){
     global $zunoLastError;
     if(zunoWsdlServer::checkServerCredentials($token)) {
         $model = new produitModel();
-        if(!$all){
-            return serialize($model->getAllZunoProduits());
-        }
-        else
-            return serialize($model->getAllZunoProduits(""));
+        if($all)
+             return serialize($model->getAllZunoProduits());
+        else return serialize($model->getAllZunoProduits("Z"));
     }
     else return zunoWsdlServer::raiseFault('accesNonAutorisé','webservice sxa.tools.getProduits',$zunoLastError,array($token),__FILE__,__LINE__);
 }

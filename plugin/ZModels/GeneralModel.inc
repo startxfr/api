@@ -151,12 +151,12 @@ abstract class GeneralModel extends Bdd_mysql_2 {
      * @return array Les familles de produit
      */
     public function getAllFamille() {
-	$this->makeRequeteFree("SELECT * from ref_prodfamille order by nom_prodfam");
+	$this->makeRequeteFree("SELECT * from ref_prodfamille order by treePathKey ASC, nom_prodfam ASC");
 	$rs = $this->process2();
 	if($rs[0]) {
 	    $rs=$rs[1];
 	    foreach($rs as $k => $v)
-		$countryList[$v['id_prodfam']] = $v['nom_prodfam'];
+		$countryList[$v['id_prodfam']] = $v['treePathKey'].' '.$v['nom_prodfam'];
 	    return $countryList;
 	}
     }

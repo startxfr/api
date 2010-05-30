@@ -251,14 +251,14 @@ class devisModel extends GeneralModel {
 	    $this->makeRequeteFree("SELECT COUNT(*) " .
 		    "FROM produit " .
 		    "LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod ".
-		    "WHERE ( nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag ) AND stillAvailable_prod = 1 " .
+		    "WHERE ( nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag ) AND stillAvailable_prod = 1 " .
 		    "ORDER BY id_prod ASC ");
 	}
 	else {
-	    $this->makeRequeteFree("SELECT nom_prod, id_prod, nom_prodfam, prix_prod " .
+	    $this->makeRequeteFree("SELECT nom_prod, id_prod, nom_prodfam, treePathKey, prix_prod " .
 		    "FROM produit " .
 		    "LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod ".
-		    "WHERE ( nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag ) AND stillAvailable_prod = 1 " .
+		    "WHERE ( nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag ) AND stillAvailable_prod = 1 " .
 		    "ORDER BY id_prod ASC " .
 		    "LIMIT $from , $limit");
 	}
@@ -386,6 +386,21 @@ class devisModel extends GeneralModel {
     public function getStatusDevis($id) {
 	$this->makeRequeteFree("SELECT status_dev from devis where id_dev = '".$id."' ; ");
 	return $this->process2();
+    }
+
+    /**
+     * Méthode qui récupère le statut d'un devis
+     * @param string $id L'id du devis dont on veut le statut
+     * @return array Le statut du devis
+     */
+    public function getAllStatusDevis() {
+	$out = array();
+	$this->makeRequeteFree("SELECT * from ref_statusdevis;");
+	$status = $this->process2();
+	if(is_array($status[1]))
+	    foreach($status[1] as $v)
+		$out[$v['id_stdev']] = $v['nom_stdev'];
+	return $out;
     }
 
     /**
@@ -944,7 +959,7 @@ class devisModel extends GeneralModel {
 	    if($newAttribList['commercial_dev'] != '')
 		$newData['commercial_dev'] = $newAttribList['commercial_dev'];
 
-	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('devisModel::changeAttributeDevisInDB() ~ changement d\'attribut du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
@@ -962,7 +977,7 @@ class devisModel extends GeneralModel {
 	    $dev = $dev[0];
 	    $newData['status_dev'] = '7';
 
-	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'archive', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markEnvoyeDevisInDB() ~ Devis '.$id_dev.' marqué comme archivé',$sql,__FILE__.'@'.__LINE__);
@@ -980,7 +995,7 @@ class devisModel extends GeneralModel {
 		$newData['commentaire_dev'] = ($dev['commentaire_dev'] != '') ? $dev['commentaire_dev'].'. '.$newAttribList['commentaireDelete'] : $newAttribList['commentaireDelete'];
 	    $newData['status_dev'] = '2';
 
-	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markDeleteDevisInDB() ~ Devis '.$id_dev.' marqué comme supprimé',$sql,__FILE__.'@'.__LINE__);
@@ -1001,7 +1016,7 @@ class devisModel extends GeneralModel {
 		$newData['commentaire_dev'] = ($dev['commentaire_dev'] != '') ? $dev['commentaire_dev'].'. '.$newAttribList['commentaireEnvoye'] : $newAttribList['commentaireEnvoye'];
 	    $newData['status_dev'] = '4';
 
-	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markEnvoyeDevisInDB() ~ Devis '.$id_dev.' marqué comme envoyé',$sql,__FILE__.'@'.__LINE__);
@@ -1021,7 +1036,7 @@ class devisModel extends GeneralModel {
 		$newData['commentaire_dev'] = ($dev['commentaire_dev'] != '') ? $dev['commentaire_dev'].'. '.$newAttribList['commentairePerdu'] : $newAttribList['commentairePerdu'];
 	    $newData['status_dev'] = '5';
 
-	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markPerduDevisInDB() ~ Devis '.$id_dev.' marqué comme perdu',$sql,__FILE__.'@'.__LINE__);
@@ -1038,7 +1053,7 @@ class devisModel extends GeneralModel {
 	    $dev = $dev[0];
 	    $newData['status_dev'] = '1';
 
-	    $sql = $bddtmp->makeRequeteUpdate('devis','id_dev',$id_dev,$newData);
+	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markReinitDevisInDB() ~ Re-initialisation du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);

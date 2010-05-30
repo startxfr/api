@@ -31,7 +31,7 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 +------------------------------------------------------------------------*/
 
 if(!is_array($_SESSION) or !array_key_exists('user',$_SESSION))
-    header("Location: Login.php");
+    header("Location: Login.php?from=Bureau.php");
 
 if ($PC->rcvG['action'] == "reset") {
     unset($_SESSION['historiqueVisite']);
@@ -51,13 +51,13 @@ $initio = 0;
 $sortieL = $sortieR = "";
 foreach($sortieB as $v) {
     if($v == "")
-        continue;
+	continue;
     else {
-        if($initio % 2 == 0)
-            $sortieL .= $v;
-        else
-            $sortieR .= $v;
-        $initio++;
+	if($initio % 2 == 0)
+	    $sortieL .= $v;
+	else
+	    $sortieR .= $v;
+	$initio++;
     }
 }
 if($sortieL == $sortieR)
@@ -70,11 +70,11 @@ else
 $sortie = "";
 if($_SESSION['message'][0]['titre_mess'] != '' and $_SESSION['message']['dejaVu'] != true) {
     $mess .= '<div class="ZBox"><div class="body"><div class="content"><div class="block width50">';
-    foreach($_SESSION['message'] as $v) {        
-        $mess .= '<fieldset class="form">';
-        $mess .= '<legend>'.$v['titre_mess'].'</legend>';
-        $mess .= '<div class="row"><div class="label">Message : </div>';
-        $mess .= '<div class="field">'.$v['contenu_mess'].'</div></div></fieldset>';
+    foreach($_SESSION['message'] as $v) {
+	$mess .= '<fieldset class="form">';
+	$mess .= '<legend>'.$v['titre_mess'].'</legend>';
+	$mess .= '<div class="row"><div class="label">Message : </div>';
+	$mess .= '<div class="field">'.$v['contenu_mess'].'</div></div></fieldset>';
     }
     $mess .= '</div></div></div></div>';
     $sortie = '<script> var msg = \''.$mess.'\'; </script>';

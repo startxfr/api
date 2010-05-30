@@ -49,8 +49,15 @@ if($PC->rcvP['action'] == 'searchCmd') {
 	$data['sommeFHT_cmd'] = $PC->rcvP['sommeFHT_cmd'];
     if($PC->rcvP['sommeFHT_cmd2'] != '')
 	$data['sommeFHT_cmd2'] = $PC->rcvP['sommeFHT_cmd2'];
-    if($PC->rcvP['order'] != '')
-	$ordre = 'ORDER BY '.$PC->rcvP['order'].' '.$PC->rcvP['orderSens'];
+    if($PC->rcvP['order'] != '') {
+	$datas['order'] = $PC->rcvP['order'];
+	$datas['orderSens'] = $PC->rcvP['orderSens'];
+    }
+    else {
+	$datas['order'] = 'id_cmd';
+	$datas['orderSens'] = 'DESC';
+    }
+    $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
     if($PC->rcvP['limit'] != '')
 	 $datas['limit'] = $PC->rcvP['limit'];
     else $datas['limit'] = '30';
@@ -64,8 +71,6 @@ if($PC->rcvP['action'] == 'searchCmd') {
 	$datas['limit'] = $datas['total'];
 	$datas['from'] = 0;
     }
-    $datas['order'] = $PC->rcvP['order'];
-    $datas['orderSens'] = $PC->rcvP['orderSens'];
     $result = $req->getDataForSearchWeb('', $datas['from'], $datas['limit'], $ordre, $data);
     $datas['data'] = $result[1];
     $view = new commandeView();
@@ -310,22 +315,18 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
     $message = $message.'<script type="text/javascript">setTimeout("window.location.href = \'CommandeListe.php\';",1000);</script>';
 }
 else {
-    $req = new commandeModel();
-    $total = $req->getDataForSearchWeb('', '0', 'ALL');
-    $total = $total[1][0]['COUNT(*)'];
-    $datas['total'] = $total;
-    $result = $req->getDataForSearchWeb('');
-    $result = $result[1];
-    $datas['data'] = $result;
-    $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-    $req = "SELECT * from ref_statuscommande ";
-    $sqlConn->makeRequeteFree($req);
-    $status = $sqlConn->process2();
-    if(is_array($status[1]))
-	foreach($status[1] as $v)
-	    $datas['status'][$v['id_stcmd']] = $v['nom_stcmd'];
+    if($PC->rcvG['status_cmd'] != '')
+	$data['status_cmd'] = $PC->rcvG['status_cmd'];
     $datas['from'] = 0;
     $datas['limit'] = 30;
+    $datas['order'] = 'id_cmd';
+    $datas['orderSens'] = 'DESC';
+    $req = new commandeModel();
+    $total = $req->getDataForSearchWeb('',$datas['from'], 'ALL','ORDER BY id_cmd DESC',$data);
+    $datas['total'] = $total[1][0]['COUNT(*)'];
+    $result = $req->getDataForSearchWeb('',$datas['from'],$datas['limit'],'ORDER BY id_cmd DESC',$data);
+    $datas['data'] = $result[1];
+    $datas['status'] = $req->getAllStatusCommande();
     $view = new commandeView();
     $sortie = $view->searchResult($datas, '');
 }

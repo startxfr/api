@@ -336,7 +336,6 @@ class Payline {
 	$this->array['wallet']['lastName'] = $this->nom;
 	$this->array['wallet']['firstName'] = $this->prenom;
 	$this->array['wallet']['email'] = $this->mailRetour;
-
 	$this->array['card']['number'] = $this->carte;
 	$this->array['card']['type'] = $this->typeCarte;
 	list($year, $month, $day) = explode("-", $this->dateCarte);
@@ -344,7 +343,6 @@ class Payline {
 	$this->array['card']['cvx'] = $this->cvvCarte;
 	$this->array['card']['ownerBirthdayDate'] = $this->anniv;
 	$this->array['card']['password'] = $this->passwordCarte;
-
     }
 
     /**
@@ -379,7 +377,6 @@ class Payline {
      * Méthode qui génère le tableau à envoyer pour une demande de payement sans wallet
      */
     private function generateArrayAuthorisation() {
-
 	$this->array['card']['number'] = $this->carte;
 	$this->array['card']['type'] = $this->typeCarte;
 	list($year, $month, $day) = explode("-", $this->dateCarte);

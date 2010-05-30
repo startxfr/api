@@ -50,7 +50,7 @@ class zunoWsdlServer {
 
     static function checkServerCredentials($token) {
 	global $zunoLastError;
-	if (md5($GLOBALS['DBPool_1']['pass']) == $token)
+	if ($GLOBALS['zunoManagerWebService']['superBase_token'] == $token)
 	    return true;
 	else $zunoLastError = "ERREUR : Le jeton présenté ne corespond pas au jeton autorisé. ";
 	Logg::loggerError('zunoWsdlServer::checkServerCredentials() ~  Accès refusé à '.$managerName.' : '.$zunoLastError,array($managerName,$managerKey),$file.'@'.$line);

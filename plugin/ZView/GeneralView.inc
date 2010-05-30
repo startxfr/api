@@ -65,23 +65,25 @@ class generalView {
 	    $point = "../";
 	if($total == 0) {
 	    if($titre == 'commande')  $tt = 'Aucune commande trouvée';
-	    elseif($titre == 'commandeHisto')  $tt = 'Aucune commande consultée';
+	    elseif($titre == 'commandeHisto')  $tt = 'Aucune commande récemment consultée';
 	    elseif($titre == 'devis') $tt = 'Aucun devis trouvé';
-	    elseif($titre == 'devisHisto') $tt = 'Aucun devis consulté';
+	    elseif($titre == 'devisHisto') $tt = 'Aucun devis récemment consulté';
 	    elseif($titre == 'affaire') $tt = 'Aucune affaire trouvée';
-	    elseif($titre == 'affaireHisto') $tt = 'Aucune affaire consultée';
+	    elseif($titre == 'affaireHisto') $tt = 'Aucune affaire récemment consultée';
 	    elseif($titre == 'contact') $tt = 'Aucun contact trouvé';
-	    elseif($titre == 'contactHisto') $tt = 'Aucun contact consulté';
+	    elseif($titre == 'contactHisto') $tt = 'Aucun contact récemment consulté';
 	    elseif($titre == 'projet') $tt = 'Aucun projet trouvé';
-	    elseif($titre == 'projetHisto') $tt = 'Aucun projet consulté';
+	    elseif($titre == 'projetHisto') $tt = 'Aucun projet récemment consulté';
 	    elseif($titre == 'produit') $tt = 'Aucun produit trouvé';
-	    elseif($titre == 'produitHisto') $tt = 'Aucun produit consulté';
+	    elseif($titre == 'produitHisto') $tt = 'Aucun produit récemment consulté';
 	    elseif($titre == 'facture') $tt = 'Aucune facture trouvée';
-	    elseif($titre == 'factureHisto') $tt = 'Aucune facture consultée';
+	    elseif($titre == 'factureHisto') $tt = 'Aucune facture récemment consultée';
 	    elseif($titre == 'fournisseur') $tt = 'Aucun fournisseur trouvé';
-	    elseif($titre == 'fournisseurHisto') $tt = 'Aucun fournisseur consulté';
+	    elseif($titre == 'fournisseurHisto') $tt = 'Aucun fournisseur récemment consulté';
 	    elseif($titre == 'factureFourn') $tt = 'Aucune facture fournisseur trouvée';
-	    elseif($titre == 'factureFournHisto') $tt = 'Aucune facture fournisseur consultée';
+	    elseif($titre == 'factureFournHisto') $tt = 'Aucune facture fournisseur récemment consultée';
+	    elseif($titre == 'pontComptable') $tt = 'Aucun fichier d\'export comptable trouvé';
+	    elseif($titre == 'pontComptableHisto') $tt = 'Aucun fichier d\'export comptable récemment consulté';
 	    $titre = imageTag($point.'img/prospec/result.png','recherche')." $tt";
 	}
 	elseif($total == 1) {
@@ -95,35 +97,39 @@ class generalView {
 	    elseif($titre == 'facture') $tt = 'Affichage de la facture trouvée';
 	    elseif($titre == 'fournisseur') $tt = 'Affichage du fournisseur trouvé';
 	    elseif($titre == 'factureFourn') $tt = 'Affichage de la facture fournisseur trouvée';
-	    elseif($titre == 'devisHisto') $tt = 'Affichage du devis consulté';
+	    elseif($titre == 'pontComptable') $tt = 'Affichage du fichier d\'export comptable trouvé';
+	    elseif($titre == 'devisHisto') $tt = 'Affichage du dernier devis consulté';
 	    elseif($titre == 'affaireHisto') $tt = ' Affichage de la dernière affaire consultée';
-	    elseif($titre == 'contactHisto') $tt = 'Affichage du contact consulté';
-	    elseif($titre == 'projetHisto') $tt = 'Affichage du projet consulté';
-	    elseif($titre == 'produitHisto') $tt = 'Affichage du produit consulté';
-	    elseif($titre == 'factureHisto') $tt = 'Affichage de la facture consultée';
-	    elseif($titre == 'fournisseurHisto') $tt = 'Affichage du fournisseur consulté';
-	    elseif($titre == 'factureFournHisto') $tt = 'Affichage de la facture fournisseur consultée';
+	    elseif($titre == 'contactHisto') $tt = 'Affichage du dernier contact consulté';
+	    elseif($titre == 'projetHisto') $tt = 'Affichage du dernier projet consulté';
+	    elseif($titre == 'produitHisto') $tt = 'Affichage du dernier produit consulté';
+	    elseif($titre == 'factureHisto') $tt = 'Affichage de la dernière facture consultée';
+	    elseif($titre == 'fournisseurHisto') $tt = 'Affichage du dernier fournisseur consulté';
+	    elseif($titre == 'factureFournHisto') $tt = 'Affichage de la dernière facture fournisseur consultée';
+	    elseif($titre == 'pontComptableHisto') $tt = 'Affichage du dernier fichier d\'export comptable consulté';
 	    $titre = imageTag($point.'img/prospec/result.png','recherche')." $tt";
 	}
 	else {
 	    if($titre == 'commande') $tt = ' Affichage des commandes';
-	    elseif($titre == 'commandeHisto') $tt = 'Affichage des dernières commandes consultées';
 	    elseif($titre == 'devis') $tt = ' Affichage des devis';
 	    elseif($titre == 'affaire') $tt = ' Affichage des affaires';
-	    elseif($titre == 'affaireHisto') $tt = ' Affichage des dernières affaires consultées';
 	    elseif($titre == 'contact') $tt = ' Affichage des contacts';
 	    elseif($titre == 'projet') $tt = ' Affichage des projets';
 	    elseif($titre == 'produit') $tt = ' Affichage des produits';
 	    elseif($titre == 'facture') $tt = ' Affichage des factures';
 	    elseif($titre == 'fournisseur') $tt = ' Affichage des fournisseurs';
 	    elseif($titre == 'factureFourn') $tt = ' Affichage des factures fournisseurs';
+	    elseif($titre == 'pontComptable') $tt = ' Affichage des fichiers d\'export comptable';
 	    elseif($titre == 'devisHisto') $tt = 'Affichage des derniers devis consultés';
+	    elseif($titre == 'affaireHisto') $tt = ' Affichage des dernières affaires consultées';
+	    elseif($titre == 'commandeHisto') $tt = 'Affichage des dernières commandes consultées';
 	    elseif($titre == 'contactHisto') $tt = 'Affichage des derniers contacts consultés';
 	    elseif($titre == 'projetHisto') $tt = 'Affichage des derniers projets consultés';
 	    elseif($titre == 'produitHisto') $tt = 'Affichage des derniers produits consultés';
 	    elseif($titre == 'factureHisto') $tt = 'Affichage des dernières factures consultées';
 	    elseif($titre == 'fournisseurHisto') $tt = 'Affichage des derniers fournisseurs consultés';
 	    elseif($titre == 'factureFournHisto') $tt = 'Affichage des dernières factures fournisseur consultées';
+	    elseif($titre == 'pontComptableHisto') $tt = 'Affichage des derniers  fichier d\'export comptable consultés';
 	    if(preg_match('/Histo/i', $titre)) {
 		$titre = $tt;
 	    }

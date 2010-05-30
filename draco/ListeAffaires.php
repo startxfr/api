@@ -35,6 +35,8 @@ if($PC->rcvP['action'] == 'searchAffaire') {
     if($PC->rcvP['from'] != '')
 	$datas['from'] = $PC->rcvP['from'];
     else	$datas['from'] = '0';
+    if($PC->rcvP['order'] == '')
+	$PC->rcvP['order'] = 'id_aff';
     $req = new affaireModel();
     $result = $req->getDataForSearchWeb($PC->rcvP, 'ALL', $datas['from'], '', $PC->rcvP['order'], $PC->rcvP['orderSens']);
     $datas['total'] = $result[1][0]['COUNT(*)'];
@@ -151,14 +153,15 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
     $message = $message.'<script type="text/javascript">setTimeout("window.location.href = \'ListeAffaires.php\';",1000);</script>';
 }
 else {
-    $req = new affaireModel();
-    $total = $req->getDataForSearchWeb('', 'ALL', '0');
-    $total = $total[1][0]['COUNT(*)'];
-    $datas['total'] = $total;
-    $result = $req->getDataForSearchWeb('');
-    $datas['data'] = $result[1];
     $datas['from'] = 0;
     $datas['limit'] = 30;
+    $datas['order'] = 'id_aff';
+    $datas['orderSens'] = 'DESC';
+    $req = new affaireModel();
+    $total = $req->getDataForSearchWeb($datas, 'ALL', $datas['from']);
+    $datas['total'] = $total[1][0]['COUNT(*)'];
+    $result = $req->getDataForSearchWeb($datas, $datas['limit'], $datas['from']);
+    $datas['data'] = $result[1];
     $view = new affaireView();
     $sortie = $view->searchResult($datas);
 }

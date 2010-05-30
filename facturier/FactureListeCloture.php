@@ -32,56 +32,23 @@ ini_set("memory_limit","20m");
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
 aiJeLeDroit('facture', 05, 'web');
-if ($PC->rcvP['action'] == 'reset') {
-    unset($_SESSION['FactureSearch']);
-    unset($_SESSION['FactureSearchQuery']);
-}
-else {
-    $_SESSION['FactureSearch']['status_fact'] = '6';
 
-    // Stockage de l'ordre de tri
-    if (isset($PC->rcvP['order']))		$_SESSION['FactureSearch']['order'] = $PC->rcvP['order'];
-
-    if (isset($PC->rcvG['viewmode']))		$_SESSION['FactureSearch']['view']['viewmode'] = $PC->rcvG['viewmode'];
-    if (isset($PC->rcvP['viewmode']))		$_SESSION['FactureSearch']['view']['viewmode'] = $PC->rcvP['viewmode'];
-
-    if (isset($PC->rcvG['_from']))		$_SESSION['FactureSearch']['view']['_from'] = $PC->rcvG['_from'];
-    if (isset($PC->rcvP['_from']))		$_SESSION['FactureSearch']['view']['_from'] = $PC->rcvP['_from'];
-
-    if (isset($PC->rcvG['_limit']))		$_SESSION['FactureSearch']['view']['_limit'] = $PC->rcvG['_limit'];
-    if (isset($PC->rcvP['_limit']))		$_SESSION['FactureSearch']['view']['_limit'] = $PC->rcvP['_limit'];
-}
-
-
-if ($PC->rcvG['action'] == 'exportTableur') {
-    $req = new factureModel();
-    $result = $req->getDataForSearchWeb('',0,1000,'ORDER BY id_fact DESC',array('status_fact', 6));
-    $gnose = new factureGnose();
-    $file = $gnose->FactureExportTableurConverter($result[1],0);
-    PushFileToBrowser($file);
-    exit;
-}
-
-$req = new factureModel();
-$total = $req->getDataForSearchWeb('', '0', 'ALL', 'ORDER BY id_fact DESC',array('status_fact' => 6));
-$total = $total[1][0]['COUNT(*)'];
-$datas['total'] = $total;
-$result = $req->getDataForSearchWeb('','0', '30', 'ORDER BY id_fact DESC',array('status_fact' => 6));
-$result = $result[1];
-$datas['data'] = $result;
-$sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-$req = "SELECT * from ref_statusfacture ";
-$sqlConn->makeRequeteFree($req);
-$status = $sqlConn->process2();
-if(is_array($status[1]))
-    foreach($status[1] as $v)
-        $datas['status'][$v['id_stfact']] = $v['nom_stfact'];
+$data['status_fact'] = 6;
 $datas['from'] = 0;
 $datas['limit'] = 30;
+$datas['order'] = 'id_fact';
+$datas['orderSens'] = 'DESC';
+$ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
+$req = new factureModel();
+$total = $req->getDataForSearchWeb('', $datas['from'], 'ALL', '', $data);
+$datas['total'] = $total[1][0]['COUNT(*)'];
+$result = $req->getDataForSearchWeb('', $datas['from'], $datas['limit'],$ordre, $data);
+$datas['data'] = $result[1];
+$datas['status'] = $req->getAllStatusFacture();
 $view = new factureView();
-$sortie = $view->searchResult($datas, '');
+$mess = ($PC->rcvG['mess']!='') ? $PC->rcvG['mess'] : '';
+$sortie = $view->searchResult($datas, $mess);
 
-//$sortie .= BoxFactureListe($_SESSION['FactureSearch']);
 /*------------------------------------------------------------------------+
 | DISPLAY PROCESSING
 +------------------------------------------------------------------------*/

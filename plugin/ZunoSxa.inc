@@ -44,11 +44,10 @@ class produitModel extends produitModelOriginal {
      * @param string $nom Le nom de la famille ZUNO
      * @return array Les produits
      */
-    public function getAllZunoProduits($nom = "ZUNO") {
+    public function getAllZunoProduits($nom = "Z") {
         if($nom != "")
-            $this->makeRequeteFree("SELECT * FROM produit LEFT JOIN ref_prodfamille ON id_prodfam = famille_prod WHERE nom_prodfam = '$nom'");
-        else
-            $this->makeRequeteFree("SELECT * FROM produit");
+             $this->makeRequeteFree("SELECT * FROM produit LEFT JOIN ref_prodfamille ON id_prodfam = famille_prod WHERE treePathKey LIKE '%$nom'");
+        else $this->makeRequeteFree("SELECT * FROM produit LEFT JOIN ref_prodfamille ON id_prodfam = famille_prod ");
         return $this->process2();
     }
 
