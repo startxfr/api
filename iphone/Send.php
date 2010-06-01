@@ -76,6 +76,7 @@ if($PC->rcvG['type'] == 'mail')
 				$_SESSION['ZSend']['data']['email'],
 				$_SESSION['ZSend']['data']['message'],
 				$GLOBALS['SVN_Pool1']['WorkCopy'].
+				$GLOBALS['SVN_Pool1']['WorkDir'].
 				$GLOBALS['ZunoSendMail']['dir.pj'].
 				$_SESSION['ZSend']['data']['file'],
 				'',
@@ -158,7 +159,7 @@ elseif($PC->rcvG['type'] == 'courrier')
 			'cp'   => $d['cp'],
 			'ville'=> $d['ville'],
 			'code_pays' => $d['cpays']);
-		$result = SendLetter($addData,$GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoSendMail']['dir.pj'].$d['file']);
+		$result = SendLetter($addData,$GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$d['file']);
 		if($result[0])
 		{	?>
 			<root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>
@@ -231,7 +232,7 @@ elseif($PC->rcvG['type'] == 'fax')
 		$addData = array(
 			'nom1' => $d['nom'],
 			'fax'  => $d['fax']);
-		$result = SendFax($addData,$GLOBALS['SVN_Pool1']['WorkCopy']. $GLOBALS['ZunoSendMail']['dir.pj'].$d['file']);
+		$result = SendFax($addData,$GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$d['file']);
 		if($result[0])
 		{	?>
 			<root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>

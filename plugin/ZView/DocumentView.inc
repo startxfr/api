@@ -261,17 +261,17 @@ class documentViewRepertoire extends generalView {
      * @param string $path Le path du dossier relatif au dossier GNOSE
      * @param string $lieu Précise si on est dans WORK (par défaut) ou dans ARCHIVES
      */
-    function __construct($path='', $lieu = 'WORK') {
+    function __construct($path='', $lieu = 'WORK/') {
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Répertoire "'.$path.'"','',true);
-	if($lieu == 'WORK') {
-	    $pathDefaut = $GLOBALS['SVN_Pool1']['WorkCopy'].'WORK';
-	    $this->m_lieu='WORK';
+	if($lieu == $GLOBALS['SVN_Pool1']['WorkDir']) {
+	    $pathDefaut = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'];
+	    $this->m_lieu=$GLOBALS['SVN_Pool1']['WorkDir'];
 	    $this->m_page = '../gnose/BrowseWork.php';
 	}
-	elseif($lieu == 'ARCHIVES') {
-	    $pathDefaut = $GLOBALS['SVN_Pool1']['WorkCopy'].'ARCHIVES';
-	    $this->m_lieu='ARCHIVES';
+	elseif($lieu == $GLOBALS['SVN_Pool1']['ArchivesDir']) {
+	    $pathDefaut = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['ArchivesDir'];
+	    $this->m_lieu=$GLOBALS['SVN_Pool1']['ArchivesDir'];
 	    $this->m_page = '../gnose/BrowseArchive.php';
 	}
 	$path2 = $path;
@@ -448,14 +448,14 @@ class documentViewRepertoire extends generalView {
      */
     private function afficherOptions() {
 
-	switch(substr($this->m_souspath, 0,13)) {
-	    case "WORK/Affaires" :
+	switch(substr($this->m_souspath, 0,14)) {
+	    case $GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'] :
 		if(!is_numeric(substr($this->m_souspath, 14,6)) and substr($this->m_souspath, 14,6) != "")
 		    return true;
-	    case "WORK/Cannevas" :
+	    case $GLOBALS['SVN_Pool1']['WorkDir']."Cannevas/" :
 		return false;
 		break;
-	    case "WORK/Factures" :
+	    case $GLOBALS['SVN_Pool1']['WorkDir']."Factures/" :
 		if(substr($this->m_souspath, 14,6) != "" and !(substr($this->m_souspath,14,7) == "Clients" or substr($this->m_souspath,14,12) == "Fournisseurs"))
 		    return true;
 		return false;
@@ -483,7 +483,7 @@ class documentViewRepertoire extends generalView {
 		    $ligne .= ' <b><a title="'.$k.'" onclick="afficherContenu(\''.$this->m_page.'\', \'action=naviguer&style=ajax&rep='.$v->sousPath().'\', \''.$v->sousPath().'\');">'.$k.'</a></b></div>';
 		    $ligne .= '<div class="cellule center bg" style="display:table-cell;width:30px;white-space:nowrap;padding-left:7px;padding-right:7px;"></div>';
 		    $ligne .= '<div class="cellule center bg" style="display:table-cell;width:30px;white-space:nowrap;padding-left:7px;padding-right:7px;">'.$v->dateM().'</div><div class="cellule right bg" style="display:table-cell;white-space:nowrap;width:30px;padding-left:7px;padding-right:7px;"><a title="Détail sur l\'utilisateur '.$v->proprio().'" href="javascript:zuno.popup.open(\'../User.php\',\'type=popup&id='.$v->proprio().'\',\'680\',\'300\',\'\',\'\',\'\',\'User\');"><b>'.$v->proprio().'</b></a></div>';
-		    if($this->m_lieu == "WORK") {
+		    if($this->m_lieu == $GLOBALS['SVN_Pool1']['WorkDir']) {
 			if($v->afficherOptions())
 			    $plus = '<a title="Modifier ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'path='.$v->sousPath().'&action=modifD&format=popup\',\'640\',\'480\',\'\',\'\',\'\',\'Modifier\');">
 								<img alt="Modifier ce dossier" src="../img/gnose/modify.png"/>
@@ -556,7 +556,7 @@ class documentViewRepertoire extends generalView {
 							<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;"><a title="Détail sur l\'utilisateur '.$v->proprio().'" href="javascript:zuno.popup.open(\'../User.php\',\'type=popup&id='.$v->proprio().'\',\'680\',\'300\',\'\',\'\',\'\',\'User\');">
 							<b>root</b>
 							</a></div>';
-		if($this->m_lieu == "WORK")
+		if($this->m_lieu == $GLOBALS['SVN_Pool1']['WorkDir'])
 		    $ligne .= '<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;">
 							<a title="Modifier ce fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?action=modifF&path='.$v->sousPath().'&format=popup\',\'640\',\'480\',\'\',\'\',\'\',\'Uploader\');">
 							<img alt="Modifier ce fichier" src="../img/gnose/modify.png"/>

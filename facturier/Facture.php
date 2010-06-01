@@ -478,7 +478,7 @@ elseif($PC->rcvP['action'] == 'payerCB') {
         $cleanFrom[] = "{payline_trans}";
         $cleanTo[] = $payline['transaction_hp'];
 
-        $key = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoSendMail']['dir.texte'].'_mailPayement.txt';
+        $key = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.texte'].'_mailPayement.txt';
 
 
         if($PC->rcvP['email_client'] == 1 and $PC->rcvP['mail_cont'] != "") {

@@ -20,7 +20,7 @@ $PC->GetVarContext();
 
 if($PC->rcvP['action'] == 'send') {
     if(array_key_exists('path', $PC->rcvP)) {
-        $path = split("/", $PC->rcvP['path']);
+        $path = explode("/", $PC->rcvP['path']);
         $PC->rcvP['fichier'] = $path[count($path)-1];
         $PC->rcvP['partie'] = "send";
         $PC->rcvP['dir_aff'] = $path[count($path)-2]."/";
@@ -37,7 +37,7 @@ if($PC->rcvP['action'] == 'send') {
 }
 else{
     $data['path'] = $PC->rcvG['file'];
-    $path = split("/",$PC->rcvG['file']);
+    $path = explode("/",$PC->rcvG['file']);
     $data['fichier'] = $path[count($path)-1];
     $view = new documentViewRepertoire();
     echo $view->popupSendMail("email", $data);

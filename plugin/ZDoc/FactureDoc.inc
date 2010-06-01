@@ -50,8 +50,8 @@ class factureGnose {
 	    $outputExt = 'pdf';
 	loadPlugin(array('OOConverter','docGenerator'));
 	if (array_key_exists($cannevas,$GLOBALS['ZunoFacture']))
-	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture'][$cannevas];
-	else $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture']['cannevas.defaut'];
+	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture'][$cannevas];
+	else $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture']['cannevas.defaut'];
 
 	$entreprise = $this->bddtmp->getDataFromID($id_fact);
 	$entreprise = $entreprise[1][0];
@@ -350,7 +350,7 @@ class factureGnose {
      */
     function FactureExportTableur($facture) {
 	loadPlugin(array('OOConverter'));
-	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
+	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
 	$cannevasFile = $cannevasPath.$GLOBALS['ZunoFacture']['cannevas.exportTableur'];
 
 	if(is_file($cannevasFile)) {

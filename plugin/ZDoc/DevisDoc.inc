@@ -48,8 +48,8 @@ class devisGnose {
     public function DevisGenerateDocument($id_dev,$outputExt = "",$cannevas = "") {
 	loadPlugin(array('OOConverter','docGenerator'));
 	if (array_key_exists($cannevas,$GLOBALS['ZunoDevis']))
-	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoDevis']['dir.cannevas'].$GLOBALS['ZunoDevis'][$cannevas];
-	else  $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoDevis']['dir.cannevas'].$GLOBALS['ZunoDevis']['cannevas.defaut'];
+	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoDevis']['dir.cannevas'].$GLOBALS['ZunoDevis'][$cannevas];
+	else  $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoDevis']['dir.cannevas'].$GLOBALS['ZunoDevis']['cannevas.defaut'];
 
 	$entreprise = $this->bddtmp->getDataFromID($id_dev);
 	$entreprise = $entreprise[1][0];
@@ -237,7 +237,7 @@ class devisGnose {
      */
     private function DevisExportTableur($devis) {
 	loadPlugin(array('OOConverter'));
-	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
+	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
 	$cannevasFile = $cannevasPath.$GLOBALS['ZunoDevis']['cannevas.exportTableur'];
 	if(is_file($cannevasFile)) {
 	    $extIn 	= FileGetExtention($cannevasFile);

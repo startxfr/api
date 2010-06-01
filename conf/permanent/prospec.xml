@@ -13,17 +13,17 @@
 	<value id="dir.img">prospec/</value>
 	<value id="color.leadRdv" title="couleur des RDV projet">#900</value>
 	<value id="image.score.width" title="largeur de l'image picto">40</value>
-	<value id="dir.cannevas.exportTableur" title="">WORK/Cannevas/ExportTableur/</value>
+	<value id="dir.cannevas.exportTableur" title="">Cannevas/ExportTableur/</value>
 	<value id="cannevas.exportContactTableur">_ExportContact.ods</value>
     </group>
     <group name="ZunoAffaire" modifRight="1" title="Documents à joindre lors d'un envoi">
 	<value id="cannevas.exportTableur">_ExportAffaire.ods</value>
-	<value id="dir.affaire" title="Répertoire des affaires">WORK/Affaires/</value>
-	<value id="dir.archives" title="Répertoire des affaires archivées">ARCHIVES/Affaires/</value>
+	<value id="dir.affaire" title="Répertoire des affaires">Affaires/</value>
+	<value id="dir.archives" title="Répertoire des affaires archivées">Affaires/</value>
     </group>
     <group name="ZunoSendMail" modifRight="1" title="Documents à joindre lors d'un envoi">
-	<value id="dir.pj">WORK/Cannevas/Mail/PiecesJointes/</value>
-	<value id="dir.texte">WORK/Cannevas/Mail/Textes/</value>
+	<value id="dir.pj">Cannevas/Mail/PiecesJointes/</value>
+	<value id="dir.texte">Cannevas/Mail/Textes/</value>
 	<value id="pj.InfoAdministratives.pdf">Informations administratives</value>
 	<value id="pj.plaquette.pdf">Plaquette de présentation</value>
 	<value id="pj.commandeForm.pdf">Formulaire de commande</value>
@@ -31,7 +31,7 @@
 	<value id="texte._presentationProduit.txt">Présentation produit</value>
 	<value id="texte._Devis.txt">Devis</value>
 	<value id="texte._CommandeEnregistree.txt">Commande enregistrée</value>
-	<value id="coverFax">WORK/Cannevas/_CouvertureFax.odt</value>
+	<value id="coverFax">Cannevas/_CouvertureFax.odt</value>
 	<value id="maxEnvoiFax">3</value>
 	<value id="maxEnvoiCourrier">3</value>
 	<value id="maxEnvoiMail">-1</value>
@@ -40,7 +40,7 @@
 	<value id="right.record" title="Droit pour l'enregistrement">1</value>
 	<value id="file.suffixe" title="Suffixe des PDF">Devis.</value>
 	<value id="cannevas.exportTableur">_ExportDevis.ods</value>
-	<value id="dir.cannevas" title="Répertoire des cannevas de devis">WORK/Cannevas/Devis/</value>
+	<value id="dir.cannevas" title="Répertoire des cannevas de devis">Cannevas/Devis/</value>
 	<value id="cannevas.defaut" title="Cannevas type pour un devis">_Devis.odt</value>
 	<value id="cannevas.prestation" title="Cannevas type pour un devis">_DevisPrestation.odt</value>
     </group>
@@ -48,7 +48,7 @@
 	<value id="right.record" title="Droit pour l'enregistrement">1</value>
 	<value id="file.suffixe" title="Suffixe des PDF">CMD.</value>
 	<value id="cannevas.exportTableur">_ExportCommande.ods</value>
-	<value id="dir.cannevas" title="Répertoire des cannevas de devis">WORK/Cannevas/Commandes/</value>
+	<value id="dir.cannevas" title="Répertoire des cannevas de devis">Cannevas/Commandes/</value>
 	<value id="cannevas.BDCC" title="Cannevas type pour un BDCC">_BDCC.odt</value>
 	<value id="cannevas.BDL" title="Cannevas type pour un BDL">_BDL.odt</value>
 	<value id="cannevas.RI" title="Cannevas type pour un Rapport d'intervention">_RapportIntervention.odt</value>
@@ -59,9 +59,9 @@
     <group name="ZunoFacture" modifRight="1" title="Documents à joindre lors d'un envoi">
 	<value id="right.record" title="Droit pour l'enregistrement">1</value>
 	<value id="cannevas.exportTableur">_ExportFacture.ods</value>
-	<value id="dir.cannevas" title="Répertoire des cannevas de facture">WORK/Cannevas/Factures/</value>
-	<value id="dir.facture" title="Répertoire de stockage des factures">WORK/Factures/Clients/</value>
-	<value id="dir.factureFournisseur" title="Répertoire de stockage des factures fournisseur">WORK/Factures/Fournisseurs/</value>
+	<value id="dir.cannevas" title="Répertoire des cannevas de facture">Cannevas/Factures/</value>
+	<value id="dir.facture" title="Répertoire de stockage des factures">Factures/Clients/</value>
+	<value id="dir.factureFournisseur" title="Répertoire de stockage des factures fournisseur">Factures/Fournisseurs/</value>
 	<value id="cannevas.defaut" title="Cannevas type pour une facture">_Facture.odt</value>
 	<value id="cannevas.avoir" title="Cannevas type pour un avoir">_FactureAvoir.odt</value>
 	<value id="cannevas.duplicata" title="Cannevas type pour un duplicata">_Duplicata.odt</value>

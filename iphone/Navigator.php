@@ -64,7 +64,7 @@ function getImg($file)
 function Naviguer($dirname = '', $nombre = 0)
 {
 	$taillemax = $GLOBALS['SVN_Pool1']['NbCharAffIphone'];
-	if($dirname == "") $dirname = $GLOBALS['SVN_Pool1']['WorkCopy'].'WORK/';
+	if($dirname == "") $dirname = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'];
 	if(is_dir($dirname))
 	{
 		$folder_nb = 0;

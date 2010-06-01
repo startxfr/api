@@ -171,7 +171,7 @@ class FactureFournisseurView extends generalView {
 	if($datas['data']['fichier_factfourn'] == '') {
 	    $upload = new ZunoFormUpload("uploadFichier", "../gnose/Upload.php");
 	    $upload->setLegend("Fichier joint");
-	    $upload->setLigne($GLOBALS['ZunoFacture']['dir.factureFournisseur']);
+	    $upload->setLigne($GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.factureFournisseur']);
 	    $upload->setRetour("../facturier/FactureFournisseur.php?newFichier=".$datas['data']['id_factfourn']);
 	    $this->optionnel = $upload->generateForm('50');
 

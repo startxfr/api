@@ -585,7 +585,7 @@ class Sender {
      */
     private function GenerateCover($outputExt = 'pdf') {
 	loadPlugin(array('OOConverter','docGenerator'));
-	$cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoSendMail']['coverFax'];
+	$cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['coverFax'];
 
 	$datas['nom_contact'] = $this->nomExpediteur;
 	$datas['mail_contact'] = $this->from;
@@ -665,7 +665,8 @@ class Sender {
 		'toMail'	=> $this->email,
 		'docPageSend'	=> $this->countPageNumberForDocument()
 	);
-	Sender::setHistoriqueEnvoiInManager($param);
+	if(!$this->bug)
+	    Sender::setHistoriqueEnvoiInManager($param);
     }
 
 

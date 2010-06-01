@@ -836,7 +836,7 @@ class affaireModel extends GeneralModel {
 
 	    if ($moveGnose) {
 		$uri   = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
-		$uriTo = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.archives'].$aff['dir_aff'];
+		$uriTo = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['ArchivesDir'].$GLOBALS['ZunoAffaire']['dir.archives'].$aff['dir_aff'];
 		$CmdBase = "svn mv --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." ";
 		if ($GLOBALS['LOG']['DisplayDebug']) {
 		    $GLOBALS['LogSVNProcess'][] = $CmdBase.$uri." ".$uriTo;
@@ -973,7 +973,7 @@ class affaireModel extends GeneralModel {
      */
     static function affaireExportTableur($req) {
 	loadPlugin(array('OOConverter'));
-	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
+	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
 	$cannevasFile = $cannevasPath.$GLOBALS['ZunoAffaire']['cannevas.exportTableur'];
 
 	if(is_file($cannevasFile)) {

@@ -38,11 +38,11 @@ class commandeGnose {
     static function CommandeGenerateBDC($datas,$outputExt = 'pdf', $type = 'BC') {
 	loadPlugin(array('OOConverter','docGenerator'));
 	if($type == 'BC')
-	    $cannevasFile =  $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.BDCC'];
+	    $cannevasFile =  $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.BDCC'];
 	elseif($type == 'BDL')
-	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.BDL'];
+	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.BDL'];
 	elseif($type == 'RI')
-	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.RI'];
+	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.RI'];
 	$id_cmd = $datas['data']['id_cmd'];
 
 	if($datas['data']['entreprise_cmd'] != '') {
@@ -183,9 +183,9 @@ class commandeGnose {
 	    $FTemp[$key."F"] = $fourn;
 	$fournisseur = $FTemp;
 	if ($fournisseur['BDCCannevas_fournF'] != '')
-	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoCommande']['dir.cannevas'].$fournisseur['BDCCannevas_fournF'];
+	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$fournisseur['BDCCannevas_fournF'];
 	if (!is_file($cannevasFile))
-	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.BDCF'];
+	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.BDCF'];
 
 	if(count($entreprise) > 0 and count($fournisseur) > 0) {
 	    if($entreprise['paysdelivery_cmd'] == "1") $entreprise['nom_paysF'] = "";
@@ -370,7 +370,7 @@ class commandeGnose {
      */
     private function CommandeExportTableur($commande) {
 	loadPlugin(array('OOConverter'));
-	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
+	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
 	$cannevasFile = $cannevasPath.$GLOBALS['ZunoCommande']['cannevas.exportTableur'];
 	if(is_file($cannevasFile)) {
 	    $extIn 	= FileGetExtention($cannevasFile);

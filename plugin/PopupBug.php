@@ -34,7 +34,7 @@ if($_POST['action'] == 'sendBug') {
     $data['message'] = "Rapport de bug : "."\n"."Rapporteur : ".$_SESSION['user']['fullnom']."\n";
     $data['message'] .= "Titre (selon le client) : ".$_POST['loca_bug']."\n";
     $data['message'] .= "URL d'envoi : ".$_SERVER['HTTP_REFERER'];
-    $data['message'] .= "Description : ".$_POST['desc_bug']."\n";
+    $data['message'] .= "\nDescription : ".$_POST['desc_bug']."\n";
     $data['bug'] = true;
 
     $send = new Sender($data);

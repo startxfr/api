@@ -36,11 +36,9 @@ if (array_key_exists('submit', $_POST))  // form has been submitted
         shell_exec('svn up --non-interactive '.$GLOBALS['SVN_Pool1']['WorkCopy']);
         $_SESSION['temp']['upload'] = $_FILES['fichier'];
         if($_POST['retour'] == '')
-            header('Location:BrowseWork.php');
-        else
-            header('Location:'.$_POST['retour']);
+             header('Location:BrowseWork.php');
+        else header('Location:'.$_POST['retour']);
     }
-    else
-        header('Location:'.$_POST['retour']);
+    else header('Location:'.$_POST['retour']);
 }
 ?>

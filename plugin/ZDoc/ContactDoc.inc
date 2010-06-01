@@ -43,7 +43,7 @@ class contactGnose {
      */
     private function ContactExportTableur($contacts) {
 	loadPlugin(array('OOConverter'));
-	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
+	$cannevasPath = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['PropsecConf']['dir.cannevas.exportTableur'];
 	$cannevasFile = $cannevasPath.$GLOBALS['PropsecConf']['cannevas.exportContactTableur'];
 	if(is_file($cannevasFile)) {
 	    $extIn 	= FileGetExtention($cannevasFile);

@@ -187,7 +187,7 @@ elseif($_GET['action'] == 'doDeplacerF')
 }
 elseif($_GET['action'] == 'archiverD')
 {
-	$rep = new documentViewRepertoire('', 'ARCHIVES');
+	$rep = new documentViewRepertoire('', $GLOBALS['SVN_Pool1']['ArchivesDir']);
 	$sortie .= '<form method="POST" action="BrowseWork.php?action=doArchiverD&path='.$_GET['path'].'">';
 	$sortie .= '<div class="blockTable"><div class="tableau" style="display:table;">';
 	$sortie .= '<div class="titre" style="display:table-row;">';
@@ -196,7 +196,7 @@ elseif($_GET['action'] == 'archiverD')
 	$sortie .= '<div class="celluleH" style="display:table-cell;"></div>';
 	$sortie .= '</div>';
 	$sortie .= '<div style="display:table-row;"><div class="celluleH" style="display:table-cell;"></div>';
-	$sortie .= '<div class="celluleH" style="display:table-cell;"><b><a onclick="placerLiens(\'aARCHIVES\', \'ARCHIVES\');" ><img src="../img/files/dir.png" style="margin-left:-18px;"/>ARCHIVES</a></b></div>';
+	$sortie .= '<div class="celluleH" style="display:table-cell;"><b><a onclick="placerLiens(\'a'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\', \''.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\');" ><img src="../img/files/dir.png" style="margin-left:-18px;"/>'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'</a></b></div>';
 	$sortie .= '<div class="celluleH" style="display:table-cell;"></div></div>';
 	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" READONLY style="float:left;"/></div>';
 	$sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';

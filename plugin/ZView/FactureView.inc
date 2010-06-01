@@ -389,7 +389,7 @@ class factureView extends generalView {
 	foreach ($GLOBALS['ZunoSendMail'] as $key => $val) {
 	    $k = explode('.',$key,2);
 	    if($k[0] == 'texte') {
-		$key = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['ZunoSendMail']['dir.texte'].$k[1];
+		$key = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.texte'].$k[1];
 		$outJS .="\tCannevas[\"".$i."\"] = \"".str_replace($cleanFrom,$cleanTo,addslashes(trim(ProcessTemplating($key,$input,$output))))."\";\n";
 		$i++;
 	    }

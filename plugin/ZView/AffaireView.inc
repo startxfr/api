@@ -226,7 +226,7 @@ class affaireView extends generalView {
      */
     private function initioBlockFiles($datas) {
 	loadPlugin(array('ZView/DocumentView'));
-	$blockFiles = new documentViewRepertoire(substr($GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'],1));
+	$blockFiles = new documentViewRepertoire($GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff']);
 	$this->blockFiles = $blockFiles->afficher();
     }
 

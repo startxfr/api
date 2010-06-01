@@ -10,6 +10,7 @@
 	<value id="WorkCopy">/data/ged.sxa/wc/</value>
 	<value id="Reposito">file:///data/ged.sxa/db/</value>
 	<value id="WorkDir">WORK/</value>
+	<value id="ArchivesDir">ARCHIVES/</value>
 	<value id="ConfigDir">conf/permanent/.subversion.pool1/</value>
 	<value id="NbCharAffIphone">25</value>
     </group>

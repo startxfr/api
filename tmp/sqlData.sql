@@ -403,7 +403,7 @@ INSERT INTO `ref_modereglement` VALUES (4,'TPE');
 -- Dumping data for table `ref_page`
 --
 
-INSERT INTO `ref_page` VALUES ('actualite','nm',NULL,'2010-05-30 10:34:54','nm','2009-06-24 08:59:10','nm','actualite',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'actualite.php','normal',NULL,1,'1','0',NULL,NULL,183797,'0000-00-00 00:00:00',NULL,NULL,NULL,'1');
+INSERT INTO `ref_page` VALUES ('actualite','nm',NULL,'2010-05-30 20:23:07','nm','2009-06-24 08:59:10','nm','actualite',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'actualite.php','normal',NULL,1,'1','0',NULL,NULL,184497,'0000-00-00 00:00:00',NULL,NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('AdminManual','cl',',0,,','2008-08-12 19:32:36','cl','2004-12-31 21:00:00','cl','Manuel de l\'admin','Admin manual','Handbuch des Verwalters','ManuelAdmin.png','ManuelAdmin.png','C\'est le manuel de l\'administrateur','sumary for english person','Handbuch des Verwalters','Manuel de l\'administrateur','Manual for technical staff','Handbuch des Verwalters',NULL,'admin','Help',1,'1','0',NULL,'titleContent',1,'2005-10-28 11:14:50','mettre ici toutes les informations disponibles pour les webmasters et les superadministrateurs.',NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('AffaireCreate','cl',NULL,'2010-05-30 09:37:37','cl',NULL,'cl','Affaire',NULL,NULL,'affaire.png','affaire.create.png','Création d\'un affaire',NULL,NULL,'Création d\'un affaire',NULL,NULL,'AffaireCreate.php','draco','Create',2,'1','0',NULL,'title',402,'0000-00-00 00:00:00',NULL,NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('AffaireFiche','cl',',0,1,2,,','2010-05-30 01:46:01','cl',NULL,'cl','Fiche affaire',NULL,NULL,'affaire.png','affaire.png','Fiche affaire',NULL,NULL,'Fiche affaire',NULL,NULL,'Affaire.php','draco','ListeAffaire',1,'0','0',NULL,'title',1717,'2006-03-13 21:03:41',NULL,NULL,NULL,'1');
@@ -446,7 +446,7 @@ INSERT INTO `ref_page` VALUES ('ListeCommande10','cl',',0,1,2,,','2010-05-30 09:
 INSERT INTO `ref_page` VALUES ('ListeCommande4','cl',',0,1,2,,','2010-05-30 10:34:15','cl','2010-05-30 09:03:24','cl','Commandes envoyées',NULL,NULL,'commande.png','commande.png',' Liste des commandes envoyées',NULL,NULL,'Liste des commandes envoyées',NULL,NULL,'CommandeListe.php?status_cmd=4','pegase','ListeCommande',2,'1','0',NULL,'titleContent',817,'2006-04-03 11:50:32',NULL,NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('ListeCommande7','cl',',0,1,2,,','2010-05-30 10:18:25','cl','2010-05-30 09:03:24','cl','Commandes expédiées',NULL,NULL,'commande.png','commande.png',' Liste des commandes expédiées',NULL,NULL,'Liste des commandes expédiées',NULL,NULL,'CommandeListe.php?status_cmd=7','pegase','ListeCommande',3,'1','0',NULL,'titleContent',816,'2006-04-03 11:50:32',NULL,NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('ListeCommande9','cl',',0,1,2,,','2010-05-30 09:19:25','cl','2010-05-30 09:03:24','cl','Commandes terminées',NULL,NULL,'commande.png','commande.png',' Liste des commandes terminées',NULL,NULL,'Liste des commandes terminées',NULL,NULL,'CommandeListe.php?status_cmd=9','pegase','ListeCommande',4,'1','0',NULL,'titleContent',824,'2006-04-03 11:50:32',NULL,NULL,NULL,'1');
-INSERT INTO `ref_page` VALUES ('ListeFacture','cl',',0,1,2,,','2010-05-30 10:33:53','cl',NULL,'cl','Recherche de factures',NULL,NULL,'facture.png','facture.png','Recherche de factures',NULL,NULL,'Recherche de factures',NULL,NULL,'FactureListe.php','facturier',NULL,1,'1','0',NULL,'titleContent',1814,'2006-04-03 11:50:32',NULL,NULL,NULL,'1');
+INSERT INTO `ref_page` VALUES ('ListeFacture','cl',',0,1,2,,','2010-05-30 17:17:24','cl',NULL,'cl','Recherche de factures',NULL,NULL,'facture.png','facture.png','Recherche de factures',NULL,NULL,'Recherche de factures',NULL,NULL,'FactureListe.php','facturier',NULL,1,'1','0',NULL,'titleContent',1815,'2006-04-03 11:50:32',NULL,NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('ListeFacture1','cl',',0,1,2,,','2010-05-30 10:34:10','cl',NULL,'cl','Crées',NULL,NULL,'facture.cloture.png','facture.cloture.png',' Liste des factures crées',NULL,NULL,'Liste des factures crées',NULL,NULL,'FactureListe.php?status_fact=1','facturier','ListeFacture',1,'1','0',NULL,'titleContent',175,'2006-04-17 13:33:20',NULL,NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('ListeFacture4','cl',',0,1,2,,','2010-05-30 10:33:45','cl',NULL,'cl','Envoyées',NULL,NULL,'facture.cloture.png','facture.cloture.png',' Liste des factures envoyées',NULL,NULL,'Liste des factures envoyées',NULL,NULL,'FactureListe.php?status_fact=4','facturier','ListeFacture',2,'1','0',NULL,'titleContent',176,'2006-04-17 13:33:20',NULL,NULL,NULL,'1');
 INSERT INTO `ref_page` VALUES ('ListeFacture5','cl',',0,1,2,,','2010-05-30 09:43:25','cl',NULL,'cl','En attente',NULL,NULL,'facture.cloture.png','facture.cloture.png',' Liste des factures en attente',NULL,NULL,'Liste des factures en attente',NULL,NULL,'FactureListe.php?status_fact=5','facturier','ListeFacture',3,'1','0',NULL,'titleContent',174,'2006-04-17 13:33:20',NULL,NULL,NULL,'1');
@@ -963,11 +963,6 @@ INSERT INTO `ref_typeproj` VALUES (6,'Projet ZUNO','70');
 
 
 --
--- Dumping data for table `session`
---
-
-
---
 -- Dumping data for table `token`
 --
 
@@ -1190,4 +1185,4 @@ INSERT INTO `user_iphoneConfig` VALUES ('nm','send','oui');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-30 12:35:28
+-- Dump completed on 2010-05-30 22:37:45

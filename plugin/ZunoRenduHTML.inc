@@ -778,7 +778,7 @@ class ZunoFieldset {
 	    // Select  detect select row
 	    if ($withBlank) {
 		if ($id_select == '')
-		     $chaine .=  "<option".$chaine_class." value='' selected='selected'> </option>";
+		    $chaine .=  "<option".$chaine_class." value='' selected='selected'> </option>";
 		else $chaine .=  "<option".$chaine_class." value=''> </option>";
 	    }
 	    // Loop for values
