@@ -71,10 +71,10 @@
 	<value id="superBaseWebServicePath">https://superbase.zuno.fr/ws/</value>
 	<value id="webServicePath">https://sxa.startx.fr/ws/</value>
 	<value id="wsdlCacheEnabled">1</value>
-	<value id="wsdlClientHttpAccess">false</value>
-	<value id="wsdlClientHttpAccesstype"></value>
-	<value id="wsdlClientHttpAccessUser"></value>
-	<value id="wsdlClientHttpAccessPass"></value>
+	<value id="wsdlClientHttpAccess">true</value>
+	<value id="wsdlClientHttpAccesstype">Basic</value>
+	<value id="wsdlClientHttpAccessUser">cl</value>
+	<value id="wsdlClientHttpAccessPass">8j9y8hw3</value>
     </group>
     <group name="zunoPontComptable" modifRight="0" title="Configuration de prospec">
 	<value id="histoDir">PontComptable/</value>

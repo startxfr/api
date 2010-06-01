@@ -7,8 +7,8 @@
 <configuration>
     <!-- Pool de connexion SVN 				-->
     <group name="SVN_Pool1" modifRight="0" title="Entrepot principal">
-	<value id="WorkCopy">/data/ged.sxa/wc/</value>
-	<value id="Reposito">file:///data/ged.sxa/db/</value>
+	<value id="WorkCopy">/var/www/virtual/sxa.svn-wc/</value>
+	<value id="Reposito">file:///var/www/virtual/sxa.svn-warehouse/</value>
 	<value id="WorkDir">WORK/</value>
 	<value id="ArchivesDir">ARCHIVES/</value>
 	<value id="ConfigDir">conf/permanent/.subversion.pool1/</value>
