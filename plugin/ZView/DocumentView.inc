@@ -262,6 +262,7 @@ class documentViewRepertoire extends generalView {
      * @param string $lieu Précise si on est dans WORK (par défaut) ou dans ARCHIVES
      */
     function __construct($path='', $lieu = 'WORK/') {
+	
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Répertoire "'.$path.'"','',true);
 	if($lieu == $GLOBALS['SVN_Pool1']['WorkDir']) {
@@ -289,7 +290,8 @@ class documentViewRepertoire extends generalView {
 	}
 	else {
 	    $temp = explode('/', $path);
-	    $temp2 = explode('/', $pathDefaut);
+	    $pd= (substr($pathDefaut,-1,1) == '/') ? substr($pathDefaut,0,-1) : $pathDefaut;
+	    $temp2 = explode('/', $pd);
 	    if(count($temp) < count($temp2)) {
 		$this->m_path = $pathDefaut;
 		$this->m_triche = true;

@@ -294,7 +294,7 @@ class affaireModel extends GeneralModel {
 	if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = affaireModel::affaireGenerateID();
 	Logg::loggerInfo('affaireModel::insert() ~ ajout de l\'affaire '.$data['id_aff'].' intitulé : '.$data['titre_aff'],$data,__FILE__.'@'.__LINE__);
 	affaireModel::createNewAffaireInDB($data,TRUE, $fait, $origine);
-	return $in;
+	return $data;
     }
 
     /**
