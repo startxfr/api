@@ -135,8 +135,12 @@ class zunoWsdlClient {
 	return true;
     }
 
-    public function resetParam($autoAddCredentials = true) {
+    public function resetParam($autoAddCredentials = true,$autoAddHttpCredentials = true) {
 	$this->params = array();
+	if($autoAddHttpCredentials and $GLOBALS['zunoManagerWebService']['wsdlClientHttpAccess'])
+	    $this->client->setCredentials($GLOBALS['zunoManagerWebService']['wsdlClientHttpAccessUser'],
+		    $GLOBALS['zunoManagerWebService']['wsdlClientHttpAccessPass'],
+		    $GLOBALS['zunoManagerWebService']['wsdlClientHttpAccesstype']);
 	if($autoAddCredentials) {
 	    $this->setParam('token',md5($GLOBALS['DBPool_1']['pass']));
 	    $this->setParam('code_ins',$GLOBALS['zunoWebService']['instance_code']);
