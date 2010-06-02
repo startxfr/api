@@ -29,7 +29,11 @@
 	<value id="pj.commandeForm.pdf">Formulaire de commande</value>
 	<value id="texte._presentationService.txt">Présentation service</value>
 	<value id="texte._presentationProduit.txt">Présentation produit</value>
+	<value id="texte.presentationDeveloppement.txt">Présentation développement</value>
 	<value id="texte._Devis.txt">Devis</value>
+	<value id="texte.DevisClientRedhat.txt">Devis (client redhat)</value>
+	<value id="texte.DevisNewClient.txt">Devis (nouv client)</value>
+	<value id="texte.DevisNewClientAcademique.txt">Devis (nouv client académique)</value>
 	<value id="texte._CommandeEnregistree.txt">Commande enregistrée</value>
 	<value id="coverFax">Cannevas/_CouvertureFax.odt</value>
 	<value id="maxEnvoiFax">3</value>
@@ -43,6 +47,8 @@
 	<value id="dir.cannevas" title="Répertoire des cannevas de devis">Cannevas/Devis/</value>
 	<value id="cannevas.defaut" title="Cannevas type pour un devis">_Devis.odt</value>
 	<value id="cannevas.prestation" title="Cannevas type pour un devis">_DevisPrestation.odt</value>
+	<value id="cannevas.dev" title="Cannevas type pour un developpement">DevisDev.odt</value>
+	<value id="cannevas.proforma" title="Cannevas type pour un proforma">_Proforma.odt</value>
     </group>
     <group name="ZunoCommande" modifRight="1" title="Cannevas utilisé pour la création de BDCF">
 	<value id="right.record" title="Droit pour l'enregistrement">1</value>
