@@ -819,7 +819,7 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
         if (trim($PC->rcvP['message']) == "")
             $PC->rcvP['message'] = "Enregistrement des documents relatifs à la commande ".$dev['id_cmd'];
         if($PC->rcvG['action'] == 'doRecsend') $Doc[]=substr($PC->rcvP['file'],strlen($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp']), strlen($PC->rcvP['file']));
-        $save = commandeGnose::CommandeSaveDocInGnose($Doc,$dev['id_cmd'],$PC->rcvP['message']);
+        $save = commandeGnose::CommandeSaveDocInGnose($Doc,$dev,$PC->rcvP['message']);
 
         $actuTitre = 'Re-enregistrement de la commande '.$dev['id_cmd'];
         $actuDesc = 'La commande '.$dev['id_cmd'].' vient d\'être re-enregistrée. Elle a une valeur de '.number_format($dev['sommeHT_cmd'],2,',',' ').' &euro; HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
@@ -850,9 +850,7 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
             $bddtmp->makeRequeteUpdate('commande','id_cmd',$dev['id_cmd'],array('status_cmd'=>$inActualiteRec['status_cmd']));
             $bddtmp->process();
         }
-
-        $bddtmp->makeRequeteInsert('actualite', $inActualiteRec);
-        $bddtmp->process();
+	$info->addActualite($dev['id_cmd'], 'commande',$actuTitre,$actuDesc,'',true,$inActualiteRec);
 
         if ($PC->rcvG['action'] == 'doRec') {	?>
 <root><go to="waCommandeAction"/>
@@ -913,9 +911,7 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
                     $bddtmp->makeRequeteUpdate('commande','id_cmd',$dev['id_cmd'],array('status_cmd'=>$inActualiteEnvoi['status_cmd']));
                     $bddtmp->process();
                 }
-
-                $bddtmp->makeRequeteInsert('actualite',$inActualiteEnvoi);
-                $bddtmp->process();
+		$info->addActualite($dev['id_cmd'], 'commande',$actuPrefix.'nvoi de la commande '.$dev['id_cmd'],'La commande '.$dev['id_cmd'].' vient d\'être '.strtolower($actuPrefix).'nvoyée par '.$PC->rcvP['type'].' à '.$dest,'',true,$inActualiteEnvoi);
                 ?>
 <root><go to="waCommandeAction"/>
     <part><destination mode="replace" zone="waCommandeAction"/>
@@ -950,12 +946,9 @@ elseif($PC->rcvG['action'] == 'valide') {
     $requete = new commandeModel();
     $result = $requete->update($data, $PC->rcvG['id_cmd']);
     $donnee = $requete->getDataFromID($PC->rcvG['id_cmd']);
-    if($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('commande', 14);
-    }
-    else {
-        aiJeLeDroit('commande', 13);
-    }
+    if($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
+         aiJeLeDroit('commande', 14);
+    else aiJeLeDroit('commande', 13);
     if($result[0]) {
         $inActualite = array(
                 'type' => 'commande',
@@ -968,9 +961,7 @@ elseif($PC->rcvG['action'] == 'valide') {
                 'id_aff' => substr($donnee[1][0]['id_cmd'],0,6),
                 'id_cmd' => $donnee[1][0]['id_cmd'],
                 'status_fact' => '5');
-        $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $bddtmp->makeRequeteInsert('actualite', $inActualite);
-        $bddtmp->process2();
+        $requete->addActualite($PC->rcvG['id_cmd'], 'commande','Commande : '.$donnee[1][0]['id_cmd'].' validée','La commande '.$PC->rcvG['id_cmd'].' vient d\'être marquée validée.','',true,$inActualite);
         ?>
 <root><go to="waCommandeFiche"/>
     <title set="waCommandeFiche"><?php echo $donnee[1][0]['id_cmd']; ?></title>
@@ -986,12 +977,9 @@ elseif($PC->rcvG['action'] == 'recep') {
     $requete = new commandeModel();
     $result = $requete->update($data, $PC->rcvG['id_cmd']);
     $donnee = $requete->getDataFromID($PC->rcvG['id_cmd']);
-    if($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('commande', 14);
-    }
-    else {
-        aiJeLeDroit('commande', 13);
-    }
+    if($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
+         aiJeLeDroit('commande', 14);
+    else aiJeLeDroit('commande', 13);
     if($result[0]) {
         $inActualite = array(
                 'type' => 'commande',
@@ -1004,9 +992,7 @@ elseif($PC->rcvG['action'] == 'recep') {
                 'id_aff' => substr($donnee[1][0]['id_cmd'],0,6),
                 'id_cmd' => $donnee[1][0]['id_cmd'],
                 'status_fact' => '5');
-        $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $bddtmp->makeRequeteInsert('actualite', $inActualite);
-        $bddtmp->process2();
+        $requete->addActualite($PC->rcvG['id_cmd'], 'commande','Commande : '.$donnee[1][0]['id_cmd'].' réceptionnée','La commande '.$PC->rcvG['id_cmd'].' vient d\'être réceptionnée.','',true,$inActualite);
         $produit = $requete->getProduitsFromCommande($dev['id_cmd']);
         if($produit[0]) {
             foreach($produit[1] as $v) {

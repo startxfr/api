@@ -116,11 +116,10 @@ class FournisseurView extends generalView {
 	    $titreF = imageTag('../img/page.menu/fournisseur.png','recherche').' Recherche de fournisseur';
 	    $titreR = $this->result($datas);
 	    $rendu = new ZunoRenduHtml('rechercheFourn');
-	    $rendu->insertJS($this->script);
 	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeFournisseurResultPage",'../');
 	    $rendu->generateZBox($titreF,$titreF, $form->generateForm(), $form->generateButtons('listeResultFournisseur', 'Annuler', 'Rechercher'), 'divSerachFourn', 'open');
 	    $rendu->generateZBox($titreR, $titreR, $this->resultats->generateTableau(), $bouton, 'searchListeFournisseur', 'open', true,'listeResultFournisseur');
-	    $rendu->insertJS('<script>function autoCompletage() { var ent = 1;} </script>');
+	    $rendu->insertJS("<script>function autoCompletage() { var ent = 1;} </script><script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchFourn', 'produit/FournisseurListe.php','listeResultFournisseur'); return false;}, false);</script>".$this->script);
 	    return $rendu->generateRendu();
 	}
     }
@@ -163,7 +162,7 @@ class FournisseurView extends generalView {
 	$this->form2->newInputHidden('newPF', "", "InputHiddenPF");
 	$this->form2->newInputHidden('newRF', "", "InputHiddenRF");
 
-	$pied2 = '<a name="submit" onclick="zuno.popup.open(\'Fournisseur.php\', \'action=changeDatas\');" style="cursor: pointer;"><img alt="modifProduits" title="Modifier les produits sélectionnés" src="../img/prospec/produit.png" /> Modifier les produits sélectionnés</a>';
+	$pied2 = '<a name="submit" onclick="zuno.popup.open(\'Fournisseur.php\', \'action=changeDatas\',480,150);" style="cursor: pointer;"><img alt="modifProduits" title="Modifier les produits sélectionnés" src="../img/prospec/produit.png" /> Modifier les produits sélectionnés</a>';
 
 	$this->html = new ZunoRenduHtml('ficheCompleteFourn');
 	$this->html->replaceJS($this->script);
@@ -179,8 +178,8 @@ class FournisseurView extends generalView {
      * @param array $datas	Les données avec lesquelles initialiser les fieldset
      */
     private function initioFieldset($datas) {
-	$this->fieldset1 = new ZunoFieldset('Fournisseur');
-	$this->fieldset2 = new ZunoFieldset('Contacts');
+	$this->fieldset1 = new ZunoFieldset('Fournisseur','','height:100px');
+	$this->fieldset2 = new ZunoFieldset('Contacts','','height:100px');
 	$this->fieldset1->ligneLinkTo('Entreprise', '../prospec/fiche.php?id_ent='.$datas['data']['entreprise_fourn'], $datas['data']['nom_ent']);
 	$this->fieldset1->ligneCheckBox('Actif', 'actif', true,'','ZTips.fournisseur.actif');
 	$this->fieldset1->ligneLinkTo('Produits liés', 'ProduitListe.php?fourn='.$datas['data']['id_fourn'].'', $datas['produits'].' produit(s)');
@@ -241,9 +240,9 @@ class FournisseurView extends generalView {
 
 
     private function initioFieldsetCreation($datas) {
-	$this->fieldset1 = new ZunoFieldset("Entreprise");
-	$this->fieldset2 = new ZunoFieldset("Autres coordonnées");
-	$this->fieldset3 = new ZunoFieldset("Contact");
+	$this->fieldset1 = new ZunoFieldset("Entreprise",'','height:130px');
+	$this->fieldset2 = new ZunoFieldset("Autres coordonnées",'','height:130px');
+	$this->fieldset3 = new ZunoFieldset("Contact",'','height:130px');
 
 	$this->fieldset1->ligneInput('Nom', 'nom_ent', $datas['data']['nom_ent'],'','ZTips.contactEnt.nom');
 	$this->fieldset1->ligneInput('Adresse', 'add1_ent', $datas['data']['add1_ent'],'','ZTips.contactEnt.add');

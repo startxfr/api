@@ -48,40 +48,43 @@ if ($total != 0) {
 	$targ[]	= "?typeproj=".$val['id'];
 	$alts[]	= $val['projet']." projet du type: ".$val['ref_typeproj'];
 	$lalegend[]	= utf8_decode($val['ref_typeproj']);
+	$total += round(($val['projet']/$total),2);
     }
     //print_r($data);
     //print_r($lalegend);
-    // Create the Pie Graph.
-    $graph = new PieGraph(550,150,"auto");
-    $graph->SetAntiAliasing();
-    $graph->SetFrame(false);
-    $graph->legend->Pos(0.05,0.1);
+    if($total > 0) {
+	// Create the Pie Graph.
+	$graph = new PieGraph(550,150,"auto");
+	$graph->SetAntiAliasing();
+	$graph->SetFrame(false);
+	$graph->legend->Pos(0.05,0.1);
 
-    // Create 3D pie plot
-    $p1 = new PiePlot3d($data);
-    $p1->SetTheme("sand");
-    $p1->SetCenter(0.3);
-    $p1->SetSize(110);
+	// Create 3D pie plot
+	$p1 = new PiePlot3d($data);
+	$p1->SetTheme("sand");
+	$p1->SetCenter(0.3);
+	$p1->SetSize(110);
 
-    // Adjust projection angle
-    $p1->SetAngle(45);
+	// Adjust projection angle
+	$p1->SetAngle(45);
 
-    // Adjsut angle for first slice
-    $p1->SetStartAngle(45);
+	// Adjsut angle for first slice
+	$p1->SetStartAngle(45);
 
-    // Display the slice values
-    $p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
-    $p1->value->SetColor("navy");
+	// Display the slice values
+	$p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
+	$p1->value->SetColor("navy");
 
-    // Add colored edges to the 3D pie
-    // NOTE: You can't have exploded slices with edges!
-    //$p1->SetEdge("navy");
+	// Add colored edges to the 3D pie
+	// NOTE: You can't have exploded slices with edges!
+	//$p1->SetEdge("navy");
 
-    $p1->SetLegends($lalegend);
-    $p1->SetCSIMTargets($targ,$alts);
+	$p1->SetLegends($lalegend);
+	$p1->SetCSIMTargets($targ,$alts);
 
-    $graph->Add($p1);
-    $graph->StrokeCSIM("../Img.ProjetChart.php");
+	$graph->Add($p1);
+	$graph->StrokeCSIM("../Img.ProjetChart.php");
+    }
 }
 
 

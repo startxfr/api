@@ -60,6 +60,9 @@ class FactureFournisseurView extends generalView {
      * @param array $datas Les données nécessaires
      */
     private function initioFormSearch($datas) {
+	$this->script .= '<script type="text/javascript">';
+	$this->script .= "Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) ChangeSubmit(); return false;}, false);";
+	$this->script .= '</script>';
 	$fieldset = new ZunoFieldset("Recherche");
 	$fieldset->ligneInput("Titre", "titre_factfourn",'','','ZTips.factFourn.searchTitre');
 	$fieldset->ligneInput("Fournisseur", "nom_ent",'','','ZTips.factFourn.searchEnt');
@@ -83,15 +86,15 @@ class FactureFournisseurView extends generalView {
      */
     private function initioFormAdd($datas) {
 
-	$fieldset = new ZunoFieldset("Facture");
-	$fieldset2 = new ZunoFieldset("Règlement");
+	$fieldset = new ZunoFieldset("Facture",'','height:150px');
+	$fieldset2 = new ZunoFieldset("Règlement",'','height:150px');
 	$fieldset->ligneInput("Nom", "titre_factfourn",'','','ZTips.factFourn.nom');
 	$fieldset->ligneAutoComplete("Fournisseur", "entreprise_factfourn", "", "", "listeEntreprise",'',false,'',true,'ZTips.factFourn.fournisseur');
 	$fieldset->ligneAutoComplete("Contact", "contact_factfourn", "", "", "", "", false, "", false,'ZTips.factFourn.contact');
 	$fieldset->ligneTArea("Description", "desc_factfourn",'','','ZTips.factFourn.desc');
 
 	$fieldset2->ligneInputDate("Attendu le", "datePaye_factfourn", date('d/m/Y'),'','','','ZTips.factFourn.dateReglementAttendu');
-	$fieldset2->ligneInput("Montant HT (€)", "montantHT", "0", ' id="HT" READONLY="READONLY" ','ZTips.factFourn.montantHT');
+	$fieldset2->ligneInput("Montant HT (€)", "montantHT", "0", ' id="HT" readonly="readonly" ','ZTips.factFourn.montantHT');
 	$fieldset2->ligneInputTVA('montantTVA_factfourn', "0", 'taux_tva', '19.6','ZTips.factFourn.tauxTVA');
 	$fieldset2->ligneInput("Montant TTC (€)", "TTC", "0", ' id="TTC" onchange="calculette();" ','ZTips.factFourn.montantTTC');
 	$fieldset2->ligneSelect("Mode", "modeReglement_factfourn", "3", $datas['mode'], false,'','ZTips.factFourn.reglementMode');
@@ -113,9 +116,9 @@ class FactureFournisseurView extends generalView {
 	$tva = $datas['data']['montantTTC_factfourn']*($datas['data']['tauxTVA_factfourn']/100);
 	$ht = $datas['data']['montantTTC_factfourn'] - $tva;
 
-	$fieldset = new ZunoFieldset("Facture");
-	$fieldset2 = new ZunoFieldset("Règlement");
-	$fieldsetR = new ZunoFieldset("Récurence");
+	$fieldset = new ZunoFieldset("Facture",'','height:160px');
+	$fieldset2 = new ZunoFieldset("Règlement",'','height:160px');
+	$fieldsetR = new ZunoFieldset("Récurence",'','height:160px');
 
 	$fieldset->ligneInput("Nom", "titre_factfourn", $datas['data']['titre_factfourn'],'','ZTips.factFourn.nom');
 	$fieldset->ligneAutoComplete("Fournisseur", "entreprise_factfourn", $datas['data']['nom_ent'], $datas['data']['entreprise_factfourn'], "listeEntreprise",'',false,'',true,'ZTips.factFourn.fournisseur');
@@ -124,7 +127,7 @@ class FactureFournisseurView extends generalView {
 	$fieldset->ligneTArea("Description", "desc_factfourn", $datas['data']['desc_factfourn'],'','ZTips.factFourn.desc');
 
 	$fieldset2->ligneInputDate("Attendu le", "datePaye_factfourn", $date,'','','','ZTips.factFourn.dateReglementAttendu');
-	$fieldset2->ligneInput("Montant HT (€)", "montantHT", prepareNombreAffichage($ht), ' id="HT" READONLY="READONLY" ','ZTips.factFourn.montantHT');
+	$fieldset2->ligneInput("Montant HT (€)", "montantHT", prepareNombreAffichage($ht), ' id="HT" readonly="readonly" ','ZTips.factFourn.montantHT');
 	$fieldset2->ligneInputTVA('montantTVA_factfourn', prepareNombreAffichage($tva), 'taux_tva', $datas['data']['tauxTVA_factfourn'],'ZTips.factFourn.tauxTVA');
 	$fieldset2->ligneInput("Montant TTC (€)", "TTC", prepareNombreAffichage($datas['data']['montantTTC_factfourn']), ' id="TTC" onchange="calculette();" ','ZTips.factFourn.montantTTC');
 	$fieldset2->ligneSelect("Mode", "modeReglement_factfourn", $datas['data']['modeReglement_factfourn'], $datas['mode'], false,'','ZTips.factFourn.reglementMode');

@@ -101,7 +101,7 @@ class factureView extends generalView {
 	$pied = '<a title="Reset" href="javascript:document.ModifInfosFacture.reset();" ><img onload="autoCompletage();" align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
 	$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'ModifInfosFacture\', \'facturier/Facture.php\',\'ContenuFormInfosFacture\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette facture</a>';
 	if($datas['last'] == $data['id_fact'] and $data['status_fact'] < 3)
-	    $pied .= '<a name="supprimer" onclick="zuno.popup.open(\'Facture.php\',\'action=popupSupp&facture='.$data['id_fact'].'\');"><img alt="Supp" title="Supprimer cette facture" src="../img/prospec/facture.delete.png"  /> Supprimer cette facture</a>';
+	    $pied .= '<a name="supprimer" onclick="zuno.popup.open(\'Facture.php\',\'action=popupSupp&facture='.$data['id_fact'].'\',200,150);"><img alt="Supp" title="Supprimer cette facture" src="../img/prospec/facture.delete.png"  /> Supprimer cette facture</a>';
 	$pied .= '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture='.$data['id_fact'].'\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img align="middle" title="Actualités" alt="Actualités" src="../img/prospec/actu.png"/> Historique de cette facture</a>';
 	if ($data['status_fact'] == '6')
 	    $pied 	= "";
@@ -119,7 +119,7 @@ class factureView extends generalView {
 
 	$out = '';
 	$out .= '<div class="block width50">
-			<fieldset class="form">
+			<fieldset class="form" style="height: 150px">
 				<legend>Informations sur '.$datas['nom'].'</legend>
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateCree);">Créé le : </div>
@@ -144,21 +144,21 @@ class factureView extends generalView {
 			</fieldset>
 		</div>
 		<div class="block width50">
-			<fieldset class="form">
+			<fieldset class="form" style="height: 150px">
 				<legend>Contacts de '.$datas['nom'].'</legend>
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.entreprise);">Entreprise</div>
-					<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',900,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
+					<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',900,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
 				</div>
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
-					<div class="field">'.inputTag('text', 'contact_fact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+					<div class="field">'.inputTag('text', 'contact_fact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="'.$data['contact_fact'].'" /><input type="hidden" name="contold" id="ACcontact_factold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
 					<div id="ACcontact_fact_choix" class="autocomplete"></div>
 				</div>
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact Achat</div>
-					<div class="field">'.inputTag('text', 'contact_achat_fact2','', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+					<div class="field">'.inputTag('text', 'contact_achat_fact2','', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="'.$data['contact_achat_fact'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_factold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
 					<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>
 				</div>
@@ -186,7 +186,7 @@ class factureView extends generalView {
 	}
 	$out.='</div>
 		<div class="block width50">
-			<fieldset class="form">
+			<fieldset class="form" style="height: 150px">
 				<legend>Informations sur la livraison</legend>
 			  	<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryNom);">Entreprise</div>
@@ -290,12 +290,12 @@ class factureView extends generalView {
     private function interneProduits($datas) {
 	$out = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
 		<tbody><tr class="titre">
-			<th>ID</th>
+			<th style="width: 135px">ID</th>
 			<th>Description</th>
-			<th>Quantité</th>
-			<th>Prix</th>
-			<th>Remise</th>
-			<th>Total</th>
+			<th style="width: 30px">Quantité</th>
+			<th style="width: 90px">Prix</th>
+			<th style="width: 65px">Remise</th>
+			<th style="width: 110px">Total</th>
 			<th width="1%"> </th>
 		</tr>';
 	$alternance = 0;
@@ -319,27 +319,27 @@ class factureView extends generalView {
 			</tr>';
 	    $out .= '<tr class="altern'.$alternance.'" id="'.$v['id'].'td1" style="display:none;">
 			<td class="barre" title="'.$v['nom_prod'].'">'.$v['id_prod'].'</td>
-			<td class="barre">'.textareaTag('desc2', $v['desc'], '', '', '', ' id="desc_Ajout_prod_fact'.$v['id'].'" style="width:100%; height:20px;" ').'</td>
-			<td class="center barre">'.inputTag('text', 'quantite2', '', '', '16', $v['quantite'], ' id="quantite_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:95%" ').'</td>
-			<td class="barre">'.inputTag('text', 'prix2', '', '', '16', abs($v['prix']), ' id="prix_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:80%" ').' €</td>
-			<td class="barre">'.inputTag('text', 'remise2', '', '', '16', $v['remise'], ' id="remise_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:78%" ').' %</td>
-			<td class="barre">'.inputTag('text', 'prix_total2', '', '', '16', $total, ' id="total_Ajout_prod_fact'.$v['id'].'" READONLY style="width:80%" ').' €</td>
+			<td class="barre">'.textareaTag('desc2', $v['desc'], '', '', '', ' id="desc_Ajout_prod_fact'.$v['id'].'" style="width:98%; height:30px;" ').'</td>
+			<td class="center barre">'.inputTag('text', 'quantite2', '', '', '16', $v['quantite'], ' id="quantite_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:28px" ').'</td>
+			<td class="barre">'.inputTag('text', 'prix2', '', '', '16', abs($v['prix']), ' id="prix_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:60px" ').' €</td>
+			<td class="barre">'.inputTag('text', 'remise2', '', '', '16', $v['remise'], ' id="remise_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:30px" ').' %</td>
+			<td class="barre">'.inputTag('text', 'prix_total2', '', '', '16', $total, ' id="total_Ajout_prod_fact'.$v['id'].'"  readonly="readonly" style="width:80px" ').' €</td>
 			<td nowrap="nowrap" class="center"><a name="modif" onclick="autoCopieChamps(\''.$v['id'].'\');chargerAction(\'modifProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/facture.add.png"/></a>
 							<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="../img/prospec/cancel.png" /></a></td>
 			</tr>';
 	    $alternance = ($alternance == '0') ? '1':'0';
 	}
 	$out .= '<tr class="altern'.$alternance.'" id="tdAjoutProdFacture">
-			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_fact" style="width:73%" onchange="verifAutocompleteur(this);"').'
-				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\');" style="cursor:pointer"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\');" style="cursor:pointer"/>
+			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_fact" style="width:80px" onchange="verifAutocompleteur(this);"').'
+				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',900,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\',760,330);" style="cursor:pointer; margin-right:0px"/>
 				<img style="display:none; margin-left:5px;" id="loadingProd" src="../img/ajax-loader.gif" alt="loader"/>
 				<input type="hidden" name="id_produit" id="ACproduit_ajout_facthidden" value="" /><input type="hidden" name="idold" id="ACproduit_ajout_factold" value="" />
 				<div id="ACproduit_ajout_fact_choix" class="autocomplete"></div></td>
-			<td class="barre">'.textareaTag('desc', '', '', '', '', ' id="desc_Ajout_prod_fact" style="width:98%; height:20px;" ').'</td>
-			<td class="center barre">'.inputTag('text', 'quantite', '', '', '16', '1', ' id="quantite_Ajout_prod_fact" onchange="calculetteTotal();" style="width:95%" ').'</td>
-			<td class="barre">'.inputTag('text', 'prix', '', '', '16', '', ' id="prix_Ajout_prod_fact" onchange="calculetteTotal();" style="width:80%" ').' €</td>
-			<td class="barre">'.inputTag('text', 'remise', '', '', '16', '0', ' id="remise_Ajout_prod_fact" onchange="calculetteTotal();" style="width:78%" ').' %</td>
-			<td class="barre">'.inputTag('text', 'prix_total', '', '', '16', '', ' id="total_Ajout_prod_fact" READONLY style="width:80%" ').' €</td>
+			<td class="barre">'.textareaTag('desc', '', '', '', '', ' id="desc_Ajout_prod_fact" style="width:98%; height:30px;" ').'</td>
+			<td class="center barre">'.inputTag('text', 'quantite', '', '', '16', '1', ' id="quantite_Ajout_prod_fact" onchange="calculetteTotal();" style="width:28px" ').'</td>
+			<td class="barre">'.inputTag('text', 'prix', '', '', '16', '', ' id="prix_Ajout_prod_fact" onchange="calculetteTotal();" style="width:60px" ').' €</td>
+			<td class="barre">'.inputTag('text', 'remise', '', '', '16', '0', ' id="remise_Ajout_prod_fact" onchange="calculetteTotal();" style="width:30px" ').' %</td>
+			<td class="barre">'.inputTag('text', 'prix_total', '', '', '16', '', ' id="total_Ajout_prod_fact"  readonly="readonly" style="width:80px" ').' €</td>
 			<td nowrap="nowrap" class="center"><a name="add" onclick="chargerAction(\'addProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Ajouter" alt="Ajouter" name="img" src="../img/prospec/facture.addProduct.png"/></a>
 			</td>
 			</tr>';
@@ -413,7 +413,7 @@ class factureView extends generalView {
 	if (($datas['data']['status_fact'] == "4")and(verifDroitsAuto('facture', 13, $datas['data']['commercial_fact']))) {
 	    $bouton .= '<a title="Réglée" name="regle" onclick="ChangeFactureAction(\'Clore\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="../img/prospec/facture.paye.png"/> Facture réglée</a>';
 	    if(array_key_exists('zunoPayline', $GLOBALS) and $GLOBALS['zunoPayline']['MERCHANT_ID'] != "")
-		$bouton .= '<a title="Payer par carte bancaire" name="CB" onclick="zuno.popup.open(\'Facture.php\', \'action=popupCB&facture='.$datas['data']['id_fact'].'\');"><img align="middle" title="Payer par carte bancaire" alt="payer par carte" name="img" src="../img/prospec/facture.paye.png"/> Payer par carte bancaire</a>';
+		$bouton .= '<a title="Payer par carte bancaire" name="CB" onclick="zuno.popup.open(\'Facture.php\', \'action=popupCB&facture='.$datas['data']['id_fact'].'\',800,230);"><img align="middle" title="Payer par carte bancaire" alt="payer par carte" name="img" src="../img/prospec/facture.paye.png"/> Payer par carte bancaire</a>';
 
 	    if(verifDroitsAuto('avoir', 20, '') and $datas['data']['type_fact'] != 'Avoir') {
 		$bouton .= '<a title="Faire un avoir" name="avoir" onclick="ChangeFactureAction(\'avoirFromFact\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\', \'ficheComplete\');"><img align="middle" title="Faire un avoir" name="avoir" src="../img/prospec/facture.png" /> Faire un avoir</a>';
@@ -599,7 +599,9 @@ class factureView extends generalView {
 		}
 		function ChangeSubmit() {
 			zuno.business.formTools.sendFormAjah('searchFacture', 'facturier/FactureListe.php','listeResultFacture');
-		}";
+		}
+		Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) ChangeSubmit(); return false;}, false);
+		";
 	$script .= 'function camenbertFacture(value, max) { $(\'devisBudgetMini\').value = value; $(\'devisBudgetMaxi\').value = max; ChangeFactureAction(\'searchFacture\');zuno.business.formTools.sendFormAjah(\'searchFacture\', \'draco/FactureListe.php\',\'listeResultFacture\'); } ';
 	$script .= 'function resetForm() {var form = $(\'searchFormFacture\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }';
@@ -618,14 +620,14 @@ class factureView extends generalView {
 	$corps .= '</div></form>';
 	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
 	$bouton .= '<a name="valider" onclick="ChangeFactureAction(\'searchFacture\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
-	return $script.generateZBox($titre,$titre,$corps,$bouton,"searchBox",'');
+	return generateZBox($titre,$titre,$corps.$script,$bouton,"searchBox",'');
     }
 
     private function interneSearch($datas) {
 	$listeType['Facture'] = 'facture';
 	$listeType['Avoir'] = 'avoir';
 
-	$out = '<div class="block width50"><fieldset class="form">';
+	$out = '<div class="block width50"><fieldset class="form" style="height: 220px">';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchEnt);">Entreprise</div>';
 	$out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseFactureSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseFactureSearch_choix"></div>';
 	$out .= '<input type="hidden" name="entreprise_fact" value="" id="entrepriseFactureSearch_hidden"/></div>';
@@ -649,7 +651,7 @@ class factureView extends generalView {
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchType);">Type</div>';
 	$out .= '<div class="field">'.selectTag('type_fact',$listeType,'').'</div></div>';
 	$out .= '</fieldset></div>';
-	$out .= '<div class="block width50"><fieldset class="form">';
+	$out .= '<div class="block width50"><fieldset class="form" style="height: 220px">';
 	$out .= '<div class="row">'.shell_exec('php ../Img.FactureChart.php').'</div>';
 	$out .= '</fieldset></div>';
 	return $out;
@@ -777,7 +779,7 @@ class factureView extends generalView {
     private function ResultGroupActionForm() {
 	$sql = new factureModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action');
+	$fieldset = new ZunoFieldset('Type d\'action','','height: 210px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'reinit', ' onclick="toggleSubGroupedAction(\'groupedSubActionReinit\')"'),'Re-initialiser ces factures','ZTips.facture.groupActionReinit');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'valide', ' onclick="toggleSubGroupedAction(\'groupedSubActionValid\')"'),'Marquer ces factures comme validées','ZTips.facture.groupActionValid');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'envoye', ' onclick="toggleSubGroupedAction(\'groupedSubActionEnvoye\')"'),'Marquer ces factures comme envoyés','ZTips.facture.groupActionEnvoye');
@@ -785,24 +787,24 @@ class factureView extends generalView {
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'archivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionArchive\')"'),'Archivage des facture','ZTips.facture.groupActionArchive');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'),'Changer un attribut par lot','ZTips.facture.groupActionChangeAttribute');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div><div class="block width50" id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Re-initialiser ces factures','groupedSubActionReinit');
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Re-initialiser ces factures','groupedSubActionReinit','height: 150px');
 	$fieldset->addOtherLigne('<div class="row"><i>Aucune action sécifique n\'est requise</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Marquer ces factures comme validées','groupedSubActionValid');
+	$fieldset = new ZunoFieldset('Marquer ces factures comme validées','groupedSubActionValid','height: 150px');
 	$fieldset->ligneInput('Commentaire', 'commentaireValid');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Marquer ces factures comme envoyées','groupedSubActionEnvoye');
+	$fieldset = new ZunoFieldset('Marquer ces factures comme envoyées','groupedSubActionEnvoye','height: 150px');
 	$fieldset->ligneInput('Commentaire', 'commentaireEnvoye');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Marquer ces factures comme Réglées','groupedSubActionRegle');
+	$fieldset = new ZunoFieldset('Marquer ces factures comme Réglées','groupedSubActionRegle','height: 150px');
 	$fieldset->ligneInput('Commentaire Règlement', 'commentreglement_fact');
 	$fieldset->ligneInput('Commentaire', 'commentaireRegle');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Archivage des factures','groupedSubActionArchive');
+	$fieldset = new ZunoFieldset('Archivage des factures','groupedSubActionArchive','height: 150px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les factures réglées seront archivées.</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute');
+	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 150px');
 	$fieldset->ligneInput('Titre', 'titre_fact');
 	$fieldset->ligneInput('Commentaire', 'commentaire_fact');
 	$fieldset->ligneFree('TVA',selectTVATag("tauxTVA_fact", array(), '', '', '', true));
@@ -811,11 +813,10 @@ class factureView extends generalView {
 	$fieldset->ligneSelect('Commercial', 'commercial_fact','',$sql->getUser());
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
-	$out.= '<div class="block width50">';
 	$fieldset = new ZunoFieldset('Executer le changement');
 	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormFacture\',\'resultFactureAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div></div>';
+	$out.= '</div></div></div>';
 	return $out;
     }
 
@@ -841,8 +842,8 @@ class factureView extends generalView {
 	    $script .= 'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_fact\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'_hidden\').value = ""; } } } ';
 	    $script .= 'function resetForm() {var form = $(\'formAddFacture\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	    $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-	    $script .= 'function addContact(idRetour) { var ent=\'action=addContFact&entreprise=\'+$(\'ACentreprise_fact_hidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Facture.php\', ent);} ';
-	    $script .= 'function addEntreprise() { zuno.popup.open(\'Facture.php\', \'action=addEnt\');} ';
+	    $script .= 'function addContact(idRetour) { var ent=\'action=addContFact&entreprise=\'+$(\'ACentreprise_fact_hidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Facture.php\', ent,800,300);} ';
+	    $script .= 'function addEntreprise() { zuno.popup.open(\'Facture.php\', \'action=addEnt\',800,320);} ';
 	    $script .= '</script>';
 
 	    if($light == 'avoir')
@@ -969,14 +970,14 @@ class factureView extends generalView {
 	}
 
 	$js .= '</script>';
-	$fieldset = new ZunoFieldset("Contact");
+	$fieldset = new ZunoFieldset("Contact",'','height:120px');
 	$fieldset->ligneSelect("Contact", "id_cont", "", $liste, true, 'onchange="autoLoadDatas(this.value);"', "");
 	$fieldset->ligneInput("Nom", "nom_cont", "", 'id="nomCB" onchange="change();"', "");
 	$fieldset->ligneInput("Prenom", "prenom_cont", "", 'id="prenomCB" onchange="change();"', "");
 	$fieldset->ligneInput("E-mail", "mail_cont", "", 'id="mailCB" ');
 	$fieldset->ligneCheckBox("Prévenir le client", "email_client", true);
 
-	$fieldset2 = new ZunoFieldset("Informations de payement");
+	$fieldset2 = new ZunoFieldset("Informations de payement",'','height:120px');
 	$fieldset2->ligneInput("Numéro de carte", "finCarte_cont", "", 'id="carteCB" onchange="change();"', "");
 	$fieldset2->ligneInput("Expire le", "dateCarte_cont", "", 'id="dateCB" onchange="change();"', "");
 	$fieldset2->ligneInput("Cryptogramme", "cvvCarte_cont", "", 'id="cvvCB" onchange="change();"', "");
@@ -1046,20 +1047,14 @@ class factureView extends generalView {
      * @return string Le code HTML
      */
     public function popupConfirmSupp($id) {
-	if(!is_array($id))
-	    $id = array(0 => $id);
 	$titre = "Suppression";
 	$form = new ZunoForm('FactureToSupp', 'Facture.php', 'POST');
 	$form->newInputHidden('action', 'doSupp');
-	$form->newInputHidden('facture', $id[0]);
-	$fieldset = new ZunoFieldset("Suppression");
-
-	foreach($id as $k => $v)
-	    $fieldset->ligneCheckBox('Supprimer la facture '.$v, 'ID['.$v.']', true);
-	$form->newBlock($fieldset->generateFieldset(),'50');
-
+	$form->newInputHidden('facture', $id);
+	$form->newInputHidden('ID['.$id.']',$id);
+	$text = '<span class="important">Confirmez vous la supression de la facture "'.$id.'"</span>';
 	$block = new ZunoRenduHtml();
-	$block->generateZBox($titre, $titre, $form->generateForm(), $form->generateButtonsNoAjax(), 'idPopupSuppFact');
+	$block->generateZBox($titre, $titre, $text.$form->generateForm(), $form->generateButtonsNoAjax(), 'idPopupSuppFact');
 	return $block->generateRendu();
 
     }

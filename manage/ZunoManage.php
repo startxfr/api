@@ -43,12 +43,12 @@ $listesupported = explode(",",'ref_activite,ref_condireglement,ref_fonction,ref_
 foreach ($listesupported as $val)
 {
 	$RowContent['table']	= $val;
-	$RefList .= templating('prospec/ZunoConfiguration.RefRow',$RowContent);
+	$RefList .= templating('manage/ZunoConfiguration.RefRow',$RowContent);
 }
 
 $outrow['message']= $message;
 $outrow['RefList'] = $RefList;
-$sortie = templating('prospec/ZunoConfiguration',$outrow);
+$sortie = templating('manage/ZunoConfiguration',$outrow);
 /*------------------------------------------------------------------------+
 | DISPLAY PROCESSING
 +------------------------------------------------------------------------*/

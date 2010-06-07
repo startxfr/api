@@ -99,6 +99,9 @@ function verifDroits($partie, $souspartie = 99 ) {
 	case 'statistiques':
 	    $nbpartie = 5000;
 	    break;
+//	case 'mobile':
+//	    $nbpartie = 7000;
+//	    break;
 	case 'pontComptable':
 	    $nbpartie = 6000;
 	    break;

@@ -339,11 +339,10 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 		    $type2 = "l'affaire";
 		    $status = $rs[1][0]['nom_staff'];
 		    if($rs[1][0]['budget_aff'] != '')
-			$montant = "de ".prepareNombreAffichage($rs[1][0]['budget_aff'])."€";
-		    else
-			$montant = "indéterminé";
+			 $montant = "de ".prepareNombreAffichage($rs[1][0]['budget_aff'])."€";
+		    else $montant = "indéterminé";
 		    if($rs[1][0]['archived_aff'])
-			$action = "archive";
+			 $action = "archive";
 		    break;
 		case "devis" :
 		    $rs = $this->getDataFromID($id);

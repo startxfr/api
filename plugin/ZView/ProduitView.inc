@@ -79,7 +79,7 @@ class ProduitViewOriginal extends generalView {
 	    $this->formF->newBlock('');
 	$this->formF->newInputHidden('action', 'modifPF', 'ToDo');
 	$this->formF->newInputHidden('idProduit', $datas['data']['id_prod']);
-	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',550,250);", "../img/prospec/add.png");
+	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',450,230);", "../img/prospec/add.png");
 
 	$this->html = new ZunoRenduHtml('ficheCompleteProd');
 	$this->html->replaceJS($this->script);
@@ -94,12 +94,12 @@ class ProduitViewOriginal extends generalView {
      * @param array $datas Données de la Bdd
      */
     protected function initioFieldSet($datas) {
-	$this->fieldset1 = new ZunoFieldset('Produit');
-	$this->fieldset2 = new ZunoFieldset('Informations complémentaires');
-	$this->fieldset3 = new ZunoFieldset('Description');
+	$this->fieldset1 = new ZunoFieldset('Produit','','height:110px');
+	$this->fieldset2 = new ZunoFieldset('Informations complémentaires','','height:110px');
+	$this->fieldset3 = new ZunoFieldset('Description','','height:110px');
 	$this->fieldset1->ligneInput('Référence', 'id_prod', $datas['data']['id_prod'],'','ZTips.produit.reference');
 	$this->fieldset1->ligneInput('Nom', 'nom_prod', $datas['data']['nom_prod'],'','ZTips.produit.nom');
-	$this->fieldset1->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id="selectFamilleProd"', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 300,250)"), 'ZTips.produit.famille');
+	$this->fieldset1->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id="selectFamilleProd"', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)"), 'ZTips.produit.famille');
 	$this->fieldset3->ligneTArea('Description', 'description_prod',$datas['data']['description_prod'],'','ZTips.produit.desc');
 	$this->fieldset1->ligneInput('Prix (€)', 'prix_prod', $datas['data']['prix_prod'],'','ZTips.produit.prix');
 	$this->fieldset2->ligneInput('Stock', 'stock_prod', $datas['data']['stock_prod'],'','ZTips.produit.stock');
@@ -203,7 +203,7 @@ class ProduitViewOriginal extends generalView {
 	    $this->formF->newBlock('');
 	$this->formF->newInputHidden('action', 'modifPF', 'ToDo');
 	$this->formF->newInputHidden('idProduit', $datas['data']['id_prod']);
-	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',550,250);", "../img/prospec/add.png");
+	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',450,230);", "../img/prospec/add.png");
 
 	$this->html = new ZunoRenduHtml();
 	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Produits').' Produit '.$datas['data']['id_prod'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce produit'),'formModifProd', 'open');
@@ -221,7 +221,7 @@ class ProduitViewOriginal extends generalView {
 	    foreach($datas['fourn'][1] as $v) {
 		$pxrevient = $v['prixF']*(1-$v['remiseF']/100);
 		$pxrevient = prepareNombreAffichage($pxrevient);
-		$fieldset = new ZunoFieldset($v['id_fourn'].' - '.$v['nom_ent']);
+		$fieldset = new ZunoFieldset($v['id_fourn'].' - '.$v['nom_ent'],'','height:130px');
 		$fieldset->ligneLinkTo("Entreprise", "../prospec/fiche.php?id_ent=".$v['id_ent'], $v['nom_ent'],'','');
 		$fieldset->ligneInput("Px public (€)", 'prixF['.$this->compteurFourn.']', prepareNombreAffichage($v['prixF']), ' onchange="autoCalcul('.$this->compteurFourn.');" id="px'.$this->compteurFourn.'" ','ZTips.produit.fournPxPub');
 		$fieldset->ligneInput("Remise (%)", 'remiseF['.$this->compteurFourn.']', prepareNombreAffichage($v['remiseF']), ' onchange="autoCalcul('.$this->compteurFourn.');" id="rem'.$this->compteurFourn.'" ','ZTips.produit.fournRemise');
@@ -241,7 +241,7 @@ class ProduitViewOriginal extends generalView {
     private function initioFieldsetExFourn($datas) {
 	if($datas['fournEx'][0] and count($datas['fournEx'][1]) >0) {
 	    foreach($datas['fournEx'][1] as $v) {
-		$fieldset = new ZunoFieldset($v['id_fourn']);
+		$fieldset = new ZunoFieldset($v['id_fourn'],'','height:130px');
 		$fieldset->ligneLinkTo("Entreprise", "../prospec/fiche.php?id_ent=".$v['id_ent'], $v['nom_ent']);
 		$fieldset->ligneCheckBox("Réactiver", "ractif[".$this->compteurFourn."]",false,'','ZTips.produit.fournEnable');
 		$fieldset->ligneCheckBox("Supprimer", "supp[".$this->compteurFourn."]",false,'','ZTips.produit.fournDelete');
@@ -390,30 +390,30 @@ class ProduitViewOriginal extends generalView {
     private function ResultGroupActionForm() {
 	$sql = new produitModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action');
+	$fieldset = new ZunoFieldset('Type d\'action','','height:285px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'delete', ' onclick="toggleSubGroupedAction(\'groupedSubActionDelete\')"'),'Marquer ces produits comme supprimés','ZTips.produit.groupActionDelete');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'activate', ' onclick="toggleSubGroupedAction(\'groupedSubActionActivate\')"'),'Activation des produits','ZTips.produit.groupActionActivate');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'desactivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionDesactivate\')"'),'Desactivation des produits','ZTips.produit.groupActionDesactivate');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'fournisseur', ' onclick="toggleSubGroupedAction(\'groupedSubActionFournisseur\')"'),'Modification des fournisseurs','ZTips.produit.groupActionFournisseur');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'),'Changer un attribut par lot','ZTips.produit.groupActionChangeAttribute');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div><div class="block width50" id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Activer ces produits','groupedSubActionActivate');
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Activer ces produits','groupedSubActionActivate','height:225px');
 	$fieldset->addOtherLigne('<div class="row"><i>Aucune action sécifique n\'est requise</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Désactiver ces produits','groupedSubActionDesactivate');
+	$fieldset = new ZunoFieldset('Désactiver ces produits','groupedSubActionDesactivate','height:225px');
 	$fieldset->addOtherLigne('<div class="row"><i>Aucune action sécifique n\'est requise</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Marquer ces produits comme supprimés','groupedSubActionDelete');
+	$fieldset = new ZunoFieldset('Marquer ces produits comme supprimés','groupedSubActionDelete','height:225px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les produits qui ne sont présent dans aucun document seront supprimés. Les autres produits seront conservés tant qu\'ils seront présent dans un document</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Modification des fournisseurs','groupedSubActionFournisseur');
+	$fieldset = new ZunoFieldset('Modification des fournisseurs','groupedSubActionFournisseur','height:225px');
 	$fieldset->ligneSelect('Fournisseur', 'fournisseur','',$sql->getAllFournisseurs(), false);
 	$fieldset->ligneInput('Tx de remise', 'remiseF');
 	$fieldset->ligneInput('Prix public', 'prixF');
 	$fieldset->ligneRadio('Actif', 'actifF', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute');
+	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height:225px');
 	$fieldset->ligneInput('Nom du produit', 'nom_prod');
 	$fieldset->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', '', $sql->getAllFamille(), true));
 	$fieldset->ligneInput('Déscription du produit', 'description_prod');
@@ -424,11 +424,10 @@ class ProduitViewOriginal extends generalView {
 	$fieldset->ligneRadio('Meilleur vente', 'bestsell_prod', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
-	$out.= '<div class="block width50">';
 	$fieldset = new ZunoFieldset('Executer le changement');
 	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormProduit\',\'resultProduitAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div></div>';
+	$out.= '</div></div></div>';
 	return $out;
     }
 
@@ -460,7 +459,7 @@ class ProduitViewOriginal extends generalView {
 	    $rendu = new ZunoRenduHtml('rechercheProd');
 	    $rendu->generateZBox('Recherche', 'Recherche', $form->generateForm(), $form->generateButtons('listeResultProduit', 'Annuler', 'Rechercher',$popup), 'divSerachProd', 'open');
 	    $rendu->addBox($this->listeResult($datas,$light));
-	    $rendu->insertJS('<script>function autoCompletage() { var ent = 1;} </script>'.$this->script);
+	    $rendu->insertJS("<script>function autoCompletage() { var ent = 1;} </script><script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchProd', 'produit/ProduitListe.php','listeResultProduit'); return false;}, false);</script>".$this->script);
 	    return $rendu->generateRendu();
 	}
 
@@ -513,7 +512,7 @@ class ProduitViewOriginal extends generalView {
 
 	$form = new ZunoForm('addFamille', "produit/Produit.php", "POST");
 	$form->newInputHidden('action', 'addFamille');
-	$form->newBlock($fieldset->generateFieldset(), '50');
+	$form->newBlock($fieldset->generateFieldset(), '33');
 
 	$rendu = new ZunoRenduHtml();
 	$rendu->generateZBox('Nouvelle Famille', 'Nouvelle Fammille', $form->generateForm(), $form->generateButtons('', 'Annuler', 'Créer', 'popup'), 'idPopupAddFamille');
@@ -614,7 +613,7 @@ class ProduitViewOriginal extends generalView {
 	    $chaine .= "</select>".$img;
 	}
 	else {
-	    Logg::error('HTML::AUTO_TAG_GENERATOR::SELECT_TAG::no_tag_name',FALSE);
+	    Logg::error('ProduitView::selectTagProdFamille() ~ le tag n\'as pas de nom. ',$liste,__FILE__.'@'.__LINE__);
 	    $chaine = 'erreur select';
 	}
 

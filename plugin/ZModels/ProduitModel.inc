@@ -145,7 +145,7 @@ class produitModelOriginal extends GeneralModel {
 		    ."From fournisseur f "
 		    ."Left join entreprise e on e.id_ent =f.entreprise_fourn "
 		    ."Left Join contact c on c.id_cont = f.contactComm_fourn "
-		    ."Where nom_ent $qTag OR nom_cont $qTag OR id_fourn $qTag "
+		    ."WHERE nom_ent $qTag OR nom_cont $qTag OR id_fourn $qTag "
 		    ."Order by nom_ent "
 		    ."Limit $from, $limit");
 	}
@@ -154,7 +154,7 @@ class produitModelOriginal extends GeneralModel {
 		    ."From fournisseur f "
 		    ."Left join entreprise e on e.id_ent =f.entreprise_fourn "
 		    ."Left Join contact c on c.id_cont = f.contactComm_fourn "
-		    ."Where nom_ent $qTag OR nom_cont $qTag OR id_fourn $qTag ");
+		    ."WHERE nom_ent $qTag OR nom_cont $qTag OR id_fourn $qTag ");
 	}
 	return $this->process2();
     }
@@ -244,7 +244,7 @@ class produitModelOriginal extends GeneralModel {
 	Logg::loggerAlert('produitModel::updateProduit() ~ mise à jour du produit '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] && $fourn != 'non') {
-	    $sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur Where produit_id = '".$id."' ");
+	    $sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur WHERE produit_id = '".$id."' ");
 	    Logg::loggerAlert('produitModel::updateProduit() ~ suppression des fournisseurs pour le produit '.$id,$sql,__FILE__.'@'.__LINE__);
 	    $result = $this->process2();
 	    foreach($data['fourn'] as $key => $datas)
@@ -265,7 +265,7 @@ class produitModelOriginal extends GeneralModel {
 	Logg::loggerAlert('produitModel::updateFournisseur() ~ mise à jour du fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] && $prod != 'non') {
-	    $sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur Where fournisseur_id = '".$id."'");
+	    $sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur WHERE fournisseur_id = '".$id."'");
 	    Logg::loggerAlert('produitModel::updateFournisseur() ~ suppression des produits pour le fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
 	    $result = $this->process2();
 	    foreach($data['prod'] as $key => $datas)
@@ -324,7 +324,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function supprimerProduitFournisseur($fourn = '', $id = '') {
-	$sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur Where fournisseur_id = '".$fourn."' AND produit_id = '".$id."' ");
+	$sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur WHERE fournisseur_id = '".$fourn."' AND produit_id = '".$id."' ");
 	Logg::loggerAlert('ProduitModel::supprimerProduitFournisseur() ~ suppression des conditions d\'achat du produit '.$id.' par le fournisseur '.$fourn,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
@@ -336,7 +336,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function enleverProduitFournisseur($fourn = '', $id = '') {
-	$sql = $this->makeRequeteFree("UPDATE produit_fournisseur set actif = '0' Where fournisseur_id = '".$fourn."' AND produit_id = '".$id."' ");
+	$sql = $this->makeRequeteFree("UPDATE produit_fournisseur set actif = '0' WHERE fournisseur_id = '".$fourn."' AND produit_id = '".$id."' ");
 	Logg::loggerAlert('ProduitModel::enleverProduitFournisseur() ~ désactivation des conditions d\'achat du produit '.$id.' par le fournisseur '.$fourn,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
@@ -347,7 +347,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function desactiverProduitFournisseur($fourn = '') {
-	$sql = $this->makeRequeteFree("UPDATE produit_fournisseur set actif = '0' Where fournisseur_id = '".$fourn."' ");
+	$sql = $this->makeRequeteFree("UPDATE produit_fournisseur set actif = '0' WHERE fournisseur_id = '".$fourn."' ");
 	Logg::loggerAlert('ProduitModel::desactiverProduitFournisseur() ~ désactivation de toutes les conditions d\'achat avec le fournisseur '.$fourn,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
@@ -358,10 +358,10 @@ class produitModelOriginal extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function supprimerFournisseur($fourn = '') {
-	$sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur Where fournisseur_id = '".$fourn."' ");
+	$sql = $this->makeRequeteFree("DELETE FROM produit_fournisseur WHERE fournisseur_id = '".$fourn."' ");
 	Logg::loggerAlert('ProduitModel::supprimerFournisseur() ~ suppression des conditions d\'achat avec le fournisseur '.$fourn,$sql,__FILE__.'@'.__LINE__);
 	$this->process2();
-	$sql = $this->makeRequeteFree("DELETE FROM fournisseur Where id_fourn = '".$fourn."' ");
+	$sql = $this->makeRequeteFree("DELETE FROM fournisseur WHERE id_fourn = '".$fourn."' ");
 	Logg::loggerAlert('ProduitModel::supprimerFournisseur() ~ suppression du fournisseur '.$fourn,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
     }
@@ -390,7 +390,7 @@ class produitModelOriginal extends GeneralModel {
 		."From fournisseur f "
 		."Left join entreprise e on e.id_ent =f.entreprise_fourn "
 		."Left Join contact c on c.id_cont = f.contactComm_fourn "
-		."Where id_fourn = '$id' ");
+		."WHERE id_fourn = '$id' ");
 	return $this->process2();
     }
 

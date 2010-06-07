@@ -171,7 +171,7 @@ function inputDateTag($type, $name, $value = '', $dateFormat = '', $class = '', 
         $dateFormat = ($dateFormat != '') ? $dateFormat : '%d/%m/%Y';
         $button_id = substr(md5(time().rand(0,10000)),0,12);
 
-        $chaine = '<input type="'.$type.'" name="'.$name.'" id="'.$name.'ID" class="'.$class.' icon" value="'.$value.'" READONLY '.$autre.'/>
+        $chaine = '<input type="'.$type.'" name="'.$name.'" id="'.$name.'ID" class="'.$class.' icon" value="'.$value.'" readonly="readonly" '.$autre.'/>
 			<a href="#" title="Calendrier" id="'.$button_id.'"><img src="'.$imgPath.'img/calendar.png" alt="calendrier" /></a>
 			<script type="text/javascript">
 				Calendar.setup({

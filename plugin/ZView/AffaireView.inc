@@ -84,24 +84,18 @@ class affaireView extends generalView {
 
     /**
      * Méthode qui génère une popup d'archivage d'affaire(s)
-     * @param array $id Le / Les ID(s) d'affaire(s) à archiver
+     * @param array $id L'e / L'ID de l'affaire à archiver
      * @return string Le code HTML
      */
     public function popupConfirmArchiv($id) {
-	if(!is_array($id))
-	    $id = array(0 => $id);
 	$titre = "Archivage";
 	$form = new ZunoForm('AffaireArchiver', 'draco/Affaire.php', 'POST');
 	$form->newInputHidden('action', 'doArchiver');
-	$form->newInputHidden('aff', $id[0]);
-	$fieldset = new ZunoFieldset("Archivage");
-
-	foreach($id as $k => $v)
-	    $fieldset->ligneCheckBox('Archiver l\'affaire '.$v, 'ID['.$v.']', true);
-	$form->newBlock($fieldset->generateFieldset(),'50');
-
+	$form->newInputHidden('aff', $id);
+	$form->newInputHidden('ID['.$id.']',$id);
+	$text = '<span class="important">Confirmez vous l\'archivage de l\'affaire "'.$id.'"</span>';
 	$block = new ZunoRenduHtml();
-	$block->generateZBox($titre, $titre, $form->generateForm(), $form->generateButtons('idformAffaireformAutoRetour', "Annuler", "Effectuer", "popup2"), 'idPopupArchiAff');
+	$block->generateZBox($titre, $titre, $text.$form->generateForm(), $form->generateButtons('idformAffaireformAutoRetour', "Annuler", "Effectuer", "popup2"), 'idPopupArchiAff');
 	return $block->generateRendu();
 
     }
@@ -118,7 +112,7 @@ class affaireView extends generalView {
 
 	$nom = trim($data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont']);
 
-	$fieldset = new ZunoFieldset('Informations');
+	$fieldset = new ZunoFieldset('Informations','','height: 90px');
 	$fieldset->ligneInput('Nom', 'titre_aff');
 	$fieldset->ligneAutoComplete('Entreprise', 'entreprise_aff', $data['nom_ent'], $data['id_ent'], 'listeEntreprise');
 	$fieldset->ligneAutoComplete('Contact', 'contact_aff', $nom, $data['id_cont'], 'listeContact', '', false, '', false);
@@ -169,14 +163,14 @@ class affaireView extends generalView {
 	$this->blockForm->newInputHidden('id_aff', $data['id_aff']);
 	$this->blockForm->newInputHidden('action', $action);
 
-	$fieldset = new ZunoFieldset('Informations');
+	$fieldset = new ZunoFieldset('Informations','','height: 140px');
 	$fieldset->ligneInput('Titre', 'titre_aff', $data['titre_aff']);
 	$fieldset->ligneLinkTo('Entreprise', '../prospec/fiche.php?id_ent='.$data['entreprise_aff'], $data['nom_ent']);
 	$fieldset->ligneAutoComplete('Contact', 'contact_aff', trim($data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont']), $data['contact_aff'], 'listeContact&id_ent='.$data['entreprise_aff']);
 	$fieldset->ligneSelect('Commercial', 'commercial_aff', $data['commercial_aff'], $datas['user']);
 	$this->blockForm->newBlock($fieldset->generateFieldset());
 
-	$fieldset = new ZunoFieldset('Détails');
+	$fieldset = new ZunoFieldset('Détails','','height: 140px');
 	$fieldset->ligneInput('Budget', 'budget_aff', $data['budget_aff']);
 	$date = ($data['echeance_aff'] != null) ? strftime('%d/%m/%Y',strtotime($data['echeance_aff'])) : '';
 	$fieldset->ligneInputDate('Échéance', 'echeance_aff', $date);
@@ -185,7 +179,7 @@ class affaireView extends generalView {
 	$fieldset->ligneCheckBox('Actif', 'actif_aff', ($data['actif_aff'] == 1) ? true : false);
 	$this->blockForm->newBlock($fieldset->generateFieldset());
 
-	$fieldset = new ZunoFieldset('Autre');
+	$fieldset = new ZunoFieldset('Autre','','height: 140px');
 	$fieldset->ligneTArea('Description', 'desc_aff', $data['desc_aff']);
 	$fieldset->ligneTArea('Commentaire', 'comm_aff', $data['comm_aff']);
 	$this->blockForm->newBlock($fieldset->generateFieldset());
@@ -206,9 +200,9 @@ class affaireView extends generalView {
 	    }
 	    $this->blockForm->newBlock($fieldset->generateFieldset());
 	}
-	$this->blockForm->addButton('Historique de cette affaire','return zuno.popup.open(\'../draco/Affaire.php\', \'action=actuAffaire&id_aff='.$data['id_aff'].'\', \'1000\', \'400\', \'\', \'\', \'resize\', \'Actualités\');','../img/prospec/actu.png');
+	$this->blockForm->addButton('Historique de cette affaire','return zuno.popup.open(\'../draco/Affaire.php\', \'action=actuAffaire&id_aff='.$data['id_aff'].'\', \'850\', \'450\', \'\', \'\', \'resize\', \'Actualités\');','../img/prospec/actu.png');
 	if($data['archived_aff'] == 0)
-	    $this->blockForm->addButton('Archiver cette affaire', 'return zuno.popup.open(\'../draco/Affaire.php\', \'action=archiver&aff='.$data['id_aff'].'\', \'1000\', \'400\', \'\', \'\', \'resize\', \'Archiver\')', '../img/prospec/affaire.png');
+	    $this->blockForm->addButton('Archiver cette affaire', 'return zuno.popup.open(\'../draco/Affaire.php\', \'action=archiver&aff='.$data['id_aff'].'\', \'300\', \'150\', \'\', \'\', \'resize\', \'Archiver\')', '../img/prospec/affaire.png');
     }
 
     /**
@@ -262,7 +256,9 @@ class affaireView extends generalView {
 			}
 			function ChangeSubmit() {
 			    zuno.business.formTools.sendFormAjah('SearchAffaire', 'draco/ListeAffaires.php','listeResultAffaire');
-			}";
+			}
+			Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) ChangeSubmit(); return false;}, false);
+			";
 	$script .= 'function camenbertAffaire(value, max) { $(\'affaireBudgetMini\').value = value; $(\'affaireBudgetMaxi\').value = max; ChangeAffaireAction(\'searchAffaire\');zuno.business.formTools.sendFormAjah(\'searchAffaire\', \'draco/ListeAffaires.php\',\'listeResultAffaire\'); } ';
 	$script .= 'function resetForm() {var form = $(\'searchFormAffaire\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }';
@@ -316,7 +312,7 @@ class affaireView extends generalView {
 	$tag['archived_aff'] = inputTag('checkbox','archived_aff','','','','1',$option);
 
 	$corps = '<div class="PortletSearchAff">
-	<div class="block width50"><fieldset class="form"><legend>Critères de recherche</legend>
+	<div class="block width50"><fieldset class="form" style="height: 240px"><legend>Critères de recherche</legend>
 			<div class="row">
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.affaire.searchIC);">IC</div>
 				<div class="field">'.$tag['commercial_aff'].'</div>
@@ -359,7 +355,7 @@ class affaireView extends generalView {
 			</div>
 		</fieldset>
 	</div>
-	<div class="block width50"><fieldset class="form"><legend>Répartition des opportunitées</legend>
+	<div class="block width50"><fieldset class="form" style="height: 240px"><legend>Répartition des opportunitées</legend>
 			<div class="row">'.$tag['ImgChart'].'</div>
 		</fieldset>
 	</div>
@@ -417,9 +413,9 @@ class affaireView extends generalView {
 	foreach($datas['data'] as $proj) {
 	    $action = '';
 
-	    if ($_SESSION['user']['id'] == $proj['utilisateur_aff'])
-		$action   .= "<a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=modif',800,535,'','','resize','affaire');\" href=\"../prospec/Contact.php?id_cont=".$proj['id_cont']."\">".imageTag($suffixeLink.'img/prospec/affaire.modif.png','Modifier')."</a>
-						      <a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=supp',500,160,'','','resize','affairerem');\" href=\"../prospec/Contact.php?id_cont=".$proj['id_cont']."\">".imageTag($suffixeLink.'img/prospec/affaire.delete.png','Supprimer')."</a>";
+	    if ($_SESSION['user']['id'] == $proj['commercial_aff'])
+		$action   .= "<a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=modif',450,450,'','','resize','affaire');\">".imageTag($suffixeLink.'img/prospec/affaire.modif.png','Modifier')."</a>
+			      <a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=supp',450,200,'','','resize','affairerem');\">".imageTag($suffixeLink.'img/prospec/affaire.delete.png','Supprimer')."</a>";
 	    $actionJSLigne = "onclick=\"window.location='$suffixeLink/draco/Affaire.php?id_aff=".$proj['id_aff']."';\"";
 
 	    if ($proj['nom_ent'] != '') {
@@ -486,33 +482,32 @@ class affaireView extends generalView {
     private function ResultGroupActionForm() {
 	$sql = new affaireModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action');
+	$fieldset = new ZunoFieldset('Type d\'action','','height: 130px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'activate', ' onclick="toggleSubGroupedAction(\'groupedSubActionActivate\')"'),'Activer ces affaires','ZTips.affaire.groupActionActivate');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'desactivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionDesactivate\')"'),'Désactiver ces affaires','ZTips.affaire.groupActionDesactivate');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'archivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionArchive\')"'),'Archivage des affaires','ZTips.affaire.groupActionArchive');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'),'Changer un attribut par lot','ZTips.affaire.groupActionChangeAttribute');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div><div class="block width50" id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Activer ce lot d\'affaires','groupedSubActionActivate');
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Activer ce lot d\'affaires','groupedSubActionActivate','height: 70px');
 	$fieldset->addOtherLigne('<div class="row"><i>Les affaires qui sont archivées ne seront pas activées</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Désactiver ce lot d\'affaires','groupedSubActionDesactivate');
+	$fieldset = new ZunoFieldset('Désactiver ce lot d\'affaires','groupedSubActionDesactivate','height: 70px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les affaires n\'ayant plus de devis, commande ou facture en cours de traitement seront désactivées.<br/>Les affaires qui sont archivées ne seront pas traitées</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Archiver ce lot d\'affaires','groupedSubActionArchive');
+	$fieldset = new ZunoFieldset('Archiver ce lot d\'affaires','groupedSubActionArchive','height: 70px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les affaires n\'ayant plus de devis, commande ou facture en cours de traitement seront archivées.<br/></i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute');
+	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 70px');
 	$fieldset->ligneInput('Titre de l\'affaire', 'titre_aff');
 	$fieldset->ligneInputDate('Echeance', 'necheance_aff','');
 	$fieldset->ligneSelect('Type d\'affaire', 'typeproj_aff','',$sql->getTypesProj());
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
-	$out.= '<div class="block width50">';
 	$fieldset = new ZunoFieldset('Executer le changement');
 	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormAffaire\',\'resultAffaireAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div></div>';
+	$out.= '</div></div></div>';
 	return $out;
     }
 
@@ -617,12 +612,12 @@ class affaireView extends generalView {
 							</div>";
 		$tag['projet'] .= "<div class=\"row\">
 								<div class=\"label\">Documents</div>
-								<div class=\"field\"><a href=\"#\" onclick=\"return zuno.popup.open('../gnose/$urlGnose','dir=/Affaire/".$affaire['dir_aff']."&format=popup',800,535,'','','resize','gnose');\">".imageTag('../img/prospec/projet.png','Affaire Liée')."Dossier GNOSE"."</a></div>
+								<div class=\"field\"><a href=\"#\" onclick=\"return zuno.popup.open('../gnose/$urlGnose','dir=/Affaire/".$affaire['dir_aff']."&format=popup',700,400,'','','resize','gnose');\">".imageTag('../img/prospec/projet.png','Affaire Liée')."Dossier GNOSE"."</a></div>
 							</div>";
 		if ($affaire['projet_aff'] != '')
 		    $tag['projet'] .= "<div class=\"row\">
 								<div class=\"label\">Projet</div>
-								<div class=\"field\"> onclick=\"return zuno.popup.open('../prospec/Projet.php','id_proj=".$affaire['projet_aff']."&format=popup',800,535,'','','resize','projet');\">".imageTag('../img/prospec/projet.png','projet Lié')."voir"."</a></div>
+								<div class=\"field\"> onclick=\"return zuno.popup.open('../prospec/Projet.php','id_proj=".$affaire['projet_aff']."&format=popup',600,450,'','','resize','projet');\">".imageTag('../img/prospec/projet.png','projet Lié')."voir"."</a></div>
 							</div>";
 	    }
 	    else	$tag['projet'] .= "";

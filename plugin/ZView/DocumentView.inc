@@ -228,9 +228,9 @@ class documentViewFichier extends generalView {
      * @return array Les détails SVN du fichier
      */
     public function detailFichier() {
-	$info = SVNINFO('', $this->m_souspath);
+	$info = libSvn::SVNInfo('', $this->m_souspath);
 	$info['Last Changed Date'] = libSvn::SVNDateSvn2human($info['Last Changed Date']);
-	$log = SVNLOG('', $this->m_souspath);
+	$log = libSvn::SVNLog('', $this->m_souspath);
 	return array($info, $log);
     }
 }
@@ -262,7 +262,7 @@ class documentViewRepertoire extends generalView {
      * @param string $lieu Précise si on est dans WORK (par défaut) ou dans ARCHIVES
      */
     function __construct($path='', $lieu = 'WORK/') {
-	
+
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Répertoire "'.$path.'"','',true);
 	if($lieu == $GLOBALS['SVN_Pool1']['WorkDir']) {
@@ -481,25 +481,25 @@ class documentViewRepertoire extends generalView {
 
 		if($mode == 'complet') {
 		    $sortie .= '<div ouvert="false" class="altern'.$alternance.'" id="'.$v->sousPath().'" style="display:table-row;">';
-		    $ligne = '<div class="cellule bg" style="display:table-cell;"><a title="Informations sur ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=detailsR&format=popup&nom='.$v->nom().'\',\'640\',\'480\',\'\',\'\',\'\',\'Informations\');"><img title="Info sur le dossier '.$k.'" alt="Info sur le dossier '.$k.'" src="../img/files/dir.png" style="margin-left:'.$marge.'px"/></a>';
+		    $ligne = '<div class="cellule bg" style="display:table-cell;"><a title="Informations sur ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=detailsR&format=popup&nom='.$v->nom().'\',\'500\',\'300\',\'\',\'\',\'\',\'Informations\');"><img title="Info sur le dossier '.$k.'" alt="Info sur le dossier '.$k.'" src="../img/files/dir.png" style="margin-left:'.$marge.'px"/></a>';
 		    $ligne .= ' <b><a title="'.$k.'" onclick="afficherContenu(\''.$this->m_page.'\', \'action=naviguer&style=ajax&rep='.$v->sousPath().'\', \''.$v->sousPath().'\');">'.$k.'</a></b></div>';
 		    $ligne .= '<div class="cellule center bg" style="display:table-cell;width:30px;white-space:nowrap;padding-left:7px;padding-right:7px;"></div>';
-		    $ligne .= '<div class="cellule center bg" style="display:table-cell;width:30px;white-space:nowrap;padding-left:7px;padding-right:7px;">'.$v->dateM().'</div><div class="cellule right bg" style="display:table-cell;white-space:nowrap;width:30px;padding-left:7px;padding-right:7px;"><a title="Détail sur l\'utilisateur '.$v->proprio().'" href="javascript:zuno.popup.open(\'../User.php\',\'type=popup&id='.$v->proprio().'\',\'680\',\'300\',\'\',\'\',\'\',\'User\');"><b>'.$v->proprio().'</b></a></div>';
+		    $ligne .= '<div class="cellule center bg" style="display:table-cell;width:30px;white-space:nowrap;padding-left:7px;padding-right:7px;">'.$v->dateM().'</div><div class="cellule right bg" style="display:table-cell;white-space:nowrap;width:30px;padding-left:7px;padding-right:7px;"><a title="Détail sur l\'utilisateur '.$v->proprio().'" href="#" onclick="zuno.popup.open(\'../User.php\',\'type=popup&id='.$v->proprio().'\',\'300\',\'300\',\'\',\'\',\'\',\'User\');"><b>'.$v->proprio().'</b></a></div>';
 		    if($this->m_lieu == $GLOBALS['SVN_Pool1']['WorkDir']) {
 			if($v->afficherOptions())
-			    $plus = '<a title="Modifier ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'path='.$v->sousPath().'&action=modifD&format=popup\',\'640\',\'480\',\'\',\'\',\'\',\'Modifier\');">
+			    $plus = '<a title="Modifier ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'path='.$v->sousPath().'&action=modifD&format=popup\',\'400\',\'150\',\'\',\'\',\'\',\'Modifier\');">
 								<img alt="Modifier ce dossier" src="../img/gnose/modify.png"/>
 								</a>
 								<a title="Supprimer le dossier" href="'.$this->m_page.'?action=suppD&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce dossier ?\'));">
 								<img alt="Supprimer le dossier" src="../img/gnose/delete.png"/>
 								</a>
-								<a title="Copier le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=copierD&format=popup&nom='.$v->nom().'\',\'640\',\'480\',\'\',\'\',\'\',\'Copier\');">
+								<a title="Copier le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=copierD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Copier\');">
 								<img alt="Copier le dossier" src="../img/gnose/copy.png"/>
 								</a>
-								<a title="Déplacer le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerD&format=popup&nom='.$v->nom().'\',\'640\',\'480\',\'\',\'\',\'\',\'Déplacer\');">
+								<a title="Déplacer le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Déplacer\');">
 								<img alt="Déplacer le dossier" src="../img/gnose/move.png"/>
 								</a>
-								<a title="Archiver le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=archiverD&format=popup&nom='.$v->nom().'\',\'640\',\'480\',\'\',\'\',\'\',\'Archiver\');">
+								<a title="Archiver le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=archiverD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Archiver\');">
 								<img alt="Archiver le dossier" src="../img/gnose/archive.png"/>
 								</a>';
 
@@ -511,7 +511,7 @@ class documentViewRepertoire extends generalView {
 								<a title="Supprimer le dossier" href="'.$this->m_page.'?action=suppD&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce dossier ?\'));">
 								<img alt="Supprimer le dossier" src="../img/gnose/delete.png"/>
 								</a>
-								<a title="Déplacer le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerD&format=popup&nom='.$v->nom().'\',\'640\',\'480\',\'\',\'\',\'\',\'Déplacer\');">
+								<a title="Déplacer le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Déplacer\');">
 								<img alt="Déplacer le dossier" src="../img/gnose/move.png"/>
 								</a>
 								</div>';
@@ -547,7 +547,7 @@ class documentViewRepertoire extends generalView {
 	if(is_array($fichiers)) {
 	    foreach($fichiers as $k => $v) {
 		$sortie .= '<div class="altern'.$alternance.'" style="display:table-row;" id="'.$v->sousPath().'">';
-		$ligne = '<div class="cellule bg" style="display:table-cell;"><a title="Informations sur ce fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=detailsF&format=popup&nom='.$v->nom().'\',\'640\',\'480\',\'\',\'\',\'\',\'Informations\');">
+		$ligne = '<div class="cellule bg" style="display:table-cell;"><a title="Informations sur ce fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=detailsF&format=popup&nom='.$v->nom().'\',\'500\',\'300\',\'\',\'\',\'\',\'Informations\');">
 							<img title="Info sur le fichier '.$k.'" alt="Info sur le fichier '.$k.'" src="'.$v->image().'" style="margin-left:'.$marge.'px"/>
 							</a>';
 		$ligne .= '<b><a title="'.$k.'" href="'.$this->m_page.'?action=download&fich='.$v->sousPath().'">'.$k.'</a>
@@ -555,26 +555,27 @@ class documentViewRepertoire extends generalView {
 		$ligne .= '<div class="cellule center bg" style="display:table-cell;white-space:nowrap;">'.$v->taille().'</div>';
 		$ligne .= '<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;">
 							'.$v->dateM().'</div>
-							<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;"><a title="Détail sur l\'utilisateur '.$v->proprio().'" href="javascript:zuno.popup.open(\'../User.php\',\'type=popup&id='.$v->proprio().'\',\'680\',\'300\',\'\',\'\',\'\',\'User\');">
+							<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;"><a title="Détail sur l\'utilisateur '.$v->proprio().'" href="#" onclick="zuno.popup.open(\'../User.php\',\'type=popup&id='.$v->proprio().'\',\'300\',\'300\',\'\',\'\',\'\',\'User\');">
 							<b>root</b>
 							</a></div>';
 		if($this->m_lieu == $GLOBALS['SVN_Pool1']['WorkDir'])
 		    $ligne .= '<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;">
-							<a title="Modifier ce fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?action=modifF&path='.$v->sousPath().'&format=popup\',\'640\',\'480\',\'\',\'\',\'\',\'Uploader\');">
+							<a title="Modifier ce fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?action=modifF&path='.$v->sousPath().'&format=popup\',\'400\',\'150\',\'\',\'\',\'\',\'Uploader\');">
 							<img alt="Modifier ce fichier" src="../img/gnose/modify.png"/>
 							</a>
 							<a title="Supprimer le fichier" href="'.$this->m_page.'?action=suppF&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce fichier ?\'));">
 							<img alt="Supprimer le fichier" src="../img/gnose/delete.png"/>
 							</a>
-							<a title="Copier le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=copierF&format=popup&nom='.$k.'\',\'640\',\'480\',\'\',\'\',\'\',\'Copier\');">
+							<a title="Copier le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=copierF&format=popup&nom='.$k.'\',\'700\',\'350\',\'\',\'\',\'\',\'Copier\');">
 							<img alt="Copier le fichier" src="../img/gnose/copy.png"/>
 							</a>
-							<a title="Déplacer le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerF&format=popup&nom='.$k.'\',\'640\',\'480\',\'\',\'\',\'\',\'Déplacer\');">
+							<a title="Déplacer le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerF&format=popup&nom='.$k.'\',\'700\',\'350\',\'\',\'\',\'\',\'Déplacer\');">
 							<img alt="Déplacer le fichier" src="../img/gnose/move.png"/>
 							</a>
-							<a title="Envoyer le fichier" onclick="zuno.popup.open(\'../gnose/Send.php\',\'?file='.$v->sousPath().'\',\'640\',\'480\',\'\',\'\',\'resize\',\'Envoyer\');">
+							<a title="Envoyer le fichier" onclick="zuno.popup.open(\'../gnose/Send.php\',\'?file='.$v->sousPath().'\',\'500\',\'400\',\'\',\'\',\'resize\',\'Envoyer\');">
 							<img alt="Envoyer le fichier" src="../img/gnose/send.png"/>
-							</a></div>';
+							</a>
+							</div>';
 		else
 		    $ligne .= '<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;">
 							<a title="Supprimer le fichier" href="'.$this->m_page.'?action=suppF&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce fichier ?\'));">
@@ -583,7 +584,7 @@ class documentViewRepertoire extends generalView {
 							<a title="Déplacer le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerF&format=popup&nom='.$k.'\',\'640\',\'480\',\'\',\'\',\'\',\'Déplacer\');">
 							<img alt="Déplacer le fichier" src="../img/gnose/move.png"/>
 							</a>
-							<a title="Envoyer le fichier" onclick="zuno.popup.open(\'../prospec/PopupSendMail.php\',\'?file='.$v->sousPath().'\',\'640\',\'480\',\'\',\'\',\'\',\'Envoyer\');">
+							<a title="Envoyer le fichier" onclick="zuno.popup.open(\'../gnose/Send.php\',\'?file='.$v->sousPath().'\',\'500\',\'400\',\'\',\'\',\'resize\',\'Envoyer\');">
 							<img alt="Envoyer le fichier" src="../img/gnose/send.png"/>
 							</a></div>';
 		$sortie .= $ligne.'</div>';
@@ -802,9 +803,9 @@ class documentViewRepertoire extends generalView {
      * @return array Les informations
      */
     public function detailRepertoire() {
-	$info = SVNINFO('', $this->m_souspath);
+	$info = libSvn::SVNInfo('', $this->m_souspath);
 	$info['Last Changed Date'] = libSvn::SVNDateSvn2human($info['Last Changed Date']);
-	$log = SVNLOG('', $this->m_souspath);
+	$log = libSvn::SVNLog('', $this->m_souspath);
 	return array($info, $log);
     }
 }

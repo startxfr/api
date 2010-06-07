@@ -74,12 +74,12 @@ if (count($res) > 0)
 		$tag['nom'] = inputTag('text',$structure['titre'].$dev1[$structure['key']],'','','',$dev1[$structure['titre']],'');
 		$tag['id'] = $dev1[$structure['key']];
 
-		$tmptab .= templating('prospec/ZunoRefConfigure.row',$tag);
+		$tmptab .= templating('manage/ZunoRefConfigure.row',$tag);
 	}
 	$tag['RefList'] = $tmptab;
 	$tag['table'] = $table;
 	$tag['message'] = $message;
-	$content = templating('prospec/ZunoRefConfigure',$tag);
+	$content = templating('manage/ZunoRefConfigure',$tag);
 }
 else
 {

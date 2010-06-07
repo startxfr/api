@@ -57,9 +57,8 @@ class PayboxModel extends GeneralModel {
 	$this->makeRequeteFree("Select COUNT(id_pb) from paybox where DAYOFYEAR(date_pb) = DAYOFYEAR(NOW())");
 	$rs = $this->process2();
 	if($rs[0])
-	    $rs = $rs[1][0]['COUNT(id_pb)']+1;
-	else
-	    $rs = "0123654789";
+	     $rs = $rs[1][0]['COUNT(id_pb)']+1;
+	else $rs = "0123654789";
 	while (strlen($rs) != 10)
 	    $rs = "0".$rs;
 	return $rs;
@@ -90,7 +89,6 @@ class PayboxModel extends GeneralModel {
 	$in['dateval_cb'] = $this->pack_str($this->zEncrypt($data['DATEVAL']), strlen($this->zEncrypt($data['DATEVAL'])));
 	$in['cvv_cb'] = $this->pack_str($this->zEncrypt($data['CVV']), strlen($this->zEncrypt($data['CVV'])));
 	$in['contact_cb'] = $contact;
-
 	$sql = $this->makeRequeteInsert("contact_banque", $in);
 	Logg::loggerInfo('PayboxModel::insertCoordonnesBancaires() ~ ajout du portefeuille client '.$data['refAbonne_cb'].' pour le porteur '.$data['porteur_cb'],$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
@@ -103,7 +101,6 @@ class PayboxModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function updateCoordonnesBancaires($contact, $data) {
-
 	if(!is_numeric($contact))
 	    return array('0', '1' => 'Aucun contact');
 	$in['porteur_cb'] = $this->pack_str($this->zEncrypt($data['PORTEUR']), strlen($this->zEncrypt($data['PORTEUR'])));
@@ -129,7 +126,10 @@ class PayboxModel extends GeneralModel {
 	    $retour['CVV'] = $this->unpack_str($this->zDecrypt($rs[1][0]['cvv_cb']), strlen($this->zDecrypt($rs[1][0]['cvv_cb'])));
 	    $retour['REFABONNE'] = $this->unpack_str($this->zDecrypt($rs[1][0]['refAbonne_cb']), strlen($this->zDecrypt($rs[1][0]['refAbonne_cb'])));
 	}
-	else $retour['ERROR'] = $rs[1];
+	else {
+	    Logg::error('PayboxModel::getCoordonnesBancaires() ~ Erreur lors de la récupération des coordonnées bancaires du contact '.$contact,$rs[1],__FILE__.'@'.__LINE__);
+	    $retour['ERROR'] = $rs[1];
+	}
 	return $retour;
     }
 

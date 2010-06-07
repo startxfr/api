@@ -91,7 +91,7 @@ class contactView extends generalView {
 	$web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
 
 	$out = '<div class="block width50">' .
-		'<fieldset class="form">' .
+		'<fieldset class="form" style="height:100px">' .
 		'<legend>Information sur l\'entreprise</legend>' .
 		'<div class="row">' .
 		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>' .
@@ -103,7 +103,7 @@ class contactView extends generalView {
 		'</div>'.
 		'</fieldset></div>';
 	$out .= '<div class="block width50">'.
-		'<fieldset class="form">'.
+		'<fieldset class="form" style="height:100px">'.
 		'<legend>Coordonnées</legend>' .
 		'<div class="row">' .
 		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Web</div>' .
@@ -132,7 +132,7 @@ class contactView extends generalView {
 	$tva = ($data['tauxTVA_ent'] == '') ? $GLOBALS['zunoClientStatut']['tauxTVA'] : $data['tauxTVA_ent'];
 
 	$out = '<div class="block width50">
-			<fieldset class="form">
+			<fieldset class="form" style="height:140px">
 				<legend>Adresse</legend>
 			  	<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>
@@ -156,27 +156,9 @@ class contactView extends generalView {
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.pays);">Pays</div>
 					<div class="field">'.selectTag('pays_ent',$datas['pays'],$data['pays_ent'], '', '', false).'</div>
 				</div>
-			</fieldset>';
-
-	$web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
-
-	$out .= '<fieldset class="form">'.
-		'<legend>Autres coordonnées</legend>' .
-		'<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphone</div>' .
-		'<div class="field">'.inputTag('text', 'tel_ent', '', '', '16', prepareTelAffichage($data['tel_ent'])).'</div>' .
-		'</div>' .
-		'<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
-		'<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
-		'</div>'.
-		'<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site internet</div>' .
-		'<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
-		'</div>' .
-		'</fieldset></div>';
+			</fieldset></div>';
 	$out .= '<div class="block width50">
-					<fieldset class="form">
+					<fieldset class="form" style="height:140px">
 						<legend>Profil de l\'entreprise</legend>
 						<div class="row">
 							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>
@@ -202,7 +184,7 @@ class contactView extends generalView {
 				</div>
 
 				<div class="block width50">
-					<fieldset class="form">
+					<fieldset class="form" style="height:140px">
 						<legend>Autres informations</legend>
 						<div class="row">
 							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nfourn);">N° fournisseur</div>
@@ -226,17 +208,28 @@ class contactView extends generalView {
 						</div>
 
 					</fieldset>
-				</div>
-
-				<div class="block width50">
-					<fieldset class="form">
-						<legend>Commentaire</legend>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.commentaire);">Commentaire</div>
-							<div class="field"><textarea rows="3" cols="35" name="commsociete_ent">'.$data['commsociete_ent'].'</textarea></div>
-						</div>
-					</fieldset>
 				</div>';
+
+	$web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
+	$out .= '<div class="block width50"><fieldset class="form" style="height:140px">'.
+		'<legend>Autres coordonnées</legend>' .
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphone</div>' .
+		'<div class="field">'.inputTag('text', 'tel_ent', '', '', '16', prepareTelAffichage($data['tel_ent'])).'</div>' .
+		'</div>' .
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
+		'<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
+		'</div>'.
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site internet</div>' .
+		'<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
+		'</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.commentaire);">Commentaire</div>
+			<div class="field"><textarea rows="3" cols="35" name="commsociete_ent">'.$data['commsociete_ent'].'</textarea></div>
+		</div>' .
+		'</fieldset></div>';
 
 	return $out;
     }
@@ -382,7 +375,7 @@ class contactView extends generalView {
 		    $v['rappel_app'] = strftime('%d/%m/%Y', strtotime($v['rappel_app']));
 		$out .= '<tr class="altern'.($compteur % 2).'">
 				<td class="center barre" nowrap="nowrap">'.strftime('%d/%m/%Y', strtotime($v['appel_app'])).'</td>
-				<td class="barre" nowrap="nowrap"><a name="user" onclick="return zuno.popup.open(\'../User.php\',\'type=popup&id='.$v['utilisateur_app'].'\',"680","300","","","",\'User\');">'.$v['utilisateur_app'].'</a></td>
+				<td class="barre" nowrap="nowrap"><a name="user" onclick="return zuno.popup.open(\'../User.php\',\'type=popup&id='.$v['utilisateur_app'].'\',480,230);">'.$v['utilisateur_app'].'</a></td>
 				<td class="center barre" nowrap="nowrap"><b>'.$v['rappel_app'].'</b></td>
 				<td class="barre" nowrap="nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
 				<td class="barre">'.$v['comm_app'].'</td>
@@ -421,103 +414,102 @@ class contactView extends generalView {
 
     protected function interneInfosContact($datas) {
 	$data = $datas['data'];
-	$mail = ($data['mail_cont'] != '') ? '<img alt="mail" title="Envoyer un mail" src="../img/prospec/SendMail.png" onclick="zuno.popup.open(\'PopupSendMail.php\',\'id_cont='.$data['id_cont'].'\');" />' : '';
+	$mail = ($data['mail_cont'] != '') ? '<img alt="mail" title="Envoyer un mail" src="../img/prospec/SendMail.png" onclick="zuno.popup.open(\'PopupSendMail.php\',\'id_cont='.$data['id_cont'].'\',480,500);" />' : '';
+	$ifcl = ($data['mail_cont'] != '') ? 'icon' : '';
 	$out .= '<div class="block width33">
-					<fieldset class="form">
-						<legend>Détails du contact</legend>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.civ);">Civilité</div>
-							<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Melle'=>'Mademoiselle'), $data['civ_cont']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.prenom);">Prénom</div>
-							<div class="field">'.inputTag('text', 'prenom_cont', '', '', '16', $data['prenom_cont']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.nom);">Nom</div>
-							<div class="field">'.inputTag('text', 'nom_cont', '', '', '16', $data['nom_cont']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.fonction);">Fonction</div>
-							<div class="field">'.selectTag('fonction_cont', $datas['fonctions'], $data['fonction_cont']).'</div>
-						</div>
-					</fieldset>
-				</div>
-
-				<div class="block width33">
-					<fieldset class="form">
-						<legend>Coordonnées</legend>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.add);">Adresse</div>
-							<div class="field">'.inputTag('text', 'add1_cont', '', '', '16', $data['add1_cont']).'</div>
-						</div>
-						<div class="row">
-							<div class="label">Complément</div>
-							<div class="field">'.inputTag('text', 'add2_cont', '', '', '16', $data['add2_cont']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.cpVille);">CP - Ville</div>
-							<div class="field">'.inputTag('text', 'cp_cont', 'civ', '', '6', $data['cp_cont'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\', \'action=villeForCp&cp=\'+this.value, \'contVille\');"').'<select name="ville_cont" id="contVille" class="nextciv" onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""></option><option value="'.$data['ville_cont'].'" selected="selected">'.$data['ville_cont'].'</option></select></div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.pays);">Pays</div>
-							<div class="field">'.selectTag('pays_cont', $datas['pays'], $data['pays_cont']).'</div>
-						</div>
-					</fieldset>
-				</div>
-
-				<div class="block width33">
-					<fieldset class="form">
-						<legend>Autres Coordonnées</legend>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.tel);">Téléphone</div>
-							<div class="field">'.inputTag('text', 'tel_cont', '', '', '16', prepareTelAffichage($data['tel_cont'])).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.mob);">Mobile</div>
-							<div class="field">'.inputTag('text', 'mob_cont', '', '', '16', prepareTelAffichage($data['mob_cont'])).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.fax);">Fax</div>
-							<div class="field">'.inputTag('text', 'fax_cont', '', '', '16', prepareTelAffichage($data['fax_cont'])).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.mail);">E-mail</div>
-							<div class="field">'.inputTag('text', 'mail_cont', '', '', '16', $data['mail_cont']).$mail.'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.web);">Site internet</div>
-							<div class="field">'.inputTag('text', 'www_cont', '', '', '16', $data['civ_cont']).'</div>
-						</div>
-					</fieldset>
-				</div>
-				<div class="block width33">
-					<fieldset class="form">
-						<legend>Commentaires</legend>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.commentaire);">Commentaires</div>
-							<div class="field"><textarea name="comm_cont">'.$data['comm_cont'].'</textarea></div>
-						</div>
-					</fieldset>
-				</div>';
+		<fieldset class="form" style="height:120px">
+			<legend>Détails du contact</legend>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.civ);">Civilité</div>
+				<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Melle'=>'Mademoiselle'), $data['civ_cont']).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.prenom);">Prénom</div>
+				<div class="field">'.inputTag('text', 'prenom_cont', '', '', '16', $data['prenom_cont']).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.nom);">Nom</div>
+				<div class="field">'.inputTag('text', 'nom_cont', '', '', '16', $data['nom_cont']).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.fonction);">Fonction</div>
+				<div class="field">'.selectTag('fonction_cont', $datas['fonctions'], $data['fonction_cont']).'</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width33">
+		<fieldset class="form" style="height:120px">
+			<legend>Coordonnées</legend>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.add);">Adresse</div>
+				<div class="field">'.inputTag('text', 'add1_cont', '', '', '16', $data['add1_cont']).'</div>
+			</div>
+			<div class="row">
+				<div class="label">Complément</div>
+				<div class="field">'.inputTag('text', 'add2_cont', '', '', '16', $data['add2_cont']).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.cpVille);">CP - Ville</div>
+				<div class="field">'.inputTag('text', 'cp_cont', 'civ', '', '6', $data['cp_cont'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\', \'action=villeForCp&cp=\'+this.value, \'contVille\');"').'<select name="ville_cont" id="contVille" class="nextciv" onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""></option><option value="'.$data['ville_cont'].'" selected="selected">'.$data['ville_cont'].'</option></select></div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.pays);">Pays</div>
+				<div class="field">'.selectTag('pays_cont', $datas['pays'], $data['pays_cont']).'</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width33" style="height:120px">
+		<fieldset class="form">
+			<legend>Autres Coordonnées</legend>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.tel);">Téléphone</div>
+				<div class="field">'.inputTag('text', 'tel_cont', '', '', '16', prepareTelAffichage($data['tel_cont'])).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.mob);">Mobile</div>
+				<div class="field">'.inputTag('text', 'mob_cont', '', '', '16', prepareTelAffichage($data['mob_cont'])).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.fax);">Fax</div>
+				<div class="field">'.inputTag('text', 'fax_cont', '', '', '16', prepareTelAffichage($data['fax_cont'])).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.mail);">E-mail</div>
+				<div class="field">'.inputTag('text', 'mail_cont', $ifcl, '', '16', $data['mail_cont']).$mail.'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.web);">Site internet</div>
+				<div class="field">'.inputTag('text', 'www_cont', '', '', '16', $data['civ_cont']).'</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="block width33">
+		<fieldset class="form" style="height:120px">
+			<legend>Commentaires</legend>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.commentaire);">Commentaires</div>
+				<div class="field"><textarea name="comm_cont">'.$data['comm_cont'].'</textarea></div>
+			</div>
+		</fieldset>
+	</div>';
 	if($data['id_ent'] != null)
 	    $out .= '<div class="block width33">
-					<fieldset class="form">
-						<legend>Entreprise</legend>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.entrepriseNom);">Nom</div>
-							<div class="field"><a href="fiche.php?id_ent='.$data['id_ent'].'" title="Voir la fiche entreprise">'.$data['nom_ent'].'</a></div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.entrepriseType);">Type</div>
-							<div class="field">'.$data['nom_tyent'].'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.entrepriseWeb);">Site internet</div>
-							<div class="field">'.$data['www_ent'].'</div>
-						</div>
-					</fieldset>
-				</div>';
+		<fieldset class="form" style="height:120px">
+			<legend>Entreprise</legend>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.entrepriseNom);">Nom</div>
+				<div class="field"><a href="fiche.php?id_ent='.$data['id_ent'].'" title="Voir la fiche entreprise">'.$data['nom_ent'].'</a></div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.entrepriseType);">Type</div>
+				<div class="field">'.$data['nom_tyent'].'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.entrepriseWeb);">Site internet</div>
+				<div class="field">'.$data['www_ent'].'</div>
+			</div>
+		</fieldset>
+	</div>';
 	return $out;
     }
 
@@ -754,21 +746,21 @@ class contactView extends generalView {
     private function ResultGroupActionForm() {
 	$sql = new contactEntrepriseModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action');
+	$fieldset = new ZunoFieldset('Type d\'action','groupActionContact','height: 310px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttributeC', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttributeC\')"'),'Changer un attribut de contact','ZTips.contactEnt.groupActionChangeAttributeC');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttributeE', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttributeE\')"'),'Changer un attribut d\'entreprise','ZTips.contactEnt.groupActionChangeAttributeE');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'deleteC', ' onclick="toggleSubGroupedAction(\'groupedSubActionDeleteC\')"'),'Supprimer les contacts','ZTips.contactEnt.groupActionDeleteC');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'deleteE', ' onclick="toggleSubGroupedAction(\'groupedSubActionDeleteE\')"'),'Supprimer les entreprises','ZTips.contactEnt.groupActionDeleteE');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div><div class="block width50" id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Information des contacts','groupedSubActionChangeAttributeC');
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Information des contacts','groupedSubActionChangeAttributeC','height: 250px');
 	$fieldset->ligneSelect('Fonction', 'fonction_cont','',$sql->getFonction());
 	$fieldset->ligneInput('Commentaire', 'comm_cont');
 	$fieldset->ligneInput('Ville', 'ville_cont');
 	$fieldset->ligneInput('CP', 'cp_cont');
 	$fieldset->ligneRadio('Relance tel', 'relactive_cont', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Information des entreprises','groupedSubActionChangeAttributeE');
+	$fieldset = new ZunoFieldset('Information des entreprises','groupedSubActionChangeAttributeE','height: 250px');
 	$fieldset->ligneSelect('Activité', 'activite_ent','',$sql->getActivitesEnt());
 	$fieldset->ligneSelect('Type', 'type_ent','',$sql->getTypesEnt());
 	$fieldset->ligneInput('Remise', 'remise_ent');
@@ -779,18 +771,17 @@ class contactView extends generalView {
 	$fieldset->ligneFree('TVA',selectTVATag("tauxTVA_ent", array(), '', '', '', true));
 	$fieldset->ligneRadio('Siège', 'siege_ent', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Supprimer les contacts','groupedSubActionDeleteC');
+	$fieldset = new ZunoFieldset('Supprimer les contacts','groupedSubActionDeleteC','height: 250px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les contacts qui ne sont liés à aucun document seront supprimés</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Supprimer les entreprises','groupedSubActionDeleteE');
+	$fieldset = new ZunoFieldset('Supprimer les entreprises','groupedSubActionDeleteE','height: 250px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les entreprises qui ne sont liés à aucun document seront supprimés</i></div>');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
-	$out.= '<div class="block width50">';
 	$fieldset = new ZunoFieldset('Executer le changement');
 	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormContact\',\'resultContactAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div></div>';
+	$out.= '</div></div></div>';
 	return $out;
     }
 
@@ -893,6 +884,7 @@ class contactView extends generalView {
 			function ChangeSubmit() {
 			    zuno.business.formTools.sendFormAjah('searchProspec','prospec/Recherche.php','listeResultProspec');
 			}
+			Event.observe('searchProspecFormId', 'submit', function(event){ Event.stop(event); ChangeSubmit(); return false;}, false);
 			</script>";
 	    $form = $this->searchForm($datas);
 	    $rendu = new ZunoRenduHtml('rechercheProspec');
@@ -919,10 +911,10 @@ class contactView extends generalView {
 	$liste[2]['label'] = 'Recherche sur les appels';
 	$liste[3]['value'] = 'global';
 	$liste[3]['label'] = 'Recherche globale';
-	$form = new ZunoForm('searchProspec', 'prospec/Recherche.php', 'POST');
-	$fieldset = new ZunoFieldset('Recherche');
+	$form = new ZunoForm('searchProspec', 'prospec/Recherche.php', 'POST','searchProspecFormId');
+	$fieldset = new ZunoFieldset('Recherche','','height: 100px');
 	$fieldset->ligneInput('Recherche', 'recherche', $datas['recherche']);
-	$fieldset2 = new ZunoFieldset('Type');
+	$fieldset2 = new ZunoFieldset('Type','','height: 100px');
 	$fieldset2->ligneRadio('Type de recherche', 'type', ($datas['type'] != '') ? $datas['type'] : 'global', $liste);
 	$form->newBlock($fieldset->generateFieldset(),'50');
 	$form->newBlock($fieldset2->generateFieldset(), '50');
@@ -979,52 +971,51 @@ class contactView extends generalView {
 
 	//Choix de l'ordre
 	$corps = '<form method="post" action="?" name="'.$tag['FormName'].'">
-				<div class="block width50">
-					<fieldset class="form">
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelDebut);">Date de début</div>
-							<div class="field">'.inputDateTag('','debut',$valeurs['debut']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelRelancer);">A relancer</div>
-							<div class="field">'.inputTag('checkbox','relactive_app','','','','1',$option).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelCommercial);">Commercial</div>
-							<div class="field">'.selectTag('utilisateur_app',$champ,$valeurs['utilisateur_app']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelTypeent);">Type d\'entreprise</div>
-							<div class="field">'.HtmlForm::addAutoSelect('type_ent','ref_typeentreprise',$valeurs['type_ent'],'','','',$GLOBALS['PropsecConf']['DBPool']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelOrder);">Ordre de tri</div>
-							<div class="field">'.selectTag('order',$listeOrder,$valeurs['order']).'</div>
-						</div>
-					</fieldset>
-				</div>
-				<div class="block width50">
-					<fieldset class="form">
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelFin);">Date de fin</div>
-							<div class="field">'.inputDateTag('','fin',$valeurs['fin']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelPremierc);">Premier contact</div>
-							<div class="field">'.inputTag('checkbox','premiercont_app','','','','1',$option1).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelDep);">Département</div>
-							<div class="field">'.HtmlForm::addAutoSelect('cp_ent','ref_departement',$valeurs['cp_ent'],'','','',$GLOBALS['PropsecConf']['DBPool']).'</div>
-						</div>
-						<div class="row">
-							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelFonction);">Fct du contact</div>
-							<div class="field">'.HtmlForm::addAutoSelect('fonction_cont','ref_fonction',$valeurs['fonction_cont'],'','','',$GLOBALS['PropsecConf']['DBPool']).'</div>
-						</div>
-					</fieldset>
-				</div>
-				</form>' ;
-
+	    <div class="block width50">
+		    <fieldset class="form" style="height: 110px">
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelDebut);">Date de début</div>
+				    <div class="field">'.inputDateTag('','debut',$valeurs['debut']).'</div>
+			    </div>
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelFin);">Date de fin</div>
+				    <div class="field">'.inputDateTag('','fin',$valeurs['fin']).'</div>
+			    </div>
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelCommercial);">Commercial</div>
+				    <div class="field">'.selectTag('utilisateur_app',$champ,$valeurs['utilisateur_app']).'</div>
+			    </div>
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelTypeent);">Type d\'entreprise</div>
+				    <div class="field">'.HtmlForm::addAutoSelect('type_ent','ref_typeentreprise',$valeurs['type_ent'],'','','',$GLOBALS['PropsecConf']['DBPool']).'</div>
+			    </div>
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelOrder);">Ordre de tri</div>
+				    <div class="field">'.selectTag('order',$listeOrder,$valeurs['order']).'</div>
+			    </div>
+		    </fieldset>
+	    </div>
+	    <div class="block width50">
+		    <fieldset class="form" style="height: 110px">
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelRelancer);">A relancer</div>
+				    <div class="field">'.inputTag('checkbox','relactive_app','','','','1',$option).'</div>
+			    </div>
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelPremierc);">Premier contact</div>
+				    <div class="field">'.inputTag('checkbox','premiercont_app','','','','1',$option1).'</div>
+			    </div>
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelDep);">Département</div>
+				    <div class="field">'.HtmlForm::addAutoSelect('cp_ent','ref_departement',$valeurs['cp_ent'],'','','',$GLOBALS['PropsecConf']['DBPool']).'</div>
+			    </div>
+			    <div class="row">
+				    <div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.searchAppelFonction);">Fct du contact</div>
+				    <div class="field">'.HtmlForm::addAutoSelect('fonction_cont','ref_fonction',$valeurs['fonction_cont'],'','','',$GLOBALS['PropsecConf']['DBPool']).'</div>
+			    </div>
+		    </fieldset>
+	    </div>
+	    </form>' ;
 	$titre = imageTag('../img/prospec/voir.png','recherche').' Recherche des relances';
 	$pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
 			   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/voir.png','','middle').' Rechercher</a>';
@@ -1142,16 +1133,16 @@ class contactEntrepriseView extends contactView {
 	    $GLOBALS['out']->setTitle('Fiche entreprise '.$datas['data']['nom_ent'],'',true);
 	$messAdd = ($mess != '') ? '<span class="important" style="text-align:center;" >'.$mess.'</span>' : '';
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
-	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent); } ';
-	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 200);} ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
 	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
@@ -1164,7 +1155,7 @@ class contactEntrepriseView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
 	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
-	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
 	$script .= "\n".'function changePopupAffaire() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel3\').innerHTML; Effect.SlideDown(\'formAffaire\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel3\').innerHTML; } ';
@@ -1196,16 +1187,16 @@ class contactEntrepriseView extends contactView {
 
     public function creerEntreprise($datas,$control = null) {
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;} function changeToDo(value) {$(\'toDO\').value = $(\'toDO2\').value = value;}';
-	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent); } ';
-	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
 	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
@@ -1218,7 +1209,7 @@ class contactEntrepriseView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
 	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
-	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
 	$script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
@@ -1323,7 +1314,7 @@ class contactEntrepriseView extends contactView {
 	    $corps .= '<input type="hidden" name="action" value="addAppelCont" />';
 	}
 	$corps .= '<div class="block width33">';
-	$corps .= '<fieldset class="form">';
+	$corps .= '<fieldset class="form" style="height: 120px"><legend>Contexte de l\'appel</legend>';
 	if($data['cont'])
 	    $corps .= '<div class="row">' .
 		    '<div class="label">Contact</div>' .
@@ -1367,7 +1358,7 @@ class contactEntrepriseView extends contactView {
 		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelH);">Heure du rappel</div>' .
 		'<div class="field">'.inputTag('text', 'heure_app','', '', '16', $data['heure_app']).'</div>' .
 		'</div></fieldset></div>';
-	$corps .= '<div class="block width33"><fieldset class="form">';
+	$corps .= '<div class="block width33"><fieldset class="form" style="height: 120px"><legend>Complément d\'information</legend>';
 	$corps .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelProjet);">Projet</div>
 					<div class="field">'.inputTag('text', 'projet','icon', '', '16',$data['titre_proj'], ' id="ACprojet_app" onchange="verifAutocompleteur(this);" ').'<a name="proj" onclick="changePopupProjet();"><img alt="addProjet" title="Créer un projet" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingProj" src="../img/ajax-loader.gif" alt="loader"/></div>
@@ -1497,16 +1488,16 @@ class contactParticulierView extends contactView {
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Fiche contact '.$datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'].$addEntInTitle,'',true);
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
-	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent); } ';
-	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
 	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
@@ -1519,7 +1510,7 @@ class contactParticulierView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
 	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
-	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
 	$script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
@@ -1540,16 +1531,16 @@ class contactParticulierView extends contactView {
 
     public function creerContact($datas) {
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
-	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent); } ';
-	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
-	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
 	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
@@ -1558,7 +1549,7 @@ class contactParticulierView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
 	$script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
-	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent);} ';
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
 	$script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';

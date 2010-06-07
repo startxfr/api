@@ -117,8 +117,7 @@ class Bdd_pgsql {
     function makeRequeteInsert($table,$liste) {
 	$top = "INSERT INTO \"".$table."\" ( ";
 	foreach ($liste as $key => $val) {
-	    //$valclean1 = addslashes($val);
-	    $valclean1 = $val;
+	    $valclean1 = addslashes(stripslashes(trim($val)));
 	    if($valclean1 == '') {
 		$bottom .= ", NULL ";
 	    }
@@ -145,7 +144,7 @@ class Bdd_pgsql {
     function makeRequeteUpdate($table,$col_id,$id,$liste) {
 	$top = "UPDATE \"".$table."\" SET ";
 	foreach ($liste as $key => $val) {
-	    $valclean1 = $val;
+	    $valclean1 = addslashes(stripslashes(trim($val)));
 	    if($valclean1 == '') {
 		$head   .= " \"".$key."\" = NULL, ";
 	    }

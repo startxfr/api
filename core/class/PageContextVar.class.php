@@ -32,19 +32,14 @@ class PageContextVar {
 	Logg::loggerNotice('PageContextVar::__construct() ~ Paramètres en entrées : GET="'.count($_GET).'"; POST="'.count($_POST).'"; FILES="'.count($_FILES).'")',array($_GET,$_POST,$_FILES),__FILE__.'@'.__LINE__);
 	// Netoyage des variables POST reçues
 	foreach($_POST as $key => $val) {
-	    if(!is_array($val)) {
+	    if(!is_array($val))
 		$this->rcvP[$key] = addslashes(stripslashes($val));
-	    }
-	    else {
-		$this->rcvP[$key] = $val;
-	    }
+	    else$this->rcvP[$key] = $val;
 	}
 	// Netoyage des variables GET reçues
-	foreach($_GET as $key => $val) {
-	    if(!is_array($val)) {
+	foreach($_GET as $key => $val)
+	    if(!is_array($val))
 		$this->rcvG[$key] = addslashes(stripslashes($val));
-	    }
-	}
 	// Netoyage des fichiers reçus
 	$this->rcvF = $_FILES;
 	if (is_array($this->rcvF)) {
@@ -57,13 +52,7 @@ class PageContextVar {
 		}
 	    }
 	}
-
     }
-}
-
-function PageContextVarCleanInput($item,$key) {
-    $toto[$key] = addslashes(stripslashs($item));
-    return $toto;
 }
 
 ?>

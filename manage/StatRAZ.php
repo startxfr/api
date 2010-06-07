@@ -39,7 +39,7 @@ if ($PC->rcvP['act'] != '')
 	elseif ($PC->rcvP['act'] == 'reset')
 	{
 		$tmpreq 		= new Bdd();
-		$tmpreq->MakeRequeteFree("UPDATE `ref_page` SET `stat_pg` = NULL, `stat_date_pg` = '".DateTimestamp2Univ('')."' WHERE channel_pg = '".$PC->rcvP['channel']."'");
+		$tmpreq->makeRequeteUpdate('ref_page', 'channel_pg', $PC->rcvP['channel'],array('stat_pg'=>'','stat_date_pg'=>DateTimestamp2Univ('')));
 		$tmpreq->process();
 	}
 }

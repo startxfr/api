@@ -668,7 +668,7 @@ class devisModel extends GeneralModel {
      * @return array Indique si la / les requête(s) s'est / se sont bien déroulée(s)
      */
     public function delete($id_dev) {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_dev = '".$id_dev."'");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE id_dev = '".$id_dev."'");
 	Logg::loggerInfo('devisModel::delete() ~ suppression du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0])

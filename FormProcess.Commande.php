@@ -156,7 +156,10 @@ elseif ($action == 'Generer') {
 	    }
 	}
 
-    commandeGnose::CommandeSaveDocInGnose($Doc,$id_cmd,"Enregistrement des documents relatifs à une commande.");
+    $info = new commandeModel();
+    $commande = $info->getDataFromID($id_cmd);
+    $dev = $commande[1][0];
+    commandeGnose::CommandeSaveDocInGnose($Doc,$dev,"Enregistrement des documents relatifs à une commande.");
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"3"));
     $bddtmp->process();
     $bddtmp->addActualite($id_cmd, 'free','Génération des documents de la commande '.$id_cmd,'Les documents'.substr($txtDo,0,-2).' de la commande '.$id_cmd.' ont été généré. Ils sont disponibles dans l\'entrepôt des documents.');

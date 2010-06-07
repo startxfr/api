@@ -397,9 +397,8 @@ elseif($PC->rcvG['action'] == 'doAddFacture') {
     $data['tauxTVA_fact'] = $cmd['tva_cmd'];
     $data['type_fact'] = $PC->rcvG['type'];
     if($PC->rcvG['type'] == 'Avoir')
-        $result = $info->insert($data, 'toAvoir', $produit);
-    else
-        $result = $info->insert($data, 'cloner', $produit);
+         $result = $info->insert($data, 'toAvoir', $produit);
+    else $result = $info->insert($data, 'cloner', $produit);
     $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
     $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '3' ; ");
     $bddtmp->process2();

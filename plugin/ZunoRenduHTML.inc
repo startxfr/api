@@ -28,18 +28,14 @@ class ZunoRenduHtml {
      */
     public function generateRendu() {
 	$this->rendu = '<div id="error"></div>';
-	$this->rendu .= $this->js;
-	if($this->grandID != '') {
+	if($this->grandID != '')
 	    $this->rendu .= '<div id="'.$this->grandID.'">';
-	}
 	if(is_array($this->listeBox))
-	    foreach($this->listeBox as $v) {
+	    foreach($this->listeBox as $v)
 		$this->rendu .= $v;
-	    }
-	if($this->grandID != '') {
+	if($this->grandID != '')
 	    $this->rendu .= '</div>';
-	}
-
+	$this->rendu .= $this->js;
 	return $this->rendu;
     }
 
@@ -210,6 +206,7 @@ class ZunoFieldset {
     private $listeLignes;
     private $lastLigne;
     private $fieldset;
+    private $style;
     private $fieldsetId;
     private $legend;
 
@@ -218,9 +215,10 @@ class ZunoFieldset {
      * @param string $legend Paramêtre optionnel pour préciser une légende au fieldset
      * @param string $fieldsetId Paramêtre optionnel pour préciser un ID au fieldset
      */
-    public function __construct($legend ='',$fieldsetId = '') {
+    public function __construct($legend ='',$fieldsetId = '',$style = '') {
 	$this->legend = $legend;
 	$this->fieldsetId = $fieldsetId;
+	$this->style = $style;
     }
 
     /**
@@ -236,9 +234,11 @@ class ZunoFieldset {
      * @return string Le fieldset généré
      */
     public function generateFieldset() {
+	if($this->style != '')
+	     $styleCss = ' style="'.$this->style.'"';
 	if($this->fieldsetId != '')
-	    $this->fieldset = '<fieldset class="form" id="'.$this->fieldsetId.'">';
-	else $this->fieldset = '<fieldset class="form">';
+	     $this->fieldset = '<fieldset class="form" id="'.$this->fieldsetId.'"'.$styleCss.'>';
+	else $this->fieldset = '<fieldset class="form"'.$styleCss.'>';
 	if($this->legend != '')
 	    $this->fieldset.= '<legend>'.$this->legend.'</legend>';
 	if(is_array($this->listeLignes))
@@ -375,7 +375,7 @@ class ZunoFieldset {
 	    $nomSelect = $nomInput."-Taux";
 	$out .= '<div class="row" '.$attRow.'>';
 	$out .= '<div class="label" '.$tips.' >Taux / Montant TVA</div>';
-	$out .= '<div class="field">'.$this->selectTVATag($nomSelect,$values,$valueSelect, 'civ',' id="ID'.$nomSelect.'" onchange="calculette();"  ', false).$this->inputTag('text',$nomInput,'nextciv','',4,$valueInput,' id="ID'.$nomInput.'" READONLY="READONLY" style="width:197px !important;" ').'</div>';
+	$out .= '<div class="field">'.$this->selectTVATag($nomSelect,$values,$valueSelect, 'civ',' id="ID'.$nomSelect.'" onchange="calculette();"  ', false).$this->inputTag('text',$nomInput,'nextciv','',4,$valueInput,' id="ID'.$nomInput.'" readonly="readonly" style="width:197px !important;" ').'</div>';
 	$out .= '</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
@@ -672,7 +672,7 @@ class ZunoFieldset {
 	    $dateFormat = ($dateFormat != '') ? $dateFormat : '%d/%m/%Y';
 	    $button_id = substr(md5(time().rand(0,10000)),0,12);
 
-	    $chaine = '<input type="'.$type.'" name="'.$name.'" id="'.$name.'ID" class="'.$class.' icon" value="'.$value.'" READONLY '.$autre.'/>
+	    $chaine = '<input type="'.$type.'" name="'.$name.'" id="'.$name.'ID" class="'.$class.' icon" value="'.$value.'" readonly="readonly" '.$autre.'/>
 				<a href="#" title="Calendrier" id="'.$button_id.'"><img src="'.$imgPath.'img/calendar.png" alt="calendrier" /></a>
 				<script type="text/javascript">
 					Calendar.setup({

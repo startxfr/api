@@ -827,7 +827,7 @@ class factureModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function delete($id_fact) {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_fact = '".$id_fact."'");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE id_fact = '".$id_fact."'");
 	Logg::loggerInfo('factureModel::delete() ~ suppression de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0])

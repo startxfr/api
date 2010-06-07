@@ -89,16 +89,16 @@ class commandeView extends generalView {
 		$tag['script'] .= 'produit['.$increment.']=\''.$v['id_produit'].'\'; ';
 		$tag['LinkBox'] = '<input type="hidden" name="id_produit['.$increment.']" value="'.$v['id_produit'].'" />'.$v['id_produit'];
 		$tag['stock'] = prepareNombreAffichage($v['stock_prod']);
-		$tag['quantite'] = inputTag('text', 'quantite['.$increment.']', '', '', '', prepareNombreAffichage($v['quantite']), 'READONLY id="'.$v['id_produit'].'qtt"');
-		$tag['prix'] = inputTag('text', 'prix['.$increment.']', '', '', '', prepareNombreAffichage($v['prix']), 'READONLY id="'.$v['id_produit'].'prixC"');
-		$tag['remise'] = inputTag('text', 'remise['.$increment.']', '', '', '', prepareNombreAffichage($v['remise']), 'READONLY id="'.$v['id_produit'].'remiseC"');
+		$tag['quantite'] = inputTag('text', 'quantite['.$increment.']', '', '', '', prepareNombreAffichage($v['quantite']), ' style="width:28px" readonly="readonly" id="'.$v['id_produit'].'qtt"');
+		$tag['prix'] = inputTag('text', 'prix['.$increment.']', '', '', '', prepareNombreAffichage($v['prix']), ' style="width:60px" readonly="readonly" id="'.$v['id_produit'].'prixC"').' &euro;';
+		$tag['remise'] = inputTag('text', 'remise['.$increment.']', '', '', '', prepareNombreAffichage($v['remise']), ' style="width:30px" readonly="readonly" id="'.$v['id_produit'].'remiseC"').' %';
 		$tag['total'] = $v['quantite']*$v['prix']*(1-$v['remise']/100);
 		$totalHT += $tag['total'];
 		if($v['fournisseurs'] != null) {
-		    $tag['quantiteF'] = inputTag('text', 'quantite_cmd['.$increment.']', '', '', '', prepareNombreAffichage($v['quantite_cmd']), 'READONLY id="'.$v['id_produit'].'qtt_cmd" onchange="changeData(\''.$v['id_produit'].'\');" ');
+		    $tag['quantiteF'] = inputTag('text', 'quantite_cmd['.$increment.']', '', '', '', prepareNombreAffichage($v['quantite_cmd']), ' style="width:28px" readonly="readonly" id="'.$v['id_produit'].'qtt_cmd" onchange="changeData(\''.$v['id_produit'].'\');" ');
 		    $tag['fournisseur'] = selectTag('fournisseur['.$increment.']', $v['fournisseurs'], prepareNombreAffichage($v['fournisseur']), '', 'id="'.$v['id_produit'].'fournisseur" onchange="aCVF(\''.$v['id_produit'].'\', this.value);" ', true);
-		    $tag['remiseF'] = inputTag('text', 'remiseF['.$increment.']', '', '', '', 0, 'READONLY id="'.$v['id_produit'].'remiseF" onchange="changeData(\''.$v['id_produit'].'\');"');
-		    $tag['prixF'] = inputTag('text', 'prixF['.$increment.']', '', '', '', 0, 'READONLY id="'.$v['id_produit'].'prixF" onchange="changeData(\''.$v['id_produit'].'\');"');
+		    $tag['remiseF'] = inputTag('text', 'remiseF['.$increment.']', '', '', '', 0, ' style="width:30px" readonly="readonly" id="'.$v['id_produit'].'remiseF" onchange="changeData(\''.$v['id_produit'].'\');"').' %';
+		    $tag['prixF'] = inputTag('text', 'prixF['.$increment.']', '', '', '', 0, ' style="width:60px" readonly="readonly" id="'.$v['id_produit'].'prixF" onchange="changeData(\''.$v['id_produit'].'\');"').' &euro;';
 
 		    $tag['script'] .= "prix['".$v['id_produit']."']= new Array(); remise['".$v['id_produit']."']= new Array(); ";
 		    foreach($v['fournisseurs'] as $kk => $vv) {
@@ -107,10 +107,8 @@ class commandeView extends generalView {
 		    }
 		}
 		else {
-		    $tag['quantiteF'] = '-';
-		    $tag['prixF'] = '-';
-		    $tag['remiseF'] = '-';
-		    $tag['fournisseur'] = '-';
+		    $tag['quantiteF'] = $tag['prixF'] = $tag['remiseF'] = '';
+		    $tag['fournisseur'] = '<i>Aucun fournisseur</i>';
 		}
 		$tag['id_produit'] = $v['id_produit'];
 		$tag['altern'] = ($increment%2);
@@ -219,7 +217,7 @@ class commandeView extends generalView {
 	$Nachat = ($datas['data']['nom_achat'] != '') ? $datas['data']['civ_achat'].' '.$datas['data']['prenom_achat'].' '.$datas['data']['nom_achat'] : '';
 
 	$out = '<div class="block width50">';
-	$out .= '<fieldset class="form"><legend>Informations sur la commande</legend>';
+	$out .= '<fieldset class="form" style="height:183px"><legend>Informations sur la commande</legend>';
 	if($datas['data']['id_fact'] != '' or $datas['data']['id_dev'] != '' or $datas['data']['id_aff'] != '') {
 	    if($datas['data']['id_aff'] != '') {
 		$out .= '<div class="row"><div class="label">Affaire : </div>';
@@ -253,7 +251,7 @@ class commandeView extends generalView {
 	$out .= '</fieldset></div>';
 
 	$out .= '<div class="block width50">';
-	$out .= '<fieldset class="form"><legend>Adresse de livraison</legend>';
+	$out .= '<fieldset class="form" style="height:183px"><legend>Adresse de livraison</legend>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryNom);">Entreprise</div>';
 	if ($datas['data']['type_ent'] != '')
@@ -282,7 +280,7 @@ class commandeView extends generalView {
                     <div class="field">'.inputTag('text', "maildelivery_cmd", '', '', '30', $datas['data']['maildelivery_cmd']).'</div>
 		</div></fieldset></div>';
 	$out .= '<div class="block width50">';
-	$out .= '<fieldset class="form"><legend>Informations sur les contacts</legend>';
+	$out .= '<fieldset class="form" style="height:100px"><legend>Informations sur les contacts</legend>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.entreprise);">Entreprise</div>';
 	$out .= '<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',900,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
@@ -303,10 +301,8 @@ class commandeView extends generalView {
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.commercial);">Commercial</div>';
 	$out .= '<div class="field">'.selectTag('commercial_cmd',$datas['user'],$datas['data']['commercial_cmd']).'</div>';
 	$out .= '</div>';
-	$out .= '</fieldset></div>';
-
-	$out .= '<div class="block width50">';
-	$out .= '<fieldset class="form"><legend>Commentaire de la commande</legend>';
+	$out .= '</fieldset>';
+	$out .= '<fieldset class="form" style="height:60px"><legend>Commentaire de la commande</legend>';
 	$out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryComplement);">Commentaire</div>
                     <div class="field">
@@ -342,23 +338,23 @@ class commandeView extends generalView {
     private function interneProduits($datas) {
 	$out = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
 		<tbody><tr class="titre"> 
-			<th rowspan="2">ID</th>
+			<th rowspan="2" style="width: 135px">ID</th>
 			<th rowspan="2">Fournisseur</th>
-			<th rowspan="2">Stock</th>
+			<th rowspan="2" style="width: 16px">Stock</th>
 			<th colspan="4">Client</th>
 			<th colspan="4">Fournisseur</th>
-			<th rowspan="2">Marge</th>
-			<th rowspan="2">Action</th>
+			<th rowspan="2" style="width: 100px">Marge</th>
+			<th rowspan="2" width="1%">Action</th>
 		</tr>
 		<tr class="subtitre">
-			<th>Quantité</th> 
-			<th>Prix</th>
-			<th>Remise</th>
-			<th>Total</th>
-			<th>Quantité</th>
-			<th>Prix</th>
-			<th>Remise</th>
-			<th>Total</th>
+			<th style="width: 30px">Quantité</th>
+			<th style="width: 90px">Prix</th>
+			<th style="width: 65px">Remise</th>
+			<th style="width: 110px">Total</th>
+			<th style="width: 30px">Quantité</th>
+			<th style="width: 90px">Prix</th>
+			<th style="width: 65px">Remise</th>
+			<th style="width: 110px">Total</th>
 		</tr>';
 	$alternance = $numero = $HT = $FHT = 0;
 	foreach($datas['produits'] as $v) {
@@ -375,30 +371,30 @@ class commandeView extends generalView {
 		$out2 .= '<td class="barre">'.selectTag('fournisseur['.$v['id'].']', $v['fournisseurs'], $v['fournisseur'], '', 'onchange="changeFourn(\''.$v['id'].'\', this.value);"').'</td>';
 	    }
 	    else {
-		$out .= '<td class="barre"> - </td>';
+		$out .= '<td class="barre"><i>Aucun fournisseur pour ce produit</i></td>';
 	    }
 	    $out .= '<td class="barre">'.$v['stock_prod'].'</td>';
 	    $out2 .= '<td class="barre">'.$v['stock_prod'].'</td>';
 	    $out .= '<td>'.$v['quantite'].'</td>';
-	    $out2 .= '<td>'.inputTag('text', 'quantite['.$v['id'].']', '', '', '', $v['quantite'], 'id="'.$v['id'].'QTTC" style="max-width:55px;" onchange="calculette();"').'</td>';
+	    $out2 .= '<td>'.inputTag('text', 'quantite['.$v['id'].']', '', '', '', $v['quantite'], 'id="'.$v['id'].'QTTC" style="width:28px;" onchange="calculette();"').'</td>';
 	    $out .= '<td>'.prepareNombreAffichage($v['prix']).' &euro;</td>';
-	    $out2 .= '<td>'.inputTag('text', 'prix['.$v['id'].']', '', '', '', $v['prix'], 'id="'.$v['id'].'PC" style="max-width:55px;" onchange="calculette();"').' &euro;</td>';
+	    $out2 .= '<td>'.inputTag('text', 'prix['.$v['id'].']', '', '', '', $v['prix'], 'id="'.$v['id'].'PC" style="width:60px;" onchange="calculette();"').' &euro;</td>';
 	    $out .= '<td>'.prepareNombreAffichage($v['remise']).' %</td>';
-	    $out2 .= '<td>'.inputTag('text', 'remise['.$v['id'].']', '', '', '', $v['remise'], 'id="'.$v['id'].'RC" style="max-width:55px;" onchange="calculette();"').' %</td>';
+	    $out2 .= '<td>'.inputTag('text', 'remise['.$v['id'].']', '', '', '', $v['remise'], 'id="'.$v['id'].'RC" style="width:30px;" onchange="calculette();"').' %</td>';
 	    $out .= '<td class="barre">'.prepareNombreAffichage($totalC).' &euro;</td>';
-	    $out2 .= '<td class="barre" nowrap="nowrap">'.inputTag('text', 'total', '', '', '', prepareNombreTraitement($totalC), 'id="'.$v['id'].'HT" READONLY style="max-width:55px;"').' &euro;</td>';
+	    $out2 .= '<td class="barre" nowrap="nowrap">'.inputTag('text', 'total', '', '', '', prepareNombreTraitement($totalC), 'id="'.$v['id'].'HT" readonly="readonly" style="width:80px"').' &euro;</td>';
 	    if($v['fournisseur'] != '') {
 		$out .= '<td>'.$v['quantite_cmd'].'</td>';
-		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'quantite_cmd['.$v['id'].']', '', '', '', $v['quantite_cmd'], 'id="'.$v['id'].'QTT" style="max-width:55px;" onchange="calculette();"').'</td>';
+		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'quantite_cmd['.$v['id'].']', '', '', '', $v['quantite_cmd'], 'id="'.$v['id'].'QTT" style="width:28px;" onchange="calculette();"').'</td>';
 		$out .= '<td>'.prepareNombreAffichage($v['prixF2']).' &euro;</td>';
-		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'prixF['.$v['id'].']', '', '', '', $v['prixF2'], 'id="'.$v['id'].'PF" style="max-width:55px;" onchange="calculette();"').' &euro;</td>';
+		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'prixF['.$v['id'].']', '', '', '', $v['prixF2'], 'id="'.$v['id'].'PF" style="width:60px;" onchange="calculette();"').' &euro;</td>';
 		$out .= '<td>'.prepareNombreAffichage($v['remiseF2']).' %</td>';
-		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'remiseF['.$v['id'].']', '', '', '', $v['remiseF2'], 'id="'.$v['id'].'RF" style="max-width:55px;" onchange="calculette();"').' %</td>';
+		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'remiseF['.$v['id'].']', '', '', '', $v['remiseF2'], 'id="'.$v['id'].'RF" style="width:30px;" onchange="calculette();"').' %</td>';
 		$out .= '<td class="barre">'.prepareNombreAffichage($totalF).' &euro;</td>';
-		$out2 .= '<td class="barre" nowrap="nowrap">'.inputTag('text', 'totalF', '', '', '', $totalF, 'id="'.$v['id'].'FHT" READONLY style="max-width:55px;"').' &euro;</td>';
+		$out2 .= '<td class="barre" nowrap="nowrap">'.inputTag('text', 'totalF', '', '', '', $totalF, 'id="'.$v['id'].'FHT" readonly="readonly" style="width:80px"').' &euro;</td>';
 	    }
 	    else {
-		$out .= '<td> - </td><td> - </td><td> - </td><td class="barre"> - </td>';
+		$out .= '<td colspan="4" class="barre" style="text-align:center"><i>non applicable</i></td>';
 	    }
 	    $out .= '<td class="barre">'.prepareNombreAffichage(($totalC-$totalF)).' &euro;</td>';
 	    $out2 .= '<td class="barre" nowrap="nowrap" id="'.$v['id'].'MARGE">'.prepareNombreAffichage(($totalC-$totalF)).' &euro;</td>';
@@ -474,7 +470,8 @@ class commandeView extends generalView {
 	    if(verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd'])) {
 		$bouton .= '<a onclick="ChangeCommandeAction(\'RecordSend\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Enregistrer puis envoyer" name="enregistrerEnvoyer"><img align="middle" title="Enregistrer et envoyer" alt="enregEnvoy" name="img" src="../img/prospec/commande.recsend.png"/> Enregistrer & envoyer</a>';
 		if($datas['data']['status_cmd'] >= "3")
-		    $bouton .= '<a onclick="ChangeCommandeAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="../img/prospec/commande.send.png"/> Envoyer</a>';
+		    $bouton .= '<a onclick="ChangeCommandeAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="../img/prospec/commande.send.png"/> Envoyer</a>
+				<a title="Traitement" name="traitement" onclick="ChangeCommandeAction(\'traitement\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');"><img align="middle" title="Traitement" alt="Traitement" name="img" src="../img/prospec/commande.AR.png"/> Commande en traitement</a>';
 
 	    }
 	}
@@ -612,7 +609,6 @@ class commandeView extends generalView {
 		}
 	    }
 
-
 	    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="GetDocBDC" value="1" /></div><div class="field">Bon de commande client</div></div>';
 	    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="GetDocBDL" value="1" /></div><div class="field">Bon de livraison</div></div>';
 	    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="GetDocRI" value="1" /></div><div class="field">Rapport d\'intervention</div></div>';
@@ -742,7 +738,9 @@ class commandeView extends generalView {
 		    }
 		    function ChangeSubmit() {
 			zuno.business.formTools.sendFormAjah('searchCmd', 'pegase/CommandeListe.php','listeResultCmd');
-		    }";
+		    }
+		    Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) ChangeSubmit(); return false;}, false);
+		    ";
 	$script .= 'function camenbertCmd(value, max) { $(\'cmdBudgetMini\').value = value; $(\'cmdBudgetMaxi\').value = max; ChangeCmdAction(\'searchCmd\');zuno.business.formTools.sendFormAjah(\'searchCmd\', \'pegase/CommandeListe.php\',\'listeResultCmd\'); } '."\n";
 	$script .= 'function resetForm() {var form = $(\'searchFormCmd\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } '."\n";
 	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }'."\n";
@@ -761,7 +759,7 @@ class commandeView extends generalView {
 	$corps .= '</div></form>';
 	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
 	$bouton .= '<a name="valider" onclick="ChangeCmdAction(\'searchCmd\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
-	return $script.generateZBox($titre,$titre,$corps,$bouton,"searchBox",'');
+	return generateZBox($titre,$titre,$corps.$script,$bouton,"searchBox",'');
     }
 
     /**
@@ -770,7 +768,7 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     private function interneSearch($datas) {
-	$out = '<div class="block width50"><fieldset class="form"><legend>Critères de recherche</legend>';
+	$out = '<div class="block width50"><fieldset class="form" style="height:220px"><legend>Critères de recherche</legend>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchEnt);">Entreprise</div>';
 	$out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseCmdSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseCmdSearch_choix"></div>';
 	$out .= '<input type="hidden" name="entreprise_cmd" value="" id="entrepriseCmdSearch_hidden"/></div>';
@@ -792,7 +790,7 @@ class commandeView extends generalView {
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchBudgMax);">Budget maxi</div>';
 	$out .= '<div class="field">'.inputTag('text', 'sommeFHT_cmd2', '', '', '20', '', ' id="cmdBudgetMaxi" ').'</div></div>';
 	$out .= '</fieldset></div>';
-	$out .= '<div class="block width50"><fieldset class="form"><legend>Répartition des ventes</legend>';
+	$out .= '<div class="block width50"><fieldset class="form" style="height:220px"><legend>Répartition des ventes</legend>';
 	$out .= '<div class="row">'.shell_exec('php ../Img.CommandeChart.php').'</div>';
 	$out .= '</fieldset></div>';
 	return $out;
@@ -924,7 +922,7 @@ class commandeView extends generalView {
     private function ResultGroupActionForm() {
 	$sql = new commandeModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action');
+	$fieldset = new ZunoFieldset('Type d\'action','groupActionCommande','height: 230px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'reinit', ' onclick="toggleSubGroupedAction(\'groupedSubActionReinit\')"'),'Re-initialiser ces commandes','ZTips.commande.groupActionReinit');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'recu', ' onclick="toggleSubGroupedAction(\'groupedSubActionRecu\')"'),'Commandes client reçues','ZTips.commande.groupActionRecu');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'bdcfenvoye', ' onclick="toggleSubGroupedAction(\'groupedSubActionBDCFEnvoye\')"'),'Commandes fournisseurs envoyées','ZTips.commande.groupActionBDCFEnvoye');
@@ -936,48 +934,47 @@ class commandeView extends generalView {
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'archivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionArchive\')"'),'Archivage des commandes','ZTips.commande.groupActionArchive');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'),'Changer un attribut par lot','ZTips.commande.groupActionChangeAttribute');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div><div class="block width50" id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Re-initialiser ces commandes','groupedSubActionReinit');
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Re-initialiser ces commandes','groupedSubActionReinit','height: 172px');
 	$fieldset->addOtherLigne('<div class="row"><i>Aucune action sécifique n\'est requise</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes client reçues','groupedSubActionRecu');
+	$fieldset = new ZunoFieldset('Commandes client reçues','groupedSubActionRecu','height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireRecu');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes fournisseurs envoyées','groupedSubActionBDCFEnvoye');
+	$fieldset = new ZunoFieldset('Commandes fournisseurs envoyées','groupedSubActionBDCFEnvoye','height: 172px');
 	$fieldset->ligneInput('Complément d\'envoi', 'complementdeliveryBDCFEnvoye');
 	$fieldset->ligneInput('Commentaire', 'commentaireBDCFEnvoye');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes fournisseurs reçu par vos partenaires','groupedSubActionBDCFRecu');
+	$fieldset = new ZunoFieldset('Commandes fournisseurs reçu par vos partenaires','groupedSubActionBDCFRecu','height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireBDCFRecu');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes fournisseurs validés par vos partenaires','groupedSubActionBDCFValid');
+	$fieldset = new ZunoFieldset('Commandes fournisseurs validés par vos partenaires','groupedSubActionBDCFValid','height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireBDCFValid');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes expediées','groupedSubActionExpedie');
+	$fieldset = new ZunoFieldset('Commandes expediées','groupedSubActionExpedie','height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireExpedie');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes réceptionnées par le client','groupedSubActionReceptionne');
+	$fieldset = new ZunoFieldset('Commandes réceptionnées par le client','groupedSubActionReceptionne','height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireReceptionne');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes terminées','groupedSubActionTermine');
+	$fieldset = new ZunoFieldset('Commandes terminées','groupedSubActionTermine','height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireTermine');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Archivage des commandes','groupedSubActionArchive');
+	$fieldset = new ZunoFieldset('Archivage des commandes','groupedSubActionArchive','height: 172px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les commandes n\'ayant plus de facture en cours de traitement seront archivées.</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute');
+	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 172px');
 	$fieldset->ligneInput('Titre de la commande', 'titre_cmd');
 	$fieldset->ligneFree('TVA',selectTVATag("tva_cmd", array(), '', '', '', true));
 	$fieldset->ligneSelect('Mode de règlement', 'modereglement_cmd','',$sql->getModeReglement());
 	$fieldset->ligneSelect('Cond. de règlement', 'condireglement_cmd','',$sql->getCondReglement());
 	$fieldset->ligneSelect('Commercial', 'commercial_cmd','',$sql->getUser());
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div>';
-	$out.= '<div class="block width50">';
+	$out.= '</div><div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
 	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormCmd\',\'resultCmdAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div></div>';
+	$out.= '</div></div></div>';
 	return $out;
     }
 

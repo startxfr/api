@@ -43,25 +43,27 @@ if (count($lesdata) > 0) {
 	$targ[]	= "?status_fact=".$val['status'];
 	$alts[]	= $val['somme']." euros";
 	$lalegend[]	= utf8_decode($val['nom']);
+	$total += $val['somme'];
     }
 
 
+    if($total > 0) {
+	$p1 = new PiePlot3d($data);
+	$p1->SetTheme("water");
+	$p1->SetCenter(0.33,0.6);
+	$p1->SetSize(120);
+	$p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
+	$p1->value->SetColor("mediumpurple");
+	$p1->SetLegends($lalegend);
+	$p1->SetCSIMTargets($targ,$alts);
 
-    $p1 = new PiePlot3d($data);
-    $p1->SetTheme("water");
-    $p1->SetCenter(0.33,0.6);
-    $p1->SetSize(120);
-    $p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
-    $p1->value->SetColor("mediumpurple");
-    $p1->SetLegends($lalegend);
-    $p1->SetCSIMTargets($targ,$alts);
-
-    $graph = new PieGraph(480,220,"auto");
-    $graph->SetAntiAliasing();
-    $graph->SetFrame(false);
-    $graph->legend->Pos(0,0);
-    $graph->Add($p1);
-    $graph->StrokeCSIM("../Img.FactureChart.php");
+	$graph = new PieGraph(480,220,"auto");
+	$graph->SetAntiAliasing();
+	$graph->SetFrame(false);
+	$graph->legend->Pos(0,0);
+	$graph->Add($p1);
+	$graph->StrokeCSIM("../Img.FactureChart.php");
+    }
 }
 
 

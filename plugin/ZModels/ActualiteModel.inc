@@ -130,15 +130,6 @@ class actualiteModel extends GeneralModel {
     }
 
     /**
-     * Méthode simple d'insertion d'actualité dans la base
-     * @param array $value Les données à insérer
-     */
-    public function insertAuto ($value = array()) {
-	$this->makeRequeteInsert('actualite', $this->bindVarActualite($value));
-	$result = $this->process2();
-    }
-
-    /**
      * Fonction qui filtre les clefs d'un tableau et ne retourne que les clefs corespondant à la table actualite
      * @param <array> $data tableau avec les données brut
      * @return <array> données filtrées selon la propriété $this->availableFields

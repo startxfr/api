@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.45, for redhat-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.46, for redhat-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: ZunoDev_sxa
 -- ------------------------------------------------------
--- Server version	5.1.45
+-- Server version	5.1.46
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -185,7 +185,7 @@ DROP TABLE IF EXISTS `commande_produit`;
 CREATE TABLE `commande_produit` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_commande` varchar(12) NOT NULL,
-  `id_produit` varchar(16) NOT NULL DEFAULT '0',
+  `id_produit` varchar(32) NOT NULL DEFAULT '0',
   `desc` varchar(255) DEFAULT NULL,
   `quantite` decimal(8,2) DEFAULT '1.00',
   `quantite_cmd` decimal(8,2) DEFAULT NULL,
@@ -311,7 +311,7 @@ DROP TABLE IF EXISTS `devis_produit`;
 CREATE TABLE `devis_produit` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_devis` varchar(12) NOT NULL,
-  `id_produit` varchar(16) NOT NULL DEFAULT '0',
+  `id_produit` varchar(32) NOT NULL DEFAULT '0',
   `desc` varchar(500) DEFAULT NULL,
   `quantite` decimal(8,2) DEFAULT '1.00',
   `remise` decimal(4,2) NOT NULL DEFAULT '0.00',
@@ -470,7 +470,7 @@ DROP TABLE IF EXISTS `facture_produit`;
 CREATE TABLE `facture_produit` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_facture` mediumint(3) unsigned NOT NULL,
-  `id_produit` varchar(16) NOT NULL DEFAULT '0',
+  `id_produit` varchar(32) NOT NULL DEFAULT '0',
   `desc` varchar(255) DEFAULT NULL,
   `quantite` decimal(8,2) DEFAULT '1.00',
   `remise` decimal(4,2) NOT NULL DEFAULT '0.00',
@@ -610,7 +610,7 @@ DROP TABLE IF EXISTS `produit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `produit` (
-  `id_prod` varchar(16) NOT NULL DEFAULT '',
+  `id_prod` varchar(32) NOT NULL DEFAULT '0',
   `nom_prod` varchar(254) NOT NULL DEFAULT '',
   `famille_prod` int(2) unsigned NOT NULL DEFAULT '1',
   `description_prod` text,
@@ -640,7 +640,7 @@ DROP TABLE IF EXISTS `produit_fournisseur`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `produit_fournisseur` (
-  `produit_id` varchar(16) NOT NULL,
+  `produit_id` varchar(32) NOT NULL DEFAULT '0',
   `fournisseur_id` varchar(6) NOT NULL,
   `remiseF` decimal(4,2) NOT NULL DEFAULT '0.00',
   `prixF` varchar(8) DEFAULT NULL,
@@ -671,8 +671,6 @@ CREATE TABLE `projet` (
   `budget_proj` int(8) DEFAULT NULL,
   `decid_proj` int(4) DEFAULT NULL,
   `rdvavec_proj` int(8) DEFAULT NULL,
-  `SSII_proj` int(4) DEFAULT NULL,
-  `SSLL_proj` int(4) DEFAULT NULL,
   `comm_proj` text,
   `typeproj_proj` int(2) NOT NULL DEFAULT '0',
   `utilisateur_proj` varchar(64) NOT NULL DEFAULT 'cl',
@@ -860,7 +858,7 @@ CREATE TABLE `ref_prodfamille` (
   PRIMARY KEY (`id_prodfam`),
   KEY `nom_prodfam` (`nom_prodfam`),
   KEY `treePathKey` (`treePathKey`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COMMENT='Type de produit';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='Type de produit';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1198,4 +1196,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-01 23:32:49
+-- Dump completed on 2010-06-07  0:32:55

@@ -79,21 +79,21 @@ class PontComptableView extends generalView {
      * @param array $datas Données de la Bdd
      */
     protected function initioFieldSet($datas) {
-	$this->fieldset1 = new ZunoFieldset('Enregistrement');
+	$this->fieldset1 = new ZunoFieldset('Enregistrement','','height: 150px');
 	$this->fieldset1->ligneFree('Référence', $datas['data']['id_pcth'],'ZTips.pontComptable.reference');
 	$this->fieldset1->ligneFree('Date', $datas['data']['date_pcth'],'ZTips.pontComptable.date');
 	$this->fieldset1->ligneInput('Nom', 'nom_pcth', $datas['data']['nom_pcth'],'','ZTips.pontComptable.nom');
+	$this->fieldset1->ligneInputDate('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
+	$this->fieldset1->ligneInputDate('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
+	$this->fieldset1->ligneLinkTo('Fichier', '../facturier/PontComptable.php?action=get&id_pcth='.$datas['data']['id_pcth'], $datas['data']['fichier_pcth'], '../img/download.png');
 
-	$this->fieldset2 = new ZunoFieldset('Configuration');
-	$this->fieldset2->ligneInputDate('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
-	$this->fieldset2->ligneInputDate('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
-	$this->fieldset2->ligneCheckBox('Facture Client', 'config_hasFactureClient_pcth', $datas['data']['config_dateDebut_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
+	$this->fieldset2 = new ZunoFieldset('Facture Client','','height: 150px');
+	$this->fieldset2->ligneCheckBox('inclure', 'config_hasFactureClient_pcth', $datas['data']['config_dateDebut_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
 	$this->fieldset2->ligneSelectMultiple('Statuts', 'config_statutFact_pcth',  explode(',', $datas['data']['config_statutFact_pcth']), $this->model->getAllFactureClientStatut(), false,'','ZTips.pontComptable.config_statutFact');
-	$this->fieldset2->ligneCheckBox('Facture Fournisseur', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
-	$this->fieldset2->ligneSelectMultiple('Statuts', 'config_statutFactFourn_pcth',  explode(',', $datas['data']['config_statutFactFourn_pcth']), $this->model->getAllFactureFournStatut(), false,'','ZTips.pontComptable.config_statutFactFourn');
-
-	$this->fieldset3 = new ZunoFieldset('Fichier');
-	$this->fieldset3->ligneLinkTo('Fichier', '../facturier/PontComptable.php?action=get&id_pcth='.$datas['data']['id_pcth'], $datas['data']['fichier_pcth'], '../img/download.png');
+	
+	$this->fieldset3 = new ZunoFieldset('Facture Fournisseur','','height: 150px');
+	$this->fieldset3->ligneCheckBox('inclure', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
+	$this->fieldset3->ligneSelectMultiple('Statuts', 'config_statutFactFourn_pcth',  explode(',', $datas['data']['config_statutFactFourn_pcth']), $this->model->getAllFactureFournStatut(), false,'','ZTips.pontComptable.config_statutFactFourn');
     }
 
     /**
@@ -116,19 +116,21 @@ class PontComptableView extends generalView {
 	if($datas['data']['config_statutFactFourn_pcth'] == '')
 	    $datas['data']['config_statutFactFourn_pcth'] = $GLOBALS['zunoPontComptable']['CreationDefaultSelectedStatutFactFourn'];
 
-	$this->fieldset1 = new ZunoFieldset('Enregistrement');
+	$this->fieldset1 = new ZunoFieldset('Enregistrement','','height: 130px');
 	$this->fieldset1->ligneFree('Référence', '<i>aucun</i>','ZTips.pontComptable.reference');
 	$this->fieldset1->ligneFree('Date', $datas['data']['date_pcth'],'ZTips.pontComptable.date');
 	$this->fieldset1->ligneInput('Nom', 'nom_pcth', $datas['data']['nom_pcth'],'','ZTips.pontComptable.nom');
+	$this->fieldset1->ligneInputDate('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
+	$this->fieldset1->ligneInputDate('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
 
-	$this->fieldset2 = new ZunoFieldset('Configuration');
-	$this->fieldset2->ligneInputDate('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
-	$this->fieldset2->ligneInputDate('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
-	$this->fieldset2->ligneCheckBox('Facture Client', 'config_hasFactureClient_pcth', $datas['data']['config_hasFactureClient_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
+	$this->fieldset2 = new ZunoFieldset('Facture Client','','height: 130px');
+	$this->fieldset2->ligneCheckBox('inclure', 'config_hasFactureClient_pcth', $datas['data']['config_hasFactureClient_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
 	$this->fieldset2->ligneSelectMultiple('Statuts', 'config_statutFact_pcth', explode(',', $datas['data']['config_statutFact_pcth']), $this->model->getAllFactureClientStatut(), false,'','ZTips.pontComptable.config_statutFact');
-	$this->fieldset2->ligneCheckBox('Facture Fournisseur', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
-	$this->fieldset2->ligneSelectMultiple('Statuts', 'config_statutFactFourn_pcth',  explode(',', $datas['data']['config_statutFactFourn_pcth']), $this->model->getAllFactureFournStatut(), false,'','ZTips.pontComptable.config_statutFactFourn');
-    }
+
+	$this->fieldset3 = new ZunoFieldset('Facture Fournisseur','','height: 130px');
+	$this->fieldset3->ligneCheckBox('Facture Fournisseur', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
+	$this->fieldset3->ligneSelectMultiple('Statuts', 'config_statutFactFourn_pcth',  explode(',', $datas['data']['config_statutFactFourn_pcth']), $this->model->getAllFactureFournStatut(), false,'','ZTips.pontComptable.config_statutFactFourn');
+     }
 
     /**
      * Méthode qui ne génère que le contenu du formulaire pontComptable
@@ -160,8 +162,6 @@ class PontComptableView extends generalView {
 	    $GLOBALS['out']->setTitle('Fichier d\'export comptable "'.$datas['data']['id_pcth'].'" - '.$titrePontComptaHisto,'',true);
 	if($light == 'interneInfos')
 	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneInfos($datas);
-	elseif($light == 'afterCreate')
-	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->afterCreate($datas);
 	else
 	    return $this->vueTotale($datas);
     }
@@ -177,6 +177,7 @@ class PontComptableView extends generalView {
 	$this->form = new ZunoForm('formPontComptable', 'facturier/PontComptable.php', 'POST');
 	$this->form->newBlock($this->fieldset1->generateFieldset());
 	$this->form->newBlock($this->fieldset2->generateFieldset());
+	$this->form->newBlock($this->fieldset3->generateFieldset());
 	$this->form->newInputHidden('action', 'addPontComptableHisto', 'addPontComptableID');
 	$this->form->addButton('Générer le fichier d\'export', '$(\'addPontComptableID\').value = \'generer\';document.formPontComptable.action = \'../facturier/PontComptable.php\';document.formPontComptable.submit();', '../img/download.png');
 	$pied = $this->form->generateButtons('ficheCompletePontComptaHisto', 'Annuler', 'Enregistrer le fichier');
@@ -186,39 +187,6 @@ class PontComptableView extends generalView {
 	$this->html->generateZBox(imageTag('../img/prospec/pontComptable.png','PontComptables').' Nouveau fichier d\'export comptable', '', $this->form->generateForm(), $pied,'creationPontComptaHisto' , 'open');
 
 	return $this->html->generateRendu();
-    }
-
-    /**
-     * Méthode qui génère l'intérieur de la page sans le javascript appelée après une création
-     * @param array $datas Les données de la base
-     * @return string Le rendu HTML
-     */
-    private function afterCreate($datas) {
-	$this->initioFieldSet($datas);
-
-	$this->form = new ZunoForm('formPontComptable', 'facturier/PontComptable.php', 'POST');
-	$this->form->newBlock($this->fieldset1->generateFieldset());
-	$this->form->newBlock($this->fieldset2->generateFieldset());
-	$this->form->newBlock($this->fieldset3->generateFieldset());
-	$this->form->newInputHidden('action', 'modifPontComptable', 'ToDo');
-	$this->form->newInputHidden('idPontComptable', $datas['data']['id_pcth']);
-
-	$this->formF = new ZunoForm('formPontComptableFournisseur', 'facturier/PontComptable.php', 'POST');
-	if(count($this->fieldsetF) > 0)
-	    foreach($this->fieldsetF as $v) {
-		$this->formF->newBlock($v->generateFieldset());
-	    }
-	else
-	    $this->formF->newBlock('');
-	$this->formF->newInputHidden('action', 'modifPF', 'ToDo');
-	$this->formF->newInputHidden('idPontComptable', $datas['data']['id_pcth']);
-	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../facturier/PontComptable.php', 'action=addFournPontComptaHisto&idPontComptaHisto=".$datas['data']['id_pcth']."',550,250);", "../img/prospec/add.png");
-
-	$this->html = new ZunoRenduHtml();
-	$this->html->generateZBox(imageTag('../img/prospec/pontComptable.png','PontComptables').' PontComptable '.$datas['data']['id_pcth'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce pontComptable'),'formModifPontComptaHisto', 'open');
-	$this->html->generateZBox(imageTag('../img/prospec/pontComptable.png','Fournisseurs').' Fournisseurs du pontComptable','', $this->formF->generateForm(), $this->formF->generateButtons('', 'Annuler', 'Modifier'),'formFournPontComptable', 'open');
-
-	return $this->html->generateInterneRendu();
     }
 
     /**
@@ -295,23 +263,22 @@ class PontComptableView extends generalView {
     private function ResultGroupActionForm() {
 	$sql = new pontComptableModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action');
+	$fieldset = new ZunoFieldset('Type d\'action','','height: 90px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'delete', ' onclick="toggleSubGroupedAction(\'groupedSubActionDelete\')"'),'Supprimer ces fichiers','ZTips.pontComptable.groupActionDelete');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'),'Changer un attribut par lot','ZTips.pontComptable.groupActionChangeAttribute');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div><div class="block width50" id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Supprimer ces fichiers','groupedSubActionDelete');
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Supprimer ces fichiers','groupedSubActionDelete','height: 30px');
 	$fieldset->ligneCheckBox('Supprimer les fichiers', 'deleteFile', true, '', 'ZTips.pontComptable.groupActionDeleteWithFile');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute');
+	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 30px');
 	$fieldset->ligneInput('Nom du pontComptable', 'nom_pcth');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
-	$out.= '<div class="block width50">';
 	$fieldset = new ZunoFieldset('Executer le changement');
 	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormPontComptable\',\'resultPontComptableAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div></div>';
+	$out.= '</div></div></div>';
 	return $out;
     }
 
@@ -344,6 +311,7 @@ class PontComptableView extends generalView {
 	    $form->addButton('Créer un nouveau fichier d\'export', 'window.location = \'../facturier/PontComptable.php?action=creer\';', '../img/prospec/pontComptable.png');
 	    $rendu->generateZBox('Recherche', 'Recherche', $form->generateForm(), $form->generateButtons('listeResultPontComptable', 'Annuler', 'Rechercher',$popup), 'divSearchPontComptaHisto', 'open');
 	    $rendu->addBox($this->listeResult($datas,$light));
+	    $rendu->insertJS("<script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchPontComptaHisto', 'facturier/PontComptableHisto.php','listeResultPontComptable'); return false;}, false);</script>".$this->script);
 	    return $rendu->generateRendu();
 	}
 

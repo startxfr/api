@@ -622,19 +622,19 @@ class commandeModel extends GeneralModel {
      * @return array Indique si la suppression s'est bien passée
      */
     public function delete($id_cmd, $facture = 'no') {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_cmd = '".$id_cmd."'");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE id_cmd = '".$id_cmd."'");
 	Logg::loggerInfo('commandeModel::delete() ~ suppression de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($facture == 'yes') {
-	    $this->makeRequeteFree("select id_fact FROM facture Where commande_fact = '".$id_cmd."'");
+	    $this->makeRequeteFree("select id_fact FROM facture WHERE commande_fact = '".$id_cmd."'");
 	    $facture = $this->process2();
 	    $sql = '';
 	    foreach($facture[1] as $v) {
 		$fact = $v['id_fact'];
-		$sql.= $this->makeRequeteFree("DELETE FROM facture_produit Where id_facture = '".$fact."' ");
+		$sql.= $this->makeRequeteFree("DELETE FROM facture_produit WHERE id_facture = '".$fact."' ");
 		$result = $this->process2();
 	    }
-	    $sql.= $this->makeRequeteFree("DELETE FROM facture Where commande_fact = '".$id_cmd."'");
+	    $sql.= $this->makeRequeteFree("DELETE FROM facture WHERE commande_fact = '".$id_cmd."'");
 	    $result = $this->process2();
 	    Logg::loggerInfo('commandeModel::delete() ~ suppression des ressources liées à la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	}

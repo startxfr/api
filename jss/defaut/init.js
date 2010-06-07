@@ -624,22 +624,6 @@ function znPopup() {
 	}
         zuno.popup.xhtmlTitle.innerHTML = title;
         zuno.popup.xhtmlFooter.innerHTML = footer;
-
-        var newTitle = $$('#ZunoPopupWindowContent .header .title h3 a[id]');
-        if(newTitle[0] != undefined)
-            newTitle[0].parentNode.removeChild(newTitle[0]);
-        var newFooter = $$('#ZunoPopupWindowContent .ZBox .footer div.content');
-        if(newFooter[0] != undefined)
-            newFooter[0].parentNode.removeChild(newFooter[0]);
-
-        zuno.popup.xhtmlWindow.style.display = 'block';
-        if(width != undefined)
-            zuno.popup.xhtmlWindow.style.width	 = width+"px";
-        if(height != undefined){
-            zuno.popup.xhtmlWindow.style.height	 = height+"px";
-        }
-        zuno.popup.xhtmlTitle.innerHTML = title;
-        zuno.popup.xhtmlFooter.innerHTML = footer;
         zuno.popup.xhtmlWindow.style.display = 'block';
         if(width != undefined)
             zuno.popup.xhtmlWindow.style.width	 = width+"px";
@@ -1701,8 +1685,8 @@ function finishEditing() {
 	var div= $(id);
 	toggleSubGroupedAction();
 	if (div.style.display == 'none')
-	     Effect.SlideDown(div,{ duration:0.2, queue: 'end' });
-	else Effect.SlideUp(div,{ duration:0.5, queue: 'end' }) ;
+	     Effect.SlideDown(div,{duration:0.2, queue: 'end'});
+	else Effect.SlideUp(div,{duration:0.5, queue: 'end'}) ;
 	return;
     }
 

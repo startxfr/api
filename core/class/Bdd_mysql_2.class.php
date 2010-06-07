@@ -116,7 +116,7 @@ class Bdd_mysql_2 {
     public function makeRequeteInsert($table,$liste) {
 	$top = "INSERT INTO `".$table."` ( ";
 	foreach ($liste as $key => $val) {
-	    $valclean1 = addslashes(trim($val));
+	    $valclean1 = addslashes(stripslashes(trim($val)));
 	    if($valclean1 == '')
 		$bottom .= ", NULL ";
 	    else  $bottom .= ", '".$valclean1."' ";
@@ -142,7 +142,7 @@ class Bdd_mysql_2 {
     public function makeRequeteUpdate($table,$col_id,$id,$liste,$autre = "") {
 	$top = "UPDATE `".$table."` SET ";
 	foreach ($liste as $key => $val) {
-	    $valclean1 = addslashes($val);
+	    $valclean1 = addslashes(stripslashes(trim($val)));
 	    if($valclean1 == '')
 		$head   .= " `".$key."` = NULL, ";
 	    else  $head   .= " `".$key."` = '".$valclean1."', ";

@@ -620,7 +620,6 @@ li#prospec {
 .ContextBox input[type=text],
 .ContextBox input[type=password],
 .ContextBox textarea {
-    float: right;
     font-size: 1em;
     background-color: rgb(250,250,250);
     border: 1px #999 solid;
@@ -923,7 +922,7 @@ a.bouton {
     float: left;
     width: 100%;
     font-size: .8em;
-    margin-left: 1em;
+    margin-left: 3em;
 }
 
 .width50 {
@@ -1280,6 +1279,7 @@ a.bouton:hover {
 #PortletLogin input[type=password],
 #PortletLogin input[type=text] {
     background-color: rgba(255,255,255,0.3);
+    float: right;
     color: #fff; }
 #PortletLogin input[type=password] {
     border-bottom: 1px solid #f66;
@@ -1399,8 +1399,8 @@ a.bouton:hover {
     -moz-border-radius : 8px 8px 8px 8px;
     -webkit-border-radius: 8px 8px 8px 8px;
     border-radius: 8px 8px 8px 8px;
-    min-height: 300px;
-    min-width: 500px;
+    min-height: 100px;
+    min-width: 300px;
 }
 #ZunoPopupWindow .title {
     font-size: 1em !important;
@@ -1411,7 +1411,6 @@ a.bouton:hover {
 }
 #ZunoPopupWindowContent {
     font-size: 1em;
-    margin-top:1.5em;
 }
 #ZunoPopupWindow .body {
     background-image: none;
@@ -1419,18 +1418,22 @@ a.bouton:hover {
     border-left: 0;
     border-right: 0;
     border-bottom: 0;
-    padding: 0;
+    padding: 0 !important;
+    margin: 0 !important;
     margin-top: .2em;
 }
 #ZunoPopupWindow .body .content {
-    padding: 0;
+    padding: 0.3em;
     color: inherit !important;
 }
 #ZunoPopupWindow .body a {
     color : inherit;
 }
 #ZunoPopupWindowContent .ZBox  {
-    margin-bottom: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: absolute;
+    top: -20px;
 }
 #ZunoPopupWindowContent .ZBox .header,
 #ZunoPopupWindowContent .ZBox .footer {
@@ -1471,8 +1474,6 @@ a.bouton:hover {
 }
 #ZunoPopupBody {
     left: 0px;
-    top: 18px;
-    bottom: 22px;
     overflow: auto;
     overflow-x: auto;
     overflow-y: scroll;

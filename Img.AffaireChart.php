@@ -49,34 +49,37 @@ if (count($lesdata) > 0) {
 	$targ[]	= "?typeaff=".$val['id'];
 	$alts[]	= $val['projet']." affaires du type: ".$val['ref_typeproj'];
 	$lalegend[]	= utf8_decode($val['ref_typeproj']);
+	$total += round(($val['projet']/$total),2);
     }
     //print_r($data);
     //print_r($lalegend);
-    // Create the Pie Graph.
-    $graph = new PieGraph(470,230,"auto");
-    $graph->SetAntiAliasing();
-    $graph->SetFrame(false);
-    $graph->legend->Pos(0,0.5);
+    if($total > 0) {
+	// Create the Pie Graph.
+	$graph = new PieGraph(470,230,"auto");
+	$graph->SetAntiAliasing();
+	$graph->SetFrame(false);
+	$graph->legend->Pos(0,0.5);
 
-    // Create 3D pie plot
-    $p1 = new PiePlot3d($data);
-    $p1->SetTheme("sand");
-    $p1->SetCenter(0.3,0.3);
-    $p1->SetSize(110);
+	// Create 3D pie plot
+	$p1 = new PiePlot3d($data);
+	$p1->SetTheme("sand");
+	$p1->SetCenter(0.3,0.3);
+	$p1->SetSize(110);
 
-    // Display the slice values
-    $p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
-    $p1->value->SetColor("navy");
+	// Display the slice values
+	$p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
+	$p1->value->SetColor("navy");
 
-    // Add colored edges to the 3D pie
-    // NOTE: You can't have exploded slices with edges!
-    //$p1->SetEdge("navy");
+	// Add colored edges to the 3D pie
+	// NOTE: You can't have exploded slices with edges!
+	//$p1->SetEdge("navy");
 
-    $p1->SetLegends($lalegend);
-    $p1->SetCSIMTargets($targ,$alts);
+	$p1->SetLegends($lalegend);
+	$p1->SetCSIMTargets($targ,$alts);
 
-    $graph->Add($p1);
-    $graph->StrokeCSIM("../Img.AffaireChart.php");
+	$graph->Add($p1);
+	$graph->StrokeCSIM("../Img.AffaireChart.php");
+    }
 }
 
 

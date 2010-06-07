@@ -149,38 +149,38 @@ class generalView {
      * @return string Le code HTML
      */
     public function popupSendMail($type = 'email', $data = array()) {
-        if($type == "email") {
-            $fieldset = new ZunoFieldset("Envoi par e-mail");
-            $fieldset->ligneInput('Expéditeur', 'expediteur', $_SESSION['user']['fullnom'], 'READONLY="READONLY"');
-            $fieldset->ligneInputHidden('from', $_SESSION['user']['mail']);
-            $fieldset->ligneAutoComplete('Destinataire', 'mail', $data['mail'], $data['mail'], "listeMail");
-            $fieldset->ligneCheckBox('Me mettre en copie', 'cc');
-        }
-        if($type == "fax") {
-            $fieldset = new ZunoFieldset("Envoi par faximile");
-            $fieldset->ligneInput("Expéditeur", 'expediteur', $_SESSION['user']['fullnom'], 'READONLY="READONLY"');
-            $fieldset->ligneInput('Destinataire', 'fax', $data['fax']);
-        }
-        if($type == "courrier") {
-            $fieldset = new ZunoFieldset("Envoi par courrier");
-            $fieldset->ligneInput('Expdétieur', 'expediteur', $_SESSION['user']['fullnom'], 'READONLY="READONLY"');
-            $fieldset->ligneInput('Destinataire', 'destinataire', $data['destinataire']);
-            $fieldset->ligneInput('Adresse', 'add1', $data['add1']);
-            $fieldset->ligneInput("Complément", "add2", $data['add2']);
-            $fieldset->ligneInputCPVille('cp', $data['cp'], 'ville', $data['ville']);
-            $fieldset->ligneInput('Pays', 'pays', (array_key_exists('pays', $data)) ? $data['pays'] : 'France');
-        }
-        if($type == "all") {
-            $fieldset = new ZunoFieldset("Envoi");
-            $fieldset->ligneInput('Expéditeur', 'expediteur', $_SESSION['user']['fullnom'], 'READONLY="READONLY"');
-            $fieldset->ligneSelect('Type d\'envoi', 'typeE', 'mail', array('mail' => 'Par e-mail', 'fax'=> 'Par faximile', 'courrier' => 'Par courrier'), false);
-            //@todo Faire cette partie all
-        }
+	if($type == "email") {
+	    $fieldset = new ZunoFieldset("Envoi par e-mail");
+	    $fieldset->ligneInput('Expéditeur', 'expediteur', $_SESSION['user']['fullnom'], ' readonly="readonly"');
+	    $fieldset->ligneInputHidden('from', $_SESSION['user']['mail']);
+	    $fieldset->ligneAutoComplete('Destinataire', 'mail', $data['mail'], $data['mail'], "listeMail");
+	    $fieldset->ligneCheckBox('Me mettre en copie', 'cc');
+	}
+	if($type == "fax") {
+	    $fieldset = new ZunoFieldset("Envoi par faximile");
+	    $fieldset->ligneInput("Expéditeur", 'expediteur', $_SESSION['user']['fullnom'], ' readonly="readonly"');
+	    $fieldset->ligneInput('Destinataire', 'fax', $data['fax']);
+	}
+	if($type == "courrier") {
+	    $fieldset = new ZunoFieldset("Envoi par courrier");
+	    $fieldset->ligneInput('Expdétieur', 'expediteur', $_SESSION['user']['fullnom'], ' readonly="readonly"');
+	    $fieldset->ligneInput('Destinataire', 'destinataire', $data['destinataire']);
+	    $fieldset->ligneInput('Adresse', 'add1', $data['add1']);
+	    $fieldset->ligneInput("Complément", "add2", $data['add2']);
+	    $fieldset->ligneInputCPVille('cp', $data['cp'], 'ville', $data['ville']);
+	    $fieldset->ligneInput('Pays', 'pays', (array_key_exists('pays', $data)) ? $data['pays'] : 'France');
+	}
+	if($type == "all") {
+	    $fieldset = new ZunoFieldset("Envoi");
+	    $fieldset->ligneInput('Expéditeur', 'expediteur', $_SESSION['user']['fullnom'], ' readonly="readonly"');
+	    $fieldset->ligneSelect('Type d\'envoi', 'typeE', 'mail', array('mail' => 'Par e-mail', 'fax'=> 'Par faximile', 'courrier' => 'Par courrier'), false);
+	    //@todo Faire cette partie all
+	}
 
-        $fieldset2 = new ZunoFieldset("Message");
-        $fieldset2->ligneInput("Sujet", 'sujet', $data['sujet']);
-        $fieldset2->ligneTArea("Message", 'message', $data['message']);
-        $fieldset2->ligneInput('Fichier joint', 'fichier', $data['fichier'], 'READONLY="READONLY"');
+	$fieldset2 = new ZunoFieldset("Message");
+	$fieldset2->ligneInput("Sujet", 'sujet', $data['sujet']);
+	$fieldset2->ligneTArea("Message", 'message', $data['message']);
+	$fieldset2->ligneInput('Fichier joint', 'fichier', $data['fichier'], ' readonly="readonly"');
 
         $form = new ZunoForm('formSender', 'gnose/Send.php', "POST");
 

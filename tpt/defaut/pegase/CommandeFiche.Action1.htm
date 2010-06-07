@@ -1,36 +1,36 @@
 <script language="javascript">
-	function ChangeCommandeAction(value) {
-		document.###[FormName]###.action.value = value;
-	}
+    function ChangeCommandeAction(value) {
+	document.###[FormName]###.action.value = value;
+    }
 </script>
 <form method='post' action='../FormProcess.Commande.php' name='###[FormName]###'>
-###[action]###
-<div id="Portlet###[FormName]###">
+    ###[action]###
+    <div id="Portlet###[FormName]###">
 	<div class="block width50">
-		<div class="form">
-			<div class="row"> 
-				<div class="label">N° commande client</div>
-				<div class="field">###[BDCclient_cmd]###</div>
-			</div>
-			<div class="row">
-				<div class="label"></div>
-				<div class="field">###[CodeBarre]###</div>
-			</div>
+	    <fieldset class="form" style="height:55px"><legend>Information client</legend>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.infoBDCC);">N° commande client</div>
+		    <div class="field">###[BDCclient_cmd]###</div>
 		</div>
+		<!--div class="row">
+		    <div class="label"></div>
+		    <div class="field">###[CodeBarre]###</div>
+		</div>
+	    </fieldset-->
 	</div>
 	<div class="block width50">
-		<div class="form">
-		  	<div class="row"> 
-				<div class="label">Mode de règlement</div>
-				<div class="field">###[modereglement_cmd]###</div>
-			</div>
-			<div class="row"> 
-				<div class="label">Délai de règlement</div>
-				<div class="field">###[condireglement_cmd]###</div>
-			</div>
-			<div class="row">
-			</div>
+	    <fieldset class="form" style="height:55px"><legend>Règlement</legend>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.reglementMode);">Mode de règlement</div>
+		    <div class="field">###[modereglement_cmd]###</div>
 		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.reglementCondi);">Délai de règlement</div>
+		    <div class="field">###[condireglement_cmd]###</div>
+		</div>
+		<div class="row">
+		</div>
+	    </fieldset>
 	</div>
-</div>
+    </div>
 </form>

@@ -151,8 +151,20 @@ class contactParticulierModel extends GeneralModel {
      * @return array Indique si la requête s'est déroulée correctement
      */
     public function delete($id_cont) {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_cont = $id_cont");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE id_cont = $id_cont");
 	Logg::loggerInfo('contactParticulierModel::delete() ~ suppression du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
+	return $this->process2();
+
+    }
+
+    /**
+     * Méthode qui supprime un contact de la base
+     * @param int $id_cont L'id du contact à supprimer
+     * @return array Indique si la requête s'est déroulée correctement
+     */
+    public function deleteAllAppels($id_cont) {
+	$sql = $this->makeRequeteFree("DELETE FROM appel WHERE contact_app = $id_cont");
+	Logg::loggerInfo('contactParticulierModel::deleteAllAppels() ~ suppression de tous les appels du contact '.$id_cont,$sql,__FILE__.'@'.__LINE__);
 	return $this->process2();
 
     }
@@ -633,7 +645,7 @@ class contactEntrepriseModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function delete($id_ent, $recursif = false) {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_ent = $id_ent");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE id_ent = $id_ent");
 	Logg::loggerInfo('contactEntrepriseModel::delete() ~ suppression de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0] and $recursif) {
@@ -927,7 +939,7 @@ class appelModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function delete($id) {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where $this->sqlIdField = $id");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE $this->sqlIdField = $id");
 	Logg::loggerInfo('appelModel::delete() ~ suppression de l\'appel '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
@@ -1073,7 +1085,7 @@ class projetModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function delete($id) {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where $this->sqlIdField = $id");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE $this->sqlIdField = $id");
 	Logg::loggerInfo('projetModel::delete() ~ suppression du projet '.$id,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	return $result;
@@ -1086,6 +1098,16 @@ class projetModel extends GeneralModel {
      */
     public function getDataFromID($id) {
 	$this->makeRequeteFree("SELECT * from projet LEFT JOIN contact c on c.id_cont = projet.contact_proj LEFT JOIN entreprise e ON e.id_ent = c.entreprise_cont LEFT JOIN affaire a ON a.id_aff = projet.affaire_proj where id_proj = $id ;");
+	return $this->process2();
+    }
+
+    /**
+     * Méthode qui récupère les informations d'un projet
+     * @param int $id L'id du projet dont on veut les informations
+     * @return array Les informations du projet
+     */
+    public function getRdvDataFromID($id) {
+	$this->makeRequeteFree("SELECT * from projet LEFT JOIN contact c on c.id_cont = projet.rdvavec_proj LEFT JOIN entreprise e ON e.id_ent = c.entreprise_cont LEFT JOIN affaire a ON a.id_aff = projet.affaire_proj where id_proj = $id ;");
 	return $this->process2();
     }
 

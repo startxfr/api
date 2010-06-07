@@ -13,7 +13,7 @@
 class libSvn {
 
     
-    function SVNStatus($file = '',$SVNPool = 1) {
+    static function SVNStatus($file = '',$SVNPool = 1) {
 	if($file{0} == '/') {
 	    $files[] = $file;
 	}
@@ -72,7 +72,7 @@ class libSvn {
 +-------------------------------------------------------------------------+
 | echo array with single or multiple query
 +------------------------------------------------------------------------*/
-    function SVNInfo($output = '' , $file = '' , $recursive = false, $SVNPool = 1) {
+    static function SVNInfo($output = '' , $file = '' , $recursive = false, $SVNPool = 1) {
 	$tmpURI = '';
 	if($file{0} == '/') {
 	    $files[] = $file;
@@ -193,7 +193,7 @@ class libSvn {
 +-------------------------------------------------------------------------+
 | echo array with single or multiple property
 +------------------------------------------------------------------------*/
-    function SVNPropList($output = '' , $file = '' , $recursive = false, $SVNPool = 1) {
+    static function SVNPropList($output = '' , $file = '' , $recursive = false, $SVNPool = 1) {
 	$SVNPLIST = $tmpArray = $newArray = array();
 	if($file{0} == '/') {
 	    $files[] = $file;
@@ -326,7 +326,7 @@ class libSvn {
 +-------------------------------------------------------------------------+
 | echo array with single or multiple property
 +------------------------------------------------------------------------*/
-    function SVNLog($output = '' , $file = '' , $SVNPool = 1, $revision = '') {
+    static function SVNLog($output = '' , $file = '' , $SVNPool = 1, $revision = '') {
 	if($file{0} == '/') {
 	    $files[] = $file;
 	}
@@ -390,7 +390,7 @@ class libSvn {
 +-------------------------------------------------------------------------+
 | echo cleaned string
 +------------------------------------------------------------------------*/
-    function SVNCleanKeywords($keywords = '',$type = '') {
+    static function SVNCleanKeywords($keywords = '',$type = '') {
 	if ($type == 'OK_SPACE') {
 	    $in = "???????¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ;[]=+'{}|/^*+-=()@`#~&!$";
 	    $out= "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy________________________";
@@ -419,7 +419,7 @@ class libSvn {
 +-------------------------------------------------------------------------+
 | echo cleaned string
 +------------------------------------------------------------------------*/
-    function SVNDateSvn2human($date = '',$output = '') {
+    static function SVNDateSvn2human($date = '',$output = '') {
 	if (substr($date,0,25) != '')
 	    return DateUniv2Human(substr($date,0,25),$output,FALSE);
 	else  return '';

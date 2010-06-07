@@ -134,7 +134,7 @@ class zunoWsdlClient {
 	    unset($this->params[$key]);
 	return true;
     }
-
+    
     public function resetParam($autoAddCredentials = true,$autoAddHttpCredentials = true) {
 	$this->params = array();
 	if($autoAddHttpCredentials and $GLOBALS['zunoManagerWebService']['wsdlClientHttpAccess'])

@@ -326,31 +326,31 @@ class affaireModel extends GeneralModel {
      * @return array Indique si la requète s'est bien exécutée
      */
     public function delete($id_aff) {
-	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName Where id_aff = $id_aff");
+	$sql = $this->makeRequeteFree("DELETE FROM $this->sqlTableName WHERE id_aff = $id_aff");
 	Logg::loggerInfo('affaireModel::delete() ~ suppression de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
 	if($result[0])
 	    $this->addActualite($id_aff, 'delete');
-	$this->makeRequeteFree("select id_dev FROM devis Where affaire_dev = $id_aff");
+	$this->makeRequeteFree("select id_dev FROM devis WHERE affaire_dev = $id_aff");
 	$dev = $this->process2();
 	foreach($dev[1] as $v) {
 	    $id_dev = $v['id_dev'];
-	    $sql = $this->makeRequeteFree("DELETE FROM devis Where id_dev = '".$id_dev."'");
+	    $sql = $this->makeRequeteFree("DELETE FROM devis WHERE id_dev = '".$id_dev."'");
 	    $result = $this->process2();
-	    $sql.= $this->makeRequeteFree("DELETE FROM devis_produit Where id_devis = '".$id_dev."'");
+	    $sql.= $this->makeRequeteFree("DELETE FROM devis_produit WHERE id_devis = '".$id_dev."'");
 	    $result = $this->process2();
-	    $sql.= $this->makeRequeteFree("DELETE FROM commande Where devis_cmd = '".$id_dev."'");
+	    $sql.= $this->makeRequeteFree("DELETE FROM commande WHERE devis_cmd = '".$id_dev."'");
 	    $result = $this->process2();
-	    $sql.= $this->makeRequeteFree("DELETE FROM commande_produit Where id_commande = '".$id_dev."BC"."'");
+	    $sql.= $this->makeRequeteFree("DELETE FROM commande_produit WHERE id_commande = '".$id_dev."BC"."'");
 	    $result = $this->process2();
-	    $sql.= $this->makeRequeteFree("select id_fact FROM facture Where commande_fact = '".$id_dev."BC"."'");
+	    $sql.= $this->makeRequeteFree("select id_fact FROM facture WHERE commande_fact = '".$id_dev."BC"."'");
 	    $facture = $this->process2();
 	    foreach($facture[1] as $v) {
 		$fact = $v['id_fact'];
-		$sql.= $this->makeRequeteFree("DELETE FROM facture_produit Where id_facture = '".$fact."' ");
+		$sql.= $this->makeRequeteFree("DELETE FROM facture_produit WHERE id_facture = '".$fact."' ");
 		$result = $this->process2();
 	    }
-	    $sql.= $this->makeRequeteFree("DELETE FROM facture Where commande_fact = '".$id_dev."BC"."'");
+	    $sql.= $this->makeRequeteFree("DELETE FROM facture WHERE commande_fact = '".$id_dev."BC"."'");
 	    $result = $this->process2();
 	    Logg::loggerInfo('affaireModel::delete() ~ suppression de toutes les ressources associées à l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	}
@@ -367,9 +367,9 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByEcheance($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
-	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY echeance_aff ASC Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY echeance_aff ASC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (echeance_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName where actif_aff = '1' ".$plus." ORDER BY temp DESC, echeance_aff ASC, id_aff DESC LIMIT $from , $maxi");
 	$result = $this->process2();
 	return $result;
@@ -384,9 +384,9 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByCreation($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
-	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY detect_aff DESC Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY detect_aff DESC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (detect_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName where actif_aff = '1' ".$plus." ORDER BY temp DESC, detect_aff DESC, id_aff DESC LIMIT $from , $maxi");
 	$result = $this->process2();
 	return $result;
@@ -401,9 +401,9 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByEntreprise($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
-	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY entreprise_aff ASC Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY entreprise_aff ASC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (entreprise_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN entreprise ON entreprise.id_ent=affaire.entreprise_aff where actif_aff = '1' ".$plus." ORDER BY temp DESC, entreprise.nom_ent ASC, id_aff DESC LIMIT $from , $maxi");
 	$result = $this->process2();
 	return $result;
@@ -418,9 +418,9 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByContact($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
-	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY contact_aff ASC Where actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY contact_aff ASC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (contact_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN contact ON contact.id_cont=affaire.contact_aff where actif_aff = '1' ".$plus." ORDER BY temp DESC, contact.nom_cont ASC, id_aff DESC LIMIT $from , $maxi");
 	$result = $this->process2();
 	return $result;

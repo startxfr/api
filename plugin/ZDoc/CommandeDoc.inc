@@ -297,14 +297,14 @@ class commandeGnose {
     }
 
     static function CommandeSaveDocInGnose($fileFrom,$commande,$message = "") {
-	if ($message == "") $message = "Changement de la commande pour l'affaire ".$commande." par ".$_SESSION['user']['id'];
+	if ($message == "") $message = "Changement de la commande pour l'affaire ".$commande['id_cmd']." par ".$_SESSION['user']['id'];
 	$message = escapeshellcmd($message);
 	$PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$commande['dir_aff'];
 	$PathFrom= $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
 	foreach ($fileFrom as $in => $file) {
 	    $FileExist = file_exists($PathTo.$file);
 	    if(copy($PathFrom.$file,$PathTo.$file)) {
-		Logg::loggerInfo('commandeGnose::CommandeSaveDocInGnose() ~ Sauvegarde du fichier '.$file.' de la commande '.$commande,array($fileFrom,$commande,$message),__FILE__.'@'.__LINE__);
+		Logg::loggerInfo('commandeGnose::CommandeSaveDocInGnose() ~ Sauvegarde du fichier '.$file.' de la commande '.$commande['id_cmd'],array($fileFrom,$commande,$message),__FILE__.'@'.__LINE__);
 		if(!$FileExist) {
 		    $fileAdd[] = $PathTo.$file;
 		    chmod($PathTo.$file,0770);
@@ -338,7 +338,7 @@ class commandeGnose {
 	    return true;
 	}
 	else {
-	    Logg::loggerError('commandeGnose::CommandeSaveDocInGnose() ~ Sauvegarde des fichiers de la commande '.$commande.' impossible. Pas de fichiers',array($fileFrom,$commande,$message),__FILE__.'@'.__LINE__);
+	    Logg::loggerError('commandeGnose::CommandeSaveDocInGnose() ~ Sauvegarde des fichiers de la commande '.$commande['id_cmd'].' impossible. Pas de fichiers',array($fileFrom,$commande,$message),__FILE__.'@'.__LINE__);
 	    return "ERREUR PAS DE FICHIER EN";
 	}
     }

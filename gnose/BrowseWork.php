@@ -101,7 +101,7 @@ elseif($_GET['action'] == 'copierD')
 	$sortie .= '</div>';
 	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" style="float:left;" /></div>';
 	$sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';
-	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" READONLY /></div></div>';
+	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" readonly="readonly" /></div></div>';
 	$sortie .= '</div></div>';
 	$sortie .= '<input type="hidden" name="path" id="path_hidden_form_cp"/>';
 	$sortie .= '</form>';
@@ -119,7 +119,7 @@ elseif($_GET['action'] == 'copierF')
 	$sortie .= '</div>';
 	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" style="float:left;"/></div>';
 	$sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';
-	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" READONLY /></div></div>';
+	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" readonly="readonly" /></div></div>';
 	$sortie .= '</div></div>';
 	$sortie .= '<input type="hidden" name="path" id="path_hidden_form_cp"/>';
 	$sortie .= '</form>';
@@ -147,9 +147,9 @@ elseif($_GET['action'] == 'deplacerD')
 	$sortie .= '<div class="celluleH" style="display:table-cell;">Destination</div>';
 	$sortie .= '<div class="celluleH" style="display:table-cell;"></div>';
 	$sortie .= '</div>';
-	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" READONLY style="float:left;"/></div>';
+	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" readonly="readonly" style="float:left;"/></div>';
 	$sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';
-	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" READONLY /></div></div>';
+	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" readonly="readonly" /></div></div>';
 	$sortie .= '</div></div>';
 	$sortie .= '<input type="hidden" name="path" id="path_hidden_form_cp"/>';
 	$sortie .= '</form>';
@@ -165,9 +165,9 @@ elseif($_GET['action'] == 'deplacerF')
 	$sortie .= '<div class="celluleH" style="display:table-cell;">Destination</div>';
 	$sortie .= '<div class="celluleH" style="display:table-cell;"></div>';
 	$sortie .= '</div>';
-	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" READONLY style="float:left;"/></div>';
+	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" readonly="readonly" style="float:left;"/></div>';
 	$sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';
-	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" READONLY /></div></div>';
+	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" readonly="readonly" /></div></div>';
 	$sortie .= '</div></div>';
 	$sortie .= '<input type="hidden" name="path" id="path_hidden_form_cp"/>';
 	$sortie .= '</form>';
@@ -198,9 +198,9 @@ elseif($_GET['action'] == 'archiverD')
 	$sortie .= '<div style="display:table-row;"><div class="celluleH" style="display:table-cell;"></div>';
 	$sortie .= '<div class="celluleH" style="display:table-cell;"><b><a onclick="placerLiens(\'a'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\', \''.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\');" ><img src="../img/files/dir.png" style="margin-left:-18px;"/>'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'</a></b></div>';
 	$sortie .= '<div class="celluleH" style="display:table-cell;"></div></div>';
-	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" READONLY style="float:left;"/></div>';
+	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" readonly="readonly" style="float:left;"/></div>';
 	$sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';
-	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" READONLY /></div></div>';
+	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" readonly="readonly" /></div></div>';
 	$sortie .= '</div></div>';
 	$sortie .= '<input type="hidden" name="path" id="path_hidden_form_cp"/>';
 	$sortie .= '</form>';
@@ -223,7 +223,7 @@ elseif($_GET['action'] == 'upload')
 	$sortie .= '</div>';
 	$sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="hidden" name="MAX_FILE_SIZE" value="104857600" /><input type="file" name="fichier" style="float:left;"/></div>';
 	$sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';
-	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" name="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" READONLY /></div></div>';
+	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" name="submit" value="Valider" /><input id="nom_rep_form_cp" type="text" name="rep" readonly="readonly" /></div></div>';
 	$sortie .= '</div></div>';
 	$sortie .= '<input type="hidden" name="path" id="path_hidden_form_cp"/>';
 	$sortie .= '</form>';	
@@ -240,7 +240,7 @@ elseif($_GET['action'] == 'modifF')
 	$sortie .= '</div>';
 	$sortie .= '<div style="display:table-row;"><div class="cellule" style="display:table-cell;"><input type="hidden" name="MAX_FILE_SIZE" value="104857600" />
 				<input type="file" name="fichier" style="float:left;"/></div>';
-	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" name="submit" value="Valider" /><input type="text" name="rep" value="'.basename($_GET['path']).'" READONLY /></div>';
+	$sortie .= '<div class="cellule" style="display:table-cell;"><input type="submit" name="submit" value="Valider" /><input type="text" name="rep" value="'.basename($_GET['path']).'" readonly="readonly" /></div>';
 	$sortie .= '</div>';
 	$sortie .= '</div></div>';
 	$sortie .= '<input type="hidden" name="path" id="path_hidden_form_cp" value="'.$_GET['path'].'" />';

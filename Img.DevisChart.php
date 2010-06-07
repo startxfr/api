@@ -72,25 +72,28 @@ if ($total != 0) {
 	$targ[]	= "javascript:camenbertDevis('".$value[$key]."', '".$max[$key]."');";
 	$alts[]	= $val." devis ";
 	$lalegend[]	= utf8_decode($lesLeng[$key]);
+	$total += round(($val/$total),2);
     }
 
-    $p1 = new PiePlot3d($data);
-    $p1->SetTheme("pastel");
-    $p1->SetCenter(0.32,0.36);
-    $p1->SetSize(120);
-    $p1->SetAngle(35);
-    $p1->SetStartAngle(45);
-    $p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
-    $p1->value->SetColor("darkseagreen");
-    $p1->SetLegends($lalegend);
-    $p1->SetCSIMTargets($targ,$alts);
+    if($total > 0) {
+	$p1 = new PiePlot3d($data);
+	$p1->SetTheme("pastel");
+	$p1->SetCenter(0.32,0.36);
+	$p1->SetSize(120);
+	$p1->SetAngle(35);
+	$p1->SetStartAngle(45);
+	$p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
+	$p1->value->SetColor("darkseagreen");
+	$p1->SetLegends($lalegend);
+	$p1->SetCSIMTargets($targ,$alts);
 
-    $graph = new PieGraph(470,200,"auto");
-    $graph->SetAntiAliasing();
-    $graph->SetFrame(false);
-    $graph->legend->Pos(0,0.55);
-    $graph->Add($p1);
-    $graph->StrokeCSIM("../Img.DevisChart.php");
+	$graph = new PieGraph(470,200,"auto");
+	$graph->SetAntiAliasing();
+	$graph->SetFrame(false);
+	$graph->legend->Pos(0,0.55);
+	$graph->Add($p1);
+	$graph->StrokeCSIM("../Img.DevisChart.php");
+    }
 }
 
 

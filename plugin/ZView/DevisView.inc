@@ -176,63 +176,63 @@ function IsNumeric(input)
 	if ($data['type_ent'] != '')	$data['nom_entH']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png',$data['nom_tyent']).' '.$data['nom_ent'];
 	else							$data['nom_entH']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' <i>Particulier</i>';
 	$out = '<div class="block width50">
-			<fieldset class="form">
-				<legend>Informations sur le devis</legend>
+		<fieldset class="form" style="height: 150px">
+		<legend>Informations sur le devis</legend>
 
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.cree);">Créé le </div>
-					<div class="field">'.DateUniv2Human($data['daterecord_dev'], 'simpleLong').'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.modifie);">Modifié le </div>
-					<div class="field">'.DateUniv2Human($data['datemodif_dev'], 'simpleLong').'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.titre);">Titre</div>
-					<div class="field">'.inputTag('text', 'titre_dev', '', '', '35', $data['titre_dev']).'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.bdcclient);">BDC Client</div>
-					<div class="field">'.inputTag('text', "BDCclient_dev", '', '', '16', $data['BDCclient_dev']).'</div>
-				</div>
-			</fieldset>
-			<fieldset class="form">
-			  	<legend>Commentaire sur le devis</legend>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.commentaire);">Commentaire</div>
-					<div class="field">
-						<textarea name="complementdelivery_dev" cols="55" rows="2" >'.$data['complementdelivery_dev'].'</textarea></div>
-				</div>
-                                <div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.tauxTva);">TVA</div>
-					<div class="field">'.selectTVATag("tva_dev", array(), $data['tva_dev'], '', '', false).'</div>
-				</div>
-			</fieldset>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.cree);">Créé le </div>
+		    <div class="field">'.DateUniv2Human($data['daterecord_dev'], 'simpleLong').'</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.modifie);">Modifié le </div>
+		    <div class="field">'.DateUniv2Human($data['datemodif_dev'], 'simpleLong').'</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.titre);">Titre</div>
+		    <div class="field">'.inputTag('text', 'titre_dev', '', '', '35', $data['titre_dev']).'</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.bdcclient);">BDC Client</div>
+		    <div class="field">'.inputTag('text', "BDCclient_dev", '', '', '16', $data['BDCclient_dev']).'</div>
+		</div>
+		</fieldset>
+		<fieldset class="form">
+		<legend>Commentaire sur le devis</legend>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.commentaire);">Commentaire</div>
+		    <div class="field">
+			    <textarea name="complementdelivery_dev" cols="55" rows="2" >'.$data['complementdelivery_dev'].'</textarea></div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.tauxTva);">TVA</div>
+		    <div class="field">'.selectTVATag("tva_dev", array(), $data['tva_dev'], '', '', false).'</div>
+		</div>
+		</fieldset>
 		</div>
 		<div class="block width50">
-			<fieldset class="form">
-				<legend>Contacts du devis</legend>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.entreprise);">Entreprise</div>
-					<div class="field"><a href="#" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',900,200,\'\',\'\',\'resize\',\'Entreprise\');" id="entrepriseDevis" title="voir les informations de l\'entreprise '.$data['nom_ent'].'">'.$data['nom_entH'].'</a></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactTech);">Contact Tech</div>
-					<div class="field">'.inputTag('text', 'contact_dev2','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_dev" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
-					<input type="hidden" name="contact_dev" id="ACcontact_devhidden" value="'.$data['contact_dev'].'" /><input type="hidden" name="contold" id="ACcontact_devold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
-					<div id="ACcontact_dev_choix" class="autocomplete"></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactAchat);">Contact Achat</div>
-					<div class="field">'.inputTag('text', 'contact_achat_dev2','icon', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_dev" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
-					<input type="hidden" name="contact_achat_dev" id="ACcontact_achat_devhidden" value="'.$data['contact_achat_dev'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_devold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
-					<div id="ACcontact_achat_dev_choix" class="autocomplete"></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.commercial);">Commercial</div>
-					<div class="field">'.selectTag('commercial_dev',$datas['user'],$data['commercial_dev']).'</div>
-				</div>
-			</fieldset>';
+		<fieldset class="form" style="height: 150px">
+		<legend>Contacts du devis</legend>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.entreprise);">Entreprise</div>
+		    <div class="field"><a href="#" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',900,200,\'\',\'\',\'resize\',\'Entreprise\');" id="entrepriseDevis" title="voir les informations de l\'entreprise '.$data['nom_ent'].'">'.$data['nom_entH'].'</a></div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactTech);">Contact Tech</div>
+		    <div class="field">'.inputTag('text', 'contact_dev2','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_dev" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+		    <input type="hidden" name="contact_dev" id="ACcontact_devhidden" value="'.$data['contact_dev'].'" /><input type="hidden" name="contold" id="ACcontact_devold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
+		    <div id="ACcontact_dev_choix" class="autocomplete"></div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactAchat);">Contact Achat</div>
+		    <div class="field">'.inputTag('text', 'contact_achat_dev2','icon', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_dev" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+		    <input type="hidden" name="contact_achat_dev" id="ACcontact_achat_devhidden" value="'.$data['contact_achat_dev'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_devold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
+		    <div id="ACcontact_achat_dev_choix" class="autocomplete"></div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.commercial);">Commercial</div>
+		    <div class="field">'.selectTag('commercial_dev',$datas['user'],$data['commercial_dev']).'</div>
+		</div>
+		</fieldset>';
 	if($data['id_fact'] != '' or $data['id_cmd'] != '' or $data['id_dev'] != '' or $data['id_aff'] != '') {
 	    $out.= '<fieldset class="form">
 				<legend>Documents liées </legend>';
@@ -256,44 +256,42 @@ function IsNumeric(input)
 	}
 	$out.='</div>
 		<div class="block width50">
-			<fieldset class="form">
-			  	<legend>Informations sur la livraison</legend>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryNom);">Entreprise</div>
+		<fieldset class="form" style="height: 150px">
+		    <legend>Informations sur la livraison</legend>
+		    <div class="row">
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryNom);">Entreprise</div>
 
-					<div class="field">'.inputTag('text', "nomdelivery_dev", '', '', '30', $data['nomdelivery_dev']).'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryAdd);">Adresse</div>
-					<div class="field">'.inputTag('text', "adressedelivery_dev", '', '', '40', $data['adressedelivery_dev']).'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryComplement);">Complément</div>
-					<div class="field">'.inputTag('text', "adresse1delivery_dev", '', '', '40', $data['adresse1delivery_dev']).'</div>
+			    <div class="field">'.inputTag('text', "nomdelivery_dev", '', '', '30', $data['nomdelivery_dev']).'</div>
+		    </div>
+		    <div class="row">
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryAdd);">Adresse</div>
+			    <div class="field">'.inputTag('text', "adressedelivery_dev", '', '', '40', $data['adressedelivery_dev']).'</div>
+		    </div>
+		    <div class="row">
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryComplement);">Complément</div>
+			    <div class="field">'.inputTag('text', "adresse1delivery_dev", '', '', '40', $data['adresse1delivery_dev']).'</div>
 
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryCpVille);">CP - Ville</div>
-					<div class="field">'.inputTag('text', "cpdelivery_dev", 'civ', '', '6', $data['cpdelivery_dev'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'devisVille\');"').'<select name=\'villedelivery_dev\'  id="devisVille"  onblur="finishEditing();" onclick="beginEditing(this);" class="nextciv"><option value=""> </option><option value="'.$data['villedelivery_dev'].'" selected="selected">'.$data['villedelivery_dev'].'</option></select></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryPays);">Pays</div>
-					<div class="field">'.selectTag('paysdelivery_dev',$datas['pays'],$data['paysdelivery_dev']).'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryMail);">Mail</div>
-					<div class="field">'.inputTag('text', "maildelivery_dev", '', '', '30', $data['maildelivery_dev']).'</div>
-				</div>
-			</fieldset>
+		    </div>
+		    <div class="row">
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryCpVille);">CP - Ville</div>
+			    <div class="field">'.inputTag('text', "cpdelivery_dev", 'civ', '', '6', $data['cpdelivery_dev'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'devisVille\');"').'<select name=\'villedelivery_dev\'  id="devisVille"  onblur="finishEditing();" onclick="beginEditing(this);" class="nextciv"><option value=""> </option><option value="'.$data['villedelivery_dev'].'" selected="selected">'.$data['villedelivery_dev'].'</option></select></div>
+		    </div>
+		    <div class="row">
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryPays);">Pays</div>
+			    <div class="field">'.selectTag('paysdelivery_dev',$datas['pays'],$data['paysdelivery_dev']).'</div>
+		    </div>
+		    <div class="row">
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryMail);">Mail</div>
+			    <div class="field">'.inputTag('text', "maildelivery_dev", '', '', '30', $data['maildelivery_dev']).'</div>
+		    </div>
+		</fieldset>
 		</div>';
 	if($datas['data']['id_dev'] == $datas['ren']['idChamp_ren'] or $datas['data']['ren_dev'] == "") {
 	    if($datas['ren']['fin_ren'] != '0000-00-00 00:00:00' and $datas['ren']['fin_ren'] != "") {
 		$date2 = $datas['ren']['fin_ren'];
 		$date2 = substr($date2, 8,2)."/".substr($date2,5,2)."/".substr($date2,0,4);
 	    }
-	    else {
-		$date2 = date('d/m/').(date('Y')+1);
-	    }
+	    else $date2 = date('d/m/').(date('Y')+1);
 	    if($datas['ren']['actif_ren'] == 1 ) {
 		$checked = ' checked="checked" ';
 		$styleDisplay="";
@@ -305,30 +303,30 @@ function IsNumeric(input)
 	    if($datas['ren']['mail_ren'] == "")
 		$datas['ren']['mail_ren'] = $_SESSION['user']['mail'];
 	    $out .= '<div class="block width50">
-                            <fieldset class="form">
-                                    <legend>Récurrence</legend>
-                                    <div class="row">
-                                            <div class="label" style="width:100px">Activer</div>
-                                            <div class="field"><input type="checkbox" name="actif_ren" value="1" onchange="affRen(this)" '.$checked.' /></div>
-                                    </div>
-                                    <div class="row"'.$styleDisplay.'>
-                                            <div class="label">Fréquence</div>
-                                            <div class="field">'.selectTag("periode_ren", $datas['periode'], $datas['ren']['periode_ren'], "", " id='selectF' ", false).'</div>
-                                    </div>
-                                    <div class="row"'.$styleDisplay.'>
-                                            <div class="label">Date de fin </div>
-                                            <div class="field">'.inputDateTag("text", "fin_ren", $date2).'</div>
-                                     </div>
-                                     <div class="row"'.$styleDisplay.'>
-                                            <div class="label">Statut</div>
-                                            <div class="field">'.selectTag("statusChamp_ren", $datas['status'], $datas['ren']['statusChamp_ren'], "", " id='statusF' ", false).'</div>
-                                     </div>
-                                     <div class="row"'.$styleDisplay.'>
-                                            <div class="label">E-Mail</div>
-                                            <div class="field">'.inputTag("text", "mail_ren", "", "", "16", $datas['ren']['mail_ren'], " id='mailF' ").'</div>
-                                     </div>
-                            </fieldset>
-                        </div>';
+	    <fieldset class="form">
+		    <legend>Récurrence</legend>
+		    <div class="row">
+			    <div class="label" style="width:100px">Activer</div>
+			    <div class="field"><input type="checkbox" name="actif_ren" value="1" onchange="affRen(this)" '.$checked.' /></div>
+		    </div>
+		    <div class="row"'.$styleDisplay.'>
+			    <div class="label">Fréquence</div>
+			    <div class="field">'.selectTag("periode_ren", $datas['periode'], $datas['ren']['periode_ren'], "", " id='selectF' ", false).'</div>
+		    </div>
+		    <div class="row"'.$styleDisplay.'>
+			    <div class="label">Date de fin </div>
+			    <div class="field">'.inputDateTag("text", "fin_ren", $date2).'</div>
+		     </div>
+		     <div class="row"'.$styleDisplay.'>
+			    <div class="label">Statut</div>
+			    <div class="field">'.selectTag("statusChamp_ren", $datas['status'], $datas['ren']['statusChamp_ren'], "", " id='statusF' ", false).'</div>
+		     </div>
+		     <div class="row"'.$styleDisplay.'>
+			    <div class="label">E-Mail</div>
+			    <div class="field">'.inputTag("text", "mail_ren", "", "", "16", $datas['ren']['mail_ren'], " id='mailF' ").'</div>
+		     </div>
+	    </fieldset>
+	</div>';
 	}
 	else {
 	    $out .= '<div class="block width50">
@@ -360,12 +358,12 @@ function IsNumeric(input)
     private function interneProduits($datas) {
 	$out = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
 		<tbody><tr class="titre">
-			<th>ID</th>
+			<th style="width: 135px">ID</th>
 			<th>Description</th>
-			<th>Quantité</th>
-			<th>Prix</th>
-			<th>Remise</th>
-			<th>Total</th>
+			<th style="width: 30px">Quantité</th>
+			<th style="width: 90px">Prix</th>
+			<th style="width: 65px">Remise</th>
+			<th style="width: 110px">Total</th>
 			<th width="1%"> </th>
 		</tr>';
 	$alternance = 0;
@@ -391,11 +389,11 @@ function IsNumeric(input)
 	    if(verifDroitsAuto('devis', 15, $datas['data']['commercial_dev']))
 		$out .= '<tr class="altern'.$alternance.'" id="'.$v['id'].'td1" style="display:none;">
 			<td class="barre" title="'.$v['nom_prod'].'">'.$v['id_prod'].'</td>
-			<td class="barre">'.textareaTag('desc2', $v['desc'], '', '', '', ' id="desc_Ajout_prod_dev'.$v['id'].'" style="width:100%; height:20px;" ').'</td>
-			<td class="center barre">'.inputTag('text', 'quantite2', '', '', '16', prepareNombreAffichage($v['quantite']), ' id="quantite_Ajout_prod_dev'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:95%" ').'</td>
-			<td class="barre">'.inputTag('text', 'prix2', '', '', '16', prepareNombreAffichage($v['prix']), ' id="prix_Ajout_prod_dev'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:80%" ').' €</td>
-			<td class="barre">'.inputTag('text', 'remise2', '', '', '16', prepareNombreAffichage($v['remise']), ' id="remise_Ajout_prod_dev'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:78%" ').' %</td>
-			<td class="barre">'.inputTag('text', 'prix_total2', '', '', '16', prepareNombreAffichage($total), ' id="total_Ajout_prod_dev'.$v['id'].'" READONLY style="width:80%" ').' € <img alt="alert" title="Vous risquez de vendre à perte !" src="../img/exclam.png" id="img_Ajout_prod_dev'.$v['id'].'" style="display:none;"/></td>
+			<td class="barre">'.textareaTag('desc2', $v['desc'], '', '', '', ' id="desc_Ajout_prod_dev'.$v['id'].'" style="width:98%; height:30px;" ').'</td>
+			<td class="center barre">'.inputTag('text', 'quantite2', '', '', '16', prepareNombreAffichage($v['quantite']), ' id="quantite_Ajout_prod_dev'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:28px" ').'</td>
+			<td class="barre">'.inputTag('text', 'prix2', '', '', '16', prepareNombreAffichage($v['prix']), ' id="prix_Ajout_prod_dev'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:60px" ').' €</td>
+			<td class="barre">'.inputTag('text', 'remise2', '', '', '16', prepareNombreAffichage($v['remise']), ' id="remise_Ajout_prod_dev'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:30px" ').' %</td>
+			<td class="barre">'.inputTag('text', 'prix_total2', '', '', '16', prepareNombreAffichage($total), ' id="total_Ajout_prod_dev'.$v['id'].'" readonly="readonly" style="width:80px" ').' € <img alt="alert" title="Vous risquez de vendre à perte !" src="../img/exclam.png" id="img_Ajout_prod_dev'.$v['id'].'" style="display:none;"/></td>
 			'.inputTag('hidden', 'mP', '', '', '', $v['PF'], ' id="maxPrix_Ajout_prod_dev'.$v['id'].'" ').'
 			<td nowrap="nowrap" class="center"><a name="modif" onclick="autoCopieChamps(\''.$v['id'].'\');chargerAction(\'modifProduit\'); zuno.business.formTools.sendFormAjah(\'productDevis\', \'draco/Devis.php\',\'contenuProdDevis\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/devis.add.png"/></a>
 							<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="../img/prospec/cancel.png" /></a></td>
@@ -405,16 +403,16 @@ function IsNumeric(input)
 
 	$action2 = (verifDroitsAuto('devis', 15, $datas['data']['commercial_dev'])) ? '<a name="add" onclick="chargerAction(\'addProduit\'); zuno.business.formTools.sendFormAjah(\'productDevis\', \'draco/Devis.php\',\'contenuProdDevis\');"><img title="Ajouter" alt="Ajouter" name="img" src="../img/prospec/devis.addProduct.png"/></a>' : '';
 	$out .= '<tr class="altern'.$alternance.'" id="tdAjoutProdDevis">
-			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_dev" style="width:73%" onblur="verifAutocompleteur(this);"').'
-				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\');" style="cursor:pointer"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\');" style="cursor:pointer"/>
+			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_dev" style="width:80px" onblur="verifAutocompleteur(this);"').'
+				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\');" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\');" style="cursor:pointer; margin-right:0px"/>
 				<img style="display:none; margin-left:5px;" id="loadingProd" src="../img/ajax-loader.gif" alt="loader"/>
 				<input type="hidden" name="id_produit" id="ACproduit_ajout_devhidden" value="" /><input type="hidden" name="idold" id="ACproduit_ajout_devold" value="" />
 				<div id="ACproduit_ajout_dev_choix" class="autocomplete"></div></td>
-			<td class="barre">'.textareaTag('desc', '', '', '', '', ' id="desc_Ajout_prod_dev" style="width:98%; height:20px;" ').'</td>
-			<td class="center barre">'.inputTag('text', 'quantite', '', '', '16', '1', ' id="quantite_Ajout_prod_dev" onchange="calculetteTotal();" style="width:95%" ').'</td>
-			<td class="barre">'.inputTag('text', 'prix', '', '', '16', '', ' id="prix_Ajout_prod_dev" onchange="calculetteTotal();" style="width:80%" ').' €</td>
-			<td class="barre">'.inputTag('text', 'remise', '', '', '16', '0', ' id="remise_Ajout_prod_dev" onchange="calculetteTotal();" style="width:78%" ').' %</td>
-			<td class="barre">'.inputTag('text', 'prix_total', '', '', '16', '', ' id="total_Ajout_prod_dev" READONLY style="width:80%" ').' € <img alt="alert" title="Vous risquez de vendre à perte !" src="../img/exclam.png" id="img_Ajout_prod_dev" style="display:none;"/></td>
+			<td class="barre">'.textareaTag('desc', '', '', '', '', ' id="desc_Ajout_prod_dev" style="width:98%; height:30px;" ').'</td>
+			<td class="center barre">'.inputTag('text', 'quantite', '', '', '16', '1', ' id="quantite_Ajout_prod_dev" onchange="calculetteTotal();" style="width:28px" ').'</td>
+			<td class="barre">'.inputTag('text', 'prix', '', '', '16', '', ' id="prix_Ajout_prod_dev" onchange="calculetteTotal();" style="width:60px" ').' €</td>
+			<td class="barre">'.inputTag('text', 'remise', '', '', '16', '0', ' id="remise_Ajout_prod_dev" onchange="calculetteTotal();" style="width:30px" ').' %</td>
+			<td class="barre">'.inputTag('text', 'prix_total', '', '', '16', '', ' id="total_Ajout_prod_dev"  readonly="readonly" style="width:80px" ').' € <img alt="alert" title="Vous risquez de vendre à perte !" src="../img/exclam.png" id="img_Ajout_prod_dev" style="display:none;"/></td>
 			'.inputTag('hidden', 'mP', '', '', '', '', ' id="maxPrix_Ajout_prod_dev" ').'
 			<td nowrap="nowrap" class="center">'.$action2.'
 			</td>
@@ -486,8 +484,8 @@ function IsNumeric(input)
 	}
 	// Quand status Envoyé
 	if (($datas['data']['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
-	    $bouton .= '<a title="Perdu" name="perdu" onclick="return zuno.popup.open(\'Devis.php\', \'devis='.$datas['data']['id_dev'].'&action=Perdu\',500,300);"><img align="middle" title="Perdu" alt="perdu" name="img" src="../img/prospec/devis.perdu.png"/> Devis perdu</a>';
-	    $bouton   .= "<a name=\"valider\" onclick=\"return zuno.popup.open('Devis.php','id_devis=".$datas['data']['id_dev']."&action=valid',1000,400,'','','resize','commandeCreate');\">".imageTag('../img/prospec/devis.valid.png','Validé')." Valider</a> ";
+	    $bouton .= '<a title="Perdu" name="perdu" onclick="return zuno.popup.open(\'Devis.php\', \'devis='.$datas['data']['id_dev'].'&action=Perdu\',500,280);"><img align="middle" title="Perdu" alt="perdu" name="img" src="../img/prospec/devis.perdu.png"/> Devis perdu</a>';
+	    $bouton   .= "<a name=\"valider\" onclick=\"return zuno.popup.open('Devis.php','id_devis=".$datas['data']['id_dev']."&action=valid',900,380,'','','resize','commandeCreate');\">".imageTag('../img/prospec/devis.valid.png','Validé')." Valider</a> ";
 	}
 	// Clonage
 	if(verifDroitsAuto('devis', 25, $datas['data']['commercial_dev']))
@@ -663,7 +661,9 @@ function IsNumeric(input)
 		    }
 		    function ChangeSubmit() {
 			zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','listeResultDevis');
-		    }";
+		    }
+		    Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) ChangeSubmit(); return false;}, false);
+		    ";
 	$script .= 'function camenbertDevis(value, max) { $(\'devisBudgetMini\').value = value; $(\'devisBudgetMaxi\').value = max; ChangeDevisAction(\'searchDevis\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\'); } ';
 	$script .= 'function resetForm() {var form = $(\'searchFormDevis\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }';
@@ -682,11 +682,11 @@ function IsNumeric(input)
 	$corps .= '</div></form>';
 	$bouton = '<a name="reset" onclick="resetForm();"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
 	$bouton .= '<a name="valider" onclick="ChangeDevisAction(\'searchDevis\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
-	return $script.generateZBox($titre,$titre,$corps,$bouton,"searchBox",'');
+	return generateZBox($titre,$titre,$corps.$script,$bouton,"searchBox",'');
     }
 
     private function interneSearch($datas) {
-	$out = '<div class="block width50"><fieldset class="form"><legend>Critères</legend>';
+	$out = '<div class="block width50"><fieldset class="form" style="height: 220px"><legend>Critères</legend>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.searchEnt);">Entreprise</div>';
 	$out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseDevisSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseDevisSearch_choix"></div>';
 	$out .= '<input type="hidden" name="entreprise_dev" value="" id="entrepriseDevisSearch_hidden"/></div>';
@@ -708,7 +708,7 @@ function IsNumeric(input)
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.searchBudgMax);">Budget maxi</div>';
 	$out .= '<div class="field">'.inputTag('text', 'sommeHT_dev2', '', '', '20', '', ' id="devisBudgetMaxi" ').'</div></div>';
 	$out .= '</fieldset></div>';
-	$out .= '<div class="block width50"><fieldset class="form"><legend>Répartition des devis</legend>';
+	$out .= '<div class="block width50"><fieldset class="form" style="height: 220px"><legend>Répartition des devis</legend>';
 	$out .= '<div class="row">'.shell_exec('php ../Img.DevisChart.php').'</div>';
 	$out .= '</fieldset></div>';
 	return $out;
@@ -732,6 +732,17 @@ function IsNumeric(input)
 			    $('resultDevisExportType').value = value;
 			    $('resultFormDevis').submit();
 			}
+			function showCmd()
+			{
+				$('commandePopupForm').style.display = 'block';
+				$('facturePopupForm').style.display = 'none';
+			}
+			function showFact()
+			{
+				$('commandePopupForm').style.display = 'none';
+				$('facturePopupForm').style.display = 'block';
+			}
+
 			</script>";
 	$out .= '<div class="blockTable">
 		    <form id="resultFormDevis" method="post" action="DevisListe.php" name="resultDevis">
@@ -761,7 +772,7 @@ function IsNumeric(input)
 		    $action .= '<a title="Cloner" href="Devis.php?action=cloner&dev='.$v['id_dev'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.$suffixeLink.'img/prospec/devis.clone.png"/></a>';
 		// Quand status créer
 		if (($v['status_dev'] == "1")and(verifDroitsAuto('devis', 60, $datas['data']['commercial_dev']))) {
-		    $action   .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}draco/Devis.php','id_devis=".$v['id_dev']."&action=supp',600,290,'','','resize','devisDelete');\">".imageTag($suffixeLink.'img/prospec/devis.delete.png','Supprimer')."</a> ";
+		    $action   .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}draco/Devis.php','id_devis=".$v['id_dev']."&action=supp',480,130);\">".imageTag($suffixeLink.'img/prospec/devis.delete.png','Supprimer')."</a> ";
 		    $action .= '<a href="Devis.php?id_dev='.$v['id_dev'].'" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="'.$suffixeLink.'img/prospec/devis.record.png"/></a>';
 		}
 		// Quand status Enregistré
@@ -770,7 +781,7 @@ function IsNumeric(input)
 		// Quand status Envoyé
 		elseif (($v['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
 		    $action .= '<a title="Perdu" name="perdu" onclick="ChangeDevisAction(\'Perdu\');ChangeDevisID(\''.$v['id_dev'].'\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\');"><img align="middle" title="Perdu" alt="perdu" name="img" src="'.$suffixeLink.'img/prospec/devis.perdu.png"/></a>';
-		    $action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',900,400,'','','resize','devisValid');\">".imageTag($suffixeLink.'img/prospec/devis.valid.png','Validé')."</a> ";
+		    $action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',900,380);\">".imageTag($suffixeLink.'img/prospec/devis.valid.png','Validé')."</a> ";
 		}
 		if (array_key_exists('isRenew',$datas) and $datas['isRenew']) {
 		    if (($v['devisgenere'] != ""))
@@ -844,7 +855,7 @@ function IsNumeric(input)
     private function ResultGroupActionForm() {
 	$sql = new devisModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action');
+	$fieldset = new ZunoFieldset('Type d\'action','','height: 150px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'reinit', ' onclick="toggleSubGroupedAction(\'groupedSubActionReinit\')"'),'Re-initialiser ces devis','ZTips.devis.groupActionReinit');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'perdu', ' onclick="toggleSubGroupedAction(\'groupedSubActionPerdu\')"'),'Marquer ces devis comme perdus','ZTips.devis.groupActionPerdu');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'envoye', ' onclick="toggleSubGroupedAction(\'groupedSubActionEnvoye\')"'),'Marquer ces devis comme envoyés','ZTips.devis.groupActionEnvoye');
@@ -852,34 +863,33 @@ function IsNumeric(input)
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'archivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionArchive\')"'),'Archivage des devis','ZTips.devis.groupActionArchive');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'),'Changer un attribut par lot','ZTips.devis.groupActionChangeAttribute');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div><div class="block width50" id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Re-initialiser ces devis','groupedSubActionReinit');
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Re-initialiser ces devis','groupedSubActionReinit','height: 90px');
 	$fieldset->addOtherLigne('<div class="row"><i>Aucune action sécifique n\'est requise</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Marquer ces devis comme perdus','groupedSubActionPerdu');
+	$fieldset = new ZunoFieldset('Marquer ces devis comme perdus','groupedSubActionPerdu','height: 90px');
 	$fieldset->ligneInput('Commentaire', 'commentairePerdu');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Marquer ces devis comme envoyés','groupedSubActionEnvoye');
+	$fieldset = new ZunoFieldset('Marquer ces devis comme envoyés','groupedSubActionEnvoye','height: 90px');
 	$fieldset->ligneInput('Complément d\'envoi', 'complementdeliveryEnvoye');
 	$fieldset->ligneInput('Commentaire', 'commentaireEnvoye');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Marquer ces devis comme supprimés','groupedSubActionDelete');
+	$fieldset = new ZunoFieldset('Marquer ces devis comme supprimés','groupedSubActionDelete','height: 90px');
 	$fieldset->ligneInput('Commentaire', 'commentaireDelete');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Archivage des devis','groupedSubActionArchive');
+	$fieldset = new ZunoFieldset('Archivage des devis','groupedSubActionArchive','height: 90px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les devis n\'ayant plus de commande ou facture en cours de traitement seront archivées.</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute');
+	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 90px');
 	$fieldset->ligneInput('Titre du devis', 'titre_dev');
 	$fieldset->ligneFree('TVA',selectTVATag("tva_dev", array(), '', '', '', true));
 	$fieldset->ligneSelect('Commercial', 'commercial_dev','',$sql->getUser());
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
-	$out.= '<div class="block width50">';
 	$fieldset = new ZunoFieldset('Executer le changement');
 	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormDevis\',\'resultDevisAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
-	$out.= '</div></div>';
+	$out.= '</div></div></div>';
 	return $out;
     }
 
@@ -904,52 +914,39 @@ function IsNumeric(input)
 	$script .= "\n".'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_dev\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'_hidden\').value = ""; } } } ';
 	$script .= "\n".'function resetForm() {var form = $(\'formAddDevis\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContDev&entreprise=\'+$(\'ACentreprise_dev_hidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Devis.php\', ent);} ';
-	$script .= "\n".'function addEntreprise() { zuno.popup.open(\'Devis.php\', \'action=addEnt\');} ';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContDev&entreprise=\'+$(\'ACentreprise_dev_hidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Devis.php\', ent, 800, 300);} ';
+	$script .= "\n".'function addEntreprise() { zuno.popup.open(\'Devis.php\', \'action=addEnt\',800,320);} ';
 	$script .= "\n".'</script>';
-
-
 	$rendu = new ZunoRenduHtml('addNewDevis');
 	$form = new ZunoForm('addDevis', 'DevisCreate.php', 'POST');
-	$fieldset = new ZunoFieldset('Client et titre du devis');
-
+	$fieldset = new ZunoFieldset('Client et titre du devis','','height: 100px');
 	$ligne = '<div class="row">';
 	$ligne .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.addEntAff);">Entreprise ou affaire</div>';
 	$ligne .= '<div class="field">'.inputTag('text', 'entreprise', 'icon', '', '16', $data['entreprise'], ' id="ACentreprise_dev" onchange="verifAutocompleteur(this);"');
 	$ligne .= '<a id="addEnt" name="addEnt" title="Ajouter une entreprise" onclick="addEntreprise();"><img alt="ent" title="Ajouter une entreprise" src="../img/prospec/entreprise.png" /></a>';
 	$ligne .= '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div>';
 	$ligne .= '<input type="hidden" name="entreprise_dev" id="ACentreprise_dev_hidden" value="'.$data['entreprise_dev'].'" /><input type="hidden" name="affaire_dev" id="ACaffaire_dev_hidden" value="'.$data['affaire_dev'].'" />
-						<div id="ACentreprise_dev_choix" class="autocomplete"></div>';
+		   <div id="ACentreprise_dev_choix" class="autocomplete"></div>';
 	$ligne .= '</div>';
 	$fieldset->addOtherLigne($ligne);
 	$fieldset->ligneInput('Titre', 'titre_dev', $data['titre_dev']);
-
 	$form->newBlock($fieldset->generateFieldset(), '33');
-
-	$fieldset = new ZunoFieldset('Contacts du devis');
+	$fieldset = new ZunoFieldset('Contacts du devis','','height: 100px');
 	$fieldset->ligneAutoComplete('Contact commercial', 'contact_dev', $data['contact_devaff'], $data['contact_dev'], 'listeContact', '', true, 'addContact', false);
 	$fieldset->ligneAutoComplete('Contact facturation', 'contact_achat_dev', $data['contact_achat_devaff'], $data['contact_achat_dev'], 'listeContact', '', true, 'addContact', false);
-
 	$form->newBlock($fieldset->generateFieldset(), '33');
-
-	$fieldset = new ZunoFieldset('Adresse de livraison');
+	$fieldset = new ZunoFieldset('Adresse de livraison','','height: 100px');
 	$fieldset->ligneInput('Adresse', 'adressedelivery_dev', $data['adressedelivery_dev'], ' id="devisadd" ');
 	$fieldset->ligneInput('Complément', 'adresse1delivery_dev', $data['adresse1delivery_dev'], ' id="devisadd1" ');
 	$fieldset->ligneInputCPVille('cpdelivery_dev', $data['cpdelivery_dev'], 'villedelivery_dev', $data['villedelivery_dev']);
 	$fieldset->ligneAutoComplete('Pays', 'paysdelivery_dev', $data['paysdelivery_devaff'], $data['paysdelivery_dev'], 'listePays');
-
 	$form->newBlock($fieldset->generateFieldset(), '33');
-
 	$form->newInputHidden('action', 'addDevis');
-
 	$rendu->replaceJS($script);
 	$rendu->generateZBox(imageTag('../img/prospec/devis.png','Devis').' Nouveau Devis','',$form->generateForm(), $form->generateButtonsNoAjax('Annuler', 'Enregistrer'), 'idCreationDevis', 'open');
-
 	if($mess != '')
-	    $messAff = '<span class="important" style="text-align:center;" id="spanErrorDevis">'.$mess.'</span> <script>setTimeout(function(){$(\'spanErrorDevis\').style.display = \'none\';}, 2000)</script>';
-	else
-	    $messAff = '';
-
+	     $messAff = '<span class="important" style="text-align:center;" id="spanErrorDevis">'.$mess.'</span> <script>setTimeout(function(){$(\'spanErrorDevis\').style.display = \'none\';}, 2000)</script>';
+	else $messAff = '';
 	return $messAff.$rendu->generateRendu();
 
     }

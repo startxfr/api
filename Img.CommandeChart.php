@@ -65,27 +65,30 @@ if ($total != 0) {
 	$targ[]	= "?sommeHT_cmd=".$value[$key];
 	$alts[]	= $val." commandes ";
 	$lalegend[]	= utf8_decode($lesLeng[$key]);
+	$total += round(($val/$total),2);
     }
 
-    // Create 3D pie plot
-    $p1 = new PiePlot3d($data);
-    $p1->SetTheme("water");
-    $p1->SetCenter(0.31,0.6);
-    $p1->SetSize(120);
-    $p1->SetAngle(35);
-    $p1->SetStartAngle(45);
-    $p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
-    $p1->value->SetColor("darkseagreen");
-    $p1->SetLegends($lalegend);
-    $p1->SetCSIMTargets($targ,$alts);
+    if($total > 0) {
+	// Create 3D pie plot
+	$p1 = new PiePlot3d($data);
+	$p1->SetTheme("water");
+	$p1->SetCenter(0.31,0.6);
+	$p1->SetSize(120);
+	$p1->SetAngle(35);
+	$p1->SetStartAngle(45);
+	$p1->value->SetFont(FF_ARIAL,FS_BOLD,9);
+	$p1->value->SetColor("darkseagreen");
+	$p1->SetLegends($lalegend);
+	$p1->SetCSIMTargets($targ,$alts);
 
-    // Create the Pie Graph.
-    $graph = new PieGraph(480,200,"auto");
-    $graph->SetAntiAliasing();
-    $graph->SetFrame(false);
-    $graph->legend->Pos(0,0);
-    $graph->Add($p1);
-    $graph->StrokeCSIM("../Img.CommandeChart.php");
+	// Create the Pie Graph.
+	$graph = new PieGraph(480,200,"auto");
+	$graph->SetAntiAliasing();
+	$graph->SetFrame(false);
+	$graph->legend->Pos(0,0);
+	$graph->Add($p1);
+	$graph->StrokeCSIM("../Img.CommandeChart.php");
+    }
 }
 
 

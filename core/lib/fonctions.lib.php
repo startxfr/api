@@ -1145,7 +1145,7 @@ function getStats($partie, $tous = 'non', $type = '') {
     $class = $partie.'Model';
     $info = new $class();
     if($partie == 'facture' and $type != '') {
-        $data = $info->getDataForStats(" Where type_fact = '$type' ");
+        $data = $info->getDataForStats(" WHERE type_fact = '$type' ");
     }
     elseif($partie == 'affaire' and $type == '') {
         $data = $info->getDataForStats();
