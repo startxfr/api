@@ -205,7 +205,7 @@ class devisGnose {
 	    return true;
 	}
 	else {
-	    Logg::loggerError('devisGnose::DevisSaveDocInGnose() ~ Erreur lors de la sauvegarde du devis '.$fileName.' dans l\'affaire '.$affaire,array($fileFrom,$fileName,$affaire,$message),__FILE__.'@'.__LINE__);
+	    Logg::loggerError('devisGnose::DevisSaveDocInGnose() ~ Erreur lors de la sauvegarde du devis '.$fileName.' dans l\'affaire '.$affaire,array($fileFrom,$PathTo,$fileName,$affaire,$message),__FILE__.'@'.__LINE__);
 	    return "ERREUR LORS DE LA COPIE";
 	}
     }

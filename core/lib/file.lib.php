@@ -44,11 +44,11 @@ function FileCleanFileName($filename, $type="") {
 		'`'=>'_', '""'=>'_', '\''=>'_', '\\'=>'_'
 	);
 	if ($type == 'SVN_PROP' or $type == 'FILE_PATH')
-	    $table = array_merge($table,$tableSign);
+	    $table = array_merge($table,$tableSign,array(' '=>'_'));
 	elseif ($type == 'FILE_PATH_LOWER')
-	    $table = array_merge($tableToLower,$tableSign);
+	    $table = array_merge($tableToLower,$tableSign,array(' '=>'_'));
 	elseif ($type == 'APOSTROPHE')
-	    $table = $tableApos;
+	    $table  = array_merge($tableApos,array(' '=>'_'));
 	else $table = array_merge($table,$tableSign,$tableApos,array(' '=>'_'));
 
 	$out = strtr($filename, $table);

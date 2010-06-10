@@ -816,8 +816,6 @@ CREATE TABLE `ref_page` (
   `sousmenu_pg` enum('0','1') NOT NULL DEFAULT '0',
   `frameset_pg` varchar(32) DEFAULT NULL,
   `style_pg` varchar(32) DEFAULT NULL,
-  `stat_pg` int(4) DEFAULT NULL,
-  `stat_date_pg` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `content_pg` longtext,
   `content_pg_en` longtext,
   `content_pg_de` longtext,
@@ -1196,4 +1194,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-07  0:32:55
+-- Dump completed on 2010-06-10 23:51:35

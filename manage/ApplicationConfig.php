@@ -43,7 +43,7 @@ elseif ($PC->rcvP['action'] == 'SearchReplace')
 	$exclude = array( 'id_pg','owner_pg','droit_pg','modif_date_pg','modif_user_pg',
 			'create_date_pg','create_user_pg','img_pg','img_menu_pg','page_pg',
 			'channel_pg','parent_pg','order_pg','menuon_pg','sousmenu_pg',
-			'frameset_pg','style_pg','stat_pg','stat_date_pg','actif_pg');
+			'frameset_pg','style_pg','actif_pg');
 	foreach($liste as $key => $val)
 	{
 		if (!in_array($key,$exclude))

@@ -83,9 +83,6 @@ class PageContextData {
 		Logg::loggerError('PageContextData::PageGetID() ~ Aucun identifiant de page n\'as pu être trouvé',$sql,__FILE__.'@'.__LINE__);
 	    }
 	    else {
-		$newstat = $tmpresult[0]['stat_pg']+1;
-		$DBconnection->makeRequeteFree("UPDATE ref_page SET stat_pg = ".$newstat." WHERE id_pg = '".$tmpresult[0]['id_pg']."';");
-		$DBconnection->process();
 		$this->SQLOutputPage = $tmpresult[0];
 		$lid = $_GET['id'];
 	    }
@@ -102,9 +99,6 @@ class PageContextData {
 		$DBconnection->makeRequeteAuto('ref_page',$var);
 		$resultat1 = $DBconnection->process();
 		if(count($resultat1) > 0) {
-		    $newstat = $resultat1[0]['stat_pg']+1;
-		    $DBconnection->makeRequeteFree("UPDATE ref_page SET stat_pg = ".$newstat." WHERE id_pg = '".$resultat1[0]['id_pg']."';");
-		    $DBconnection->process();
 		    $this->SQLOutputPage = $resultat1[0];
 		    $lid = $resultat1[0]['id_pg'];
 		}
@@ -114,9 +108,6 @@ class PageContextData {
 		}
 	    }
 	    else {
-		$newstat = $resultat[0]['stat_pg']+1;
-		$DBconnection->makeRequeteFree("UPDATE ref_page SET stat_pg = ".$newstat." WHERE id_pg = '".$resultat[0]['id_pg']."';");
-		$DBconnection->process();
 		$this->SQLOutputPage = $resultat[0];
 		$lid = $resultat[0]['id_pg'];
 	    }
@@ -128,7 +119,7 @@ class PageContextData {
 	Logg::loggerNotice('PageContextData::getData() ~ Recherche des informations pour la page '.$this->id,'',__FILE__.'@'.__LINE__);
 	$resultat = array();
 	$translatable 	= array('nom_pg','desc_pg','header_pg');
-	$datable 	= array('modif_date_pg'=>'shortdetail','create_date_pg'=>'simple','stat_date_pg'=>'simple');
+	$datable 	= array('modif_date_pg'=>'shortdetail','create_date_pg'=>'simple');
 
 	if($this->SQLOutputPage == '') {
 	    $dbConnexion = new Bdd();

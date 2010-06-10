@@ -69,16 +69,6 @@
 				<a href="PageDelete.php?id={id}" class="bouton" >Supprimer</a>
 			</xsl:otherwise>
 		</xsl:choose>
-			<xsl:if test="(string-length(stat/visited) != 0) or (string-length(@droit) &gt; 0)">
-				<span class="right">
-				<xsl:if test="string-length(stat/visited) != 0">
-					<xsl:apply-templates select="stat"/>
-				</xsl:if>
-				<xsl:if test="string-length(@droit) &gt; 0">
-					<xsl:apply-templates select="@droit"/>
-				</xsl:if>
-				</span>
-			</xsl:if>
 		</li>
 		<xsl:apply-templates select="submenu">
 			<xsl:with-param name="channel" select="$channel" />
@@ -136,23 +126,9 @@
 					<a href="PageDelete.php?id={id}" class="bouton" >Supprimer</a>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="(string-length(stat/visited) != 0) or (string-length(@droit) &gt; 0)">
-				<span class="right">
-				<xsl:if test="string-length(stat/visited) != 0">
-					<xsl:apply-templates select="stat"/>
-				</xsl:if>
-				<xsl:text> </xsl:text>
-				<xsl:if test="string-length(@droit) &gt; 0">
-					<xsl:apply-templates select="@droit"/>
-				</xsl:if>
-				</span>
-			</xsl:if>
 			</li>
 		</xsl:if>
 		<xsl:apply-templates select="submenu"/>
-	</xsl:template>
-	<xsl:template match="stat">
-		<img src="../img/exclam.info.png" title="{visited} visites depuis le {from}" hspace="4"/>
 	</xsl:template>
 	<xsl:template match="@droit">
 		<img src="../img/deconnect.mini.png" title="Page privee" hspace="4"/>

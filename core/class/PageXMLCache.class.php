@@ -34,7 +34,7 @@ class PageXMLCache {
 	$this->table 		= 'ref_page';
 	$this->tableSuffix 	= '_pg';
 	$this->translatable 	= array('nom','desc','header');
-	$this->datable 		= array('modif_date'=>'shortdetail','create_date'=>'simple','stat_date'=>'simple');
+	$this->datable 		= array('modif_date'=>'shortdetail','create_date'=>'simple');
 	if ($lang == '') {
 	    $this->Lang = $GLOBALS['LANGUE']['default'];
 	}

@@ -37,11 +37,11 @@ class XMLCache_Menu {
     function __construct($channel='normal',$lang='') {
 	$this->table 		= 'ref_page';
 	$this->channel 		= $channel;
-	$this->availableChannel = array('normal','prospec','draco', 'produit','pegase','gnose','facturier','admin','iPhone');
+	$this->availableChannel = array('normal','prospec','draco', 'produit','pegase','gnose','facturier','admin','iphone');
 	$this->tableSuffix 	= '_pg';
 	$this->menuDepth 	= 2;
 	$this->translatable 	= array('nom','desc','header');
-	$this->datable 		= array('modif_date'=>'shortdetail','create'=>'simple','stat_date'=>'simple');
+	$this->datable 		= array('modif_date'=>'shortdetail','create'=>'simple');
 	if ($lang == '') {
 	    $this->Lang = $GLOBALS['LANGUE']['default'];
 	}
