@@ -197,6 +197,7 @@ elseif ($action == 'SendBDCF') {
 
     foreach($Type as $fournisseur => $val) {
 	if($val['type'] == "mail") {
+	    // remplacer par un appel a la classe Sender
 	    MailAttach($val['mail'],
 		    $val['mess'],
 		    $PathTo.$id_cmd.'F-'.$fournisseur.'.pdf',
@@ -204,11 +205,11 @@ elseif ($action == 'SendBDCF') {
 		    '',
 		    $val['titr'],
 		    $_SESSION['user']['mail']);
-	    $actuDesc .= $id_cmd.'F-'.$fournisseur.' par messagerie ï¿½lï¿½ctronique vers l\'adresse '.$val['mail'].', ';
+	    $actuDesc .= $id_cmd.'F-'.$fournisseur.' par messagerie éléctronique vers l\'adresse '.$val['mail'].', ';
 	}
 	elseif($val['type'] == "fax") {
 	    // mettre ici le plugin pour envoi par fax
-	    $actuDesc .= $id_cmd.'F-'.$fournisseur.' par fax vers le numï¿½ro '.$val['fax'].', ';
+	    $actuDesc .= $id_cmd.'F-'.$fournisseur.' par fax vers le numéro '.$val['fax'].', ';
 	}
 	elseif($val['type'] == "soap") {
 	    // mettre ici le plugin pour envoi par EDI/soap

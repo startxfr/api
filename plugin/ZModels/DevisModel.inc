@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 /**
  * Classe gérant toutes les requètes SQL en rapport avec les devis.
  *
@@ -569,7 +569,7 @@ class devisModel extends GeneralModel {
     public function insert($data, $fait = 'creation', $prod = array(), $id='') {
 	$data['datemodif_dev']=date('Y-m-d');
 	$data['daterecord_dev']=date('Y-m-d');
-	$data['tva_dev']=number_format($data['tva_dev'], 1, '.', '');
+	$data['tva_dev']=formatCurencyDatabase($data['tva_dev'],1);
 	if($fait == 'creation') {
 	    $sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarDevis($data));
 	    Logg::loggerInfo('devisModel::insert() ~ ajout du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
@@ -641,7 +641,7 @@ class devisModel extends GeneralModel {
     public function update($data,$id_dev,$addActu = true) {
 	$data['datemodif_dev']=date('Y-m-d');
 	if(array_key_exists('tva_dev', $data))
-	    $data['tva_dev']=number_format($data['tva_dev'], 1, '.', '');
+	    $data['tva_dev']=formatCurencyDatabase($data['tva_dev'],1);
 	if(array_key_exists('sommeHT_dev', $data))
 	    $data['sommeHT_dev']=prepareNombreTraitement($data['sommeHT_dev']);
 	if(!array_key_exists($this->sqlIdField,$data)) {

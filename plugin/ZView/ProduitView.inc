@@ -369,7 +369,8 @@ class ProduitViewOriginal extends generalView {
 	}
 
 	$out .= '</tbody></table>';
-	$out .= $this->ResultGroupActionForm();
+	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produitHisto');
@@ -381,6 +382,8 @@ class ProduitViewOriginal extends generalView {
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 	$bouton .= '<a name="synchroProduit" onclick="synchToSB();"><img alt="produit" src="../img/prospec/produit.png"/> Synchroniser les produits sur Superbase</a>';
 
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	    $bouton = '';
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeProduit",'');
     }
 

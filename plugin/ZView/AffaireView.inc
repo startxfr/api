@@ -165,9 +165,16 @@ class affaireView extends generalView {
 
 	$fieldset = new ZunoFieldset('Informations','','height: 140px');
 	$fieldset->ligneInput('Titre', 'titre_aff', $data['titre_aff']);
-	$fieldset->ligneLinkTo('Entreprise', '../prospec/fiche.php?id_ent='.$data['entreprise_aff'], $data['nom_ent']);
+	if ($data['type_ent'] != '')
+	      $img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png';
+	else {$img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png'; $data['nom_ent'] = '<i>particulier</i>'; }
+	$fieldset->ligneLinkTo('Entreprise', '../prospec/fiche.php?id_ent='.$data['entreprise_aff'], $data['nom_ent'],$img);
 	$fieldset->ligneAutoComplete('Contact', 'contact_aff', trim($data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont']), $data['contact_aff'], 'listeContact&id_ent='.$data['entreprise_aff']);
 	$fieldset->ligneSelect('Commercial', 'commercial_aff', $data['commercial_aff'], $datas['user']);
+	$fieldset->addOtherLigne('<div class="row">
+					<div class="label" onmouseover="zuno.tooltip(this,ZTips.affaire.statut);">Statut</div>
+					<div class="field" style="color: #'.$data['color_staff'].'"><div class="square" style="background-color:#'.$data['color_staff'].';">&nbsp;</div> '.$data['nom_staff'].'</div>
+				</div>');
 	$this->blockForm->newBlock($fieldset->generateFieldset());
 
 	$fieldset = new ZunoFieldset('Détails','','height: 140px');
@@ -220,7 +227,10 @@ class affaireView extends generalView {
      */
     private function initioBlockFiles($datas) {
 	loadPlugin(array('ZView/DocumentView'));
-	$blockFiles = new documentViewRepertoire($GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff']);
+	if($datas['data']['archived_aff'] == 1)
+	     $workDir = $GLOBALS['SVN_Pool1']['ArchivesDir'];
+	else $workDir = $GLOBALS['SVN_Pool1']['WorkDir'];
+	$blockFiles = new documentViewRepertoire($workDir.$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff']);
 	$this->blockFiles = $blockFiles->afficher();
     }
 
@@ -448,12 +458,12 @@ class affaireView extends generalView {
 
 	    $out .= '<tr class="altern'.$alternance.'">';
 	    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$proj['id_aff'].'" checked="checked"/></td>';
-	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'"><b>'.$proj['id_aff'].'</b></td>';
-	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$proj['titre_aff'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$proj['contact'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$proj['civ_cont'].' '.$proj['prenom_cont'].' '.$proj['nom_cont'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$proj['budget_aff'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'"><div style="width:14px;height:14px;background-color:#'.$proj['color_staff'].';float:left;margin-right:.5em">&nbsp;</div>'.$proj['nom_staff'].'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'"><b>'.$proj['id_aff'].'</b></td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'">'.$proj['titre_aff'].'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'">'.$proj['contact'].'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'">'.$proj['civ_cont'].' '.$proj['prenom_cont'].' '.$proj['nom_cont'].'</td>';
+	    $out .= '<td class="right barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'">'.formatCurencyDisplay($proj['budget_aff'],0).'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'"><div class="square" style="background-color:#'.$proj['color_staff'].';">&nbsp;</div>'.$proj['nom_staff'].'</td>';
 	    $out .= '<td class="barre center" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$imgActif.'</td>';
 	    $out .= '<td class="barre center" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$imgArchive.'</td>';
 	    $out .= '<td class="right">'.$action.'</td>';
@@ -462,7 +472,8 @@ class affaireView extends generalView {
 	}
 
 	$out .= '</tbody></table>';
-	$out .= $this->ResultGroupActionForm();
+	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaireHisto');

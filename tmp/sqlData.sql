@@ -19,6 +19,18 @@
 -- Dumping data for table `actualite`
 --
 
+INSERT INTO `actualite` VALUES (244,'2010-06-12 13:21:16','cl','facture','Modification de la facture 10F005 pour le client STARTX','La facture 10F005 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 240,65€ Hors Taxes.',3,10,'091201',NULL,'091201-01',NULL,'091201-01BC',NULL,5,2,NULL,NULL,'0','0','1');
+INSERT INTO `actualite` VALUES (245,'2010-06-12 13:23:07','cl','facture','Modification de la facture 10F005 pour le client STARTX','La facture 10F005 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 240,65€ Hors Taxes.',3,10,'091201',NULL,'091201-01',NULL,'091201-01BC',NULL,5,2,NULL,NULL,'0','0','1');
+INSERT INTO `actualite` VALUES (246,'2010-06-12 14:45:01','cl','facture','Archivage de l\'avoir 10A003 pour le client STARTX','L\'avoir 10A003 vient d\'être archivé par M. Christophe LARUE. Complément d\'informations : changement par lot',3,10,NULL,NULL,NULL,NULL,'null',NULL,3,7,NULL,NULL,'0','0','0');
+INSERT INTO `actualite` VALUES (247,'2010-06-12 14:45:01','cl','general','Lot de 1 factures archivées','archivage de la facture 3',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
+INSERT INTO `actualite` VALUES (248,'2010-06-12 14:45:56','cl','facture','Modification de la facture 10F006 pour le client FOURNISSEUR','La facture 10F006 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 100,00€ Hors Taxes.',2,2,NULL,NULL,NULL,NULL,'null',NULL,6,2,NULL,NULL,'0','0','1');
+INSERT INTO `actualite` VALUES (249,'2010-06-12 14:45:56','cl','facture','Modification de la facture 10F006 pour le client FOURNISSEUR','La facture 10F006 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 100,00€ Hors Taxes.',2,2,NULL,NULL,NULL,NULL,'null',NULL,6,2,NULL,NULL,'0','0','1');
+INSERT INTO `actualite` VALUES (250,'2010-06-12 15:47:05','cl','affaire','Modification de l\'affaire 100206 pour le client BOXYBOX','L\'affaire 100206 est maintenant désactivée. Vous ne pouvez plus travailler sur cette affaire Complément d\'informations : changement par lot',1,4,'100206',19,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','0');
+INSERT INTO `actualite` VALUES (251,'2010-06-12 15:47:05','cl','affaire','Modification de l\'affaire 100208 pour le client STARTX','L\'affaire 100208 est maintenant désactivée. Vous ne pouvez plus travailler sur cette affaire Complément d\'informations : changement par lot',3,10,'100208',19,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','0');
+INSERT INTO `actualite` VALUES (252,'2010-06-12 15:47:05','cl','general','Lot de 2 affaires désactivées','désactivation de l\'affaire 100206 \ndésactivation de l\'affaire 100208',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
+INSERT INTO `actualite` VALUES (253,'2010-06-12 15:57:41','cl','affaire','Archivage de l\'affaire 100503 pour le client PLB CONSULTANT','L\'affaire 100503 est maintenant archivée. Cette affaire ne pleut plus être modifiée. Les documents sont dorénavant consultables dans le répertoire 100503-Plb consultant/ des affaires archivés. Complément d\'informations : changement par lot',11,5,'100503',18,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','0');
+INSERT INTO `actualite` VALUES (254,'2010-06-12 16:33:45','cl','devis','Modification du devis 100207-01 pour le client BOXYBOX','Devis 100207-01 vient d\'être modifié par M. Christophe LARUE. Il a désormais le status Envoyé avec un montant de 115,65€ Hors Taxes.',1,4,'100207',NULL,'100207-01',4,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
+INSERT INTO `actualite` VALUES (255,'2010-06-12 16:33:55','cl','devis','Le devis 100207-01 pour le client BOXYBOX est perdu','Devis 100207-01 vient d\'être marqué comme perdu par M. Christophe LARUE.',1,4,'100207',NULL,'100207-01',5,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
 
 --
 -- Dumping data for table `affaire`
@@ -84,6 +96,7 @@
 -- Dumping data for table `facture_produit`
 --
 
+INSERT INTO `facture_produit` VALUES (22,6,'DEMO3','déscription','1.00','0.00','100.00');
 
 --
 -- Dumping data for table `fournisseur`
@@ -130,8 +143,8 @@ INSERT INTO `module` VALUES ('send','oui');
 INSERT INTO `module` VALUES ('avoir','oui');
 INSERT INTO `module` VALUES ('produit','oui');
 INSERT INTO `module` VALUES ('statistiques','oui');
-INSERT INTO `module` VALUES ('mobile','oui');
 INSERT INTO `module` VALUES ('pontComptable','oui');
+INSERT INTO `module` VALUES ('mobile','oui');
 
 --
 -- Dumping data for table `pontcomptable_histo`
@@ -194,7 +207,7 @@ INSERT INTO `ref_activite` VALUES (45,'Construction');
 INSERT INTO `ref_activite` VALUES (50,'Commerce et réparation automobile');
 INSERT INTO `ref_activite` VALUES (51,'Commerce de gros et intermédiaires du commerce');
 INSERT INTO `ref_activite` VALUES (52,'Commerce de détail et réparation d\'articles domestiques');
-INSERT INTO `ref_activite` VALUES (55,'Hôtels et restaurants');
+INSERT INTO `ref_activite` VALUES (55,'HÃ´tels et restaurants');
 INSERT INTO `ref_activite` VALUES (60,'Transport terrestre');
 INSERT INTO `ref_activite` VALUES (61,'Transport par eau');
 INSERT INTO `ref_activite` VALUES (62,'Transport aérien');
@@ -837,26 +850,26 @@ INSERT INTO `ref_renewperiode` VALUES (36,'Tous les 3 ans');
 -- Dumping data for table `ref_statusaffaire`
 --
 
-INSERT INTO `ref_statusaffaire` VALUES (1,'Ouverte',10,'d9dd69');
-INSERT INTO `ref_statusaffaire` VALUES (2,'Attente CDC',15,'b0ce55');
-INSERT INTO `ref_statusaffaire` VALUES (3,'Rédaction de réponse',20,'68bb36');
-INSERT INTO `ref_statusaffaire` VALUES (4,'Réponse envoyée',25,'35b420');
-INSERT INTO `ref_statusaffaire` VALUES (5,'Accord de principe',45,'23bc76');
-INSERT INTO `ref_statusaffaire` VALUES (6,'Perdu',0,'bc3523');
-INSERT INTO `ref_statusaffaire` VALUES (7,'BDC Client recu',50,'10a19c');
-INSERT INTO `ref_statusaffaire` VALUES (8,'BDC Fournisseur Crée',52,'2393bc');
-INSERT INTO `ref_statusaffaire` VALUES (9,'BDC Fournisseur envoyé',70,'1d77bd');
-INSERT INTO `ref_statusaffaire` VALUES (10,'Commande Client traitée',75,'1f4fc8');
-INSERT INTO `ref_statusaffaire` VALUES (11,'Commande validé',80,'391ac1');
-INSERT INTO `ref_statusaffaire` VALUES (12,'Facture crée',80,'832ddb');
-INSERT INTO `ref_statusaffaire` VALUES (13,'Facture validée',85,'932ddb');
-INSERT INTO `ref_statusaffaire` VALUES (14,'Facture éditée',90,'891ec6');
-INSERT INTO `ref_statusaffaire` VALUES (15,'Facture envoyée',90,'8015bd');
-INSERT INTO `ref_statusaffaire` VALUES (16,'Facture réglée',100,'870aa6');
-INSERT INTO `ref_statusaffaire` VALUES (17,'Affaire supprimée',0,NULL);
-INSERT INTO `ref_statusaffaire` VALUES (18,'Affaire archivée',0,NULL);
-INSERT INTO `ref_statusaffaire` VALUES (19,'Affaire désactivée',0,NULL);
-INSERT INTO `ref_statusaffaire` VALUES (20,'Affaire re-activée',0,NULL);
+INSERT INTO `ref_statusaffaire` VALUES (1,'Ouverte',10,'d48319');
+INSERT INTO `ref_statusaffaire` VALUES (2,'Attente CDC',15,'c46f00');
+INSERT INTO `ref_statusaffaire` VALUES (3,'Rédaction de réponse',20,'59c800');
+INSERT INTO `ref_statusaffaire` VALUES (4,'Réponse envoyée',25,'429300;font-weight:bold');
+INSERT INTO `ref_statusaffaire` VALUES (5,'Accord de principe',45,'00b537');
+INSERT INTO `ref_statusaffaire` VALUES (6,'Perdu',0,'cd4833;text-decoration:line-through');
+INSERT INTO `ref_statusaffaire` VALUES (7,'BDC Client recu',50,'188da6;font-weight:bold');
+INSERT INTO `ref_statusaffaire` VALUES (8,'BDC Fournisseur Crée',52,'2d9db5');
+INSERT INTO `ref_statusaffaire` VALUES (9,'BDC Fournisseur envoyé',70,'38a7bf');
+INSERT INTO `ref_statusaffaire` VALUES (10,'Commande Client traitée',75,'40b8d2');
+INSERT INTO `ref_statusaffaire` VALUES (11,'Commande terminée',80,'3894bf');
+INSERT INTO `ref_statusaffaire` VALUES (12,'Facture crée',80,'316fc4');
+INSERT INTO `ref_statusaffaire` VALUES (13,'Facture validée',85,'3a76cf');
+INSERT INTO `ref_statusaffaire` VALUES (14,'Facture éditée',90,'2363ba');
+INSERT INTO `ref_statusaffaire` VALUES (15,'Facture envoyée',90,'185ebc;font-weight:bold');
+INSERT INTO `ref_statusaffaire` VALUES (16,'Facture réglée',100,'1843bc;font-weight:bold');
+INSERT INTO `ref_statusaffaire` VALUES (17,'Affaire supprimée',0,'bcbcbc;text-decoration:line-through');
+INSERT INTO `ref_statusaffaire` VALUES (18,'Affaire archivée',0,'b0b0b0;font-style:italic');
+INSERT INTO `ref_statusaffaire` VALUES (19,'Affaire désactivée',0,'9a9a9a;font-style:italic');
+INSERT INTO `ref_statusaffaire` VALUES (20,'Affaire re-activée',0,'70c45d');
 
 --
 -- Dumping data for table `ref_statuscommande`
@@ -865,13 +878,13 @@ INSERT INTO `ref_statusaffaire` VALUES (20,'Affaire re-activée',0,NULL);
 INSERT INTO `ref_statuscommande` VALUES (1,0,5,'BDCC enregistré','La commande client est enregistrée. En attente du bon de commande client.',5,'44a');
 INSERT INTO `ref_statuscommande` VALUES (2,1,10,'BDCC reçu','Nous avons reçu le bon de commande client dument validé',5,'55b');
 INSERT INTO `ref_statuscommande` VALUES (3,2,15,'BDCF Généré','Le bon de commande fournisseur est maintenant généré',5,'56b');
-INSERT INTO `ref_statuscommande` VALUES (4,3,25,'BDCF Envoyé','Le bon de commande fournisseur est parti vers votre fournisseur',4,'67c');
-INSERT INTO `ref_statuscommande` VALUES (5,4,50,'BDCF reçu par le fournisseur','Le fournisseur à bien reçu le bon de commande',2,'38d');
-INSERT INTO `ref_statuscommande` VALUES (6,5,60,'BDCF en cours de traitement','Le fournisseur valide la vente et lance son traitement',3,'49e');
+INSERT INTO `ref_statuscommande` VALUES (4,3,25,'BDCF Envoyé','Le bon de commande fournisseur est parti vers votre fournisseur',4,'67c;font-weight:bold');
+INSERT INTO `ref_statuscommande` VALUES (5,4,50,'BDCF reçu par le fournisseur','Le fournisseur à bien reçu le bon de commande',2,'38d;font-weight:bold');
+INSERT INTO `ref_statuscommande` VALUES (6,5,60,'BDCF en cours de traitement','Le fournisseur valide la vente et lance son traitement;font-weight:bold',3,'49e');
 INSERT INTO `ref_statuscommande` VALUES (7,6,90,'Commande expédié','Commande expédié par ',5,'5af');
 INSERT INTO `ref_statuscommande` VALUES (8,7,100,'Commande réceptionnée','Réception de la commande par le client ',5,'6bf');
-INSERT INTO `ref_statuscommande` VALUES (9,8,100,'Commande terminée','Clôture de la commande',5,'2c1');
-INSERT INTO `ref_statuscommande` VALUES (10,9,100,'Commande archivée','La commande est archivée',5,'2c1');
+INSERT INTO `ref_statuscommande` VALUES (9,8,100,'Commande terminée','Clôture de la commande',5,'2c1;font-weight:bold');
+INSERT INTO `ref_statuscommande` VALUES (10,9,100,'Commande archivée','La commande est archivée',5,'b0b0b0;font-style:italic');
 
 --
 -- Dumping data for table `ref_statusdevis`
@@ -880,22 +893,22 @@ INSERT INTO `ref_statuscommande` VALUES (10,9,100,'Commande archivée','La comma
 INSERT INTO `ref_statusdevis` VALUES (1,'Crée','44a','15');
 INSERT INTO `ref_statusdevis` VALUES (2,'Supprimé','c55','0');
 INSERT INTO `ref_statusdevis` VALUES (3,'Enregistré','56b','30');
-INSERT INTO `ref_statusdevis` VALUES (4,'Envoyé','38d','50');
-INSERT INTO `ref_statusdevis` VALUES (5,'Perdu','d34','100');
-INSERT INTO `ref_statusdevis` VALUES (6,'Validé','2c1','100');
-INSERT INTO `ref_statusdevis` VALUES (7,'Archivé','c55','0');
+INSERT INTO `ref_statusdevis` VALUES (4,'Envoyé','38d;font-weight:bold','50');
+INSERT INTO `ref_statusdevis` VALUES (5,'Perdu','d34;text-decoration:line-through','100');
+INSERT INTO `ref_statusdevis` VALUES (6,'Validé','2c1;font-weight:bold','100');
+INSERT INTO `ref_statusdevis` VALUES (7,'Archivé','b0b0b0;font-style:italic','0');
 
 --
 -- Dumping data for table `ref_statusfacture`
 --
 
-INSERT INTO `ref_statusfacture` VALUES (1,10,'Facture créée','La facture est enregistrée dans nos bases','44a','0');
-INSERT INTO `ref_statusfacture` VALUES (2,25,'Facture validée','Facture controlée et validée','55b','0');
-INSERT INTO `ref_statusfacture` VALUES (3,45,'Facture enregistrée','La facture est éditée et enregistrée dans gnose','56b','0');
-INSERT INTO `ref_statusfacture` VALUES (4,50,'Facture Envoyée','La facture est envoyée','56b','1');
-INSERT INTO `ref_statusfacture` VALUES (5,75,'Facture En attente de règlement','La facture est en attente de règlement','56b','1');
-INSERT INTO `ref_statusfacture` VALUES (6,100,'Facture Cloturée','Le règlement vient d\'etre enregistré dans nos bases','56b','1');
-INSERT INTO `ref_statusfacture` VALUES (7,100,'Facture archivée','La facture est maintenant archivée','56b','1');
+INSERT INTO `ref_statusfacture` VALUES (1,10,'Facture créée','La facture est enregistrée dans nos bases','6879de','0');
+INSERT INTO `ref_statusfacture` VALUES (2,25,'Facture validée','Facture controlée et validée','5062d2','0');
+INSERT INTO `ref_statusfacture` VALUES (3,45,'Facture enregistrée','La facture est éditée et enregistrée dans gnose','384bc3','0');
+INSERT INTO `ref_statusfacture` VALUES (4,50,'Facture Envoyée','La facture est envoyée','529631','1');
+INSERT INTO `ref_statusfacture` VALUES (5,75,'Facture En attente de règlement','La facture est en attente de règlement','4d8b31;font-weight:bold','1');
+INSERT INTO `ref_statusfacture` VALUES (6,100,'Facture Cloturée','Le règlement vient d\'etre enregistré dans nos bases','93b087','1');
+INSERT INTO `ref_statusfacture` VALUES (7,100,'Facture archivée','La facture est maintenant archivée','b0b0b0;font-style:italic','1');
 
 --
 -- Dumping data for table `ref_statusfacturefournisseur`
@@ -962,6 +975,9 @@ INSERT INTO `ref_typeproj` VALUES (6,'Projet ZUNO','70');
 -- Dumping data for table `send`
 --
 
+INSERT INTO `send` VALUES (40,'cl','mail','2010-06-12');
+INSERT INTO `send` VALUES (41,'cl','fax','2010-06-13');
+INSERT INTO `send` VALUES (42,'cl','courrier','2010-06-13');
 
 --
 -- Dumping data for table `token`
@@ -1186,4 +1202,4 @@ INSERT INTO `user_iphoneConfig` VALUES ('nm','send','oui');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-10 23:51:35
+-- Dump completed on 2010-06-13  3:42:09

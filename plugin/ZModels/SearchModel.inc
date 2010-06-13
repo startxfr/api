@@ -1,4 +1,5 @@
 <?php
+loadPlugin('ZModels/GeneralModel');
 
 /**
  * Classe qui gère le module de recherche global de l'iphone

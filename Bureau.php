@@ -42,7 +42,6 @@ if ($PC->rcvG['action'] == "reset") {
 $sortieB[] = contactView::MyBureau();
 $sortieB[] = projetView::MyBureau();
 $sortieB[] = BureauMyDevis();
-
 $sortieB[] = BureauMyAffaire();
 $sortieB[] = BureauMyCommande();
 $sortieB[] = factureView::MyBureau();
@@ -52,21 +51,17 @@ $sortieL = $sortieR = "";
 foreach($sortieB as $v) {
     if($v == "")
 	continue;
-    else {
-	if($initio % 2 == 0)
-	    $sortieL .= $v;
-	else
-	    $sortieR .= $v;
-	$initio++;
-    }
+    elseif($initio % 2 == 0)
+	$sortieL .= $v;
+    else $sortieR .= $v;
+    $initio++;
 }
 if($sortieL == $sortieR)
-    $sortieZ = "$message<span class=\"importantblue\">Votre bureau est un espace réservé pour vous afficher un résumé des dernières fiches que vous avez consultées.<br />Pour le moment, vous n'avez consulté aucune fiche.</span>";
-else
-    $sortieZ = '<div style="float: left; width: 49%; ">'.$sortieL.'</div>
+     $sortieZ = "$message<span class=\"importantblue\">Votre bureau est un espace réservé pour vous afficher un résumé des dernières fiches que vous avez consultées.<br />Pour le moment, vous n'avez consulté aucune fiche.</span>";
+else $sortieZ = '<div style="float: left; width: 49%; ">'.$sortieL.'</div>
 	        <div style="float: right; width: 49%; ">'.$sortieR.'</div>
-	        <div style="float: right; width: 100%; "><a href="Bureau.php?action=reset" title="reinitialiser le bureau">Réinitialiser le bureau</a></div>';
-
+	        <div style="float: right; width: 100%; "><a href="Bureau.php?action=reset" title="reinitialiser le bureau" class="bouton">Réinitialiser le bureau</a></div>';
+//var_dump($sortieL,$sortieR);exit;
 $sortie = "";
 if($_SESSION['message'][0]['titre_mess'] != '' and $_SESSION['message']['dejaVu'] != true) {
     $mess .= '<div class="ZBox"><div class="body"><div class="content"><div class="block width50">';
@@ -80,7 +75,6 @@ if($_SESSION['message'][0]['titre_mess'] != '' and $_SESSION['message']['dejaVu'
     $sortie = '<script> var msg = \''.$mess.'\'; </script>';
     $sortie .= '<img alt="Image" style="display:none" src="img/zuno.png" onload="zuno.popup.doOpen(msg, \'Messages\',\'430\');" />';
     $_SESSION['message']['dejaVu'] = true;
-
 }
 
 $sortie .= $sortieZ;

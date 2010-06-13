@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 
 /**
  * Classe qui gère la table des messages

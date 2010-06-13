@@ -248,6 +248,10 @@ class commandeView extends generalView {
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.infoBDCC);">BDC client</div>';
 	$out .= '<div class="field">'.inputTag('text', 'BDCclient_cmd', '', '', '', $datas['data']['BDCclient_cmd']).'</div>';
 	$out .= '</div>';
+	$out .= '<div class="row">';
+	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.statut);">Statut</div>';
+	$out .= '<div class="field" style="color: #'.$datas['data']['color_stcmd'].'"><div class="square" style="background-color:#'.$datas['data']['color_stcmd'].';">&nbsp;</div> '.$datas['data']['nom_stcmd'].'</div>';
+	$out .= '</div>';
 	$out .= '</fieldset></div>';
 
 	$out .= '<div class="block width50">';
@@ -257,7 +261,7 @@ class commandeView extends generalView {
 	if ($datas['data']['type_ent'] != '')
 	    $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$datas['data']['type_ent'].'.png',$datas['data']['nom_tyent']).' '.$datas['data']['nom_ent'];
 	else $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').'<i>Particulier</i>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',900,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+	$out .= '<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd);">Adresse</div>';
@@ -283,7 +287,7 @@ class commandeView extends generalView {
 	$out .= '<fieldset class="form" style="height:100px"><legend>Informations sur les contacts</legend>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.entreprise);">Entreprise</div>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',900,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+	$out .= '<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
 	$out .= '</div>';
 	$out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactTech);">Contact Tech</div>
@@ -367,7 +371,7 @@ class commandeView extends generalView {
 	    $out .= '<td id="ID'.$v['id'].'">'.$v['id_produit'].'</td>';
 	    $out2 .= '<td>'.$v['id_produit'].'</td>';
 	    if($v['fournisseur'] != '') {
-		$out .= '<td class="barre"><a name="fourn'.$v['fournisseur'].'" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'id_fourn='.$v['fournisseur'].'\', \'900\', \'200\',\'\',\'\', \'resize\', \'Fournisseur\')"><img alt="fourn" title="Fournisseur" src="../img/prospec/TypeEntreprise/5.png" /> '.$v['fournisseurs'][$v['fournisseur']].'</a></td>';
+		$out .= '<td class="barre"><a name="fourn'.$v['fournisseur'].'" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'id_fourn='.$v['fournisseur'].'\', \'950\', \'220\',\'\',\'\', \'resize\', \'Fournisseur\')"><img alt="fourn" title="Fournisseur" src="../img/prospec/TypeEntreprise/5.png" /> '.$v['fournisseurs'][$v['fournisseur']].'</a></td>';
 		$out2 .= '<td class="barre">'.selectTag('fournisseur['.$v['id'].']', $v['fournisseurs'], $v['fournisseur'], '', 'onchange="changeFourn(\''.$v['id'].'\', this.value);"').'</td>';
 	    }
 	    else {
@@ -544,10 +548,7 @@ class commandeView extends generalView {
 		$TypeSend['fax'] = "par fax";
 	    if(verifDroitsAuto('commande', 54, $datas['data']['commercial_cmd']))
 		$TypeSend['courrier'] = "par courrier";
-
-
 	    $ListeFournisseur = $datas['LF'];
-
 	    if(count($ListeFournisseur) > 0) {
 		$j = 0;
 		foreach ($ListeFournisseur as $idfourn => $val) {
@@ -662,8 +663,7 @@ class commandeView extends generalView {
 				<fieldset class="form"><legend>Informations sur le destinataire</legend>
 					<div class="row" style="display:none;" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendMail);">Courriel</div>
-						<div class="field">'.inputTag('text', 'mail', '', '', '', $datas['data']['mail_cont']).'</div>
-					</div>
+						<div class="field">'.inputTag('text', 'mail', '', '', '', $_SESSION['user']['mail']).'</div>					</div>
                                         <div class="row" style="display:none;" id="champCC">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCopyToMe);">Me mettre en copie</div>
 						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'" /></div>
@@ -902,7 +902,8 @@ class commandeView extends generalView {
 	}
 
 	$out .= '</tbody></table>';
-	$out .= $this->ResultGroupActionForm();
+	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commandeHisto');

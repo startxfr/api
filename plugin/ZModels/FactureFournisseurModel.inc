@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 /**
  * Classe gérant toutes les requètes SQL en rapport avec les factures fournisseur.
  * @author Nicolas Mannocci

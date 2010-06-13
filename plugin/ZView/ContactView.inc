@@ -301,11 +301,12 @@ class contactView extends generalView {
 	$out = $mess.'<div class="blockTable">
 		    <table width="100% border="0" cellspacing="0" cellpadding="2">
 		    <tr class="titre">
-			<th colspan="2" width="10%">Titre</th>
-			<th>Type</th>
+			<th width="120px">ID</th>
+			<th>Titre</th>
 			<th>Description</th>
-			<th width="5%">Detecté le</th>
-			<th width="5%">Contact</th>
+			<th>Type</th>
+			<th width="120px">Detecté le</th>
+			<th width="120px">Contact</th>
 			<th width="1%"> </th>
 		    </tr>';
 	if(is_array($datas['projet']))
@@ -314,13 +315,13 @@ class contactView extends generalView {
 		    $v['detect_proj'] = strftime('%d/%m/%Y', strtotime($v['detect_proj']));
 		$jsurl =  ' onclick="modifProj(\''.$v['id_proj'].'\');"';
 		$out .= '<tr class="altern'.($compteur %2).'">
-				<td style="white-space: nowrap; color:#827F00"'.$jsurl.'><div style="width:14px;height:14px;background-color:#827F00;float:left;margin-right:.5em">&nbsp;</div> Projet</td>
-				<td class="center barre" nowrap="nowrap"'.$jsurl.'>'.$v['titre_proj'].'</td>
-				<td class="center barre" nowrap="nowrap">'.$v['nom_typro'].'</td>
-				<td class="center barre" nowrap="nowrap">'.$v['desc_proj'].'</td>
-				<td class="center barre" nowrap="nowrap">'.$v['detect_proj'].'</td>
-				<td class="center barre" nowrap="nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
-				<td class="center" nowrap="nowrap"><a name="modifProj"'.$jsurl.'><img alt="modif" title="Modifier ce projet" src="../img/prospec/projet.modif.png" /></a><a name="suppProj" onclick="suppProj(\''.$v['id_proj'].'\');"><img alt="supp" title="Supprimer ce projet" src="../img/prospec/projet.delete.png" /></a></td>
+				<td class="nowrap barre" style="cursor:pointer;color:#da8b20"'.$jsurl.'><div class="square" style="background-color:#da8b20;">&nbsp;</div> Projet '.$v['id_proj'].'</td>
+				<td class="barre nowrap">'.$v['titre_proj'].'</td>
+				<td class="barre">'.$v['desc_proj'].'</td>
+				<td class="barre nowrap">'.$v['nom_typro'].'</td>
+				<td class="barre nowrap">'.$v['detect_proj'].'</td>
+				<td class="barre nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
+				<td class="right nowrap"><a name="modifProj"'.$jsurl.'><img alt="modif" title="Modifier ce projet" src="../img/prospec/projet.modif.png" /></a><a name="suppProj" onclick="suppProj(\''.$v['id_proj'].'\');"><img alt="supp" title="Supprimer ce projet" src="../img/prospec/projet.delete.png" /></a></td>
 			</tr>';
 		$compteur++;
 	    }
@@ -331,13 +332,13 @@ class contactView extends generalView {
 		$url = '../draco/Affaire.php?id_aff='.$v['id_aff'];
 		$jsurl =  ' onclick="document.location.href=\''.$url.'\'"';
 		$out .= '<tr class="altern'.($compteur %2).'" >
-				<td style="white-space: nowrap; color:#007F00"'.$jsurl.'><div style="width:14px;height:14px;background-color:#007F00;float:left;margin-right:.5em">&nbsp;</div> Affaire</td>
-				<td class="center barre" nowrap="nowrap"'.$jsurl.'>'.$v['id_aff'].'</td>
-				<td class="center barre" nowrap="nowrap">'.$v['titre_aff'].'</td>
-				<td class="barre nowrap" style="color:#'.$v['color_staff'].'"><div style="width:14px;height:14px;background-color:#'.$v['color_staff'].';float:left;margin-right:.5em">&nbsp;</div> '.$v['nom_staff'].'</td>
-				<td class="center barre" nowrap="nowrap">'.$v['detect_aff'].'</td>
-				<td class="center barre" nowrap="nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
-				<td class="center" nowrap="nowrap"><a href="'.$url.'"><img alt="affaire" title="Voir l\'affaire" src="../img/prospec/affaire.png"</a></td>
+				<td class="nowrap barre" style="cursor:pointer;color:#007F00"'.$jsurl.'><div class="square" style="background-color:#007F00;">&nbsp;</div> Affaire '.$v['id_aff'].'</td>
+				<td class="barre nowrap">'.$v['titre_aff'].'</td>
+				<td class="barre">'.$v['comm_aff'].'</td>
+				<td class="barre nowrap" style="color:#'.$v['color_staff'].'"><div class="square" style="background-color:#'.$v['color_staff'].';">&nbsp;</div> '.$v['nom_staff'].'</td>
+				<td class="barre nowrap">'.$v['detect_aff'].'</td>
+				<td class="barre nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
+				<td class="right nowrap"><a href="'.$url.'"><img alt="affaire" title="Voir l\'affaire" src="../img/prospec/affaire.png"</a></td>
 			</tr>';
 		$compteur++;
 	    }

@@ -87,16 +87,16 @@ class factureGnose {
 		    $produit['RefProd'] 	= $produit['id_produit'];
 		    $produit['Description'] = $produit['desc'];
 		    if(substr($produit['quantite'],-3) == '.00')
-			$produit['quantite'] = substr($produit['quantite'],0,-3);
-		    else  $produit['quantite'] = number_format($produit['quantite'],2,',',' ');
+			$produit['quantite'] = formatCurencyDisplay($produit['quantite'],0,'');
+		    else  $produit['quantite'] = formatCurencyDisplay($produit['quantite'],2,'');
 		    if($produit['remise'] > 0) {
 			if(substr($produit['remise'],-3) == '.00')
-			    $produit['remise'] = substr($produit['remise'],0,-3).'%';
-			else  $produit['remise'] = number_format($produit['remise'],2,',',' ').'%';
+			    $produit['remise'] = formatCurencyDisplay($produit['remise'],0,'%');
+			else  $produit['remise'] = formatCurencyDisplay($produit['remise'],2,'%');
 		    }
 		    else  $produit['remise'] = '';
-		    $produit['prix'] = number_format(abs($produit["prix"]),2,',',' ');
-		    $produit['total']= number_format(round($totalRow,2),2,',',' ');
+		    $produit['prix'] = formatCurencyDisplay(abs($produit["prix"]),2,'');
+		    $produit['total']= formatCurencyDisplay(round($totalRow,2),2,'');
 		    $produits[$key] = $produit;
 		    $entreprise = array_merge($produit,$entreprise);
 		    $total = $total+$totalRow;
@@ -104,9 +104,9 @@ class factureGnose {
 	    }
 	    else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux lignes produits de la facture '.$id_fact,serialize($entreprise),__FILE__.'@'.__LINE__);
 
-	    $entreprise['totalHT'] = number_format(round($total,2),2,',',' ');
-	    $entreprise['totalTVA'] = number_format(round(($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
-	    $entreprise['totalTTC'] = number_format(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
+	    $entreprise['totalHT'] = formatCurencyDisplay(round($total,2),2,'');
+	    $entreprise['totalTVA'] = formatCurencyDisplay(round(($total*$entreprise['tauxTVA_ent']/100),2),2,'');
+	    $entreprise['totalTTC'] = formatCurencyDisplay(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,'');
 	}
 	else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux données de la facture '.$id_fact,serialize($entreprise),__FILE__.'@'.__LINE__);
 
@@ -391,10 +391,10 @@ class factureGnose {
 		    $fact['daterecord_fact'] = ($fact['daterecord_fact'] == '') 	? '' : strftime('%d/%m/%y',strtotime($fact['daterecord_fact']));
 		    $fact['dateenvoi_fact']	= ($fact['dateenvoi_fact'] == '') 	? '' : strftime("%d/%m/%y",strtotime($fact['dateenvoi_fact']));
 		    $fact['datereglement_fact'] = ($fact['datereglement_fact'] == '') ? '' : strftime("%d/%m/%y",strtotime($fact['datereglement_fact']));
-		    $fact['budget_aff'] 	= ($fact['budget_aff'] == '') 		? '' : number_format($fact['budget_aff'],0,',',' ');
-		    $fact['sommeHT_dev'] 	= ($fact['sommeHT_dev'] == '') 	? '' : number_format($fact['sommeHT_dev'],0,',',' ');
-		    $fact['sommeHT_cmd'] 	= ($fact['sommeHT_cmd'] == '') 	? '' : number_format($fact['sommeHT_cmd'],0,',',' ');
-		    $fact['sommeHT_fact'] 	= ($fact['sommeHT_fact'] == '') 	? '' : number_format($fact['sommeHT_fact'],0,',',' ');
+		    $fact['budget_aff'] 	= ($fact['budget_aff'] == '') 		? '' : formatCurencyDisplay($fact['budget_aff'],0,'');
+		    $fact['sommeHT_dev'] 	= ($fact['sommeHT_dev'] == '') 	? '' : formatCurencyDisplay($fact['sommeHT_dev'],2,'');
+		    $fact['sommeHT_cmd'] 	= ($fact['sommeHT_cmd'] == '') 	? '' : formatCurencyDisplay($fact['sommeHT_cmd'],2,'');
+		    $fact['sommeHT_fact'] 	= ($fact['sommeHT_fact'] == '') 	? '' : formatCurencyDisplay($fact['sommeHT_fact'],2,'');
 		    foreach ($fact as $in => $out) {
 			$input[] = "/\{".$in."\}/";
 			$output[] = $out;

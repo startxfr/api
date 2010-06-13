@@ -98,7 +98,7 @@ elseif($PC->rcvG['action'] == 'doModifProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont from commande left join entreprise e on e.id_ent=commande.entreprise_cmd left join contact c on c.id_cont=commande.contact_cmd where id_cmd='".$PC->rcvG['id_cmd']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update commande set sommeHT_cmd='".$sommeHT."', sommeFHT_cmd='".$FHT."' WHERE id_cmd = '".$PC->rcvG['id_cmd']."'");
         $temp = $sqlConn->process2();
 
@@ -163,7 +163,7 @@ elseif($PC->rcvG['action'] == 'doAddProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont from commande left join entreprise e on e.id_ent=commande.entreprise_cmd left join contact c on c.id_cont=commande.contact_cmd where id_cmd='".$PC->rcvG['id_cmd']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update commande set sommeHT_cmd='".$sommeHT."', sommeFHT_cmd='".$FHT."' WHERE id_cmd = '".$PC->rcvG['id_cmd']."'");
         $temp = $sqlConn->process2();
     }
@@ -202,7 +202,7 @@ elseif($PC->rcvG['action'] == 'suppProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont from commande left join entreprise e on e.id_ent=commande.entreprise_cmd left join contact c on c.id_cont=commande.contact_cmd where id_cmd='".$PC->rcvG['id_cmd']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update commande set sommeHT_cmd='".$sommeHT."', sommeFHT_cmd='".$FHT."' WHERE id_cmd = '".$PC->rcvG['id_cmd']."'");
         $temp = $sqlConn->process2();
     }
@@ -690,12 +690,9 @@ elseif($PC->rcvG['action'] == 'recsend1') {
         $_SESSION['CommandeActionRecSend']['code_pays'] = $r['paysdelivery_cmd'];
     }
     elseif($PC->rcvP['type'] == 'fax') {
-        if($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('commande', 53);
-        }
-        else {
-            aiJeLeDroit('commande', 52);
-        }
+        if($result[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
+             aiJeLeDroit('commande', 53);
+        else aiJeLeDroit('commande', 52);
         if($r['nomdelivery_cmd'] != '')
             $_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
         else  $_SESSION['CommandeActionRecSend']['nom'] = $r['civ_cont'].' '.$r['prenom_cont'].' '.$r['nom_cont'];
@@ -709,9 +706,7 @@ elseif($PC->rcvG['action'] == 'recsend1') {
         if($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
             aiJeLeDroit('commande', 51);
         }
-        else {
-            aiJeLeDroit('commande', 50);
-        }
+        else aiJeLeDroit('commande', 50);
         if($r['maildelivery_cmd'] != '')
             $_SESSION['CommandeActionRecSend']['email'] = $r['maildelivery_cmd'];
         elseif($r['mail_cont'] != '')
@@ -822,7 +817,7 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
         $save = commandeGnose::CommandeSaveDocInGnose($Doc,$dev,$PC->rcvP['message']);
 
         $actuTitre = 'Re-enregistrement de la commande '.$dev['id_cmd'];
-        $actuDesc = 'La commande '.$dev['id_cmd'].' vient d\'être re-enregistrée. Elle a une valeur de '.number_format($dev['sommeHT_cmd'],2,',',' ').' &euro; HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
+        $actuDesc = 'La commande '.$dev['id_cmd'].' vient d\'être re-enregistrée. Elle a une valeur de '.formatCurencyDisplay($dev['sommeHT_cmd']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
         if ($dev['status_cmd'] < 3) {
             $actuTitre = 'Génération des documents de la commande '.$dev['id_cmd'];
             $actuDesc = 'Les documents'.substr($mess,0,-2).' de la commande '.$dev['id_cmd'].' on été généré. Ils sont disponibles dans l\'entrepôt des documents. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];

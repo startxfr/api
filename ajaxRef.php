@@ -55,16 +55,16 @@ if(array_key_exists('action', $PC->rcvG)) {
     }
     elseif($PC->rcvG['action'] == 'listeProduit') {
         loadPlugin(array('ZModels/ProduitModel', 'ZView/ProduitView', 'ZunoSxa'));
-        $req = new ProduitModel();
-        if($PC->rcvP['value'] == '**')
-            $search = '';
-        else
-            $search = $PC->rcvP['value'];
-        $result = $req->getDataForSearchProduit($search,25);
-        if(is_array($result[1])) {
-            foreach($result[1] as $v)
-                $out .= '<li title="'.$v['id_prod'].'-_-'.$v['treePathKey'].' '.$v['nom_prodfam'].'-_-'.$v['prix_prod'].'-_-'.$v['description_prod'].'-_-'.$v['PF'].'">['.$v['id_prod'].'] '.$v['nom_prod'].' <span class="informal">('.number_format((double)$v['prix_prod'],2,',',' ').' €)</span></li>';
-        }
+	$req = new ProduitModel();
+	if($PC->rcvP['value'] == '**')
+	    $search = '';
+	else
+	    $search = $PC->rcvP['value'];
+	$result = $req->getDataForSearchProduit($search,25);
+	if(is_array($result[1])) {
+	    foreach($result[1] as $v)
+		$out .= '<li title="'.$v['id_prod'].'-_-'.$v['treePathKey'].' '.$v['nom_prodfam'].'-_-'.$v['prix_prod'].'-_-'.$v['description_prod'].'-_-'.$v['PF'].'">['.$v['id_prod'].'] '.$v['nom_prod'].' <span class="informal">('.formatCurencyDisplay((double)$v['prix_prod']).')</span></li>';
+	}
     }
     elseif($PC->rcvG['action'] == 'listeAffaire') {
         loadPlugin(array('ZModels/AffaireModel'));

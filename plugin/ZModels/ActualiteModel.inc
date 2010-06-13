@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 /**
  * Class d'accès aux information d'un particulier
  * @author Nicolas Mannocci

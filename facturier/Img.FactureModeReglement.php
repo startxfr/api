@@ -47,7 +47,7 @@ if (count($lesdata) > 0) {
     foreach($lesdata as $key => $val) {
 	$data[]	= round(($val['counter']/$total),2);
 	$targ[]	= "FactureListe.php?modereglement_fact=".$val['id_modereg'];
-	$alts[]	= number_format($val['counter'],0,',',' ').'&euro; réglé par '.$val['nom_modereg'];
+	$alts[]	= formatCurencyDisplay($val['counter'],0,' euros').' réglé par '.$val['nom_modereg'];
 	$lalegend[]	= $val['nom_modereg'];
     }
     //print_r($data);
@@ -60,7 +60,7 @@ if (count($lesdata) > 0) {
     $graph->title->SetFont(FF_ARIAL,FS_NORMAL,11);
     $graph->title->SetColor('midnightblue');
     $graph->legend->Pos(0.05,0.1);
-    $graph->subtitle->Set(' '.number_format($total,0,',',' ').' euros ');
+    $graph->subtitle->Set(' '.formatCurencyDisplay($total,0,' euros'));
     $graph->subtitle->SetFont(FF_ARIAL,FS_NORMAL,9);
     $graph->subtitle->SetColor('blue');
 

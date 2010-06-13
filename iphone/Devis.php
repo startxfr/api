@@ -107,7 +107,7 @@ elseif($PC->rcvG['action'] == 'doModifProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
         $temp = $sqlConn->process2();
     }
@@ -174,7 +174,7 @@ elseif($PC->rcvG['action'] == 'doAddProduit') {
             $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
             $sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
             $infoprod=$sqlConn->process2();
-            $sommeHT = number_format($sommeHT,2,'.','');
+            $sommeHT = formatCurencyDatabase($sommeHT);
             $sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
             $temp = $sqlConn->process2();
 
@@ -231,7 +231,7 @@ elseif($PC->rcvG['action'] == 'suppProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
         $temp = $sqlConn->process2();
 
@@ -949,10 +949,10 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
         $save = $ooGnose->DevisSaveDocInGnose($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc,$dev['id_aff'],$PC->rcvP['message']);
 
         $actuTitre = 'Re-enregistrement du devis '.$dev['id_dev'].' pour le client '.$dev['nom_ent'];
-        $actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être re-enregistré. Il a une valeur de '.number_format($dev['sommeHT_dev'],2,',',' ').' &euro; HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
+        $actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être re-enregistré. Il a une valeur de '.formatCurencyDisplay($dev['sommeHT_dev']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
         if ($dev['status_dev'] < 3) {
             $actuTitre = 'Enregistrement du devis '.$dev['id_dev'].' pour le client '.$dev['nom_ent'];
-            $actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être enregistré. Il a une valeur de '.number_format($dev['sommeHT_dev'],2,',',' ').' &euro; HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
+            $actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être enregistré. Il a une valeur de '.formatCurencyDisplay($dev['sommeHT_dev']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
         }
 
         if($dev['status_aff'] < 3) {
@@ -1002,11 +1002,9 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
             $PC->rcvP['sujet'] = $PC->rcvP['titre'];
             $send = new Sender($PC->rcvP);
             $result = $send->send($_SESSION['user']['mail']);
-
             $dest = ($PC->rcvP['destinataire'] == '') ? $PC->rcvP['mail'] : $PC->rcvP['destinataire'];
             if($result[0]) {
                 $actuPrefix = ($dev['status_dev'] >= 3) ? 'Re-e' : 'E';
-
                 if($dev['status_aff'] < 4) {
                     $inActualiteEnvoi['status_aff'] = '4';
                     $bddtmp->makeRequeteUpdate('affaire','id_aff',$dev['id_aff'],array('status_aff'=>$inActualiteEnvoi['status_aff']));
@@ -1017,7 +1015,6 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
                     $bddtmp->makeRequeteUpdate('devis','id_dev',$dev['id_dev'],array('status_dev'=>$inActualiteEnvoi['status_dev']));
                     $bddtmp->process();
                 }
-
                 unset($_SESSION['DevisActionRecSend']);
                 ?>
 <root><go to="waDevisAction"/>

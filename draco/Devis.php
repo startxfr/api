@@ -330,8 +330,8 @@ elseif($PC->rcvG['action'] == 'valid') {
         }
         else {
             $data['produits'][$increment-1]['fournisseurs'][$v['id_fourn']] = $v['nom_ent'].' ('.$v['cp_ent'].')';
-            $data['produits'][$increment-1]['PF'][$v['id_fourn']] = number_format($v['prixF'],2,',',' ');
-            $data['produits'][$increment-1]['RF'][$v['id_fourn']] = $v['remiseF'];
+            $data['produits'][$increment-1]['PF'][$v['id_fourn']] = formatCurencyDisplay($v['prixF'],2,'');
+            $data['produits'][$increment-1]['RF'][$v['id_fourn']] = formatCurencyDisplay($v['remiseF'],2,'');
             continue;
         }
     }

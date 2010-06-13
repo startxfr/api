@@ -18,24 +18,18 @@
  * @return cleaned string
  */
 function SXhtmlentities($string, $option = ENT_QUOTES) {
-    if (($option == 'ONLY_QUOTES')or($option == 'ONLY_DBQUOTES')) {
-        $option1 = ENT_QUOTES;
-    }
-    else {
-        $option1 = $option;
-    }
+    if (($option == 'ONLY_QUOTES')or($option == 'ONLY_DBQUOTES'))
+	$option1 = ENT_QUOTES;
+    else $option1 = $option;
     $trans = get_html_translation_table(HTML_SPECIALCHARS, $option1);
     if (($option == 'ONLY_QUOTES')or($option == 'ONLY_DBQUOTES')) {
-        unset($trans['<']);
-        unset($trans['>']);
-        if ($option == 'ONLY_QUOTES') {
-            unset($trans['"']);
-        }
-        elseif ($option == 'ONLY_DBQUOTES') {
-            unset($trans["'"]);
-        }
+	unset($trans['<']);
+	unset($trans['>']);
+	if ($option == 'ONLY_QUOTES')
+	    unset($trans['"']);
+	elseif ($option == 'ONLY_DBQUOTES')
+	    unset($trans["'"]);
     }
-
     return strtr($string, $trans);
 }
 
@@ -50,17 +44,12 @@ function SXhtmlentities($string, $option = ENT_QUOTES) {
  */
 function imageTag($img, $alt = '', $align= '', $css= '', $name= 'img') {
     if ($alt == '')
-        $alt = $img;
-    if (	($align == 'left')or
-            ($align == 'right')or
-            ($align == 'center')or
-            ($align == 'top')or
-            ($align == 'middle')or
-            ($align == 'baseline')or
-            ($align == 'bottom')	)
-        $align =' align="'.$align.'"';
+	$alt = $img;
+    if ( ($align == 'left') or ($align == 'right') or ($align == 'center') or ($align == 'top') or
+	    ($align == 'middle') or ($align == 'baseline') or ($align == 'bottom') )
+	$align =' align="'.$align.'"';
     if ($css != '')
-        $css = ' class="'.$css.'"';
+	$css = ' class="'.$css.'"';
 
     return '<img src="'.$img.'" name="'.$name.'" alt="'.$alt.'" title="'.$alt.'"'.$css.$align.'/>';
 }
@@ -75,18 +64,16 @@ function imageTag($img, $alt = '', $align= '', $css= '', $name= 'img') {
  */
 function buttonTag($page,$hidden,$class, $titre = 'modifier', $name = 'action') {
     if($page != '') {
-        if($class == 'inline') {
-            $class1  =  $class;
-            $class   =  '';
-        }
-        $left  =  '<form method="post" action="'.$page.'" class="'.$class1.'">';
-        $right =  '</form>';
+	if($class == 'inline') {
+	    $class1  =  $class;
+	    $class   =  '';
+	}
+	$left  =  '<form method="post" action="'.$page.'" class="'.$class1.'">';
+	$right =  '</form>';
     }
-    if(is_array($hidden)) {
-        foreach ($hidden as $key => $val) {
-            $html_hid .= '<input type="hidden" name="'.$key.'" value="'.$val.'">';
-        }
-    }
+    if(is_array($hidden))
+	foreach ($hidden as $key => $val)
+	    $html_hid .= '<input type="hidden" name="'.$key.'" value="'.$val.'">';
     return $left.$html_hid.'<input type="submit" name="'.$name.'" class="'.$class.'" value="'.$titre.'">'.$right;
 }
 
@@ -104,51 +91,20 @@ function buttonTag($page,$hidden,$class, $titre = 'modifier', $name = 'action') 
  */
 function inputTag($type, $name, $class = '', $max = '', $size = '', $value = '', $autre = "", $fs = '"') {
     if ($name != '') {
-        $chaine = '<input ';
-        // Input type of form element (button, password,...)
-        if (  ($type == 'hidden')or
-                ($type == 'password')or
-                ($type == 'reset')or
-                ($type == 'submit')or
-                ($type == 'text')or
-                ($type == 'checkbox')or
-                ($type == 'radio')or
-                ($type == 'file')  ) {
-            $chaine .=  'type='.$fs.$type.$fs.' ';
-        }
-        else {
-            $chaine .=  'type='.$fs.'text'.$fs.' ';
-        }
-        // Input name
-        if ($name != '') {
-            $chaine .=  'name='.$fs.$name.$fs.' ';
-        }
-        // Input CSS class
-        if ($class != '') {
-            $chaine .=  'class='.$fs.$class.$fs.' ';
-        }
-        // Input entered data size limitation
-        if (is_numeric($max)) {
-            $chaine .=   'maxlength='.$fs.$max.$fs.' ';
-        }
-        // Input field length
-        if (is_numeric($size)) {
-            $chaine .=   'size='.$fs.$size.$fs.' ';
-        }
-        // Input fill in with value
-        if ($value != '') {
-            $chaine .=  'value='.$fs.$value.$fs.' ';
-        }
-        // Ad other element into the tag
-        if ($autre != '') {
-            $chaine .=  $autre." ";
-        }
-        $chaine .= '/>';
+	$chaine = '<input ';
+	if (  ($type == 'hidden') or ($type == 'password') or ($type == 'reset') or ($type == 'submit') or
+		($type == 'text') or ($type == 'checkbox') or ($type == 'radio') or ($type == 'file')  )
+	    $chaine .=  'type='.$fs.$type.$fs.' ';
+	else			$chaine .=  'type='.$fs.'text'.$fs.' ';
+	if ($name != '')	$chaine .=  'name='.$fs.$name.$fs.' ';
+	if ($class != '')	$chaine .=  'class='.$fs.$class.$fs.' ';
+	if (is_numeric($max))	$chaine .=   'maxlength='.$fs.$max.$fs.' ';
+	if (is_numeric($size))	$chaine .=   'size='.$fs.$size.$fs.' ';
+	if ($value != '')	$chaine .=  'value='.$fs.$value.$fs.' ';
+	if ($autre != '')	$chaine .=  $autre." ";
+	$chaine .= '/>';
     }
-    else {
-        Logg::error('HTML::FORM::HTFORM_Input::no_tag_name',FALSE);
-    }
-
+    else Logg::error('HTML::FORM::HTFORM_Input::no_tag_name',FALSE);
     return $chaine;
 }
 
@@ -167,11 +123,11 @@ function inputTag($type, $name, $class = '', $max = '', $size = '', $value = '',
  */
 function inputDateTag($type, $name, $value = '', $dateFormat = '', $class = '', $imgPath = "../", $autre = "") {
     if ($name != '') {
-        $type = (in_array($type,array('text','hidden'))) ? $type : 'text';
-        $dateFormat = ($dateFormat != '') ? $dateFormat : '%d/%m/%Y';
-        $button_id = substr(md5(time().rand(0,10000)),0,12);
+	$type = (in_array($type,array('text','hidden'))) ? $type : 'text';
+	$dateFormat = ($dateFormat != '') ? $dateFormat : '%d/%m/%Y';
+	$button_id = substr(md5(time().rand(0,10000)),0,12);
 
-        $chaine = '<input type="'.$type.'" name="'.$name.'" id="'.$name.'ID" class="'.$class.' icon" value="'.$value.'" readonly="readonly" '.$autre.'/>
+	$chaine = '<input type="'.$type.'" name="'.$name.'" id="'.$name.'ID" class="'.$class.' icon" value="'.$value.'" readonly="readonly" '.$autre.'/>
 			<a href="#" title="Calendrier" id="'.$button_id.'"><img src="'.$imgPath.'img/calendar.png" alt="calendrier" /></a>
 			<script type="text/javascript">
 				Calendar.setup({
@@ -183,63 +139,38 @@ function inputDateTag($type, $name, $value = '', $dateFormat = '', $class = '', 
 			</script>';
     }
     else {
-        Logg::error('HTML::FORM::HTFORM_Input::no_tag_name',FALSE);
+	Logg::error('HTML::FORM::HTFORM_Input::no_tag_name',FALSE);
     }
     return $chaine;
 }
 
 /**
  * Generate clean textarea tag filled with appropriate information
- * @param $text		  	default content
  * @param $name		 	tag name *
+ * @param $text		  	default content
  * @param $class	  	CSS class
- * @param $max		  	max data size
  * @param $cols		  	horizontal size
  * @param $rows		  	vertical size
  * @param $autre	  	free information
+ * @param $max		  	max data size
  * @return filled html textarea tag
  */
 function textareaTag($name = "text", $text = "", $class = "", $cols = "", $rows = "", $autre = "", $max = "") {
     if ($name != '') {
-        $chaine = '<textarea ';
-        // Textarea field name
-        if ($name != '') {
-            $chaine .=  'name="'.$name.'" ';
-        }
-        // Textarea CSS class
-        if ($class != '') {
-            $chaine .=  'class="'.$class.'" ';
-        }
-        // Textarea field length
-        if ($cols != '') {
-            $chaine .=   'cols="'.$cols.'" ';
-        }else {
-            $chaine .=   'cols="'.$GLOBALS['HTML']['textarea_cols'].'" ';
-        }
-        // Textarea field height
-        if ($rows != '') {
-            $chaine .=   'rows="'.$rows.'" ';
-        }else {
-            $chaine .=   'rows="'.$GLOBALS['HTML']['textarea_row'].'" ';
-        }
-        // Input entered data size limitation
-        if (is_numeric($max)) {
-            $chaine .=   'maxlength="'.$max.'" ';
-        }
-        // Ad other element into the tag
-        if ($autre != '') {
-            $chaine .=  $autre." ";
-        }
-        $chaine .=  ">";
-        // Textarea field value
-        if ($text != '') {
-            $chaine .=  $text;
-        }
-        $chaine .= '</textarea>';
+	$chaine = '<textarea ';
+	if ($name != '')	$chaine .=  'name="'.$name.'" ';
+	if ($class != '')	$chaine .=  'class="'.$class.'" ';
+	if ($cols != '')	$chaine .=   'cols="'.$cols.'" ';
+	else			$chaine .=   'cols="'.$GLOBALS['HTML']['textarea_cols'].'" ';
+	if ($rows != '')	$chaine .=   'rows="'.$rows.'" ';
+	else			$chaine .=   'rows="'.$GLOBALS['HTML']['textarea_row'].'" ';
+	if (is_numeric($max))	$chaine .=   'maxlength="'.$max.'" ';
+	if ($autre != '')	$chaine .=  $autre." ";
+	$chaine .=  ">";
+	if ($text != '')	$chaine .=  $text;
+	$chaine .= '</textarea>';
     }
-    else {
-        error ('HTML:TAG_GENERATOR:TEXTAREA:no_tag_name',FALSE);
-    }
+    else error ('HTML:TAG_GENERATOR:TEXTAREA:no_tag_name',FALSE);
     return "\n".$chaine."\n";
 }
 
@@ -255,47 +186,33 @@ function textareaTag($name = "text", $text = "", $class = "", $cols = "", $rows 
  */
 function selectTag($name,$champ,$id_select="",$class="",$autre="",$withBlank = TRUE) {
     if ($name != '') {
-        $chaine_class =  '';
-        $chaine = "<select ";
-        // Select  field name
-        if ($name != '') {
-            $chaine .=  'name=\''.$name.'\' ';
-        }
-        // Select  CSS class
-        if ($class != '') {
-            $chaine .=  'class=\''.$class.'\' ';
-            $chaine_class =  ' class=\''.$class.'\' ';
-        }
-        // Ad other element into the select tag
-        if ($autre != '') {
-            $chaine .=  $autre." ";
-        }
-        $chaine .=  ">";
-        // Select  detect select row
-        if ($withBlank) {
-            if ($id_select == '') {
-                $chaine .=  "<option".$chaine_class." value='' selected='selected'> </option>";
-            }
-            else {
-                $chaine .=  "<option".$chaine_class." value=''> </option>";
-            }
-        }
-        // Loop for values
-        if(is_array($champ))
-            foreach( $champ as $key => $val ) {
-                $chaine .= "<option".$chaine_class." value='".$key."'";
-                if (($id_select == $key)and($id_select != "")) {
-                    $chaine .= ' selected="selected"';
-                }
-                $chaine .= ">".htmlentities($val, ENT_COMPAT, 'UTF-8')."</option>";
-            }
-        $chaine .= "</select>";
+	$chaine_class =  '';
+	$chaine = "<select ";
+	if ($class != '') {
+	    $chaine .=  'class=\''.$class.'\' ';
+	    $chaine_class =  ' class=\''.$class.'\' ';
+	}
+	if ($name != '')	$chaine .=  'name=\''.$name.'\' ';
+	if ($autre != '')	$chaine .=  $autre." ";
+	$chaine .=  ">";
+	if ($withBlank) {
+	    if ($id_select == '')
+		$chaine .=  "<option".$chaine_class." value='' selected='selected'> </option>";
+	    else $chaine .=  "<option".$chaine_class." value=''> </option>";
+	}
+	if(is_array($champ))
+	    foreach( $champ as $key => $val ) {
+		$chaine .= "<option".$chaine_class." value='".$key."'";
+		if (($id_select == $key)and($id_select != ""))
+		    $chaine .= ' selected="selected"';
+		$chaine .= ">".htmlentities($val, ENT_COMPAT, 'UTF-8')."</option>";
+	    }
+	$chaine .= "</select>";
     }
     else {
-        Logg::error('HTML::AUTO_TAG_GENERATOR::SELECT_TAG::no_tag_name',FALSE);
-        return 'erreur select';
+	Logg::error('HTML::AUTO_TAG_GENERATOR::SELECT_TAG::no_tag_name',FALSE);
+	return 'erreur select';
     }
-
     return $chaine;
 }
 
@@ -317,36 +234,16 @@ function selectTVATag($name, $champ = array(), $id_select="", $class = "", $autr
 function linkTag($url, $texte = '', $class = '', $title = '', $autres_elements = '') {
     $chaine = '<a href="';
 
-    if ($url == '') {
-        $chaine .= '#" ';
-    }
-    else {
-        $chaine .=  $url.'" ';
-    }
-
-    if ($title != '') {
-        $chaine .=  'title="'.$title.'" ';
-    }
-    else {
-        $chaine .=  'title="'.$url.'" ';
-    }
-
-    if ($class != '') {
-        $chaine .=  'class="'.$class.'" ';
-    }
-    if ($autres_elements != '') {
-        $chaine .=  $autres_elements.' ';
-    }
-
+    if ($url == '')		$chaine .= '#" ';
+    else			$chaine .=  $url.'" ';
+    if ($title != '')		$chaine .=  'title="'.$title.'" ';
+    else			$chaine .=  'title="'.$url.'" ';
+    if ($class != '')		$chaine .=  'class="'.$class.'" ';
+    if ($autres_elements != '')	$chaine .=  $autres_elements.' ';
     $chaine .= '>';
-
-    if ($texte == '') {
-        $chaine .=  $url.'</a>';
-    }
-    else {
-        $chaine .= $texte.'</a>';
-    }
-
+    if ($texte == '')
+	$chaine .=  $url.'</a>';
+    else $chaine .= $texte.'</a>';
     return $chaine;
 }
 

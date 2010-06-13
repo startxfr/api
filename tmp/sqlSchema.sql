@@ -671,6 +671,8 @@ CREATE TABLE `projet` (
   `budget_proj` int(8) DEFAULT NULL,
   `decid_proj` int(4) DEFAULT NULL,
   `rdvavec_proj` int(8) DEFAULT NULL,
+  `SSII_proj` int(4) DEFAULT NULL,
+  `SSLL_proj` int(4) DEFAULT NULL,
   `comm_proj` text,
   `typeproj_proj` int(2) NOT NULL DEFAULT '0',
   `utilisateur_proj` varchar(64) NOT NULL DEFAULT 'cl',
@@ -912,7 +914,7 @@ CREATE TABLE `ref_statusaffaire` (
   `id_staff` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
   `nom_staff` varchar(254) NOT NULL DEFAULT '',
   `score_staff` int(2) unsigned NOT NULL DEFAULT '50',
-  `color_staff` varchar(8) DEFAULT NULL,
+  `color_staff` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id_staff`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -931,7 +933,7 @@ CREATE TABLE `ref_statuscommande` (
   `nom_stcmd` varchar(128) NOT NULL DEFAULT '',
   `description_stcmd` text,
   `right_stcmd` tinyint(1) NOT NULL DEFAULT '0',
-  `color_stcmd` varchar(16) DEFAULT NULL,
+  `color_stcmd` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id_stcmd`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='etat possible d''une commande';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -946,7 +948,7 @@ DROP TABLE IF EXISTS `ref_statusdevis`;
 CREATE TABLE `ref_statusdevis` (
   `id_stdev` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
   `nom_stdev` varchar(254) NOT NULL DEFAULT '',
-  `color_stdev` varchar(6) NOT NULL,
+  `color_stdev` varchar(32) NOT NULL,
   `score_stdev` varchar(3) NOT NULL,
   PRIMARY KEY (`id_stdev`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
@@ -964,7 +966,7 @@ CREATE TABLE `ref_statusfacture` (
   `pourcent_stfact` int(2) unsigned NOT NULL DEFAULT '0',
   `nom_stfact` varchar(128) NOT NULL DEFAULT '',
   `description_stfact` text,
-  `color_stfact` varchar(16) DEFAULT NULL,
+  `color_stfact` varchar(32) DEFAULT NULL,
   `pontComptableExportable_stfact` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_stfact`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='etat possible d''une facture';
@@ -1194,4 +1196,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-10 23:51:35
+-- Dump completed on 2010-06-13  3:42:09

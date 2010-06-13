@@ -145,21 +145,22 @@ class Logg extends Singleton {
      * @param $type		String containing type of information
      */
     protected function Log2Mail($content) {
-
         $titre = $this->conf['Name'].'-LOG : '.$this->errortype[$content['level_log']].' sur l\'instance '.$GLOBALS['zunoWebService']['instance_code'];
         $to    = $GLOBALS['PROJET']['mail'];
-
-        $texte = "#".$content['channel_log'].": ".$this->errortype[$content['level_log']]."
+	$texte = "-----------------------------------------------------------------------------
+   channel:  ".$content['channel_log']."
+      type:  ".$this->errortype[$content['level_log']]."
 -------------------------+---------------------------------------------------
       date:  ".date('d/m/Y',time())."  |      Session:  ".$content['session_log']."
      heure:  ".date('h:i:s',time())."    |         user:  ".$_SESSION['user']['id']."
 -------------------------+---------------------------------------------------
 compostant:  ".$content['component_log']."
    fichier:  ".$content['fichier_log']."
-
      titre:  ".$content['nom_log']."
-
-    detail:  ".str_replace(">",">\n",$content['trace_log']);
+    detail:
+-----------------------------------------------------------------------------
+".str_replace(">",">\n",$content['trace_log'])."
+-----------------------------------------------------------------------------";
         simple_mail($to,$texte,$titre,$to,'','text');
     }
 

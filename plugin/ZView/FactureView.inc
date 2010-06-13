@@ -112,9 +112,8 @@ class factureView extends generalView {
 	if ($data['nom_ent'] == '')
 	    $data['nom_ent'] = '<i>Particulier</i>';
 	if ($data['type_ent'] != '')
-	    $data['nom_ent'] = imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png',$data['nom_tyent']).' '.$data['nom_ent'];
-	else
-	    $data['nom_ent'] = imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' <i>Particulier</i>';
+	     $data['nom_ent'] = imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png',$data['nom_tyent']).' '.$data['nom_ent'];
+	else $data['nom_ent'] = imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' <i>Particulier</i>';
 	$tva = ($data['tauxTVA_fact'] != "") ? $data['tauxTVA_fact'] : $GLOBALS['zunoClientStatut']['tauxTVA'];
 
 	$out = '';
@@ -128,6 +127,10 @@ class factureView extends generalView {
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateModif);">Modifié le : </div>
 					<div class="field">'.DateUniv2Human($data['datemodif_fact'], 'simpleLong').'</div>
+				</div>
+				<div class="row">
+					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.statut+\'<br/>Statut de cette facture : '.addslashes($data['description_stfact']).'\');">Statut</div>
+					<div class="field" title="'.$data['description_stfact'].'" style="color: #'.$data['color_stfact'].'"><div class="square" style="background-color:#'.$data['color_stfact'].';">&nbsp;</div> '.$data['nom_stfact'].'</div>
 				</div>
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoBDCC);">BDC Client</div>
@@ -148,7 +151,7 @@ class factureView extends generalView {
 				<legend>Contacts de '.$datas['nom'].'</legend>
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.entreprise);">Entreprise</div>
-					<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',900,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
+					<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
 				</div>
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
@@ -213,6 +216,27 @@ class factureView extends generalView {
 				<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryMail);">Mail</div>
 					<div class="field">'.inputTag('text', "maildelivery_fact", '', '', '30', $data['maildelivery_fact']).'</div>
+				</div>
+			</fieldset>
+		</div>';
+	$out.='<div class="block width50">
+			<fieldset class="form" style="height: 150px">
+				<legend>Règlement de cette facture</legend>
+				<div class="row">
+					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateReglement);">Réglé le : </div>
+					<div class="field">'.DateUniv2Human($data['datereglement_fact'], 'simpleLong').'</div>
+				</div>
+				<div class="row">
+                                        <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementMode);">Mode</div>
+                                        <div class="field">'.selectTag('modereglement_fact',$datas['modereglement'],$data['modereglement_fact'],'','',false).'</div>
+                                </div>
+                                <div class="row">
+                                        <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementCondi);">Condition</div>
+                                        <div class="field">'.selectTag('condireglement_fact',$datas['condireglement'],$data['condireglement_fact'],'','',false).'</div>
+                                </div>
+				<div class="row">
+					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.commentreglement);">Commentaire</div>
+					<div class="field">'.textareaTag('commentreglement_fact', $data['commentreglement_fact'], '', '', 3).'</div>
 				</div>
 			</fieldset>
 		</div>';
@@ -331,7 +355,7 @@ class factureView extends generalView {
 	}
 	$out .= '<tr class="altern'.$alternance.'" id="tdAjoutProdFacture">
 			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_fact" style="width:80px" onchange="verifAutocompleteur(this);"').'
-				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',900,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\',760,330);" style="cursor:pointer; margin-right:0px"/>
+				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\',760,330);" style="cursor:pointer; margin-right:0px"/>
 				<img style="display:none; margin-left:5px;" id="loadingProd" src="../img/ajax-loader.gif" alt="loader"/>
 				<input type="hidden" name="id_produit" id="ACproduit_ajout_facthidden" value="" /><input type="hidden" name="idold" id="ACproduit_ajout_factold" value="" />
 				<div id="ACproduit_ajout_fact_choix" class="autocomplete"></div></td>
@@ -346,9 +370,9 @@ class factureView extends generalView {
 	$out .= '<input type="hidden" name="action" value="" id="actionFactureProd" />';
 	$tva = $datas['data']['tauxTVA_ent']*$bigtotal/100;
 	$ttc = $tva+$bigtotal;
-	$tva = number_format(round($tva, 2), 2, ',', ' ');
-	$ttc = number_format(round($ttc, 2), 2, ',', ' ');
-	$bigtotal = number_format(round($bigtotal, 2), 2, ',', ' ');
+	$tva = formatCurencyDisplay($tva,2,'');
+	$ttc = formatCurencyDisplay($ttc,2,'');
+	$bigtotal = formatCurencyDisplay($bigtotal,2,'');
 	$out .= '<tr>
 			<th rowspan="4" colspan="3"> </th>
 			<th colspan="8"> </th>
@@ -741,7 +765,7 @@ class factureView extends generalView {
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['titre_fact'].'</td>';
 	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.prepareNombreAffichage($v['sommeHT_fact']).' &euro;</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['nom_stfact'].'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'"><div class="square" style="background-color:#'.$v['color_stfact'].';">&nbsp;</div>'.$v['nom_stfact'].'</td>';
 	    $out .= '<td class="right">'.$action.'</td>';
 	    $out .= '</tr>';
 	    $alternance = (($alternance+1) % 2);
@@ -752,13 +776,10 @@ class factureView extends generalView {
 	$out .= '<th class="bordG bordD right">'.prepareNombreAffichage($totalDisplay).' &euro;</th>';
 	$out .= '<td colspan="2"></td>';
 	$out .= '</tr>';
-	
-
-
-
 
 	$out .= '</tbody></table>';
-	$out .= $this->ResultGroupActionForm();
+	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'factureHisto');

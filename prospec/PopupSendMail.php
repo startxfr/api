@@ -23,8 +23,7 @@ $PC->GetFullContext();
 +------------------------------------------------------------------------*/
 
 
-if($PC->rcvP['action'] == 'new')
-{
+if($PC->rcvP['action'] == 'new') {
 	$sql = new contactParticulierModel();
 	$result = $sql->getDataFromID($PC->rcvP['id_cont']);
 	$datas['id'] = $PC->rcvP['id_cont'];
@@ -49,24 +48,18 @@ if($PC->rcvP['action'] == 'new')
 	$result = $send->send();
 	if($result[0])
 		echo $result[1];
-	else
-		echo '<erreur>errorPopupMail</erreur>'.$result[1];
+	else	echo '<erreur>errorPopupMail</erreur>'.$result[1];
 	exit;
 }
-elseif($PC->rcvG['id_cont'] != '')
-{
+elseif($PC->rcvG['id_cont'] != '') {
 	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	$id_cont = $PC->rcvG['id_cont'];
 	$bddtmp->makeRequeteFree("SELECT * FROM entreprise,contact WHERE entreprise_cont = id_ent AND id_cont = '".$id_cont."'");
 	$cont = $bddtmp->process();
 	$cont = $cont[0];
-
 	if ($cont['mail_cont'] != '')
 		echo BlockSendmail($id_cont,"");
 	else  echo "<html><body><script language=\"javascript\">zuno.popup.close();</script></body></html>";
 }
-else
-{
-	echo BlockSendmail('',"");
-}
+else echo BlockSendmail('',"");
 ?>

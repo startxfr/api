@@ -230,7 +230,7 @@ elseif($PC->rcvG['action'] == 'inputContactContinue')
 }
 elseif($PC->rcvG['action'] == 'listeVille')
 {
-	$sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	$sqlConn = new Bdd($GLOBALS['referenceBase']['dbPool']);
 	$sqlConn->makeRequeteFree("select distinct CP, Ville, Pays from code_postal where CP ='".$PC->rcvP['cp']."' order by Ville ;");
 	$temp = $sqlConn->process2();
 	$temp=$temp[1];

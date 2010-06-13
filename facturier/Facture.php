@@ -161,7 +161,7 @@ elseif($PC->rcvP['action'] == 'suppProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont from facture f left join entreprise e on e.id_ent=f.entreprise_fact left join contact c on c.id_cont=f.contact_fact where id_fact='".$PC->rcvP['id_facture']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update facture set sommeHT_fact='".$sommeHT."' WHERE id_fact = '".$PC->rcvP['id_facture']."'");
         $temp = $sqlConn->process2();
     }
@@ -192,7 +192,7 @@ elseif($PC->rcvP['action'] == 'modifProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont from facture f left join entreprise e on e.id_ent=f.entreprise_fact left join contact c on c.id_cont=f.contact_fact where id_fact='".$PC->rcvP['id_facture']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update facture set sommeHT_fact='".$sommeHT."' WHERE id_fact = '".$PC->rcvP['id_facture']."'");
         $temp = $sqlConn->process2();
         echo viewFiche($PC->rcvP['id_facture'], $type, 'interneProduit', 'non', 'web', true, 'Le produit a été modifié');
@@ -489,7 +489,6 @@ elseif($PC->rcvP['action'] == 'payerCB') {
             $array['message'] = trim(ProcessTemplating($key,$cleanFrom,$cleanTo));
             $array['sujet'] = "Règlement de la facture ".$PC->rcvP['id_fact'];
             $array['expediteur'] = $GLOBALS['zunoClientCoordonnee']['mail'];
-            $array['bug'] = false;
             $array['mail'] = $PC->rcvP['mail_cont'];
             $array['fichier'] = $f[1][0]['file_fact'];
             $sender = new Sender($array);
@@ -512,10 +511,8 @@ elseif($PC->rcvP['action'] == 'payerCB') {
                 "Ce payement est lié à la facture ".$PC->rcvP['id_fact']." et a été effectué ce jour, le ".date('d')." ".date('M')." ".date('Y')."<br />".$mess;
         $array['sujet'] = "Débit client sur Carte Bancaire";
         $array['expediteur'] = 'ZUNO';
-        $array['bug'] = false;
         $array['mail'] = $_SESSION['user']['mail'];
         $array['cc'] = $cc[1];
-
         $sender = new Sender($array);
         $sender->send();
 

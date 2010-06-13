@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 /**
  * Classe qui gère toutes les requètes Base en rapport avec les affaires
  * @author Nicolas Mannocci
@@ -1020,10 +1020,10 @@ class affaireModel extends GeneralModel {
 		    $aff['daterecord_fact'] = ($aff['daterecord_fact'] == '') 	? '' : strftime('%d/%m/%y',strtotime($aff['daterecord_fact']));
 		    $aff['dateenvoi_fact']	= ($aff['dateenvoi_fact'] == '') 	? '' : strftime("%d/%m/%y",strtotime($aff['dateenvoi_fact']));
 		    $aff['datereglement_fact'] = ($aff['datereglement_fact'] == '') ? '' : strftime("%d/%m/%y",strtotime($aff['datereglement_fact']));
-		    $aff['budget_aff'] 	= ($aff['budget_aff'] == '') 		? '' : number_format($aff['budget_aff'],0,',',' ');
-		    $aff['sommeHT_dev'] 	= ($aff['sommeHT_dev'] == '') 	? '' : number_format($aff['sommeHT_dev'],0,',',' ');
-		    $aff['sommeHT_cmd'] 	= ($aff['sommeHT_cmd'] == '') 	? '' : number_format($aff['sommeHT_cmd'],0,',',' ');
-		    $aff['sommeHT_fact'] 	= ($aff['sommeHT_fact'] == '') 	? '' : number_format($aff['sommeHT_fact'],0,',',' ');
+		    $aff['budget_aff'] 	= ($aff['budget_aff'] == '') 		? '' : formatCurencyDisplay($aff['budget_aff'],0);
+		    $aff['sommeHT_dev'] 	= ($aff['sommeHT_dev'] == '') 	? '' : formatCurencyDisplay($aff['sommeHT_dev'],2);
+		    $aff['sommeHT_cmd'] 	= ($aff['sommeHT_cmd'] == '') 	? '' : formatCurencyDisplay($aff['sommeHT_cmd'],2);
+		    $aff['sommeHT_fact'] 	= ($aff['sommeHT_fact'] == '') 	? '' : formatCurencyDisplay($aff['sommeHT_fact'],2);
 		    foreach ($aff as $in => $out) {
 			$input[] = "/\{".$in."\}/";
 			$output[] = $out;

@@ -52,22 +52,19 @@ class Sender {
 	$this->message = $data['message'];
 	$this->sujet = $data['sujet'];
 	$this->nomExpediteur = $data['expediteur'];
-	$this->from = (generalControl::mailControl($data['from'])) ? $data['from'] : $GLOBALS['PROJET']['mail'];
+	$this->from = (generalControl::mailControl($data['from'])) ? $data['from'] : $GLOBALS['zunoClientCoordonnee']['mail'];
 	if(is_array($data['cc'])) {
 	    $aumoins1 = false;
-
 	    foreach($data['cc'] as $v) {
 		if(generalControl::mailControl($v['mail'])) {
 		    $this->cc[] = $v['mail'];
 		    $aumoins1 = true;
 		}
 	    }
-	    if(!$aumoins1) {
+	    if(!$aumoins1)
 		$this->cc = false;
-	    }
 	}
-	else
-	    $this->cc = (generalControl::mailControl($data['cc'])) ? $data['cc'] : false;
+	else $this->cc = (generalControl::mailControl($data['cc'])) ? $data['cc'] : false;
 	$this->email = (generalControl::mailControl($data['mail'])) ? $data['mail'] : false;
 	$this->fax = (generalControl::telephoneControl($data['fax'])) ? $data['fax'] : false;
 	$this->tel = (generalControl::telephoneControl($data['tel'])) ? $data['tel'] : false;
@@ -124,6 +121,7 @@ class Sender {
 
 	$this->bdd = new Bdd_mysql();
 	$this->bug = ($data['bug'] == true) ? true : false;
+	$this->signature = "\n\n-------------------------------\nCe message vous est transmis grace au service www.zuno.fr";
     }
 
     /**
@@ -137,29 +135,23 @@ class Sender {
 		aiJeLeDroit($this->partie, 50, $this->channel);
 	    if($this->email === false) {
 		if($this->partie != 'send')
-		    $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'E-mail invalide');
-		else {
-		    $out = "E-mail invalide";
-		}
+		     $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'E-mail invalide');
+		else $out = "E-mail invalide";
 		return array(0,$out);
 	    }
 	    elseif($this->bug == false and $this->controlTotalEnvoi() === false) {
 		if($this->partie != 'send')
-		    $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Quota d\'envoi par mail dépassé');
-		else {
-		    $out = "Quota d\'envoi par mail dépassé";
-		}
+		     $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Quota d\'envoi par mail dépassé');
+		else $out = "Quota d\'envoi par mail dépassé";
 		return array(0,$out);
 	    }
 	    else {
 		$from = (generalControl::mailControl($from)) ? $from : '';
 		if($this->fichier === false) {
-		    $this->newEnvoi();
 		    $r = $this->simple_mail($from, $this->typeEmail);
 		    $this->addHistoriqueEnvoiInManager();
 		}
 		else {
-		    $this->newEnvoi();
 		    $r = $this->MailAttach($from, $this->typeEmail);
 		    $this->addHistoriqueEnvoiInManager();
 		}
@@ -185,10 +177,12 @@ class Sender {
 		return array(0,$out);
 	    }
 	    else {
-		$this->newEnvoi();
-		$this->SendFaxMaileva();
-		if($this->channel != 'iphone' and $this->partie != "send")
-		    $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Fax envoyé');
+		$result = $this->SendFaxMaileva();
+		if($result[0]) {
+		   if($this->channel != 'iphone' and $this->partie != "send")
+			$out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Fax envoyé');
+		}
+		$out = $result[1];
 		return array(1,$out);
 	    }
 	}
@@ -201,11 +195,10 @@ class Sender {
 	    else {
 		$result = $this->SendLetterMaileva();
 		if($result[0]) {
-		    $this->newEnvoi();
-		    $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Courrier envoyé');
+		   if($this->channel != 'iphone' and $this->partie != "send")
+			$out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Courrier envoyé');
 		}
-		else
-		    $out = $result[1];
+		$out = $result[1];
 		return array(1,$out);
 	    }
 	}
@@ -398,30 +391,8 @@ class Sender {
 	if ($from == '')
 	    $from = $this->from;
 	if ($this->sujet == '')
-	    $this->sujet = $GLOBALS['PROJET']['nom'];
-	if ($type == 'html')
-	    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-	else	$headers .= "Content-type: text/plain; charset=UTF-8\r\n";
-
-	// en-têtes
-	$headers .= "From: ".$from."\r\n";
-	$headers .= "Reply-To: ".$from."\r\n";
-	$headers .= "Return-Path: ".$from."\r\n";
-	$headers .= "ZunoMessageUID: ".$this->token."\r\n";
-	$headers .= "X-Sender: ".$from."\r\n";
-	if ($this->cc !== false and !is_array($this->cc))
-	    $headers .= "Cc: ".$this->cc."\r\n";
-	elseif($this->cc !== false and is_array($this->cc)) {
-	    $headers .= "Cc: ";
-	    foreach($this->cc as $v) {
-		$headers .= $v.",";
-	    }
-	    $headers = rtrim($headers, ",");
-	    $headers .= "\r\n";
-	}
-
-	$o	= mail($this->email, $this->sujet, $this->message.$this->signature, $headers);
-	return array($o);
+	    $this->sujet = $GLOBALS['zunoClientCoordonnee']['nom'];
+	return simple_mail($this->email,$this->message.$this->signature,$this->sujet,$from,$this->cc,$type,$this->token);
     }
 
     /**
@@ -435,7 +406,7 @@ class Sender {
 	if ($from == '')
 	    $from = $this->from;
 	if ($this->sujet == '')
-	    $this->sujet = $GLOBALS['PROJET']['nom'];
+	    $this->sujet = $GLOBALS['zunoClientCoordonnee']['nom'];
 	if ($messagetype == '')
 	    $messagetype = 'text/plain; charset=UTF-8';
 	elseif ($messagetype == 'html')
@@ -491,15 +462,7 @@ class Sender {
      * @return buffer Le buffer contenant le fichier
      */
     private function mp_FileReadFile($filename) {
-	$buf = '';
-	$fd = fopen($filename, 'r');
-	if ($fd) {
-	    while(!feof($fd))
-		$buf .= fread($fd, 256);
-	    fclose($fd);
-	}
-	if (strlen($buf))
-	    return $buf;
+	return mp_FileReadFile($filename);
     }
 
     /**
@@ -521,9 +484,7 @@ class Sender {
 		    $headers['Content-Type'] = $chunk['content_type'].'; name="'.$chunk['filename'].'"';
 		    $headers['Content-Disposition'] = 'attachment; filename="'.$chunk['filename'].'"';
 		}
-		else {
-		    $headers['Content-Type'] = $chunk['content_type'];
-		}
+		else $headers['Content-Type'] = $chunk['content_type'];
 		$data = chunk_split(base64_encode($chunk['data']),60,"\n");
 	    }
 	    else {
@@ -534,7 +495,6 @@ class Sender {
 	    if (is_array($chunk['headers']) && count($chunk['headers']))
 		while(list($key, $val) = each($chunk['headers']))
 		    $headers[$key] = $val;
-
 	    $buf .= '--' . $boundary. "\n";
 	    while(list($key, $val) = each($headers))
 		$buf .= $key.': '.$val."\n";
@@ -544,19 +504,16 @@ class Sender {
 
 	if ($mess) {
 	    $buf .= '--' . $boundary. '--' ;
-
-	    return array
-		    (0 => $buf,
+	    return array(
+		    0 => $buf,
 		    1 => 'MIME-Version: 1.0'."\n".
 			    'Content-Type: MULTIPART/MIXED;'."\r\n".
-			    '  BOUNDARY="'.$boundary.'"'."\r\n".
-			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].' '.$GLOBALS['PROJET']['copyright'].";\r\n".
-			    '  http://www.startx.fr/',
+			    'BOUNDARY="'.$boundary.'"'."\r\n".
+			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].' '.$GLOBALS['PROJET']['copyright'].";\r\n".'  http://www.zuno.fr/',
 		    2 => array('MIME-Version: 1.0',
 			    'Content-Type: MULTIPART/MIXED;'."\r\n".
-				    '  BOUNDARY="'.$boundary.'"\r\n',
-			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].';'."\r\n".
-				    '  http://www.startx.fr/')
+			    'BOUNDARY="'.$boundary.'"\r\n',
+			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].';'."\r\n".'  http://www.zuno.fr/')
 	    );
 
 	}
@@ -567,7 +524,7 @@ class Sender {
      * @return string La chaine générée
      */
     private function mp_new_boundary() {
-	return '-'.$GLOBALS['PROJET']['nom'].'-'.str_replace(' ','.',microtime());
+	return mp_new_boundary();
     }
 
     /**
@@ -575,7 +532,7 @@ class Sender {
      * @return string l'id généré
      */
     private function mp_new_message_id() {
-	return '<'.$GLOBALS['PROJET']['nom'].'-'.str_replace(' ','.',microtime()).'@'.'>';
+	return mp_new_message_id();
     }
 
     /**
@@ -665,8 +622,10 @@ class Sender {
 		'toMail'	=> $this->email,
 		'docPageSend'	=> $this->countPageNumberForDocument()
 	);
-	if(!$this->bug)
+	if(!$this->bug) {
+	    $this->newEnvoi();
 	    Sender::setHistoriqueEnvoiInManager($param);
+	}
     }
 
 

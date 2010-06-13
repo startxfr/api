@@ -29,9 +29,10 @@ $PC->GetSessionContext();
 if($_POST['action'] == 'sendBug') {
     $data['typeE'] = 'mail';
     $data['mail'] = $GLOBALS['PROJET']['mail'];
-    $data['from'] = 'zuno@startx.fr';
+    $data['from'] = 'bugtrack@zuno.fr <instance '.$GLOBALS['zunoWebService']['instance_code'].'>';
     $data['sujet'] = 'Rapport de bug de : '.$GLOBALS['zunoClientCoordonnee']['nom'];
     $data['message'] = "Rapport de bug : "."\n"."Rapporteur : ".$_SESSION['user']['fullnom']."\n";
+    $data['message'] .= "Instance : ".$GLOBALS['zunoWebService']['instance_code']."\n";
     $data['message'] .= "Titre (selon le client) : ".$_POST['loca_bug']."\n";
     $data['message'] .= "URL d'envoi : ".$_SERVER['HTTP_REFERER'];
     $data['message'] .= "\nDescription : ".$_POST['desc_bug']."\n";

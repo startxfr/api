@@ -143,7 +143,8 @@ var ZTips = {
 	sendSujet:		'Sujet de votre envoi.<br/>Cette option n\'est utile que lors d\'un envoi par mail ou par fax',
 	sendType:		'Type d\'envoi que vous souhaitez réaliser.<br/>Cette option n\'est utile que si vous souhaitez "enregistrer & envoyer" ou "envoyer" votre document',
 	tauxTva:		'Taux de TVA applicable à cette entreprise pour ce devis. Par defaut, corespond au taux de tva de l\'entreprise',
-	titre:		 	'Titre du devis.<br/>Nous vous conseillons de saisir une phrase courte et explicite, contenant les principaux mots clefs applicables à ce devis'
+	titre:		 	'Titre du devis.<br/>Nous vous conseillons de saisir une phrase courte et explicite, contenant les principaux mots clefs applicables à ce devis',
+	statut:			'Vous permet de connaitre l\'état de ce devis. le statut d\'un devis évolu tout seul en fonction des actions qui ont été menées'
     } ,
   
     commande: {
@@ -186,7 +187,8 @@ var ZTips = {
 	sendPJ:			'Pièce jointe de l\'envoi.<br/>Cette option n\'est utile que lors d\'un envoi par mail, fax ou courrier',
 	sendSujet:		'Sujet de votre envoi.<br/>Cette option n\'est utile que lors d\'un envoi par mail ou par fax',
 	sendType:		'Type d\'envoi que vous souhaitez réaliser.<br/>Cette option n\'est utile que si vous souhaitez "enregistrer & envoyer" ou "envoyer" votre document',
-	sendCopyToMe:		'Pour recevoir une copie du document envoyé, directement dans votre boite mail'
+	sendCopyToMe:		'Pour recevoir une copie du document envoyé, directement dans votre boite mail',
+	statut:			'Vous permet de connaitre l\'état de cette commande. le statut d\'une commande évolue tout seul en fonction des actions qui ont été menées'
     } ,
 
     facture: {
@@ -195,8 +197,11 @@ var ZTips = {
 	bdcc:			'Vous permet d\'enregistrer le numéro de bon de commande fournit par votre client lors de sa commande.',
 	reglementMode:		'Vous pouvez choisir un mode de règlement pour cette facture.',
 	reglementCondi:		'Vous pouvez choisir les conditions de règlement de la facture client.',
+	commentreglement:	'Commentaire interne sur le règlement de cette facture',
 	infoDateCree:		'Date de création de la facture',
 	infoDateModif: 		'Date de la dernière modification faite  sur cette facture',
+	infoDateReglement: 	'Date de règlement, prévu ou effective, pour cette facture',
+	statut:			'Le statut de cette facture',
 	infoTitre: 		'Titre de la facture.<br/>Nous vous conseillons de saisir une phrase courte et explicite, contenant les principaux mots clefs applicables à cette facture.<br/> Par defaut, le titre de la commande est repris comme titre de la facture.',
 	infoBDCC: 		'Numero de bon de facture fournit par le client.<br/> Ce numero est en général saisi lors de la création d\'une facture',
 	infotauxTva:		'Taux de TVA applicable à cette entreprise pour cette facture. Par defaut, corespond au taux de tva de l\'entreprise',

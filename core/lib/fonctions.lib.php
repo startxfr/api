@@ -157,83 +157,85 @@ function viewFiche($id, $partie, $mode = '', $fournisseur = 'non', $channel = 'i
         }
     }
     elseif($channel == 'web') {
-        $datas['data'] = $result[1][0];
-        if($partie != 'produit' and $partie != 'factureFournisseur') {
-            $datas['pays'] =  $info->getPays();
-            $datas['user'] = $info->getUser();
-        }
-        if($partie == 'commande') {
-            $datas['produits'] = $info->getAllFournisseursFromID($id);
-            $datas['actu'] = $info->getActualites($id);
-            $datas['LF'] = $info->getAllFournisseursFromID($id, $datas['data']['status_cmd']);
-        }
-        elseif($partie =='contactEntreprise') {
-            $datas['type'] = $info->getTypesEnt();
-            $datas['groupe'] = $info->getGroupesEnt();
-            $datas['activite'] = $info->getActivitesEnt();
-            $datas['projet'] = $info->getProjets($id);
-            $datas['affaire'] = $info->getAffaires($id);
-            $datas['appel'] = $info->getAppels($id);
-        }
-        elseif($partie == 'contactParticulier') {
-            $datas['fonctions'] = $info->getFonction();
-            $datas['projet'] = $info->getProjets($id);
-            $datas['affaire'] = $info->getAffaires($id);
-            $datas['appel'] = $info->getAppels($id);
-            $datas['data']['contact'] = $info->getCollegue($id);
-        }
-        elseif($partie == 'produit' and $fournisseur != 'fourn') {
-            $datas['dureeR'] = $info->getRenews();
-            $datas['famille'] = $info->getAllFamille();
-            $datas['fourn'] = $info->getFournisseurByProduitID($id);
-            $datas['fournEx'] = $info->getExFournisseurByProduitID($id);
-        }
-        elseif($partie == 'produit' and $fournisseur == 'fourn') {
-            $partie = 'Fournisseur';
-            $datas['produits'] = $prod[1][0]['COUNT(*)'];
-            $datas['prod'] = $info->getProduitsByFournisseurID($id);
-            $datas['contacts'] = $info->getContactsPotentiels($id);
-        }
-        elseif($partie == 'affaire') {
-            $datas['related'] = $info->getRelatedRessourcesForAffaire($id);
-            $datas['actu'] = $info->getActusByID($id);
-            $datas['type'] = $info->getTypesProj();
-        }
-        elseif($partie == 'factureFournisseur') {
-            $datas['status'] = $info->getStatutFactFourn();
-            $datas['mode'] = $info->getModeReglement();
-            $datas['periode'] = $info->getRenews();
-            if($datas['data']['ren_factfourn'] != "")
-                $datas['ren'] = $info->getRenouvellement($datas['data']['ren_factfourn']);
-        }
-        elseif($partie == 'facture') {
-            $result = $info->getProduitsFromID($id);
-            $datas['produits'] = $result[1];
-            $datas['periode'] = $info->getRenews();
-            $datas['status'] = $info->getStatutFact();
-            $datas['last'] = $info->getLastId();
-            if($datas['data']['ren_fact'] != "")
-                $datas['ren'] = $info->getRenouvellement($datas['data']['ren_fact']);
-        }
-        elseif($partie == 'devis') {
-            $result = $info->getProduitsFromID($id);
-            $datas['produits'] = $result[1];
-            $datas['periode'] = $info->getRenews();
-            $datas['status'] = $info->getStatutDevis();
-            if($datas['data']['ren_dev'] != "")
-                $datas['ren'] = $info->getRenouvellement($datas['data']['ren_dev']);
-        }
-        elseif($partie == 'pontComptable') {
-            
-        }
-        else {
-            $result = $info->getProduitsFromID($id);
-            $datas['produits'] = $result[1];
-        }
-        $partie = ($partie == 'avoir') ? 'facture' : $partie;
-        $nomclass = $partie.'View';
-        $aff = new $nomclass();
-        return $aff->view($datas, $mode, $mess);
+	$datas['data'] = $result[1][0];
+	if($partie != 'produit' and $partie != 'factureFournisseur') {
+	    $datas['pays'] =  $info->getPays();
+	    $datas['user'] = $info->getUser();
+	}
+	if($partie == 'commande') {
+	    $datas['produits'] = $info->getAllFournisseursFromID($id);
+	    $datas['actu'] = $info->getActualites($id);
+	    $datas['LF'] = $info->getAllFournisseursFromID($id, $datas['data']['status_cmd']);
+	}
+	elseif($partie =='contactEntreprise') {
+	    $datas['type'] = $info->getTypesEnt();
+	    $datas['groupe'] = $info->getGroupesEnt();
+	    $datas['activite'] = $info->getActivitesEnt();
+	    $datas['projet'] = $info->getProjets($id);
+	    $datas['affaire'] = $info->getAffaires($id);
+	    $datas['appel'] = $info->getAppels($id);
+	}
+	elseif($partie == 'contactParticulier') {
+	    $datas['fonctions'] = $info->getFonction();
+	    $datas['projet'] = $info->getProjets($id);
+	    $datas['affaire'] = $info->getAffaires($id);
+	    $datas['appel'] = $info->getAppels($id);
+	    $datas['data']['contact'] = $info->getCollegue($id);
+	}
+	elseif($partie == 'produit' and $fournisseur != 'fourn') {
+	    $datas['dureeR'] = $info->getRenews();
+	    $datas['famille'] = $info->getAllFamille();
+	    $datas['fourn'] = $info->getFournisseurByProduitID($id);
+	    $datas['fournEx'] = $info->getExFournisseurByProduitID($id);
+	}
+	elseif($partie == 'produit' and $fournisseur == 'fourn') {
+	    $partie = 'Fournisseur';
+	    $datas['produits'] = $prod[1][0]['COUNT(*)'];
+	    $datas['prod'] = $info->getProduitsByFournisseurID($id);
+	    $datas['contacts'] = $info->getContactsPotentiels($id);
+	}
+	elseif($partie == 'affaire') {
+	    $datas['related'] = $info->getRelatedRessourcesForAffaire($id);
+	    $datas['actu'] = $info->getActusByID($id);
+	    $datas['type'] = $info->getTypesProj();
+	}
+	elseif($partie == 'factureFournisseur') {
+	    $datas['status'] = $info->getStatutFactFourn();
+	    $datas['mode'] = $info->getModeReglement();
+	    $datas['periode'] = $info->getRenews();
+	    if($datas['data']['ren_factfourn'] != "")
+		$datas['ren'] = $info->getRenouvellement($datas['data']['ren_factfourn']);
+	}
+	elseif($partie == 'facture') {
+	    $result = $info->getProduitsFromID($id);
+	    $datas['produits'] = $result[1];
+	    $datas['periode'] = $info->getRenews();
+	    $datas['status'] = $info->getStatutFact();
+	    $datas['modereglement'] = $info->getModeReglement();
+	    $datas['condireglement'] = $info->getCondReglement();
+	    $datas['last'] = $info->getLastId();
+	    if($datas['data']['ren_fact'] != "")
+		$datas['ren'] = $info->getRenouvellement($datas['data']['ren_fact']);
+	}
+	elseif($partie == 'devis') {
+	    $result = $info->getProduitsFromID($id);
+	    $datas['produits'] = $result[1];
+	    $datas['periode'] = $info->getRenews();
+	    $datas['status'] = $info->getStatutDevis();
+	    if($datas['data']['ren_dev'] != "")
+		$datas['ren'] = $info->getRenouvellement($datas['data']['ren_dev']);
+	}
+	elseif($partie == 'pontComptable' or $partie == 'journalBanque') {
+
+	}
+	else {
+	    $result = $info->getProduitsFromID($id);
+	    $datas['produits'] = $result[1];
+	}
+	$partie = ($partie == 'avoir') ? 'facture' : $partie;
+	$nomclass = $partie.'View';
+	$aff = new $nomclass();
+	return $aff->view($datas, $mode, $mess);
     }
 }
 
@@ -1111,28 +1113,28 @@ function suppBDD($id, $partie, $channel = 'iphone', $recursif = false) {
  */
 function triMontant($value, $prix = '', $valeur = array(500, 2500, 10000, 25000, 100000)) {
     if($value >= $valeur[4] && $prix != 100000) {
-        $prix = 100000;
-        $out .= '</ul><h2>Supérieur à '.number_format($valeur[4], 0, ',', ' ').' €</h2><ul>';
+	$prix = 100000;
+	$out .= '</ul><h2>Supérieur à '.formatCurencyDisplay($valeur[4], 0).'</h2><ul>';
     }
     elseif($value >= $valeur[3] && $value < $valeur[4] && $prix != 25000) {
-        $prix = 25000;
-        $out .= '</ul><h2>Entre '.number_format($valeur[3], 0, ',', ' ').' € et '.number_format($valeur[4], 0, ',', ' ').' €</h2><ul>';
+	$prix = 25000;
+	$out .= '</ul><h2>Entre '.formatCurencyDisplay($valeur[3], 0).' et '.formatCurencyDisplay($valeur[4], 0).'</h2><ul>';
     }
     elseif($value >= $valeur[2] && $value < $valeur[3] && $prix != 10000) {
-        $prix = 10000;
-        $out .= '</ul><h2>Entre '.number_format($valeur[2], 0, ',', ' ').' € et '.number_format($valeur[3], 0, ',', ' ').' €</h2><ul>';
+	$prix = 10000;
+	$out .= '</ul><h2>Entre '.formatCurencyDisplay($valeur[2], 0).' et '.formatCurencyDisplay($valeur[3], 0).'</h2><ul>';
     }
     elseif($value >= $valeur[1] && $value < $valeur[2] && $prix != 2500) {
-        $prix = 2500;
-        $out .= '</ul><h2>Entre '.number_format($valeur[1], 0, ',', ' ').' € et '.number_format($valeur[2], 0, ',', ' ').' €</h2><ul>';
+	$prix = 2500;
+	$out .= '</ul><h2>Entre '.formatCurencyDisplay($valeur[1], 0).' et '.formatCurencyDisplay($valeur[2], 0).'</h2><ul>';
     }
     elseif($value >= $valeur[0] && $value < $valeur[1] && $prix != 500) {
-        $prix = 500;
-        $out .= '</ul><h2>Entre '.number_format($valeur[0], 0, ',', ' ').' € et '.number_format($valeur[1], 0, ',', ' ').' €</h2><ul>';
+	$prix = 500;
+	$out .= '</ul><h2>Entre '.formatCurencyDisplay($valeur[0], 0).' et '.formatCurencyDisplay($valeur[1], 0).'</h2><ul>';
     }
     elseif($value < $valeur[0] && $prix != 10) {
-        $prix = 10;
-        $out .= '</ul><h2>Inférieur à '.number_format($valeur[0], 0, ',', ' ').' €</h2><ul>';
+	$prix = 10;
+	$out .= '</ul><h2>Inférieur à '.formatCurencyDisplay($valeur[0], 0).'</h2><ul>';
     }
     return array($out, $prix);
 }
@@ -1167,20 +1169,20 @@ function getStats($partie, $tous = 'non', $type = '') {
     }
     $N = $data[1][0]['N'];
     if($tous == 'oui') {
-        $X = round($data[1][0]['X'],2);
-        $variance = $data[1][0]['variance'];
-        $mediane = $data['mediane'][1][0]['MEDIANE'];
-        $somme = $data[1][0]['somme'];
-        $ecartType = sqrt($variance);
-        $coefVar = $ecartType/$X;
-        $X = number_format($X, 2, ',', ' ');
-        $N = prepareNombreAffichage($N);
-        $mediane = prepareNombreAffichage($mediane);
-        $variance = prepareNombreAffichage($variance);
-        $ecartType = prepareNombreAffichage($ecartType);
-        $somme = prepareNombreAffichage($somme);
-        $coefVar = prepareNombreAffichage($coefVar);
-        return array($N, $X, $mediane, $variance, $ecartType, $somme, $coefVar);
+	$X = round($data[1][0]['X'],2);
+	$variance = $data[1][0]['variance'];
+	$mediane = $data['mediane'][1][0]['MEDIANE'];
+	$somme = $data[1][0]['somme'];
+	$ecartType = sqrt($variance);
+	$coefVar = $ecartType/$X;
+	$X = formatCurencyDisplay($X,2,'');
+	$N = prepareNombreAffichage($N);
+	$mediane = prepareNombreAffichage($mediane);
+	$variance = prepareNombreAffichage($variance);
+	$ecartType = prepareNombreAffichage($ecartType);
+	$somme = prepareNombreAffichage($somme);
+	$coefVar = prepareNombreAffichage($coefVar);
+	return array($N, $X, $mediane, $variance, $ecartType, $somme, $coefVar);
     }
     else {
         $pas = round($N/6, 0);
@@ -1209,8 +1211,8 @@ function carre($val) {
  * @param $nombre	Le nombre à formater correctement
  * @return le nombre formaté, 2 chiffres après la virgule, avec une virgule et pas un point
  */
-function prepareNombreAffichage($nombre) {
-    return number_format(round($nombre, 2), 2, ',', ' ');
+function prepareNombreAffichage($nombre,$round = 2) {
+    return number_format(round($nombre,$round),$round,',',' ');
 }
 
 
@@ -1222,7 +1224,6 @@ function prepareNombreAffichage($nombre) {
 function prepareNombreTraitement($nombre) {
     $nombre = str_replace(",",".",$nombre);
     $nombre = str_replace(" ","", $nombre);
-
     return $nombre;
 }
 
@@ -1400,4 +1401,23 @@ function dateF($format, $timestamp = '-1') {
 }
 
 
+/**
+ * Format a number and return a string with a curency représentation
+ * @param <number> $number
+ * @param <int> $round
+ * @param <string> $csymbol
+ */
+function  formatCurencyDisplay($number,$round = 2,$csymbol = ' &euro;') {
+    return prepareNombreAffichage($number,$round).$csymbol;
+}
+
+/**
+ * Format a number and return a string with a curency représentation
+ * @param <number> $number
+ * @param <int> $round
+ * @param <string> $sign
+ */
+function  formatCurencyDatabase($number,$round = 2) {
+    return round(prepareNombreTraitement($number), $round);
+}
 ?>

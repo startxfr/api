@@ -231,9 +231,9 @@ class sendView
 		$pays 	= HtmlFormIphone::Select('cpays',$countryList,$value['cpays'],false);
 
 
-		if($value['file'] != '' and file_exists($value['file']))
+		if($value['file'] != '' and file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$value['file']))
 		{
-			$fileSize = FileConvertSize2Human(filesize($value['file']));
+			$fileSize = FileConvertSize2Human(filesize($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$value['file']));
 			$fileNameA = explode('/',$value['file']);
 			$fileName = ' '.$fileNameA[count($fileNameA)-1];
 			$fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');
@@ -345,9 +345,9 @@ class sendView
 		$nom 		= HtmlFormIphone::Input('nom',$value['nom'],'Nom : ');
 		$fax	 	= HtmlFormIphone::Input('fax',$value['fax'],'Numéro : ');
 
-		if($value['file'] != '' and file_exists($value['file']))
+		if($value['file'] != '' and file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$value['file']))
 		{
-			$fileSize = FileConvertSize2Human(filesize($value['file']));
+			$fileSize = FileConvertSize2Human(filesize($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$value['file']));
 			$fileNameA = explode('/',$value['file']);
 			$fileName = ' '.$fileNameA[count($fileNameA)-1];
 			$fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');

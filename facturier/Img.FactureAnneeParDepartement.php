@@ -69,7 +69,7 @@ if (count($lesdata) > 0) {
     foreach($lesdata as $key => $val) {
 	$data[]	= round(($val['counter']/$total),2);
 	$targ[]	= "FactureListe.php?cp_ent=".$val['id_dep'];
-	$alts[]	= number_format($val['counter'],0,',',' ').'&euro; de facturation avec des établissements du département '.$val['nom_dep'];
+	$alts[]	= formatCurencyDisplay($val['counter'],0,' euros').' de facturation avec des établissements du département '.$val['nom_dep'];
 	$lalegend[]	= $val['nom_dep'];
     }
     //print_r($data);
@@ -82,7 +82,7 @@ if (count($lesdata) > 0) {
     $graph->title->SetFont(FF_ARIAL,FS_NORMAL,11);
     $graph->title->SetColor('midnightblue');
     $graph->legend->Pos(0.05,0.1);
-    $graph->subtitle->Set(' '.number_format($total,0,',',' ').' euros ');
+    $graph->subtitle->Set(' '.formatCurencyDisplay($total,0,' euros'));
     $graph->subtitle->SetFont(FF_ARIAL,FS_NORMAL,9);
     $graph->subtitle->SetColor('blue');
 

@@ -1488,3 +1488,14 @@ a.bouton:hover {
     font-size: .75em;
     padding-top: .3em;
 }
+
+div.square {
+    width:14px;
+    height:14px;
+    background-color:#ddd;
+    float:left;
+    margin-right:.5em;
+    -moz-border-radius : 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+}

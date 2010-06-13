@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 /**
  * Classe qui gère les connexions à la base de données
  * pour tout ce qui concerne les pontComptables.

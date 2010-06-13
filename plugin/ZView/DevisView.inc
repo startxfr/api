@@ -195,6 +195,10 @@ function IsNumeric(input)
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.bdcclient);">BDC Client</div>
 		    <div class="field">'.inputTag('text', "BDCclient_dev", '', '', '16', $data['BDCclient_dev']).'</div>
 		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.statut);">Statut</div>
+			<div class="field" style="color: #'.$data['color_stdev'].'"><div class="square" style="background-color:#'.$data['color_stdev'].';">&nbsp;</div> '.$data['nom_stdev'].'</div>
+		</div>
 		</fieldset>
 		<fieldset class="form">
 		<legend>Commentaire sur le devis</legend>
@@ -214,7 +218,7 @@ function IsNumeric(input)
 		<legend>Contacts du devis</legend>
 		<div class="row">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.entreprise);">Entreprise</div>
-		    <div class="field"><a href="#" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',900,200,\'\',\'\',\'resize\',\'Entreprise\');" id="entrepriseDevis" title="voir les informations de l\'entreprise '.$data['nom_ent'].'">'.$data['nom_entH'].'</a></div>
+		    <div class="field"><a href="#" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" id="entrepriseDevis" title="voir les informations de l\'entreprise '.$data['nom_ent'].'">'.$data['nom_entH'].'</a></div>
 		</div>
 		<div class="row">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactTech);">Contact Tech</div>
@@ -485,7 +489,7 @@ function IsNumeric(input)
 	// Quand status Envoyé
 	if (($datas['data']['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
 	    $bouton .= '<a title="Perdu" name="perdu" onclick="return zuno.popup.open(\'Devis.php\', \'devis='.$datas['data']['id_dev'].'&action=Perdu\',500,280);"><img align="middle" title="Perdu" alt="perdu" name="img" src="../img/prospec/devis.perdu.png"/> Devis perdu</a>';
-	    $bouton   .= "<a name=\"valider\" onclick=\"return zuno.popup.open('Devis.php','id_devis=".$datas['data']['id_dev']."&action=valid',900,380,'','','resize','commandeCreate');\">".imageTag('../img/prospec/devis.valid.png','Validé')." Valider</a> ";
+	    $bouton   .= "<a name=\"valider\" onclick=\"return zuno.popup.open('Devis.php','id_devis=".$datas['data']['id_dev']."&action=valid',950,380,'','','resize','commandeCreate');\">".imageTag('../img/prospec/devis.valid.png','Validé')." Valider</a> ";
 	}
 	// Clonage
 	if(verifDroitsAuto('devis', 25, $datas['data']['commercial_dev']))
@@ -781,7 +785,7 @@ function IsNumeric(input)
 		// Quand status Envoyé
 		elseif (($v['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
 		    $action .= '<a title="Perdu" name="perdu" onclick="ChangeDevisAction(\'Perdu\');ChangeDevisID(\''.$v['id_dev'].'\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\');"><img align="middle" title="Perdu" alt="perdu" name="img" src="'.$suffixeLink.'img/prospec/devis.perdu.png"/></a>';
-		    $action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',900,380);\">".imageTag($suffixeLink.'img/prospec/devis.valid.png','Validé')."</a> ";
+		    $action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',950,380);\">".imageTag($suffixeLink.'img/prospec/devis.valid.png','Validé')."</a> ";
 		}
 		if (array_key_exists('isRenew',$datas) and $datas['isRenew']) {
 		    if (($v['devisgenere'] != ""))
@@ -824,7 +828,7 @@ function IsNumeric(input)
 		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['contact'].'</td>';
 		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
 		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['titre_dev'].'</td>';
-		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['sommeHT_dev'].' &euro;</td>';
+		$out .= '<td class="right barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.formatCurencyDisplay($v['sommeHT_dev']).'</td>';
 		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['nom_stdev'].'</td>';
 		$out .= '<td class="right">'.$action.'</td>';
 		$out .= '</tr>';
@@ -832,7 +836,8 @@ function IsNumeric(input)
 	    }
 
 	$out .= '</tbody></table>';
-	$out .= $this->ResultGroupActionForm();
+	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'devisHisto');

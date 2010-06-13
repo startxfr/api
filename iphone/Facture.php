@@ -158,7 +158,7 @@ elseif($PC->rcvG['action'] == 'doModifProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont, f.commande_fact from facture f left join entreprise e on e.id_ent=f.entreprise_fact left join contact c on c.id_cont=f.contact_fact where id_fact='".$PC->rcvG['id_fact']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update facture set sommeHT_fact='".$sommeHT."' WHERE id_fact = '".$PC->rcvG['id_fact']."'");
         $temp = $sqlConn->process2();
     }
@@ -220,7 +220,7 @@ elseif($PC->rcvG['action'] == 'doAddProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont, f.commande_fact from facture f left join entreprise e on e.id_ent=f.entreprise_fact left join contact c on c.id_cont=f.contact_fact where id_fact='".$PC->rcvG['id_fact']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update facture set sommeHT_fact='".$sommeHT."' WHERE id_fact = '".$PC->rcvG['id_fact']."'");
         $temp = $sqlConn->process2();
 
@@ -259,7 +259,7 @@ elseif($PC->rcvG['action'] == 'suppProduit') {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont, f.commande_fact from facture f left join entreprise e on e.id_ent=f.entreprise_fact left join contact c on c.id_cont=f.contact_fact where id_fact='".$PC->rcvG['id_fact']."';");
         $infoprod=$sqlConn->process2();
-        $sommeHT = number_format($sommeHT,2,'.','');
+        $sommeHT = formatCurencyDatabase($sommeHT);
         $sqlConn->makeRequeteFree("update facture set sommeHT_fact='".$sommeHT."' WHERE id_fact = '".$PC->rcvG['id_fact']."'");
         $temp = $sqlConn->process2();
 
@@ -962,10 +962,8 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
 
         if ($dev['status_fact'] < 2) {
             $actuTitre = 'Enregistrement de '.$ckoi.' '.$dev['id_fact'];
-            $actuDesc = ucfirst($ckoi).' '.$dev['id_fact'].' vient d\'être enregistré'.$petite.'. '.$pronom.' a une valeur de '.number_format($dev['sommeHT_fact'],2,',',' ').' &euro; HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
+            $actuDesc = ucfirst($ckoi).' '.$dev['id_fact'].' vient d\'être enregistré'.$petite.'. '.$pronom.' a une valeur de '.formatCurencyDisplay($dev['sommeHT_fact']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
         }
-
-
         if($dev['status_aff'] < 3) {
             $inActualiteRec['status_aff'] = '3';
             $bddtmp->makeRequeteUpdate('affaire','id_aff',$dev['id_aff'],array('status_aff'=>$inActualiteRec['status_aff']));

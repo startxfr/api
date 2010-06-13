@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 /**
  * Classe gérant toutes les requètes SQL en rapport avec les factures.
  *
@@ -528,7 +528,7 @@ class factureModel extends GeneralModel {
 	    $data['quantite'] = 1;
 	if($data['remise'] == NULL)
 	    $data['remise'] = 0;
-	$data['prix']=number_format($data['prix'],2,'.','');
+	$data['prix']=formatCurencyDatabase($data['prix']);
 	$sql = $this->makeRequeteInsert('facture_produit', $this->bindVarFactureProduit($data));
 	Logg::loggerInfo('factureModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour la facture '.$data['id_facture'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
@@ -646,7 +646,7 @@ class factureModel extends GeneralModel {
 		$data['datereglement_fact'] = date('Y-m-d');
 		break;
 	}
-	$data['tauxTVA_fact']=number_format($data['tauxTVA_fact'], 1, '.', '');
+	$data['tauxTVA_fact']=formatCurencyDatabase($data['tauxTVA_fact'],1);
 	if($fait == 'creation') {
 	    $sql = $this->makeRequeteInsert($this->sqlTableName, $this->bindVarFacture($data));
 	    Logg::loggerInfo('factureModel::insert() ~ ajout de la facture '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);

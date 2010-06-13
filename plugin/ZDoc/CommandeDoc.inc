@@ -65,16 +65,16 @@ class commandeGnose {
 		    $produit['RefProd'] 	= $produit['id_produit'];
 		    $produit['Description'] = $produit['desc'];
 		    if(substr($produit['quantite'],-3) == '.00')
-			$produit['quantite'] = substr($produit['quantite'],0,-3);
-		    else  $produit['quantite'] = number_format($produit['quantite'],2,',',' ');
+			$produit['quantite'] = formatCurencyDisplay($produit['quantite'],0,'');
+		    else  $produit['quantite'] = formatCurencyDisplay($produit['quantite'],2,'');
 		    if($produit['remise'] > 0) {
 			if(substr($produit['remise'],-3) == '.00')
-			    $produit['remise'] = substr($produit['remise'],0,-3).'%';
-			else  $produit['remise'] = number_format($produit['remise'],2,',',' ').'%';
+			     $produit['remise'] = formatCurencyDisplay($produit['remise'],0,'%');
+			else $produit['remise'] = formatCurencyDisplay($produit['remise'],2,'%');
 		    }
 		    else  $produit['remise'] = '';
-		    $produit['prix'] = number_format($prix,2,',',' ');
-		    $produit['total']= number_format(round($totalRow,2),2,',',' ');
+		    $produit['prix'] = formatCurencyDisplay($prix,2,'');
+		    $produit['total']= formatCurencyDisplay($totalRow,2,'');
 		    $produits[$key] = $produit;
 		    $entreprise = array_merge($produit,$entreprise);
 		    $total += $totalRow;
@@ -82,9 +82,9 @@ class commandeGnose {
 	    }
 	    else Logg::loggerNotice('commandeGnose::CommandeGenerateBDC() ~ Impossible de trouver les produits pour la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
 	    if($type == 'BC' or $type == 'BDL') {
-		$entreprise['totalHT'] = number_format(round($total,2),2,',',' ');
-		$entreprise['totalTVA'] = number_format(round(($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
-		$entreprise['totalTTC'] = number_format(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,',',' ');
+		$entreprise['totalHT'] = formatCurencyDisplay(round($total,2),2,'');
+		$entreprise['totalTVA'] = formatCurencyDisplay(round(($total*$entreprise['tauxTVA_ent']/100),2),2,'');
+		$entreprise['totalTTC'] = formatCurencyDisplay(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,'');
 	    }
 	}
 	else Logg::loggerError('commandeGnose::CommandeGenerateBDC() ~ Impossible de trouver les informations sur la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
@@ -209,25 +209,25 @@ class commandeGnose {
 		    $produit['Description'] = $produit['desc'];
 		    $produit['quantite'] = $quantite;
 		    if(substr($produit['quantite'],-3) == '.00')
-			$produit['quantite'] = substr($produit['quantite'],0,-3);
-		    else  $produit['quantite'] = number_format($produit['quantite'],2,',',' ');
+			$produit['quantite'] = formatCurencyDisplay($produit['quantite'],0,'');
+		    else  $produit['quantite'] = formatCurencyDisplay($produit['quantite'],2,'');
 		    if($produit['remiseF'] > 0) {
 			if(substr($produit['remiseF'],-3) == '.00')
-			    $produit['remiseF'] = substr($produit['remiseF'],0,-3).'%';
-			else  $produit['remiseF'] = number_format($produit['remiseF'],2,',',' ').'%';
+			    $produit['remiseF'] = formatCurencyDisplay($produit['remiseF'],0,'%');
+			else  $produit['remiseF'] = formatCurencyDisplay($produit['remiseF'],2,'%');
 		    }
 		    else  $produit['remiseF'] = '';
-		    $produit['prix'] = number_format($prixfourn,2,',',' ');
-		    $produit['total']= number_format(round($totalRow,2),2,',',' ');
+		    $produit['prix'] = formatCurencyDisplay($prixfourn,2,'');
+		    $produit['total']= formatCurencyDisplay(round($totalRow,2),2,'');
 		    $produits[$key] = $produit;
 		    $entreprise = array_merge($produit,$entreprise);
 		    $total += $totalRow;
 		}
 	    }
 	    else Logg::loggerNotice('commandeGnose::CommandeGenerateBDCF() ~ Impossible de trouver les produits pour la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
-	    $entreprise['totalHT'] = number_format(round($total,2),2,',',' ');
-	    $entreprise['totalTVA'] = number_format(round(($total*$fournisseur['tauxTVA_entF']/100),2),2,',',' ');
-	    $entreprise['totalTTC'] = number_format(round($total+($total*$fournisseur['tauxTVA_entF']/100),2),2,',',' ');
+	    $entreprise['totalHT'] = formatCurencyDisplay(round($total,2),2,'');
+	    $entreprise['totalTVA'] = formatCurencyDisplay(round(($total*$fournisseur['tauxTVA_entF']/100),2),2,'');
+	    $entreprise['totalTTC'] = formatCurencyDisplay(round($total+($total*$fournisseur['tauxTVA_entF']/100),2),2,'');
 	}
 	else Logg::loggerError('commandeGnose::CommandeGenerateBDCF() ~ Impossible de trouver les informations sur la commande '.$id_cmd,$id_cmd,__FILE__.'@'.__LINE__);
 
@@ -411,11 +411,11 @@ class commandeGnose {
 		    $dev['daterecord_fact'] = ($dev['daterecord_fact'] == '') 	? '' : strftime('%d/%m/%y',strtotime($dev['daterecord_fact']));
 		    $dev['dateenvoi_fact']	= ($dev['dateenvoi_fact'] == '') 	? '' : strftime("%d/%m/%y",strtotime($dev['dateenvoi_fact']));
 		    $dev['datereglement_fact'] = ($dev['datereglement_fact'] == '') ? '' : strftime("%d/%m/%y",strtotime($dev['datereglement_fact']));
-		    $dev['budget_aff'] 	= ($dev['budget_aff'] == '') 		? '' : number_format($dev['budget_aff'],0,',',' ');
-		    $dev['sommeHT_dev'] 	= ($dev['sommeHT_dev'] == '') 	? '' : number_format($dev['sommeHT_dev'],0,',',' ');
-		    $dev['sommeHT_cmd'] 	= ($dev['sommeHT_cmd'] == '') 	? '' : number_format($dev['sommeHT_cmd'],0,',',' ');
-		    $dev['sommeFHT_cmd'] 	= ($dev['sommeHT_cmd'] == '') 	? '' : number_format($dev['sommeHT_cmd'],0,',',' ');
-		    $dev['sommeHT_fact'] 	= ($dev['sommeHT_fact'] == '') 	? '' : number_format($dev['sommeHT_fact'],0,',',' ');
+		    $dev['budget_aff'] 	= ($dev['budget_aff'] == '') 		? '' : formatCurencyDisplay($dev['budget_aff'],0,'');
+		    $dev['sommeHT_dev'] 	= ($dev['sommeHT_dev'] == '') 	? '' : formatCurencyDisplay($dev['sommeHT_dev'],2,'');
+		    $dev['sommeHT_cmd'] 	= ($dev['sommeHT_cmd'] == '') 	? '' : formatCurencyDisplay($dev['sommeHT_cmd'],2,'');
+		    $dev['sommeFHT_cmd'] 	= ($dev['sommeHT_cmd'] == '') 	? '' : formatCurencyDisplay($dev['sommeHT_cmd'],2,'');
+		    $dev['sommeHT_fact'] 	= ($dev['sommeHT_fact'] == '') 	? '' : formatCurencyDisplay($dev['sommeHT_fact'],2,'');
 		    foreach ($dev as $in => $out) {
 			$input[] = "/\{".$in."\}/";
 			$output[] = $out;

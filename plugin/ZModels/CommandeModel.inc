@@ -1,5 +1,5 @@
 <?php
-include_once('GeneralModel.inc');
+loadPlugin('ZModels/GeneralModel');
 /**
  * Classe gérant toutes les requètes SQL en rapport avec les commande.
  * @author Nicolas Mannocci
@@ -475,7 +475,7 @@ class commandeModel extends GeneralModel {
 	    $data['remise'] = 0;
 	if($data['remiseF'] == NULL)
 	    $data['remiseF'] = 0;
-	$data['prix']=number_format($data['prix'],2,'.','');
+	$data['prix']=formatCurencyDatabase($data['prix']);
 	$sql = $this->makeRequeteInsert('commande_produit',$this->bindVarCommandeProduit($data));
 	Logg::loggerInfo('commandeModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour la commande '.$data['id_commande'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
@@ -548,7 +548,7 @@ class commandeModel extends GeneralModel {
     public function insert($data, $fait = 'creation', $prod = array()) {
 	$data['datemodif_cmd']=date('Y-m-d');
 	$data['daterecord_cmd']=date('Y-m-d');
-	$data['tva_cmd']=number_format($data['tva_cmd'], 1, '.', '');
+	$data['tva_cmd']=formatCurencyDatabase($data['tva_cmd'],1);
 	if($fait == 'creation') {
 	    $sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarCommande($data));
 	    Logg::loggerInfo('commandeModel::insert() ~ ajout de la commande '.$data['id_cmd'],$sql,__FILE__.'@'.__LINE__);
@@ -592,7 +592,7 @@ class commandeModel extends GeneralModel {
     public function update($data,$id_cmd) {
 	$data['datemodif_cmd']=date('Y-m-d');
 	if(array_key_exists('tva_cmd', $data))
-	    $data['tva_cmd']=number_format($data['tva_cmd'], 1, '.', '');
+	    $data['tva_cmd']=formatCurencyDatabase($data['tva_cmd'],1);
 	if(array_key_exists('sommeHT_cmd', $data))
 	    $data['sommeHT_cmd']=prepareNombreTraitement($data['sommeHT_cmd']);
 	if(array_key_exists('sommeFHT_cmd', $data))
@@ -762,10 +762,10 @@ class commandeModel extends GeneralModel {
 	}
 	elseif($quoi == 2) {
 	    $this->makeRequeteFree("SELECT *
-					  FROM `commande_produit`, fournisseur
-					  LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
-					  LEFT JOIN contact ON contact.id_cont = fournisseur.contactComm_fourn
-					  WHERE id_fourn = fournisseur AND `id_commande` = '".$id."'");
+		  FROM `commande_produit`, fournisseur
+		  LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
+		  LEFT JOIN contact ON contact.id_cont = fournisseur.contactComm_fourn
+		  WHERE id_fourn = fournisseur AND `id_commande` = '".$id."'");
 	    $fournisseurs = $this->process();
 	    if (count($fournisseurs) > 0) {
 		foreach ($fournisseurs as $key => $fournisseur) {
@@ -779,12 +779,12 @@ class commandeModel extends GeneralModel {
 	}
 	elseif($quoi == '3') {
 	    $this->makeRequeteFree("SELECT *
-						  FROM  fournisseur
-						  LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
-						  LEFT JOIN contact ON contact.id_cont = fournisseur.contactComm_fourn, `commande_produit`
-						  LEFT JOIN produit ON produit.id_prod = commande_produit.id_produit
-						  LEFT JOIN ref_prodfamille ON ref_prodfamille.id_prodfam = produit.famille_prod
-						  WHERE id_fourn = fournisseur AND `id_commande` = '".$id."'");
+		  FROM  fournisseur
+		  LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
+		  LEFT JOIN contact ON contact.id_cont = fournisseur.contactComm_fourn, `commande_produit`
+		  LEFT JOIN produit ON produit.id_prod = commande_produit.id_produit
+		  LEFT JOIN ref_prodfamille ON ref_prodfamille.id_prodfam = produit.famille_prod
+		  WHERE id_fourn = fournisseur AND `id_commande` = '".$id."'");
 	    $data = $this->process();
 	}
 	return $data;
@@ -797,12 +797,12 @@ class commandeModel extends GeneralModel {
      */
     private function getFournisseurs($id) {
 	$this->makeRequeteFree("SELECT *
-						  FROM  fournisseur
-						  LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
-						  LEFT JOIN contact ON contact.id_cont = fournisseur.contactComm_fourn, `commande_produit`
-						  LEFT JOIN produit ON produit.id_prod = commande_produit.id_produit
-						  LEFT JOIN ref_prodfamille ON ref_prodfamille.id_prodfam = produit.famille_prod
-						  WHERE id_fourn = fournisseur AND `id_commande` = '".$id."'");
+	      FROM  fournisseur
+	      LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
+	      LEFT JOIN contact ON contact.id_cont = fournisseur.contactComm_fourn, `commande_produit`
+	      LEFT JOIN produit ON produit.id_prod = commande_produit.id_produit
+	      LEFT JOIN ref_prodfamille ON ref_prodfamille.id_prodfam = produit.famille_prod
+	      WHERE id_fourn = fournisseur AND `id_commande` = '".$id."'");
 	return $this->process();
     }
 
@@ -820,25 +820,12 @@ class commandeModel extends GeneralModel {
 	$res = $bddtmp->process();
 	$cmd = $res[0];
 	// Scoring projet difficulty
-	if((int) $cmd['pourcent_stcmd'] == 100) {
-	    $score = 100;
-	    $desc = "Commande terminée. Derniére action éffectuée :".$cmd['nom_stcmd'];
-	    $color = '';
-	}
-	elseif((int) $cmd['pourcent_stcmd'] == 0) {
-	    $score = 0;
-	    $desc = "Commande cloturée. Pas de scoring possible";
-	    $color = '';
-	}
-	else {
-	    $score = $cmd['pourcent_stcmd'];
-	    $desc = $cmd['nom_stcmd'];
-	    $color = $cmd['color_stcmd'];
-	}
-
+	$score = $cmd['pourcent_stcmd'];
+	$desc = $cmd['nom_stcmd'];
+	$color = $cmd['color_stcmd'];
 	$out['score'] = $score;
 	if($bureau)
-	    $out['img'] = imageTag('Img.CommandeScore.php?score='.$score,$score.'%');
+	     $out['img'] = imageTag('Img.CommandeScore.php?score='.$score,$score.'%');
 	else $out['img'] = imageTag('../Img.CommandeScore.php?score='.$score,$score.'%');
 	$out['color'] = $color;
 	$out['desc'] = $desc;

@@ -69,7 +69,7 @@ class sendControl {
 		$mess.= 'merci de fournir un document<br/>';
 		$fields[] = 'file';
 	    }
-	    elseif(!file_exists($value['file'])) {
+	    elseif(!file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$value['file'])) {
 		$mess.= 'Le document choisi n\'existe plus<br/>';
 		$fields[] = 'file';
 	    }
@@ -104,7 +104,7 @@ class sendControl {
 		$mess.= 'merci de fournir un document<br/>';
 		$fields[] = 'file';
 	    }
-	    elseif(!file_exists($value['file'])) {
+	    elseif(!file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.pj'].$value['file'])) {
 		$mess.= 'Le document choisi n\'existe plus<br/>';
 		$fields[] = 'file';
 	    }

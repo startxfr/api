@@ -113,7 +113,7 @@ class affaireView
 		if($value['echeance_aff'] != NULL)
 			$echeance = '<li>Arrive à échance le : <small>'.strftime("%A %d %B %G &agrave %R", strtotime($value['echeance_aff'])).'</small></li>';
 
-		$budget	 = ($value['budget_aff'] != NULL) ? '<li>Budget de l\'affaire : <small>'.number_format($value['budget_aff'],2,',',' ').' &euro;</small></li>' : '';
+		$budget	 = ($value['budget_aff'] != NULL) ? '<li>Budget de l\'affaire : <small>'.formatCurencyDisplay($value['budget_aff']).'</small></li>' : '';
 		$commentaire = ($value['comm_aff'] != NULL) ? '<li>Commentaire : <small>'.$value['comm_aff'].'</small></li>' : '';
 		$entreprise	 = ($value['entreprise_aff'] != NULL) ? '<li>'.contactEntrepriseView::contactLinkSimple($value).'</li>' : '';
 		$contact	 = ($value['contact_aff'] != NULL) ? '<li>'.contactParticulierView::contactLinkSimple($value).'</li>' : '';
@@ -451,7 +451,7 @@ class affaireView
 		if($value['echeance_aff'] != NULL)
 			$echeance = '<li>Arrive à échance le : <small>'.strftime("%A %d %B %G &agrave %R", strtotime($value['echeance_aff'])).'</small></li>';
 
-		$budget	 = ($value['budget_aff'] != NULL) ? '<li>Budget de l\'affaire : <small>'.number_format($value['budget_aff'],2,',',' ').' &euro;</small></li>' : '';
+		$budget	 = ($value['budget_aff'] != NULL) ? '<li>Budget de l\'affaire : <small>'.formatCurencyDisplay($value['budget_aff']).'</small></li>' : '';
 		$commentaire = ($value['comm_aff'] != NULL) ? '<li>Commentaire : <small>'.$value['comm_aff'].'</small></li>' : '';
 		$entreprise	 = ($value['entreprise_aff'] != NULL) ? '<li>'.contactEntrepriseView::contactLinkSimple($value).'</li>' : '';
 		$contact	 = ($value['contact_aff'] != NULL) ? '<li>'.contactParticulierView::contactLinkSimple($value).'</li>' : '';
