@@ -140,7 +140,7 @@ class FactureFournisseurModel extends GeneralModel {
                 left join ref_statusfacturefournisseur on id_stfactfourn = status_factfourn ".$where. " ".$order." Limit ".$from." , ".$limit);
 	}
 	else {
-	    $this->makeRequeteFree("Select COUNT(*)".
+	    $this->makeRequeteFree("Select COUNT(*) AS counter".
 		    " from facture_fournisseur
                 left join entreprise on id_ent = entreprise_factfourn
                 left join contact on id_cont = contact_factfourn

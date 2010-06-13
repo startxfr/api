@@ -294,7 +294,7 @@ class affaireView extends generalView {
     private function interneSearch($datas) {
 	$tag['action']   = '';
 	//Bouton de l'echeance
-	$tag['echeance_aff']  =inputDateTag('','echeance_aff',$valeurs['echeance_aff']);
+	$tag['echeance_aff']  =inputDateTag('','echeance_aff',$datas['echeance_aff']);
 	$bddtmp = new Bdd('');
 	$bddtmp->makeRequeteFree('SELECT * FROM user WHERE actif = \'1\' ORDER BY nom ASC');
 	$res = $bddtmp->process();
@@ -304,19 +304,19 @@ class affaireView extends generalView {
 	    }
 	}
 	$tag['FormName'] = "SearchAffaire";
-	$tag['commercial_aff'] = selectTag('commercial_aff',$champ,$valeurs['commercial_aff']);
-	$tag['cp_ent']= HtmlForm::addAutoSelect('cp_ent','ref_departement',$valeurs['cp_ent'],'','','',$GLOBALS['PropsecConf']['DBPool']);
-	$tag['typeproj_aff']= HtmlForm::addAutoSelect('typeproj_aff','ref_typeproj',$valeurs['typeproj_aff'],'','','',$GLOBALS['PropsecConf']['DBPool']);
-	$tag['status_aff']= HtmlForm::addAutoSelect('status_aff','ref_statusaffaire',$valeurs['status_aff'],'','',' ORDER by id_staff ASC',$GLOBALS['PropsecConf']['DBPool']);
-	$tag['titre_aff'] 	= inputTag('text','titre_aff','','',20,$valeurs['titre_aff']);
-	$tag['id_aff'] 	= inputTag('text','id_aff','','',20,$valeurs['id_aff']);
-	$tag['nom_ent'] = inputTag('text','nom_ent','','',20,$valeurs['nom_ent']);
+	$tag['commercial_aff'] = selectTag('commercial_aff',$champ,$datas['commercial_aff']);
+	$tag['cp_ent']= HtmlForm::addAutoSelect('cp_ent','ref_departement',$datas['cp_ent'],'','','',$GLOBALS['PropsecConf']['DBPool']);
+	$tag['typeproj_aff']= HtmlForm::addAutoSelect('typeproj_aff','ref_typeproj',$datas['typeproj_aff'],'','','',$GLOBALS['PropsecConf']['DBPool']);
+	$tag['status_aff']= HtmlForm::addAutoSelect('status_aff','ref_statusaffaire',$datas['status_aff'],'','',' ORDER by id_staff ASC',$GLOBALS['PropsecConf']['DBPool']);
+	$tag['titre_aff'] 	= inputTag('text','titre_aff','','',20,$datas['titre_aff']);
+	$tag['id_aff'] 	= inputTag('text','id_aff','','',20,$datas['id_aff']);
+	$tag['nom_ent'] = inputTag('text','nom_ent','','',20,$datas['nom_ent']);
 	$tag['ImgChart'] = shell_exec('php ../Img.AffaireChart.php');
-	if ($valeurs['actif_aff'] == '0')
+	if ($datas['actif_aff'] == '0')
 	    $option = '';
 	else $option = 'checked="checked"';
 	$tag['actif_aff'] = inputTag('checkbox','actif_aff','','','','1',$option);
-	if ($valeurs['archived_aff'] == '1')
+	if ($datas['archived_aff'] == '1')
 	    $option = 'checked="checked"';
 	else	$option = '';
 	$tag['archived_aff'] = inputTag('checkbox','archived_aff','','','','1',$option);
@@ -390,9 +390,11 @@ class affaireView extends generalView {
      */
     private function Result($datas) {
 	$suffixeLink = '../';
+	$modHistorique = false;
 	$linkOrderFunction = 'tagLinkOrderSwitch';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
+	    $modHistorique = true;
 	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
 	}
 	$out = "<script type=\"text/javascript\">
@@ -408,7 +410,8 @@ class affaireView extends generalView {
 		    <input type="hidden" name="exportType" value="" id="resultAffaireExportType" />
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
-	$out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormAffaire\');"/></th>';
+	if(!$modHistorique)
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormAffaire\');"/></th>';
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
 	$out .= '<th>'.$this->$linkOrderFunction('Titre','titre_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
@@ -417,7 +420,8 @@ class affaireView extends generalView {
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="barre" style="width:1%; white-space: nowrap">'.$this->$linkOrderFunction('Actif','actif_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="barre" style="width:1%; white-space: nowrap">'.$this->$linkOrderFunction('Archivé','archived_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="last center">Actions</th>';
+	if(!$modHistorique)
+	    $out .= '<th class="last center">Actions</th>';
 	$out .= '</tr>';
 	$alternance =  0;
 	foreach($datas['data'] as $proj) {
@@ -457,7 +461,8 @@ class affaireView extends generalView {
 	    else $imgArchive = imageTag($suffixeLink.'img/unvalid.png','Affaire non-archivée');
 
 	    $out .= '<tr class="altern'.$alternance.'">';
-	    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$proj['id_aff'].'" checked="checked"/></td>';
+	    if(!$modHistorique)
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$proj['id_aff'].'" checked="checked"/></td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'"><b>'.$proj['id_aff'].'</b></td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'">'.$proj['titre_aff'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'">'.$proj['contact'].'</td>';
@@ -466,17 +471,18 @@ class affaireView extends generalView {
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$proj['color_staff'].' !important;" '.$actionJSLigne.'\'"><div class="square" style="background-color:#'.$proj['color_staff'].';">&nbsp;</div>'.$proj['nom_staff'].'</td>';
 	    $out .= '<td class="barre center" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$imgActif.'</td>';
 	    $out .= '<td class="barre center" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$imgArchive.'</td>';
-	    $out .= '<td class="right">'.$action.'</td>';
+	    if(!$modHistorique)
+		$out .= '<td class="right">'.$action.'</td>';
 	    $out .= '</tr>';
 	    $alternance = ($alternance+1) % 2;
 	}
 
 	$out .= '</tbody></table>';
-	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	if(!$modHistorique)
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaireHisto');
+	if($modHistorique)
+	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaireHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaire');
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeAffaireResultPage",$suffixeLink);
 	loadPlugin(array('OOConverter'));
@@ -485,7 +491,7 @@ class affaireView extends generalView {
 	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $bouton = '';
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeAffaire",'');
     }

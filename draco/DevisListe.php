@@ -66,7 +66,7 @@ if($PC->rcvP['action'] == 'searchDevis') {
     else	$datas['from'] = '0';
     $req = new devisModel();
     $result = $req->getDataForSearchWeb('', $datas['from'], 'ALL', $ordre, $data);
-    $datas['total'] = $result[1][0]['COUNT(*)'];
+    $datas['total'] = $result[1][0]['counter'];
     if($datas['limit'] == 'ALL') {
 	$datas['limit'] = $datas['total'];
 	$datas['from'] = 0;
@@ -233,7 +233,7 @@ else {
     $datas['orderSens'] = 'DESC';
     $req = new devisModel();
     $total = $req->getDataForSearchWeb('', '0', 'ALL','ORDER BY id_dev DESC',$data);
-    $total = $total[1][0]['COUNT(*)'];
+    $total = $total[1][0]['counter'];
     $datas['total'] = $total;
     $result = $req->getDataForSearchWeb('',$datas['from'],$datas['limit'],'ORDER BY id_dev DESC',$data);
     $result = $result[1];

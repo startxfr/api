@@ -8,8 +8,11 @@ class projetView extends generalView {
     }
 
     private function Result($datas) {
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	$modHistorique = false;
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
+	    $modHistorique = true;
+	}
 	else $suffixeLink = '../';
 
 	$out = '<div class="blockTable"><table cellspacing="0"><tbody>';
@@ -19,9 +22,10 @@ class projetView extends generalView {
 			<th class="center barre">Contact</th>
 			<th>Titre</th>
 			<th>Montant HT</th>
-			<th class="barre">Status</th>
-			<th class="last center">Actions</th>
-		</tr>';
+			<th class="barre">Status</th>';
+	if(!$modHistorique)
+	    $out .= '<th class="last center">Actions</th>';
+	$out .= '</tr>';
 	$alternance =  0;
 	foreach($datas['data'] as $proj) {
 	    $action = '';
@@ -66,14 +70,15 @@ class projetView extends generalView {
 	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$proj['titre_proj'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$proj['budget_proj'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" '.$actionJSLigne.'\'">'.$proj['nom_typro'].'</td>';
-	    $out .= '<td class="right">'.$action.'</td>';
+	    if(!$modHistorique)
+		$out .= '<td class="right">'.$action.'</td>';
 	    $out .= '</tr>';
 	    $alternance = ($alternance++ % 2);
 	}
 
 	$out .= '</tbody></table></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'projetHisto');
+	if($modHistorique)
+	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'projetHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'projet');
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProjetResultPage",$suffixeLink);
 
@@ -82,7 +87,7 @@ class projetView extends generalView {
 	$bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="ChangeProjetAction(\'exportTableur\');ChangeFrom(this.value);ChangeLimit(\'ALL\'); document.searchProjet.submit();" ').'</div>';
 	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
 
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $bouton = '';
 	return generateZBox($titre,$titre,$out,$bouton,"searchListe",'');
     }

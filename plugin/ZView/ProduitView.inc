@@ -321,8 +321,11 @@ class ProduitViewOriginal extends generalView {
      * @return string Le code HTML généré
      */
     private function Result($datas,$option = null) {
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	$modHistorique = false;
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
+	    $modHistorique = true;
+	}
 	else $suffixeLink = '../';
 
 	$out .= '<div class="blockTable">
@@ -330,9 +333,10 @@ class ProduitViewOriginal extends generalView {
 		    <input type="hidden" name="action" value="" id="resultProduitAction" />
 		    <input type="hidden" name="exportType" value="" id="resultProduitExportType" />
 		    <table cellspacing="0"><tbody>';
-	$out .= '<tr class="titre">
-			<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormProduit\');"/></th>
-			<th class="bg barre">Ref</th>
+	$out .= '<tr class="titre">';
+	if(!$modHistorique)
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormProduit\');"/></th>';
+	$out .= '<th class="bg barre">Ref</th>
 			<th class="center barre">Nom</th>
 			<th class="center barre">Famille</th>
 			<th>Description</th>
@@ -355,7 +359,8 @@ class ProduitViewOriginal extends generalView {
 		$imgActif = imageTag($suffixeLink.'img/valid.png','Produit en vente');
 	    else $imgActif = imageTag($suffixeLink.'img/unvalid.png','Produit désactivé');
 	    $out .= '<tr class="altern'.($alternance % 2).'">';
-	    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$result['id_prod'].'" checked="checked"/></td>';
+	    if(!$modHistorique)
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$result['id_prod'].'" checked="checked"/></td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['id_prod'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['nom_prod'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['treePathKey'].' '.$result['nom_prodfam'].'</td>';
@@ -369,20 +374,17 @@ class ProduitViewOriginal extends generalView {
 	}
 
 	$out .= '</tbody></table>';
-	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	if(!$modHistorique)
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produitHisto');
+	if($modHistorique)
+	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produitHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produit');
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $bouton = '';
-	else
-	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProduitResultPage",$suffixeLink);
+	$bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProduitResultPage",$suffixeLink);
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 	$bouton .= '<a name="synchroProduit" onclick="synchToSB();"><img alt="produit" src="../img/prospec/produit.png"/> Synchroniser les produits sur Superbase</a>';
 
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $bouton = '';
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeProduit",'');
     }

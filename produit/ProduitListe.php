@@ -62,7 +62,7 @@ if($PC->rcvP['action'] == 'searchProduit') {
         $datas['from'] = '0';
     $req = new produitModel();
     $result = $req->getDataForSearchProduitWeb('', $datas['from'], 'ALL', $ordre, $data);
-    $datas['total'] = $result[1][0]['COUNT(distinct id_prod)'];
+    $datas['total'] = $result[1][0]['counter'];
     if($datas['total'] == '')
         $datas['total'] = '0';
     if($datas['limit'] == 'ALL') {
@@ -183,7 +183,7 @@ else {
         $data['stillAvailable_prod'] = 1;
     $req = new produitModel();
     $total = $req->getDataForSearchProduitWeb('', '0', 'ALL', 'ORDER BY nom_prod', $data);
-    $total = $total[1][0]['COUNT(distinct id_prod)'];
+    $total = $total[1][0]['counter'];
     $datas['total'] = $total;
     $result = $req->getDataForSearchProduitWeb('', '0', '30', 'ORDER BY nom_prod', $data);
     $result = $result[1];

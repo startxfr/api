@@ -632,7 +632,7 @@ elseif($PC->rcvG['action'] == 'inputProduitResult') {
     $limit = $_SESSION['user']['config']['LenghtSearchDevis'];
     $produit = $info->getDataForSearchProd($PC->rcvP['search'],$limit,$from);
     $total = $info->getDataForSearchProd($PC->rcvP['search']);
-    $total = $total[1][0]["COUNT(*)"];
+    $total = $total[1][0]["counter"];
     if($produit[0]) {
         $out .= '<ul id="searchResultInputProduitUl">';
         $out .= devisView::searchInputResultRowProd($produit[1],$_SESSION['searchProduitLayerBackTo'],$_SESSION['searchProduitTagsBackTo']);

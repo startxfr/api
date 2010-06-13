@@ -40,7 +40,7 @@ class factureModel extends GeneralModel {
     public function getDataForSearch($search,$limit = 10, $from = 0, $type = 'Facture', $plus = '') {
 	$qTag = " LIKE '%".$search."%' ";
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*) " .
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter " .
 		    "FROM facture f " .
 		    "LEFT JOIN entreprise ON entreprise.id_ent = f.entreprise_fact
 			 LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
@@ -117,9 +117,9 @@ class factureModel extends GeneralModel {
 			LEFT JOIN ref_typeproj ON ref_typeproj.id_typro = affaire.projet_aff
 			LEFT JOIN ref_statusfacture rsd ON rsd.id_stfact = facture.status_fact
 			LEFT JOIN ref_pays rfp ON rfp.id_pays = facture.pays_fact
-			LEFT JOIN user ON user.login = facture.commercial_fact $where $order LIMIT $from , $limit ");
+			LEFT JOIN user ON user.login = facture.commercial_fact $where  GROUP BY id_fact $order LIMIT $from , $limit ");
 	else
-	    $this->makeRequeteFree("SELECT COUNT(*)
+	    $this->makeRequeteFree("SELECT COUNT(DISTINCT id_fact) AS counter
 			FROM facture
 			LEFT JOIN entreprise ON entreprise.id_ent = facture.entreprise_fact
 			LEFT JOIN ref_activite ON ref_activite.id_act = entreprise.activite_ent
@@ -844,7 +844,7 @@ class factureModel extends GeneralModel {
      */
     public function getDataByMontant($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY sommeHT_fact DESC ".$plus);
 	else $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ".$plus." ORDER BY sommeHT_fact DESC, id_fact DESC LIMIT $from , $maxi");
@@ -860,7 +860,7 @@ class factureModel extends GeneralModel {
      */
     public function getDataByCreation($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY daterecord_fact DESC ".$plus);
 	else $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ".$plus." ORDER BY daterecord_fact DESC, id_fact DESC LIMIT $from , $maxi");
@@ -876,7 +876,7 @@ class factureModel extends GeneralModel {
      */
     public function getDataByEntreprise($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY entreprise_fact ASC ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (entreprise_fact IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN entreprise ON entreprise.id_ent=facture.entreprise_fact ".$plus." ORDER BY temp DESC, entreprise.nom_ent ASC, id_fact DESC LIMIT $from , $maxi");
@@ -892,7 +892,7 @@ class factureModel extends GeneralModel {
      */
     public function getDataByContact($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY contact_fact ASC ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (contact_fact IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN contact ON contact.id_cont=facture.contact_fact ".$plus." ORDER BY temp DESC, contact.nom_cont ASC, id_fact DESC LIMIT $from , $maxi");

@@ -40,25 +40,25 @@ if ($PC->rcvP['action'] == 'search') {
 	{
 		case 'entreprise' :
 		$total = $req->getDataForSearchEntWeb($PC->rcvP['recherche'], 'ALL');
-		$total = $total[1][0]['COUNT(*)'];
+		$total = $total[1][0]['counter'];
 		$PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
 		$result = $req->getDataForSearchEntWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
 		break;
 		case 'contact' : 
 		$total = $req->getDataForSearchContWeb($PC->rcvP['recherche'], 'ALL');
-		$total = $total[1][0]['COUNT(*)'];
+		$total = $total[1][0]['counter'];
 		$PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
 		$result = $req->getDataForSearchContWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
 		break;
 		case 'appel' : 
 		$total = $req->getDataForSearchAppWeb($PC->rcvP['recherche'], 'ALL');
-		$total = $total[1][0]['COUNT(*)'];
+		$total = $total[1][0]['counter'];
 		$PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
 		$result = $req->getDataForSearchAppWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
 		break;
 		default:
 		$total = $req->getDataForSearchGlobal($PC->rcvP['recherche'], 'ALL','0', $PC->rcvP['order'], $PC->rcvP['orderSens']);
-		$total = $total[1][0]['COUNT(*)'];
+		$total = $total[1][0]['counter'];
 		$PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
 		$result = $req->getDataForSearchGlobal($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
 		break;
@@ -196,7 +196,7 @@ else
 {
 	$req = new contactEntrepriseModel();
 	$total = $req->getDataForSearchGlobal('', 'ALL');
-	$total = $total[1][0]['COUNT(*)'];
+	$total = $total[1][0]['counter'];
 	$datas['total'] = $total;
 	$result = $req->getDataForSearchGlobal('', '30');
 	$result = $result[1];

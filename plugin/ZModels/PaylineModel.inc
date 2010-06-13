@@ -56,7 +56,7 @@ class PaylineModel extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function saveInfosContact($array) {
-	$this->makeRequeteFree("select COUNT(*) from contact_payline where contact_cp = '".$array['id']."'");
+	$this->makeRequeteFree("SELECT COUNT(*) AS counter FROM contact_payline WHERE contact_cp = '".$array['id']."'");
 	$c = $this->process2();
 	if(array_key_exists("nom_cont", $array) and $array["nom_cont"] != "")
 	    $in["nom_cp"] = $array['nom_cont'];
@@ -72,7 +72,7 @@ class PaylineModel extends GeneralModel {
 	    $in['cvv_cp'] = $this->pack_str($this->zEncrypt($array['cvvCarte_cont']));
 	if(array_key_exists("carte", $array) and $array["carte"] != "")
 	    $in['fin_cp'] = substr($array['carte'], strlen($array['carte'])-6, 6);
-	if($c[1][0]['COUNT(*)'] == 0) {
+	if($c[1][0]['counter'] == 0) {
 	    $in['contact_cp'] = $array['id'];
 	    $sql = $this->makeRequeteInsert('contact_payline', $in);
 	}

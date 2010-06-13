@@ -41,7 +41,7 @@ class commandeModel extends GeneralModel {
     public function getDataForSearch($search,$limit = 10, $from = 0, $plus = '') {
 	$qTag = " LIKE '%".$search."%' ";
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*)
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter
 		    FROM commande
 		    LEFT JOIN entreprise ON entreprise.id_ent = commande.entreprise_cmd
 		    LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
@@ -94,9 +94,9 @@ class commandeModel extends GeneralModel {
 			LEFT JOIN affaire ON affaire.id_aff = devis.affaire_dev
 			LEFT JOIN ref_statuscommande rsd ON rsd.id_stcmd = c.status_cmd
 			LEFT JOIN ref_pays rfp ON rfp.id_pays = c.paysdelivery_cmd
-			LEFT JOIN user ON user.login = c.commercial_cmd $where id_cmd IS NOT NULL $order LIMIT $from , $limit ");
+			LEFT JOIN user ON user.login = c.commercial_cmd $where id_cmd IS NOT NULL GROUP BY id_cmd $order LIMIT $from , $limit ");
 	else
-	    $this->makeRequeteFree("SELECT COUNT(*)
+	    $this->makeRequeteFree("SELECT COUNT(DISTINCT id_cmd) AS counter
 			FROM commande c
 			LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd
 			LEFT JOIN contact c2 ON c2.id_cont = c.contact_achat_cmd
@@ -162,11 +162,12 @@ class commandeModel extends GeneralModel {
 	else $list = '(\'fakeNull\')';
 	if($type == 'COUNT')
 	    $select = 'SELECT COUNT(*) AS counter';
-	else $select = 'SELECT titre_cmd, nom_ent, nom_tyent, type_ent, nom_cont, prenom_cont, civ_cont, id_cmd ';
+	else $select = 'SELECT titre_cmd, nom_ent, nom_tyent, type_ent, nom_cont, prenom_cont, civ_cont, id_cmd, ref_statuscommande.* ';
 	$this->makeRequeteFree($select." FROM commande
 			LEFT JOIN entreprise ON entreprise.id_ent = commande.entreprise_cmd 
 			LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
 			LEFT JOIN contact ON contact.id_cont = commande.contact_cmd
+			LEFT JOIN ref_statuscommande ON ref_statuscommande.id_stcmd = commande.status_cmd
 			WHERE id_cmd IN $list $order LIMIT 0, $limit ");
 	return $this->process2();
     }
@@ -653,7 +654,7 @@ class commandeModel extends GeneralModel {
     public function getDataByMontant($maxi = NULL, $from = 0, $plus = '') {
 
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY sommeFHT_cmd DESC ".$plus);
 	else $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ".$plus." ORDER BY sommeFHT_cmd DESC, id_cmd DESC LIMIT $from , $maxi");
@@ -672,7 +673,7 @@ class commandeModel extends GeneralModel {
     public function getDataByCreation($maxi = NULL, $from = 0, $plus = '') {
 
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY daterecord_cmd DESC ".$plus);
 	else $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ".$plus." ORDER BY daterecord_cmd DESC, id_cmd DESC LIMIT $from , $maxi");
@@ -690,7 +691,7 @@ class commandeModel extends GeneralModel {
     public function getDataByEntreprise($maxi = NULL, $from = 0, $plus = '') {
 
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY entreprise_cmd ASC ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (entreprise_cmd IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN entreprise ON entreprise.id_ent=commande.entreprise_cmd ".$plus." ORDER BY temp DESC, entreprise.nom_ent ASC, id_cmd DESC LIMIT $from , $maxi");
@@ -708,7 +709,7 @@ class commandeModel extends GeneralModel {
     public function getDataByContact($maxi = NULL, $from = 0, $plus = '') {
 
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY contact_cmd ASC ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (contact_cmd IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN contact ON contact.id_cont=commande.contact_cmd ".$plus." ORDER BY temp DESC, contact.nom_cont ASC, id_cmd DESC LIMIT $from , $maxi");

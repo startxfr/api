@@ -31,7 +31,7 @@ class searchModel extends GeneralModel {
 				  LEFT JOIN ref_pays ON ref_pays.id_pays = entreprise.pays_ent
 				  WHERE nom_ent LIKE '%$search%' OR ville_ent LIKE '%$search%'";
 	if($count != 'no')
-	    $this->makeRequeteFree("SELECT COUNT(*) $queryBody");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter $queryBody");
 	else  $this->makeRequeteFree("SELECT * $queryBody ORDER BY nom_ent ASC LIMIT $from , $limit");
 	return $this->process2();
     }
@@ -49,7 +49,7 @@ class searchModel extends GeneralModel {
 				  LEFT JOIN ref_fonction ON ref_fonction.id_fct = contact.fonction_cont
 				  WHERE nom_cont LIKE '%$search%' OR prenom_cont LIKE '%$search%'  OR nom_fct LIKE '%$search%'";
 	if($count != 'no')
-	    $this->makeRequeteFree("SELECT COUNT(*) $queryBody");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter $queryBody");
 	else  $this->makeRequeteFree("SELECT * $queryBody ORDER BY nom_cont ASC LIMIT $from , $limit");
 	return $this->process2();
     }
@@ -69,7 +69,7 @@ class searchModel extends GeneralModel {
 				  LEFT JOIN contact ON contact.id_cont = affaire.contact_aff
 				  WHERE (id_aff $qTag OR titre_aff $qTag) ".$plus;
 	if($count != 'no')
-	    $this->makeRequeteFree("SELECT COUNT(*) $queryBody $plus ORDER BY id_aff ASC ");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter $queryBody $plus ORDER BY id_aff ASC ");
 	else  $this->makeRequeteFree("SELECT * $queryBody $plus ORDER BY id_aff ASC LIMIT $from , $limit");
 	return $this->process2();
     }
@@ -90,7 +90,7 @@ class searchModel extends GeneralModel {
 				  LEFT JOIN contact ON contact.id_cont = affaire.contact_aff
 				  WHERE (id_dev $qTag OR titre_dev $qTag) $plus ";
 	if($count != 'no')
-	    $this->makeRequeteFree("SELECT COUNT(*) $queryBody $plus ORDER BY id_dev ASC ");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter $queryBody $plus ORDER BY id_dev ASC ");
 	else  $this->makeRequeteFree("SELECT * $queryBody $plus ORDER BY id_dev ASC LIMIT $from , $limit");
 	return $this->process2();
     }
@@ -110,7 +110,7 @@ class searchModel extends GeneralModel {
 				  LEFT JOIN contact ON contact.id_cont = commande.contact_cmd
 				  WHERE (id_cmd $qTag OR titre_cmd $qTag) $plus ";
 	if($count != 'no')
-	    $this->makeRequeteFree("SELECT COUNT(*) $queryBody $plus ORDER BY id_cmd ASC ");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter $queryBody $plus ORDER BY id_cmd ASC ");
 	else  $this->makeRequeteFree("SELECT * $queryBody $plus ORDER BY id_cmd ASC LIMIT $from , $limit");
 	return $this->process2();
     }
@@ -130,7 +130,7 @@ class searchModel extends GeneralModel {
 				  LEFT JOIN contact ON contact.id_cont = facture.contact_fact
 				  WHERE (id_fact = '$search' OR titre_fact $qTag OR commande_fact $qTag) $plus ";
 	if($count != 'no')
-	    $this->makeRequeteFree("SELECT COUNT(*) $queryBody $plus ORDER BY id_fact ASC ");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter $queryBody $plus ORDER BY id_fact ASC ");
 	else  $this->makeRequeteFree("SELECT * $queryBody $plus ORDER BY id_fact ASC LIMIT $from , $limit");
 	return $this->process2();
     }
@@ -148,7 +148,7 @@ class searchModel extends GeneralModel {
 	$queryBody = "FROM produit
 				 WHERE id_prod = '$search' OR nom_prod $qTag ";
 	if($count != 'no')
-	    $this->makeRequeteFree("SELECT COUNT(*) $queryBody ORDER BY id_prod ASC ");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter $queryBody ORDER BY id_prod ASC ");
 	else  $this->makeRequeteFree("SELECT * $queryBody ORDER BY id_prod ASC LIMIT $from , $limit");
 	return $this->process2();
     }

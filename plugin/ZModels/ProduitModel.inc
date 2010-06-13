@@ -60,7 +60,7 @@ class produitModelOriginal extends GeneralModel {
 		    ."LIMIT $from , $limit");
 	}
 	else {
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM produit "
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM produit "
 		    ."LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod "
 		    ."WHERE (nom_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag OR description_prod $qTag OR id_prod $qTag) AND stillAvailable_prod != '0' ");
 	}
@@ -98,7 +98,7 @@ class produitModelOriginal extends GeneralModel {
 		    ."$where GROUP BY id_prod $ordre "
 		    ."LIMIT $from , $limit");
 	else
-	    $this->makeRequeteFree("SELECT COUNT(distinct id_prod) FROM produit "
+	    $this->makeRequeteFree("SELECT COUNT(DISTINCT id_prod) AS counter FROM produit "
 		    ."LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod "
 		    ."LEFT JOIN produit_fournisseur pf ON pf.produit_id = produit.id_prod "
 		    ."$where ");
@@ -150,7 +150,7 @@ class produitModelOriginal extends GeneralModel {
 		    ."Limit $from, $limit");
 	}
 	else {
-	    $this->makeRequeteFree("SELECT COUNT(*) "
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter "
 		    ."From fournisseur f "
 		    ."Left join entreprise e on e.id_ent =f.entreprise_fourn "
 		    ."Left Join contact c on c.id_cont = f.contactComm_fourn "
@@ -188,7 +188,7 @@ class produitModelOriginal extends GeneralModel {
 		    "$where $ordre ".
 		    "Limit $from, $limit");
 	else
-	    $this->makeRequeteFree("SELECT COUNT(*) from fournisseur " .
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM fournisseur " .
 		    "LEFT JOIN entreprise e ON e.id_ent = entreprise_fourn " .
 		    "LEFT JOIN contact c ON c.id_cont = contactComm_fourn " .
 		    "LEFT JOIN contact c2 ON c2.id_cont = contactADV_fourn " .
@@ -420,7 +420,7 @@ class produitModelOriginal extends GeneralModel {
      * @return array Le nombre de produits liés au fournisseur
      */
     public function getProduitByFournisseurID($id = "") {
-	$this->makeRequeteFree("Select COUNT(*) from produit_fournisseur pf where pf.fournisseur_id = '".$id."' ");
+	$this->makeRequeteFree("SELECT COUNT(*) AS counter FROM produit_fournisseur pf WHERE pf.fournisseur_id = '".$id."' ");
 	return $this->process2();
     }
 
@@ -466,12 +466,12 @@ class produitModelOriginal extends GeneralModel {
      * @return string Le nombre de famille présent dans la table avant l'insertion
      */
     public function insertFamille($nom_prodfam) {
-	$this->makeRequeteFree("SELECT COUNT(*) from ref_prodfamille ");
+	$this->makeRequeteFree("SELECT COUNT(*) AS counter FROM ref_prodfamille ");
 	$total = $this->process2();
 	$sql = $this->makeRequeteInsert('ref_prodfamille', array('nom_prodfam' => $nom_prodfam, 'treePathKey' => $GLOBALS['zunoProduit']['defautNewFamilleCode']));
 	Logg::loggerAlert('ProduitModel::insertFamille() ~ ajout de la famille produit '.$nom_prodfam,$sql,__FILE__.'@'.__LINE__);
 	$result = $this->process2();
-	return $total['1']['0']['COUNT(*)'];
+	return $total['1']['0']['counter'];
     }
 
     /**

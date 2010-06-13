@@ -655,10 +655,12 @@ class contactView extends generalView {
 
     private function ResultProspec($datas) {
 	$suffixeLink = '../';
+	$modHistorique = false;
 	$linkOrderFunction = 'tagLinkOrderSwitch';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
 	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
+	    $modHistorique = true;
 	}
 
 	$out = "<script type=\"text/javascript\">
@@ -729,8 +731,8 @@ class contactView extends generalView {
 	$out .= '</tbody></table>';
 	$out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
+	if ($modHistorique)
+	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
 
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage",$suffixeLink);
@@ -1136,7 +1138,7 @@ class contactEntrepriseView extends contactView {
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
 	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
 	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
@@ -1190,7 +1192,7 @@ class contactEntrepriseView extends contactView {
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;} function changeToDo(value) {$(\'toDO\').value = $(\'toDO2\').value = value;}';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
 	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
 	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
@@ -1491,7 +1493,7 @@ class contactParticulierView extends contactView {
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
 	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
 	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
@@ -1534,7 +1536,7 @@ class contactParticulierView extends contactView {
 	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
 	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
 	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';

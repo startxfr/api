@@ -408,7 +408,7 @@ function IsNumeric(input)
 	$action2 = (verifDroitsAuto('devis', 15, $datas['data']['commercial_dev'])) ? '<a name="add" onclick="chargerAction(\'addProduit\'); zuno.business.formTools.sendFormAjah(\'productDevis\', \'draco/Devis.php\',\'contenuProdDevis\');"><img title="Ajouter" alt="Ajouter" name="img" src="../img/prospec/devis.addProduct.png"/></a>' : '';
 	$out .= '<tr class="altern'.$alternance.'" id="tdAjoutProdDevis">
 			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_dev" style="width:80px" onblur="verifAutocompleteur(this);"').'
-				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\');" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\');" style="cursor:pointer; margin-right:0px"/>
+				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\');" style="cursor:pointer; margin-right:0px"/>
 				<img style="display:none; margin-left:5px;" id="loadingProd" src="../img/ajax-loader.gif" alt="loader"/>
 				<input type="hidden" name="id_produit" id="ACproduit_ajout_devhidden" value="" /><input type="hidden" name="idold" id="ACproduit_ajout_devold" value="" />
 				<div id="ACproduit_ajout_dev_choix" class="autocomplete"></div></td>
@@ -724,10 +724,12 @@ function IsNumeric(input)
 
     private function Result($datas) {
 	$suffixeLink = '../';
+	$modHistorique = false;
 	$linkOrderFunction = 'tagLinkOrderSwitch';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
 	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
+	    $modHistorique = true;
 	}
 
 	$out = "<script type=\"text/javascript\">
@@ -754,92 +756,104 @@ function IsNumeric(input)
 		    <input type="hidden" name="exportType" value="" id="resultDevisExportType" />
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
-	$out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormDevis\');"/></th>';
+	if(!$modHistorique)
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormDevis\');"/></th>';
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_dev',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeDevisResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeDevisResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','c1.nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeDevisResultPage',$suffixeLink).'</th>';
 	$out .= '<th>'.$this->$linkOrderFunction('Titre','titre_dev',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeDevisResultPage',$suffixeLink).'</th>';
 	$out .= '<th>'.$this->$linkOrderFunction('Montant HT','sommeHT_dev',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeDevisResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_dev',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeDevisResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="last center">Actions</th>';
+	if(!$modHistorique)
+	    $out .= '<th class="last center">Actions</th>';
 	$out .= '</tr>';
 	$alternance =  0;
 	if(count($datas['data']) > 0)
-	    foreach($datas['data'] as $v) {
-		$action = '';
-		//traitement des boutons de modification et d'action
-		// recherche du fichier PDF
-		if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$v['dir_aff'].$GLOBALS['ZunoDevis']['file.suffixe'].$v['id_dev'].'.pdf') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev']))
-		    $action   .= "<a href=\"${suffixeLink}draco/Devis.php?id_devis=".$v['id_dev']."&action=pdf\">".imageTag($suffixeLink.'img/prospec/devis.pdf.png','PDF')."</a> ";
-		// Clonage
-		if(verifDroitsAuto('devis', 25, $datas['data']['commercial_dev']))
-		    $action .= '<a title="Cloner" href="Devis.php?action=cloner&dev='.$v['id_dev'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.$suffixeLink.'img/prospec/devis.clone.png"/></a>';
-		// Quand status créer
-		if (($v['status_dev'] == "1")and(verifDroitsAuto('devis', 60, $datas['data']['commercial_dev']))) {
-		    $action   .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}draco/Devis.php','id_devis=".$v['id_dev']."&action=supp',480,130);\">".imageTag($suffixeLink.'img/prospec/devis.delete.png','Supprimer')."</a> ";
-		    $action .= '<a href="Devis.php?id_dev='.$v['id_dev'].'" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="'.$suffixeLink.'img/prospec/devis.record.png"/></a>';
-		}
-		// Quand status Enregistré
-		elseif (($v['status_dev'] == "3")and(verifDroitsAuto('devis', 50, $datas['data']['commercial_dev'])))
-		    $action .= '<a href="Devis.php?id_dev='.$v['id_dev'].'" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="'.$suffixeLink.'img/prospec/devis.send.png"/></a>';
-		// Quand status Envoyé
-		elseif (($v['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
-		    $action .= '<a title="Perdu" name="perdu" onclick="ChangeDevisAction(\'Perdu\');ChangeDevisID(\''.$v['id_dev'].'\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\');"><img align="middle" title="Perdu" alt="perdu" name="img" src="'.$suffixeLink.'img/prospec/devis.perdu.png"/></a>';
-		    $action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',950,380);\">".imageTag($suffixeLink.'img/prospec/devis.valid.png','Validé')."</a> ";
-		}
-		if (array_key_exists('isRenew',$datas) and $datas['isRenew']) {
-		    if (($v['devisgenere'] != ""))
-			$action = "<a href=\"Devis.php?id_dev=".$v['devisgenere']."\">".imageTag('../img/prospec/devis.png','Voir')."</a> ";
-		    else $action = "<a href=\"${suffixeLink}draco/Devis.php?id_devis=".$v['id_dev']."&action=clone&renew=yes\">".imageTag('../img/prospec/devis.record.png','Créer')."</a> ";
+	    $totalDisplay =0;
+	foreach($datas['data'] as $v) {
+	    $action = '';
+	    //traitement des boutons de modification et d'action
+	    // recherche du fichier PDF
+	    if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$v['dir_aff'].$GLOBALS['ZunoDevis']['file.suffixe'].$v['id_dev'].'.pdf') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev']))
+		$action   .= "<a href=\"${suffixeLink}draco/Devis.php?id_devis=".$v['id_dev']."&action=pdf\">".imageTag($suffixeLink.'img/prospec/devis.pdf.png','PDF')."</a> ";
+	    // Clonage
+	    if(verifDroitsAuto('devis', 25, $datas['data']['commercial_dev']))
+		$action .= '<a title="Cloner" href="Devis.php?action=cloner&dev='.$v['id_dev'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.$suffixeLink.'img/prospec/devis.clone.png"/></a>';
+	    // Quand status créer
+	    if (($v['status_dev'] == "1")and(verifDroitsAuto('devis', 60, $datas['data']['commercial_dev']))) {
+		$action   .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}draco/Devis.php','id_devis=".$v['id_dev']."&action=supp',480,130);\">".imageTag($suffixeLink.'img/prospec/devis.delete.png','Supprimer')."</a> ";
+		$action .= '<a href="Devis.php?id_dev='.$v['id_dev'].'" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="'.$suffixeLink.'img/prospec/devis.record.png"/></a>';
+	    }
+	    // Quand status Enregistré
+	    elseif (($v['status_dev'] == "3")and(verifDroitsAuto('devis', 50, $datas['data']['commercial_dev'])))
+		$action .= '<a href="Devis.php?id_dev='.$v['id_dev'].'" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="'.$suffixeLink.'img/prospec/devis.send.png"/></a>';
+	    // Quand status Envoyé
+	    elseif (($v['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
+		$action .= '<a title="Perdu" name="perdu" onclick="ChangeDevisAction(\'Perdu\');ChangeDevisID(\''.$v['id_dev'].'\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\');"><img align="middle" title="Perdu" alt="perdu" name="img" src="'.$suffixeLink.'img/prospec/devis.perdu.png"/></a>';
+		$action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',950,380);\">".imageTag($suffixeLink.'img/prospec/devis.valid.png','Validé')."</a> ";
+	    }
+	    if (array_key_exists('isRenew',$datas) and $datas['isRenew']) {
+		if (($v['devisgenere'] != ""))
+		    $action = "<a href=\"Devis.php?id_dev=".$v['devisgenere']."\">".imageTag('../img/prospec/devis.png','Voir')."</a> ";
+		else $action = "<a href=\"${suffixeLink}draco/Devis.php?id_devis=".$v['id_dev']."&action=clone&renew=yes\">".imageTag('../img/prospec/devis.record.png','Créer')."</a> ";
 
-		    $diffDate = DateUniv2Timestamp($v['date_renew'])-DateUniv2Timestamp('');
-		    if ($v['devisgenere'] != "")
-			$v['color_stdev'] = "2c1";
-		    elseif ($diffDate > 1209600)
-			$v['color_stdev'] = "44a";
-		    elseif ($diffDate > 0)
-			$v['color_stdev'] = "56b";
-		    else $v['color_stdev'] = "d34";
-		}
-		if ($v['nom_ent'] != '') {
-		    if (strlen($v['nom_ent']) > 25)
-			$v['nom_ent'] = substr($v['nom_ent'],0,25)."...";
-		    if ($v['type_ent'] != '')
-			$v['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
-		    if (strlen($v['ville_ent']) > 18)
-			$v['ville_ent'] = substr($v['ville_ent'],0,18)."...";
-		    if ($v['ville_ent'] != '')
-			$v['ville_ent'] = ' ('.$v['ville_ent'].')';
-		    $v['contact'] = $v['nom_ent'].$v['ville_ent'];
-		}
-		else {
-		    $v['nom_ent'] = '<i>Particulier</i>';
-		    $v['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$v['nom_ent'];
-		    if (strlen($v['ville_cont']) > 18)
-			$v['ville_cont'] = substr($v['ville_cont'],0,18)."...";
-		    if ($v['ville_cont'] != '')
-			$v['ville_cont'] = ' ('.$v['ville_cont'].')';
-		    $v['contact'] = $v['nom_ent'].$v['ville_cont'];
-		}
-
-		$out .= '<tr class="altern'.$alternance.'">';
-		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_dev'].'" checked="checked"/></td>';
-		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'"><b>'.$v['id_dev'].'</b></td>';
-		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['contact'].'</td>';
-		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
-		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['titre_dev'].'</td>';
-		$out .= '<td class="right barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.formatCurencyDisplay($v['sommeHT_dev']).'</td>';
-		$out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['nom_stdev'].'</td>';
-		$out .= '<td class="right">'.$action.'</td>';
-		$out .= '</tr>';
-		$alternance = (($alternance+1) % 2);
+		$diffDate = DateUniv2Timestamp($v['date_renew'])-DateUniv2Timestamp('');
+		if ($v['devisgenere'] != "")
+		    $v['color_stdev'] = "2c1";
+		elseif ($diffDate > 1209600)
+		    $v['color_stdev'] = "44a";
+		elseif ($diffDate > 0)
+		    $v['color_stdev'] = "56b";
+		else $v['color_stdev'] = "d34";
+	    }
+	    if ($v['nom_ent'] != '') {
+		if (strlen($v['nom_ent']) > 25)
+		    $v['nom_ent'] = substr($v['nom_ent'],0,25)."...";
+		if ($v['type_ent'] != '')
+		    $v['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
+		if (strlen($v['ville_ent']) > 18)
+		    $v['ville_ent'] = substr($v['ville_ent'],0,18)."...";
+		if ($v['ville_ent'] != '')
+		    $v['ville_ent'] = ' ('.$v['ville_ent'].')';
+		$v['contact'] = $v['nom_ent'].$v['ville_ent'];
+	    }
+	    else {
+		$v['nom_ent'] = '<i>Particulier</i>';
+		$v['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$v['nom_ent'];
+		if (strlen($v['ville_cont']) > 18)
+		    $v['ville_cont'] = substr($v['ville_cont'],0,18)."...";
+		if ($v['ville_cont'] != '')
+		    $v['ville_cont'] = ' ('.$v['ville_cont'].')';
+		$v['contact'] = $v['nom_ent'].$v['ville_cont'];
 	    }
 
+	    $out .= '<tr class="altern'.$alternance.'">';
+	    if(!$modHistorique)
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_dev'].'" checked="checked"/></td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'"><b>'.$v['id_dev'].'</b></td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['contact'].'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.$v['titre_dev'].'</td>';
+	    $out .= '<td class="right barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'">'.formatCurencyDisplay($v['sommeHT_dev']).'</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stdev'].' !important;" onclick="window.location=\''.$suffixeLink.'draco/Devis.php?id_dev='.$v['id_dev'].'\'"><div class="square" style="background-color:#'.$v['color_stdev'].';">&nbsp;</div>'.$v['nom_stdev'].'</td>';
+	    if(!$modHistorique)
+		$out .= '<td class="right">'.$action.'</td>';
+	    $out .= '</tr>';
+	    $alternance = (($alternance+1) % 2);
+	    $totalDisplay += $v['sommeHT_dev'];
+	}
+	if(!$modHistorique) {
+	    $out .= '<tr class="titre noround roundbottom">';
+	    $out .= '<td colspan="5"></td>';
+	    $out .= '<th class="bordG bordD right">'.prepareNombreAffichage($totalDisplay).' &euro;</th>';
+	    $out .= '<td colspan="2"></td>';
+	    $out .= '</tr>';
+	}
 	$out .= '</tbody></table>';
-	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	if(!$modHistorique)
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'devisHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'devis');
 
@@ -850,7 +864,7 @@ function IsNumeric(input)
 	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $bouton = '';
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeDevis",'');
     }
@@ -950,7 +964,7 @@ function IsNumeric(input)
 	$rendu->replaceJS($script);
 	$rendu->generateZBox(imageTag('../img/prospec/devis.png','Devis').' Nouveau Devis','',$form->generateForm(), $form->generateButtonsNoAjax('Annuler', 'Enregistrer'), 'idCreationDevis', 'open');
 	if($mess != '')
-	     $messAff = '<span class="important" style="text-align:center;" id="spanErrorDevis">'.$mess.'</span> <script>setTimeout(function(){$(\'spanErrorDevis\').style.display = \'none\';}, 2000)</script>';
+	    $messAff = '<span class="important" style="text-align:center;" id="spanErrorDevis">'.$mess.'</span> <script>setTimeout(function(){$(\'spanErrorDevis\').style.display = \'none\';}, 2000)</script>';
 	else $messAff = '';
 	return $messAff.$rendu->generateRendu();
 

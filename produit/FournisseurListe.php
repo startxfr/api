@@ -57,7 +57,7 @@ if($PC->rcvP['action'] == 'searchFournisseur') {
         $datas['from'] = '0';
     $req = new produitModel();
     $result = $req->getDataForSearchFournisseurWeb('', $datas['from'], 'ALL', $ordre, $data);
-    $datas['total'] = $result[1][0]['COUNT(*)'];
+    $datas['total'] = $result[1][0]['counter'];
     if($datas['total'] == '')
         $datas['total'] = '0';
     if($datas['limit'] == 'ALL') {
@@ -73,7 +73,7 @@ if($PC->rcvP['action'] == 'searchFournisseur') {
 else {
     $req = new produitModel();
     $total = $req->getDataForSearchFournisseurWeb('','', 'ALL', '', array('actif' => '1'));
-    $total = $total[1][0]['COUNT(*)'];
+    $total = $total[1][0]['counter'];
     $datas['total'] = $total;
     $result = $req->getDataForSearchFournisseurWeb('', '0', '30', 'ORDER BY id_fourn', array('actif' => '1'));
     $result = $result[1];

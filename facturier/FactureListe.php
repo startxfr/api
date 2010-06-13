@@ -68,7 +68,7 @@ if($PC->rcvP['action'] == 'searchFacture') {
     else $datas['from'] = '0';
     $req = new factureModel();
     $result = $req->getDataForSearchWeb('', $datas['from'], 'ALL', $ordre, $data);
-    $datas['total'] = $result[1][0]['COUNT(*)'];
+    $datas['total'] = $result[1][0]['counter'];
     if($datas['limit'] == 'ALL') {
         $datas['limit'] = $datas['total'];
         $datas['from'] = 0;
@@ -247,7 +247,7 @@ else {
     $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
     $req = new factureModel();
     $total = $req->getDataForSearchWeb('', $datas['from'], 'ALL', $ordre, $data);
-    $datas['total'] = $total[1][0]['COUNT(*)'];
+    $datas['total'] = $total[1][0]['counter'];
     $result = $req->getDataForSearchWeb('', $datas['from'], $datas['limit'],$ordre, $data);
     $datas['data'] = $result[1];
     $datas['status'] = $req->getAllStatusFacture();

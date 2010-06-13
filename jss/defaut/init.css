@@ -1423,7 +1423,7 @@ a.bouton:hover {
     margin-top: .2em;
 }
 #ZunoPopupWindow .body .content {
-    padding: 0.3em;
+    padding: 0em;
     color: inherit !important;
 }
 #ZunoPopupWindow .body a {
@@ -1432,8 +1432,9 @@ a.bouton:hover {
 #ZunoPopupWindowContent .ZBox  {
     padding: 0 !important;
     margin: 0 !important;
-    position: absolute;
-    top: -20px;
+    position: relative;
+    top: -18px;
+
 }
 #ZunoPopupWindowContent .ZBox .header,
 #ZunoPopupWindowContent .ZBox .footer {

@@ -687,10 +687,12 @@ class factureView extends generalView {
 
     private function Result($datas) {
 	$suffixeLink = '../';
+	$modHistorique = false;
 	$linkOrderFunction = 'tagLinkOrderSwitch';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
 	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
+	    $modHistorique = true;
 	}
 
 	$out = "<script type=\"text/javascript\">
@@ -706,14 +708,16 @@ class factureView extends generalView {
 		    <input type="hidden" name="exportType" value="" id="resultFactureExportType" />
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
-	$out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormFacture\');"/></th>';
+	if(!$modHistorique)
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormFacture\');"/></th>';
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="center barre">Entreprise '.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','c1.nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
 	$out .= '<th>'.$this->$linkOrderFunction('Titre','titre_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
 	$out .= '<th>'.$this->$linkOrderFunction('Montant Vente','sommeHT_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="last center">Actions</th>';
+	if(!$modHistorique)
+	    $out .= '<th class="last center">Actions</th>';
 	$out .= '</tr>';
 	$alternance =  0;
 	$totalDisplay = 0;
@@ -759,14 +763,16 @@ class factureView extends generalView {
 	    }
 
 	    $out .= '<tr class="altern'.$alternance.'">';
-	    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_fact'].'" checked="checked"/></td>';
+	    if(!$modHistorique)
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_fact'].'" checked="checked"/></td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'"><b>'.$this->prepareAffichageID($v['id_fact'], $v['daterecord_fact'], $v['type_fact']).'</b></td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['contact'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['titre_fact'].'</td>';
 	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.prepareNombreAffichage($v['sommeHT_fact']).' &euro;</td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'"><div class="square" style="background-color:#'.$v['color_stfact'].';">&nbsp;</div>'.$v['nom_stfact'].'</td>';
-	    $out .= '<td class="right">'.$action.'</td>';
+	    if(!$modHistorique)
+		$out .= '<td class="right">'.$action.'</td>';
 	    $out .= '</tr>';
 	    $alternance = (($alternance+1) % 2);
 	    $totalDisplay += $v['sommeHT_fact'];
@@ -778,11 +784,11 @@ class factureView extends generalView {
 	$out .= '</tr>';
 
 	$out .= '</tbody></table>';
-	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	if(!$modHistorique)
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'factureHisto');
+	if($modHistorique)
+	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'factureHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'facture');
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeFactureResultPage",$suffixeLink);
 	loadPlugin(array('OOConverter'));
@@ -791,7 +797,7 @@ class factureView extends generalView {
 	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $bouton = '';
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeFacture",'');
     }

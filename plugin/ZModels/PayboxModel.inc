@@ -54,10 +54,10 @@ class PayboxModel extends GeneralModel {
      * @return string Le numéro de question
      */
     public function getNewNumQuestion() {
-	$this->makeRequeteFree("Select COUNT(id_pb) from paybox where DAYOFYEAR(date_pb) = DAYOFYEAR(NOW())");
+	$this->makeRequeteFree("SELECT COUNT(id_pb) AS counter FROM paybox WHERE DAYOFYEAR(date_pb) = DAYOFYEAR(NOW())");
 	$rs = $this->process2();
 	if($rs[0])
-	     $rs = $rs[1][0]['COUNT(id_pb)']+1;
+	     $rs = $rs[1][0]['counter']+1;
 	else $rs = "0123654789";
 	while (strlen($rs) != 10)
 	    $rs = "0".$rs;

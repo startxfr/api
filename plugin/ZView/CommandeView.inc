@@ -811,13 +811,13 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     private function Result($datas) {
-	$bureau = false;
 	$suffixeLink = '../';
+	$modHistorique = false;
 	$linkOrderFunction = 'tagLinkOrderSwitch';
 	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
 	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
-	    $bureau = true;
+	    $modHistorique = true;
 	}
 
 	$out = "<script type=\"text/javascript\">
@@ -833,7 +833,8 @@ class commandeView extends generalView {
 		    <input type="hidden" name="exportType" value="" id="resultCmdExportType" />
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
-	$out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormCmd\');"/></th>';
+	if(!$modHistorique)
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormCmd\');"/></th>';
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="center barre">Entreprise '.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
 	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','c1.nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
@@ -842,9 +843,11 @@ class commandeView extends generalView {
 	$out .= '<th>'.$this->$linkOrderFunction('Montant Achat','sommeFHT_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
 	$out .= '<th>Marge </th>';
 	$out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="last center">Actions</th>';
+	if(!$modHistorique)
+	    $out .= '<th class="last center">Actions</th>';
 	$out .= '</tr>';
 	$alternance =  0;
+	$totalDisplayC = $totalDisplayF = $totalDisplayM = 0;
 	foreach($datas['data'] as $v) {
 	    $action = '';
 	    //traitement des boutons de modification et d'action
@@ -885,28 +888,41 @@ class commandeView extends generalView {
 	    }
 
 	    $marge = $v['sommeHT_cmd']-$v['sommeFHT_cmd'];
-	    $score = commandeModel::ScoreCommande($v['id_cmd'], $bureau);
+	    $score = commandeModel::ScoreCommande($v['id_cmd'], $modHistorique);
 	    $out .= '<tr class="altern'.$alternance.'">';
-	    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_cmd'].'" checked="checked"/></td>';
+	    if(!$modHistorique)
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_cmd'].'" checked="checked"/></td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'"><b>'.$score['img'].$v['id_cmd'].'</b></td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['contact'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
 	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['titre_cmd'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['sommeHT_cmd'].' &euro;</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['sommeFHT_cmd'].' &euro;</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$marge.' &euro;</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['nom_stcmd'].'</td>';
-	    $out .= '<td class="right">'.$action.'</td>';
+	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.prepareNombreAffichage($v['sommeHT_cmd']).' &euro;</td>';
+	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.prepareNombreAffichage($v['sommeFHT_cmd']).' &euro;</td>';
+	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.prepareNombreAffichage($marge).' &euro;</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'"><div class="square" style="background-color:#'.$score['color'].';">&nbsp;</div>'.$v['nom_stcmd'].'</td>';
+	    if(!$modHistorique)
+		$out .= '<td class="right">'.$action.'</td>';
 	    $out .= '</tr>';
 	    $alternance = (($alternance+1) % 2);
+	    $totalDisplayC += $v['sommeHT_cmd'];
+	    $totalDisplayF += $v['sommeFHT_cmd'];
+	    $totalDisplayM += $marge;
 	}
-
+	if(!$modHistorique) {
+	    $out .= '<tr class="titre noround roundbottom">';
+	    $out .= '<td colspan="5"></td>';
+	    $out .= '<th class="bordG right">'.prepareNombreAffichage($totalDisplayC).' &euro;</th>';
+	    $out .= '<th class="right">'.prepareNombreAffichage($totalDisplayF).' &euro;</th>';
+	    $out .= '<th class="bordD right">'.prepareNombreAffichage($totalDisplayM).' &euro;</th>';
+	    $out .= '<td colspan="2"></td>';
+	    $out .= '</tr>';
+	}
 	$out .= '</tbody></table>';
-	if (!(array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']))
+	if(!$modHistorique)
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commandeHisto');
+	if($modHistorique)
+	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commandeHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commande');
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeCmdResultPage",$suffixeLink);
 	loadPlugin(array('OOConverter'));
@@ -915,7 +931,7 @@ class commandeView extends generalView {
 	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $bouton = '';
 	return generateZBox($titre,$titre,$out,$bouton,"searchListeCommande",'');
     }

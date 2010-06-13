@@ -66,7 +66,7 @@ if($PC->rcvP['action'] == 'searchCmd') {
     else $datas['from'] = '0';
     $req = new commandeModel();
     $result = $req->getDataForSearchWeb('', $datas['from'], 'ALL', $ordre, $data);
-    $datas['total'] = $result[1][0]['COUNT(*)'];
+    $datas['total'] = $result[1][0]['counter'];
     if($datas['limit'] == 'ALL') {
 	$datas['limit'] = $datas['total'];
 	$datas['from'] = 0;
@@ -323,7 +323,7 @@ else {
     $datas['orderSens'] = 'DESC';
     $req = new commandeModel();
     $total = $req->getDataForSearchWeb('',$datas['from'], 'ALL','ORDER BY id_cmd DESC',$data);
-    $datas['total'] = $total[1][0]['COUNT(*)'];
+    $datas['total'] = $total[1][0]['counter'];
     $result = $req->getDataForSearchWeb('',$datas['from'],$datas['limit'],'ORDER BY id_cmd DESC',$data);
     $datas['data'] = $result[1];
     $datas['status'] = $req->getAllStatusCommande();

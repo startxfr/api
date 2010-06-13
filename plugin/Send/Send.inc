@@ -661,9 +661,9 @@ class Sender {
      * @return bool Indique si le quota de documents envoyés est dépassé ou non.
      */
     private function controlTotalEnvoi() {
-	$this->bdd->makeRequeteFree("SELECT COUNT(*) from send where type_send = '".$this->type."' ");
+	$this->bdd->makeRequeteFree("SELECT COUNT(*) AS counter FROM send WHERE type_send = '".$this->type."' ");
 	$result = $this->bdd->process2();
-	if($result[1][0]['COUNT(*)'] >= $GLOBALS['ZunoSendMail']['maxEnvoi'.ucfirst($this->type)] and $GLOBALS['ZunoSendMail']['maxEnvoi'.ucfirst($this->type)] != -1) {
+	if($result[1][0]['counter'] >= $GLOBALS['ZunoSendMail']['maxEnvoi'.ucfirst($this->type)] and $GLOBALS['ZunoSendMail']['maxEnvoi'.ucfirst($this->type)] != -1) {
 	    return false;
 	}
 	else

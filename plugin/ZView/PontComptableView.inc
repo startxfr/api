@@ -204,8 +204,11 @@ class PontComptableView extends generalView {
      * @return string Le code HTML généré
      */
     private function Result($datas,$option = null) {
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	$modHistorique = false;
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
+	    $modHistorique = true;
+	}
 	else $suffixeLink = '../';
 
 	$out .= '<div class="blockTable">
@@ -213,47 +216,51 @@ class PontComptableView extends generalView {
 		    <input type="hidden" name="action" value="" id="resultPontComptableAction" />
 		    <input type="hidden" name="exportType" value="" id="resultPontComptableExportType" />
 		    <table cellspacing="0"><tbody>';
-	$out .= '<tr class="titre">
-			<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormPontComptable\');"/></th>
-			<th class="center barre">Nom</th>
+	$out .= '<tr class="titre">';
+	if(!$modHistorique)
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormPontComptable\');"/></th>';
+	$out .= '<th class="center barre">Nom</th>
 			<th class="center barre">Date</th>
 			<th class="last center">Client</th>
 			<th class="last center">Fournisseur</th>
 			<th class="last center">Fichier</th>
 		</tr>';
 	$alternance =  0;
-	foreach($datas['data'] as $result) {
-	    $action = '';
-	    $link = $suffixeLink."facturier/PontComptable.php?id_pcth=".$result['id_pcth'];
-	    $onclick = 'window.location=\''.$link.'\'';
-	    if($result['config_hasFactureClient_pcth'] == '1')
-		 $imgFCActif = imageTag($suffixeLink.'img/valid.png','avec facture client');
-	    else $imgFCActif = imageTag($suffixeLink.'img/unvalid.png','sans facture client');
-	    if($result['config_hasFactureFourn_pcth'] == '1')
-		 $imgFFActif = imageTag($suffixeLink.'img/valid.png','avec facture fournisseur');
-	    else $imgFFActif = imageTag($suffixeLink.'img/unvalid.png','sans facture fournisseur');
-	    $out .= '<tr class="altern'.($alternance % 2).'">';
-	    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$result['id_pcth'].'" checked="checked"/></td>';
-	    $out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['nom_pcth'].'</td>';
-	    $out .= '<td class="barre right" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['date_pcth'].'</td>';
-	    $out .= '<td class="barre center" style="cursor : pointer;" onclick="'.$onclick.'">'.$imgFCActif.'</td>';
-	    $out .= '<td class="barre center" style="cursor : pointer;" onclick="'.$onclick.'">'.$imgFFActif.'</td>';
-	    $out .= '<td class="right" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['fichier_pcth'].'</td>';
-	    $out .= '</tr>';
-	    $alternance++;
+	if(is_array($datas['data'])) {
+	    foreach($datas['data'] as $result) {
+		$action = '';
+		$link = $suffixeLink."facturier/PontComptable.php?id_pcth=".$result['id_pcth'];
+		$onclick = 'window.location=\''.$link.'\'';
+		if($result['config_hasFactureClient_pcth'] == '1')
+		    $imgFCActif = imageTag($suffixeLink.'img/valid.png','avec facture client');
+		else $imgFCActif = imageTag($suffixeLink.'img/unvalid.png','sans facture client');
+		if($result['config_hasFactureFourn_pcth'] == '1')
+		    $imgFFActif = imageTag($suffixeLink.'img/valid.png','avec facture fournisseur');
+		else $imgFFActif = imageTag($suffixeLink.'img/unvalid.png','sans facture fournisseur');
+		$out .= '<tr class="altern'.($alternance % 2).'">';
+		if(!$modHistorique)
+		    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$result['id_pcth'].'" checked="checked"/></td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['nom_pcth'].'</td>';
+		$out .= '<td class="barre right" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['date_pcth'].'</td>';
+		$out .= '<td class="barre center" style="cursor : pointer;" onclick="'.$onclick.'">'.$imgFCActif.'</td>';
+		$out .= '<td class="barre center" style="cursor : pointer;" onclick="'.$onclick.'">'.$imgFFActif.'</td>';
+		$out .= '<td class="right" style="cursor : pointer;" onclick="'.$onclick.'">'.$result['fichier_pcth'].'</td>';
+		$out .= '</tr>';
+		$alternance++;
+	    }
 	}
 
 	$out .= '</tbody></table>';
 	$out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if($modHistorique)
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'pontComptableHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'pontComptable');
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-	    $bouton = '';
-	else $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangePontComptableResultPage",$suffixeLink);
+	$bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangePontComptableResultPage",$suffixeLink);
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
-
+	if($modHistorique)
+	    $bouton = '';
+	
 	return generateZBox($titre,$titre,$out,$bouton,"searchListePontComptable",'');
     }
 

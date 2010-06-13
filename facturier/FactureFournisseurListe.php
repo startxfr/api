@@ -55,7 +55,7 @@ if($PC->rcvP['action'] == 'searchFactFourn') {
     else $datas['from'] = '0';
     $req = new FactureFournisseurModel();
     $result = $req->getDataForSearch('', $datas['from'], 'ALL', $ordre, $data);
-    $datas['total'] = $result[1][0]['COUNT(*)'];
+    $datas['total'] = $result[1][0]['counter'];
     if($datas['limit'] == 'ALL') {
         $datas['limit'] = $datas['total'];
         $datas['from'] = 0;
@@ -80,7 +80,7 @@ else {
     $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
     $req = new FactureFournisseurModel();
     $total = $req->getDataForSearch('', '0', 'ALL',$ordre, $data);
-    $total = $total[1][0]['COUNT(*)'];
+    $total = $total[1][0]['counter'];
     $datas['total'] = $total;
     $result = $req->getDataForSearch('', $datas['from'], $datas['limit'],$ordre, $data);
     foreach($result[1] as $k => $v)

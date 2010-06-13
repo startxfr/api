@@ -39,7 +39,7 @@ if($PC->rcvP['action'] == 'searchAffaire') {
 	$PC->rcvP['order'] = 'id_aff';
     $req = new affaireModel();
     $result = $req->getDataForSearchWeb($PC->rcvP, 'ALL', $datas['from'], '', $PC->rcvP['order'], $PC->rcvP['orderSens']);
-    $datas['total'] = $result[1][0]['COUNT(*)'];
+    $datas['total'] = $result[1][0]['counter'];
     if($datas['limit'] == 'ALL') {
 	$datas['limit'] = $datas['total'];
 	$datas['from'] = 0;
@@ -157,9 +157,11 @@ else {
     $datas['limit'] = 30;
     $datas['order'] = 'id_aff';
     $datas['orderSens'] = 'DESC';
+    $datas['actif_aff'] = 1;
+    $datas['typeproj_aff'] = $PC->rcvG['typeaff'];
     $req = new affaireModel();
     $total = $req->getDataForSearchWeb($datas, 'ALL', $datas['from']);
-    $datas['total'] = $total[1][0]['COUNT(*)'];
+    $datas['total'] = $total[1][0]['counter'];
     $result = $req->getDataForSearchWeb($datas, $datas['limit'], $datas['from']);
     $datas['data'] = $result[1];
     $view = new affaireView();

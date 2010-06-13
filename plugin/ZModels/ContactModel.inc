@@ -51,7 +51,7 @@ class contactParticulierModel extends GeneralModel {
     public function getDataForSearch($search,$limit = 10, $from = 0) {
 	$qTag = " LIKE '%".trim($search)."%' ";
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*) " .
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter " .
 		    "FROM contact " .
 		    "LEFT JOIN ref_fonction ON ref_fonction.id_fct = contact.fonction_cont " .
 		    "WHERE nom_cont $qTag OR prenom_cont $qTag OR mail_cont $qTag");
@@ -438,7 +438,7 @@ class contactEntrepriseModel extends GeneralModel {
     public function getDataForSearch($search,$limit = 10, $from = 0) {
 	$qTag = " LIKE '%".trim($search)."%' ";
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*) " .
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter " .
 		    "FROM entreprise " .
 		    "WHERE nom_ent $qTag OR ville_ent $qTag OR cp_ent $qTag");
 	}
@@ -474,7 +474,7 @@ class contactEntrepriseModel extends GeneralModel {
 	    $endSql = ' ORDER BY '.$order.' '.((strtolower($orderSens) == 'asc') ? 'ASC' : 'DESC');
 
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*) from ( ".$requete." ) as virtual ");
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter from ( ".$requete." ) as virtual ");
 	}
 	else {
 	    $this->makeRequeteFree("$requete $endSql LIMIT $from, $limit ");
@@ -502,7 +502,7 @@ class contactEntrepriseModel extends GeneralModel {
 	    $endSql = $order.' '.((strtolower($orderSens) == 'asc') ? 'ASC' : 'DESC').', ';
 
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("select COUNT(*) from entreprise " .
+	    $this->makeRequeteFree("select COUNT(*) AS counter from entreprise " .
 		    "left join contact on entreprise_cont = id_ent " .
 		    "where id_ent is not null and $search ");
 	}
@@ -534,7 +534,7 @@ class contactEntrepriseModel extends GeneralModel {
 	    $endSql = $order.' '.((strtolower($orderSens) == 'asc') ? 'ASC' : 'DESC').', ';
 
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("select COUNT(*) from contact " .
+	    $this->makeRequeteFree("select COUNT(*) AS counter from contact " .
 		    "left join entreprise on id_ent = entreprise_cont " .
 		    "where id_cont is not null and $search ");
 	}
@@ -568,7 +568,7 @@ class contactEntrepriseModel extends GeneralModel {
 	    $endSql = $order.' '.((strtolower($orderSens) == 'asc') ? 'ASC' : 'DESC').', ';
 
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("select COUNT(*) from appel " .
+	    $this->makeRequeteFree("select COUNT(*) AS counter from appel " .
 		    "left join contact on id_cont = contact_app left join entreprise on id_ent = entreprise_cont " .
 		    "where id_app is not null and $search ");
 	}

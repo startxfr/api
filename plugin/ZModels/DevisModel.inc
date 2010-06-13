@@ -40,7 +40,7 @@ class devisModel extends GeneralModel {
     public function getDataForSearch($search,$limit = 10, $from = 0, $plus = '') {
 	$qTag = " LIKE '%".$search."%' ";
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*) " .
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter " .
 		    "FROM devis " .
 		    "LEFT JOIN entreprise ON entreprise.id_ent = devis.entreprise_dev
 			 LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
@@ -121,9 +121,8 @@ class devisModel extends GeneralModel {
 			LEFT JOIN ref_typeproj ON ref_typeproj.id_typro = affaire.projet_aff
 			LEFT JOIN ref_statusdevis rsd ON rsd.id_stdev = devis.status_dev
 			LEFT JOIN ref_pays rfp ON rfp.id_pays = devis.paysdelivery_dev
-			LEFT JOIN user ON user.login = devis.commercial_dev $where $order LIMIT $from , $limit ");
-	else
-	    $this->makeRequeteFree("SELECT COUNT(*)
+			LEFT JOIN user ON user.login = devis.commercial_dev $where GROUP BY id_dev $order LIMIT $from , $limit ");
+	else $this->makeRequeteFree("SELECT COUNT(DISTINCT id_dev) AS counter
 			FROM devis
 			LEFT JOIN entreprise ON entreprise.id_ent = devis.entreprise_dev
 			LEFT JOIN ref_activite ON ref_activite.id_act = entreprise.activite_ent
@@ -140,7 +139,6 @@ class devisModel extends GeneralModel {
 			LEFT JOIN ref_statusdevis rsd ON rsd.id_stdev = devis.status_dev
 			LEFT JOIN ref_pays rfp ON rfp.id_pays = devis.paysdelivery_dev
 			LEFT JOIN user ON user.login = devis.commercial_dev $where $order ");
-
 	return $this->process2();
     }
 
@@ -248,7 +246,7 @@ class devisModel extends GeneralModel {
     public function getDataForSearchProd($search,$limit = 0, $from = 0) {
 	$qTag = " LIKE '%".$search."%' ";
 	if($limit == 0) {
-	    $this->makeRequeteFree("SELECT COUNT(*) " .
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter " .
 		    "FROM produit " .
 		    "LEFT JOIN ref_prodfamille rpf ON rpf.id_prodfam = produit.famille_prod ".
 		    "WHERE ( nom_prod $qTag OR id_prod $qTag OR nom_prodfam $qTag OR treePathKey $qTag ) AND stillAvailable_prod = 1 " .
@@ -723,7 +721,7 @@ class devisModel extends GeneralModel {
      */
     public function getDataByMontant($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY sommeHT_dev DESC ".$plus);
 	else $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ".$plus." ORDER BY sommeHT_dev DESC, id_dev DESC LIMIT $from , $maxi");
@@ -739,7 +737,7 @@ class devisModel extends GeneralModel {
      */
     public function getDataByCreation($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY daterecord_dev DESC ".$plus);
 	else $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ".$plus." ORDER BY daterecord_dev DESC, id_dev DESC LIMIT $from , $maxi");
@@ -755,7 +753,7 @@ class devisModel extends GeneralModel {
      */
     public function getDataByEntreprise($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY entreprise_dev ASC ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (entreprise_dev IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN entreprise ON entreprise.id_ent=devis.entreprise_dev ".$plus." ORDER BY temp DESC, entreprise.nom_ent ASC, id_dev DESC LIMIT $from , $maxi");
@@ -771,7 +769,7 @@ class devisModel extends GeneralModel {
      */
     public function getDataByContact($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY contact_dev ASC ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (contact_dev IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN contact ON contact.id_cont=devis.contact_dev ".$plus." ORDER BY temp DESC, contact.nom_cont ASC, id_dev DESC LIMIT $from , $maxi");
@@ -834,13 +832,13 @@ class devisModel extends GeneralModel {
      * @return int Le nombre de devis à renouveller
      */
     public function getTotalDevisToRenew() {
-	$this->makeRequeteFree("SELECT COUNT(*) AS C FROM devis
+	$this->makeRequeteFree("SELECT COUNT(*) AS counter FROM devis
 						  LEFT JOIN entreprise ON entreprise_dev = id_ent ,
 						  devis_renew
 						  LEFT JOIN ref_renewperiode ON ref_renewperiode.id_refrnw = devis_renew.cyclerenew
 						  WHERE  AND id_dev = id_devis");
 	$r = $this->process2();
-	if($r[0])	return $r[1][0]['C'];
+	if($r[0])	return $r[1][0]['counter'];
 	else 		return 0;
     }
 
@@ -873,9 +871,9 @@ class devisModel extends GeneralModel {
      * @return int le nombre de devis gagnés
      */
     public function getTotalDevisGagne() {
-	$this->makeRequeteFree("SELECT COUNT(*) AS C FROM devis WHERE status_dev = 6");
+	$this->makeRequeteFree("SELECT COUNT(*) AS counter FROM devis WHERE status_dev = 6");
 	$r = $this->process2();
-	if($r[0])	return $r[1][0]['C'];
+	if($r[0])	return $r[1][0]['counter'];
 	else		return 0;
     }
 
@@ -897,7 +895,7 @@ class devisModel extends GeneralModel {
 						  LEFT JOIN ref_statusdevis rsd ON rsd.id_stdev = devis.status_dev
 						  LEFT JOIN ref_pays rfp ON rfp.id_pays = devis.paysdelivery_dev
 						  LEFT JOIN user ON user.login = devis.commercial_dev
-						  WHERE status_dev = 5 LIMIT $from , $limit ");
+						  WHERE status_dev = 6 LIMIT $from , $limit ");
 	return $this->process2();
     }
 
@@ -906,9 +904,9 @@ class devisModel extends GeneralModel {
      * @return int le nombre de devis perdu
      */
     public function getTotalDevisPerdu() {
-	$this->makeRequeteFree("SELECT COUNT(*) AS C FROM devis WHERE status_dev = 6");
+	$this->makeRequeteFree("SELECT COUNT(*) AS counter FROM devis WHERE status_dev = 5");
 	$r = $this->process2();
-	if($r[0])	return $r[1][0]['C'];
+	if($r[0])	return $r[1][0]['counter'];
 	else		return 0;
     }
 

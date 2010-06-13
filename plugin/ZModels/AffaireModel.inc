@@ -55,7 +55,7 @@ class affaireModel extends GeneralModel {
 	if($search['order'] != '')		$reqOrder = $search['order'].' '.((strtolower($search['orderSens']) == 'asc') ? 'ASC' : 'DESC').', ';
 
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("SELECT COUNT(*)
+	    $this->makeRequeteFree("SELECT COUNT(DISTINCT id_aff) AS counter
 			FROM entreprise
 			LEFT JOIN ref_activite ON entreprise.activite_ent = ref_activite.id_act
 			LEFT JOIN ref_typeentreprise ON ref_typeentreprise.id_tyent = entreprise.type_ent
@@ -78,11 +78,7 @@ class affaireModel extends GeneralModel {
 	}
 	else {
 	    $this->makeRequeteFree("SELECT *
-                        FROM entreprise
-			LEFT JOIN ref_activite ON entreprise.activite_ent = ref_activite.id_act
-			LEFT JOIN ref_typeentreprise ON ref_typeentreprise.id_tyent = entreprise.type_ent
-			LEFT JOIN ref_pays ON entreprise.pays_ent = ref_pays.id_pays
-			,affaire
+                        FROM affaire
 			LEFT JOIN contact ON contact.id_cont = affaire.contact_aff
 			LEFT JOIN ref_statusaffaire ON affaire.status_aff = ref_statusaffaire.id_staff
 			LEFT JOIN ref_typeproj ON affaire.typeproj_aff = ref_typeproj.id_typro
@@ -94,8 +90,13 @@ class affaireModel extends GeneralModel {
 			LEFT JOIN ref_statusfacture ON ref_statusfacture.id_stfact = facture.status_fact
 			LEFT JOIN ref_modereglement ON ref_modereglement.id_modereg = facture.modereglement_fact
 			LEFT JOIN ref_condireglement ON ref_condireglement.id_condreg = facture.condireglement_fact
+			, entreprise
+			LEFT JOIN ref_activite ON entreprise.activite_ent = ref_activite.id_act
+			LEFT JOIN ref_typeentreprise ON ref_typeentreprise.id_tyent = entreprise.type_ent
+			LEFT JOIN ref_pays ON entreprise.pays_ent = ref_pays.id_pays
 			WHERE entreprise_aff = id_ent
 			".$reqAdd.$plus."
+			GROUP BY affaire.id_aff
 			ORDER BY ".$reqOrder." detect_aff ASC,nom_ent ASC
                         LIMIT $from , $limit");
 	}
@@ -154,7 +155,7 @@ class affaireModel extends GeneralModel {
 	$qTag = " LIKE '%".$search."%' ";
 	if($limit == 'ALL') {
 	    $this->makeRequeteFree(
-		    "SELECT COUNT(*) " .
+		    "SELECT COUNT(*) AS counter " .
 		    "FROM affaire " .
 		    "LEFT JOIN entreprise ON entreprise.id_ent = affaire.entreprise_aff
 			 LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
@@ -367,7 +368,7 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByEcheance($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY echeance_aff ASC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (echeance_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName where actif_aff = '1' ".$plus." ORDER BY temp DESC, echeance_aff ASC, id_aff DESC LIMIT $from , $maxi");
@@ -384,7 +385,7 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByCreation($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY detect_aff DESC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (detect_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName where actif_aff = '1' ".$plus." ORDER BY temp DESC, detect_aff DESC, id_aff DESC LIMIT $from , $maxi");
@@ -401,7 +402,7 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByEntreprise($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY entreprise_aff ASC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (entreprise_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN entreprise ON entreprise.id_ent=affaire.entreprise_aff where actif_aff = '1' ".$plus." ORDER BY temp DESC, entreprise.nom_ent ASC, id_aff DESC LIMIT $from , $maxi");
@@ -418,7 +419,7 @@ class affaireModel extends GeneralModel {
      */
     public function getDataByContact($maxi = NULL, $from = 0, $plus = '') {
 	if($maxi == 'total')
-	    $this->makeRequeteFree("SELECT COUNT(*) FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
+	    $this->makeRequeteFree("SELECT COUNT(*) AS counter FROM $this->sqlTableName WHERE actif_aff = '1' ".$plus);
 	elseif($maxi == NULL)
 	    $this->makeRequeteFree("SELECT * FROM $this->sqlTableName ORDER BY contact_aff ASC WHERE actif_aff = '1' ".$plus);
 	else $this->makeRequeteFree("SELECT *, CASE WHEN (contact_aff IS NOT NULL) THEN '1' ELSE '0' END AS temp FROM $this->sqlTableName LEFT JOIN contact ON contact.id_cont=affaire.contact_aff where actif_aff = '1' ".$plus." ORDER BY temp DESC, contact.nom_cont ASC, id_aff DESC LIMIT $from , $maxi");

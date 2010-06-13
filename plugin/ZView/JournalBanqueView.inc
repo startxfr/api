@@ -225,8 +225,11 @@ class JournalBanqueView extends generalView {
      */
     private function Result($datas,$option = null) {
 	$modelFact = new factureModel();
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	$modHistorique = false;
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
+	    $modHistorique = true;
+	}
 	else $suffixeLink = '../';
 
 	$out .= '<div class="blockTable">
@@ -289,10 +292,10 @@ class JournalBanqueView extends generalView {
 	$out .= '</tbody></table>';
 	$out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if ($modHistorique)
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'journalBanqueHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'journalBanque');
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	if ($modHistorique)
 	    $bouton = '';
 	else $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeJournalBanqueResultPage",$suffixeLink);
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
