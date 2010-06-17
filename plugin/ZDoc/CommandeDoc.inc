@@ -54,7 +54,9 @@ class commandeGnose {
 	    $entreprise['mail_commercial'] = $datas['user']['mail'];
 	    $entreprise['id_aff'] = substr($datas['data']['id_cmd'],0,6);
 	    $entreprise['id_dev'] = substr($datas['data']['id_cmd'],0,9);
-	    $entreprise['date_cmd'] = DateUniv2Human($entreprise['datemodif_cmd'], 'fulldate');
+	    $entreprise['datemodif_cmd'] = DateUniv2Human($entreprise['datemodif_cmd'], 'fulldate');
+	    $entreprise['date_cmd'] = $entreprise['datemodif_cmd'];
+	    $entreprise['daterecord_cmd'] = DateUniv2Human($entreprise['daterecord_cmd'], 'simpleLong');
 	    $produits = array();
 	    if (array_key_exists('produit', $datas) and count($datas['produit']) > 0) {
 		foreach ($datas['produit'] as $key => $produit) {
@@ -195,7 +197,9 @@ class commandeGnose {
 	    $entreprise['mail_commercial'] = $datas['user']['mail'];
 	    $entreprise['id_aff'] = substr($id_cmd,0,6);
 	    $entreprise['id_dev'] = substr($id_cmd,0,9);
-	    $entreprise['date_cmd'] = DateUniv2Human($entreprise['datemodif_cmd'], 'fulldate');
+	    $entreprise['datemodif_cmd'] = DateUniv2Human($entreprise['datemodif_cmd'], 'fulldate');
+	    $entreprise['date_cmd'] = $entreprise['datemodif_cmd'];
+	    $entreprise['daterecord_cmd'] = DateUniv2Human($entreprise['daterecord_cmd'], 'simpleLong');
 
 	    $produits = $datas['produit'];
 	    $total = 0;

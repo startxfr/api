@@ -96,7 +96,6 @@ INSERT INTO `actualite` VALUES (255,'2010-06-12 16:33:55','cl','devis','Le devis
 -- Dumping data for table `facture_produit`
 --
 
-INSERT INTO `facture_produit` VALUES (22,6,'DEMO3','déscription','1.00','0.00','100.00');
 
 --
 -- Dumping data for table `fournisseur`
@@ -1202,4 +1201,4 @@ INSERT INTO `user_iphoneConfig` VALUES ('nm','send','oui');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-13  3:42:09
+-- Dump completed on 2010-06-17  3:19:54

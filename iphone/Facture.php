@@ -440,8 +440,6 @@ elseif($PC->rcvG['action'] == 'addFactureFromDevis') {
         $data['complementdelivery_cmd'] = $dev['complementdelivery_dev'];
         $data['tva_cmd'] = $dev['tva_dev'];
         $data['status_cmd'] = 9;
-
-
         $result = $info->insert($data, 'cloner', $produit);
         $aijecommande[1][0] = $data;
         if($result[0]) {
@@ -458,8 +456,8 @@ elseif($PC->rcvG['action'] == 'addFactureFromDevis') {
     $data['titre_fact'] = $aijecommande[1][0]['titre_cmd'];
     $data['commercial_fact'] = $_SESSION['user']['id'];
     $data['sommeHT_fact'] = $aijecommande[1][0]['sommeHT_cmd'];
-    $data['modereglement_fact'] = $aijecommande[1][0]['modereglement_fact'];
-    $data['condireglement_fact'] = $aijecommande[1][0]['condireglement_fact'];
+    $data['modereglement_fact'] = $aijecommande[1][0]['modereglement_cmd'];
+    $data['condireglement_fact'] = $aijecommande[1][0]['condireglement_cmd'];
     $data['BDCclient_fact'] = $aijecommande[1][0]['BDCclient_cmd'];
     $data['entreprise_fact'] = $aijecommande[1][0]['entreprise_cmd'];
     $data['contact_fact'] = $aijecommande[1][0]['contact_cmd'];
@@ -471,6 +469,8 @@ elseif($PC->rcvG['action'] == 'addFactureFromDevis') {
     $data['cp_fact'] = $aijecommande[1][0]['cpdelivery_cmd'];
     $data['pays_fact'] = $aijecommande[1][0]['paysdelivery_cmd'];
     $data['tauxTVA_fact'] = $aijecommande[1][0]['tva_cmd'];
+    $data['maildelivery_fact'] = $aijecommande[1][0]['maildelivery_cmd'];
+    $data['complementdelivery_fact'] = $aijecommande[1][0]['complementdelivery_cmd'];
     $data['type_fact'] = 'Facture';
     $result2 = $facture->insert($data, 'cloner', $produit);
     $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);

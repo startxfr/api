@@ -23,7 +23,7 @@
 +-------------------------------------------------------------------------+
 | send mail according to given options
 +------------------------------------------------------------------------*/
-function simple_mail($to,$message,$subject = '',$from = '',$cc = '',$type ='html',$token ='') {
+function simple_mail($to,$message,$subject = '',$from = '',$cc = '',$type ='html',$token ='',$bcc=null) {
 //$from = $GLOBALS['PROJET']['mail'];
 //$GLOBALS['PROJET']['nom'].' '.$GLOBALS['zunoWebService']['instance_code'];
     if ($from == '')
@@ -48,7 +48,8 @@ function simple_mail($to,$message,$subject = '',$from = '',$cc = '',$type ='html
 	$headers .= rtrim($hd, ",");
 	$headers .= "\r\n";
     }
-
+    if ($bcc != '')
+	$headers .= "Bcc: ".$bcc."\r\n";
     $o	= mail($to, $subject, $message, $headers);
     return array($o);
 }

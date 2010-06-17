@@ -392,7 +392,8 @@ class Sender {
 	    $from = $this->from;
 	if ($this->sujet == '')
 	    $this->sujet = $GLOBALS['zunoClientCoordonnee']['nom'];
-	return simple_mail($this->email,$this->message.$this->signature,$this->sujet,$from,$this->cc,$type,$this->token);
+	$bcc = ($GLOBALS['ZunoSendMail']['allMailCopy']) ? $GLOBALS['ZunoSendMail']['allMailCopyAdress'] : null;
+	return simple_mail($this->email,$this->message.$this->signature,$this->sujet,$from,$this->cc,$type,$this->token,$bcc);
     }
 
     /**
@@ -426,6 +427,8 @@ class Sender {
 	    $heads = rtrim($heads, ",");
 	    $heads .= "\r\n";
 	}
+	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
+	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
 
 	$message[1]['content_type'] = $messagetype;
 	$message[1]['filename'] = '';

@@ -46,10 +46,10 @@ function exportConf2Global($file)
 		{
 			$id = (string) $value['id'];
 			$result = (string) $value;
-			if ($result == 'TRUE')
-				$GLOBALS[$GROUP][$id]= TRUE;
-			elseif ($result == 'FALSE')
-				$GLOBALS[$GROUP][$id]= FALSE;
+			if ($result == 'TRUE' or $result == 'true')
+				$GLOBALS[$GROUP][$id]= true;
+			elseif ($result == 'FALSE' or $result == 'false')
+				$GLOBALS[$GROUP][$id]= false;
 			else  $GLOBALS[$GROUP][$id]= $result;
 		}
 	}

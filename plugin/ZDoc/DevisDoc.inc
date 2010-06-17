@@ -53,7 +53,9 @@ class devisGnose {
 
 	$entreprise = $this->bddtmp->getDataFromID($id_dev);
 	$entreprise = $entreprise[1][0];
-	$entreprise['date_dev'] = DateUniv2Human($entreprise['datemodif_dev'], 'fulldate');
+	$entreprise['datemodif_dev'] = DateUniv2Human($entreprise['datemodif_dev'], 'fulldate');
+	$entreprise['date_dev'] = $entreprise['datemodif_dev'];
+	$entreprise['daterecord_dev'] = DateUniv2Human($entreprise['daterecord_dev'], 'simpleLong');
 	$entreprise['tauxTVA_ent'] = $entreprise['tva_dev'];
 
 	if(count($entreprise) > 0) {
@@ -154,14 +156,14 @@ class devisGnose {
 			if(is_string($retour))
 			    return false;
 		    }
-		    else Logg::loggerInfo('devisGnose::DevisGenerateDocument() ~ Génération du document pour le devis '.$id_dev.' (fichier '.$PDFName.')',$cannevasFile,__FILE__.'@'.__LINE__);
+		    else Logg::loggerInfo('devisGnose::DevisGenerateDocument() ~ Génération du document pour le devis '.$id_dev.' (fichier '.$PDFName.')',array($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
 		    return $PDFName;
 		}
-		else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible de trouver la sequence {LIGNE_PROD} dans le cannevas '.$cannevasFile,$cannevasFile,__FILE__.'@'.__LINE__);
+		else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible de trouver la sequence {LIGNE_PROD} dans le cannevas '.$cannevasFile,array($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
 	    }
-	    else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible d\'ouvrir le cannevas '.$cannevasFile,$extract,__FILE__.'@'.__LINE__);
+	    else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible d\'ouvrir le cannevas '.$cannevasFile,array($cannevasFile,$extract),__FILE__.'@'.__LINE__);
 	}
-	else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible de trouver le cannevas '.$cannevasFile.' ou les informations sur le devis '.$id_dev,$entreprise,__FILE__.'@'.__LINE__);
+	else Logg::loggerError('devisGnose::DevisGenerateDocument() ~ Impossible de trouver le cannevas '.$cannevasFile.' ou les informations sur le devis '.$id_dev,array($cannevasFile,$entreprise),__FILE__.'@'.__LINE__);
     }
 
     /**

@@ -47,6 +47,8 @@ function FileCleanFileName($filename, $type="") {
 	    $table = array_merge($table,$tableSign,array(' '=>'_'));
 	elseif ($type == 'FILE_PATH_LOWER')
 	    $table = array_merge($tableToLower,$tableSign,array(' '=>'_'));
+	elseif ($type == 'TOLOWER')
+	    $table = $tableToLower;
 	elseif ($type == 'APOSTROPHE')
 	    $table  = array_merge($tableApos,array(' '=>'_'));
 	else $table = array_merge($table,$tableSign,$tableApos,array(' '=>'_'));

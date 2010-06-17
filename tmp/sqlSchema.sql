@@ -416,6 +416,8 @@ CREATE TABLE `facture` (
   `cp_fact` varchar(8) DEFAULT NULL,
   `ville_fact` varchar(64) DEFAULT NULL,
   `pays_fact` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `maildelivery_fact` varchar(255) DEFAULT NULL,
+  `complementdelivery_fact` varchar(128) DEFAULT NULL,
   `file_fact` varchar(128) DEFAULT NULL,
   `type_fact` varchar(32) NOT NULL DEFAULT 'Facture',
   `ren_fact` int(8) DEFAULT NULL,
@@ -1196,4 +1198,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-13  3:42:09
+-- Dump completed on 2010-06-17  3:19:54

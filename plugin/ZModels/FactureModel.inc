@@ -20,8 +20,7 @@ class factureModel extends GeneralModel {
 		'id_fact','entreprise_fact','contact_fact','commande_fact',
 		'sommeHT_fact','commentreglement_fact','modereglement_fact','condireglement_fact','BDCclient_fact','titre_fact',
 		'datemodif_fact','daterecord_fact','dateenvoi_fact','datereglement_fact','status_fact',
-		'nomentreprise_fact','add1_fact','add2_fact',
-		'ville_fact','cp_fact','pays_fact','numeroTVA_fact',
+		'nomentreprise_fact','add1_fact','add2_fact','ville_fact','cp_fact','pays_fact','numeroTVA_fact','maildelivery_fact','complementdelivery_fact',
 		'envoi_fact','commercial_fact','contact_achat_fact', 'tauxTVA_fact', 'type_fact', 'ren_fact', 'commentaire_fact');
 	$this->availableFieldsProduit = array('id_facture', 'id_produit', 'desc', 'quantite', 'remise', 'prix', 'id');
 

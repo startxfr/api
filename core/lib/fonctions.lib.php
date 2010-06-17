@@ -1407,7 +1407,7 @@ function dateF($format, $timestamp = '-1') {
  * @param <int> $round
  * @param <string> $csymbol
  */
-function  formatCurencyDisplay($number,$round = 2,$csymbol = ' &euro;') {
+function formatCurencyDisplay($number,$round = 2,$csymbol = ' &euro;') {
     return prepareNombreAffichage($number,$round).$csymbol;
 }
 
@@ -1417,7 +1417,8 @@ function  formatCurencyDisplay($number,$round = 2,$csymbol = ' &euro;') {
  * @param <int> $round
  * @param <string> $sign
  */
-function  formatCurencyDatabase($number,$round = 2) {
-    return round(prepareNombreTraitement($number), $round);
+function formatCurencyDatabase($number,$round = 2) {
+    $n = round(prepareNombreTraitement($number),$round);
+    return prepareNombreTraitement($n);
 }
 ?>

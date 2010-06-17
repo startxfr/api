@@ -63,8 +63,11 @@ class factureGnose {
 	else
 	    $id = $id_fact;
 	$entreprise['id_affiche'] = substr($entreprise['daterecord_fact'], 2, 2).substr(strtoupper($entreprise['type_fact']),0,1).$id;
-	$entreprise['date_fact'] = DateUniv2Human($entreprise['datemodif_fact'], 'fulldate');
-	$entreprise['datereglement_fact'] = ($entreprise['datereglement_fact'] == null) ? " ":DateUniv2Human($entreprise['datereglement_fact'], 'fulldate');
+	$entreprise['datemodif_fact'] = DateUniv2Human($entreprise['datemodif_fact'], 'fulldate');
+	$entreprise['date_fact'] = $entreprise['datemodif_fact'];
+	$entreprise['daterecord_fact'] = DateUniv2Human($entreprise['daterecord_fact'], 'simpleLong');
+	$entreprise['dateenvoi_fact'] = ($entreprise['dateenvoi_fact'] == null) ? " ":DateUniv2Human($entreprise['dateenvoi_fact'], 'fulldate');
+	$entreprise['datereglement_fact'] = ($entreprise['datereglement_fact'] == null) ? " ":DateUniv2Human($entreprise['datereglement_fact'], 'simpleLong');
 	if(count($entreprise) > 0) {
 	    if($entreprise['id_pays'] == "1") $entreprise['nom_pays'] = "";
 
@@ -163,18 +166,18 @@ class factureGnose {
 			@rm($ArchivePath.$PDFName);
 			$retour = OOConverter($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt);
 			if(is_string($retour)) {
-			    Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la conversion en '.$outputExt.' du fichier '.$ODTName,serialize($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
+			    Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la conversion en '.$outputExt.' du fichier '.$ODTName,array($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
 			    return false;
 			}
 		    }
-		    Logg::loggerInfo('factureGnose::FactureGenerateDocument() ~ Génération du document de la facture '.$id_fact.' (fichier '.$PDFName.')',serialize($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
+		    Logg::loggerInfo('factureGnose::FactureGenerateDocument() ~ Génération du document de la facture '.$id_fact.' (fichier '.$PDFName.')',array($ArchivePath.$ODTName,$ArchivePath.$PDFName,$outputExt),__FILE__.'@'.__LINE__);
 		    return $PDFName;
 		}
-		else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' aucune Ligne produit disponible dans le cannevas',serialize($cannevasFile),__FILE__.'@'.__LINE__);
+		else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' aucune Ligne produit disponible dans le cannevas',$cannevasFile,__FILE__.'@'.__LINE__);
 	    }
-	    else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible d\'extraire le cannevas',serialize($cannevasFile),__FILE__.'@'.__LINE__);
+	    else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible d\'extraire le cannevas',array($cannevasFile,$extract),__FILE__.'@'.__LINE__);
 	}
-	else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible de trouver le cannevas ou le tableau des informations sur la facture'.$cannevasFile,serialize($cannevasFile,$entreprise),__FILE__.'@'.__LINE__);
+	else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible de trouver le cannevas ou le tableau des informations sur la facture'.$cannevasFile,array($cannevasFile,$entreprise),__FILE__.'@'.__LINE__);
     }
 
     /**

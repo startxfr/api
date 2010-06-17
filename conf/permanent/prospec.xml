@@ -35,10 +35,13 @@
 	<value id="texte.DevisNewClient.txt">Devis (nouv client)</value>
 	<value id="texte.DevisNewClientAcademique.txt">Devis (nouv client académique)</value>
 	<value id="texte._CommandeEnregistree.txt">Commande enregistrée</value>
+	<value id="texte._Facture.txt">Votre facture</value>
 	<value id="coverFax">Cannevas/_CouvertureFax.odt</value>
-	<value id="maxEnvoiFax">3</value>
-	<value id="maxEnvoiCourrier">3</value>
+	<value id="maxEnvoiFax">-1</value>
+	<value id="maxEnvoiCourrier">-1</value>
 	<value id="maxEnvoiMail">-1</value>
+	<value id="allMailCopy">true</value>
+	<value id="allMailCopyAdress">sxa@startx.fr</value>
     </group>
     <group name="ZunoDevis" modifRight="1" title="parametrage du devis">
 	<value id="right.record" title="Droit pour l'enregistrement">1</value>

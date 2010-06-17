@@ -176,26 +176,26 @@ if(array_key_exists('action', $PC->rcvG)) {
     }
 
     elseif($PC->rcvG['action'] == 'listeEntCmdFact') {
-        if($PC->rcvP['value'] == '**')
-            $search = '';
-        else
-            $search = $PC->rcvP['value'];
-        $qTag = "LIKE '".$search."%'";
-        $sql->makeRequeteFree("SELECT * FROM commande c LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd LEFT JOIN ref_pays on ref_pays.id_pays = entreprise.pays_ent where id_cmd $qTag OR titre_cmd $qTag OR nom_ent $qTag OR cp_ent $qTag ORDER BY id_cmd ASC LIMIT 0,10 ");
-        $result = $sql->process2();
-        if(is_array($result[1])) {
-            foreach($result[1] as $v)
-                $out .= '<li title="'.$v['id_cmd'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.imageTag('../img/actualite/commande.png','commande').' '.$v['id_cmd'].' - '.$v['titre_cmd'].' ('.$v['nom_ent'].')</li>';
-        }
-        $sql->makeRequeteFree("SELECT * from entreprise LEFT JOIN ref_pays ON ref_pays.id_pays = entreprise.pays_ent where nom_ent $qTag or cp_ent $qTag or ville_ent $qTag ORDER BY nom_ent ASC LIMIT 0,10 ");
-        $result = $sql->process2();
-        if(is_array($result[1])) {
-            foreach($result[1] as $v) {
-                if ($v['type_ent'] != '')
-                    $v['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
-                $out .= '<li title="null-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.$v['nom_ent'].' ('.$v['ville_ent'].')</li>';
-            }
-        }
+	if($PC->rcvP['value'] == '**')
+	    $search = '';
+	else
+	    $search = $PC->rcvP['value'];
+	$qTag = "LIKE '".$search."%'";
+	$sql->makeRequeteFree("SELECT * from entreprise LEFT JOIN ref_pays ON ref_pays.id_pays = entreprise.pays_ent where nom_ent $qTag or cp_ent $qTag or ville_ent $qTag ORDER BY nom_ent ASC LIMIT 0,10 ");
+	$result = $sql->process2();
+	if(is_array($result[1])) {
+	    foreach($result[1] as $v) {
+		if ($v['type_ent'] != '')
+		    $v['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
+		$out .= '<li title="null-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.$v['nom_ent'].' ('.$v['ville_ent'].')</li>';
+	    }
+	}
+	$sql->makeRequeteFree("SELECT * FROM commande c LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd LEFT JOIN ref_pays on ref_pays.id_pays = entreprise.pays_ent where (id_cmd $qTag OR titre_cmd $qTag OR nom_ent $qTag OR cp_ent $qTag) AND status_cmd IN (4,5,6,7,8) ORDER BY id_cmd ASC LIMIT 0,10 ");
+	$result = $sql->process2();
+	if(is_array($result[1])) {
+	    foreach($result[1] as $v)
+		$out .= '<li title="'.$v['id_cmd'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.imageTag('../img/actualite/commande.png','commande').' '.$v['id_cmd'].' - '.$v['titre_cmd'].' ('.$v['nom_ent'].')</li>';
+	}
     }
     elseif($PC->rcvG['action'] == 'listeFamille') {
         if($PC->rcvP['value'] == '**')

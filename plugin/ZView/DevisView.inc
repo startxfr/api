@@ -27,9 +27,9 @@ class devisView extends generalView {
 	$script .= "\n".'function ChangeDevisAction(value) { $(\'MakeDevisAction\').value = value; } ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$script .= "\n".'function changeDevisFormat(value) { $(\'formatDevisPDF\').value = value;} ';
-	$script .= "\n".'function champAdd(display) {$(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
+	$script .= "\n".'function champAdd(display) {$(\'champDestinataire\').style.display = $(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
 	$script .= "\n".'function affRen(cbox) { if(cbox.checked) { $(\'mailF\').parentNode.parentNode.style.display = \'table-row\'; $(\'statusF\').parentNode.parentNode.style.display = \'table-row\'; $(\'fin_renID\').parentNode.parentNode.style.display = \'table-row\'; $(\'selectF\').parentNode.parentNode.style.display = \'table-row\'; } else { $(\'mailF\').parentNode.parentNode.style.display = \'none\'; $(\'fin_renID\').parentNode.parentNode.style.display = \'none\'; $(\'selectF\').parentNode.parentNode.style.display = \'none\'; $(\'statusF\').parentNode.parentNode.style.display = \'none\'; } } ';
-	$script .= "\n".'function montreForm(value) {if(value == \'mail\') { $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') {$(\'champFax\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') { $(\'champFax\').style.display = \'none\'; $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
+	$script .= "\n".'function montreForm(value) {if(value == \'mail\') {  $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') { champAdd(\'none\'); $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'table-row\'; $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') {  $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
 
 	$script .= "\n".'function saveProd() {' .
 		'zuno.ajax.post.json(\'../produit/Produit.php\', ' .
@@ -570,11 +570,7 @@ function IsNumeric(input)
 					<legend>Détail de l\'envoi</legend>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendType);">Type d\'envoi</div>
-						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"').'</div>
-					</div>
-					<div class="row">
-						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendDestinataire);">Destinataire</div>
-						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
+						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"',false).'</div>
 					</div>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendSujet);">Sujet</div>
@@ -598,17 +594,21 @@ function IsNumeric(input)
 			<div class="block width50">
 				<fieldset class="form">
 					<legend>Informations sur le destinataire</legend>
-					<div class="row" style="display:none;" id="champEmail">
+					<div class="row" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendMail);">Courriel</div>
 						<div class="field">'.inputTag('text', 'mail', '', '', '', $datas['data']['mail_cont']).'</div>
 					</div>
-                                        <div class="row" style="display:none;" id="champCC">
+                                        <div class="row" id="champCC">
 						<div class="label">Me mettre en copie</div>
-						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'" /></div>
+						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'"  checked="checked"/></div>
 					</div>
 					<div class="row" style="display:none;" id="champFax">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendFax);">Fax</div>
 						<div class="field">'.inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']).'</div>
+					</div>
+					<div class="row" id="champDestinataire" style="display:none;">
+						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendDestinataire);">Destinataire</div>
+						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
 					</div>
 					<div class="row" style="display:none;" id="champAdd1">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendAdd);">Adresse</div>

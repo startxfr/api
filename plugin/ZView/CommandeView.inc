@@ -40,7 +40,7 @@ class commandeView extends generalView {
      */
     public function popupValidFacturation($id) {
 	$titre = 'Création Facture';
-	$corps = '<div id="formAddFact">Etes vous sûr de vouloir cloturer la commande '.$id.' et de créer la facture correspondante ?</div>';
+	$corps = '<div id="formAddFact"><span class="importantgreen">Etes vous sûr de vouloir créer la facture associé à la commande '.$id.' et cloturer cette dernière ?</span></div>';
 	$corps .= '<form name="addFact" action="../facturier/Facture.php" method="POST"><input type="hidden" name="id_cmd" value="'.$id.'" /><input type="hidden" name="action" value="addFactFromCmd" /></form>';
 	$pied = '<a onclick="javascript:zuno.popup.close();" ><img align="middle" title="Non" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Non</a>';
 	$pied .= '<a name="submit" href="javascript:document.forms.addFact.submit();"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/confirm.png"/>Oui</a>';
@@ -165,8 +165,8 @@ class commandeView extends generalView {
 	}
 	$script .= "\n".'function ChangeCannevas() { var choix = document.getElementById(\'CannevasListe\').value; if(choix.length > 0) { output = Cannevas[choix]; } document.getElementById(\'MessageToSend\').value = output; } ';
 	$script .= "\n".'function changeCommandeFormat(value) { $(\'formatCommandePDF\').value = value;} ';
-	$script .= "\n".'function montreForm(value) {if(value == \'mail\') { $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') {$(\'champFax\').style.display = \'table-row\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); $(\'champEmail\').style.display =\'none\';} else if(value == \'courrier\') { $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; champAdd(\'none\'); } } ';
-	$script .= "\n".'function champAdd(display) {$(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
+	$script .= "\n".'function montreForm(value) {if(value == \'mail\') {  $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') { champAdd(\'none\'); $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'table-row\'; $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') {  $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
+	$script .= "\n".'function champAdd(display) {$(\'champDestinataire\').style.display = $(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
 	$script .= "\n".'function changeFourn(produit, fourn) {if(fourn != "") {$(produit+\'PF\').value = prix[produit][fourn];$(produit+\'RF\').value = remise[produit][fourn]; calculette();} else {$(produit+\'PF\').value = 0; $(produit+\'RF\').value = 0; calculette();} } '."\n";
 	$script .= 'function ChangeCommandeAction(value) {	$(\'MakeCommandeAction\').value = value;}'."\n";
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
@@ -488,7 +488,7 @@ class commandeView extends generalView {
 	    if($datas['data']['status_cmd'] == "7")
 		$bouton .= '<a title="Reception" name="reception" onclick="ChangeCommandeAction(\'reception\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');"><img align="middle" title="Reception" alt="Reception" name="img" src="../img/prospec/commande.valid.png"/> Commande réceptionnée</a>';
 	    if(verifDroitsAuto('facture', 20, $datas['data']['commercial_cmd']))
-		$bouton   .= "<a name=\"facture\" onclick=\"return zuno.popup.open('Commande.php','id_commande=".$datas['data']['id_cmd']."&action=fact',700,450,'','','resize','FactureCreate');\">".imageTag('../img/prospec/facture.create.png','Facture')." Créer la facture</a> ";
+		$bouton   .= "<a name=\"facture\" onclick=\"return zuno.popup.open('Commande.php','id_commande=".$datas['data']['id_cmd']."&action=fact',500,150,'','','resize','FactureCreate');\">".imageTag('../img/prospec/facture.create.png','Facture')." Créer la facture</a> ";
 	}
 
 	$titre = imageTag('../img/prospec/commande.record.png','créer')." Traitement de la Commande ".$datas['data']['id_cmd'];
@@ -501,7 +501,7 @@ class commandeView extends generalView {
      * @param array $datas Les données à afficher
      * @return string Le code HTML
      */
-    private function internetraitement($datas) {
+    private function interneTraitement($datas) {
 	$id_cmd = $datas['data']['id_cmd'];
 	$opt = "";
 	$gnose = new commandeGnose();
@@ -634,11 +634,7 @@ class commandeView extends generalView {
 				<fieldset class="form"><legend>Envoyer</legend>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendType);">Type d\'envoi</div>
-						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"').'</div>
-					</div>
-					<div class="row">
-						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendDestinataire);">Destinataire</div>
-						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
+						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"',false).'</div>
 					</div>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendSujet);">Sujet</div>
@@ -661,16 +657,21 @@ class commandeView extends generalView {
 			</div>
 			<div class="block width50">
 				<fieldset class="form"><legend>Informations sur le destinataire</legend>
-					<div class="row" style="display:none;" id="champEmail">
+					<div class="row" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendMail);">Courriel</div>
-						<div class="field">'.inputTag('text', 'mail', '', '', '', $_SESSION['user']['mail']).'</div>					</div>
-                                        <div class="row" style="display:none;" id="champCC">
+						<div class="field">'.inputTag('text', 'mail', '', '', '', $_SESSION['user']['mail']).'</div>
+					</div>
+                                        <div class="row" id="champCC">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCopyToMe);">Me mettre en copie</div>
-						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'" /></div>
+						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'"  checked="checked"/></div>
 					</div>
 					<div class="row" style="display:none;" id="champFax">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendFax);">Fax</div>
 						<div class="field">'.inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']).'</div>
+					</div>
+					<div class="row" style="display:none;" id="champDestinataire">
+						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendDestinataire);">Destinataire</div>
+						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
 					</div>
 					<div class="row" style="display:none;" id="champAdd1">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendAdd);">Adresse</div>

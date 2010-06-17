@@ -19,9 +19,9 @@ class factureView extends generalView {
 	$script .= "\n".'function ChangeCannevas() { var choix = document.getElementById(\'CannevasListe\').value; if(choix.length > 0) { output = Cannevas[choix]; } document.getElementById(\'MessageToSend\').value = output; } ';
 	$script .= "\n".'function ChangeFactureAction(value) { $(\'MakeFactureAction\').value = value; } ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-	$script .= "\n".'function champAdd(display) {$(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
+	$script .= "\n".'function champAdd(display) {$(\'champDestinataire\').style.display = $(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
 	$script .= "\n".'function changeFactureFormat(value) { $(\'formatFacturePDF\').value = value;} ';
-	$script .= "\n".'function montreForm(value) {if(value == \'mail\') { $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') {$(\'champFax\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\'; } else if(value == \'courrier\') { $(\'champFax\').style.display = \'none\'; $(\'champEmail\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; champAdd(\'none\'); } } ';
+	$script .= "\n".'function montreForm(value) {if(value == \'mail\') {  $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') { champAdd(\'none\'); $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'table-row\'; $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') {  $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
 	$script .= "\n".'function affRen(cbox) { if(cbox.checked) { $(\'mailF\').parentNode.parentNode.style.display = \'table-row\'; $(\'statusF\').parentNode.parentNode.style.display = \'table-row\'; $(\'fin_renID\').parentNode.parentNode.style.display = \'table-row\'; $(\'selectF\').parentNode.parentNode.style.display = \'table-row\'; } else { $(\'mailF\').parentNode.parentNode.style.display = \'none\'; $(\'fin_renID\').parentNode.parentNode.style.display = \'none\'; $(\'selectF\').parentNode.parentNode.style.display = \'none\'; $(\'statusF\').parentNode.parentNode.style.display = \'none\'; } } ';
 	$script .= "\n".'function saveProd() {' .
 		'zuno.ajax.post.json(\'../produit/Produit.php\', ' .
@@ -44,26 +44,26 @@ class factureView extends generalView {
 		'zuno.popup.close(); ' .
 		'} ';
 	$script .= 'var cont = new Array();'."\n".'function autoLoadDatas(val) { if (val != \'\') {$(\'nomCB\').value = cont[val][\'nom\'];
-                                            $(\'prenomCB\').value = cont[val][\'prenom\'];
-                                            $(\'mailCB\').value = cont[val][\'mail\'];
-                                            $(\'civCB\').value = cont[val][\'civ\'];
-                                            if(cont[val][\'carte\'] != \'\')
-                                            $(\'carteCB\').value = \'XXXX \'+cont[val][\'carte\'];
-                                            $(\'dateCB\').value = cont[val][\'date\'];
-                                            if(cont[val][\'carte\'] != \'\')
-                                            $(\'cvvCB\').value = \'XXX\';
-                                            $(\'walletCB\').value = cont[val][\'wallet\'];}
-                                            else
-                                            {$(\'nomCB\').value = \'\';
-                                            $(\'prenomCB\').value = \'\';
-                                            $(\'civCB\').value = \'\';
-                                            $(\'mailCB\').value = \'\';
-                                            $(\'carteCB\').value = \'\';
-                                            $(\'dateCB\').value = \'\';
-                                            $(\'cvvCB\').value = \'\';
-                                            $(\'walletCB\').value = \'\';}
-                                            $(\'modifiedCB\').value = \'false\';
-                                            }'."\n";
+		$(\'prenomCB\').value = cont[val][\'prenom\'];
+		$(\'mailCB\').value = cont[val][\'mail\'];
+		$(\'civCB\').value = cont[val][\'civ\'];
+		if(cont[val][\'carte\'] != \'\')
+		$(\'carteCB\').value = \'XXXX \'+cont[val][\'carte\'];
+		$(\'dateCB\').value = cont[val][\'date\'];
+		if(cont[val][\'carte\'] != \'\')
+		$(\'cvvCB\').value = \'XXX\';
+		$(\'walletCB\').value = cont[val][\'wallet\'];}
+		else
+		{$(\'nomCB\').value = \'\';
+		$(\'prenomCB\').value = \'\';
+		$(\'civCB\').value = \'\';
+		$(\'mailCB\').value = \'\';
+		$(\'carteCB\').value = \'\';
+		$(\'dateCB\').value = \'\';
+		$(\'cvvCB\').value = \'\';
+		$(\'walletCB\').value = \'\';}
+		$(\'modifiedCB\').value = \'false\';
+		}'."\n";
 	$script .= "\n".'function change() {$(\'modifiedCB\').value = \'true\';}';
 	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;}</script>';
 
@@ -118,58 +118,58 @@ class factureView extends generalView {
 
 	$out = '';
 	$out .= '<div class="block width50">
-			<fieldset class="form" style="height: 150px">
-				<legend>Informations sur '.$datas['nom'].'</legend>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateCree);">Créé le : </div>
-					<div class="field">'.DateUniv2Human($data['daterecord_fact'], 'simpleLong').'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateModif);">Modifié le : </div>
-					<div class="field">'.DateUniv2Human($data['datemodif_fact'], 'simpleLong').'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.statut+\'<br/>Statut de cette facture : '.addslashes($data['description_stfact']).'\');">Statut</div>
-					<div class="field" title="'.$data['description_stfact'].'" style="color: #'.$data['color_stfact'].'"><div class="square" style="background-color:#'.$data['color_stfact'].';">&nbsp;</div> '.$data['nom_stfact'].'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoBDCC);">BDC Client</div>
-					<div class="field">'.inputTag('text', "BDCclient_fact", '', '', '16', $data['BDCclient_fact']).'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoTitre);">Titre</div>
-					<div class="field">'.inputTag('text', 'titre_fact', '', '', '35', $data['titre_fact']).'</div>
-				</div>
-                                <div class="row">
-                                        <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infotauxTva);">Taux TVA</div>
-                                        <div class="field">'.selectTVATag('tauxTVA_fact', array(), $tva, '', '', false).'</div>
-                                </div>
-			</fieldset>
+		<fieldset class="form" style="height: 180px">
+		<legend>Informations sur '.$datas['nom'].'</legend>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateCree);">Créé le : </div>
+			<div class="field">'.DateUniv2Human($data['daterecord_fact'], 'simpleLong').'</div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateModif);">Modifié le : </div>
+			<div class="field">'.DateUniv2Human($data['datemodif_fact'], 'simpleLong').'</div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.statut+\'<br/>Statut de cette facture : '.addslashes($data['description_stfact']).'\');">Statut</div>
+			<div class="field" title="'.$data['description_stfact'].'" style="color: #'.$data['color_stfact'].'"><div class="square" style="background-color:#'.$data['color_stfact'].';">&nbsp;</div> '.$data['nom_stfact'].'</div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoBDCC);">BDC Client</div>
+			<div class="field">'.inputTag('text', "BDCclient_fact", '', '', '16', $data['BDCclient_fact']).'</div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoTitre);">Titre</div>
+			<div class="field">'.inputTag('text', 'titre_fact', '', '', '35', $data['titre_fact']).'</div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infotauxTva);">Taux TVA</div>
+			<div class="field">'.selectTVATag('tauxTVA_fact', array(), $tva, '', '', false).'</div>
+		</div>
+		</fieldset>
 		</div>
 		<div class="block width50">
-			<fieldset class="form" style="height: 150px">
-				<legend>Contacts de '.$datas['nom'].'</legend>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.entreprise);">Entreprise</div>
-					<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
-					<div class="field">'.inputTag('text', 'contact_fact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
-					<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="'.$data['contact_fact'].'" /><input type="hidden" name="contold" id="ACcontact_factold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
-					<div id="ACcontact_fact_choix" class="autocomplete"></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact Achat</div>
-					<div class="field">'.inputTag('text', 'contact_achat_fact2','', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
-					<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="'.$data['contact_achat_fact'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_factold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
-					<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.commercial);">Commercial</div>
-					<div class="field">'.selectTag('commercial_fact',$datas['user'],$data['commercial_fact']).'</div>
-				</div>
-			</fieldset>';
+		<fieldset class="form" style="height: 180px">
+		<legend>Contacts de '.$datas['nom'].'</legend>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.entreprise);">Entreprise</div>
+			<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
+			<div class="field">'.inputTag('text', 'contact_fact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+			<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="'.$data['contact_fact'].'" /><input type="hidden" name="contold" id="ACcontact_factold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
+			<div id="ACcontact_fact_choix" class="autocomplete"></div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact Achat</div>
+			<div class="field">'.inputTag('text', 'contact_achat_fact2','', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+			<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="'.$data['contact_achat_fact'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_factold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
+			<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>
+		</div>
+		<div class="row">
+			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.commercial);">Commercial</div>
+			<div class="field">'.selectTag('commercial_fact',$datas['user'],$data['commercial_fact']).'</div>
+		</div>
+		</fieldset>';
 	if($data['id_cmd'] != '' or $data['id_dev'] != '' or $data['id_aff'] != '') {
 	    $out.= '<fieldset class="form">
 				<legend>Documents liées </legend>';
@@ -189,65 +189,68 @@ class factureView extends generalView {
 	}
 	$out.='</div>
 		<div class="block width50">
-			<fieldset class="form" style="height: 150px">
-				<legend>Informations sur la livraison</legend>
-			  	<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryNom);">Entreprise</div>
+		<fieldset class="form" style="height: 180px">
+			<legend>Informations sur la livraison</legend>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryNom);">Entreprise</div>
 
-					<div class="field">'.inputTag('text', "nomentreprise_fact", '', '', '30', $data['nomentreprise_fact']).'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryAdd);">Adresse</div>
-					<div class="field">'.inputTag('text', "add1_fact", '', '', '40', $data['add1_fact']).'</div>
-				</div>
-				<div class="row">
-					<div class="label">Complément</div>
-					<div class="field">'.inputTag('text', "add2_fact", '', '', '40', $data['add2_fact']).'</div>
+				<div class="field">'.inputTag('text', "nomentreprise_fact", '', '', '30', $data['nomentreprise_fact']).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryAdd);">Adresse</div>
+				<div class="field">'.inputTag('text', "add1_fact", '', '', '40', $data['add1_fact']).'</div>
+			</div>
+			<div class="row">
+				<div class="label">Complément</div>
+				<div class="field">'.inputTag('text', "add2_fact", '', '', '40', $data['add2_fact']).'</div>
 
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryCpVille);">CP - Ville</div>
-					<div class="field">'.inputTag('text', "cp_fact", 'civ', '', '6', $data['cp_fact'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'devisVille\');"').'<select name=\'ville_fact\'  id="devisVille" class="nextciv" onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$data['ville_fact'].'" selected="selected">'.$data['ville_fact'].'</option></select></div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryPays);">Pays</div>
-					<div class="field">'.selectTag('pays_fact',$datas['pays'],$data['pays_fact']).'</div>
-				</div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryMail);">Mail</div>
-					<div class="field">'.inputTag('text', "maildelivery_fact", '', '', '30', $data['maildelivery_fact']).'</div>
-				</div>
-			</fieldset>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryCpVille);">CP - Ville</div>
+				<div class="field">'.inputTag('text', "cp_fact", 'civ', '', '6', $data['cp_fact'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'devisVille\');"').'<select name=\'ville_fact\'  id="devisVille" class="nextciv" onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$data['ville_fact'].'" selected="selected">'.$data['ville_fact'].'</option></select></div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryPays);">Pays</div>
+				<div class="field">'.selectTag('pays_fact',$datas['pays'],$data['pays_fact']).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryMail);">Mail</div>
+				<div class="field">'.inputTag('text', "maildelivery_fact", '', '', '30', $data['maildelivery_fact']).'</div>
+			</div>
+			<div class="row">
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.complementDelivery);">Commentaire</div>
+			    <div class="field">
+				    <textarea name="complementdelivery_fact" cols="55" rows="1" >'.$data['complementdelivery_fact'].'</textarea></div>
+			</div>
+		</fieldset>
 		</div>';
 	$out.='<div class="block width50">
-			<fieldset class="form" style="height: 150px">
-				<legend>Règlement de cette facture</legend>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateReglement);">Réglé le : </div>
-					<div class="field">'.DateUniv2Human($data['datereglement_fact'], 'simpleLong').'</div>
-				</div>
-				<div class="row">
-                                        <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementMode);">Mode</div>
-                                        <div class="field">'.selectTag('modereglement_fact',$datas['modereglement'],$data['modereglement_fact'],'','',false).'</div>
-                                </div>
-                                <div class="row">
-                                        <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementCondi);">Condition</div>
-                                        <div class="field">'.selectTag('condireglement_fact',$datas['condireglement'],$data['condireglement_fact'],'','',false).'</div>
-                                </div>
-				<div class="row">
-					<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.commentreglement);">Commentaire</div>
-					<div class="field">'.textareaTag('commentreglement_fact', $data['commentreglement_fact'], '', '', 3).'</div>
-				</div>
-			</fieldset>
+		<fieldset class="form" style="height: 180px">
+			<legend>Règlement de cette facture</legend>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoDateReglement);">Réglé le : </div>
+				<div class="field">'.DateUniv2Human($data['datereglement_fact'], 'simpleLong').'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementMode);">Mode</div>
+				<div class="field">'.selectTag('modereglement_fact',$datas['modereglement'],$data['modereglement_fact'],'','',false).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementCondi);">Condition</div>
+				<div class="field">'.selectTag('condireglement_fact',$datas['condireglement'],$data['condireglement_fact'],'','',false).'</div>
+			</div>
+			<div class="row">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.commentreglement);">Commentaire</div>
+				<div class="field">'.textareaTag('commentreglement_fact', $data['commentreglement_fact'], '', '', 3).'</div>
+			</div>
+		</fieldset>
 		</div>';
 	if($datas['data']['id_fact'] == $datas['ren']['idChamp_ren'] or $datas['data']['ren_fact'] == "") {
 	    if($datas['ren']['fin_ren'] != '0000-00-00 00:00:00' and $datas['ren']['fin_ren'] != "") {
 		$date2 = $datas['ren']['fin_ren'];
 		$date2 = substr($date2, 8,2)."/".substr($date2,5,2)."/".substr($date2,0,4);
 	    }
-	    else {
-		$date2 = date('d/m/').(date('Y')+1);
-	    }
+	    else $date2 = date('d/m/').(date('Y')+1);
 	    if($datas['ren']['actif_ren'] == 1 ) {
 		$checked = ' checked="checked" ';
 		$styleDisplay="";
@@ -526,11 +529,7 @@ class factureView extends generalView {
 				<legend>Envoyer</legend>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendType);">Détail de l\'envoi</div>
-						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"').'</div>
-					</div>
-					<div class="row">
-						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendDestinataire);">Destinataire</div>
-						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
+						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"',false).'</div>
 					</div>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendSujet);">Sujet</div>
@@ -554,17 +553,21 @@ class factureView extends generalView {
 			<div class="block width50">
 				<fieldset class="form">
 				<legend>Informations sur le destinataire</legend>
-					<div class="row" style="display:none;" id="champEmail">
+					<div class="row" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendMail);">Courriel</div>
 						<div class="field">'.inputTag('text', 'mail', '', '', '', $datas['data']['mail_cont']).'</div>
 					</div>
-                                        <div class="row" style="display:none;" id="champCC">
+                                        <div class="row" id="champCC">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendCopyToMe);">Me mettre en copie</div>
-						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'" /></div>
+						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'" checked="checked"/></div>
 					</div>
 					<div class="row" style="display:none;" id="champFax">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendFax);">Fax</div>
 						<div class="field">'.inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']).'</div>
+					</div>
+					<div class="row" style="display:none;" id="champDestinataire">
+						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendDestinataire);">Destinataire</div>
+						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
 					</div>
 					<div class="row" style="display:none;" id="champAdd1">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendAdd);">Adresse</div>

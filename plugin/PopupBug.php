@@ -41,8 +41,8 @@ if($_POST['action'] == 'sendBug') {
     $send = new Sender($data);
     $rs = $send->send();
     if($rs[0])
-	echo '<div id="BodyContent"><span class="importantgreen">Votre rapport de bug à bien été enregistré. Nous vous remercions de votre participation à l\'amélioration du service Zuno qui devient chaque jour un peu plus le votre.</span>
-	      <script type="text/javascript">$(\'idreportBugformFull\').style.display = \'none\'; setTimeout(function() { zuno.contextBox.close();$(\'idreportBugformFull\').style.display = \'block\'; },2000);</script></div>';
+	echo '<div id="BodyContent"><span class="importantgreen" id="resultBugMsg">Votre rapport de bug à bien été enregistré.<br/>Nous vous remercions de votre participation à l\'amélioration du service Zuno.</span>
+	      <script type="text/javascript">$(\'idreportBugformFull\').style.display = \'none\';$(\'fieldLocaBug\').value = \'\';$(\'fieldDescBug\').value = \'\'; setTimeout(function() { zuno.contextBox.close(); },1500); setTimeout(function() { $(\'idreportBugformFull\').style.display = \'block\';$(\'resultBugMsg\').style.display = \'none\'; },2500);</script></div>';
     else
 	echo '<erreur>returnMessageRapportBug</erreur>Erreur lors de l\'envoi de votre rapport.<br/>Vous pouvez renouveller votre envoi dans quelques minutes ou contacter notre hotline.';
 
