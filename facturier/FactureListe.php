@@ -145,7 +145,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 	}
 	else $message = "<span class=\"importantblue\">Aucune des factures séléctionnées ne peuvent être marquée comme validée</span>";
     }
-    elseif($action == 'envoye') {
+    elseif($action == 'attente') {
 	$req = "SELECT facture.id_fact FROM facture
 		LEFT JOIN commande ON commande.id_cmd = facture.commande_fact
 		LEFT JOIN devis ON devis.id_dev = commande.devis_cmd
@@ -153,19 +153,19 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		WHERE id_fact IN (".$factListString.")
 		AND (archived_aff = '0' OR archived_aff IS NULL)
 		AND (actif_aff = '1' OR actif_aff IS NULL)
-		AND status_fact IN (3,4,5)
+		AND status_fact IN (2,3,4,5)
 		GROUP BY id_fact ORDER BY id_fact ASC";
         $bddtmp->makeRequeteFree($req);
         $res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $fact) {
 		factureModel::markEnvoyeFactureInDB($fact['id_fact'],$PC->rcvP);
-		$message.= "Facture ".$fact['id_fact']." marqué comme envoyé \n";
+		$message.= "Facture ".$fact['id_fact']." marqué comme en attente de règlement \n";
 	    }
-	    $bddtmp->addActualite('', 'free', 'Lot de '.count($res).' factures envoyées', $message);
+	    $bddtmp->addActualite('', 'free', 'Lot de '.count($res).' factures  en attente de règlement', $message);
 	    $message = "<span class=\"importantgreen\">".nl2br($message)."</span>";
 	}
-	else $message = "<span class=\"importantblue\">Aucune des factures séléctionnées ne peuvent être marquée comme envoyée</span>";
+	else $message = "<span class=\"importantblue\">Aucune des factures séléctionnées ne peuvent être marquée comme  en attente de règlement</span>";
     }
     elseif($action == 'regle') {
 	$req = "SELECT facture.id_fact FROM facture

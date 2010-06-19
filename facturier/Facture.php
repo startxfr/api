@@ -269,7 +269,12 @@ elseif (($PC->rcvP['action'] == "Voir") or ($PC->rcvP['action'] == "Record") or 
             $bddtmp->process();
             $bddtmp->makeRequeteUpdate('commande',"id_cmd",$dev['commande_fact'],array("status_cmd"=>"9"));
             $bddtmp->process();
-            $info->update(array("status_fact"=>"4"), $id_fact);
+	    if($dev['status_fact'] <= 3) {
+		$info->update(array("status_fact"=>"4"), $id_fact);
+		$info->update(array("status_fact"=>"5"), $id_fact);
+	    }
+	    elseif($dev['status_fact'] == 4)
+		$info->update(array("status_fact"=>"5"), $id_fact);
             echo viewFiche($PC->rcvP['id_fact'], $type, 'Traitement', 'non', 'web', true, 'Document envoyé');
 
         }
@@ -497,7 +502,7 @@ elseif($PC->rcvP['action'] == 'payerCB') {
             $sender = new Sender($array);
             $test = $sender->send();
             if($test[0])
-                $mess = "Un e-mail de confirmation a été envoyé à votre client à ".$PC->rcvP['mail_cont'];
+                $mess = "Un e-mail de confirmation a été envoyé à votre client sur ".$PC->rcvP['mail_cont'];
             $array = array();
         }
         else

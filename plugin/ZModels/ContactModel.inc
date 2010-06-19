@@ -615,7 +615,7 @@ class contactEntrepriseModel extends GeneralModel {
 	if($data['www_ent'] == "http://")
 	    unset($data['www_ent']);
 	if(!array_key_exists($this->sqlIdField,$data)) $data[$this->sqlIdField] = ($this->getLastId()+1);
-	$data['nom_ent'] = strtoupper(str_replace(" ","",trim($data['nom_ent'])));
+	$data['nom_ent'] = strtoupper(trim($data['nom_ent']));
 	$data['ville_ent'] = strtoupper($data['ville_ent']);
 	$sql = $this->makeRequeteInsert($this->sqlTableName,$this->bindVarEntreprise($data));
 	Logg::loggerInfo('contactEntrepriseModel::insert() ~ ajout de l\'entreprise '.$data['id_ent'].' : '.$data['nom_ent'],$sql,__FILE__.'@'.__LINE__);
@@ -630,7 +630,7 @@ class contactEntrepriseModel extends GeneralModel {
      * @return array Indique si la requête s'est bien déroulée
      */
     public function update($data,$id_ent) {
-	$data['nom_ent'] = strtoupper(str_replace(" ","",trim($data['nom_ent'])));
+	$data['nom_ent'] = strtoupper(trim($data['nom_ent']));
 	$data['ville_ent'] = strtoupper($data['ville_ent']);
 	$sql = $this->makeRequeteUpdate($this->sqlTableName,"id_ent",$id_ent,$this->bindVarEntreprise($data));
 	Logg::loggerInfo('contactEntrepriseModel::update() ~ mise à jour de l\'entreprise '.$id_ent,$sql,__FILE__.'@'.__LINE__);

@@ -163,7 +163,7 @@ class commandeView extends generalView {
 		}
 	    }
 	}
-	$script .= "\n".'function ChangeCannevas() { var choix = document.getElementById(\'CannevasListe\').value; if(choix.length > 0) { output = Cannevas[choix]; } document.getElementById(\'MessageToSend\').value = output; } ';
+	$script .= "\n".'function ChangeCannevas() { var choix = document.getElementById(\'CannevasListe\').value; if(choix.length > 0) { document.getElementById(\'MessageTitle\').value =  CannevasTitre[choix]; document.getElementById(\'MessageToSend\').value = Cannevas[choix]; }  } ';
 	$script .= "\n".'function changeCommandeFormat(value) { $(\'formatCommandePDF\').value = value;} ';
 	$script .= "\n".'function montreForm(value) {if(value == \'mail\') {  $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') { champAdd(\'none\'); $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'table-row\'; $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') {  $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
 	$script .= "\n".'function champAdd(display) {$(\'champDestinataire\').style.display = $(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
@@ -454,11 +454,13 @@ class commandeView extends generalView {
 	}
 	$outJS = '<script type="text/javascript">';
 	$outJS .='Cannevas = new Array(); ';
+	$outJS .='CannevasTitre = new Array(); ';
 	foreach ($GLOBALS['ZunoSendMail'] as $key => $val) {
 	    $k = explode('.',$key,2);
 	    if($k[0] == 'texte') {
 		$key = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.texte'].$k[1];
 		$outJS .="\tCannevas[\"".$i."\"] = \"".str_replace($cleanFrom,$cleanTo,addslashes(trim(ProcessTemplating($key,$input,$output))))."\";\n";
+		$outJS .="\tCannevasTitre[\"".$i."\"] = \"".str_replace($cleanFrom,$cleanTo,addslashes(trim($val)))."\";\n";
 		$i++;
 	    }
 	}
@@ -638,7 +640,7 @@ class commandeView extends generalView {
 					</div>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendSujet);">Sujet</div>
-						<div class="field">'.inputTag('text', 'sujet').'</div>
+						<div class="field">'.inputTag('text', 'sujet','','','','','id="MessageTitle"').'</div>
 					</div>
 					<div class="row"> 
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCannevas);">Cannevas</div>

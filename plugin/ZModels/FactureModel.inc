@@ -1039,7 +1039,7 @@ class factureModel extends GeneralModel {
 	    $fact = $fact[0];
 	    if($newAttribList['commentaireEnvoye'] != '')
 		$newData['commentaire_fact'] = ($fact['commentaire_fact'] != '') ? $fact['commentaire_fact'].'. '.$newAttribList['commentaireEnvoye'] : $newAttribList['commentaireEnvoye'];
-	    $newData['status_fact'] = '4';
+	    $newData['status_fact'] = '5';
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_fact, $bddtmp->bindVarFacture($newData));
 	    $bddtmp->process();
 	    $bddtmp->addActualite($id_fact, 'update', '', 'changement par lot', '',false);

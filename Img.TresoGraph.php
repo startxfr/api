@@ -49,7 +49,7 @@ $monthAxisList = array_reverse($monthAxisList);
 $statList = array("5","6");
 $statColor = array("AntiqueWhite","olivedrab");
 $statTxtColor = array("gray","green");
-$statLegend = array("Facture envoyée","Facture réglée");
+$statLegend = array("Attentes","Payes");
 
 $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 foreach($statList as $status) {
@@ -66,10 +66,15 @@ foreach($statList as $status) {
     }
 }
 
-// Setup the graph
-$graph = new Graph(500,350);
+if($_GET['format'] == 'small') {
+    $graph = new Graph(500,250);
+    $graph->SetMargin(50,50,5,10);
+}
+else {
+    $graph = new Graph(500,350);
+    $graph->SetMargin(50,40,20,30);
+}
 $graph->img->SetAntiAliasing();
-$graph->SetMargin(50,40,20,30);
 $graph->SetScale("textlin");
 $graph->SetFrame(false,'white');
 
