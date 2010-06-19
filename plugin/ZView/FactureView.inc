@@ -438,8 +438,11 @@ class factureView extends generalView {
 	if(verifDroitsAuto('facture', 50, $datas['data']['commercial_fact']))
 	    $bouton .= '<a onclick="ChangeFactureAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="../img/prospec/facture.send.png"/> Envoyer</a>';
 
+	if (($datas['data']['status_fact'] < 5) and (verifDroitsAuto('facture', 13, $datas['data']['commercial_fact'])))
+	    $bouton .= '<a title="En attente de règlement" name="attenteRglmt" onclick="ChangeFactureAction(\'AttenteRglmt\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');"><img align="middle" title="En attente de règlement" alt="En attente de règlement" name="img" src="../img/prospec/facture.attente.png"/> En attente du règlement</a>';
+
 	// Quand status Envoyé
-	if (($datas['data']['status_fact'] == "4" or $datas['data']['status_fact'] == "5")and(verifDroitsAuto('facture', 13, $datas['data']['commercial_fact']))) {
+	if (($datas['data']['status_fact'] == "5")and(verifDroitsAuto('facture', 13, $datas['data']['commercial_fact']))) {
 	    $bouton .= '<a title="Réglée" name="regle" onclick="ChangeFactureAction(\'Clore\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="../img/prospec/facture.paye.png"/> Facture réglée</a>';
 	    if(array_key_exists('zunoPayline', $GLOBALS) and $GLOBALS['zunoPayline']['MERCHANT_ID'] != "")
 		$bouton .= '<a title="Payer par carte bancaire" name="CB" onclick="zuno.popup.open(\'Facture.php\', \'action=popupCB&facture='.$datas['data']['id_fact'].'\',800,230);"><img align="middle" title="Payer par carte bancaire" alt="payer par carte" name="img" src="../img/prospec/facture.paye.png"/> Payer par carte bancaire</a>';
