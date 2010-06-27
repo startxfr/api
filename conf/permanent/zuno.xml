@@ -38,11 +38,11 @@
 	<value id="telex">BAPCO 280 150F</value>
     </group>
     <group name="zunoPayline" modifRight="0" title="Configuration de Payline">
-	<value id="CONTRACT_NUMBER">1234567</value>
-	<value id="CONTRACT_NUMBER_LIST">1234567</value>
-	<value id="MERCHANT_ID">42991416362969</value>
-	<value id="ACCESS_KEY">Ue3Ayz1z5tL4ERlfqfge</value>
-	<value id="PRODUCTION">FALSE</value>
+	<value id="CONTRACT_NUMBER">6891533</value>
+	<value id="CONTRACT_NUMBER_LIST">6891533</value>
+	<value id="MERCHANT_ID">30118170124619</value>
+	<value id="ACCESS_KEY">N5GYGOpkGV4CAgIgHreu</value>
+	<value id="PRODUCTION">TRUE</value> 
 	<value id="PAYMENT_CURRENCY">978</value>
 	<value id="ORDER_CURRENCY">978</value>
 	<value id="SECURITY_MODE">SSL</value>
