@@ -81,6 +81,7 @@ elseif($PC->rcvP['action'] == 'addCmd') {
         if($PC->rcvP['quantite_cmd'][$k] == 0 or $PC->rcvP['quantite_cmd'][0] == '' or $PC->rcvP['fournisseur'][$k] == '')
             $PC->rcvP['fournisseur'][$k] = null;
         $produit[$k]['id_produit'] = $v;
+        $produit[$k]['desc'] = $PC->rcvP['desc'][$k];
         $produit[$k]['fournisseur'] = $PC->rcvP['fournisseur'][$k];
         $produit[$k]['quantite'] = prepareNombreTraitement($PC->rcvP['quantite'][$k]);
         $produit[$k]['quantite_cmd'] = ($PC->rcvP['quantite_cmd'][$k]) ? prepareNombreTraitement($PC->rcvP['quantite_cmd'][$k]) : 0;
@@ -234,49 +235,58 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
     $bdd = new commandeModel();
     if($PC->rcvP['action'] == 'GenererDocs' or $PC->rcvP['action'] == 'RecordSend') {
         aiJeLeDroit('commande', 60, 'web');
-        $sql = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $sql->makeRequeteFree("Select fournisseur from commande_produit where id_commande = '".$PC->rcvP['id_cmd']."'");
-        $fourn = $sql->process2();
         $gnose = new commandeGnose();
-
-        $result = $bdd->getDataFromID($PC->rcvP['id_cmd']);
-        $statusCmd = $result[1][0]['status_cmd'];
-        $datas['data'] = $result[1][0];
-        $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+	$datas = $bdd->getFullDataFromID($PC->rcvP['id_cmd']);
+        $bdd->makeRequeteFree("Select fournisseur from commande_produit where id_commande = '".$PC->rcvP['id_cmd']."'");
+        $fourn = $bdd->process2();
+        $statusCmd = $datas['data']['status_cmd'];
         $datas['pays'] =  $bdd->getPays();
         $datas['user'] = $bdd->getUser($PC->rcvP['id_cmd']);
-        $datas['produit'] = $bdd->getAllFournisseursFromID($PC->rcvP['id_cmd']);
 
-        if(is_array($fourn[1])) {
+	if(is_array($fourn[1])) {
             foreach($fourn[1] as $v) {
                 if(is_null($v['fournisseur']))
                     continue;
                 elseif(array_key_exists('BCF'.$v['fournisseur'], $PC->rcvP)) {
-                    $sql->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '".$v['fournisseur']."'");
-                    $datas['fournisseur'] = $sql->process2();
+                    $bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '".$v['fournisseur']."'");
+                    $datas['fournisseur'] = $bdd->process2();
                     $datas['fournisseur'] = $datas['fournisseur'][1][0];
-                    $sql->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '".$v['fournisseur']."' AND cp.id_commande = '".$PC->rcvP['id_cmd']."'");
-                    $datas['produit'] = $sql->process2();
+                    $bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '".$v['fournisseur']."' AND cp.id_commande = '".$PC->rcvP['id_cmd']."'");
+                    $datas['produit'] = $bdd->process2();
                     $datas['produit'] = $datas['produit'][1];
-                    $Doc[] = $dooc = $gnose->CommandeGenerateBDCF($datas, $PC->rcvP['OutputExt']);
-                    if(!is_string($dooc)) {
-                        echo viewFiche($PC->rcvP['id_dev'], 'devis', 'interneTraitement', 'non', 'web', true, 'Impossible de générer le document.');
-                        exit;
-                    }
+                    $dooc = $gnose->CommandeGenerateBDCF($datas, $PC->rcvP['OutputExt']);
+                    if(is_string($dooc))
+                        $Doc[] = $dooc;
                 }
             }
         }
         $datas['produit'] = $bdd->getAllFournisseursFromID($PC->rcvP['id_cmd']);
         if(array_key_exists('GetDocBDC', $PC->rcvP)) {
-            $Doc[] = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt']);
+            $ddd = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt']);
+            if($ddd != false)
+		$Doc[] = $ddd;
         }
         if(array_key_exists('GetDocBDL', $PC->rcvP)) {
-            $Doc[] = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt'], 'BDL');
+            $ddd = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt'], 'BDL');
+            if($ddd != false)
+		$Doc[] = $ddd;
         }
         if(array_key_exists('GetDocRI', $PC->rcvP)) {
-            $Doc[] = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt'], 'RI');
+            $ddd = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt'], 'RI');
+            if($ddd != false)
+		$Doc[] = $ddd;
         }
-        $gnose->CommandeSaveDocInGnose($Doc,$datas['data']);
+	if(count($Doc) > 0) {
+	    $result = $gnose->CommandeSaveDocInGnose($Doc,$datas['data']);
+	    if($result !== true) {
+		echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, $result);
+		exit;
+	    }
+	}
+	else {
+	    echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, 'Impossible de générer le document.');
+	    exit;
+	}
     }
     if($PC->rcvP['action'] == 'Send') {
         foreach($PC->rcvP as $k => $v) {

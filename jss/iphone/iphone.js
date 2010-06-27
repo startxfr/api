@@ -663,7 +663,7 @@ var total = $("QuantiteCommande"+idp).value*(1-remise/100)*prix;
 $("TotalCommande"+idp).innerHTML = "Total : "+total+" &euro;";
 $("PrixCommande"+idp).innerHTML = "Prix : "+prix+" &euro;";
 $("RemiseCommande"+idp).value = remise;
-$("PrixCommande"+idp+"_hidden").value = prix;
+$("PrixCommande"+idp+"hidden").value = prix;
 }
 function commandChangeQtt(idp, qtt)
 {
@@ -724,7 +724,7 @@ function confirmBeforeClickBis(id, fournisseur)
 {
 	if(confirm('Confirmer la suppression ?'))
 	{
-	$(id+"_hidden").value = fournisseur;
+	$(id+"hidden").value = fournisseur;
 	simulateClick(id);
 	}
 }
@@ -1141,7 +1141,7 @@ function soumettrepin()
 
 function autoVille(cp, id)
 {
-	$(id+"_hidden").value = cp;
+	$(id+"hidden").value = cp;
 	simulateClick(id+"_valid");
 }
 function placerVille(value, id)

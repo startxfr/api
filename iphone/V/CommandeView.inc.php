@@ -132,7 +132,7 @@ class commandeView {
     /**
      * Fonction qui va générer l'affichage de la liste des produits.
      */
-    static function produits($value = array(), $id_cmd, $tva, $valide = '') {
+    static function produits($value = array(), $id_cmd = '', $tva = 0, $valide = '') {
 	if($valide != 'valide') {
 	    $produits = '<a href="Commande.php?action=addProduit&id_cmd='.$id_cmd.'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/add.png" alt="Ajouter" /></a><div class="iPanel">';
 	}
@@ -240,7 +240,7 @@ class commandeView {
     /**
      * Fonction générant le rendu visuel du formulaire d'ajout d'un produit.
      */
-    static function addProduits($value = array(), $id_cmd, $tva = 0) {
+    static function addProduits($value = array(), $id_cmd = '', $tva = 0) {
 	$out = '<a href="#"  onclick="return WA.Submit(\'formAddProduitCommande\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
 				<form id="formAddProduitCommande" action="Commande.php?action=doAddProduit&tva='.$tva.'&id_cmd='.$id_cmd.'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
@@ -681,7 +681,7 @@ class commandeView {
 		$fourn = '<li>'.$fourn.'</li>';
 		$remise = HtmlFormIphone::InputLabel('remiseF['.$v['id_prod'].']',$temp[0]['remiseF'], 'Remise : ', 'id="RemiseCommande'.$v['id_prod'].'" onchange="commandChangeRemise(\''.$v['id_prod'].'\', this.value)"');
 		$remise = '<li>'.$remise.'</li>';
-		$remise .= '<input type="hidden" name="prixF['.$v['id_prod'].']" id="PrixCommande'.$v['id_prod'].'_hidden" value="'.$temp[0]['prixF'].'" />';
+		$remise .= '<input type="hidden" name="prixF['.$v['id_prod'].']" id="PrixCommande'.$v['id_prod'].'hidden" value="'.$temp[0]['prixF'].'" />';
 		$champprix = '<li id="PrixCommande'.$v['id_prod'].'">Prix : '.$temp[0]['prixF'].' €</li>';
 		$total = $totalBrut*(1-$temp[0]['remiseF']/100);
 		$stock = '<li>Stock : '.$v['stock_prod'].'</li>';

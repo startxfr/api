@@ -47,7 +47,6 @@ class FactureFournisseurView extends generalView {
 		function ChangeSubmit() {
 			    zuno.business.formTools.sendFormAjah('searchFactFourn','facturier/FactureFournisseurListe.php','searchListeFournisseur');
 		}";
-	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'function calculette() {TTC = $(\'TTC\').value.replace(/,/g, ".").replace(/ /g, ""); TX = $(\'IDtaux_tva\').value; TVA = TTC*(TX/100); TVA = Math.round(TVA*100)/100; $(\'IDmontantTVA_factfourn\').value = TVA; $(\'HT\').value = TTC - TVA;}';
 	$this->script .= "\n".'function getReg(value) { if(value >= 4) {$(\'dateReg\').style.display=\'table-row\'; } else {$(\'dateReg\').style.display=\'none\';} } ';

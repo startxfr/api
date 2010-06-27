@@ -53,7 +53,7 @@ class contactView extends generalView {
 	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
 	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
 	    if($popup)
-		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'entrepriseDevis\', \'popup2\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'entrepriseFiche\', \'popup2\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
 	    else
 		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
 	    $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="../img/prospec/rss.png"/> Consulter le fil RSS</a>';
@@ -1157,7 +1157,6 @@ class contactEntrepriseView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
-	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
@@ -1211,7 +1210,6 @@ class contactEntrepriseView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
-	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
@@ -1512,7 +1510,6 @@ class contactParticulierView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
-	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
@@ -1551,7 +1548,6 @@ class contactParticulierView extends contactView {
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
 	$script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
 	$script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
-	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
 	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
 	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';

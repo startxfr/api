@@ -18,9 +18,7 @@ class PontComptableView extends generalView {
     protected $fieldset1;
     protected $fieldset2;
     protected $fieldset3;
-    private $fieldsetF;
     private $form;
-    private $formF;
     private $html;
     private $script;
     private $compteurFourn;
@@ -44,7 +42,6 @@ class PontComptableView extends generalView {
 			    function ChangeLimit(value) { \$('limitPontComptableSearch').value = value; }
 			    function ChangeAction(value) { \$('actionPontComptableSearch').value = value;} ";
 	$this->script .= "\n".'function autoCalcul(numero) {px = $(\'px\'+numero).value.replace(/,/,"."); rem = $(\'rem\'+numero).value.replace(/,/,"."); tot=px*(1-rem/100); tot = Math.round(tot*100)/100; $(\'tot\'+numero).value = tot; }';
-	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'var REM = new Array();';
 	$this->script .= '</script>';

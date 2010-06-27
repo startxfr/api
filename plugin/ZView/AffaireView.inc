@@ -24,7 +24,6 @@ class affaireView extends generalView {
     public function __construct() {
 	$this->script = '<script>';
 	$this->script .= "\n".'function autoCompletage() { ent = 1;} ';
-	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= '</script>';
     }
@@ -55,7 +54,6 @@ class affaireView extends generalView {
 	$this->script = '<script>';
 	$this->script .= "\n".'function autoCompletage() { contact_completer = new Ajax.Autocompleter("ACcontact_aff", "ACcontact_aff_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_aff", afterUpdateElement : autoCompleteHidden } ); ';
 	$this->script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\') }';
-	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= '</script>';
 	$rendu = new ZunoRenduHtml();
@@ -246,9 +244,8 @@ class affaireView extends generalView {
 	$script .= 'new Ajax.Autocompleter("affaireAffaireSearch", "affaireAffaireSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("entrepriseAffaireSearch", "entrepriseAffaireSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("userAffaireSearch", "userAffaireSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );*/   } ';
-	$script .= 'function autoCompleteHidden(text, li) { $(text.id+\'_hidden\').value = li.title; } ';
 	$script .= 'function ChangeAffaireID(value) { $(\'idAffaireSearch\').value = value; } ';
-	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'_hidden\').value = ""; } } ';
+	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } ';
 	$script.= "function ChangeAffaireResultPage(limit,from,order,sens) {
 			    ChangeAffaireAction('searchAffaire');
 			    if(limit != undefined) ChangeLimit(limit);

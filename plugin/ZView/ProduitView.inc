@@ -14,8 +14,6 @@ loadPlugin('ZView/GeneralView');
  */
 class ProduitViewOriginal extends generalView {
 
-    private $listeFournisseur;
-    private $id_prod;
     protected $fieldset1;
     protected $fieldset2;
     protected $fieldset3;
@@ -44,7 +42,6 @@ class ProduitViewOriginal extends generalView {
 			    function ChangeLimit(value) { \$('limitProduitSearch').value = value; }
 			    function ChangeAction(value) { \$('actionProduitSearch').value = value;} ";
 	$this->script .= "\n".'function autoCalcul(numero) {px = $(\'px\'+numero).value.replace(/,/,"."); rem = $(\'rem\'+numero).value.replace(/,/,"."); tot=px*(1-rem/100); tot = Math.round(tot*100)/100; $(\'tot\'+numero).value = tot; }';
-	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'var REM = new Array();';
 	$this->script .= "\n".'function synchToSB(){zuno.ajax.get.json(\'../ajaxRef.php\', \'action=synchToSB\', function(xhr){var json = xhr.responseText.evalJSON(); if (json.good == \'true\') {alert(json.message);} else{alert(json.message);} } );}';
@@ -99,7 +96,7 @@ class ProduitViewOriginal extends generalView {
 	$this->fieldset3 = new ZunoFieldset('Description','','height:110px');
 	$this->fieldset1->ligneInput('Référence', 'id_prod', $datas['data']['id_prod'],'','ZTips.produit.reference');
 	$this->fieldset1->ligneInput('Nom', 'nom_prod', $datas['data']['nom_prod'],'','ZTips.produit.nom');
-	$this->fieldset1->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id="selectFamilleProd"', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)"), 'ZTips.produit.famille');
+	$this->fieldset1->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)");
 	$this->fieldset3->ligneTArea('Description', 'description_prod',$datas['data']['description_prod'],'','ZTips.produit.desc');
 	$this->fieldset1->ligneInput('Prix (€)', 'prix_prod', $datas['data']['prix_prod'],'','ZTips.produit.prix');
 	$this->fieldset2->ligneInput('Stock', 'stock_prod', $datas['data']['stock_prod'],'','ZTips.produit.stock');
@@ -165,7 +162,7 @@ class ProduitViewOriginal extends generalView {
 	}
 	else {
 	    $this->form->newInputHidden('action', 'addProdPopup');
-	    $pied = '<a href="javascript:document.formProduit.reset();" title="Reset"><img align="middle" src="../img/prospec/cancel.png" alt="Effacer" title="Effacer" onload="autoCompletage();"/> Annuler</a>';
+	    $pied = '<a name="closePopup" onclick="zuno.popup.close()" title="Reset"><img align="middle" src="../img/prospec/cancel.png" alt="Effacer" title="Effacer" onload="autoCompletage();"/> Annuler</a>';
 	    $pied .= '<a style="cursor: pointer;" onclick="saveProd();" name="submit"><img align="middle" src="../img/prospec/record.png" alt="Enregistrer" title="Enregistrer"/> Créer le produit</a>';
 	}
 
@@ -480,7 +477,7 @@ class ProduitViewOriginal extends generalView {
 	$fieldset = new ZunoFieldset('Recherche');
 	$fieldset->ligneInput('Référence', 'id_prod', $datas['form']['id_prod'],'','ZTips.produit.searchReference');
 	$fieldset->ligneInput('Nom', 'nom_prod', $datas['form']['nom_prod'],'','ZTips.produit.searchNom');
-	$fieldset->ligneFree('Famille', $this->selectTagProdFamille('famille_prod', $datas['form']['famille_prod'], $datas['famille'], true), 'ZTips.produit.searchFamille');
+	$fieldset->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], true, '', 'ZTips.produit.famille');
 	$fieldset->ligneSelect('Fournisseur', 'fournisseur_prod', $datas['form']['fournisseur_prod'], $datas['fournisseur'], true,'','ZTips.produit.searchFournisseur');
 	$fieldset->ligneCheckBox('Disponible', 'stillAvailable_prod', true,'','ZTips.produit.searchDisponible');
 	$fieldset->ligneInput('Prix minimal', 'pxmin_prod', $datas['pxmin_prod'],'','ZTips.produit.searchPrixMin');

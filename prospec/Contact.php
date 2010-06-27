@@ -122,8 +122,8 @@ elseif($PC->rcvP['action'] == 'addEntPopup') {
     }
     else {
         $id = $sql->getLastId();
-        //echo '<script type="text/javascript">$(\''.$PC->rcvP['retour'].'\').value = \''.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\'; $(\''.$PC->rcvP['retour'].'_hidden\').value=\''.$id.'\'; zuno.popup.close();</script>';
-        //echo $view->popupCont($PC->rcvP, 'erreurCont', '<img src="../img/ajax-loader.gif" onload="return function() { $(\''.$PC->rcvP['retour'].'\').value = \''.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\'; $(\''.$PC->rcvP['retour'].'_hidden\').value=\''.$id.'\'; return zuno.popup.close(); } " alt="loader" />');
+        //echo '<script type="text/javascript">$(\''.$PC->rcvP['retour'].'\').value = \''.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\'; $(\''.$PC->rcvP['retour'].'hidden\').value=\''.$id.'\'; zuno.popup.close();</script>';
+        //echo $view->popupCont($PC->rcvP, 'erreurCont', '<img src="../img/ajax-loader.gif" onload="return function() { $(\''.$PC->rcvP['retour'].'\').value = \''.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\'; $(\''.$PC->rcvP['retour'].'hidden\').value=\''.$id.'\'; return zuno.popup.close(); } " alt="loader" />');
         echo $view->popupEnt($PC->rcvP, 'erreurEnt', '<img src="../img/ajax-loader.gif" onload="zuno.popup.close(); " alt="loader" />');
         exit;
     }

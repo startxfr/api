@@ -87,7 +87,7 @@ class commandeView extends generalView {
 		if($v['stock_prod'] == '')
 		    $v['stock_prod'] = '0';
 		$tag['script'] .= 'produit['.$increment.']=\''.$v['id_produit'].'\'; ';
-		$tag['LinkBox'] = '<input type="hidden" name="id_produit['.$increment.']" value="'.$v['id_produit'].'" />'.$v['id_produit'];
+		$tag['LinkBox'] = '<input type="hidden" name="id_produit['.$increment.']" value="'.$v['id_produit'].'" /><input type="hidden" name="desc['.$increment.']" value="'.$v['desc'].'" />'.$v['id_produit'];
 		$tag['stock'] = prepareNombreAffichage($v['stock_prod']);
 		$tag['quantite'] = inputTag('text', 'quantite['.$increment.']', '', '', '', prepareNombreAffichage($v['quantite']), ' style="width:28px" readonly="readonly" id="'.$v['id_produit'].'qtt"');
 		$tag['prix'] = inputTag('text', 'prix['.$increment.']', '', '', '', prepareNombreAffichage($v['prix']), ' style="width:60px" readonly="readonly" id="'.$v['id_produit'].'prixC"').' &euro;';
@@ -126,6 +126,12 @@ class commandeView extends generalView {
 	$sqlConn->makeRequeteFree("select id_modereg, nom_modereg from ref_modereglement;");
 	$temp = $sqlConn->process2();
 	$temp=$temp[1];
+        if($data['modereglement_cmd'] == ''){
+            $data['modereglement_cmd'] = 3;
+        }
+        if($data['condireglement_cmd'] == ''){
+            $data['condireglement_cmd'] = 4;
+        }
 	foreach($temp as $k => $v)
 	    $list[$v['id_modereg']] = $v['nom_modereg'];
 	$tag['ModeReglement'] = selectTag('modereglement_cmd', $list, $data['modereglement_cmd']);
@@ -170,7 +176,7 @@ class commandeView extends generalView {
 	$script .= "\n".'function changeFourn(produit, fourn) {if(fourn != "") {$(produit+\'PF\').value = prix[produit][fourn];$(produit+\'RF\').value = remise[produit][fourn]; calculette();} else {$(produit+\'PF\').value = 0; $(produit+\'RF\').value = 0; calculette();} } '."\n";
 	$script .= 'function ChangeCommandeAction(value) {	$(\'MakeCommandeAction\').value = value;}'."\n";
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-	$script .= 'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;}</script>';
+	$script .= '</script>';
 
 	if($light == 'interneInfos')
 	    return '<span class="important">'.$mess.'</span>'.$this->blockInfosCommande($datas);
@@ -261,7 +267,7 @@ class commandeView extends generalView {
 	if ($datas['data']['type_ent'] != '')
 	    $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$datas['data']['type_ent'].'.png',$datas['data']['nom_tyent']).' '.$datas['data']['nom_ent'];
 	else $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').'<i>Particulier</i>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd);">Adresse</div>';
@@ -287,7 +293,7 @@ class commandeView extends generalView {
 	$out .= '<fieldset class="form" style="height:100px"><legend>Informations sur les contacts</legend>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.entreprise);">Entreprise</div>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
 	$out .= '</div>';
 	$out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactTech);">Contact Tech</div>
@@ -721,9 +727,8 @@ class commandeView extends generalView {
 	$script .= 'new Ajax.Autocompleter("affaireCmdSearch", "affaireCmdSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); '."\n";
 	$script .= 'new Ajax.Autocompleter("entrepriseCmdSearch", "entrepriseCmdSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); '."\n";
 	$script .= 'new Ajax.Autocompleter("userCmdSearch", "userCmdSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );} '."\n";
-	$script .= 'function autoCompleteHidden(text, li) { $(text.id+\'_hidden\').value = li.title; } '."\n";
 	$script .= 'function ChangeCmdID(value) { $(\'idCmdSearch\').value = value; } '."\n";
-	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'_hidden\').value = ""; } } '."\n";
+	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } '."\n";
 	$script.= "function ChangeCmdResultPage(limit,from,order,sens) {
 			ChangeCmdAction('searchCmd');
 			if(limit != undefined) ChangeLimit(limit);

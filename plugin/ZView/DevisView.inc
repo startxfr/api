@@ -36,12 +36,13 @@ class devisView extends generalView {
 		'zuno.business.formTools.getParamFromForm(\'formProduit\'), ' .
 		'function(xhr) { ' .
 		'var json = xhr.responseText.evalJSON(); ' .
-		'$(\'ACproduit_ajout_dev\').value = \'[\'+json.datas.id_prod+\']\'; ' .
+                'if(json.error != undefined){$(\'error\').innerHTML = json.error;}'.
+		'else { $(\'ACproduit_ajout_dev\').value = \'[\'+json.datas.id_prod+\']\'; ' .
 		'$(\'desc_Ajout_prod_dev\').value = json.datas.description_prod; ' .
 		'$(\'prix_Ajout_prod_dev\').value = json.datas.prix_prod; ' .
 		'$(\'total_Ajout_prod_dev\').value = json.datas.prix_prod; ' .
 		'$(\'ACproduit_ajout_devhidden\').value = json.datas.id_prod; ' .
-		'zuno.popup.close(); ' .
+		'zuno.popup.close(); }' .
 		'} );} ';
 	$script .= "\n".'function searchProdReturn(id_prod,description_prod,prix_prod) {' .
 		'$(\'ACproduit_ajout_dev\').value = \'[\'+id_prod+\']\'; ' .
@@ -134,7 +135,7 @@ function IsNumeric(input)
 	return (input - 0) == input && input.length > 0;
 }";
 
-	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;}</script>';
+	$script .= '</script>';
 
 	if($light == 'interneInfos')
 	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneInfos($datas);
@@ -218,7 +219,7 @@ function IsNumeric(input)
 		<legend>Contacts du devis</legend>
 		<div class="row">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.entreprise);">Entreprise</div>
-		    <div class="field"><a href="#" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" id="entrepriseDevis" title="voir les informations de l\'entreprise '.$data['nom_ent'].'">'.$data['nom_entH'].'</a></div>
+		    <div class="field"><a href="#" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" id="entrepriseFiche" title="voir les informations de l\'entreprise '.$data['nom_ent'].'">'.$data['nom_entH'].'</a></div>
 		</div>
 		<div class="row">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactTech);">Contact Tech</div>
@@ -408,7 +409,7 @@ function IsNumeric(input)
 	$action2 = (verifDroitsAuto('devis', 15, $datas['data']['commercial_dev'])) ? '<a name="add" onclick="chargerAction(\'addProduit\'); zuno.business.formTools.sendFormAjah(\'productDevis\', \'draco/Devis.php\',\'contenuProdDevis\');"><img title="Ajouter" alt="Ajouter" name="img" src="../img/prospec/devis.addProduct.png"/></a>' : '';
 	$out .= '<tr class="altern'.$alternance.'" id="tdAjoutProdDevis">
 			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_dev" style="width:80px" onblur="verifAutocompleteur(this);"').'
-				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\');" style="cursor:pointer; margin-right:0px"/>
+				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\', \'800\', \'330\');" style="cursor:pointer; margin-right:0px"/>
 				<img style="display:none; margin-left:5px;" id="loadingProd" src="../img/ajax-loader.gif" alt="loader"/>
 				<input type="hidden" name="id_produit" id="ACproduit_ajout_devhidden" value="" /><input type="hidden" name="idold" id="ACproduit_ajout_devold" value="" />
 				<div id="ACproduit_ajout_dev_choix" class="autocomplete"></div></td>
@@ -647,9 +648,8 @@ function IsNumeric(input)
 	$script .= 'new Ajax.Autocompleter("affaireDevisSearch", "affaireDevisSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("entrepriseDevisSearch", "entrepriseDevisSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("userDevisSearch", "userDevisSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );} ';
-	$script .= 'function autoCompleteHidden(text, li) { $(text.id+\'_hidden\').value = li.title; } ';
 	$script .= 'function ChangeDevisID(value) { $(\'idDevisSearch\').value = value; } ';
-	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'_hidden\').value = ""; } } ';
+	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } ';
 	$script.= "function ChangeDevisResultPage(limit,from,order,sens) {
 			ChangeDevisAction('searchDevis');
 			if(limit != undefined) ChangeLimit(limit);
@@ -930,9 +930,8 @@ function IsNumeric(input)
 	    $script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); } ';
 	else
 	    $script .= "\n".'} ';
-	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title; } ';
 	$script .= "\n".'function autoCompleteChamps(text, li) { id = li.title.split(\'-_-\'); $(\'ACaffaire_dev_hidden\').value = id[0]; $(\'ACentreprise_dev_hidden\').value = id[1]; $(\'devisadd\').value = id[2]; $(\'devisadd1\').value = id[3]; $(\'IDcpdelivery_dev\').value = id[4]; $(\'IDvilledelivery_dev\').options[0]= new Option(id[5], id[5]); $(\'ACpaysdelivery_devhidden\').value = id[6];  $(\'ACpaysdelivery_dev\').value = id[7]; contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); $(\'ACcontact_devAddImg\').style.display="inline"; $(\'ACcontact_achat_devAddImg\').style.display="inline"; } ';
-	$script .= "\n".'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_dev\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'_hidden\').value = ""; } } } ';
+	$script .= "\n".'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_dev\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'hidden\').value = ""; } } } ';
 	$script .= "\n".'function resetForm() {var form = $(\'formAddDevis\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContDev&entreprise=\'+$(\'ACentreprise_dev_hidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Devis.php\', ent, 800, 300);} ';

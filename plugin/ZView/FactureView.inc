@@ -28,12 +28,13 @@ class factureView extends generalView {
 		'zuno.business.formTools.getParamFromForm(\'formProduit\'), ' .
 		'function(xhr) { ' .
 		'var json = xhr.responseText.evalJSON(); ' .
-		'$(\'ACproduit_ajout_fact\').value = \'[\'+json.datas.id_prod+\']\'; ' .
+                'if(json.error != undefined){$(\'error\').innerHTML = json.error;}'.
+		'else { $(\'ACproduit_ajout_fact\').value = \'[\'+json.datas.id_prod+\']\'; ' .
 		'$(\'desc_Ajout_prod_fact\').value = json.datas.description_prod; ' .
 		'$(\'prix_Ajout_prod_fact\').value = json.datas.prix_prod; ' .
 		'$(\'total_Ajout_prod_fact\').value = json.datas.prix_prod; ' .
 		'$(\'ACproduit_ajout_facthidden\').value = json.datas.id_prod; ' .
-		'zuno.popup.close(); ' .
+		'zuno.popup.close(); }' .
 		'} );} ';
 	$script .= "\n".'function searchProdReturn(id_prod,description_prod,prix_prod) {' .
 		'$(\'ACproduit_ajout_fact\').value = \'[\'+id_prod+\']\'; ' .
@@ -65,7 +66,7 @@ class factureView extends generalView {
 		$(\'modifiedCB\').value = \'false\';
 		}'."\n";
 	$script .= "\n".'function change() {$(\'modifiedCB\').value = \'true\';}';
-	$script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;}</script>';
+	$script .= '</script>';
 
 	$datas['nom'] = ($datas['data']['type_fact'] == 'Facture')?'la facture' : 'l\'avoir';
 
@@ -151,7 +152,7 @@ class factureView extends generalView {
 		<legend>Contacts de '.$datas['nom'].'</legend>
 		<div class="row">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.entreprise);">Entreprise</div>
-			<div class="field"><a href="#" id="entrepriseFacture" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
+			<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
 		</div>
 		<div class="row">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
@@ -352,13 +353,13 @@ class factureView extends generalView {
 			<td class="barre">'.inputTag('text', 'remise2', '', '', '16', $v['remise'], ' id="remise_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:30px" ').' %</td>
 			<td class="barre">'.inputTag('text', 'prix_total2', '', '', '16', $total, ' id="total_Ajout_prod_fact'.$v['id'].'"  readonly="readonly" style="width:80px" ').' €</td>
 			<td nowrap="nowrap" class="center"><a name="modif" onclick="autoCopieChamps(\''.$v['id'].'\');chargerAction(\'modifProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/facture.add.png"/></a>
-							<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="../img/prospec/cancel.png" /></a></td>
+			<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="../img/prospec/cancel.png" /></a></td>
 			</tr>';
 	    $alternance = ($alternance == '0') ? '1':'0';
 	}
 	$out .= '<tr class="altern'.$alternance.'" id="tdAjoutProdFacture">
 			<td class="barre">'.inputTag('text', 'produit','', '', '16','', ' id="ACproduit_ajout_fact" style="width:80px" onchange="verifAutocompleteur(this);"').'
-				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\',760,330);" style="cursor:pointer; margin-right:0px"/>
+				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\',800,330);" style="cursor:pointer; margin-right:0px"/>
 				<img style="display:none; margin-left:5px;" id="loadingProd" src="../img/ajax-loader.gif" alt="loader"/>
 				<input type="hidden" name="id_produit" id="ACproduit_ajout_facthidden" value="" /><input type="hidden" name="idold" id="ACproduit_ajout_factold" value="" />
 				<div id="ACproduit_ajout_fact_choix" class="autocomplete"></div></td>
@@ -611,9 +612,8 @@ class factureView extends generalView {
 	$script .= 'new Ajax.Autocompleter("affaireFactureSearch", "affaireFactureSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("entrepriseFactureSearch", "entrepriseFactureSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("userFactureSearch", "userFactureSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );} ';
-	$script .= 'function autoCompleteHidden(text, li) { $(text.id+\'_hidden\').value = li.title; } ';
 	$script .= 'function ChangeFactureID(value) { $(\'idFactureSearch\').value = value; } ';
-	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'_hidden\').value = ""; } } ';
+	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } ';
 	$script.= "function ChangeFactureResultPage(limit,from,order,sens) {
 		    ChangeFactureAction('searchFacture');
 		    if(limit != undefined) ChangeLimit(limit);
@@ -662,20 +662,20 @@ class factureView extends generalView {
 	$out = '<div class="block width50"><fieldset class="form" style="height: 250px">';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchEnt);">Entreprise</div>';
 	$out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseFactureSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseFactureSearch_choix"></div>';
-	$out .= '<input type="hidden" name="entreprise_fact" value="" id="entrepriseFactureSearch_hidden"/></div>';
+	$out .= '<input type="hidden" name="entreprise_fact" value="" id="entrepriseFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchTitre);">Titre</div>';
 	$out .= '<div class="field">'.inputTag('text', 'titre_fact', '', '', '20').'</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchAff);">Affaire</div>';
 	$out .= '<div class="field">'.inputTag('text', 'affaire', '', '', '20', '', ' id="affaireFactureSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingAff" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="affaireFactureSearch_choix"></div>';
-	$out .= '<input type="hidden" name="affaire_fact" value="" id="affaireFactureSearch_hidden"/></div>';
+	$out .= '<input type="hidden" name="affaire_fact" value="" id="affaireFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchStatut);">Status</div>';
 	$out .= '<div class="field">'.selectTag('status_fact',$datas['status'],'').'</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchComm);">Commercial</div>';
 	$out .= '<div class="field">'.inputTag('text', 'commercial', '', '', '20', '', ' id="userFactureSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingUsr" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="userFactureSearch_choix"></div>';
-	$out .= '<input type="hidden" name="commercial_fact" value="" id="userFactureSearch_hidden"/></div>';
+	$out .= '<input type="hidden" name="commercial_fact" value="" id="userFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchCP);">Département</div>';
 	$out .= '<div class="field">'.inputTag('text', 'cp', '', '', '20', '', ' id="cpFactureSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingCp" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="cpFactureSearch_choix"></div>';
-	$out .= '<input type="hidden" name="cp_ent" value="" id="cpFactureSearch_hidden"/></div>';
+	$out .= '<input type="hidden" name="cp_ent" value="" id="cpFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchBudgMin);">Montant min</div>';
 	$out .= '<div class="field">'.inputTag('text', 'sommeHT_fact', '', '', '20', '', ' id="devisBudgetMini" ').'</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchBudgMax);">Montant maxi</div>';
@@ -871,13 +871,12 @@ class factureView extends generalView {
 	    $script .= 'contact_completer = new Ajax.Autocompleter("ACcontact_fact", "ACcontact_fact_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingCont", afterUpdateElement : autoCompleteHidden } ); ';
 	    $script .= 'contact2_completer = new Ajax.Autocompleter("ACcontact_achat_fact", "ACcontact_achat_fact_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingCont2", afterUpdateElement : autoCompleteHidden } ); ';
 	    $script .= 'new Ajax.Autocompleter("ACpays_fact", "ACpays_fact_choix", "../ajaxRef.php?action=listePays", { paramName: "value", minChars: 2, afterUpdateElement : autoCompleteHidden, indicator : "loadingPays" } ); } ';
-	    $script .= 'function autoCompleteHidden(text, li) { $(text.id+\'_hidden\').value = li.title; } ';
-	    $script .= 'function autoCompleteChamps(text, li) { id = li.title.split(\'-_-\'); $(\'ACaffaire_fact_hidden\').value = id[0]; $(\'ACentreprise_fact_hidden\').value = id[1]; $(\'devisadd\').value = id[2]; $(\'devisadd1\').value = id[3]; $(\'deviscp\').value = id[4]; $(\'devisVille\').options[0]= new Option(id[5], id[5]); $(\'ACpays_fact_hidden\').value = id[6];  $(\'ACpays_fact\').value = id[7]; contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_fact_hidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_fact_hidden\'); $(\'addContTech\').style.display="inline"; $(\'addContFact\').style.display="inline"; } ';
+	    $script .= 'function autoCompleteChamps(text, li) { id = li.title.split(\'-_-\'); $(\'ACaffaire_facthidden\').value = id[0]; $(\'ACentreprise_facthidden\').value = id[1]; $(\'devisadd\').value = id[2]; $(\'devisadd1\').value = id[3]; $(\'deviscp\').value = id[4]; $(\'devisVille\').options[0]= new Option(id[5], id[5]); $(\'ACpays_facthidden\').value = id[6];  $(\'ACpays_fact\').value = id[7]; contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_facthidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_facthidden\'); $(\'addContTech\').style.display="inline"; $(\'addContFact\').style.display="inline"; } ';
 	    $script .= 'function ChangeFactureAction(value) { $(\'actionFactureAdd\').value = value; } ';
-	    $script .= 'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_fact\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'_hidden\').value = ""; } } } ';
+	    $script .= 'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_fact\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'hidden\').value = ""; } } } ';
 	    $script .= 'function resetForm() {var form = $(\'formAddFacture\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	    $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-	    $script .= 'function addContact(idRetour) { var ent=\'action=addContFact&entreprise=\'+$(\'ACentreprise_fact_hidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Facture.php\', ent,800,300);} ';
+	    $script .= 'function addContact(idRetour) { var ent=\'action=addContFact&entreprise=\'+$(\'ACentreprise_facthidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Facture.php\', ent,800,300);} ';
 	    $script .= 'function addEntreprise() { zuno.popup.open(\'Facture.php\', \'action=addEnt\',800,320);} ';
 	    $script .= '</script>';
 
@@ -908,7 +907,7 @@ class factureView extends generalView {
 	$out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '16', $data['entreprise'], ' id="ACentreprise_fact" onchange="verifAutocompleteur(this);"');
 	$out .= '<a id="addEnt" name="addEnt" title="Ajouter une entreprise" onclick="addEntreprise();"><img alt="ent" title="Ajouter une entreprise" src="../img/prospec/entreprise.png" /></a>';
 	$out .= '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div>';
-	$out .= '<input type="hidden" name="entreprise_fact" id="ACentreprise_fact_hidden" value="'.$data['entreprise_fact'].'" /><input type="hidden" name="commande_fact" id="ACaffaire_fact_hidden" value="'.$data['commande_fact'].'" />
+	$out .= '<input type="hidden" name="entreprise_fact" id="ACentreprise_facthidden" value="'.$data['entreprise_fact'].'" /><input type="hidden" name="commande_fact" id="ACaffaire_facthidden" value="'.$data['commande_fact'].'" />
 					<div id="ACentreprise_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
@@ -916,7 +915,7 @@ class factureView extends generalView {
 	$out .= '<div class="field">'.inputTag('text', 'contact', '', '', '16', $data['contact'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);"');
 	$out .= '<a id="addContTech" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a>';
 	$out .= '<img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>';
-	$out .= '<input type="hidden" name="contact_fact" id="ACcontact_fact_hidden" value="'.$data['contact_fact'].'" />
+	$out .= '<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="'.$data['contact_fact'].'" />
 					<div id="ACcontact_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
@@ -924,7 +923,7 @@ class factureView extends generalView {
 	$out .= '<div class="field">'.inputTag('text', 'contact2', '', '', '16', $data['contact2'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"');
 	$out .= '<a id="addContFact" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_achat_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a>';
 	$out .= '<img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>';
-	$out .= '<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_fact_hidden" value="'.$data['contact_achat_fact'].'" />
+	$out .= '<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="'.$data['contact_achat_fact'].'" />
 					<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
@@ -952,7 +951,7 @@ class factureView extends generalView {
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryPays);">Pays</div>';
 	$out .= '<div class="field">'.inputTag('text', 'pays', '', '', '16', $data['pays'], ' id="ACpays_fact" onchange="verifVide(this);" ');
 	$out .= '<img style="display:none; margin-left:5px;" id="loadingPays" src="../img/ajax-loader.gif" alt="loader"/></div>';
-	$out .= '<input type="hidden" name="pays_fact" id="ACpays_fact_hidden" value="'.$data['pays_fact'].'" />
+	$out .= '<input type="hidden" name="pays_fact" id="ACpays_facthidden" value="'.$data['pays_fact'].'" />
 					<div id="ACpays_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
 	$out .= '</fieldset></div>';

@@ -40,7 +40,6 @@ class FournisseurView extends generalView {
 				    function ChangeFrom(value) { \$('fromFournisseurSearch').value = value; }
 				    function ChangeLimit(value) { \$('limitFournisseurSearch').value = value; }
 				    function ChangeAction(value) { \$('actionFournisseurSearch').value = value;} ";
-	$this->script .= "\n".'function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;} ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'function submitPopupFournProd() {$(\'InputHiddenPF\').value = $(\'InputPF\').value; $(\'InputHiddenRF\').value = $(\'InputRF\').value; $(\'InputHiddenAction\').value = \'changeDatasProdFourn\'; zuno.business.formTools.sendFormAjah(\'formProdFourn\', \'produit/Fournisseur.php\', \'idformProdFournformAutoRetour\', \'popup2\');}';
 	$this->script .= '</script>';

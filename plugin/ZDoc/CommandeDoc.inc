@@ -71,7 +71,7 @@ class commandeGnose {
 		    else  $produit['quantite'] = formatCurencyDisplay($produit['quantite'],2,'');
 		    if($produit['remise'] > 0) {
 			if(substr($produit['remise'],-3) == '.00')
-			     $produit['remise'] = formatCurencyDisplay($produit['remise'],0,'%');
+			    $produit['remise'] = formatCurencyDisplay($produit['remise'],0,'%');
 			else $produit['remise'] = formatCurencyDisplay($produit['remise'],2,'%');
 		    }
 		    else  $produit['remise'] = '';
@@ -298,6 +298,7 @@ class commandeGnose {
 	    else Logg::loggerError('commandeGnose::CommandeGenerateBDCF() ~ Impossible d\'ouvrir le cannevas '.$cannevasFile,$extract,__FILE__.'@'.__LINE__);
 	}
 	else Logg::loggerError('commandeGnose::CommandeGenerateBDCF() ~ Impossible de trouver le cannevas '.$cannevasFile.' ou les informations sur la commande '.$id_cmd,$entreprise,__FILE__.'@'.__LINE__);
+	return false;
     }
 
     static function CommandeSaveDocInGnose($fileFrom,$commande,$message = "") {
@@ -305,6 +306,11 @@ class commandeGnose {
 	$message = escapeshellcmd($message);
 	$PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$commande['dir_aff'];
 	$PathFrom= $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
+
+	if(!is_dir($PathTo) or !is_writable($PathTo)) {
+	    return "Le répértoire ".$GLOBALS['ZunoAffaire']['dir.affaire'].$commande['dir_aff']." n'existe pas.";
+	}
+	
 	foreach ($fileFrom as $in => $file) {
 	    $FileExist = file_exists($PathTo.$file);
 	    if(copy($PathFrom.$file,$PathTo.$file)) {

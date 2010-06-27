@@ -610,7 +610,6 @@ class documentViewRepertoire extends generalView {
 	if($tout == '') {
 	    $js = '<script type="text/javascript">
 			function confirmation(message) {if(confirm(message)){return true;} else {return false;}}
-                        function autoCompleteHidden(text, li) { $(text.id+\'hidden\').value = li.title;}
                         function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {$(champ.id+\'hidden\').value = champ.value;} }
 		</script>';
 	    if($mode == 'complet') {

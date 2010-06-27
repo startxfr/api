@@ -502,12 +502,12 @@ class contactEntrepriseModel extends GeneralModel {
 	    $endSql = $order.' '.((strtolower($orderSens) == 'asc') ? 'ASC' : 'DESC').', ';
 
 	if($limit == 'ALL') {
-	    $this->makeRequeteFree("select COUNT(*) AS counter from entreprise " .
+	    $this->makeRequeteFree("SELECT COUNT(DISTINCT id_ent) AS counter FROM entreprise " .
 		    "left join contact on entreprise_cont = id_ent " .
 		    "where id_ent is not null and $search ");
 	}
 	else {
-	    $this->makeRequeteFree("select id_ent, id_cont, nom_ent, ville_ent, tel_ent, type_ent, civ_cont, prenom_cont, nom_cont, mail_cont from entreprise " .
+	    $this->makeRequeteFree("SELECT DISTINCT id_ent, nom_ent, ville_ent, tel_ent, type_ent FROM entreprise " .
 		    "left join contact on entreprise_cont = id_ent " .
 		    "where id_ent is not null and $search order by $endSql nom_ent ASC, id_ent ASC, nom_cont ASC ");
 	}

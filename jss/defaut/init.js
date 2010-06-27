@@ -20,7 +20,9 @@ var zunoJsf = {
     }
 };
 
-
+function autoCompleteHidden(text, li) {
+    $(text.id+'hidden').value = li.title;
+}
 
 /**
  * Affiche l'arborescence d'une structure Javascript
@@ -616,14 +618,6 @@ function znPopup() {
         if(newFooter[0] != undefined)
             newFooter[0].parentNode.removeChild(newFooter[0]);
 
-	zuno.popup.xhtmlWindow.style.display = 'block';
-	if(width != undefined)
-	    zuno.popup.xhtmlWindow.style.width	 = width+"px";
-	if(height != undefined){
-	    zuno.popup.xhtmlWindow.style.height	 = height+"px";
-	}
-        zuno.popup.xhtmlTitle.innerHTML = title;
-        zuno.popup.xhtmlFooter.innerHTML = footer;
         zuno.popup.xhtmlWindow.style.display = 'block';
         if(width != undefined)
             zuno.popup.xhtmlWindow.style.width	 = width+"px";
@@ -1350,29 +1344,29 @@ function znAuthentification(){
     }
 
     this.redirectLogout = function () {
-	location.href = 'index.php';
-	return true;
+        location.href = 'index.php';
+        return true;
     }
 
     this.disconnect = new Object();
 
     this.disconnect.doLogout = function (doSave) {
-	param = new Object();
-	param.action= 'doLogout';
-	param.doSave= doSave;
-	var d = zuno.ajax.post.json(zuno.contextPath+'ajaxAuthentification.php',param,
-	    function(xhr,json) {
-		if (xhr.status == 200) {
-		    if(json.code == true) {
-			zuno.popup.doOpen('vous êtes maintenant deconnecté','Merci de votre visite');
-			setTimeout("zuno.auth.redirectLogout()", 1500);
-		    }
-		    else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ json.mess);
-		}
-		else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ xhr.statusText);
-	    }
-	    );
-	return false;
+        param = new Object();
+        param.action= 'doLogout';
+        param.doSave= doSave;
+        var d = zuno.ajax.post.json(zuno.contextPath+'ajaxAuthentification.php',param,
+            function(xhr,json) {
+                if (xhr.status == 200) {
+                    if(json.code == true) {
+                        zuno.popup.doOpen('vous êtes maintenant deconnecté','Merci de votre visite');
+                        setTimeout("zuno.auth.redirectLogout()", 1500);
+                    }
+                    else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ json.mess);
+                }
+                else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ xhr.statusText);
+            }
+            );
+        return false;
     }
 
     this.disconnect.save = function () {
@@ -1617,8 +1611,8 @@ function beginEditing(menu) {
         }
         else if(keyCode == 8)
             option.text = option.text.substring(0,option.text.indexOf(pointer)-1) + pointer + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
-//        else if(keyCode == 46  && option.text.indexOf(pointer) < option.text.length)
-//            option.text = option.text.substring(0,option.text.indexOf(pointer)) + pointer + option.text.substring(option.text.indexOf(pointer)+2,option.text.length);
+        //        else if(keyCode == 46  && option.text.indexOf(pointer) < option.text.length)
+        //            option.text = option.text.substring(0,option.text.indexOf(pointer)) + pointer + option.text.substring(option.text.indexOf(pointer)+2,option.text.length);
         else if (keyCode == 13)
             finishEditing();
         else if(keyCode == 37 && option.text.indexOf(pointer) > 0 && specialKey)
@@ -1681,27 +1675,33 @@ function finishEditing() {
 
 
 
-    function toggleGroupedAction(id) {
-	var div= $(id);
-	toggleSubGroupedAction();
-	if (div.style.display == 'none')
-	     Effect.SlideDown(div,{duration:0.2, queue: 'end'});
-	else Effect.SlideUp(div,{duration:0.5, queue: 'end'}) ;
-	return;
-    }
+function toggleGroupedAction(id) {
+    var div= $(id);
+    toggleSubGroupedAction();
+    if (div.style.display == 'none')
+        Effect.SlideDown(div,{
+            duration:0.2,
+            queue: 'end'
+        });
+    else Effect.SlideUp(div,{
+        duration:0.5,
+        queue: 'end'
+    }) ;
+    return;
+}
 
-    function toggleSubGroupedAction(id) {
-	var listAll = $$('#groupedSubAction fieldset');
-	    for(var j=0;j<listAll.length;j++)
-		listAll[j].style.display = 'none';
-	if($(id) != undefined)
-	    $(id).style.display = 'block';
-	return;
-    }
+function toggleSubGroupedAction(id) {
+    var listAll = $$('#groupedSubAction fieldset');
+    for(var j=0;j<listAll.length;j++)
+        listAll[j].style.display = 'none';
+    if($(id) != undefined)
+        $(id).style.display = 'block';
+    return;
+}
 
-    function submitGroupAction(idForm,idAction) {
-	$(idAction).value = "groupedAction";
-	$(idForm).submit();
-	return;
-    }
+function submitGroupAction(idForm,idAction) {
+    $(idAction).value = "groupedAction";
+    $(idForm).submit();
+    return;
+}
 

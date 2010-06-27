@@ -50,7 +50,7 @@ $initio = 0;
 $sortieL = $sortieR = "";
 foreach($sortieB as $v) {
     if($v == "")
-	continue;
+        continue;
     elseif($initio % 2 == 0)
 	$sortieL .= $v;
     else $sortieR .= $v;

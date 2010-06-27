@@ -326,6 +326,22 @@ class commandeModel extends GeneralModel {
     }
 
     /**
+     * Méthode qui permet de récupérer la liste des fournisseurs liés à une commande
+     * @param string $id L'id de la commande
+     * @return array  Le résultat
+     */
+    public function getFullDataFromID($id) {
+	$this->makeRequeteFree("Select fournisseur from commande_produit where id_commande = '".$id."'");
+        $fourn = $this->process2();
+        $result = $this->getDataFromID($id);
+        $datas['data'] = $result[1][0];
+        $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+        $datas['produit'] = $this->getAllFournisseursFromID($id);
+
+	return $datas;
+    }
+
+    /**
      * Fonction qui récupère la liste des produits liés à une commande.
      * @param string $id L'id de la commande
      * @param int $nbprod Précise si on ne souhaite qu'un seul produit
@@ -369,7 +385,7 @@ class commandeModel extends GeneralModel {
 
     /**
      * Méthode qui permet de récupérer la liste des fournisseurs liés à une commande
-     * @param string $id L'id de al commande
+     * @param string $id L'id de la commande
      * @return array  Le résultat
      */
     public function getFournisseurFromID($id) {
@@ -761,7 +777,7 @@ class commandeModel extends GeneralModel {
 		}
 	    }
 	}
-	elseif($quoi == 2) {
+	/*elseif($quoi == 2) {
 	    $this->makeRequeteFree("SELECT *
 		  FROM `commande_produit`, fournisseur
 		  LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
@@ -777,15 +793,15 @@ class commandeModel extends GeneralModel {
 		    }
 		}
 	    }
-	}
-	elseif($quoi == '3') {
+	}*/
+	elseif($quoi >= '2') {
 	    $this->makeRequeteFree("SELECT *
 		  FROM  fournisseur
 		  LEFT JOIN entreprise ON entreprise.id_ent = fournisseur.entreprise_fourn
 		  LEFT JOIN contact ON contact.id_cont = fournisseur.contactComm_fourn, `commande_produit`
 		  LEFT JOIN produit ON produit.id_prod = commande_produit.id_produit
 		  LEFT JOIN ref_prodfamille ON ref_prodfamille.id_prodfam = produit.famille_prod
-		  WHERE id_fourn = fournisseur AND `id_commande` = '".$id."'");
+		  WHERE id_fourn = fournisseur AND `id_commande` = '".$id."' GROUP BY id_fourn");
 	    $data = $this->process();
 	}
 	return $data;

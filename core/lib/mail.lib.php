@@ -75,13 +75,13 @@ function MailAttach($to,$messager,$file,$filetype = '',$messagetype = '',$subjec
     $heads .= "Return-Path: ".$from."\r\n";
     $heads .= "X-Sender: ".$from."\n";
     if ($cc !== false and !is_array($cc))
-	$headers .= "Cc: ".$cc."\r\n";
+	$heads .= "Cc: ".$cc."\r\n";
     elseif($cc !== false and is_array($cc)) {
 	$hd = "Cc: ";
 	foreach($cc as $v)
 	    $hd .= $v.",";
-	$headers .= rtrim($hd, ",");
-	$headers .= "\r\n";
+	$heads .= rtrim($hd, ",");
+	$heads .= "\r\n";
     }
 
     $message[1]['content_type'] = $messagetype;

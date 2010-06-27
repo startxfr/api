@@ -179,12 +179,12 @@ elseif($PC->rcvP['action'] == 'addProdPopup') {
             exit;
         }
         else {
-            echo '<erreur>error</erreur>'.$rs[1];
+            echo '{ "error" : "'.$rs[1].'"}';
             exit;
         }
     }
     else {
-        echo '<erreur>error</erreur><span class="important" style="text-align:center;">'.$rs[1].'</span>';
+        echo '{ "error" : "<span class=\"important\">'.$rs[1].'</span>"}';
         exit;
     }
 }

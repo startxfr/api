@@ -33,6 +33,7 @@ class Sender {
 
     private $sujet;//Le sujet du message envoyé
     private $message;//Le message envoyé par lui même
+    private $signature;//La signature du message
 
     private $bdd;//Le lien vers la Base de donnée
     private $bug;//pour préciser s'il s'agit d'un envoi d'un bug et agir en conséquence
@@ -135,13 +136,13 @@ class Sender {
 		aiJeLeDroit($this->partie, 50, $this->channel);
 	    if($this->email === false) {
 		if($this->partie != 'send')
-		     $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'E-mail invalide');
+		    $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'E-mail invalide');
 		else $out = "E-mail invalide";
 		return array(0,$out);
 	    }
 	    elseif($this->bug == false and $this->controlTotalEnvoi() === false) {
 		if($this->partie != 'send')
-		     $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Quota d\'envoi par mail dépassé');
+		    $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Quota d\'envoi par mail dépassé');
 		else $out = "Quota d\'envoi par mail dépassé";
 		return array(0,$out);
 	    }
@@ -178,11 +179,15 @@ class Sender {
 	    }
 	    else {
 		$result = $this->SendFaxMaileva();
+		$out = $result;
 		if($result[0]) {
-		   if($this->channel != 'iphone' and $this->partie != "send")
+		    if($this->channel != 'iphone' and $this->partie != "send")
 			$out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Fax envoyé');
 		}
-		$out = $result[1];
+		else {
+		    if($this->channel != 'iphone' and $this->partie != "send")
+			$out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, $result[1]);
+		}
 		return array(1,$out);
 	    }
 	}
@@ -195,10 +200,9 @@ class Sender {
 	    else {
 		$result = $this->SendLetterMaileva();
 		if($result[0]) {
-		   if($this->channel != 'iphone' and $this->partie != "send")
-			$out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Courrier envoyé');
+		    $out = viewFiche($this->id, $this->partie, 'Traitement', 'non', $this->channel, true, 'Courrier envoyé');
 		}
-		$out = $result[1];
+		else $out = $result[1];
 		return array(1,$out);
 	    }
 	}
@@ -392,8 +396,31 @@ class Sender {
 	    $from = $this->from;
 	if ($this->sujet == '')
 	    $this->sujet = $GLOBALS['zunoClientCoordonnee']['nom'];
-	$bcc = ($GLOBALS['ZunoSendMail']['allMailCopy']) ? $GLOBALS['ZunoSendMail']['allMailCopyAdress'] : null;
-	return simple_mail($this->email,$this->message.$this->signature,$this->sujet,$from,$this->cc,$type,$this->token,$bcc);
+	if ($type == 'html')
+	    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+	else	$headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+
+	// en-têtes
+	$headers .= "From: ".$from."\r\n";
+	$headers .= "Reply-To: ".$from."\r\n";
+	$headers .= "Return-Path: ".$from."\r\n";
+	$headers .= "ZunoMessageUID: ".$this->token."\r\n";
+	$headers .= "X-Sender: ".$from."\r\n";
+	if ($this->cc !== false and !is_array($this->cc))
+	    $headers .= "Cc: ".$this->cc."\r\n";
+	elseif($this->cc !== false and is_array($this->cc)) {
+	    $headers .= "Cc: ";
+	    foreach($this->cc as $v) {
+		$headers .= $v.",";
+	    }
+	    $headers = rtrim($headers, ",");
+	    $headers .= "\r\n";
+	}
+	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
+	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
+
+	$o	= mail($this->email, $this->sujet, $this->message.$this->signature, $headers);
+	return array($o);
     }
 
     /**
@@ -427,6 +454,8 @@ class Sender {
 	    $heads = rtrim($heads, ",");
 	    $heads .= "\r\n";
 	}
+	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
+	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
 	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
 	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
 
@@ -511,11 +540,11 @@ class Sender {
 		    0 => $buf,
 		    1 => 'MIME-Version: 1.0'."\n".
 			    'Content-Type: MULTIPART/MIXED;'."\r\n".
-			    'BOUNDARY="'.$boundary.'"'."\r\n".
+			    '  BOUNDARY="'.$boundary.'"'."\r\n".
 			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].' '.$GLOBALS['PROJET']['copyright'].";\r\n".'  http://www.zuno.fr/',
 		    2 => array('MIME-Version: 1.0',
 			    'Content-Type: MULTIPART/MIXED;'."\r\n".
-			    'BOUNDARY="'.$boundary.'"\r\n',
+				    '  BOUNDARY="'.$boundary.'"\r\n',
 			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].';'."\r\n".'  http://www.zuno.fr/')
 	    );
 
