@@ -265,12 +265,7 @@ function addContactWallet($token, $civ, $prenom, $nom, $carte, $date, $cvv, $con
         $model = new PaylineModel();
         $data = $model->getInfosContact($contact);
         Logg::loggerInfo('webservice sxa.client.addContactWallet() ~ Test de la présence du Wallet '.$data['wallet_cont'],$data,__FILE__.'@'.__LINE__);
-        if($data['wallet_cont'] != '') {
-            $out = $pl->updateWallet();
-        }
-        else {
-            $out = $pl->createWallet();
-        }
+        $out = $pl->createWallet();
         $sortie = array('code_retour' => $out[0], 'message' => $out[1], 'interne' => $out[2]);
         Logg::loggerInfo('webservice sxa.client.addContactWallet() ~ fin du traitement',$sortie,__FILE__.'@'.__LINE__);
         return $sortie;
