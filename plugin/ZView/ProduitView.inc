@@ -90,13 +90,15 @@ class ProduitViewOriginal extends generalView {
      * Méthode initialisant les filedsets contenus dans le fromulaire produit
      * @param array $datas Données de la Bdd
      */
-    protected function initioFieldSet($datas) {
+    protected function initioFieldSet($datas, $popup = false) {
 	$this->fieldset1 = new ZunoFieldset('Produit','','height:110px');
 	$this->fieldset2 = new ZunoFieldset('Informations complémentaires','','height:110px');
 	$this->fieldset3 = new ZunoFieldset('Description','','height:110px');
 	$this->fieldset1->ligneInput('Référence', 'id_prod', $datas['data']['id_prod'],'','ZTips.produit.reference');
 	$this->fieldset1->ligneInput('Nom', 'nom_prod', $datas['data']['nom_prod'],'','ZTips.produit.nom');
-	$this->fieldset1->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)");
+	if($popup)
+	     $this->fieldset1->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille&popup=popup', 800,330)");
+	else $this->fieldset1->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)");
 	$this->fieldset3->ligneTArea('Description', 'description_prod',$datas['data']['description_prod'],'','ZTips.produit.desc');
 	$this->fieldset1->ligneInput('Prix (€)', 'prix_prod', $datas['data']['prix_prod'],'','ZTips.produit.prix');
 	$this->fieldset2->ligneInput('Stock', 'stock_prod', $datas['data']['stock_prod'],'','ZTips.produit.stock');
@@ -151,7 +153,7 @@ class ProduitViewOriginal extends generalView {
      * @return string Le rendu HTML
      */
     public function creer($datas, $popup = false) {
-	$this->initioFieldSet($datas);
+	$this->initioFieldSet($datas, $popup);
 	$this->form = new ZunoForm('formProduit', 'produit/Produit.php', 'POST');
 	$this->form->newBlock($this->fieldset1->generateFieldset());
 	$this->form->newBlock($this->fieldset2->generateFieldset());
@@ -375,7 +377,7 @@ class ProduitViewOriginal extends generalView {
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if($modHistorique)
-	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produitHisto');
+	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produitHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produit');
 	$bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProduitResultPage",$suffixeLink);
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
@@ -505,19 +507,24 @@ class ProduitViewOriginal extends generalView {
 
     /**
      * Méthode qui génère le code HTML de la popup de création des familles de produits
-     * @param string $erreur Précise un éventuell message d'erreur
+     * @param string $erreur Précise un éventuel message d'erreur
      * @return string Le code HTML
      */
-    public function popupAddFamille($erreur = '') {
+    public function popupAddFamille($erreur = '', $popup = false) {
 	$fieldset = new ZunoFieldset("Informations");
+	if($erreur != '')
+	    $fieldset->ligneFree('Erreur', $erreur);
 	$fieldset->ligneInput('Nom', 'nom_prodfam');
 
 	$form = new ZunoForm('addFamille', "produit/Produit.php", "POST");
 	$form->newInputHidden('action', 'addFamille');
+	if($popup != false)
+	    $form->newInputHidden('popup', 'popup');
 	$form->newBlock($fieldset->generateFieldset(), '33');
 
 	$rendu = new ZunoRenduHtml();
-	$rendu->generateZBox('Nouvelle Famille', 'Nouvelle Fammille', $form->generateForm(), $form->generateButtons('', 'Annuler', 'Créer', 'popup'), 'idPopupAddFamille');
+	$rendu->generateZBox('Nouvelle Famille', 'Nouvelle Famille', $form->generateForm(), $form->generateButtons('', 'Annuler', 'Créer', 'popup'), 'idPopupAddFamille');
+
 	return $rendu->generateInterneRendu();
     }
 

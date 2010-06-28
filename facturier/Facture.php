@@ -536,6 +536,12 @@ elseif($PC->rcvP['action'] == "AttenteRglmt") {
     echo viewFiche($PC->rcvP['id_fact'], 'facture', 'Traitement', 'non', 'web', true, "Votre facture est maintenant en attente de règlement");
     exit;
 }
+elseif($PC->rcvP['action'] == "Clore") {
+    $id_fact = $PC->rcvP['id_fact'];
+    $info->update(array("status_fact"=>"6"), $id_fact);
+    echo viewFiche($PC->rcvP['id_fact'], 'facture', 'Traitement', 'non', 'web', true, "Votre facture est maintenant payée et cloturée");
+    exit;
+}
 elseif($PC->rcvG['action'] == "popupSupp") {
     $view = new factureView();
     echo $view->popupConfirmSupp($PC->rcvG['facture']);

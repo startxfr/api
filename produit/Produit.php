@@ -130,7 +130,7 @@ elseif($PC->rcvP['action'] == 'addProduitFourn') {
     if($PC->rcvP['fournisseur_id'] == '') {
         exit;
     }
-    if($PC->rcvP['prixF'] == ''){
+    if($PC->rcvP['prixF'] == '') {
         echo '<erreur>error</erreur><span class="important" >Il vous faut remplir un prix public à ce fournisseur</span>';
         exit;
     }
@@ -190,19 +190,27 @@ elseif($PC->rcvP['action'] == 'addProdPopup') {
 }
 elseif($PC->rcvG['action'] == 'addFamille') {
     $view = new ProduitView();
-    echo $view->popupAddFamille();
+    echo $view->popupAddFamille('', $PC->rcvG['popup']);
     exit;
 }
-elseif($PC->rcvP['action'] == 'addFamille'){
-    if($PC->rcvP['nom_prodfam'] == ""){
+elseif($PC->rcvP['action'] == 'addFamille') {
+    if($PC->rcvP['nom_prodfam'] == "") {
         $view = new ProduitView();
         echo $view->popupAddFamille("Vous devez entrer un nom pour votre famille");
         exit;
     }
-    else{
+    else {
         $model = new produitModel();
         $model->insertFamille($PC->rcvP['nom_prodfam']);
-        echo '<img alt="loader" src="../img/ajax-loader.gif" onload="$(\'selectFamilleProd\').options['.$model->getLastFamille().'] = new Option(\''.$PC->rcvP['nom_prodfam'].'\', \''.$model->getLastFamille().'\');$(\'selectFamilleProd\').selectedIndex = '.$model->getLastFamille().'; zuno.popup.close();" />';
+        if($PC->rcvP['popup'] != 'popup')
+            echo '<img alt="loader" src="../img/ajax-loader.gif" onload="$(\'selectFamilleProd\').options['.$model->getLastFamille().'] = new Option(\''.$PC->rcvP['nom_prodfam'].'\', \''.$model->getLastFamille().'\');$(\'selectFamilleProd\').selectedIndex = '.$model->getLastFamille().'; zuno.popup.close();" />';
+        else {
+            $view = new ProduitView();
+            $datas['dureeR'] = $model->getRenews();
+            $datas['famille'] = $model->getAllFamille();
+            $datas['data']['famille_prod'] = $model->getLastFamille();
+            echo $view->creer($datas, true);
+        }
         exit;
     }
 }

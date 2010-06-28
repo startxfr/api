@@ -372,7 +372,7 @@ class factureView extends generalView {
 			</td>
 			</tr>';
 	$out .= '<input type="hidden" name="action" value="" id="actionFactureProd" />';
-	$tva = $datas['data']['tauxTVA_ent']*$bigtotal/100;
+	$tva = $datas['data']['tauxTVA_fact']*$bigtotal/100;
 	$ttc = $tva+$bigtotal;
 	$tva = formatCurencyDisplay($tva,2,'');
 	$ttc = formatCurencyDisplay($ttc,2,'');

@@ -456,8 +456,6 @@ class Sender {
 	}
 	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
 	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
-	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
-	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
 
 	$message[1]['content_type'] = $messagetype;
 	$message[1]['filename'] = '';
