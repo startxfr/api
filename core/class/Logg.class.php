@@ -35,11 +35,11 @@ class Logg extends Singleton {
      * @see singleton::getInstance()
      */
     protected function initSingleton() {
-        $this->conf = $GLOBALS['LOG'];
-        $this->confChannel['db']   = $GLOBALS['LOG_DB'];
-        $this->confChannel['file'] = $GLOBALS['LOG_FILE'];
-        $this->confChannel['sys']  = $GLOBALS['LOG_SYS'];
-        $this->confChannel['mail'] = $GLOBALS['LOG_MAIL'];
+        $this->conf &= $GLOBALS['LOG'];
+        $this->confChannel['db']   &= $GLOBALS['LOG_DB'];
+        $this->confChannel['file'] &= $GLOBALS['LOG_FILE'];
+        $this->confChannel['sys']  &= $GLOBALS['LOG_SYS'];
+        $this->confChannel['mail'] &= $GLOBALS['LOG_MAIL'];
     }
 
     /**

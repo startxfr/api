@@ -85,7 +85,7 @@ class Session {
 	    $tmp = new Bdd($GLOBALS['CHANNEL_'.$this->Channel]['SessDBPool']);
 	    $tmp->makeRequeteFree("SELECT id_mess, titre_mess, contenu_mess from message where user_mess = '".$_SESSION['user']['id']."' and debut_mess <= CURRENT_DATE and (fin_mess >= CURRENT_DATE or fin_mess is null ) and lu_mess = 0 ");
 	    $resultat = $tmp->process2();
-	    if($resultat[0]) {
+	    if($resultat[0] and count($resultat[1]) > 0) {
 		$_SESSION['message'] = $resultat[1];
 		$to = "index.php?mess=message";
 		$req = "update message set lu_mess = '1' where (";

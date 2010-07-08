@@ -183,7 +183,7 @@ class FactureFournisseurView extends generalView {
 	    $this->optionnel = "";
 	}
 	$this->form = new ZunoForm("modifFactFourn", "facturier/FactureFournisseur.php", "POST");
-	$this->form->newInputHidden("action", "modifFactFourn");
+	$this->form->newInputHidden("action", "modifFactFourn", 'idaction');
 	$this->form->newInputHidden("id_factfourn", $datas['data']['id_factfourn']);
 	$this->form->newInputHidden("oldstatus", $datas['data']['status_factfourn']);
 	if($datas['data']['id_factfourn'] == $datas['ren']['idChamp_ren'] or $datas['data']['ren_factfourn'] == "")
@@ -214,7 +214,7 @@ class FactureFournisseurView extends generalView {
 	}
 	else {
 	    $this->ficheFact = new ZunoRenduHtml("ficheFactureFournisseur");
-	    $this->ficheFact->generateZBox('<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur','<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur', $this->form->generateForm().$this->optionnel, $this->form->generateButtons(), 'divFicheFact', 'open', true);
+	    $this->ficheFact->generateZBox('<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur','<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur', $this->form->generateForm().$this->optionnel, $this->form->generateButtons().'<a name="journal" onclick="function(){$(\'idaction\').value = \'journalise\';};zuno.business.formTools.sendFormAjah(\'modifFactFourn\', \'facturier/FactureFournisseur.php\',\'idmodifFactFournformAutoRetour\');"><img alt="journal" src="../img/page.menu/JournalBanque.png"/> Inscrire dans le journal de banque</a>', 'divFicheFact', 'open', true);
 	    $this->ficheFact->insertJS($this->script);
 
 	    return $this->ficheFact->generateRendu();

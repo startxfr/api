@@ -40,11 +40,11 @@ elseif($PC->rcvG['id_cmd'] != '') {
 }
 elseif($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'supp') {
     aiJeLeDroit('commande', 30, 'web');
-	$titre = "Suppression de la commande ".$PC->rcvG['id_commande'];
-	$corps 	= '<span class="importantblue">Confirmer la suppression</span>';
-	$pied 	= '<a href="javascript:zuno.popup.close();">'.imageTag('../img/prospec/cancel.png','Effacer','middle').' Annuler</a>
+    $titre = "Suppression de la commande ".$PC->rcvG['id_commande'];
+    $corps 	= '<span class="importantblue">Confirmer la suppression</span>';
+    $pied 	= '<a href="javascript:zuno.popup.close();">'.imageTag('../img/prospec/cancel.png','Effacer','middle').' Annuler</a>
 		   <a href="../pegase/Commande.php?action=suppconfirm&id_commande='.$PC->rcvG['id_commande'].'">'.imageTag('../img/prospec/confirm.png','Effacer','middle').'Confirmer</a>';
-	echo generateZBox($titre, $titre, $corps,$pied,'CommandeBox','');
+    echo generateZBox($titre, $titre, $corps,$pied,'CommandeBox','');
 }
 elseif ($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'suppconfirm') {
     $bddtmp = new CommandeModel();
@@ -57,9 +57,9 @@ elseif ($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'suppconfirm')
     exit;
 }
 elseif ($PC->rcvG['action'] == 'VoirBDCC' or
-	$PC->rcvG['action'] == 'VoirBDCF' or
-	$PC->rcvG['action'] == 'VoirBDL' or
-	$PC->rcvG['action'] == 'VoirRI') {
+        $PC->rcvG['action'] == 'VoirBDCF' or
+        $PC->rcvG['action'] == 'VoirBDL' or
+        $PC->rcvG['action'] == 'VoirRI') {
     $bddtmp->makeRequeteSelect('affaire','id_aff',substr($PC->rcvG['id_commande'],0,-5));
     $aff = $bddtmp->process();
     $aff = $aff[0];
@@ -115,7 +115,7 @@ elseif($PC->rcvP['action'] == 'addCmd') {
 
     $result = $sql->insert($data, 'cloner', $produit);
     if($result[0]) {
-        $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);        
+        $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $bddtmp->makeRequeteUpdate('devis', 'id_dev', $data['devis_cmd'], array('status_dev' => '6'));
         $bddtmp->process();
         echo $view->popupCommande($PC->rcvP, 'ok', '<img src="../img/ajax-loader.gif" alt="loading" onload="redirectCommande(\''.$data['id_cmd'].'\');"');
@@ -236,14 +236,14 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
     if($PC->rcvP['action'] == 'GenererDocs' or $PC->rcvP['action'] == 'RecordSend') {
         aiJeLeDroit('commande', 60, 'web');
         $gnose = new commandeGnose();
-	$datas = $bdd->getFullDataFromID($PC->rcvP['id_cmd']);
+        $datas = $bdd->getFullDataFromID($PC->rcvP['id_cmd']);
         $bdd->makeRequeteFree("Select fournisseur from commande_produit where id_commande = '".$PC->rcvP['id_cmd']."'");
         $fourn = $bdd->process2();
         $statusCmd = $datas['data']['status_cmd'];
         $datas['pays'] =  $bdd->getPays();
         $datas['user'] = $bdd->getUser($PC->rcvP['id_cmd']);
 
-	if(is_array($fourn[1])) {
+        if(is_array($fourn[1])) {
             foreach($fourn[1] as $v) {
                 if(is_null($v['fournisseur']))
                     continue;
@@ -264,29 +264,29 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
         if(array_key_exists('GetDocBDC', $PC->rcvP)) {
             $ddd = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt']);
             if($ddd != false)
-		$Doc[] = $ddd;
+                $Doc[] = $ddd;
         }
         if(array_key_exists('GetDocBDL', $PC->rcvP)) {
             $ddd = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt'], 'BDL');
             if($ddd != false)
-		$Doc[] = $ddd;
+                $Doc[] = $ddd;
         }
         if(array_key_exists('GetDocRI', $PC->rcvP)) {
             $ddd = $gnose->CommandeGenerateBDC($datas, $PC->rcvP['OutputExt'], 'RI');
             if($ddd != false)
-		$Doc[] = $ddd;
+                $Doc[] = $ddd;
         }
-	if(count($Doc) > 0) {
-	    $result = $gnose->CommandeSaveDocInGnose($Doc,$datas['data']);
-	    if($result !== true) {
-		echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, $result);
-		exit;
-	    }
-	}
-	else {
-	    echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, 'Impossible de générer le document.');
-	    exit;
-	}
+        if(count($Doc) > 0) {
+            $result = $gnose->CommandeSaveDocInGnose($Doc,$datas['data']);
+            if($result !== true) {
+                echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, $result);
+                exit;
+            }
+        }
+        else {
+            echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, 'Impossible de générer le document.');
+            exit;
+        }
     }
     if($PC->rcvP['action'] == 'Send') {
         foreach($PC->rcvP as $k => $v) {
@@ -304,7 +304,7 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
     if($PC->rcvP['action'] == 'GenererDocs') {
         if($statusCmd < 3)
             $result = $bdd->update(array('status_cmd' => '3'), $PC->rcvP['id_cmd']);
-        
+
         echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, 'Les documents ont été générés et sauvegardés.');
         exit;
     }
@@ -330,17 +330,17 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
                 case 'courrier' : $arrivee = ".";
                     break;
                 default : $arrivee = " à l'adresse suivante : ".$PC->rcvP['mail'].".";
-            }           
+            }
+            if($statusCmd < 4)
+                $result = $bdd->update(array('status_cmd' => '4'), $PC->rcvP['id_cmd'], 'From : '.$PC->rcvP['from']."\nTo : ".$PC->rcvP['mail']);
             $bddtmp->makeRequeteUpdate('devis',"id_dev",substr($dev['id_cmd'],0,9),array("status_dev"=>"6"));
             $bddtmp->process();
             $bddtmp->makeRequeteUpdate('affaire',"id_aff",substr($dev['id_cmd'],0,6),array("status_aff"=>"9"));
             $bddtmp->process();
-            $bddtmp->makeRequeteUpdate('commande',"id_cmd",$dev['id_cmd'],array("status_cmd"=>"4"));
-            $bddtmp->process();
-            echo $result[1];
+            echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, 'Votre envoi s\'est bien déroulé.');
         }
         else
-            echo "Erreur lors de l'envoi";
+            echo viewFiche($PC->rcvP['id_cmd'], 'commande', 'Traitement', 'non', 'web', true, 'Erreur lors de l\'envoi.');
         exit;
     }
 }

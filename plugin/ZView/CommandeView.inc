@@ -174,7 +174,7 @@ class commandeView extends generalView {
 	$script .= "\n".'function montreForm(value) {if(value == \'mail\') {  $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') { champAdd(\'none\'); $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'table-row\'; $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') {  $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
 	$script .= "\n".'function champAdd(display) {$(\'champDestinataire\').style.display = $(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
 	$script .= "\n".'function changeFourn(produit, fourn) {if(fourn != "") {$(produit+\'PF\').value = prix[produit][fourn];$(produit+\'RF\').value = remise[produit][fourn]; calculette();} else {$(produit+\'PF\').value = 0; $(produit+\'RF\').value = 0; calculette();} } '."\n";
-	$script .= 'function ChangeCommandeAction(value) {	$(\'MakeCommandeAction\').value = value;}'."\n";
+	$script .= 'function ChangeCommandeAction(value) {	$(\'MakeCommandeAction\').value = value; }'."\n";
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$script .= '</script>';
 
@@ -209,7 +209,7 @@ class commandeView extends generalView {
 	if ($datas['data']['status_cmd'] >= '7') {
 	    $pied 	= "";
 	}
-	$pied .= '<a name="submit" onclick="return zuno.popup.open(\'../pegase/Commande.php\', \'action=actuCommande&id_cmd='.$datas['data']['id_cmd'].'\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');"><img align="middle" title="Historique" alt="Historique" name="img" src="../img/prospec/actu.png"/> Historique de cette commande</a>';
+	$pied .= '<a name="submit" onclick="return zuno.popup.open(\'pegase/Commande.php\', \'action=actuCommande&id_cmd='.$datas['data']['id_cmd'].'\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');"><img align="middle" title="Historique" alt="Historique" name="img" src="../img/prospec/actu.png"/> Historique de cette commande</a>';
 	return generateZBox($titre,$titre,$corps,$pied,'infosCmd','');
     }
 
@@ -285,6 +285,10 @@ class commandeView extends generalView {
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryPays);">Pays</div>
                     <div class="field">'.selectTag('paysdelivery_cmd',$datas['pays'],$datas['data']['paysdelivery_cmd']).'</div>
 		</div>
+                <div class="row">
+                    <div class="label">Complément de livraison</div>
+                    <div class="field"><textarea name="complementdelivery_cmd" cols="55" rows="1">'.$datas['data']['complementdelivery_cmd'].'</textarea></div>
+                </div>
 		<div class="row"> 
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryMail);">Mail</div>
                     <div class="field">'.inputTag('text', "maildelivery_cmd", '', '', '30', $datas['data']['maildelivery_cmd']).'</div>
@@ -312,11 +316,11 @@ class commandeView extends generalView {
 	$out .= '<div class="field">'.selectTag('commercial_cmd',$datas['user'],$datas['data']['commercial_cmd']).'</div>';
 	$out .= '</div>';
 	$out .= '</fieldset>';
-	$out .= '<fieldset class="form" style="height:60px"><legend>Commentaire de la commande</legend>';
+	$out .= '<fieldset class="form" style="height:60px"><legend>Commentaires de la commande</legend>';
 	$out .= '<div class="row">
-                    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryComplement);">Commentaire</div>
+                    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryComplement);">Commentaires</div>
                     <div class="field">
-			<textarea name="complementdelivery_cmd" cols="55" rows="2" value="'.$datas['data']['complementdelivery_cmd'].'"></textarea></div>
+			<textarea name="commentaire_cmd" cols="55" rows="2">'.$datas['data']['commentaire_cmd'].'</textarea></div>
 		</div>';
 	$out .= '</fieldset></div>';
 	return $out;
@@ -349,7 +353,8 @@ class commandeView extends generalView {
 	$out = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
 		<tbody><tr class="titre"> 
 			<th rowspan="2" style="width: 135px">ID</th>
-			<th rowspan="2">Fournisseur</th>
+			<th rowspan="2">Description</th>
+                        <th rowspan="2">Fournisseur</th>
 			<th rowspan="2" style="width: 16px">Stock</th>
 			<th colspan="4">Client</th>
 			<th colspan="4">Fournisseur</th>
@@ -376,6 +381,8 @@ class commandeView extends generalView {
 	    $out2 = '<tr class="altern'.$alternance.'" id="'.$v['id'].'M" style="display:none;">';
 	    $out .= '<td id="ID'.$v['id'].'">'.$v['id_produit'].'</td>';
 	    $out2 .= '<td>'.$v['id_produit'].'</td>';
+            $out .= '<td>'.$v['desc'].'</td>';
+            $out2 .= '<td>'.$v['desc'].'</td>';
 	    if($v['fournisseur'] != '') {
 		$out .= '<td class="barre"><a name="fourn'.$v['fournisseur'].'" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'id_fourn='.$v['fournisseur'].'\', \'950\', \'220\',\'\',\'\', \'resize\', \'Fournisseur\')"><img alt="fourn" title="Fournisseur" src="../img/prospec/TypeEntreprise/5.png" /> '.$v['fournisseurs'][$v['fournisseur']].'</a></td>';
 		$out2 .= '<td class="barre">'.selectTag('fournisseur['.$v['id'].']', $v['fournisseurs'], $v['fournisseur'], '', 'onchange="changeFourn(\''.$v['id'].'\', this.value);"').'</td>';

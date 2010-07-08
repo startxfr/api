@@ -28,20 +28,6 @@ class contactControl {
 		$mess.= 'Merci de fournir la civilité de ce contact<br/>';
 		$fields[] = 'civ_cont';
 	    }
-	    if(!$entreprise) {
-		if(!array_key_exists('mail_cont',$value) or $value['mail_cont'] == '' or !generalControl::mailControl($value['mail_cont'])) {
-		    $mess.= 'Merci de fournir un e-mail valide pour ce contact<br/>';
-		    $fields[] = 'mail_cont';
-		}
-		if(!array_key_exists('tel_cont',$value) or $value['tel_cont'] == '' or generalControl::telephoneControl($value['tel_cont']) == '0') {
-		    $mess.= 'Merci de fournir un numéro de téléphone valide pour ce contact<br/>';
-		    $fields[] = 'tel_cont';
-		}
-	    }
-	    if($value['mob_cont'] != '' and !generalControl::telephoneControl($value['mob_cont'])) {
-		$mess.='Merci de donner un numéro de portable valide<br/>';
-		$field[] = 'mob_cont';
-	    }
 	    if ($entreprise) {
 		if (($value['entreprise_cont']==0) or ($value['entreprise_cont'] == NULL )) {
 		    $mess.='problème de lien avec l\'entreprise<br />';

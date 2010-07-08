@@ -745,9 +745,10 @@ class factureModel extends GeneralModel {
      * Méthode qui s'occuper de mettre à jour les factures
      * @param array $data Les données à jour
      * @param int $id_fact L'id de la facture à mettre à jour
+     * @param string $cplmt Permet d'ajouter un complément aux infos d'actu générés
      * @return array Indique si la requête s'est bien déroulée
      */
-    public function update($data,$id_fact) {
+    public function update($data,$id_fact, $cplmt = '') {
 	$data['datemodif_fact']=date('Y-m-d');
 	$data['status_fact']=($data['status_fact'] == NULL || $data['status_fact'] == '') ? '2': $data['status_fact'];
 	switch($data['condireglement_fact']) {
@@ -807,7 +808,7 @@ class factureModel extends GeneralModel {
 	    Logg::loggerInfo('factureModel::updateProduits() ~ modification de la facture '.$id_fact,$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_fact'] != '')
-		$this->addActualite($id_fact, 'update');
+		$this->addActualite($id_fact, 'update', '', $cplmt);
 	    return $rs;
 	}
 	else {
@@ -815,7 +816,7 @@ class factureModel extends GeneralModel {
 	    Logg::loggerInfo('factureModel::updateProduits() ~ modification de la facture '.$data['id_fact'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['id_fact'] != '')
-		$this->addActualite($data['id_fact'], 'update');
+		$this->addActualite($data['id_fact'], 'update', '', $cplmt);
 	    return $rs;
 	}
     }

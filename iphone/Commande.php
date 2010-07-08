@@ -2,7 +2,7 @@
 // On inclus les librairies et les fichiers de configurations
 include ('../inc/conf.inc');
 include ('../inc/core.inc');
-loadPlugin(array('ZDoc/CommandeDoc','OOConverter','Send/SendFax','Send/SendLetter'));
+loadPlugin(array('ZDoc/CommandeDoc','OOConverter','Send/Send'));
 
 // On inclus les librairies speciales iPhone
 include_once ('lib/Debug.inc.php');

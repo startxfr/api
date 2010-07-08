@@ -2,17 +2,17 @@
 // On inclus les librairies et les fichiers de configurations
 include ('../inc/conf.inc');
 include ('../inc/core.inc');		// Load core library
-loadPlugin(array('Send/Send','Send/SendFax','Send/SendLetter'));
+loadPlugin(array('Send/Send', 'ZModels/ContactModel', 'ZControl/SendControl'));
 
 // On inclus les librairies speciales iPhone
 include_once ('lib/Debug.inc.php');
 include_once ('lib/HtmlElement.inc.php');
 include_once ('lib/HtmlForm.inc.php');
 include_once ('lib/ZunoLayerSend.inc.php');
-loadPlugin(array('ZModels/ContactModel'));
+
 include_once ('V/SendView.inc.php');
 include_once ('V/ContactView.inc.php');
-loadPlugin(array('ZControl/SendControl'));
+
 include_once ('V/GeneralView.inc.php');
 
 
@@ -68,29 +68,16 @@ if($_SESSION['user']['config']['send'] != 'oui') {
 // ex: <a href="Send.php?type=courrier&nom=Mr+Christophe+LARUE&add1=16+rue+camille+Desmoulins&cp=75011&ville=PARIS&pays=FRANCE&cpays=fr&file=../tmp/todo.ods" rev="async"><img src="Img/iconMenu/zsendCourrier.png" />Envoi de Courrier </a>
 if($PC->rcvG['type'] == 'mail') {
     if($PC->rcvG['action'] == 'doConfirmSend') {
-	if($_SESSION['ZSend']['data']['file'] != '') {
-	    MailAttach(
-		    $_SESSION['ZSend']['data']['email'],
-		    $_SESSION['ZSend']['data']['message'],
-		    $GLOBALS['SVN_Pool1']['WorkCopy'].
-		    $GLOBALS['SVN_Pool1']['WorkDir'].
-		    $GLOBALS['ZunoSendMail']['dir.pj'].
-		    $_SESSION['ZSend']['data']['file'],
-		    '',
-		    '',
-		    $_SESSION['ZSend']['data']['titre'],
-		    $_SESSION['ZSend']['data']['sender'],
-		    $_SESSION['ZSend']['data']['emailcc']);
-	}
-	else {
-	    simple_mail(
-		    $_SESSION['ZSend']['data']['email'],
-		    $_SESSION['ZSend']['data']['message'],
-		    $_SESSION['ZSend']['data']['titre'],
-		    $_SESSION['ZSend']['data']['sender'],
-		    $_SESSION['ZSend']['data']['emailcc'],
-		    'txt');
-	}
+        $_SESSION['ZSend']['data']['typeE'] = 'email';
+        $_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
+        $_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
+        $_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
+        $_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
+        $_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
+        $_SESSION['ZSend']['data']['fichier'] =$_SESSION['ZSend']['data']['file'];
+        $sender = new Sender($_SESSION['ZSend']['data']);
+        $sender->send();
+	
 	?>
 <root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>
 	<?php
@@ -142,15 +129,20 @@ if($PC->rcvG['type'] == 'mail') {
 }
 elseif($PC->rcvG['type'] == 'courrier') {
     if($PC->rcvG['action'] == 'doConfirmSend') {
-	$d = $_SESSION['ZSend']['data'];
-	$addData = array(
-		'nom1' => $d['nom'],
-		'add1' => $d['add1'],
-		'add2' => $d['add2'],
-		'cp'   => $d['cp'],
-		'ville'=> $d['ville'],
-		'code_pays' => $d['cpays']);
-	$result = SendLetter($addData,$GLOBALS['ZunoSendMail']['dir.pj'].$d['file']);
+
+        $_SESSION['ZSend']['data']['typeE'] = 'courrier';
+        $_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
+        $_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
+        $_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
+        $_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
+        $_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
+        $_SESSION['ZSend']['data']['fichier'] = $_SESSION['ZSend']['data']['file'];
+        $_SESSION['ZSend']['data']['destinataire'] =$_SESSION['ZSend']['data']['nom'];
+        $_SESSION['ZSend']['data']['pays'] = $_SESSION['ZSend']['data']['cpays'];
+        $sender = new Sender($_SESSION['ZSend']['data']);
+        $result = $sender->send();
+	
+
 	if($result[0]) {	?>
 <root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>
 	    <?php
@@ -213,10 +205,18 @@ elseif($PC->rcvG['type'] == 'courrier') {
 elseif($PC->rcvG['type'] == 'fax') {
     if($PC->rcvG['action'] == 'doConfirmSend') {
 	$d = $_SESSION['ZSend']['data'];
-	$addData = array(
-		'nom1' => $d['nom'],
-		'fax'  => $d['fax']);
-	$result = SendFax($addData,$GLOBALS['ZunoSendMail']['dir.pj'].$d['file']);
+	$_SESSION['ZSend']['data']['typeE'] = 'fax';
+        $_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
+        $_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
+        $_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
+        $_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
+        $_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
+        $_SESSION['ZSend']['data']['fichier'] = $_SESSION['ZSend']['data']['file'];
+        $_SESSION['ZSend']['data']['destinataire'] =$_SESSION['ZSend']['data']['nom'];
+
+        $sender = new Sender($_SESSION['ZSend']['data']);
+        $result = $sender->send();
+
 	if($result[0]) {	?>
 <root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>
 	    <?php

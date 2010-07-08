@@ -72,7 +72,7 @@ class factureControl {
      * @return array Le résultat du controle
      */
     static function controlAddWeb($value = array()) {
-	if((!array_key_exists('commande_fact',$value) or $value['commande_fact'] == '') and (!array_key_exists('entreprise_fact', $value) or $value['entreprise_fact'] == '')) {
+	if((!array_key_exists('commande_fact',$value) or $value['commande_fact'] == '') and ((!array_key_exists('entreprise_fact', $value) or $value['entreprise_fact'] == '') and (!array_key_exists('contact_achat_fact',$value) or $value['contact_achat_fact'] == ''))) {
 	    $mess.= 'Merci d\'indiquer la commande liée<br/>';
 	    $fields[] = 'affaire_dev';
 	}

@@ -634,9 +634,11 @@ class devisModel extends GeneralModel {
      * Méthode qui met à jour un devis
      * @param array $data Les données mises à jour
      * @param string $id_dev L'id du devis à mettre à jour
+     * @param boolean $addActu Précise si on ajoute une actualité ou pas
+     * @param string $cplmt Permet d'ajouter un complément à l'actualité
      * @return array Indique si la requête s'est bien déroulée
      */
-    public function update($data,$id_dev,$addActu = true) {
+    public function update($data,$id_dev,$addActu = true, $cplmt = '') {
 	$data['datemodif_dev']=date('Y-m-d');
 	if(array_key_exists('tva_dev', $data))
 	    $data['tva_dev']=formatCurencyDatabase($data['tva_dev'],1);
@@ -647,7 +649,7 @@ class devisModel extends GeneralModel {
 	    Logg::loggerInfo('devisModel::update() ~ modification du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_dev'] != '' and $addActu)
-		$this->addActualite($id_dev, 'update');
+		$this->addActualite($id_dev, 'update', '', $cplmt);
 	    return $rs;
 	}
 	else {
@@ -655,7 +657,7 @@ class devisModel extends GeneralModel {
 	    Logg::loggerInfo('devisModel::update() ~ modification du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_dev'] != '')
-		$this->addActualite($din['id_dev'], 'update');
+		$this->addActualite($din['id_dev'], 'update', '', $cplmt);
 	    return $rs;
 	}
     }

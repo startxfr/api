@@ -51,7 +51,7 @@ class Payline {
         $this->sql = new PaylineModel();
         $this->contractNumber = $GLOBALS['zunoPayline']['CONTRACT_NUMBER'];
         $this->mailRetour = $GLOBALS['zunoClientCoordonnee']['mail'];
-
+        
         $this->availableCodeAction = array('100', '101', '110', '111', '120', '121', '130', '131', '201', '204', '421', '422', '202');
         $this->codeAction = 101; //Autorisation + validation
         $this->mode = "CPT";//Comptant

@@ -269,12 +269,12 @@ elseif (($PC->rcvP['action'] == "Voir") or ($PC->rcvP['action'] == "Record") or 
             $bddtmp->process();
             $bddtmp->makeRequeteUpdate('commande',"id_cmd",$dev['commande_fact'],array("status_cmd"=>"9"));
             $bddtmp->process();
-	    if($dev['status_fact'] <= 3) {
-		$info->update(array("status_fact"=>"4"), $id_fact);
-		$info->update(array("status_fact"=>"5"), $id_fact);
-	    }
-	    elseif($dev['status_fact'] == 4)
-		$info->update(array("status_fact"=>"5"), $id_fact);
+            if($dev['status_fact'] <= 3) {
+                $info->update(array("status_fact"=>"4"), $id_fact, 'From : '.$PC->rcvP['from']."\nTo : ".$PC->rcvP['mail']);
+                $info->update(array("status_fact"=>"5"), $id_fact);
+            }
+            elseif($dev['status_fact'] == 4)
+                $info->update(array("status_fact"=>"5"), $id_fact);
             echo viewFiche($PC->rcvP['id_fact'], $type, 'Traitement', 'non', 'web', true, 'Document envoyé');
 
         }
@@ -325,8 +325,10 @@ elseif($PC->rcvP['action'] == "addFactFromCmd") {
     $data['type_fact'] = 'Facture';
     $result = $info->insert($data, 'cloner', $produit);
     $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-    $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '4' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '4' ; ");
-    $bddtmp->process2();
+    if($data['entreprise_fact'] != '') {
+        $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '4' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '4' ; ");
+        $bddtmp->process2();
+    }
     if($result[0]) {
         $bddtmp->makeRequeteFree("UPDATE commande SET status_cmd = '9' WHERE id_cmd = '".$PC->rcvP['id_cmd']."' ; ");
         $result = $bddtmp->process2();
@@ -344,11 +346,11 @@ elseif($PC->rcvP['action'] == "Zieuter") {
 
 }
 elseif ($PC->rcvG['action'] == 'VoirFact') {
-	$PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
-	$bddtmp->makeRequeteFree("SELECT file_fact FROM facture WHERE id_fact = '".$PC->rcvG['id_fact']."'");
-	$facture = $bddtmp->process();
-	$facture = $facture[0];
-	PushFileToBrowser($PathTo.$facture['file_fact'],$facture['file_fact']);
+    $PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
+    $bddtmp->makeRequeteFree("SELECT file_fact FROM facture WHERE id_fact = '".$PC->rcvG['id_fact']."'");
+    $facture = $bddtmp->process();
+    $facture = $facture[0];
+    PushFileToBrowser($PathTo.$facture['file_fact'],$facture['file_fact']);
 }
 elseif($PC->rcvG['action'] == 'addContFact') {
     aiJeLeDroit('contact', 20, 'web');
@@ -428,7 +430,7 @@ elseif($PC->rcvP['action'] == 'payerCB') {
             $wallet = substr($PC->rcvP['nom_cont'], 0, 5).substr($PC->rcvP['cvvCarte_cont'],0,1).substr($PC->rcvP['prenom_cont'], 0, 2).substr($PC->rcvP['finCarte_cont'], strlen($PC->rcvP['finCarte_cont'])-4,2);
             $model->setWallet($wallet);
             $result = $model->createWallet();
-            if($result[0] == 1){
+            if($result[0] == 1) {
                 $model->saveCarteDatas();
                 $result = $model->doWalletPayement();
             }
@@ -524,6 +526,15 @@ elseif($PC->rcvP['action'] == 'payerCB') {
         $sender = new Sender($array);
         $sender->send();
 
+        if($PC->rcvP['journalise'] == 'true') {
+            loadPlugin('ZModels/JournalBanqueModel');
+            $jb = new journalBanqueModel();
+            $jb->insertFromFacture($PC->rcvP['id_fact']);
+        }
+
+        $sql = new factureModel();
+        $sql->update(array('status_fact' => 6), $PC->rcvP['id_fact']);
+
 
     }
     echo viewFiche($PC->rcvP['id_fact'], 'facture', 'interneTraitement', 'non', 'web', true, $result[1]);
@@ -537,9 +548,16 @@ elseif($PC->rcvP['action'] == "AttenteRglmt") {
     exit;
 }
 elseif($PC->rcvP['action'] == "Clore") {
-    $id_fact = $PC->rcvP['id_fact'];
-    $info->update(array("status_fact"=>"6"), $id_fact);
-    echo viewFiche($PC->rcvP['id_fact'], 'facture', 'Traitement', 'non', 'web', true, "Votre facture est maintenant payée et cloturée");
+    $info->update(array("status_fact"=>"6"), $PC->rcvP['facture']);
+    echo viewFiche($PC->rcvP['facture'], 'facture', 'Traitement', 'non', 'web', true, "Votre facture est maintenant payée et cloturée");
+    exit;
+}
+elseif($PC->rcvP['action'] == "JournaliseAndClore") {
+    loadPlugin('ZModels/JournalBanqueModel');
+    $jb = new journalBanqueModel();
+    $jb->insertFromFacture($PC->rcvP['facture']);
+    $info->update(array("status_fact"=>"6"), $PC->rcvP['facture']);
+    echo viewFiche($PC->rcvP['facture'], 'facture', 'Traitement', 'non', 'web', true, "Votre facture est maintenant payée, cloturée et inscrite dans le journal de banque");
     exit;
 }
 elseif($PC->rcvG['action'] == "popupSupp") {
@@ -550,6 +568,13 @@ elseif($PC->rcvG['action'] == "popupSupp") {
 elseif($PC->rcvP['action'] == "doSupp") {
     $info->delete($PC->rcvP['facture']);
     header('Location:FactureListe.php?mess=supp');
+    exit;
+}
+elseif($PC->rcvG['action'] == 'confirmClore') {
+    $fact = new factureModel();
+
+    $view = new factureView();
+    echo $view->popupConfirmClore($PC->rcvG['facture'], $fact->getType($PC->rcvG['facture']));
     exit;
 }
 /*------------------------------------------------------------------------+

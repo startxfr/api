@@ -22,7 +22,7 @@ class commandeModel extends GeneralModel {
 		'datemodif_cmd','daterecord_cmd','status_cmd', 'prixF',
 		'nomdelivery_cmd','adressedelivery_cmd','adresse1delivery_cmd',
 		'villedelivery_cmd','cpdelivery_cmd','paysdelivery_cmd',
-		'maildelivery_cmd','complement_delivery_cmd',
+		'maildelivery_cmd','complementdelivery_cmd',
 		'commercial_cmd','contact_achat_cmd', 'tva_cmd', 'commentaire_cmd');
 	$this->availableFieldsProduit = array(
 		'id_commande', 'id_produit', 'desc', 'quantite', 'quantite_cmd', 'remise',
@@ -604,9 +604,10 @@ class commandeModel extends GeneralModel {
      * Fonction d'exécution de la requète SQL de modification
      * @param array $data Les données à mettre à jour
      * @param string $id_cmd L'id de al commande à mettre à jour
+     * @param string $cplmt Permet d'ajouter un complément à l'actu générée
      * @return array Indique si la requête s'est bien passée.
      */
-    public function update($data,$id_cmd) {
+    public function update($data,$id_cmd, $cplmt = '') {
 	$data['datemodif_cmd']=date('Y-m-d');
 	if(array_key_exists('tva_cmd', $data))
 	    $data['tva_cmd']=formatCurencyDatabase($data['tva_cmd'],1);
@@ -619,7 +620,7 @@ class commandeModel extends GeneralModel {
 	    Logg::loggerInfo('commandeModel::update() ~ mise à jour de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_cmd'] != '')
-		$this->addActualite($id_cmd, 'update');
+		$this->addActualite($id_cmd, 'update', '', $cplmt);
 	    return $rs;
 	}
 	else {
@@ -627,7 +628,7 @@ class commandeModel extends GeneralModel {
 	    Logg::loggerInfo('commandeModel::update() ~ mise à jour de la commande '.$data['id_cmd'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_cmd'] != '')
-		$this->addActualite($data['id_cmd'], 'update');
+		$this->addActualite($data['id_cmd'], 'update', '', $cplmt);
 	    return $rs;
 	}
     }

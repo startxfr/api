@@ -32,6 +32,7 @@ a.bouton,
 .ContextBox input[type=button],
 .ContextBox input[type=submit],
 .ContextBox input[type=reset],
+#tags li a:hover,
 #ScanSearchCode:hover {
     background-color: #ff6600;
 }

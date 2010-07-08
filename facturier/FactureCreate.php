@@ -38,7 +38,7 @@ if($PC->rcvP['action'] == 'addFacture') {
         $data['contact_fact'] = $PC->rcvP['contact_fact'];
         $data['contact_achat_fact'] = $PC->rcvP['contact_achat_fact'];
         $info = new factureModel();
-        if($PC->rcvP['commande_fact'] != "null") {
+        if($PC->rcvP['commande_fact'] != "null" and $PC->rcvP['entreprise_fact'] != '') {
             $cmd = $info->getEntrepriseData($PC->rcvP['commande_fact']);
             $cmd = $cmd[1][0];
             $devisM = new commandeModel();
@@ -56,12 +56,18 @@ if($PC->rcvP['action'] == 'addFacture') {
             $data['nomentreprise_fact'] = $cmd['nomdelivery_cmd'];
             $data['tauxTVA_fact'] = $cmd['tva_cmd'];
         }
-        else {
+        elseif($PC->rcvP['entreprise_fact'] != '') {
             $ent = new contactEntrepriseModel();
             $id = $ent->getDataFromID($PC->rcvP['entreprise_fact']);
             $data['entreprise_fact'] = $PC->rcvP['entreprise_fact'];
             $data['nomentreprise_fact'] = $id[1][0]['nom_ent'];
             $data['tauxTVA_fact'] = $id[1][0]['tauxTVA_ent'];
+        }
+        else {
+            $ent = new contactParticulierModel();
+            $id = $ent->getDataFromID($PC->rcvP['contact_achat_fact']);
+            $data['nomentreprise_fact'] = $id[1][0]['civ_cont'].' '.$id[1][0]['prenom_cont'].' '.$id[1][0]['nom_cont'];
+            $data['tauxTVA_fact'] = $GLOBALS['zunoClientStatut']['tauxTVA'];
         }
 
         $id = $info->GetLastId();
@@ -76,7 +82,7 @@ if($PC->rcvP['action'] == 'addFacture') {
         $data['cp_fact'] = $PC->rcvP['cp_fact'];
         $data['pays_fact'] = $PC->rcvP['pays_fact'];
         $data['type_fact'] = 'Facture';
-        if($PC->rcvP['commande_fact'] != "null") {
+        if($PC->rcvP['commande_fact'] != "null" and $PC->rcvP['entreprise_fact'] != '') {
             if($PC->rcvP['type'] == 'Avoir')
                 $result = $info->insert($data, 'toAvoir', $produit);
             else
@@ -84,12 +90,12 @@ if($PC->rcvP['action'] == 'addFacture') {
         }
         else
             $result = $info->insert($data);
-        $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '3' ; ");
-        $bddtmp->process2();
+        if($PC->rcvP['entreprise_fact'] != '') {
+            $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+            $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '3' ; ");
+            $bddtmp->process2();
+        }
         if($result[0]) {
-            $ckoi = ($PC->rcvP['type'] == 'Avoir') ? 'l\'avoir' : 'la facture';
-            $petite = ($PC->rcvP['type'] == 'Avoir') ? '' : 'e';
             header('Location:Facture.php?id_fact='.$id);
             exit;
         }

@@ -357,6 +357,8 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 		    $pronom = "Il";
 		    $e = "";
 		    $status = $rs[1][0]['nom_stdev'];
+                    if($rs[1][0]['status_dev'] == '4')
+                        $action = 'send';
 		    $montant = "de ".prepareNombreAffichage($rs[1][0]['sommeHT_dev'])."€ Hors Taxes";
 		    break;
 		case "commande" :
@@ -371,6 +373,8 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 		    $type = "de la commande";
 		    $type2 = "la commande";
 		    $status = $rs[1][0]['nom_stcmd'];
+                    if($rs[1][0]['status_cmd'] == '4')
+                        $action = 'send';
 		    $montant = "de ".prepareNombreAffichage($rs[1][0]['sommeHT_cmd'])."€ Hors taxes";
 		    break;
 		case "facture" :
@@ -395,6 +399,8 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 			$type2 = "la facture";
 		    }
 		    $status = $rs[1][0]['nom_stfact'];
+                    if($rs[1][0]['status_fact'] == '4')
+                        $action = 'send';
 		    if(strlen($id) == 1)
 			$id = "00".$id;
 		    elseif(strlen($id) == 2)
@@ -419,32 +425,36 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 	switch($action) {
 	    case "add" :
 		$param['titre'] = "Création ".$type." ".$id." pour le client ".$client;
-		$param['desc'] = ($desc == '') ? ucfirst(substr($type, 3))." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
 		break;
 	    case "clone" :
 		$param['titre'] = "Création ".$type." ".$id." à partir ".$type." ".$cloneID;
-		$param['desc'] = ($desc == '') ? ucfirst(substr($type, 3))." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
 		break;
 	    case "avoir" :
 		$param['titre'] = "Création ".$type." ".$id." à partir de la facture ".$cloneID;
-		$param['desc'] = ($desc == '') ? ucfirst(substr($type, 3))." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
 		break;
 	    case "update" :
 		$param['titre'] ="Modification ".$type." ".$id." pour le client ".$client;
-		$param['desc'] = ($desc == '') ? ucfirst(substr($type, 3))." ".$id." vient d'être modifié".$e." par ".$_SESSION['user']['fullnom'].". ".$pronom." a désormais le status ".$status." avec un montant ".$montant."." : $desc;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être modifié".$e." par ".$_SESSION['user']['fullnom'].". ".$pronom." a désormais le status ".$status." avec un montant ".$montant."." : $desc;
 		break;
 	    case "delete" :
 		$param['titre'] ="Suppression ".$type." ".$id." pour le client ".$client;
-		$param['desc'] = ($desc == '') ? ucfirst(substr($type, 3))." ".$id." vient d'être supprimé".$e." par ".$_SESSION['user']['fullnom'].". ".$pronom." a désormais le status ".$status."." : $desc;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être supprimé".$e." par ".$_SESSION['user']['fullnom'].". ".$pronom." a désormais le status ".$status."." : $desc;
 		break;
 	    case "archive" :
 		$param['titre'] ="Archivage ".$type." ".$id." pour le client ".$client;
-		$param['desc'] = ($desc == '') ? ucfirst(substr($type, 3))." ".$id." vient d'être archivé".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être archivé".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
 		break;
 	    case "perdu" :
 		$param['titre'] = ucfirst($type2)." ".$id." pour le client ".$client.' est perdu';
-		$param['desc'] = ($desc == '') ? ucfirst(substr($type, 3))." ".$id." vient d'être marqué".$e." comme perdu".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être marqué".$e." comme perdu".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
 		break;
+            case "send" :
+                $param['titre'] = "Envoi ".$type." ".$id." relative au client ".$client;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être envoyé".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
+                break;
 	    default :
 		$param['type'] = 'general';
 		$param['titre'] = ($desc == '') ? 'Information générale' : $desc;

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.46, for redhat-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.47, for redhat-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: ZunoDev_sxa
 -- ------------------------------------------------------
--- Server version	5.1.46
+-- Server version	5.1.47
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -68,7 +68,7 @@ DROP TABLE IF EXISTS `affaire`;
 CREATE TABLE `affaire` (
   `id_aff` varchar(6) NOT NULL,
   `entreprise_aff` int(6) unsigned DEFAULT NULL,
-  `contact_aff` int(4) unsigned NOT NULL DEFAULT '0',
+  `contact_aff` int(4) unsigned DEFAULT NULL,
   `actif_aff` enum('0','1') NOT NULL DEFAULT '1',
   `archived_aff` enum('0','1') NOT NULL DEFAULT '0',
   `projet_aff` int(4) unsigned DEFAULT NULL,
@@ -127,6 +127,39 @@ CREATE TABLE `appel` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `banque`
+--
+
+DROP TABLE IF EXISTS `banque`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `banque` (
+  `id_bq` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `nom_bq` varchar(255) NOT NULL,
+  `isActif_bq` enum('0','1') NOT NULL DEFAULT '1',
+  `isExportablePontComptable_bq` enum('0','1') NOT NULL DEFAULT '1',
+  `commentaire_bq` text,
+  PRIMARY KEY (`id_bq`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='table des banques';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `cloud`
+--
+
+DROP TABLE IF EXISTS `cloud`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cloud` (
+  `recherche_cloud` varchar(20) NOT NULL,
+  `total_cloud` int(10) unsigned NOT NULL DEFAULT '1',
+  `module_cloud` enum('entreprise','contact','affaire','devis','commande','facture','factureFourn','produit','fournisseur') NOT NULL DEFAULT 'entreprise',
+  `user_cloud` varchar(127) NOT NULL,
+  PRIMARY KEY (`recherche_cloud`,`module_cloud`,`user_cloud`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `commande`
 --
 
@@ -156,7 +189,7 @@ CREATE TABLE `commande` (
   `cpdelivery_cmd` varchar(8) DEFAULT NULL,
   `paysdelivery_cmd` tinyint(3) NOT NULL DEFAULT '1',
   `maildelivery_cmd` varchar(255) DEFAULT NULL,
-  `complementdelivery_cmd` varchar(128) DEFAULT NULL,
+  `complementdelivery_cmd` varchar(255) DEFAULT NULL,
   `tva_cmd` decimal(3,1) NOT NULL DEFAULT '19.6',
   `ren_cmd` int(8) DEFAULT NULL,
   `commentaire_cmd` text,
@@ -233,7 +266,8 @@ CREATE TABLE `contact` (
   KEY `fonction_cont` (`fonction_cont`),
   KEY `relactive_cont` (`relactive_cont`),
   KEY `mail_cont` (`mail_cont`),
-  KEY `LD_cont` (`LD_cont`)
+  KEY `LD_cont` (`LD_cont`),
+  KEY `entreprise_cont` (`entreprise_cont`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -527,6 +561,29 @@ CREATE TABLE `historique_payline` (
   `dateAutorisation_hp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_hp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `journal_banque`
+--
+
+DROP TABLE IF EXISTS `journal_banque`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_banque` (
+  `id_jb` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `date_record_jb` datetime NOT NULL,
+  `date_effet_jb` datetime NOT NULL,
+  `banque_jb` int(8) unsigned NOT NULL,
+  `modereglement_jb` tinyint(1) NOT NULL,
+  `libelle_jb` varchar(255) NOT NULL,
+  `montant_jb` decimal(12,2) NOT NULL,
+  `commentaire_jb` text,
+  `file_jb` varchar(255) DEFAULT NULL,
+  `facture_jb` mediumint(3) unsigned DEFAULT NULL,
+  `entreprise_jb` mediumint(3) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id_jb`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table de journal de banque pour les mouvements de compte';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1198,4 +1255,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-17  3:19:54
+-- Dump completed on 2010-07-08  1:45:06

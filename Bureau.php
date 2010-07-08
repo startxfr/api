@@ -77,6 +77,14 @@ if($_SESSION['message'][0]['titre_mess'] != '' and $_SESSION['message']['dejaVu'
     $_SESSION['message']['dejaVu'] = true;
 }
 
+if($PC->rcvG['module'] != ''){
+    $sortieZ = '<span class="important">Vous n\'avez pas acheté le module pour effectuer cette opération.<br/>
+				Pour y accéder vous avez besoin du module <b>'.$PC->rcvG['module'].'</b></span>'.$sortieZ;
+}
+elseif($PC->rcvG['droits'] == 'absent'){
+    $sortieZ = '<span class="important" style="text-align: center;">Vous n\'avez pas les droits suffisants pour effectuer cette opération</span>'.$sortieZ;
+}
+
 $sortie .= $sortieZ;
 $sortie.= '<br class="clear"/>';
 /*------------------------------------------------------------------------+

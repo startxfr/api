@@ -7,6 +7,8 @@ include ('../inc/core.inc');		// Load core library
 loadPlugin(array('ZA.Wsdl','ZModels/TransactionModel', 'ZModels/PaylineModel', 'Payline/Payline', 'ZModels/ContactModel', 'ZModels/AffaireModel'));
 setlocale(LC_ALL,'fr_FR.UTF8');
 $GLOBALS['currentChannel'] = 'webservice';
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
 if($_SERVER['QUERY_STRING'] == 'wsdl')
     Logg::loggerInfo('webservice sxa.client ~ Appel au fichier WSDL CLIENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);
 else Logg::loggerInfo('webservice sxa.client ~ Appel au webservice CLIENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);

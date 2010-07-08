@@ -40,7 +40,7 @@ elseif(isset($PC->rcvG['newFichier']) and isset($_SESSION['temp']['upload'])) {
     $sortie = viewFiche($PC->rcvG['newFichier'], 'factureFournisseur', '', 'non', 'web', true);
 }
 
-elseif($PC->rcvP['action'] == 'modifFactFourn') {
+elseif($PC->rcvP['action'] == 'modifFactFourn' or $PC->rcvP['action'] == 'journalise') {
     aiJeLeDroit('factureFournisseur', 15, 'web');
 
     if($PC->rcvP['dateReglement_factfourn'] != '')
@@ -79,7 +79,14 @@ elseif($PC->rcvP['action'] == 'modifFactFourn') {
             $renModel->desactiver($PC->rcvP['ren_factfourn']);
         }
     }
+    if($PC->rcvP['action'] == 'journalise' and $PC->rcvP['status_factfourn'] < 4)
+            $PC->rcvP['status_factfourn'] = '4';
     $result = $info->update($PC->rcvP['id_factfourn'], $PC->rcvP);
+    if($result[0] and $PC->rcvP['action'] == 'journalise'){
+        loadPlugin('ZModels/JournalBanqueModel');
+        $jb = new journalBanqueModel();
+        $jb->insertFromFactureFournisseur($PC->rcvP['id_factfourn']);
+    }
     if($PC->rcvP['status_factfourn'] == 4) {
         $info= new actualiteModel();
         $data['type'] = 'factureFournisseur';

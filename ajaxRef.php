@@ -54,17 +54,17 @@ if(array_key_exists('action', $PC->rcvG)) {
         }
     }
     elseif($PC->rcvG['action'] == 'listeProduit') {
-        loadPlugin(array('ZModels/ProduitModel', 'ZView/ProduitView', 'ZunoSxa'));
-	$req = new ProduitModel();
-	if($PC->rcvP['value'] == '**')
-	    $search = '';
-	else
-	    $search = $PC->rcvP['value'];
-	$result = $req->getDataForSearchProduit($search,25);
-	if(is_array($result[1])) {
-	    foreach($result[1] as $v)
-		$out .= '<li title="'.$v['id_prod'].'-_-'.$v['treePathKey'].' '.$v['nom_prodfam'].'-_-'.$v['prix_prod'].'-_-'.$v['description_prod'].'-_-'.$v['PF'].'">['.$v['id_prod'].'] '.$v['nom_prod'].' <span class="informal">('.formatCurencyDisplay((double)$v['prix_prod']).')</span></li>';
-	}
+        loadPlugin(array('ZModels/ProduitModel'));
+        $req = new ProduitModel();
+        if($PC->rcvP['value'] == '**')
+            $search = '';
+        else
+            $search = $PC->rcvP['value'];
+        $result = $req->getDataForSearchProduit($search,25);
+        if(is_array($result[1])) {
+            foreach($result[1] as $v)
+                $out .= '<li title="'.$v['id_prod'].'-_-'.$v['treePathKey'].' '.$v['nom_prodfam'].'-_-'.$v['prix_prod'].'-_-'.$v['description_prod'].'-_-'.$v['PF'].'">['.$v['id_prod'].'] '.$v['nom_prod'].' <span class="informal">('.formatCurencyDisplay((double)$v['prix_prod']).')</span></li>';
+        }
     }
     elseif($PC->rcvG['action'] == 'listeAffaire') {
         loadPlugin(array('ZModels/AffaireModel'));
@@ -82,6 +82,22 @@ if(array_key_exists('action', $PC->rcvG)) {
         if(is_array($result[1])) {
             foreach($result[1] as $v)
                 $out .= '<li title="'.$v['id_aff'].'">['.$v['id_aff'].'] '.$v['titre_aff'].'</li>';
+        }
+    }
+    elseif($PC->rcvG['action'] == 'listeFacturePlusEnt') {
+        loadPlugin(array('ZModels/FactureModel'));
+        $req = new factureModel();
+        $search = ($PC->rcvP['value'] == '**') ? '' : $PC->rcvP['value'];
+        $result = $req->getDataForSearch($search, '10', '0');
+        if(is_array($result[1])) {
+            foreach($result[1] as $v) {
+                if(strlen($v['id_fact']) == 1)
+                    $id = "00".$v['id_fact'];
+                elseif(strlen($v['id_fact']) == 2)
+                    $id = "0".$v['id_fact'];
+                else $id = $v['id_fact'];
+                $out .= '<li title="'.$v['id_fact'].'">'.$v['type_fact'].' '.$req->getFormatedIdFromData($v).': '.$v['titre_fact'].'</li>';
+            }
         }
     }
     elseif($PC->rcvG['action'] == 'listeProjet') {
@@ -176,26 +192,26 @@ if(array_key_exists('action', $PC->rcvG)) {
     }
 
     elseif($PC->rcvG['action'] == 'listeEntCmdFact') {
-	if($PC->rcvP['value'] == '**')
-	    $search = '';
-	else
-	    $search = $PC->rcvP['value'];
-	$qTag = "LIKE '".$search."%'";
-	$sql->makeRequeteFree("SELECT * from entreprise LEFT JOIN ref_pays ON ref_pays.id_pays = entreprise.pays_ent where nom_ent $qTag or cp_ent $qTag or ville_ent $qTag ORDER BY nom_ent ASC LIMIT 0,10 ");
-	$result = $sql->process2();
-	if(is_array($result[1])) {
-	    foreach($result[1] as $v) {
-		if ($v['type_ent'] != '')
-		    $v['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
-		$out .= '<li title="null-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.$v['nom_ent'].' ('.$v['ville_ent'].')</li>';
-	    }
-	}
-	$sql->makeRequeteFree("SELECT * FROM commande c LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd LEFT JOIN ref_pays on ref_pays.id_pays = entreprise.pays_ent where (id_cmd $qTag OR titre_cmd $qTag OR nom_ent $qTag OR cp_ent $qTag) AND status_cmd IN (4,5,6,7,8) ORDER BY id_cmd ASC LIMIT 0,10 ");
-	$result = $sql->process2();
-	if(is_array($result[1])) {
-	    foreach($result[1] as $v)
-		$out .= '<li title="'.$v['id_cmd'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.imageTag('../img/actualite/commande.png','commande').' '.$v['id_cmd'].' - '.$v['titre_cmd'].' ('.$v['nom_ent'].')</li>';
-	}
+        if($PC->rcvP['value'] == '**')
+            $search = '';
+        else
+            $search = $PC->rcvP['value'];
+        $qTag = "LIKE '".$search."%'";
+        $sql->makeRequeteFree("SELECT * from entreprise LEFT JOIN ref_pays ON ref_pays.id_pays = entreprise.pays_ent where nom_ent $qTag or cp_ent $qTag or ville_ent $qTag ORDER BY nom_ent ASC LIMIT 0,10 ");
+        $result = $sql->process2();
+        if(is_array($result[1])) {
+            foreach($result[1] as $v) {
+                if ($v['type_ent'] != '')
+                    $v['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
+                $out .= '<li title="null-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.$v['nom_ent'].' ('.$v['ville_ent'].')</li>';
+            }
+        }
+        $sql->makeRequeteFree("SELECT * FROM commande c LEFT JOIN entreprise ON entreprise.id_ent = c.entreprise_cmd LEFT JOIN ref_pays on ref_pays.id_pays = entreprise.pays_ent where (id_cmd $qTag OR titre_cmd $qTag OR nom_ent $qTag OR cp_ent $qTag) AND status_cmd IN (4,5,6,7,8) ORDER BY id_cmd ASC LIMIT 0,10 ");
+        $result = $sql->process2();
+        if(is_array($result[1])) {
+            foreach($result[1] as $v)
+                $out .= '<li title="'.$v['id_cmd'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'">'.imageTag('../img/actualite/commande.png','commande').' '.$v['id_cmd'].' - '.$v['titre_cmd'].' ('.$v['nom_ent'].')</li>';
+        }
     }
     elseif($PC->rcvG['action'] == 'listeFamille') {
         if($PC->rcvP['value'] == '**')
@@ -262,6 +278,64 @@ if(array_key_exists('action', $PC->rcvG)) {
                     $out .='<li title="'.$v['mail_cont'].'">'.$v['mail_cont'].'</li>';
             }
         }
+    }
+    elseif($PC->rcvG['action'] == 'quickSearchPropsec') {
+        if($PC->rcvP['value'] == '**')
+            $search = '';
+        else
+            $search = $PC->rcvP['value'];
+        $sql->makeRequeteFree("Select id_cont, civ_cont, prenom_cont, nom_cont FROM contact WHERE nom_cont LIKE '".$search."%' OR prenom_cont LIKE '".$search."%' ORDER BY nom_cont ASC, prenom_cont ASC limit 0,10");
+        $rc = $sql->process2();
+        $sql->makeRequeteFree("SELECT id_ent, nom_ent, cp_ent, ville_ent FROM entreprise WHERE nom_ent LIKE '".$search."%' ORDER BY nom_ent limit 0,10");
+        $re = $sql->process2();
+        if($rc[0] and $re[0]) {
+            $tab = array();
+            foreach($rc[1] as $v) {
+                $tab[$v['nom_cont']." ".$v['prenom_cont']][0] = $v['id_cont'];
+                $tab[$v['nom_cont']." ".$v['prenom_cont']][1] = $v['civ_cont']." ".$v['prenom_cont']." ".$v['nom_cont'];
+                $tab[$v['nom_cont']." ".$v['prenom_cont']][2] = 'cont';
+            }
+            foreach($re[1] as $v) {
+                $tab[$v['nom_ent']][0] = $v['id_ent'];
+                $tab[$v['nom_ent']][1] = $v['nom_ent']." (".$v['cp_ent']." - ".$v['ville_ent'].")";
+                $tab[$v['nom_ent']][2] = 'ent';
+            }
+            ksort($tab);
+            $tab = array_slice($tab,0,10);
+            foreach($tab as $v) {
+                if($v[2] == 'cont')
+                    $out .= '<li onclick="window.location.replace(\'Contact.php?id_cont='.$v[0].'\');">'.$v[1].'</li>';
+                else
+                    $out .= '<li onclick="window.location.replace(\'fiche.php?id_ent='.$v[0].'\');">'.$v[1].'</li>';
+            }
+
+        }
+    }
+
+    elseif($PC->rcvG['action'] == 'suppCloud'){
+        if($PC->rcvP['module'] == ''){
+            $retour = array('error'=>'true');
+        }
+        elseif($PC->rcvP['module'] == 'prospec'){
+            loadPlugin('ZModels/CloudModel');
+            $cloud = new CloudModel();
+            $ret = $cloud->dropToCloud(array('contact', 'entreprise'), $PC->rcvP['user']);
+            if($ret[0])
+                $retour['error'] = 'false';
+            else
+                $retour['error'] = 'true';
+        }
+        else{
+            loadPlugin('ZModels/CloudModel');
+            $cloud = new CloudModel();
+            $ret = $cloud->dropToCloud($PC->rcvP['module'], $PC->rcvP['user']);
+            if($ret[0])
+                $retour['error'] = 'false';
+            else
+                $retour['error'] = 'true';
+        }
+        echo json_encode($retour);
+        exit;
     }
     else $out = '<li title=""><i>ERREUR: action non reconnue</i></li>';
 }

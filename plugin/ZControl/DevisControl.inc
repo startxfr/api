@@ -180,7 +180,7 @@ class devisControl {
      * @return array Le résultat du controle
      */
     static function controlAddWeb($value = array()) {
-	if((!array_key_exists('affaire_dev',$value) or $value['affaire_dev'] == '') and (!array_key_exists('entreprise_dev', $value) or $value['entreprise_dev'] == '')) {
+	if((!array_key_exists('affaire_dev',$value) or $value['affaire_dev'] == '') and ((!array_key_exists('entreprise_dev', $value) or $value['entreprise_dev'] == '') and (!array_key_exists('contact_dev',$value) or $value['contact_dev'] == ''))  ) {
 	    $mess.= 'Merci d\'indiquer l\'affaire liée<br/>';
 	    $fields[] = 'affaire_dev';
 	}

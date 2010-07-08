@@ -18,6 +18,8 @@ loadPlugin(array('ZA.Wsdl','ZModels/TransactionModel', 'ZModels/PaylineModel', '
 include_once 'class/Payement.php';
 setlocale(LC_ALL,'fr_FR.UTF8');
 $GLOBALS['currentChannel'] = 'webservice';
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
 if($_SERVER['QUERY_STRING'] == 'wsdl')
     Logg::loggerInfo('webservice sxa.payement ~ Appel au fichier WSDL PAYEMENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);
 else Logg::loggerInfo('webservice sxa.payement ~ Appel au webservice PAYEMENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);

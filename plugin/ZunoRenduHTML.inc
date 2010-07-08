@@ -531,8 +531,9 @@ class ZunoFieldset {
      * @param string $autre Eventuels tags supplémentaires
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param boolean $withbr Précise si on veut un retour chariot entre chaque option
      */
-    public function ligneRadio($label, $nom, $checked = '', $liste = array(), $autre = '', $tips='') {
+    public function ligneRadio($label, $nom, $checked = '', $liste = array(), $autre = '', $tips='', $withbr = true) {
 	if(is_array($liste)) {
 	    if($tips != '')
 		$tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
@@ -541,7 +542,9 @@ class ZunoFieldset {
 			<div class="field">
 				<optgroup label="type">';
 	    foreach($liste as $v) {
-		$out .= '<input type="radio" name="'.$nom.'" value="'.$v['value'].'"'.(($v["value"] == $checked) ? ' checked="checked"' : "").' '.$autre.' >'.$v['label'].'<br>';
+		$out .= '<input type="radio" name="'.$nom.'" value="'.$v['value'].'"'.(($v["value"] == $checked) ? ' checked="checked"' : "").' '.$autre.' ><span>'.$v['label'].'</span> ';
+                if($withbr)
+                    $out .= '<br class="clear"/>';
 	    }
 	    $out .= '</optgroup>
 				</div>

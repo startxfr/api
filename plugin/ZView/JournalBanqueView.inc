@@ -96,7 +96,7 @@ class JournalBanqueView extends generalView {
 	$this->fieldset2 = new ZunoFieldset('Détail de l\'écriture','','height: 150px');
 	$sens = ($datas['montant_jb'] < 0) ? 'D' : 'C';
 	$radioOpt = array(0 => array('value'=>'C','label'=>'Crédit'), 1 => array('value'=>'D','label'=>'Débit'));
-	$this->fieldset2->ligneRadio('sens', 'sens', $sens, $radioOpt,'','ZTips.journalBanque.sens');
+	$this->fieldset2->ligneRadio('sens', 'sens', $sens, $radioOpt,'','ZTips.journalBanque.sens', false);
 	$this->fieldset2->ligneInput('Montant', 'montant_jb', abs($datas['montant_jb']),'','ZTips.journalBanque.montant');
 	$this->fieldset2->ligneInput('Libellé', 'libelle_jb', $datas['libelle_jb'],'','ZTips.journalBanque.libelle');
 	$this->fieldset2->ligneInputDate('Date d\'effet', 'date_effet_jb', DateUniv2Human($datas['date_effet_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateEffet');
@@ -136,7 +136,7 @@ class JournalBanqueView extends generalView {
 
 	$this->fieldset2 = new ZunoFieldset('Détail de l\'écriture','','height: 150px');
 	$radioOpt = array(0 => array('value'=>'C','label'=>'Crédit'), 1 => array('value'=>'D','label'=>'Débit'));
-	$this->fieldset2->ligneRadio('sens', 'sens', $datas['sens'], $radioOpt,'','ZTips.journalBanque.sens');
+	$this->fieldset2->ligneRadio('sens', 'sens', $datas['sens'], $radioOpt,'','ZTips.journalBanque.sens', false);
 	$nomFact = ($datas['facture_jb'] != '') ? "Facture ".$datas['facture_jb'] : '';
 	$idFact  = ($datas['facture_jb'] != '') ? $datas['facture_jb'] : '';
 	$this->fieldset2->ligneInput('Montant', 'montant_jb', $datas['montant_jb'],'','ZTips.journalBanque.montant');
@@ -377,7 +377,7 @@ class JournalBanqueView extends generalView {
 	$fieldset->ligneInput('Montant min', 'montantMin_jb', $datas['form']['montantMin'],'','ZTips.journalBanque.searchMontantMin');
 	$fieldset->ligneInput('Montant max', 'montantMax_jb', $datas['form']['montantMax'],'','ZTips.journalBanque.searchMontantMax');
 	$radioOpt = array(' ' => array('value'=>'','label'=>'Les deux'), 0 => array('value'=>'C','label'=>'Crédit'), 1 => array('value'=>'D','label'=>'Débit'));
-	$fieldset->ligneRadio('sens', 'sens', $datas['form']['sens'], $radioOpt,'','ZTips.journalBanque.searchSens');
+	$fieldset->ligneRadio('sens', 'sens', $datas['form']['sens'], $radioOpt,'','ZTips.journalBanque.searchSens', false);
 	$form->newBlock($fieldset->generateFieldset(), '50');
 	$form->newInputHidden('result', $option);
 	$form->newInputHidden("action", "searchJournalBanque", "actionJournalBanqueSearch");

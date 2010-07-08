@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.46, for redhat-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.47, for redhat-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: ZunoDev_sxa
 -- ------------------------------------------------------
--- Server version	5.1.46
+-- Server version	5.1.47
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -19,18 +19,6 @@
 -- Dumping data for table `actualite`
 --
 
-INSERT INTO `actualite` VALUES (244,'2010-06-12 13:21:16','cl','facture','Modification de la facture 10F005 pour le client STARTX','La facture 10F005 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 240,65€ Hors Taxes.',3,10,'091201',NULL,'091201-01',NULL,'091201-01BC',NULL,5,2,NULL,NULL,'0','0','1');
-INSERT INTO `actualite` VALUES (245,'2010-06-12 13:23:07','cl','facture','Modification de la facture 10F005 pour le client STARTX','La facture 10F005 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 240,65€ Hors Taxes.',3,10,'091201',NULL,'091201-01',NULL,'091201-01BC',NULL,5,2,NULL,NULL,'0','0','1');
-INSERT INTO `actualite` VALUES (246,'2010-06-12 14:45:01','cl','facture','Archivage de l\'avoir 10A003 pour le client STARTX','L\'avoir 10A003 vient d\'être archivé par M. Christophe LARUE. Complément d\'informations : changement par lot',3,10,NULL,NULL,NULL,NULL,'null',NULL,3,7,NULL,NULL,'0','0','0');
-INSERT INTO `actualite` VALUES (247,'2010-06-12 14:45:01','cl','general','Lot de 1 factures archivées','archivage de la facture 3',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
-INSERT INTO `actualite` VALUES (248,'2010-06-12 14:45:56','cl','facture','Modification de la facture 10F006 pour le client FOURNISSEUR','La facture 10F006 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 100,00€ Hors Taxes.',2,2,NULL,NULL,NULL,NULL,'null',NULL,6,2,NULL,NULL,'0','0','1');
-INSERT INTO `actualite` VALUES (249,'2010-06-12 14:45:56','cl','facture','Modification de la facture 10F006 pour le client FOURNISSEUR','La facture 10F006 vient d\'être modifiée par M. Christophe LARUE. Elle a désormais le status Facture validée avec un montant de 100,00€ Hors Taxes.',2,2,NULL,NULL,NULL,NULL,'null',NULL,6,2,NULL,NULL,'0','0','1');
-INSERT INTO `actualite` VALUES (250,'2010-06-12 15:47:05','cl','affaire','Modification de l\'affaire 100206 pour le client BOXYBOX','L\'affaire 100206 est maintenant désactivée. Vous ne pouvez plus travailler sur cette affaire Complément d\'informations : changement par lot',1,4,'100206',19,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','0');
-INSERT INTO `actualite` VALUES (251,'2010-06-12 15:47:05','cl','affaire','Modification de l\'affaire 100208 pour le client STARTX','L\'affaire 100208 est maintenant désactivée. Vous ne pouvez plus travailler sur cette affaire Complément d\'informations : changement par lot',3,10,'100208',19,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','0');
-INSERT INTO `actualite` VALUES (252,'2010-06-12 15:47:05','cl','general','Lot de 2 affaires désactivées','désactivation de l\'affaire 100206 \ndésactivation de l\'affaire 100208',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
-INSERT INTO `actualite` VALUES (253,'2010-06-12 15:57:41','cl','affaire','Archivage de l\'affaire 100503 pour le client PLB CONSULTANT','L\'affaire 100503 est maintenant archivée. Cette affaire ne pleut plus être modifiée. Les documents sont dorénavant consultables dans le répertoire 100503-Plb consultant/ des affaires archivés. Complément d\'informations : changement par lot',11,5,'100503',18,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','0');
-INSERT INTO `actualite` VALUES (254,'2010-06-12 16:33:45','cl','devis','Modification du devis 100207-01 pour le client BOXYBOX','Devis 100207-01 vient d\'être modifié par M. Christophe LARUE. Il a désormais le status Envoyé avec un montant de 115,65€ Hors Taxes.',1,4,'100207',NULL,'100207-01',4,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
-INSERT INTO `actualite` VALUES (255,'2010-06-12 16:33:55','cl','devis','Le devis 100207-01 pour le client BOXYBOX est perdu','Devis 100207-01 vient d\'être marqué comme perdu par M. Christophe LARUE.',1,4,'100207',NULL,'100207-01',5,NULL,NULL,NULL,NULL,NULL,NULL,'0','0','1');
 
 --
 -- Dumping data for table `affaire`
@@ -39,6 +27,17 @@ INSERT INTO `actualite` VALUES (255,'2010-06-12 16:33:55','cl','devis','Le devis
 
 --
 -- Dumping data for table `appel`
+--
+
+
+--
+-- Dumping data for table `banque`
+--
+
+INSERT INTO `banque` VALUES (1,'FORTIS','1','1','');
+
+--
+-- Dumping data for table `cloud`
 --
 
 
@@ -108,6 +107,11 @@ INSERT INTO `actualite` VALUES (255,'2010-06-12 16:33:55','cl','devis','Le devis
 
 
 --
+-- Dumping data for table `journal_banque`
+--
+
+
+--
 -- Dumping data for table `message`
 --
 
@@ -143,7 +147,6 @@ INSERT INTO `module` VALUES ('avoir','oui');
 INSERT INTO `module` VALUES ('produit','oui');
 INSERT INTO `module` VALUES ('statistiques','oui');
 INSERT INTO `module` VALUES ('pontComptable','oui');
-INSERT INTO `module` VALUES ('mobile','oui');
 
 --
 -- Dumping data for table `pontcomptable_histo`
@@ -974,9 +977,6 @@ INSERT INTO `ref_typeproj` VALUES (6,'Projet ZUNO','70');
 -- Dumping data for table `send`
 --
 
-INSERT INTO `send` VALUES (40,'cl','mail','2010-06-12');
-INSERT INTO `send` VALUES (41,'cl','fax','2010-06-13');
-INSERT INTO `send` VALUES (42,'cl','courrier','2010-06-13');
 
 --
 -- Dumping data for table `token`
@@ -1201,4 +1201,4 @@ INSERT INTO `user_iphoneConfig` VALUES ('nm','send','oui');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-17  3:19:54
+-- Dump completed on 2010-07-08  1:45:06

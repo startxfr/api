@@ -9,24 +9,6 @@
 #   copyright:   See licence.txt for this script licence
 #########################################################################*/
 
-function ZunoSelectEntreprise($name,$id_select='',$class='',$autre='',$withBlank=TRUE,$subPath = '../') {
-    if ($id_select != '') {
-	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-	$bddtmp->makeRequeteFree("SELECT id_ent,nom_ent,type_ent,cp_ent,ville_ent FROM zncore_entreprise WHERE id_ent = '".$id_select."' ORDER BY nom_ent ASC");
-	$res = $bddtmp->process();
-	$ent = $res[0];
-	if ($ent['id_ent'] != '')
-	    $nom = '['.$ent['id_ent'].'] '.strtoupper($ent['nom_ent']).' ('.$ent['cp_ent'].' '.$ent['ville_ent'].')';
-    }
-
-    return '<input id="'.$name.'" type="text" value="'.$nom.'" class="ajax" '.$class.' name="'.$name.'" autocomplete="off"/>
-			<div id="autocompleteEnt" class="autocomplete" style="display: none;">tmpContent</div>
-				<script type="text/javascript">
-					new Ajax.Autocompleter("'.$name.'", "autocompleteEnt", "'.$subPath.'AjaxGetEntreprise.php", {minChars: 3});
-				</script>';
-}
-
-
 /**
  * Create select liste with contact list for a given company
  * @param $name String: name of the select tag

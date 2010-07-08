@@ -227,7 +227,7 @@ elseif (($PC->rcvP['action'] == "Voir") or ($PC->rcvP['action'] == "Record") or 
                     break;
                 default : $arrivee = " à l'adresse suivante : ".$PC->rcvP['mail'].".";
             }
-            $req->update(array("status_dev"=>"4"), $id_dev);
+            $req->update(array("status_dev"=>"4"), $id_dev, true, 'From : '.$PC->rcvP['from']."\nTo : ".$PC->rcvP['mail']);
            
             $affaire = substr($id_dev,0,6);
             $bddtmp->makeRequeteUpdate('affaire',"id_aff",$affaire,array("status_aff"=>"4"));

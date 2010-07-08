@@ -52,10 +52,12 @@ class affaireView extends generalView {
 	$this->formCreation();
 
 	$this->script = '<script>';
-	$this->script .= "\n".'function autoCompletage() { contact_completer = new Ajax.Autocompleter("ACcontact_aff", "ACcontact_aff_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_aff", afterUpdateElement : autoCompleteHidden } ); ';
+	$this->script .= "\n".'function autoCompletage() { entreprise_completer = new Ajax.Autocompleter("ACentreprise_aff", "ACentreprise_aff_choix", "../ajaxRef.php?action=listeEntreprise", {paramName: "value", minChars: 2, indicator: "loadingentreprise_aff", afterUpdateElement: autoCompleteEntreprise} );';
+        $this->script .= "\n".'contact_completer = new Ajax.Autocompleter("ACcontact_aff", "ACcontact_aff_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_aff", afterUpdateElement : autoCompleteHidden } ); ';
 	$this->script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\') }';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-	$this->script .= '</script>';
+	$this->script .= "\n".'function autoCompleteEntreprise(text, li) {autoCompleteHidden(text, li); contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\');}';
+        $this->script .= '</script>';
 	$rendu = new ZunoRenduHtml();
 	$rendu->insertJS($this->script);
 	$rendu->generateZBox('Nouvelle affaire', 'Nouvelle affaire', $this->blockCreate->generateForm(), $this->blockCreate->generateButtonsNoAjax('Annuler', 'Créer'), 'idAffaireCreation', 'open', true);
@@ -112,7 +114,7 @@ class affaireView extends generalView {
 
 	$fieldset = new ZunoFieldset('Informations','','height: 90px');
 	$fieldset->ligneInput('Nom', 'titre_aff');
-	$fieldset->ligneAutoComplete('Entreprise', 'entreprise_aff', $data['nom_ent'], $data['id_ent'], 'listeEntreprise');
+	$fieldset->ligneAutoComplete('Entreprise', 'entreprise_aff', $data['nom_ent'], $data['id_ent'], 'listeEntreprise', '', false, '', false);
 	$fieldset->ligneAutoComplete('Contact', 'contact_aff', $nom, $data['id_cont'], 'listeContact', '', false, '', false);
 	$this->blockCreate->newBlock($fieldset->generateFieldset(), '50');
 

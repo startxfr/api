@@ -28,7 +28,7 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 +------------------------------------------------------------------------*/
 aiJeLeDroit('affaire', 20, 'web');
 if($PC->rcvP['action'] == 'creer' and !array_key_exists('from', $PC->rcvP)) {
-    if($PC->rcvP['entreprise_aff'] != null and $PC->rcvP['contact_aff'] != null) {
+    if($PC->rcvP['entreprise_aff'] != null ) {
         $PC->rcvP['titre_aff'] = str_replace(" ","_", $PC->rcvP['titre_aff']);
         $model  = new affaireModel();
         $resultinsert = $model->insert($PC->rcvP);

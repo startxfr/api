@@ -36,13 +36,22 @@ if($PC->rcvP['action'] == 'addDevis') {
     else {
         $PC->rcvP['commercial_dev'] = $_SESSION['user']['id'];
         $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $req = "SELECT * from entreprise where id_ent = '".$PC->rcvP['entreprise_dev']."'";
-        $bddtmp->makeRequeteFree($req);
-        $result = $bddtmp->process2();
-        $PC->rcvP['nomdelivery_dev'] = $result[1][0]['nom_ent'];
-        $PC->rcvP['tva_dev'] = $result[1][0]['tauxTVA_ent'];
+        if($PC->rcvP['entreprise_dev'] != '') {
+            $req = "SELECT * from entreprise where id_ent = '".$PC->rcvP['entreprise_dev']."'";
+            $bddtmp->makeRequeteFree($req);
+            $result = $bddtmp->process2();
+            $PC->rcvP['nomdelivery_dev'] = $result[1][0]['nom_ent'];
+            $PC->rcvP['tva_dev'] = $result[1][0]['tauxTVA_ent'];
+        }
+        else{
+            $req = "SELECT * from contact where id_cont = '".$PC->rcvP['contact_dev']."'";
+            $bddtmp->makeRequeteFree($req);
+            $result = $bddtmp->process2();
+            $PC->rcvP['nomdelivery_dev'] = $result[1][0]['civ_cont'].' '.$result[1][0]['prenom_cont'].' '.$result[1][0]['nom_cont'];
+            $PC->rcvP['tva_dev'] = $GLOBALS['zunoClientStatut']['tauxTVA'];
+        }
         $sql = new devisModel();
-        if($PC->rcvP['affaire_dev'] != 'null') {
+        if($PC->rcvP['affaire_dev'] != 'null' and $PC->rcvP['entreprise_dev'] != '') {
             $PC->rcvP['id_dev'] = $sql->createId($PC->rcvP['affaire_dev']);
             $result = $sql->insert($PC->rcvP);
             if($result[0]) {
@@ -52,7 +61,8 @@ if($PC->rcvP['action'] == 'addDevis') {
             }
             else {
                 $view = new devisView();
-                echo $view->creerDevis('light');exit;
+                echo $view->creerDevis('light');
+                exit;
             }
         }
         else {

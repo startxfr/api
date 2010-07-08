@@ -91,14 +91,14 @@ br.clear {
     -webkit-border-radius : 6px 6px 6px 6px;
 }
 .importantgreen {
-    	     background-color: #dfd;
-	     border-color: #3e3;
-	     color: #3e3;
+    background-color: #dfd;
+    border-color: #3e3;
+    color: #3e3;
 }
 .importantblue {
-    	     background-color: #ddf;
-	     border-color: #33e;
-	     color: #33e;
+    background-color: #ddf;
+    border-color: #33e;
+    color: #33e;
 }
 
 
@@ -354,17 +354,17 @@ br.clear {
 }
 
 #ScanSearchCode { border: 1px solid #555;
-		  -moz-border-radius : 8px;
-		  -webkit-border-radius : 8px;
-		  border-radius : 8px;
-		  width: 55px;
-		  margin-left: 1em;
-		  padding: 0px;
-		  padding-left: .1em;
-		  padding-right: .1em;
-		  background-color: rgba(255,255,255,0.2);
-		  color: #f99;
-		  font-size: 1em; }
+                  -moz-border-radius : 8px;
+                  -webkit-border-radius : 8px;
+                  border-radius : 8px;
+                  width: 55px;
+                  margin-left: 1em;
+                  padding: 0px;
+                  padding-left: .1em;
+                  padding-right: .1em;
+                  background-color: rgba(255,255,255,0.2);
+                  color: #f99;
+                  font-size: 1em; }
 #ScanSearchCode:hover {
     border-color: rgba(255,255,255,1); }
 
@@ -937,6 +937,12 @@ a.bouton {
 .ZBox .body .width33 .form {
     width: 340px !important;
 }
+.width25 {
+    width: 210px !important;
+}
+.ZBox .body .width25 .form {
+    width: 205px !important;
+}
 .ZBox .body .block fieldset {
     -moz-border-radius :4px 4px 4px 4px;
     -webkit-border-radius : 4px 4px 4px 4px;
@@ -1060,13 +1066,13 @@ a.bouton {
     font-size: .8em;
 }
 .ZBox .blockTable h2 { font-weight : bold;
-		       margin: 0px;
-		       color: #555;
-		       margin-top: 15px;
-		       width: 100%; }
+                       margin: 0px;
+                       color: #555;
+                       margin-top: 15px;
+                       width: 100%; }
 .ZBox .blockTable hr { border: 1px dashed #555;
-		       margin: 0px;
-		       margin-bottom: 10px }
+                       margin: 0px;
+                       margin-bottom: 10px }
 .ZBox .blockTable table,
 .ZBox .blockTable div.tableau { 
     background: transparent;
@@ -1083,10 +1089,10 @@ a.bouton {
 .ZBox .blockTable .titre .celluleH,
 .ZBox .blockTable .subtitre th,
 .ZBox .blockTable .subtitre .celluleH { background: #666;
-					border: 0;
-					border-bottom: 1px inset #116;
-					padding: .2em;
-					color: #fff; }
+                                        border: 0;
+                                        border-bottom: 1px inset #116;
+                                        padding: .2em;
+                                        color: #fff; }
 .ZBox .blockTable .subtitre th,
 .ZBox .blockTable .subtitre .celluleH {
     background: rgba(102,102,102,0.7); }
@@ -1131,8 +1137,8 @@ a.bouton {
     color: inherit; }
 .ZBox .blockTable td,
 .ZBox .blockTable div.cellule { background: transparent;
-				padding: .3em;
-				vertical-align: top }
+                                padding: .3em;
+                                vertical-align: top }
 .ZBox .blockTable .nowrap,
 .ZBox .blockTable .cellulenowrap {
     white-space: nowrap }
@@ -1275,7 +1281,7 @@ a.bouton:hover {
     background-image:url(../../img/login.png);
     background-repeat:no-repeat;
     background-position:bottom right;
-    }
+}
 #PortletLogin input[type=password],
 #PortletLogin input[type=text] {
     background-color: rgba(255,255,255,0.3);
@@ -1500,3 +1506,29 @@ div.square {
     -webkit-border-radius: 4px 4px 4px 4px;
     border-radius: 4px 4px 4px 4px;
 }
+#tags ul{
+    margin:1em 0;
+    padding:.5em 10px;
+    text-align:center;
+}
+#tags li{
+    margin:0;
+    padding:0;
+    list-style:none;
+    display:inline;
+    padding: 0.1em;
+}
+
+#tags li a:hover{
+    color:#ffffff;
+}
+#tags li a{
+    text-decoration:none;
+    padding:0 2px;
+}
+
+.tag1{font-size:100%;}
+.tag2{font-size:125%;}
+.tag3{font-size:150%;}
+.tag4{font-size:175%;}
+.tag5{font-size:200%;}

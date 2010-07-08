@@ -35,9 +35,9 @@ class Bdd_mysql {
      */
     function __construct( $pool = 1 ) {
 
-	if($pool == '')
-	    $this->setPool(1);
-	else  $this->setPool($pool);
+        if($pool == '')
+            $this->setPool(1);
+        else  $this->setPool($pool);
     }
 
     /**
@@ -45,7 +45,7 @@ class Bdd_mysql {
      * @param $p Boolean, TRUE for a persistant connection.
      */
     function setPersistant($p) {
-	$this->persistant = $p;
+        $this->persistant = $p;
     }
 
     /**
@@ -53,12 +53,12 @@ class Bdd_mysql {
      * @param $p Int: number of database pool to use for this connexion.
      */
     function setPool($p) {
-	$this->pool = "DBPool_".$p;
-	$this->setPersistant($GLOBALS[$this->pool]['persistant']);
-	$this->base = $GLOBALS[$this->pool]['base'];
-	$this->serveur = $GLOBALS[$this->pool]['serveur'];
-	$this->username = $GLOBALS[$this->pool]['login'];
-	$this->passwd = $GLOBALS[$this->pool]['pass'];
+        $this->pool = "DBPool_".$p;
+        $this->setPersistant($GLOBALS[$this->pool]['persistant']);
+        $this->base = $GLOBALS[$this->pool]['base'];
+        $this->serveur = $GLOBALS[$this->pool]['serveur'];
+        $this->username = $GLOBALS[$this->pool]['login'];
+        $this->passwd = $GLOBALS[$this->pool]['pass'];
     }
 
     /**
@@ -66,7 +66,7 @@ class Bdd_mysql {
      * @param $b string: name of the database.
      */
     function setBase($b) {
-	$this->base = $b;
+        $this->base = $b;
     }
 
     /**
@@ -74,7 +74,7 @@ class Bdd_mysql {
      * @param $s string: name of the server.
      */
     function setServeur($s) {
-	$this->serveur = $s;
+        $this->serveur = $s;
     }
 
     /**
@@ -83,18 +83,21 @@ class Bdd_mysql {
      * @param $error String: error mysql
      */
     function dieAndPrint($txt, $error) {
-	return "BDD::".$txt.$error;
+        return "BDD::".$txt.$error;
     }
 
     /** Execute connexion to server. */
     function connect($reconnect = FALSE) {
-	if(!is_resource($this->connexion) or ($reconnect == TRUE)) {
-	    if($this->persistant)
-		$this->connexion = mysql_pconnect($this->serveur, $this->username, $this->passwd);
-	    else  $this->connexion = mysql_connect($this->serveur, $this->username, $this->passwd);
-	}
-	mysql_select_db($this->base, $this->connexion) or $this->dieAndPrint("WRONG_GIVEN_BASE::".$this->base, mysql_error());
-	mysql_query("SET NAMES 'UTF8'");
+        if(!is_resource($this->connexion) or ($reconnect == TRUE)) {
+            if($this->persistant)
+                $this->connexion = mysql_pconnect($this->serveur, $this->username, $this->passwd);
+            else  $this->connexion = mysql_connect($this->serveur, $this->username, $this->passwd);
+        }
+        $out = mysql_select_db($this->base, $this->connexion) or $this->dieAndPrint("WRONG_GIVEN_BASE::".$this->base, mysql_error());
+        mysql_query("SET NAMES 'UTF8'");
+        if(is_string($out))
+            return false;
+        return true;
     }
 
     /**
@@ -102,7 +105,7 @@ class Bdd_mysql {
      * @param $req	String: User request
      */
     function makeRequeteFree($req) {
-	return $this->requete = $req;
+        return $this->requete = $req;
     }
 
     /**
@@ -111,19 +114,19 @@ class Bdd_mysql {
      * @param $liste Array: array with data to fill
      */
     function makeRequeteInsert($table,$liste) {
-	$top = "INSERT INTO `".$table."` ( ";
-	foreach ($liste as $key => $val) {
-	    $valclean1 = addslashes(stripslashes(trim($val)));
-	    if($valclean1 == '')
-		$bottom .= ", NULL ";
-	    else  $bottom .= ", '".$valclean1."' ";
-	    $head   .= ", `".$key."` ";
-	}
-	$head   = substr($head, 1);
-	$bottom = substr($bottom, 1);
+        $top = "INSERT INTO `".$table."` ( ";
+        foreach ($liste as $key => $val) {
+            $valclean1 = addslashes(stripslashes(trim($val)));
+            if($valclean1 == '')
+                $bottom .= ", NULL ";
+            else  $bottom .= ", '".$valclean1."' ";
+            $head   .= ", `".$key."` ";
+        }
+        $head   = substr($head, 1);
+        $bottom = substr($bottom, 1);
 
-	$this->requete = $top.$head.") VALUES (".$bottom.")";
-	return $this->requete;
+        $this->requete = $top.$head.") VALUES (".$bottom.")";
+        return $this->requete;
     }
 
 
@@ -135,17 +138,17 @@ class Bdd_mysql {
      * @param $col_id String: name of ID column
      */
     function makeRequeteUpdate($table,$col_id,$id,$liste,$autre = "") {
-	$top = "UPDATE `".$table."` SET ";
-	foreach ($liste as $key => $val) {
-	    $valclean1 = addslashes(stripslashes(trim($val)));
-	    if($valclean1 == '')
-		$head   .= " `".$key."` = NULL, ";
-	    else  $head   .= " `".$key."` = '".$valclean1."', ";
-	}
-	$head   = substr($head, 0, -2);
+        $top = "UPDATE `".$table."` SET ";
+        foreach ($liste as $key => $val) {
+            $valclean1 = addslashes(stripslashes(trim($val)));
+            if($valclean1 == '')
+                $head   .= " `".$key."` = NULL, ";
+            else  $head   .= " `".$key."` = '".$valclean1."', ";
+        }
+        $head   = substr($head, 0, -2);
 
-	$this->requete = $top.$head." WHERE ".$col_id." = '".$id."' ".$autre;
-	return $this->requete;
+        $this->requete = $top.$head." WHERE ".$col_id." = '".$id."' ".$autre;
+        return $this->requete;
     }
 
     /**
@@ -155,10 +158,10 @@ class Bdd_mysql {
      * @param $col_id Sring: Column name
      */
     function makeRequeteSelect($table,$col_id,$id) {
-	$top = "SELECT * FROM `".$table."` WHERE ";
+        $top = "SELECT * FROM `".$table."` WHERE ";
 
-	$this->requete = $top.$col_id." = '".$id."'";
-	return $this->requete;
+        $this->requete = $top.$col_id." = '".$id."'";
+        return $this->requete;
     }
 
     /**
@@ -167,13 +170,13 @@ class Bdd_mysql {
      * @param $liste Array: with col_name to fill
      */
     function makeRequeteDelete($table,$liste) {
-	if(is_array($liste)) {
-	    foreach ($liste as $key => $val)
-		$head   .= " `".$key."` = '".$val."' AND";
-	    $head   = substr($head, 0, -3);
-	    $this->requete = "DELETE FROM `".$table."` WHERE ".$head;
-	    return $this->requete;
-	}
+        if(is_array($liste)) {
+            foreach ($liste as $key => $val)
+                $head   .= " `".$key."` = '".$val."' AND";
+            $head   = substr($head, 0, -3);
+            $this->requete = "DELETE FROM `".$table."` WHERE ".$head;
+            return $this->requete;
+        }
     }
 
     /**
@@ -182,27 +185,27 @@ class Bdd_mysql {
      * @param $liste Array: with col_name to fill
      */
     function makeRequeteAuto($table,$liste = "",$other = "") {
-	if(is_array($table)) {
-	    foreach ($table as $key => $val)
-		$lestables   .= " `".$val."`,";
-	    $lestables   = substr($lestables, 0, -1);
-	}
-	else  $lestables   = " `".$table."`";
+        if(is_array($table)) {
+            foreach ($table as $key => $val)
+                $lestables   .= " `".$val."`,";
+            $lestables   = substr($lestables, 0, -1);
+        }
+        else  $lestables   = " `".$table."`";
 
-	if(is_array($liste)) {
-	    $lescrit = '';
-	    foreach ($liste as $key => $val) {
-		if (strlen($val) and $val{0} == '`')
-		    $lescrit   .= " `".$key."` = ".$val."` AND";
-		else  $lescrit   .= " `".$key."` = '".$val."' AND";
-	    }
-	    $lescrit   = substr($lescrit, 0, -3);
-	    $lescrit   = " WHERE ".$lescrit;
-	}
-	else  $lescrit   = " ";
+        if(is_array($liste)) {
+            $lescrit = '';
+            foreach ($liste as $key => $val) {
+                if (strlen($val) and $val{0} == '`')
+                    $lescrit   .= " `".$key."` = ".$val."` AND";
+                else  $lescrit   .= " `".$key."` = '".$val."' AND";
+            }
+            $lescrit   = substr($lescrit, 0, -3);
+            $lescrit   = " WHERE ".$lescrit;
+        }
+        else  $lescrit   = " ";
 
-	$this->requete = "SELECT * FROM ".$lestables." ".$lescrit.' '.$other;
-	return $this->requete;
+        $this->requete = "SELECT * FROM ".$lestables." ".$lescrit.' '.$other;
+        return $this->requete;
     }
 
 
@@ -213,74 +216,74 @@ class Bdd_mysql {
      * @param $detail String: row to get particular informations from
      */
     function AnalyseTableStructure($table,$type = "total",$detail = "") {
-	if($table == "")
-	    $table[]   = "ref_page";
-	if(!is_array($table)) {
-	    $tmp = $table;
-	    unset($table);
-	    $table[]   = $tmp;
-	}
+        if($table == "")
+            $table[]   = "ref_page";
+        if(!is_array($table)) {
+            $tmp = $table;
+            unset($table);
+            $table[]   = $tmp;
+        }
 
-	$this->connect();
-	foreach($table as $key => $TabName) {
-	    $this->requete = "SHOW COLUMNS FROM ".$TabName;
-	    $resultat = $this->process();
-	    $count = 0;
-	    $nbre_chmp = count($resultat);
-	    foreach($resultat as $id => $data) {
-		$rowID = $data['Field'];
-		$dataOut[$rowID]['nom'] = $data['Field'];
-		$typeTmp = explode("(",$data['Type']);
-		$dataOut[$rowID]['type'] = $typeTmp[0];
-		$dataOut[$rowID]['taille'] = substr($typeTmp[1],0,-1);
-		$dataOut[$rowID]['flag'] = $data['Extra'];
-		if ($data['Key'] == 'PRI') {
-		    $nom_chmp_key	= $dataOut[$rowID]['nom'];
-		    $suf 		= explode("_",$nom_chmp_key);
-		    $suffixe 	= $suf[1];
-		}
-		if ($data['Field'] == "nom_$suffixe")
-		    $nom_chmp_titre = $dataOut[$rowID]['nom'];
-		elseif ($data['Field'] == "titre_$suffixe")
-		    $nom_chmp_titre = $dataOut[$rowID]['nom'];
-		if ($data['Field'] == "color_$suffixe")
-		    $nom_chmp_color = $dataOut[$rowID]['nom'];
-		if (($type == "detail")and($rowID == $detail)) {
-		    $suf 	= explode("_",$rowID);
-		    $titre 	= $suf[0];
-		    $suffixe = $suf[1].$suf[2];
+        $this->connect();
+        foreach($table as $key => $TabName) {
+            $this->requete = "SHOW COLUMNS FROM ".$TabName;
+            $resultat = $this->process();
+            $count = 0;
+            $nbre_chmp = count($resultat);
+            foreach($resultat as $id => $data) {
+                $rowID = $data['Field'];
+                $dataOut[$rowID]['nom'] = $data['Field'];
+                $typeTmp = explode("(",$data['Type']);
+                $dataOut[$rowID]['type'] = $typeTmp[0];
+                $dataOut[$rowID]['taille'] = substr($typeTmp[1],0,-1);
+                $dataOut[$rowID]['flag'] = $data['Extra'];
+                if ($data['Key'] == 'PRI') {
+                    $nom_chmp_key	= $dataOut[$rowID]['nom'];
+                    $suf 		= explode("_",$nom_chmp_key);
+                    $suffixe 	= $suf[1];
+                }
+                if ($data['Field'] == "nom_$suffixe")
+                    $nom_chmp_titre = $dataOut[$rowID]['nom'];
+                elseif ($data['Field'] == "titre_$suffixe")
+                    $nom_chmp_titre = $dataOut[$rowID]['nom'];
+                if ($data['Field'] == "color_$suffixe")
+                    $nom_chmp_color = $dataOut[$rowID]['nom'];
+                if (($type == "detail")and($rowID == $detail)) {
+                    $suf 	= explode("_",$rowID);
+                    $titre 	= $suf[0];
+                    $suffixe = $suf[1].$suf[2];
 
-		    $detail_champ['nom']    = $rowID;
-		    $detail_champ['titre']  = $titre;
-		    $detail_champ['type']   = $dataOut[$rowID]['type'];
-		    $detail_champ['taille'] = $dataOut[$rowID]['taille'];
-		    $detail_champ['flag']   = $dataOut[$rowID]['flag'];
-		    $detail_champ['id_tab'] = $nom_chmp_key;
-		    $detail_champ['suffixe']= $suffixe;
-		}
-		$count++;
-	    }
+                    $detail_champ['nom']    = $rowID;
+                    $detail_champ['titre']  = $titre;
+                    $detail_champ['type']   = $dataOut[$rowID]['type'];
+                    $detail_champ['taille'] = $dataOut[$rowID]['taille'];
+                    $detail_champ['flag']   = $dataOut[$rowID]['flag'];
+                    $detail_champ['id_tab'] = $nom_chmp_key;
+                    $detail_champ['suffixe']= $suffixe;
+                }
+                $count++;
+            }
 
 
-	    if($type == "total") {
-		$result[$TabName][0] = $nbre_chmp;
-		$result[$TabName][1] = $dataOut;
-	    }
-	    elseif($type == "detail")
-		$result[$TabName] = $detail_champ;
-	    elseif($type == "") {
-		if ($nom_chmp_titre  == "")
-		    $nom_chmp_titre = "nom_$suffixe";
-		$result[$TabName]['key']     = $nom_chmp_key;
-		$result[$TabName]['titre']   = $nom_chmp_titre;
-		$result[$TabName]['color']   = $nom_chmp_color;
-		$result[$TabName]['suffixe'] = $suffixe;
-	    }
-	}
+            if($type == "total") {
+                $result[$TabName][0] = $nbre_chmp;
+                $result[$TabName][1] = $dataOut;
+            }
+            elseif($type == "detail")
+                $result[$TabName] = $detail_champ;
+            elseif($type == "") {
+                if ($nom_chmp_titre  == "")
+                    $nom_chmp_titre = "nom_$suffixe";
+                $result[$TabName]['key']     = $nom_chmp_key;
+                $result[$TabName]['titre']   = $nom_chmp_titre;
+                $result[$TabName]['color']   = $nom_chmp_color;
+                $result[$TabName]['suffixe'] = $suffixe;
+            }
+        }
 
-	if(count($table) == 1)
-	    return $result[$table[0]];
-	else  return $result;
+        if(count($table) == 1)
+            return $result[$table[0]];
+        else  return $result;
     }
 
 
@@ -289,16 +292,16 @@ class Bdd_mysql {
      * @param $type String: type of display to output
      */
     function AnalyseDatabaseStructure($type = "total") {
-	$this->connect(FALSE,FALSE);
+        $this->connect(FALSE,FALSE);
 
-	$this->requete = "SHOW TABLES FROM ".$this->base;
-	$resultat = $this->process();
-	$count = 0;
-	$nbre_chmp = count($resultat);
-	foreach($resultat as $id => $data)
-	    $result[$id] = $data['Tables_in_'.$this->base];
+        $this->requete = "SHOW TABLES FROM ".$this->base;
+        $resultat = $this->process();
+        $count = 0;
+        $nbre_chmp = count($resultat);
+        foreach($resultat as $id => $data)
+            $result[$id] = $data['Tables_in_'.$this->base];
 
-	return $result;
+        return $result;
     }
 
 
@@ -309,38 +312,41 @@ class Bdd_mysql {
      */
 
     function process($log = true) {
-	$this->connect();
-	$generate_time_begin = microtime(true);
-	$this->requete = trim($this->requete);
-	$pos = strpos($this->requete, ';');
-	$taille = strlen($this->requete);
+        $this->connect();
+        $generate_time_begin = microtime(true);
+        $this->requete = trim($this->requete);
+        $pos = strpos($this->requete, ';');
+        $taille = strlen($this->requete);
 //		if(($pos+1 != $taille) && ($pos !== false) )
 //		{
 //			return $this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete.' / pos : '.$pos.' taille : '.$taille);
 //		}
-	$resultat = mysql_query($this->requete);
-	$generate_time_end = microtime(true);
-	$time = $generate_time_end-$generate_time_begin;
-	if ($GLOBALS['LOG']['DisplayDebug']) {
-	    $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
-	    $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
-	}
+        $resultat = mysql_query($this->requete);
+        $generate_time_end = microtime(true);
+        $time = $generate_time_end-$generate_time_begin;
+        if ($GLOBALS['LOG']['DisplayDebug']) {
+            $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
+            $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
+        }
 
-	if(!$this->persistant)
-	    mysql_close($this->connexion);
+        if(!$this->persistant)
+            mysql_close($this->connexion);
 
-	if (!$resultat)
-	    echo $this->dieAndPrint("WRONG_GIVEN_REQUETE::".$this->requete, mysql_error());
-	else {
-	    if (is_resource($resultat))
-		while($childresult = mysql_fetch_array($resultat,MYSQL_ASSOC))
-		    $output[] = $childresult;
+        if (!$resultat) {
+            if($log)
+                Logg::loggerError('Bdd_mysql::process() ~ erreur SQL '.$this->requete,mysql_error(),__FILE__.'@'.__LINE__);
+            return $this->dieAndPrint("WRONG_GIVEN_REQUETE::".$this->requete, mysql_error());
+        }
+        else {
+            if (is_resource($resultat))
+                while($childresult = mysql_fetch_array($resultat,MYSQL_ASSOC))
+                    $output[] = $childresult;
 
-	    if(!isset($output))
-		$output = array();
+            if(!isset($output))
+                $output = array();
 
-	    return $output;
-	}
+            return $output;
+        }
     }
 
 
@@ -352,42 +358,47 @@ class Bdd_mysql {
      */
 
     function process2($log = true) {
-	$this->connect();
-	$generate_time_begin = microtime(true);
-	$this->requete = trim($this->requete);
-	if(substr($this->requete,-1, 1) == ';')
-	    $this->requete = substr($this->requete,0,-1);
-	if(strpos($this->requete, '; SELECT') !== false or strpos($this->requete, ';SELECT') !== false or
-	   strpos($this->requete, '; INSERT') !== false or strpos($this->requete, ';INSERT') !== false or
-	   strpos($this->requete, '; UPDATE') !== false or strpos($this->requete, ';UPDATE') !== false or
-	   strpos($this->requete, '; DELETE') !== false or strpos($this->requete, ';DELETE') !== false or
-	   strpos($this->requete, '; ALTER')  !== false or strpos($this->requete, ';ALTER')  !== false or
-	   strpos($this->requete, '; DROP')   !== false or strpos($this->requete, ';DROP')   !== false) {
-	    return array(false,$this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete).' /');
-	}
-	$resultat = mysql_query($this->requete);
-	$generate_time_end = microtime(true);
-	$time = $generate_time_end-$generate_time_begin;
-	if ($GLOBALS['LOG']['DisplayDebug']) {
-	    $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
-	    $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
-	}
+        $this->connect();
+        $generate_time_begin = microtime(true);
+        $this->requete = trim($this->requete);
+        if(substr($this->requete,-1, 1) == ';')
+            $this->requete = substr($this->requete,0,-1);
+        if(strpos($this->requete, '; SELECT') !== false or strpos($this->requete, ';SELECT') !== false or
+                strpos($this->requete, '; INSERT') !== false or strpos($this->requete, ';INSERT') !== false or
+                strpos($this->requete, '; UPDATE') !== false or strpos($this->requete, ';UPDATE') !== false or
+                strpos($this->requete, '; DELETE') !== false or strpos($this->requete, ';DELETE') !== false or
+                strpos($this->requete, '; ALTER')  !== false or strpos($this->requete, ';ALTER')  !== false or
+                strpos($this->requete, '; DROP')   !== false or strpos($this->requete, ';DROP')   !== false) {
+            if($log)
+                Logg::loggerError('Bdd_mysql::process2() ~ protection anti injection SQL '.$this->requete,'Plusieurs requêtes SQL en une',__FILE__.'@'.__LINE__);
+            return array(false,$this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete).' /');
+        }
+        $resultat = mysql_query($this->requete);
+        $generate_time_end = microtime(true);
+        $time = $generate_time_end-$generate_time_begin;
+        if ($GLOBALS['LOG']['DisplayDebug']) {
+            $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
+            $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
+        }
 
-	if (!$resultat)
-	    return array(false,$this->dieAndPrint("WRONG_GIVEN_REQUETE::".$this->requete, mysql_error()));
-	else {
-	    if (is_resource($resultat))
-		while($childresult = mysql_fetch_array($resultat,MYSQL_ASSOC))
-		    $output[] = $childresult;
+        if (!$resultat) {
+            if($log)
+                Logg::loggerError('Bdd_mysql::process2() ~ erreur SQL '.$this->requete,mysql_error(),__FILE__.'@'.__LINE__);
+            return array(false,$this->dieAndPrint("WRONG_GIVEN_REQUETE::".$this->requete, mysql_error()));
+        }
+        else {
+            if (is_resource($resultat))
+                while($childresult = mysql_fetch_array($resultat,MYSQL_ASSOC))
+                    $output[] = $childresult;
 
-	    if(!isset($output))
-		$output = array();
+            if(!isset($output))
+                $output = array();
 
-	    if(!$this->persistant)
-		mysql_close($this->connexion);
+            if(!$this->persistant)
+                mysql_close($this->connexion);
 
-	    return array(true,$output);
-	}
+            return array(true,$output);
+        }
     }
 }
 ?>

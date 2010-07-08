@@ -1705,3 +1705,27 @@ function submitGroupAction(idForm,idAction) {
     return;
 }
 
+function makeReplace(recherche, module){
+    $('champsRecherche').value = recherche;
+    if(module == 'entreprise'){
+        document.forms["searchProspec"].type[0].checked = true;
+    }
+    if(module == 'contact'){
+        document.forms["searchProspec"].type[1].checked = true;
+    }
+    zuno.business.formTools.sendFormAjah('searchProspec', 'prospec/Recherche.php','listeResultProspec');
+
+}
+
+function viderCloud(module, user){
+
+    zuno.ajax.post.json('../ajaxRef.php?action=suppCloud', 'module='+module+'&user='+user, function(xhr){
+        if(xhr.status == 200){
+            var json = xhr.responseText.evalJSON();
+            if(json.error == 'false'){
+                $('tags').innerHTML = "<ul><li>Cette zone se remplira au fur et à mesure de vos recherches</li></ul>";
+            }
+        }
+        
+    });
+}
