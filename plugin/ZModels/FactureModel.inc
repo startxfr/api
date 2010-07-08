@@ -959,6 +959,20 @@ class factureModel extends GeneralModel {
     }
 
     /**
+     * Méthode qui format un identifiant de facture normalisé d'après les données fournies
+     * @param string $data Les données de la facture
+     * @return array L'id de la facture
+     */
+    public function getFormatedIdFromData($data) {
+	if(strlen($data['id_fact']) == 1)
+	     $id = "00".$data['id_fact'];
+	elseif(strlen($data['id_fact']) == 2)
+	     $id = "0".$data['id_fact'];
+	else $id = $data['id_fact'];
+	return substr($data['daterecord_fact'], 2, 2).substr(strtoupper($data['type_fact']),0,1).$id;
+    }
+
+    /**
      * Create portlet for calling list
      * @return Next affaire ID according to last inserted Affaire
      */
