@@ -14,6 +14,7 @@
 +------------------------------------------------------------------------*/
 include ('inc/conf.inc');		// Declare global variables from config files
 include ('inc/core.inc');		// Load core library
+loadPlugin(array('ZView/ProduitView','ZModels/ProduitModel','ZunoSxa'));
 
 $PC = new PageContext();
 $PC->GetVarContext();
