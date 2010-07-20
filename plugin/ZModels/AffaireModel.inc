@@ -316,7 +316,7 @@ class affaireModel extends GeneralModel {
 	    Logg::loggerInfo('affaireModel::update() ~ mise à jour de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $result = $this->process2();
 	    if($result[0] and $data['status_aff'] != '')
-		$this->addActualite($id_aff, 'update');
+		$this->addActualite($id_aff, 'update','','','',false);
 	    return $result;
 	}
     }
@@ -833,7 +833,7 @@ class affaireModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_aff, $bddtmp->bindVarAffaire(array('archived_aff' => '1','actif_aff' => '0','status_aff' => '18')));
 	    Logg::loggerInfo('affaireModel::archivateAffaireInDB() ~ archivage de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_aff, 'archive', 'L\'affaire '.$id_aff.' est maintenant archivée. Cette affaire ne pleut plus être modifiée. Les documents sont dorénavant consultables dans le répertoire '.$aff['dir_aff'].' des affaires archivés.', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_aff, 'archive', 'L\'affaire '.$id_aff.' est maintenant archivée. Cette affaire ne peut plus être modifiée. Les documents sont dorénavant consultables dans le répertoire '.$aff['dir_aff'].' des affaires archivés.', 'changement par lot', '',false);
 
 	    if ($moveGnose) {
 		$uri   = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
@@ -870,7 +870,7 @@ class affaireModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_aff, $bddtmp->bindVarAffaire(array('actif_aff' => '1','status_aff' => '20')));
 	    Logg::loggerInfo('affaireModel::activateAffaireInDB() ~ activation de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_aff, 'update', 'L\'affaire '.$id_aff.' est maintenant activée. Vous pouvez de nouveau travailler sur cette affaire', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_aff, 'free', 'L\'affaire '.$id_aff.' est maintenant activée. Vous pouvez de nouveau travailler sur cette affaire', 'changement par lot', '',false);
 	    return true;
 	}
 	Logg::loggerAlert('affaireModel::activateAffaireInDB() ~ impossible d\'activer l\'affaire '.$id_aff,'',__FILE__.'@'.__LINE__);
@@ -889,7 +889,7 @@ class affaireModel extends GeneralModel {
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_aff, $bddtmp->bindVarAffaire(array('actif_aff' => '0','status_aff' => '19')));
 	    Logg::loggerInfo('affaireModel::activateAffaireInDB() ~ désactivation de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_aff, 'update', 'L\'affaire '.$id_aff.' est maintenant désactivée. Vous ne pouvez plus travailler sur cette affaire', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_aff, 'free', 'L\'affaire '.$id_aff.' est maintenant désactivée. Vous ne pouvez plus travailler sur cette affaire', 'changement par lot', '',false);
 	    return true;
 	}
 	Logg::loggerAlert('affaireModel::activateAffaireInDB() ~ impossible de désactiver l\'affaire '.$id_aff,'',__FILE__.'@'.__LINE__);
@@ -911,16 +911,23 @@ class affaireModel extends GeneralModel {
 	    $bddtmp->makeRequeteSelect('affaire','id_aff',$id_aff);
 	    $aff = $bddtmp->process();
 	    $aff = $aff[0];
-	    if($newAttribList['titre_aff'] != '')
+	    $propMess = '';
+	    if($newAttribList['titre_aff'] != ''){
+		$propMess .= "<br/>Nouveau titre : \"".$newAttribList['titre_aff'].'", ';
 		$newData['titre_aff'] = $newAttribList['titre_aff'];
-	    if($newAttribList['necheance_aff'] != '')
+	    }
+	    if($newAttribList['necheance_aff'] != ''){
+		$propMess .= "<br/>Nouvelle échéance: \"".$newAttribList['necheance_aff'].'", ';
 		$newData['echeance_aff'] = $newAttribList['necheance_aff'];
-	    if($newAttribList['typeproj_aff'] != '')
+	    }
+	    if($newAttribList['typeproj_aff'] != ''){
+		$propMess .= "<br/>vouveau type de projet, ";
 		$newData['typeproj_aff'] = $newAttribList['typeproj_aff'];
-
+	    }
+	    $propMess = substr($propMess, 0, -2);
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField,$id_aff, $bddtmp->bindVarAffaire($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_aff, 'free', 'Changement d\'attribut(s)', 'changement par lot des propriétés suivantes : '.$propMess, '',false);
 	    Logg::loggerInfo('affaireModel::changeAttributeAffaireInDB() ~ changement d\'attribut de l\'affaire '.$id_aff,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}

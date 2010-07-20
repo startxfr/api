@@ -162,7 +162,7 @@ elseif ($action == 'Generer') {
     commandeGnose::CommandeSaveDocInGnose($Doc,$dev,"Enregistrement des documents relatifs à une commande.");
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"3"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'free','Génération des documents de la commande '.$id_cmd,'Les documents'.substr($txtDo,0,-2).' de la commande '.$id_cmd.' ont été généré. Ils sont disponibles dans l\'entrepôt des documents.');
+    $bddtmp->addActualite($id_cmd, 'free','Génération des documents de la commande '.$id_cmd,'Les documents'.substr($txtDo,0,-2).' de la commande '.$id_cmd.' ont été généré. Ils sont disponibles dans l\'entrepôt des documents.','',false);
 }
 elseif ($action == 'VoirBDCC' or
 	$action == 'VoirBDCF' or
@@ -227,22 +227,22 @@ elseif ($action == 'SendBDCF') {
 elseif ($action == 'BDCF-AR') {
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"5"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' en cours de traitement','Les bon de commandes fournisseurs ont bien été réceptionnés par les fournisseurs');
+    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' en cours de traitement','Les bon de commandes fournisseurs ont bien été réceptionnés par les fournisseurs','',false);
 }
 elseif ($action == 'BDCFValid') {
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"6"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' en cours de traitement','Les bons de commandes fournisseurs viennent d\'être validés.');
+    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' en cours de traitement','Les bons de commandes fournisseurs viennent d\'être validés.','',false);
 }
 elseif ($action == 'CommandeExped') {
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"7"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' expédiée par le fournisseur','La commande viens d\'être éxpédiée par le fournisseur.');
+    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' expédiée par le fournisseur','La commande viens d\'être éxpédiée par le fournisseur.','',false);
 }
 elseif ($action == 'CommandeValid') {
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"7"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' traitée et expédiée.','La commande viens d\'être validé. Elle est maintenant considérée comme récéptionnée par le fournisseur, et livrée au client.');
+    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' traitée et expédiée.','La commande viens d\'être validé. Elle est maintenant considérée comme expédiée par le fournisseur, et livrée au client.','',false);
 }
 elseif ($action == 'ValidCMD') {
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"8"));
@@ -250,7 +250,7 @@ elseif ($action == 'ValidCMD') {
     // On laisse une trace dans l'histo de l'affaire
     $bddtmp->makeRequeteUpdate('affaire',"id_aff",substr($id_cmd,0,-5),array("status_aff"=>"11"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'free','La commande viens d\'être expédiée par le fournisseur.','Commande '.$id_cmd.' expédiée par le fournisseur');
+    $bddtmp->addActualite($id_cmd, 'free','La commande vient d\'être expédiée par le fournisseur.','Commande '.$id_cmd.' expédiée par le fournisseur','',false);
 }
 elseif ($action == 'CreateFact') {
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,$var_recv);
@@ -325,7 +325,7 @@ elseif ($action == 'ModifCommande') {
 if ($action == 'suppconfirm') {
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$id_cmd,array("status_cmd"=>"2"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'free','Commande '.$id_cmd.' supprimée','La commande viens d\'étre supprimée.');
+    $bddtmp->addActualite($id_cmd, 'delete');
     $out = new PageDisplayHeader();
     echo $out->Process();
     echo "<script language=\"javascript\">window.location.reload();zuno.popup.close();</script>";

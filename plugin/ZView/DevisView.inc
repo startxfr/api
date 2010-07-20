@@ -36,7 +36,7 @@ class devisView extends generalView {
 		'zuno.business.formTools.getParamFromForm(\'formProduit\'), ' .
 		'function(xhr) { ' .
 		'var json = xhr.responseText.evalJSON(); ' .
-                'if(json.error != undefined){$(\'error\').innerHTML = json.error;}'.
+		'if(json.error != undefined){$(\'error\').innerHTML = json.error;}'.
 		'else { $(\'ACproduit_ajout_dev\').value = \'[\'+json.datas.id_prod+\']\'; ' .
 		'$(\'desc_Ajout_prod_dev\').value = json.datas.description_prod; ' .
 		'$(\'prix_Ajout_prod_dev\').value = json.datas.prix_prod; ' .
@@ -134,7 +134,7 @@ function IsNumeric(input)
 {
 	return (input - 0) == input && input.length > 0;
 }";
-
+	$script .= "\n".'function autoRemplir(dest, id, val){$(dest).value=val; $(dest+\'hidden\').value=id; zuno.popup.close();}';
 	$script .= '</script>';
 
 	if($light == 'interneInfos')
@@ -223,13 +223,13 @@ function IsNumeric(input)
 		</div>
 		<div class="row">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactTech);">Contact Tech</div>
-		    <div class="field">'.inputTag('text', 'contact_dev2','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_dev" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+		    <div class="field">'.inputTag('text', 'contact_dev2','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_dev" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
 		    <input type="hidden" name="contact_dev" id="ACcontact_devhidden" value="'.$data['contact_dev'].'" /><input type="hidden" name="contold" id="ACcontact_devold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
 		    <div id="ACcontact_dev_choix" class="autocomplete"></div>
 		</div>
 		<div class="row">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactAchat);">Contact Achat</div>
-		    <div class="field">'.inputTag('text', 'contact_achat_dev2','icon', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_dev" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+		    <div class="field">'.inputTag('text', 'contact_achat_dev2','icon', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_dev" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
 		    <input type="hidden" name="contact_achat_dev" id="ACcontact_achat_devhidden" value="'.$data['contact_achat_dev'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_devold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
 		    <div id="ACcontact_achat_dev_choix" class="autocomplete"></div>
 		</div>
@@ -363,7 +363,7 @@ function IsNumeric(input)
     private function interneProduits($datas) {
 	$out = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
 		<tbody><tr class="titre">
-			<th style="width: 135px">ID</th>
+			<th style="width: 135px">Référence</th>
 			<th>Description</th>
 			<th style="width: 30px">Quantité</th>
 			<th style="width: 90px">Prix</th>
@@ -489,12 +489,12 @@ function IsNumeric(input)
 
 	    }
 	}
-	// Quand status Envoyé
+// Quand status Envoyé
 	if (($datas['data']['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
 	    $bouton .= '<a title="Perdu" name="perdu" onclick="return zuno.popup.open(\'Devis.php\', \'devis='.$datas['data']['id_dev'].'&action=Perdu\',500,280);"><img align="middle" title="Perdu" alt="perdu" name="img" src="../img/prospec/devis.perdu.png"/> Devis perdu</a>';
 	    $bouton   .= "<a name=\"valider\" onclick=\"return zuno.popup.open('Devis.php','id_devis=".$datas['data']['id_dev']."&action=valid',950,380,'','','resize','commandeCreate');\">".imageTag('../img/prospec/devis.valid.png','Validé')." Valider</a> ";
 	}
-	// Clonage
+// Clonage
 	if(verifDroitsAuto('devis', 25, $datas['data']['commercial_dev']))
 	    $bouton .= '<a title="Cloner" href="Devis.php?action=cloner&dev='.$datas['data']['id_dev'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="../img/prospec/devis.clone.png"/> Cloner</a>';
 
@@ -651,25 +651,25 @@ function IsNumeric(input)
 	$script .= 'function ChangeDevisID(value) { $(\'idDevisSearch\').value = value; } ';
 	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } ';
 	$script.= "function ChangeDevisResultPage(limit,from,order,sens) {
-			ChangeDevisAction('searchDevis');
-			if(limit != undefined) ChangeLimit(limit);
-			if(from  != undefined) ChangeFrom(from);
-			if(order != undefined) ChangeOrder(order,sens);
-			ChangeSubmit();
-		    }
+ChangeDevisAction('searchDevis');
+if(limit != undefined) ChangeLimit(limit);
+if(from  != undefined) ChangeFrom(from);
+if(order != undefined) ChangeOrder(order,sens);
+ChangeSubmit();
+}
 		    function ChangeDevisAction(value) {\$('listeDevisAction').value = value;}
 		    function ChangeFrom(value) { \$('fromDevisSearch').value = value; }
 		    function ChangeLimit(value) { \$('limitDevisSearch').value = value; }
-		    function ChangeOrder(value,sens) {
-			if(sens == undefined) sens = 'ASC';
-			\$('orderDevisSearch').value = value;
-			\$('orderSensDevisSearch').value = sens;
-		    }
-		    function ChangeSubmit() {
-			zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','listeResultDevis');
-		    }
+function ChangeOrder(value,sens) {
+if(sens == undefined) sens = 'ASC';
+\$('orderDevisSearch').value = value;
+\$('orderSensDevisSearch').value = sens;
+}
+function ChangeSubmit() {
+zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','listeResultDevis');
+}
 		    Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) ChangeSubmit(); return false;}, false);
-		    ";
+";
 	$script .= 'function camenbertDevis(value, max) { $(\'devisBudgetMini\').value = value; $(\'devisBudgetMaxi\').value = max; ChangeDevisAction(\'searchDevis\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\'); } ';
 	$script .= 'function resetForm() {var form = $(\'searchFormDevis\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
 	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }';
@@ -695,7 +695,7 @@ function IsNumeric(input)
 	$out = '<div class="block width50"><fieldset class="form" style="height: 220px"><legend>Critères</legend>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.searchEnt);">Entreprise</div>';
 	$out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseDevisSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseDevisSearch_choix"></div>';
-	$out .= '<input type="hidden" name="entreprise_dev" value="" id="entrepriseDevisSearch_hidden"/></div>';
+	$out .= '<input type="hidden" name="entreprise_dev" value="" id="entrepriseDevisSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.searchTitre);">Titre</div>';
 	$out .= '<div class="field">'.inputTag('text', 'titre_dev', '', '', '20').'</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.searchAff);">Affaire</div>';
@@ -774,22 +774,22 @@ function IsNumeric(input)
 	    $totalDisplay =0;
 	foreach($datas['data'] as $v) {
 	    $action = '';
-	    //traitement des boutons de modification et d'action
-	    // recherche du fichier PDF
+//traitement des boutons de modification et d'action
+// recherche du fichier PDF
 	    if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$v['dir_aff'].$GLOBALS['ZunoDevis']['file.suffixe'].$v['id_dev'].'.pdf') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev']))
 		$action   .= "<a href=\"${suffixeLink}draco/Devis.php?id_devis=".$v['id_dev']."&action=pdf\">".imageTag($suffixeLink.'img/prospec/devis.pdf.png','PDF')."</a> ";
-	    // Clonage
+// Clonage
 	    if(verifDroitsAuto('devis', 25, $datas['data']['commercial_dev']))
 		$action .= '<a title="Cloner" href="Devis.php?action=cloner&dev='.$v['id_dev'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.$suffixeLink.'img/prospec/devis.clone.png"/></a>';
-	    // Quand status créer
+// Quand status créer
 	    if (($v['status_dev'] == "1")and(verifDroitsAuto('devis', 60, $datas['data']['commercial_dev']))) {
 		$action   .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}draco/Devis.php','id_devis=".$v['id_dev']."&action=supp',480,130);\">".imageTag($suffixeLink.'img/prospec/devis.delete.png','Supprimer')."</a> ";
 		$action .= '<a href="Devis.php?id_dev='.$v['id_dev'].'" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="'.$suffixeLink.'img/prospec/devis.record.png"/></a>';
 	    }
-	    // Quand status Enregistré
+// Quand status Enregistré
 	    elseif (($v['status_dev'] == "3")and(verifDroitsAuto('devis', 50, $datas['data']['commercial_dev'])))
 		$action .= '<a href="Devis.php?id_dev='.$v['id_dev'].'" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="'.$suffixeLink.'img/prospec/devis.send.png"/></a>';
-	    // Quand status Envoyé
+// Quand status Envoyé
 	    elseif (($v['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
 		$action .= '<a title="Perdu" name="perdu" onclick="ChangeDevisAction(\'Perdu\');ChangeDevisID(\''.$v['id_dev'].'\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\');"><img align="middle" title="Perdu" alt="perdu" name="img" src="'.$suffixeLink.'img/prospec/devis.perdu.png"/></a>';
 		$action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',950,380);\">".imageTag($suffixeLink.'img/prospec/devis.valid.png','Validé')."</a> ";

@@ -82,14 +82,9 @@ if($PC->rcvP['action'] == 'addFacture') {
         $data['cp_fact'] = $PC->rcvP['cp_fact'];
         $data['pays_fact'] = $PC->rcvP['pays_fact'];
         $data['type_fact'] = 'Facture';
-        if($PC->rcvP['commande_fact'] != "null" and $PC->rcvP['entreprise_fact'] != '') {
-            if($PC->rcvP['type'] == 'Avoir')
-                $result = $info->insert($data, 'toAvoir', $produit);
-            else
-                $result = $info->insert($data, 'cloner', $produit);
-        }
-        else
-            $result = $info->insert($data);
+        if($PC->rcvP['commande_fact'] != "null" and $PC->rcvP['entreprise_fact'] != '')
+             $result = ($PC->rcvP['type'] == 'Avoir') ? $info->insert($data, 'toAvoir', $produit) : $info->insert($data, 'cloner', $produit);
+        else $result = $info->insert($data);
         if($PC->rcvP['entreprise_fact'] != '') {
             $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
             $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '3' ; ");
@@ -141,8 +136,6 @@ elseif($PC->rcvP['action'] == 'createFromDevis') {
 
         $result = $info->insert($data, 'cloner', $produit);
         $aijecommande[1][0] = $data;
-        if($result[0]) {
-        }
     }
     $produit = $info->getProduitsFromID($aijecommande[1][0]['id_cmd']);
     $produit = $produit[1];
@@ -175,17 +168,15 @@ elseif($PC->rcvP['action'] == 'createFromDevis') {
     $bddtmp->makeRequeteFree("UPDATE devis SET status_dev = '6' WHERE id_dev = ".$PC->rcvP['devis']." ");
     $bddtmp->process2();
     if($result2[0]) {
-        $ckoi = ($PC->rcvP['type'] == 'Avoir') ? 'l\'avoir' : 'la facture';
-        $petite = ($PC->rcvP['type'] == 'Avoir') ? '' : 'e';
         echo '<redirection>../facturier/Facture.php?id_fact='.$data['id_fact'].'</redirection>';
+	exit;
     }
 }
 else {
     $view = new factureView();
     if($PC->rcvG['type'] == 'avoir')
-        $sortie = $view->creerFacture('avoir');
-    else
-        $sortie = $view->creerFacture();
+         $sortie = $view->creerFacture('avoir');
+    else $sortie = $view->creerFacture();
 }
 /*------------------------------------------------------------------------+
 | DISPLAY PROCESSING

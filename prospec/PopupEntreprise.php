@@ -35,5 +35,16 @@ elseif($PC->rcvG['id_fourn'] != '')
     $rs = $model->getFournisseurByID($PC->rcvG['id_fourn']);
 	echo viewFiche($rs[1][0]['entreprise_fourn'], 'contactEntreprise', 'LightInfoSimpleBis', 'non', 'web', true);
 }
+elseif($PC->rcvG['action'] == 'searchContDev'){
+    $v = new contactEntrepriseView();
+    echo $v->popupSearch($PC->rcvG);
+}
+elseif($PC->rcvP['action'] == 'searchPopup'){
+    $model = new contactParticulierModel();
+    $datas['result'] = $model->getDataForSearch($PC->rcvP['recherche_cont']);
+    $datas['idChamp'] = $PC->rcvP['idChamp'];
+    $v = new contactEntrepriseView();
+    echo $v->popupSearch($datas, false);
+}
 else  echo "<html><body><script language=\"javascript\">zuno.popup.close();</script></body></html>";
 ?>

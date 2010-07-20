@@ -75,7 +75,6 @@ class factureGnose {
 	    $entreprise['nom_commercial'] = $entreprise['civ']." ".$entreprise['prenom']." ".$entreprise['nom'];
 	    $entreprise['mail_commercial'] = $entreprise['mail'];
 	    $entreprise['id_fact'] = $entreprise['id_fact'];
-	    $this->bddtmp = new factureModel();
 	    $produits = $this->bddtmp->getProduitsFromID($id_fact);
 	    $produits = $produits[1];
 	    $total = 0;

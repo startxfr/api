@@ -3,83 +3,85 @@ loadPlugin(array('ZModels/ContactModel','ZDoc/ContactDoc', 'ZView/GeneralView', 
 
 class contactView extends generalView {
     protected function infos($datas = array(),$control = null) {
-        return '<div id="interneInfos">'.$this->interneInfos($datas,'open1',$control).'</div>';
+	return '<div id="interneInfos">'.$this->interneInfos($datas,'open1',$control).'</div>';
     }
 
     protected function interneInfos($datas, $statut = 'open1',$control = null, $message = '') {
-        if(array_key_exists('data', $datas)) {
-            $data = $datas['data'];
-            $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
-            $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
-            $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="../img/prospec/rss.png"/> Consulter le fil RSS</a>';
-            $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            $pied1 .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
-        }
-        else {
-            $datas['data'] = array();
-            $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
-            $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
-            $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            $pied1 .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
-        }
+	if(array_key_exists('data', $datas)) {
+	    $data = $datas['data'];
+	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
+	    $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="../img/prospec/rss.png"/> Consulter le fil RSS</a>';
+	    $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $pied1 .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
+	}
+	else {
+	    $datas['data'] = array();
+	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
+	    $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $pied1 .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
+	}
 
-        if($control != null and is_array($control) and $control[0] == false)
-            $message = '<div class="important">'.$control[1].'</div>';
+	if($control != null and is_array($control) and $control[0] == false)
+	    $message = '<div class="important">'.$control[1].'</div>';
 
-        $corps = $message.'<form name="LightInfos" action="#" method="post">';
-        $corps .= '<input type="hidden" id="toDO" name="action" value="modifLightEnt" />';
-        $corps .= '<input type="hidden" name="id_ent" id="idEntrepriseLightInfo" value="'.$data['id_ent'].'" />';
-        $corps .= '<div id="ContenuLightInfos">';
-        $corps .= $this->interneLightInfos($datas);
-        $corps .= '</div></form>';
+	$corps = $message.'<form name="LightInfos" action="#" method="post">';
+	$corps .= '<input type="hidden" id="toDO" name="action" value="modifLightEnt" />';
+	$corps .= '<input type="hidden" name="id_ent" id="idEntrepriseLightInfo" value="'.$data['id_ent'].'" />';
+	$corps .= '<div id="ContenuLightInfos">';
+	$corps .= $this->interneLightInfos($datas);
+	$corps .= '</div></form>';
 
-        $corps1 = $message.'<form name="BigInfos" action="#" method="post">';
-        $corps1 .= '<input type="hidden" id="toDO2" name="action" value="modifBigEnt" />';
-        $corps1 .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
-        $corps1 .= '<div id="ContenuBigInfos">';
-        $corps1 .= $this->interneBigInfos($datas);
-        $corps1 .= '</div></form>';
+	$corps1 = $message.'<form name="BigInfos" action="#" method="post">';
+	$corps1 .= '<input type="hidden" id="toDO2" name="action" value="modifBigEnt" />';
+	$corps1 .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
+	$corps1 .= '<div id="ContenuBigInfos">';
+	$corps1 .= $this->interneBigInfos($datas);
+	$corps1 .= '</div></form>';
 
 
-        return generateZBox3($titre, $titre, $titre, $corps, $pied, $corps1, $pied1,'infosEnt',$statut, true);
+	return generateZBox3($titre, $titre, $titre, $corps, $pied, $corps1, $pied1,'infosEnt',$statut, true);
 
     }
 
     protected function interneInfosSimple($datas, $statut = 'close',$control = null, $popup = false, $message = '') {
-        if(array_key_exists('data', $datas)) {
-            $data = $datas['data'];
-            $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
-            $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            if($popup)
-                $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'entrepriseFiche\', \'popup2\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
-            else
-                $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
-            $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="../img/prospec/rss.png"/> Consulter le fil RSS</a>';
-        }
-        else {
-            $datas['data'] = array();
-            $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
-            $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
-        }
+	if(array_key_exists('data', $datas)) {
+	    $data = $datas['data'];
+	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    if($popup) {
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'entrepriseFiche\', \'popup2\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
+		$pied .= '<a name="fiche" href="../prospec/fiche.php?id_ent='.$data['id_ent'].'"><img align="middle" title="Fiche" alt="ficher" src="../img/prospec/entreprise.png"/> Voir la fiche</a>';
+	    }
+	    else
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
+	    $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="../img/prospec/rss.png"/> Consulter le fil RSS</a>';
+	}
+	else {
+	    $datas['data'] = array();
+	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
+	}
 
-        if($control != null and is_array($control) and $control[0] == false)
-            $message = '<div class="important">'.$control[1].'</div>';
+	if($control != null and is_array($control) and $control[0] == false)
+	    $message = '<div class="important">'.$control[1].'</div>';
 
-        $corps = $message.'<form name="LightInfos" action="#" method="post">';
-        if($popup)
-            $corps .= '<input type="hidden" name="action" value="modifEntPopup" />';
-        else
-            $corps .= '<input type="hidden" id="toDO" name="action" value="modifLightEnt" />';
-        $corps .= '<input type="hidden" name="id_ent" id="idEntrepriseLightInfo" value="'.$data['id_ent'].'" />';
-        $corps .= '<div id="ContenuLightInfos">';
-        $corps .= $this->interneLightInfos($datas);
-        $corps .= '</div></form>';
+	$corps = $message.'<form name="LightInfos" action="#" method="post">';
+	if($popup)
+	    $corps .= '<input type="hidden" name="action" value="modifEntPopup" />';
+	else
+	    $corps .= '<input type="hidden" id="toDO" name="action" value="modifLightEnt" />';
+	$corps .= '<input type="hidden" name="id_ent" id="idEntrepriseLightInfo" value="'.$data['id_ent'].'" />';
+	$corps .= '<div id="ContenuLightInfos">';
+	$corps .= $this->interneLightInfos($datas);
+	$corps .= '</div></form>';
 
 
-        return generateZBox($titre, $titre, $corps, $pied,'infosSimpleEnt',$statut);
+	return generateZBox($titre, $titre, $corps, $pied,'infosSimpleEnt',$statut);
 
     }
 
@@ -88,50 +90,50 @@ class contactView extends generalView {
 	if($data['siege_ent'] == '1')
 	    $siege = 'checked="checked"';
 
-        $web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
+	$web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
 
-        $out = '<div class="block width50">' .
-                '<fieldset class="form" style="height:100px">' .
-                '<legend>Information sur l\'entreprise</legend>' .
-                '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>' .
-                '<div class="field">'.inputTag('text', 'nom_ent', '', '', '16', $data['nom_ent']).'</div>' .
-                '</div>' .
-                '<div class="row">'.
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>'.
-                '<div class="field">'.selectTag('type_ent', $datas['type'], $data['type_ent'],'','',false).'</div>'.
-                '</div>'.
-                '</fieldset></div>';
-        $out .= '<div class="block width50">'.
-                '<fieldset class="form" style="height:100px">'.
-                '<legend>Coordonnées</legend>' .
-                '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Web</div>' .
-                '<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
-                '</div>' .
-                '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
-                '<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
-                '</div>'.
-                '<div class="row">
+	$out = '<div class="block width50">' .
+		'<fieldset class="form" style="height:100px">' .
+		'<legend>Information sur l\'entreprise</legend>' .
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>' .
+		'<div class="field">'.inputTag('text', 'nom_ent', '', '', '16', $data['nom_ent']).'</div>' .
+		'</div>' .
+		'<div class="row">'.
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>'.
+		'<div class="field">'.selectTag('type_ent', $datas['type'], $data['type_ent'],'','',false).'</div>'.
+		'</div>'.
+		'</fieldset></div>';
+	$out .= '<div class="block width50">'.
+		'<fieldset class="form" style="height:100px">'.
+		'<legend>Coordonnées</legend>' .
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Web</div>' .
+		'<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
+		'</div>' .
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
+		'<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
+		'</div>'.
+		'<div class="row">
 							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.cpVille);">CP - Ville</div>
 							<div class="field">'.inputTag('text', "cp_ent", 'civ', '', '6', $data['cp_ent'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'entVille\');"').'<select name=\'ville_ent\'  id="entVille" class="nextciv" onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$data['ville_ent'].'" selected="selected">'.$data['ville_ent'].'</option></select></div>
 						</div>'.
-                '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphone</div>' .
-                '<div class="field">'.inputTag('text', 'tel_ent', '', '', '16', prepareTelAffichage($data['tel_ent'])).'</div>' .
-                '</div>'.
-                '</fieldset></div>';
-        return $out;
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphone</div>' .
+		'<div class="field">'.inputTag('text', 'tel_ent', '', '', '16', prepareTelAffichage($data['tel_ent'])).'</div>' .
+		'</div>'.
+		'</fieldset></div>';
+	return $out;
     }
 
     private function interneBigInfos($datas) {
-        $data = $datas['data'];
-        if($data['siege_ent'] == '1')
-            $siege = 'checked="checked"';
-        $tva = ($data['tauxTVA_ent'] == '') ? $GLOBALS['zunoClientStatut']['tauxTVA'] : $data['tauxTVA_ent'];
+	$data = $datas['data'];
+	if($data['siege_ent'] == '1')
+	    $siege = 'checked="checked"';
+	$tva = ($data['tauxTVA_ent'] == '') ? $GLOBALS['zunoClientStatut']['tauxTVA'] : $data['tauxTVA_ent'];
 
-        $out = '<div class="block width50">
+	$out = '<div class="block width50">
 			<fieldset class="form" style="height:140px">
 				<legend>Adresse</legend>
 			  	<div class="row">
@@ -157,7 +159,7 @@ class contactView extends generalView {
 					<div class="field">'.selectTag('pays_ent',$datas['pays'],$data['pays_ent'], '', '', false).'</div>
 				</div>
 			</fieldset></div>';
-        $out .= '<div class="block width50">
+	$out .= '<div class="block width50">
 					<fieldset class="form" style="height:140px">
 						<legend>Profil de l\'entreprise</legend>
 						<div class="row">
@@ -210,95 +212,95 @@ class contactView extends generalView {
 					</fieldset>
 				</div>';
 
-        $web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
-        $out .= '<div class="block width50"><fieldset class="form" style="height:140px">'.
-                '<legend>Autres coordonnées</legend>' .
-                '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphone</div>' .
-                '<div class="field">'.inputTag('text', 'tel_ent', '', '', '16', prepareTelAffichage($data['tel_ent'])).'</div>' .
-                '</div>' .
-                '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
-                '<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
-                '</div>'.
-                '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site internet</div>' .
-                '<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
-                '</div>
+	$web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
+	$out .= '<div class="block width50"><fieldset class="form" style="height:140px">'.
+		'<legend>Autres coordonnées</legend>' .
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphone</div>' .
+		'<div class="field">'.inputTag('text', 'tel_ent', '', '', '16', prepareTelAffichage($data['tel_ent'])).'</div>' .
+		'</div>' .
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
+		'<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
+		'</div>'.
+		'<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site internet</div>' .
+		'<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
+		'</div>
 		<div class="row">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.commentaire);">Commentaire</div>
 			<div class="field"><textarea rows="3" cols="35" name="commsociete_ent">'.$data['commsociete_ent'].'</textarea></div>
 		</div>' .
-                '</fieldset></div>';
+		'</fieldset></div>';
 
-        return $out;
+	return $out;
     }
 
     protected function contactsLies($datas) {
-        if(is_array($datas['data']['contact'][0]))
-            $corps = '<div id="ContenuContactsEntreprise" >'.$this->interneContacts($datas).'</div>';
-        else
-            $corps = '<div id="ContenuContactsEntreprise" ><span class="important" style="text-align:center;">Aucun contact pour cette entreprise</span></div>';
-        $titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Contacts de l\'entreprise '.$datas['data']['nom_ent'];
-        $pied = '<a name="addcont" onclick="addContact(\'\');" ><img alt="add" title="Ajouter un contact" src="../img/prospec/add.png" /> Ajouter un contact </a>';
-        return generateZBox($titre,$titre,$corps,$pied,'contactsEntreprise','');
+	if(is_array($datas['data']['contact'][0]))
+	    $corps = '<div id="ContenuContactsEntreprise" >'.$this->interneContacts($datas).'</div>';
+	else
+	    $corps = '<div id="ContenuContactsEntreprise" ><span class="important" style="text-align:center;">Aucun contact pour cette entreprise</span></div>';
+	$titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Contacts de l\'entreprise '.$datas['data']['nom_ent'];
+	$pied = '<a name="addcont" onclick="addContact(\'\');" ><img alt="add" title="Ajouter un contact" src="../img/prospec/add.png" /> Ajouter un contact </a>';
+	return generateZBox($titre,$titre,$corps,$pied,'contactsEntreprise','');
 
     }
 
     protected function interneContacts($datas, $mess = '') {
-        $compteur = 0;
-        $out = $mess.'<div class="blockTable">' .
-                '<table width="100%" cellspacing="0" cellpadding="2" border="0">' .
-                '<tbody>' .
-                '<tr class="titre">
+	$compteur = 0;
+	$out = $mess.'<div class="blockTable">' .
+		'<table width="100%" cellspacing="0" cellpadding="2" border="0">' .
+		'<tbody>' .
+		'<tr class="titre">
 							<th width="5%" rowspan="2">Nom</th>
 							<th width="5%" rowspan="2">Fonction</th>
 							<th width="5%" colspan="4">Coordonnées</th>
 							<th rowspan="2">Commentaires</th>
 							<th width="1%" rowspan="2"> </th>
 						</tr>' .
-                '<tr class="subtitre">
+		'<tr class="subtitre">
 							<th width="5%" nowrap="nowrap">Tel</th>
 							<th width="5%" nowrap="nowrap">Portable</th>
 							<th width="5%" nowrap="nowrap">Fax</th>
 							<th width="5%" nowrap="nowrap">e-mail</th>
 						</tr>';
-        if(is_array($datas['data']['contact']))
-            foreach($datas['data']['contact'] as $v) {
-                $out .= '<tr class="altern'.($compteur % 2).'">';
-                $out .= '<td nowrap="nowrap" class="barre" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</a></td>';
-                $out .= '<td nowrap="nowrap" class="center barre" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['nom_fct'].'</a></td>';
-                $out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.prepareTelAffichage($v['tel_cont']).'</a></td>';
-                $out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.prepareTelAffichage($v['mob_cont']).'</a></td>';
-                $out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.prepareTelAffichage($v['fax_cont']).'</a></td>';
-                $out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['mail_cont'].'</a></td>';
-                $out .= '<td nowrap="nowrap" class="barre" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['comm_cont'].'</a></td>';
-                $out .= '<td nowrap="nowrap" class="center">';
-                $out .= '<a name="appel" title="Nouvel appel à ce contact" onclick="appelContact(\''.$v['id_cont'].'\')"><img alt="appel" title="Enregistrer un nouvel appel" src="../img/prospec/appel.png" /></a>';
-                $out .= '<a name="modif" title="Modifier le contact" onclick="modifContact(\''.$v['id_cont'].'\')"><img alt="modif" title="Modifier le Contact" src="../img/prospec/contact.modif.png" /></a>';
-                $out .= '<a name="move" title="Déplacer ce contact" onclick="moveContact(\''.$v['id_cont'].'\')"><img alt="deplacer" title="Déplacer ce contact" src="../img/prospec/contact.move.png" /></a>';
-                $out .= '<a name="supp" title="Supprimer ce contact" onclick="suppContact(\''.$v['id_cont'].'\')"><img alt="supprimer" title="Supprimer ce contact" src="../img/prospec/contact.delete.png" /></a>';
-                $out .= '</td>';
-                $out .= '</tr>';
-                $compteur++;
-            }
-        $out .= '</table></div>';
-        return $out;
+	if(is_array($datas['data']['contact']))
+	    foreach($datas['data']['contact'] as $v) {
+		$out .= '<tr class="altern'.($compteur % 2).'">';
+		$out .= '<td nowrap="nowrap" class="barre" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</a></td>';
+		$out .= '<td nowrap="nowrap" class="center barre" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['nom_fct'].'</a></td>';
+		$out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.prepareTelAffichage($v['tel_cont']).'</a></td>';
+		$out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.prepareTelAffichage($v['mob_cont']).'</a></td>';
+		$out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.prepareTelAffichage($v['fax_cont']).'</a></td>';
+		$out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['mail_cont'].'</a></td>';
+		$out .= '<td nowrap="nowrap" class="barre" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['comm_cont'].'</a></td>';
+		$out .= '<td nowrap="nowrap" class="center">';
+		$out .= '<a name="appel" title="Nouvel appel à ce contact" onclick="appelContact(\''.$v['id_cont'].'\')"><img alt="appel" title="Enregistrer un nouvel appel" src="../img/prospec/appel.png" /></a>';
+		$out .= '<a name="modif" title="Modifier le contact" onclick="modifContact(\''.$v['id_cont'].'\')"><img alt="modif" title="Modifier le Contact" src="../img/prospec/contact.modif.png" /></a>';
+		$out .= '<a name="move" title="Déplacer ce contact" onclick="moveContact(\''.$v['id_cont'].'\')"><img alt="deplacer" title="Déplacer ce contact" src="../img/prospec/contact.move.png" /></a>';
+		$out .= '<a name="supp" title="Supprimer ce contact" onclick="suppContact(\''.$v['id_cont'].'\')"><img alt="supprimer" title="Supprimer ce contact" src="../img/prospec/contact.delete.png" /></a>';
+		$out .= '</td>';
+		$out .= '</tr>';
+		$compteur++;
+	    }
+	$out .= '</table></div>';
+	return $out;
     }
 
     protected function projets($datas) {
-        if(is_array($datas['projet'][0]) or is_array($datas['affaire'][0]))
-            $corps = '<div id="ContenuProjetsEntreprise" >'.$this->interneProjets($datas).'</div>';
-        else
-            $corps = '<div id="ContenuProjetsEntreprise" ><span class="important" style="text-align:center;">Aucun projet pour cette entreprise</span></div>';
-        $titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Projets de l\'entreprise '.$datas['data']['nom_ent'];
-        $pied = '<a name="bouttonAddproj" onclick="addProjetE(\'\');" ><img alt="add" title="Ajouter un projet" src="../img/prospec/add.png" /> Ajouter un projet </a>';
-        return generateZBox($titre,$titre,$corps,$pied,'projetEntreprise','');
+	if(is_array($datas['projet'][0]) or is_array($datas['affaire'][0]))
+	    $corps = '<div id="ContenuProjetsEntreprise" >'.$this->interneProjets($datas).'</div>';
+	else
+	    $corps = '<div id="ContenuProjetsEntreprise" ><span class="important" style="text-align:center;">Aucun projet pour cette entreprise</span></div>';
+	$titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Projets de l\'entreprise '.$datas['data']['nom_ent'];
+	$pied = '<a name="bouttonAddproj" onclick="addProjetE(\'\');" ><img alt="add" title="Ajouter un projet" src="../img/prospec/add.png" /> Ajouter un projet </a>';
+	return generateZBox($titre,$titre,$corps,$pied,'projetEntreprise','');
     }
 
     protected function interneProjets($datas, $mess = '') {
-        $compteur = 0;
-        $out = $mess.'<div class="blockTable">
+	$compteur = 0;
+	$out = $mess.'<div class="blockTable">
 		    <table width="100% border="0" cellspacing="0" cellpadding="2">
 		    <tr class="titre">
 			<th width="120px">ID</th>
@@ -309,12 +311,12 @@ class contactView extends generalView {
 			<th width="120px">Contact</th>
 			<th width="1%"> </th>
 		    </tr>';
-        if(is_array($datas['projet']))
-            foreach($datas['projet'] as $v) {
-                if($v['detect_proj'] != '')
-                    $v['detect_proj'] = strftime('%d/%m/%Y', strtotime($v['detect_proj']));
-                $jsurl =  ' onclick="modifProj(\''.$v['id_proj'].'\');"';
-                $out .= '<tr class="altern'.($compteur %2).'">
+	if(is_array($datas['projet']))
+	    foreach($datas['projet'] as $v) {
+		if($v['detect_proj'] != '')
+		    $v['detect_proj'] = strftime('%d/%m/%Y', strtotime($v['detect_proj']));
+		$jsurl =  ' onclick="modifProj(\''.$v['id_proj'].'\');"';
+		$out .= '<tr class="altern'.($compteur %2).'">
 				<td class="nowrap barre" style="cursor:pointer;color:#da8b20"'.$jsurl.'><div class="square" style="background-color:#da8b20;">&nbsp;</div> Projet '.$v['id_proj'].'</td>
 				<td class="barre nowrap">'.$v['titre_proj'].'</td>
 				<td class="barre">'.$v['desc_proj'].'</td>
@@ -323,15 +325,15 @@ class contactView extends generalView {
 				<td class="barre nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
 				<td class="right nowrap"><a name="modifProj"'.$jsurl.'><img alt="modif" title="Modifier ce projet" src="../img/prospec/projet.modif.png" /></a><a name="suppProj" onclick="suppProj(\''.$v['id_proj'].'\');"><img alt="supp" title="Supprimer ce projet" src="../img/prospec/projet.delete.png" /></a></td>
 			</tr>';
-                $compteur++;
-            }
-        if(is_array($datas['affaire']))
-            foreach($datas['affaire'] as $v) {
-                if($v['detect_aff'] != '')
-                    $v['detect_aff'] = strftime('%d/%m/%Y', strtotime($v['detect_aff']));
-                $url = '../draco/Affaire.php?id_aff='.$v['id_aff'];
-                $jsurl =  ' onclick="document.location.href=\''.$url.'\'"';
-                $out .= '<tr class="altern'.($compteur %2).'" >
+		$compteur++;
+	    }
+	if(is_array($datas['affaire']))
+	    foreach($datas['affaire'] as $v) {
+		if($v['detect_aff'] != '')
+		    $v['detect_aff'] = strftime('%d/%m/%Y', strtotime($v['detect_aff']));
+		$url = '../draco/Affaire.php?id_aff='.$v['id_aff'];
+		$jsurl =  ' onclick="document.location.href=\''.$url.'\'"';
+		$out .= '<tr class="altern'.($compteur %2).'" >
 				<td class="nowrap barre" style="cursor:pointer;color:#007F00"'.$jsurl.'><div class="square" style="background-color:#007F00;">&nbsp;</div> Affaire '.$v['id_aff'].'</td>
 				<td class="barre nowrap">'.$v['titre_aff'].'</td>
 				<td class="barre">'.$v['comm_aff'].'</td>
@@ -340,27 +342,27 @@ class contactView extends generalView {
 				<td class="barre nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
 				<td class="right nowrap"><a href="'.$url.'"><img alt="affaire" title="Voir l\'affaire" src="../img/prospec/affaire.png"</a></td>
 			</tr>';
-                $compteur++;
-            }
+		$compteur++;
+	    }
 
-        $out .= '</table>
+	$out .= '</table>
 			</div>';
-        return $out;
+	return $out;
     }
 
     protected function appels($datas) {
-        if(is_array($datas['appel'][0]))
-            $corps = '<div id="ContenuAppelsEntreprise" >'.$this->interneAppels($datas).'</div>';
-        else
-            $corps = '<div id="ContenuAppelsEntreprise" ><span class="important" style="text-align:center;">Aucun appel passé à cette entreprise</span></div>';
-        $titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Appels passés à l\'entreprise '.$datas['data']['nom_ent'];
-        $pied = '<a name="addapp" onclick="addAppel(\'\');" ><img alt="add" title="Ajouter un appel" src="../img/prospec/add.png" /> Ajouter un appel </a>';
-        return generateZBox($titre,$titre,$corps,$pied,'appelsEntreprise','');
+	if(is_array($datas['appel'][0]))
+	    $corps = '<div id="ContenuAppelsEntreprise" >'.$this->interneAppels($datas).'</div>';
+	else
+	    $corps = '<div id="ContenuAppelsEntreprise" ><span class="important" style="text-align:center;">Aucun appel passé à cette entreprise</span></div>';
+	$titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Appels passés à l\'entreprise '.$datas['data']['nom_ent'];
+	$pied = '<a name="addapp" onclick="addAppel(\'\');" ><img alt="add" title="Ajouter un appel" src="../img/prospec/add.png" /> Ajouter un appel </a>';
+	return generateZBox($titre,$titre,$corps,$pied,'appelsEntreprise','');
     }
 
     protected function interneAppels($datas, $mess = '') {
-        $compteur = 0;
-        $out = $mess .'<div class="blockTable">
+	$compteur = 0;
+	$out = $mess .'<div class="blockTable">
 			<table width="100%" border="0" cellspacing="0" cellpadding="2">
 			<tr class="titre">
 				<th width="7%">Appel</th>
@@ -370,11 +372,11 @@ class contactView extends generalView {
 				<th>Commentaires</th>
 				<th width="1%"> </th>
 			</tr>';
-        if(is_array($datas['appel']))
-            foreach($datas['appel'] as $v) {
-                if($v['rappel_app'] != '')
-                    $v['rappel_app'] = strftime('%d/%m/%Y', strtotime($v['rappel_app']));
-                $out .= '<tr class="altern'.($compteur % 2).'">
+	if(is_array($datas['appel']))
+	    foreach($datas['appel'] as $v) {
+		if($v['rappel_app'] != '')
+		    $v['rappel_app'] = strftime('%d/%m/%Y', strtotime($v['rappel_app']));
+		$out .= '<tr class="altern'.($compteur % 2).'">
 				<td class="center barre" nowrap="nowrap">'.strftime('%d/%m/%Y', strtotime($v['appel_app'])).'</td>
 				<td class="barre" nowrap="nowrap"><a name="user" onclick="return zuno.popup.open(\'../User.php\',\'type=popup&id='.$v['utilisateur_app'].'\',480,230);">'.$v['utilisateur_app'].'</a></td>
 				<td class="center barre" nowrap="nowrap"><b>'.$v['rappel_app'].'</b></td>
@@ -385,45 +387,45 @@ class contactView extends generalView {
 				<a name="suppApp" title="Supprimer" onclick="suppAppel(\''.$v['id_app'].'\');"><img alt="supp" title="Supprimer l\'appel" src="../img/prospec/appel.delete.png" /></a>
 				</td>
 			</tr>';
-                $compteur++;
-            }
+		$compteur++;
+	    }
 
-        $out .= '</table></div>';
-        return $out;
+	$out .= '</table></div>';
+	return $out;
     }
 
     protected function contactsInfos($datas) {
-        if(is_array($datas['data'])) {
-            $titre = '<img src="../img/prospec/contact.png" alt="contact" title="Contact" /> Informations sur le contact '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'];
-            $pied = '<a title="Reset" href="javascript:document.infosContact.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier ce contact</a>';
-            $pied .= '<a name="Vcard" href="vcard.php?id_cont='.$datas['data']['id_cont'].'"><img alt="export" src="../img/prospec/contact.png"/> Exporter en VCard</a>';
-        }
-        else {
-            $datas['data'] = array();
-            $titre = '<img src="../img/prospec/contact.png" alt="contact" title="Contact" /> Nouveau contact';
-            $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-            $pied .= '<a name="submit" onclick="changeToDo(\'creerCont\');zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
-        }
-        $corps = '<form name="infosContact" action="#" method="post">';
-        $corps .= '<input type="hidden" id="toDO" name="action" value="modifCont" />';
-        $corps .= '<input type="hidden" name="id_cont" value="'.$datas['data']['id_cont'].'" />';
-        $corps .= '<div id="interneInfos">';
-        $corps .= $this->interneInfosContact($datas);
-        $corps .= '</div></form>';
-        return generateZBox($titre, $titre, $corps, $pied, 'infosCont');
+	if(is_array($datas['data'])) {
+	    $titre = '<img src="../img/prospec/contact.png" alt="contact" title="Contact" /> Informations sur le contact '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'];
+	    $pied = '<a title="Reset" href="javascript:document.infosContact.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier ce contact</a>';
+	    $pied .= '<a name="Vcard" href="vcard.php?id_cont='.$datas['data']['id_cont'].'"><img alt="export" src="../img/prospec/contact.png"/> Exporter en VCard</a>';
+	}
+	else {
+	    $datas['data'] = array();
+	    $titre = '<img src="../img/prospec/contact.png" alt="contact" title="Contact" /> Nouveau contact';
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="changeToDo(\'creerCont\');zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
+	}
+	$corps = '<form name="infosContact" action="#" method="post">';
+	$corps .= '<input type="hidden" id="toDO" name="action" value="modifCont" />';
+	$corps .= '<input type="hidden" name="id_cont" value="'.$datas['data']['id_cont'].'" />';
+	$corps .= '<div id="interneInfos">';
+	$corps .= $this->interneInfosContact($datas);
+	$corps .= '</div></form>';
+	return generateZBox($titre, $titre, $corps, $pied, 'infosCont');
     }
 
     protected function interneInfosContact($datas) {
-        $data = $datas['data'];
-        $mail = ($data['mail_cont'] != '') ? '<img alt="mail" title="Envoyer un mail" src="../img/prospec/SendMail.png" onclick="zuno.popup.open(\'PopupSendMail.php\',\'id_cont='.$data['id_cont'].'\',480,500);" />' : '';
-        $ifcl = ($data['mail_cont'] != '') ? 'icon' : '';
-        $out .= '<div class="block width33">
+	$data = $datas['data'];
+	$mail = ($data['mail_cont'] != '') ? '<img alt="mail" title="Envoyer un mail" src="../img/prospec/SendMail.png" onclick="zuno.popup.open(\'PopupSendMail.php\',\'id_cont='.$data['id_cont'].'\',480,500);" />' : '';
+	$ifcl = ($data['mail_cont'] != '') ? 'icon' : '';
+	$out .= '<div class="block width33">
 		<fieldset class="form" style="height:120px">
 			<legend>Détails du contact</legend>
 			<div class="row">
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.civ);">Civilité</div>
-				<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Melle'=>'Mademoiselle'), $data['civ_cont']).'</div>
+				<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Mlle'=>'Mademoiselle'), $data['civ_cont']).'</div>
 			</div>
 			<div class="row">
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.prenom);">Prénom</div>
@@ -494,8 +496,8 @@ class contactView extends generalView {
 			</div>
 		</fieldset>
 	</div>';
-        if($data['id_ent'] != null)
-            $out .= '<div class="block width33">
+	if($data['id_ent'] != null)
+	    $out .= '<div class="block width33">
 		<fieldset class="form" style="height:120px">
 			<legend>Entreprise</legend>
 			<div class="row">
@@ -512,33 +514,33 @@ class contactView extends generalView {
 			</div>
 		</fieldset>
 	</div>';
-        return $out;
+	return $out;
     }
 
     public function popupCont($data, $light ='', $mess='', $action='addContPopup') {
-        if($light == 'erreurCont') {
-            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupCont($data, $action);
-        }
-        else {
-            if($action == 'modifContPopup')
-                $titre = $data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
-            else
-                $titre = 'Nouveau Contact';
-            $corps = '<div id="popupAddCont" >';
-            $corps .= $this->formPopupCont($data, $action);
-            $corps .= '</div>';
-            $pied = '<a href="javascript:document.addContDevis.reset();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
-            if($data['from'] == 'contactEntreprise')
-                $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
-            else
-                $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'popupAddCont\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
-            return generateZBox($titre, $titre, $corps, $pied, 'popupAddContDevis');
-        }
+	if($light == 'erreurCont') {
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupCont($data, $action);
+	}
+	else {
+	    if($action == 'modifContPopup')
+		$titre = $data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+	    else
+		$titre = 'Nouveau Contact';
+	    $corps = '<div id="popupAddCont" >';
+	    $corps .= $this->formPopupCont($data, $action);
+	    $corps .= '</div>';
+	    $pied = '<a href="javascript:document.addContDevis.reset();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
+	    if($data['from'] == 'contactEntreprise')
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+	    else
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'popupAddCont\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+	    return generateZBox($titre, $titre, $corps, $pied, 'popupAddContDevis');
+	}
     }
 
     private function formPopupCont($data, $action = 'addContPopup') {
-        if($data['idRetour'] == '' and $data['retour'] != '')
-            $data['idRetour'] = $data['retour'];
+	if($data['idRetour'] == '' and $data['retour'] != '')
+	    $data['idRetour'] = $data['retour'];
 
 	$corps = '<form name="addContDevis" method="post" action="Contact.php">';
 	$corps .= '<input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" />';
@@ -550,7 +552,7 @@ class contactView extends generalView {
 	$corps .= '<fieldset class="form"><legend>Détail du contact</legend>';
 	$corps .= '<div class="row">';
 	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.civ);">Civilité</div>';
-	$corps .= '<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Melle'=>'Mademoiselle'), $data['civ_cont'], '', '', false).'</div></div>';
+	$corps .= '<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Mlle'=>'Mademoiselle'), $data['civ_cont'], '', '', false).'</div></div>';
 	$corps .= '<div class="row">';
 	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.prenom);">Prenom</div>';
 	$corps .= '<div class="field">'.inputTag('text', 'prenom_cont', '', '', '', $data['prenom_cont']).'</div></div>';
@@ -588,84 +590,84 @@ class contactView extends generalView {
     }
 
     public function popupEnt($data, $light ='', $mess='') {
-        if($light == 'erreurEnt') {
-            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupEnt($data);
-        }
-        else {
-            $titre = 'Nouvelle Entreprise';
-            $corps = '<div id="popupAddEnt" >';
-            $corps .= $this->formPopupEnt($data);
-            $corps .= '</div>';
-            $pied = '<a href="javascript:document.addEntDevis.reset();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
-            $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addEntDevis\', \'prospec/Contact.php\',\'popupAddEnt\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
-            return generateZBox($titre, $titre, $corps, $pied, 'popupAddEntDevis');
-        }
+	if($light == 'erreurEnt') {
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupEnt($data);
+	}
+	else {
+	    $titre = 'Nouvelle Entreprise';
+	    $corps = '<div id="popupAddEnt" >';
+	    $corps .= $this->formPopupEnt($data);
+	    $corps .= '</div>';
+	    $pied = '<a href="javascript:document.addEntDevis.reset();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
+	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addEntDevis\', \'prospec/Contact.php\',\'popupAddEnt\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+	    return generateZBox($titre, $titre, $corps, $pied, 'popupAddEntDevis');
+	}
     }
 
     private function formPopupEnt($data) {
 
-        $tva = ($data['tauxTVA_ent'] != "") ? $data['tauxTVA_ent'] : $GLOBALS['zunoClientStatut']['tauxTVA'];
+	$tva = ($data['tauxTVA_ent'] != "") ? $data['tauxTVA_ent'] : $GLOBALS['zunoClientStatut']['tauxTVA'];
 
-        $corps = '<form name="addEntDevis" method="post" action="Contact.php">';
-        $corps .= '<input type="hidden" name="action" value="addEntPopup" />';
-        $corps .= '<div class="block width33">';
-        $corps .= '<fieldset class="form"><legend>Informations sur l\'entreprise</legend>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>';
-        $corps .= '<div class="field">'.inputTag('text', 'nom_ent', '', '', '', $data['nom_ent']).'</div></div>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>';
-        $corps .= '<div class="field">'.selectTag('type_ent', $data['types'], $data['type_ent'], '', '', false).'</div></div>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ttva);">Taux TVA</div>';
-        $corps .= '<div class="field">'.selectTVATag('tauxTVA_ent', array(), $tva, '', '', false).'</div></div>';
-        $corps .= '</fieldset></div>';
-        $corps .= '<div class="block width33">';
-        $corps .= '<fieldset class="form"><legend>Autres coordonnées</legend>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Faximile</div>';
-        $corps .= '<div class="field">'.inputTag('text', 'fax_ent', '', '', '', prepareTelAffichage($data['fax_ent'])).'</div></div>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphonne</div>';
-        $corps .= '<div class="field">'.inputTag('text', 'tel_ent', '', '', '', prepareTelAffichage($data['tel_ent'])).'</div></div>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site Web</div>';
-        $corps .= '<div class="field">'.inputTag('text', 'www_ent', '', '', '', $data['www_ent']).'</div></div>';
-        $corps .= '</fieldset></div>';
-        $corps .= '<div class="block width33">';
-        $corps .= '<fieldset class="form"><legend>Coordonnées postales</legend>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.add);">Adresse</div>';
-        $corps .= '<div class="field">'.inputTag('text', 'add1_ent', '', '', '', $data['add1_ent']).'</div></div>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label">Complément</div>';
-        $corps .= '<div class="field">'.inputTag('text', 'add2_ent', '', '', '', $data['add2_ent']).'</div></div>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.cpVille);">CP - Ville</div>';
-        $corps .= '<div class="field">'.inputTag('text','cp_ent','civ','',4,$data['cp_ent'],' id="entcp" onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'entVille\');"').selectTag('ville_ent',array($data['ville_ent']),$data['ville_ent'], 'nextciv',' id="entVille"  onblur="finishEditing();" onclick="beginEditing(this);"').'</div></div>';
-        $corps .= '<div class="row">';
-        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.pays);">Pays</div>';
-        $corps .= '<div class="field">'.selectTag('pays_ent', $data['listePays'], $data['pays_ent']).'</div></div>';
-        $corps .= '</fieldset></div></form>';
-        return $corps;
+	$corps = '<form name="addEntDevis" method="post" action="Contact.php">';
+	$corps .= '<input type="hidden" name="action" value="addEntPopup" />';
+	$corps .= '<div class="block width33">';
+	$corps .= '<fieldset class="form"><legend>Informations sur l\'entreprise</legend>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>';
+	$corps .= '<div class="field">'.inputTag('text', 'nom_ent', '', '', '', $data['nom_ent']).'</div></div>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>';
+	$corps .= '<div class="field">'.selectTag('type_ent', $data['types'], $data['type_ent'], '', '', false).'</div></div>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ttva);">Taux TVA</div>';
+	$corps .= '<div class="field">'.selectTVATag('tauxTVA_ent', array(), $tva, '', '', false).'</div></div>';
+	$corps .= '</fieldset></div>';
+	$corps .= '<div class="block width33">';
+	$corps .= '<fieldset class="form"><legend>Autres coordonnées</legend>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Faximile</div>';
+	$corps .= '<div class="field">'.inputTag('text', 'fax_ent', '', '', '', prepareTelAffichage($data['fax_ent'])).'</div></div>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphonne</div>';
+	$corps .= '<div class="field">'.inputTag('text', 'tel_ent', '', '', '', prepareTelAffichage($data['tel_ent'])).'</div></div>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site Web</div>';
+	$corps .= '<div class="field">'.inputTag('text', 'www_ent', '', '', '', $data['www_ent']).'</div></div>';
+	$corps .= '</fieldset></div>';
+	$corps .= '<div class="block width33">';
+	$corps .= '<fieldset class="form"><legend>Coordonnées postales</legend>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.add);">Adresse</div>';
+	$corps .= '<div class="field">'.inputTag('text', 'add1_ent', '', '', '', $data['add1_ent']).'</div></div>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label">Complément</div>';
+	$corps .= '<div class="field">'.inputTag('text', 'add2_ent', '', '', '', $data['add2_ent']).'</div></div>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.cpVille);">CP - Ville</div>';
+	$corps .= '<div class="field">'.inputTag('text','cp_ent','civ','',4,$data['cp_ent'],' id="entcp" onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'entVille\');"').selectTag('ville_ent',array($data['ville_ent']),$data['ville_ent'], 'nextciv',' id="entVille"  onblur="finishEditing();" onclick="beginEditing(this);"').'</div></div>';
+	$corps .= '<div class="row">';
+	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.pays);">Pays</div>';
+	$corps .= '<div class="field">'.selectTag('pays_ent', $data['listePays'], $data['pays_ent']).'</div></div>';
+	$corps .= '</fieldset></div></form>';
+	return $corps;
     }
 
     public function listeResult($datas, $tableau = 'classic') {
-        return '<div id=listeResultProspec>'.$this->ResultProspec($datas, $tableau).'</div>';
+	return '<div id=listeResultProspec>'.$this->ResultProspec($datas, $tableau).'</div>';
     }
 
     private function ResultProspec($datas, $tableau = 'classic') {
-        $suffixeLink = '../';
-        $modHistorique = false;
-        $linkOrderFunction = 'tagLinkOrderSwitch';
-        if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
-            $suffixeLink = './';
-            $linkOrderFunction = 'tagNoLinkOrderSwitch';
-            $modHistorique = true;
-        }
+	$suffixeLink = '../';
+	$modHistorique = false;
+	$linkOrderFunction = 'tagLinkOrderSwitch';
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
+	    $suffixeLink = './';
+	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
+	    $modHistorique = true;
+	}
 
-        if($tableau == 'ent') {
-            $out = "<script type=\"text/javascript\">
+	if($tableau == 'ent') {
+	    $out = "<script type=\"text/javascript\">
 		function exportTab() {
 		    if ($('divExportTableur').style.display == 'inline')
 			$('divExportTableur').style.display = 'none';
@@ -678,63 +680,63 @@ class contactView extends generalView {
 		    $('resultFormContact').submit();
 		}
 		</script>";
-            $out .= '<div class="blockTable">
+	    $out .= '<div class="blockTable">
 		    <form id="resultFormContact" method="post" action="Recherche.php" name="resultContact">
 		    <input type="hidden" name="action" value="" id="resultContactAction" />
 		    <input type="hidden" name="exportType" value="" id="resultContactExportType" />
 		    <table cellspacing="0"><tbody>';
-            $out .= '<tr class="titre">';
-            $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
-            $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th>'.$this->$linkOrderFunction('Type','nom_tyent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th>'.$this->$linkOrderFunction('Site&nbsp;web','www_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '</tr>';
+	    $out .= '<tr class="titre">';
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
+	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Type','nom_tyent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Site&nbsp;web','www_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '</tr>';
 
 
-            $alternance =  0;
-            foreach($datas['data'] as $result) {
-                $action = '';
-                $link = $suffixeLink."prospec/fiche.php?id_ent=".$result['id_ent'];
+	    $alternance =  0;
+	    foreach($datas['data'] as $result) {
+		$action = '';
+		$link = $suffixeLink."prospec/fiche.php?id_ent=".$result['id_ent'];
 
 
-                if (strlen($result['nom_ent']) > 25)
-                    $result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
-                if ($result['type_ent'] != '')
-                    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
-                $result['contact'] = $result['nom_ent'];
+		if (strlen($result['nom_ent']) > 25)
+		    $result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
+		if ($result['type_ent'] != '')
+		    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
+		$result['contact'] = $result['nom_ent'];
 
-                $out .= '<tr class="altern'.$alternance.'">';
-                $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="selectE[]" value="'.$result['id_ent'].'" checked="checked"/></td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['contact'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['nom_tyent'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['ville_ent'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['www_ent'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.prepareTelAffichage($result['tel_ent']).'</td>';
-                $out .= '</tr>';
-                $alternance = (($alternance+1) % 2);
-            }
-            $out .= '</tbody></table>';
-            $out .= $this->ResultGroupActionForm();
-            $out .= '</form></div>';
-            if ($modHistorique)
-                $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
-            else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
+		$out .= '<tr class="altern'.$alternance.'">';
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="selectE[]" value="'.$result['id_ent'].'" checked="checked"/></td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['contact'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['nom_tyent'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['ville_ent'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['www_ent'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.prepareTelAffichage($result['tel_ent']).'</td>';
+		$out .= '</tr>';
+		$alternance = (($alternance+1) % 2);
+	    }
+	    $out .= '</tbody></table>';
+	    $out .= $this->ResultGroupActionForm();
+	    $out .= '</form></div>';
+	    if ($modHistorique)
+		$titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
+	    else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
 
-            $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage",$suffixeLink);
-            loadPlugin(array('OOConverter'));
-            $availableConvFormat = OOConverterAvailable('spreadsheet');
-            $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="contactDoExportTableur(this.value);" ').'</div>';
-            $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
-            $bouton .= $this->ResultGroupActionBouton($suffixeLink);
-            return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
+	    $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage",$suffixeLink);
+	    loadPlugin(array('OOConverter'));
+	    $availableConvFormat = OOConverterAvailable('spreadsheet');
+	    $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="contactDoExportTableur(this.value);" ').'</div>';
+	    $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
+	    $bouton .= $this->ResultGroupActionBouton($suffixeLink);
+	    return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
 
-        }
-        else {
+	}
+	else {
 
 
-            $out = "<script type=\"text/javascript\">
+	    $out = "<script type=\"text/javascript\">
 		function exportTab() {
 		    if ($('divExportTableur').style.display == 'inline')
 			$('divExportTableur').style.display = 'none';
@@ -747,123 +749,123 @@ class contactView extends generalView {
 		    $('resultFormContact').submit();
 		}
 		</script>";
-            $out .= '<div class="blockTable">
+	    $out .= '<div class="blockTable">
 		    <form id="resultFormContact" method="post" action="Recherche.php" name="resultContact">
 		    <input type="hidden" name="action" value="" id="resultContactAction" />
 		    <input type="hidden" name="exportType" value="" id="resultContactExportType" />
 		    <table cellspacing="0"><tbody>';
-            $out .= '<tr class="titre">';
-            $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
-            $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
-            $out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '<th>'.$this->$linkOrderFunction('e-mail','mail_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-            $out .= '</tr>';
-            $alternance =  0;
-            foreach($datas['data'] as $result) {
-                $action = '';
-                if($result['id_ent'] == '')
-                    $link = $suffixeLink."prospec/Contact.php?id_cont=".$result['id_cont'];
-                else $link = $suffixeLink."prospec/fiche.php?id_ent=".$result['id_ent'];
+	    $out .= '<tr class="titre">';
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
+	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
+	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('e-mail','mail_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '</tr>';
+	    $alternance =  0;
+	    foreach($datas['data'] as $result) {
+		$action = '';
+		if($result['id_ent'] == '')
+		    $link = $suffixeLink."prospec/Contact.php?id_cont=".$result['id_cont'];
+		else $link = $suffixeLink."prospec/fiche.php?id_ent=".$result['id_ent'];
 
-                if ($result['nom_ent'] != '') {
-                    if (strlen($result['nom_ent']) > 25)
-                        $result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
-                    if ($result['type_ent'] != '')
-                        $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
-                    $result['contact'] = $result['nom_ent'];
-                    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
-                    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
-                    if($result['mail_cont'] == '')  $result['mail_cont']  = $result['mail_ent'];
-                }
-                else {
-                    $result['nom_ent'] = '<i>Particulier</i>';
-                    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
-                    $result['contact'] = $result['nom_ent'];
-                    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
-                    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
-                    if($result['mail_cont'] == '')  $result['mail_cont']  = $result['mail_ent'];
-                }
-                $out .= '<tr class="altern'.$alternance.'">';
-                $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="selectE[]" value="'.$result['id_ent'].'" checked="checked"/></td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['contact'].'</td>';
-                $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="selectC[]" value="'.$result['id_cont'].'" checked="checked"/></td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['civ_cont'].' '.$result['prenom_cont'].' '.$result['nom_cont'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['ville_cont'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.prepareTelAffichage($result['tel_cont']).'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['mail_cont'].'</td>';
-                //				$out .= '<td class="barre right" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['id_app'].'</td>';
-                $out .= '</tr>';
-                $alternance = (($alternance+1) % 2);
-            }
+		if ($result['nom_ent'] != '') {
+		    if (strlen($result['nom_ent']) > 25)
+			$result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
+		    if ($result['type_ent'] != '')
+			$result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
+		    $result['contact'] = $result['nom_ent'];
+		    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
+		    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
+		    if($result['mail_cont'] == '')  $result['mail_cont']  = $result['mail_ent'];
+		}
+		else {
+		    $result['nom_ent'] = '<i>Particulier</i>';
+		    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
+		    $result['contact'] = $result['nom_ent'];
+		    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
+		    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
+		    if($result['mail_cont'] == '')  $result['mail_cont']  = $result['mail_ent'];
+		}
+		$out .= '<tr class="altern'.$alternance.'">';
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="selectE[]" value="'.$result['id_ent'].'" checked="checked"/></td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['contact'].'</td>';
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="selectC[]" value="'.$result['id_cont'].'" checked="checked"/></td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['civ_cont'].' '.$result['prenom_cont'].' '.$result['nom_cont'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['ville_cont'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.prepareTelAffichage($result['tel_cont']).'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['mail_cont'].'</td>';
+		//				$out .= '<td class="barre right" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['id_app'].'</td>';
+		$out .= '</tr>';
+		$alternance = (($alternance+1) % 2);
+	    }
 
-            $out .= '</tbody></table>';
-            $out .= $this->ResultGroupActionForm();
-            $out .= '</form></div>';
-            if ($modHistorique)
-                $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
-            else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
+	    $out .= '</tbody></table>';
+	    $out .= $this->ResultGroupActionForm();
+	    $out .= '</form></div>';
+	    if ($modHistorique)
+		$titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
+	    else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
 
-            $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage",$suffixeLink);
-            loadPlugin(array('OOConverter'));
-            $availableConvFormat = OOConverterAvailable('spreadsheet');
-            $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="contactDoExportTableur(this.value);" ').'</div>';
-            $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
-            $bouton .= $this->ResultGroupActionBouton($suffixeLink);
-            return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
-        }
+	    $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage",$suffixeLink);
+	    loadPlugin(array('OOConverter'));
+	    $availableConvFormat = OOConverterAvailable('spreadsheet');
+	    $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="contactDoExportTableur(this.value);" ').'</div>';
+	    $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
+	    $bouton .= $this->ResultGroupActionBouton($suffixeLink);
+	    return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
+	}
 
     }
 
 
 
     private function ResultGroupActionForm() {
-        $sql = new contactEntrepriseModel();
-        $out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-        $fieldset = new ZunoFieldset('Type d\'action','groupActionContact','height: 310px');
-        $fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttributeC', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttributeC\')"'),'Changer un attribut de contact','ZTips.contactEnt.groupActionChangeAttributeC');
-        $fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttributeE', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttributeE\')"'),'Changer un attribut d\'entreprise','ZTips.contactEnt.groupActionChangeAttributeE');
-        $fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'deleteC', ' onclick="toggleSubGroupedAction(\'groupedSubActionDeleteC\')"'),'Supprimer les contacts','ZTips.contactEnt.groupActionDeleteC');
-        $fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'deleteE', ' onclick="toggleSubGroupedAction(\'groupedSubActionDeleteE\')"'),'Supprimer les entreprises','ZTips.contactEnt.groupActionDeleteE');
-        $out.= $fieldset->generateFieldset();
-        $out.= '</div><div class="block width50"><div id="groupedSubAction">';
-        $fieldset = new ZunoFieldset('Information des contacts','groupedSubActionChangeAttributeC','height: 250px');
-        $fieldset->ligneSelect('Fonction', 'fonction_cont','',$sql->getFonction());
-        $fieldset->ligneInput('Commentaire', 'comm_cont');
-        $fieldset->ligneInput('Ville', 'ville_cont');
-        $fieldset->ligneInput('CP', 'cp_cont');
-        $fieldset->ligneRadio('Relance tel', 'relactive_cont', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
-        $out.= $fieldset->generateFieldset();
-        $fieldset = new ZunoFieldset('Information des entreprises','groupedSubActionChangeAttributeE','height: 250px');
-        $fieldset->ligneSelect('Activité', 'activite_ent','',$sql->getActivitesEnt());
-        $fieldset->ligneSelect('Type', 'type_ent','',$sql->getTypesEnt());
-        $fieldset->ligneInput('Remise', 'remise_ent');
-        $fieldset->ligneInput('Effectifs', 'effectif_ent');
-        $fieldset->ligneInput('Commentaire', 'commsociete_ent');
-        $fieldset->ligneInput('Ville', 'ville_ent');
-        $fieldset->ligneInput('CP', 'cp_ent');
-        $fieldset->ligneFree('TVA',selectTVATag("tauxTVA_ent", array(), '', '', '', true));
-        $fieldset->ligneRadio('Siège', 'siege_ent', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
-        $out.= $fieldset->generateFieldset();
-        $fieldset = new ZunoFieldset('Supprimer les contacts','groupedSubActionDeleteC','height: 250px');
-        $fieldset->addOtherLigne('<div class="row"><i>Seul les contacts qui ne sont liés à aucun document seront supprimés</i></div>');
-        $out.= $fieldset->generateFieldset();
-        $fieldset = new ZunoFieldset('Supprimer les entreprises','groupedSubActionDeleteE','height: 250px');
-        $fieldset->addOtherLigne('<div class="row"><i>Seul les entreprises qui ne sont liés à aucun document seront supprimés</i></div>');
-        $out.= $fieldset->generateFieldset();
-        $out.= '</div>';
-        $fieldset = new ZunoFieldset('Executer le changement');
-        $fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormContact\',\'resultContactAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
-        $out.= $fieldset->generateFieldset();
-        $out.= '</div></div></div>';
-        return $out;
+	$sql = new contactEntrepriseModel();
+	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
+	$fieldset = new ZunoFieldset('Type d\'action','groupActionContact','height: 310px');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttributeC', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttributeC\')"'),'Changer un attribut de contact','ZTips.contactEnt.groupActionChangeAttributeC');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttributeE', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttributeE\')"'),'Changer un attribut d\'entreprise','ZTips.contactEnt.groupActionChangeAttributeE');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'deleteC', ' onclick="toggleSubGroupedAction(\'groupedSubActionDeleteC\')"'),'Supprimer les contacts','ZTips.contactEnt.groupActionDeleteC');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'deleteE', ' onclick="toggleSubGroupedAction(\'groupedSubActionDeleteE\')"'),'Supprimer les entreprises','ZTips.contactEnt.groupActionDeleteE');
+	$out.= $fieldset->generateFieldset();
+	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
+	$fieldset = new ZunoFieldset('Information des contacts','groupedSubActionChangeAttributeC','height: 250px');
+	$fieldset->ligneSelect('Fonction', 'fonction_cont','',$sql->getFonction());
+	$fieldset->ligneInput('Commentaire', 'comm_cont');
+	$fieldset->ligneInput('Ville', 'ville_cont');
+	$fieldset->ligneInput('CP', 'cp_cont');
+	$fieldset->ligneRadio('Relance tel', 'relactive_cont', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
+	$out.= $fieldset->generateFieldset();
+	$fieldset = new ZunoFieldset('Information des entreprises','groupedSubActionChangeAttributeE','height: 250px');
+	$fieldset->ligneSelect('Activité', 'activite_ent','',$sql->getActivitesEnt());
+	$fieldset->ligneSelect('Type', 'type_ent','',$sql->getTypesEnt());
+	$fieldset->ligneInput('Remise', 'remise_ent');
+	$fieldset->ligneInput('Effectifs', 'effectif_ent');
+	$fieldset->ligneInput('Commentaire', 'commsociete_ent');
+	$fieldset->ligneInput('Ville', 'ville_ent');
+	$fieldset->ligneInput('CP', 'cp_ent');
+	$fieldset->ligneFree('TVA',selectTVATag("tauxTVA_ent", array(), '', '', '', true));
+	$fieldset->ligneRadio('Siège', 'siege_ent', ' ', array(array('label'=>'inchangé','value'=>' '),array('label'=>'non','value'=>'0'),array('label'=>'oui','value'=>'1')));
+	$out.= $fieldset->generateFieldset();
+	$fieldset = new ZunoFieldset('Supprimer les contacts','groupedSubActionDeleteC','height: 250px');
+	$fieldset->addOtherLigne('<div class="row"><i>Seul les contacts qui ne sont liés à aucun document seront supprimés</i></div>');
+	$out.= $fieldset->generateFieldset();
+	$fieldset = new ZunoFieldset('Supprimer les entreprises','groupedSubActionDeleteE','height: 250px');
+	$fieldset->addOtherLigne('<div class="row"><i>Seul les entreprises qui ne sont liés à aucun document seront supprimés</i></div>');
+	$out.= $fieldset->generateFieldset();
+	$out.= '</div>';
+	$fieldset = new ZunoFieldset('Executer le changement');
+	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormContact\',\'resultContactAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
+	$out.= $fieldset->generateFieldset();
+	$out.= '</div></div></div>';
+	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-        $bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
-        return $bouton;
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	return $bouton;
     }
 
 
@@ -875,12 +877,12 @@ class contactView extends generalView {
      * @deprecated 1 - 26 oct. 2009
      */
     private function Result($datas) {
-        if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-            $suffixeLink = './';
-        else $suffixeLink = '../';
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	    $suffixeLink = './';
+	else $suffixeLink = '../';
 
-        $out  = '<div class="blockTable"><table cellspacing="0"><tbody>';
-        $out .= '<tr class="titre">
+	$out  = '<div class="blockTable"><table cellspacing="0"><tbody>';
+	$out .= '<tr class="titre">
 			<th class="center barre">Entreprise</th>
 			<th class="center barre">Contact</th>
 			<th>Ville</th>
@@ -888,47 +890,47 @@ class contactView extends generalView {
 			<th>e-mail</th>
 			<th class="last right">type</th>
 		</tr>';
-        $alternance =  0;
-        foreach($datas['data'] as $v) {
-            foreach($v as $result) {
-                $action = '';
-                if($result['id_ent'] == '')
-                    $link = $suffixeLink."prospec/Contact.php?id_cont=".$result['id_cont'];
-                else $link = $suffixeLink."prospec/fiche.php?id_ent=".$result['id_ent'];
+	$alternance =  0;
+	foreach($datas['data'] as $v) {
+	    foreach($v as $result) {
+		$action = '';
+		if($result['id_ent'] == '')
+		    $link = $suffixeLink."prospec/Contact.php?id_cont=".$result['id_cont'];
+		else $link = $suffixeLink."prospec/fiche.php?id_ent=".$result['id_ent'];
 
-                if ($result['nom_ent'] != '') {
-                    if (strlen($result['nom_ent']) > 25)
-                        $result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
-                    if ($result['type_ent'] != '')
-                        $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
-                    $result['contact'] = $result['nom_ent'];
-                    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
-                    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
-                    if($result['mail_cont'] == '')  $result['mail_cont']  = $result['mail_ent'];
-                }
-                else {
-                    $result['nom_ent'] = '<i>Particulier</i>';
-                    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
-                    $result['contact'] = $result['nom_ent'];
-                }
-                $out .= '<tr class="altern'.$alternance.'">';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['contact'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['civ_cont'].' '.$result['prenom_cont'].' '.$result['nom_cont'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['ville_cont'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.prepareTelAffichage($result['tel_cont']).'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['mail_cont'].'</td>';
-                $out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['nom_fct'].'</td>';
-                $out .= '</tr>';
-                $alternance = (($alternance+1) % 2);
-            }
-        }
+		if ($result['nom_ent'] != '') {
+		    if (strlen($result['nom_ent']) > 25)
+			$result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
+		    if ($result['type_ent'] != '')
+			$result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
+		    $result['contact'] = $result['nom_ent'];
+		    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
+		    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
+		    if($result['mail_cont'] == '')  $result['mail_cont']  = $result['mail_ent'];
+		}
+		else {
+		    $result['nom_ent'] = '<i>Particulier</i>';
+		    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
+		    $result['contact'] = $result['nom_ent'];
+		}
+		$out .= '<tr class="altern'.$alternance.'">';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['contact'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['civ_cont'].' '.$result['prenom_cont'].' '.$result['nom_cont'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['ville_cont'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.prepareTelAffichage($result['tel_cont']).'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['mail_cont'].'</td>';
+		$out .= '<td class="barre" style="cursor : pointer;" onclick="window.location=\''.$link.'\'">'.$result['nom_fct'].'</td>';
+		$out .= '</tr>';
+		$alternance = (($alternance+1) % 2);
+	    }
+	}
 
-        $out .= '</tbody></table></div>';
-        if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
-            $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
-        else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
-        $bouton = '';
-        return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
+	$out .= '</tbody></table></div>';
+	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit'])
+	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
+	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
+	$bouton = '';
+	return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
     }
 
     /**
@@ -939,10 +941,10 @@ class contactView extends generalView {
      * @return $retour	Le HTML
      */
     public function searchResult($datas, $light='', $tableau = 'classic') {
-        if($light == 'result')
-            return $this->ResultProspec($datas, $tableau);
-        else {
-            $script = "<script type=\"text/javascript\">
+	if($light == 'result')
+	    return $this->ResultProspec($datas, $tableau);
+	else {
+	    $script = "<script type=\"text/javascript\">
 			function autoCompletage() { new Ajax.Autocompleter(\"ACarecherche\", \"ACarecherche_choix\", \"../ajaxRef.php?action=quickSearchPropsec\", {paramName: \"value\", minChars: 2, indicator: \"loadingarecherche\"}); }
 			function ChangeContactResultPage(limit,from,order,sens) {
 			    ChangeAction('search');
@@ -964,14 +966,14 @@ class contactView extends generalView {
 			}
 			Event.observe('searchProspecFormId', 'submit', function(event){ Event.stop(event); ChangeSubmit(); return false;}, false);
 			</script>";
-            $form = $this->searchForm($datas);
-            $rendu = new ZunoRenduHtml('rechercheProspec');
-            $titreF = imageTag('../img/prospec/contact.png','recherche').' Recherche de contacts';
-            $rendu->generateZBox($titreF,$titreF, $form->generateForm(), $form->generateButtons('listeResultProspec', 'Annuler', 'Rechercher'), 'divSearchProspec', 'open');
-            $rendu->addBox($this->listeResult($datas, $tableau));
-            $rendu->insertJS($script);
-            return $rendu->generateRendu();
-        }
+	    $form = $this->searchForm($datas);
+	    $rendu = new ZunoRenduHtml('rechercheProspec');
+	    $titreF = imageTag('../img/prospec/contact.png','recherche').' Recherche de contacts';
+	    $rendu->generateZBox($titreF,$titreF, $form->generateForm(), $form->generateButtons('listeResultProspec', 'Annuler', 'Rechercher'), 'divSearchProspec', 'open');
+	    $rendu->addBox($this->listeResult($datas, $tableau));
+	    $rendu->insertJS($script);
+	    return $rendu->generateRendu();
+	}
 
     }
 
@@ -981,33 +983,33 @@ class contactView extends generalView {
      * @return form Le formulaire généré
      */
     private function searchForm($datas) {
-        $liste[0]['value'] = 'entreprise';
-        $liste[0]['label'] = 'Recherche sur les entreprises';
-        $liste[1]['value'] = 'contact';
-        $liste[1]['label'] = 'Recherche sur les contacts';
-        $liste[2]['value'] = 'global';
-        $liste[2]['label'] = 'Recherche globale';
-        $form = new ZunoForm('searchProspec', 'prospec/Recherche.php', 'POST','searchProspecFormId');
-        $fieldset = new ZunoFieldset('Recherche assistée','','height: 100px');
-        $fieldset->ligneAutoComplete('Recherche', 'arecherche', $datas['recherche'], $datas['recherche'], '', '', false, '', false);
-        
-        $fieldset2 = new ZunoFieldset('Recherche classique','','height: 100px');
-        $fieldset2->ligneInput('Recherche', 'recherche', $datas['recherche'], 'id="champsRecherche"');
-        $fieldset2->ligneRadio('Type de recherche', 'type', ($datas['type'] != '') ? $datas['type'] : 'global', $liste);
+	$liste[0]['value'] = 'entreprise';
+	$liste[0]['label'] = 'Recherche sur les entreprises';
+	$liste[1]['value'] = 'contact';
+	$liste[1]['label'] = 'Recherche sur les contacts';
+	$liste[2]['value'] = 'global';
+	$liste[2]['label'] = 'Recherche globale';
+	$form = new ZunoForm('searchProspec', 'prospec/Recherche.php', 'POST','searchProspecFormId');
+	$fieldset = new ZunoFieldset('Recherche assistée','','height: 100px');
+	$fieldset->ligneAutoComplete('Recherche', 'arecherche', $datas['recherche'], $datas['recherche'], '', '', false, '', false);
 
-        $fieldset3 = new ZunoFieldset('Dernières recherches &nbsp;<a name="vider" onclick="viderCloud(\'prospec\', \''.$_SESSION['user']['id'].'\');" style="font-size:65%">(vider)</a>', '', 'height: 100px');
-        $cloud = new CloudView();
-        $fieldset3->addOtherLigne($cloud->cloud(array('contact', 'entreprise')));
+	$fieldset2 = new ZunoFieldset('Recherche classique','','height: 100px');
+	$fieldset2->ligneInput('Recherche', 'recherche', $datas['recherche'], 'id="champsRecherche"');
+	$fieldset2->ligneRadio('Type de recherche', 'type', ($datas['type'] != '') ? $datas['type'] : 'global', $liste);
 
-        $form->newBlock($fieldset2->generateFieldset(),'50');
-        $form->newBlock($fieldset->generateFieldset(), '50');        
-        $form->newBlock($fieldset3->generateFieldset(), '50');
-        $form->newInputHidden('action', 'search', 'ACTION');
-        $form->newInputHidden('limit', $datas['limit'], 'LIMIT');
-        $form->newInputHidden('from', $datas['from'], 'FROM');
-        $form->newInputHidden('order','nom_ent','ORDER');
-        $form->newInputHidden('orderSens','ASC','ORDERSENS');
-        return $form;
+	$fieldset3 = new ZunoFieldset('Dernières recherches &nbsp;<a name="vider" onclick="viderCloud(\'prospec\', \''.$_SESSION['user']['id'].'\');" style="font-size:65%">(vider)</a>', '', 'height: 100px');
+	$cloud = new CloudView();
+	$fieldset3->addOtherLigne($cloud->cloud(array('contact', 'entreprise')));
+
+	$form->newBlock($fieldset2->generateFieldset(),'50');
+	$form->newBlock($fieldset->generateFieldset(), '50');
+	$form->newBlock($fieldset3->generateFieldset(), '50');
+	$form->newInputHidden('action', 'search', 'ACTION');
+	$form->newInputHidden('limit', $datas['limit'], 'LIMIT');
+	$form->newInputHidden('from', $datas['from'], 'FROM');
+	$form->newInputHidden('order','nom_ent','ORDER');
+	$form->newInputHidden('orderSens','ASC','ORDERSENS');
+	return $form;
     }
 
 
@@ -1018,43 +1020,43 @@ class contactView extends generalView {
      * @return HTML portlet ready to insert
      */
     static function BoxSearchAppelForm($valeurs) {
-        $listeOrder['utilisateur_app  ASC'] = "Commercial";
-        $listeOrder['nom_ent ASC'] = "Entreprise";
-        $listeOrder['nom_cont ASC'] = "Contact";
-        $listeOrder['nom_fct ASC'] = "Fonction";
-        $listeOrder['ville_ent ASC'] = "Ville";
-        $listeOrder['type_ent DESC'] = "Type d'entreprise";
-        $tag['FormName'] = "SearchAppel";
+	$listeOrder['utilisateur_app  ASC'] = "Commercial";
+	$listeOrder['nom_ent ASC'] = "Entreprise";
+	$listeOrder['nom_cont ASC'] = "Contact";
+	$listeOrder['nom_fct ASC'] = "Fonction";
+	$listeOrder['ville_ent ASC'] = "Ville";
+	$listeOrder['type_ent DESC'] = "Type d'entreprise";
+	$tag['FormName'] = "SearchAppel";
 
-        //Bouton de la periode
-        if ($valeurs['debut'] == '')
-            $valeurs['debut'] = DateUniv2Human('','simpleLong');
+	//Bouton de la periode
+	if ($valeurs['debut'] == '')
+	    $valeurs['debut'] = DateUniv2Human('','simpleLong');
 
-        //Choix de l'utilisateur
-        if ($valeurs['utilisateur_app'] == '')
-            $valeurs['utilisateur_app'] = $_SESSION["user"]["id"];
-        $bddtmp = new Bdd('');
-        $bddtmp->makeRequeteFree('SELECT * FROM user WHERE actif = \'1\' ORDER BY nom ASC');
-        $res = $bddtmp->process();
-        if (count($res) > 0)
-            foreach ($res as $key => $data)
-                $champ[$data['login']] = $data['civ']." ".$data['prenom']." ".$data['nom']." (".$data['login'].")";
+	//Choix de l'utilisateur
+	if ($valeurs['utilisateur_app'] == '')
+	    $valeurs['utilisateur_app'] = $_SESSION["user"]["id"];
+	$bddtmp = new Bdd('');
+	$bddtmp->makeRequeteFree('SELECT * FROM user WHERE actif = \'1\' ORDER BY nom ASC');
+	$res = $bddtmp->process();
+	if (count($res) > 0)
+	    foreach ($res as $key => $data)
+		$champ[$data['login']] = $data['civ']." ".$data['prenom']." ".$data['nom']." (".$data['login'].")";
 
-        //Choix de la relance active
-        if ($valeurs['relactive_app'] == '1') {
-            $option = 'checked="checked"';
-        }
-        else {
-            $option = '';
-        }
+	//Choix de la relance active
+	if ($valeurs['relactive_app'] == '1') {
+	    $option = 'checked="checked"';
+	}
+	else {
+	    $option = '';
+	}
 
-        //Choix du type de contact
-        if ($valeurs['premiercont_app'] == '1')
-            $option1 = 'checked="checked"';
-        else $option1 = '';
+	//Choix du type de contact
+	if ($valeurs['premiercont_app'] == '1')
+	    $option1 = 'checked="checked"';
+	else $option1 = '';
 
-        //Choix de l'ordre
-        $corps = '<form method="post" action="?" name="'.$tag['FormName'].'">
+	//Choix de l'ordre
+	$corps = '<form method="post" action="?" name="'.$tag['FormName'].'">
 	    <div class="block width50">
 		    <fieldset class="form" style="height: 110px">
 			    <div class="row">
@@ -1100,10 +1102,10 @@ class contactView extends generalView {
 		    </fieldset>
 	    </div>
 	    </form>' ;
-        $titre = imageTag('../img/prospec/voir.png','recherche').' Recherche des relances';
-        $pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
+	$titre = imageTag('../img/prospec/voir.png','recherche').' Recherche des relances';
+	$pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
 			   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/voir.png','','middle').' Rechercher</a>';
-        return generateZBox($titre,$titre,$corps,$pied,'relanceSearch','none');
+	return generateZBox($titre,$titre,$corps,$pied,'relanceSearch','none');
     }
 
     /**
@@ -1113,41 +1115,41 @@ class contactView extends generalView {
      * @return HTML portlet ready to insert
      */
     static function BoxSearchAppelResult($valeurs,$opt) {
-        //Choix de la periode
-        if ($valeurs['debut'] != '') {
-            if($valeurs['fin'] != '')
-                $reqAdd .= "AND (rappel_app >= '".DateHuman2Univ($valeurs['debut'])."' OR rappel_app <= '".DateHuman2Univ($valeurs['fin'])."') ";
-            else  $reqAdd .= "AND rappel_app = '".DateHuman2Univ($valeurs['debut'])."' ";
-        }
-        elseif($valeurs['fin'] != '')
-            $reqAdd .= "AND rappel_app = '".$valeurs['fin']."' ";
-        //Choix de l'utilisateur
-        if ($valeurs['utilisateur_app'] == '')
-            $reqAdd .= "AND utilisateur_app = '".$_SESSION["user"]["id"]."' ";
-        else  $reqAdd .= "AND utilisateur_app = '".$valeurs['utilisateur_app']."' ";
-        //Choix de la relance active
-        if ($valeurs['relactive_app'] == '1')
-            $reqAdd .= 'AND relactive_app = 1 ';
-        //Choix du département
-        if ($valeurs['cp_ent'] != '')
-            $reqAdd .= 'AND cp_ent LIKE \''.$valeurs['cp_ent'].'%\' ';
-        //Choix du type
-        if ($valeurs['type_ent'] != '')
-            $reqAdd .= 'AND type_ent = \''.$valeurs['type_ent'].'\' ';
-        //Choix de la fonction
-        if ($valeurs['fonction_cont'] != '')
-            $reqAdd .= 'AND fonction_cont = \''.$valeurs['fonction_cont'].'\' ';
-        //Choix du type de contact
-        if ($valeurs['premiercont_app'] == '1')
-            $reqAdd .= 'AND premiercont_app = 1 ';
-        else  $reqAdd .= 'AND premiercont_app = 0 ';
+	//Choix de la periode
+	if ($valeurs['debut'] != '') {
+	    if($valeurs['fin'] != '')
+		$reqAdd .= "AND (rappel_app >= '".DateHuman2Univ($valeurs['debut'])."' OR rappel_app <= '".DateHuman2Univ($valeurs['fin'])."') ";
+	    else  $reqAdd .= "AND rappel_app = '".DateHuman2Univ($valeurs['debut'])."' ";
+	}
+	elseif($valeurs['fin'] != '')
+	    $reqAdd .= "AND rappel_app = '".$valeurs['fin']."' ";
+	//Choix de l'utilisateur
+	if ($valeurs['utilisateur_app'] == '')
+	    $reqAdd .= "AND utilisateur_app = '".$_SESSION["user"]["id"]."' ";
+	else  $reqAdd .= "AND utilisateur_app = '".$valeurs['utilisateur_app']."' ";
+	//Choix de la relance active
+	if ($valeurs['relactive_app'] == '1')
+	    $reqAdd .= 'AND relactive_app = 1 ';
+	//Choix du département
+	if ($valeurs['cp_ent'] != '')
+	    $reqAdd .= 'AND cp_ent LIKE \''.$valeurs['cp_ent'].'%\' ';
+	//Choix du type
+	if ($valeurs['type_ent'] != '')
+	    $reqAdd .= 'AND type_ent = \''.$valeurs['type_ent'].'\' ';
+	//Choix de la fonction
+	if ($valeurs['fonction_cont'] != '')
+	    $reqAdd .= 'AND fonction_cont = \''.$valeurs['fonction_cont'].'\' ';
+	//Choix du type de contact
+	if ($valeurs['premiercont_app'] == '1')
+	    $reqAdd .= 'AND premiercont_app = 1 ';
+	else  $reqAdd .= 'AND premiercont_app = 0 ';
 
-        //Choix de l'ordre
-        if ($valeurs['order'] == '')
-            $reqOrder = 'rappel_app';
-        else  $reqOrder = $valeurs['order'];
+	//Choix de l'ordre
+	if ($valeurs['order'] == '')
+	    $reqOrder = 'rappel_app';
+	else  $reqOrder = $valeurs['order'];
 
-        $req = "SELECT utilisateur_app,id_ent,id_cont,id_app,nom_ent,ville_ent,tel_ent,nom_cont,prenom_cont,civ_cont,nom_fct,type_ent,nom_tyent,rappel_app
+	$req = "SELECT utilisateur_app,id_ent,id_cont,id_app,nom_ent,ville_ent,tel_ent,nom_cont,prenom_cont,civ_cont,nom_fct,type_ent,nom_tyent,rappel_app
 			FROM contact
 			LEFT JOIN ref_fonction ON ref_fonction.id_fct = contact.fonction_cont
 			LEFT JOIN appel ON appel.contact_app = contact.id_cont
@@ -1158,53 +1160,53 @@ class contactView extends generalView {
 			GROUP BY id_cont
 			ORDER BY ".$reqOrder." , rappel_app ASC,nom_ent ASC LIMIT 0,".$GLOBALS['PropsecConf']['list.limite.relance'];
 
-        // requete pour la liste
-        $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	// requete pour la liste
+	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 
-        // remplissage du tableau
-        if (count($res) > 0) {
-            $j=0;
-            foreach ($res as $key => $relance) {
-                $relance['pictoType'] = imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$relance['type_ent'].'.png',$relance['nom_tyent']);
-                $relance['rappel_app'] = DateUniv2Human($relance['rappel_app'], 'simpleLong');
-                $relance['altern'] = ($j % 2);
-                $tmptab .= templating('prospec/listeRelance.row',$relance);
-                $j++;
-            }
-            $tab['liste'] = $tmptab ;
-            $corps = templating('prospec/listeRelance',$tab);
-            $result = '';
-        }
-        else {
-            $corps = '<span class="important">Vous n\'avez pas de relance aujourd\'hui</span>';
-            $result = 'none';
-        }
+	// remplissage du tableau
+	if (count($res) > 0) {
+	    $j=0;
+	    foreach ($res as $key => $relance) {
+		$relance['pictoType'] = imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$relance['type_ent'].'.png',$relance['nom_tyent']);
+		$relance['rappel_app'] = DateUniv2Human($relance['rappel_app'], 'simpleLong');
+		$relance['altern'] = ($j % 2);
+		$tmptab .= templating('prospec/listeRelance.row',$relance);
+		$j++;
+	    }
+	    $tab['liste'] = $tmptab ;
+	    $corps = templating('prospec/listeRelance',$tab);
+	    $result = '';
+	}
+	else {
+	    $corps = '<span class="important">Vous n\'avez pas de relance aujourd\'hui</span>';
+	    $result = 'none';
+	}
 
-        $titre = imageTag('../img/prospec/relance.png','resultat').' '.$j.' contacts &agrave; relancer';
-        return generateZBox($titre,$titre,$corps,'','relance'.$opt,$result);
+	$titre = imageTag('../img/prospec/relance.png','resultat').' '.$j.' contacts &agrave; relancer';
+	return generateZBox($titre,$titre,$corps,'','relance'.$opt,$result);
     }
 
 
     static function MyBureau() {
-        $limit = 10;
-        $req  = new contactParticulierModel();
-        $req1 = new contactEntrepriseModel();
-        $total = $req->getDataForHistoriqueVisit($limit,$type = 'COUNT');
-        $total1= $req1->getDataForHistoriqueVisit($limit,$type = 'COUNT');
-        $result = $req->getDataForHistoriqueVisit($limit);
-        $result1= $req1->getDataForHistoriqueVisit($limit);
-        $datas['total'] = $total[1][0]['counter']+$total1[1][0]['counter'];
-        $datas['data'][] = $result[1];
-        $datas['data'][] = $result1[1];
-        $datas['from'] = 0;
-        $datas['limit'] = $limit;
-        $datas['isHistoVisit'] = true;
-        $view = new contactView();
-        if($datas['total'] > 0)
-            return $view->Result($datas);
-        else return "";
+	$limit = 10;
+	$req  = new contactParticulierModel();
+	$req1 = new contactEntrepriseModel();
+	$total = $req->getDataForHistoriqueVisit($limit,$type = 'COUNT');
+	$total1= $req1->getDataForHistoriqueVisit($limit,$type = 'COUNT');
+	$result = $req->getDataForHistoriqueVisit($limit);
+	$result1= $req1->getDataForHistoriqueVisit($limit);
+	$datas['total'] = $total[1][0]['counter']+$total1[1][0]['counter'];
+	$datas['data'][] = $result[1];
+	$datas['data'][] = $result1[1];
+	$datas['from'] = 0;
+	$datas['limit'] = $limit;
+	$datas['isHistoVisit'] = true;
+	$view = new contactView();
+	if($datas['total'] > 0)
+	    return $view->Result($datas);
+	else return "";
     }
 
 
@@ -1213,267 +1215,267 @@ class contactView extends generalView {
 class contactEntrepriseView extends contactView {
 
     public function view($datas, $light, $mess) {
-        if(array_key_exists('out',$GLOBALS))
-            $GLOBALS['out']->setTitle('Fiche entreprise '.$datas['data']['nom_ent'],'',true);
-        $messAdd = ($mess != '') ? '<span class="important" style="text-align:center;" >'.$mess.'</span>' : '';
-        $script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
-        $script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-        $script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
-        $script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
-        $script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
-        $script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 200);} ';
-        $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-        $script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
-        $script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function autoComplete4() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
+	if(array_key_exists('out',$GLOBALS))
+	    $GLOBALS['out']->setTitle('Fiche entreprise '.$datas['data']['nom_ent'],'',true);
+	$messAdd = ($mess != '') ? '<span class="important" style="text-align:center;" >'.$mess.'</span>' : '';
+	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 200);} ';
+	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
+	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function autoComplete4() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
-        $script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
-        $script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
-        $script .= "\n".'function changePopupAffaire() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel3\').innerHTML; Effect.SlideDown(\'formAffaire\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel3\').innerHTML; } ';
-        $script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
-        $script .= "\n".'function retourFormAppel2() {Effect.SlideUp(\'formAffaire\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
-        $script .= '</script>';
-        if($light == 'LightInfoSimple')
-            return $this->interneInfosSimple($datas,'', null, $messAdd);
-        if($light == 'LightInfoSimpleBis')
-            return $this->interneInfosSimple($datas,'', null, true, $messAdd);
-        elseif($light == 'LightInfo')
-            return $this->interneInfos($datas, 'close', null, $messAdd);
-        elseif($light == 'BigInfo')
-            return $this->interneInfos($datas, '1', null, $messAdd);
-        elseif($light == 'all')
-            return $messAdd.$this->infos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas);
-        elseif($light == 'listeCont')
-            return $this->interneContacts($datas, $messAdd);
-        elseif($light == 'interneAppel')
-            return $this->interneAppels($datas, $messAdd);
-        elseif($light == 'interneProjet')
-            return $this->interneProjets($datas, $messAdd);
-        else
-            return '<div id="error"></div><div id="ficheInterne">'.$this->infos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas).'</div>'.$script;
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
+	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
+	$script .= "\n".'function changePopupAffaire() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel3\').innerHTML; Effect.SlideDown(\'formAffaire\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel3\').innerHTML; } ';
+	$script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
+	$script .= "\n".'function retourFormAppel2() {Effect.SlideUp(\'formAffaire\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
+	$script .= '</script>';
+	if($light == 'LightInfoSimple')
+	    return $this->interneInfosSimple($datas,'', null,false, $messAdd);
+	if($light == 'LightInfoSimpleBis')
+	    return $this->interneInfosSimple($datas,'', null, true, $messAdd);
+	elseif($light == 'LightInfo')
+	    return $this->interneInfos($datas, 'close', null, $messAdd);
+	elseif($light == 'BigInfo')
+	    return $this->interneInfos($datas, '1', null, $messAdd);
+	elseif($light == 'all')
+	    return $messAdd.$this->infos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas);
+	elseif($light == 'listeCont')
+	    return $this->interneContacts($datas, $messAdd);
+	elseif($light == 'interneAppel')
+	    return $this->interneAppels($datas, $messAdd);
+	elseif($light == 'interneProjet')
+	    return $this->interneProjets($datas, $messAdd);
+	else
+	    return '<div id="error"></div><div id="ficheInterne">'.$this->infos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas).'</div>'.$script;
 
     }
 
 
 
     public function creerEntreprise($datas,$control = null) {
-        $script = '<script type="text/javascript">function autoCompletage() {var toto = 1;} function changeToDo(value) {$(\'toDO\').value = $(\'toDO2\').value = value;}';
-        $script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-        $script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
-        $script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
-        $script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
-        $script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
-        $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-        $script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
-        $script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function autoComplete4() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
+	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;} function changeToDo(value) {$(\'toDO\').value = $(\'toDO2\').value = value;}';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
+	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function autoComplete4() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent="+$(\'idEntrepriseLightInfo\').value, { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
-        $script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
-        $script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
-        $script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
-        $script .= '</script>';
-        return $script.'<div id="error"></div><div id="ficheComplete">'.$this->infos($datas,$control).'</div>';
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
+	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
+	$script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
+	$script .= '</script>';
+	return $script.'<div id="error"></div><div id="ficheComplete">'.$this->infos($datas,$control).'</div>';
     }
 
     public function creerEntrepriseError($datas, $control = null) {
-        return $this->infos($datas, $control);
+	return $this->infos($datas, $control);
     }
 
     public function confirmSupp($data) {
-        $titre = '<img alt="supp" title="Supprimer Contact" src="../img/prospec/contact.delete.png" /> Supprimer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
-        $corps = '<h4>Confirmez vous la suppression définitive de ce contact ?</h4>';
-        $corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppCont" /><input type="hidden" name="id_cont" value="'.$data['id_cont'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
-        $pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-        $pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer le contact" src="../img/prospec/confirm.png" /> Valider</a>';
-        return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
+	$titre = '<img alt="supp" title="Supprimer Contact" src="../img/prospec/contact.delete.png" /> Supprimer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+	$corps = '<h4>Confirmez vous la suppression définitive de ce contact ?</h4>';
+	$corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppCont" /><input type="hidden" name="id_cont" value="'.$data['id_cont'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer le contact" src="../img/prospec/confirm.png" /> Valider</a>';
+	return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
     }
     public function confirmSuppAppel($data) {
-        $titre = '<img alt="supp" title="Supprimer Appel" src="../img/prospec/appel.delete.png" /> Supprimer l\'appel ';
-        $corps = '<h4>Confirmez vous la suppression définitive de cet appel ?</h4>';
-        $corps .= '<br />Contact : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'<br />';
-        $corps .= 'Date de l\'appel : '.strftime('%A %d %B %Y', strtotime($data['appel_app']));
-        $corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppApp" /><input type="hidden" name="id_app" value="'.$data['id_app'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
-        $pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-        $pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuAppelsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer appel" src="../img/prospec/confirm.png" /> Valider</a>';
-        return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
+	$titre = '<img alt="supp" title="Supprimer Appel" src="../img/prospec/appel.delete.png" /> Supprimer l\'appel ';
+	$corps = '<h4>Confirmez vous la suppression définitive de cet appel ?</h4>';
+	$corps .= '<br />Contact : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'<br />';
+	$corps .= 'Date de l\'appel : '.strftime('%A %d %B %Y', strtotime($data['appel_app']));
+	$corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppApp" /><input type="hidden" name="id_app" value="'.$data['id_app'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuAppelsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer appel" src="../img/prospec/confirm.png" /> Valider</a>';
+	return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
     }
     public function confirmSuppProjet($data) {
-        $titre = '<img alt="supp" title="Supprimer Projet" src="../img/prospec/projet.delete.png" /> Supprimer le projet ';
-        $corps = '<h4>Confirmez vous la suppression définitive de ce projet ?</h4>';
-        $corps .= '<br />Contact : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'<br />';
-        $corps .= 'Date du projet : '.strftime('%A %d %B %Y', strtotime($data['detect_proj']));
-        $corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppProj" /><input type="hidden" name="id_proj" value="'.$data['id_proj'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
-        $pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-        $pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer projet" src="../img/prospec/confirm.png" /> Valider</a>';
-        return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
+	$titre = '<img alt="supp" title="Supprimer Projet" src="../img/prospec/projet.delete.png" /> Supprimer le projet ';
+	$corps = '<h4>Confirmez vous la suppression définitive de ce projet ?</h4>';
+	$corps .= '<br />Contact : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'<br />';
+	$corps .= 'Date du projet : '.strftime('%A %d %B %Y', strtotime($data['detect_proj']));
+	$corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppProj" /><input type="hidden" name="id_proj" value="'.$data['id_proj'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer projet" src="../img/prospec/confirm.png" /> Valider</a>';
+	return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
     }
 
     public function moveContact($data) {
-        $titre = '<img alt="move" title="Déplacer Contact" src="../img/prospec/contact.move.png" onload="autoComplete();" /> Déplacer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
-        $corps = '<form name="move" action="fiche.php">';
-        $corps .= '<input type="hidden" name="action" value="moveCont" />';
-        $corps .= '<input type="hidden" name="entrepriseC" value="'.$data['entreprise_cont'].'" />';
-        $corps .= '<input type="hidden" name="id_cont" value="'.$data['id_cont'].'" />';
-        $corps .= '<div class="block width50">';
-        $corps .= '<fieldset class="form">';
-        $corps .= '<div class="row">
+	$titre = '<img alt="move" title="Déplacer Contact" src="../img/prospec/contact.move.png" onload="autoComplete();" /> Déplacer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+	$corps = '<form name="move" action="fiche.php">';
+	$corps .= '<input type="hidden" name="action" value="moveCont" />';
+	$corps .= '<input type="hidden" name="entrepriseC" value="'.$data['entreprise_cont'].'" />';
+	$corps .= '<input type="hidden" name="id_cont" value="'.$data['id_cont'].'" />';
+	$corps .= '<div class="block width50">';
+	$corps .= '<fieldset class="form">';
+	$corps .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ajaxField);">Entreprise</div>
 					<div class="field">'.inputTag('text', 'entreprise','icon', '', '16',$data['nom_ent'], ' id="ACentreprise_cont" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="entreprise_cont" id="ACentreprise_conthidden" value="'.$data['entreprise_cont'].'" /><input type="hidden" name="contold" id="ACentreprise_contold" value="'.$data['entreprise_cont'].'" />
 					<div id="ACentreprise_cont_choix" class="autocomplete"></div>
 				</div>';
-        $corps .= '</fieldset></div></form>';
-        $pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-        $pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'move\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Déplacer le contact" src="../img/prospec/confirm.png" /> Valider</a>';
-        return generateZBox($titre,$titre,$corps,$pied,'popupMove','');
+	$corps .= '</fieldset></div></form>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'move\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Déplacer le contact" src="../img/prospec/confirm.png" /> Valider</a>';
+	return generateZBox($titre,$titre,$corps,$pied,'popupMove','');
 
     }
 
     public function appelContact($data) {
-        if($data['id_cont'] != '')
-            $onload = 'onload="autoComplete4();"';
-        else
-            $onload = 'onload="autoComplete2();"';
+	if($data['id_cont'] != '')
+	    $onload = 'onload="autoComplete4();"';
+	else
+	    $onload = 'onload="autoComplete2();"';
 
-        if($data['id_def'] != '') {
-            $data['id_cont'] = $data['id_def'];
-            $data['civ_cont'] = $data['civ_def'];
-            $data['prenom_cont'] = $data['prenom_def'];
-            $data['nom_cont'] = $data['nom_def'];
-            $data['cont'] = false;
-        }
-        elseif($data['id_cont'] == '') {
-            $data['cont'] = false;
-        }
-        else {
-            $data['cont'] = true;
-        }
+	if($data['id_def'] != '') {
+	    $data['id_cont'] = $data['id_def'];
+	    $data['civ_cont'] = $data['civ_def'];
+	    $data['prenom_cont'] = $data['prenom_def'];
+	    $data['nom_cont'] = $data['nom_def'];
+	    $data['cont'] = false;
+	}
+	elseif($data['id_cont'] == '') {
+	    $data['cont'] = false;
+	}
+	else {
+	    $data['cont'] = true;
+	}
 
-        $titre = '<img alt="move" title="Appeler Contact" src="../img/prospec/appel.png" '.$onload.' /> Appeler le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
-        $pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-        $pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'appel\', \'prospec/fiche.php\',\'ficheInterne\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
-        $corps = '<div id="formAppel">';
-        $corps .= '<div id="titrePopupAppel1" style="display:none;">'.$titre.'</div>';
-        $corps .= '<div id="titrePopupAppel2" style="display:none;"><img alt="projet" title="Nouveau Projet" src="../img/prospec/projet.png" /> Nouveau projet pour le nouvel appel</div>';
-        $corps .= '<div id="piedPopupAppel1" style="display:none;">'.$pied.'</div>';
-        $corps .= '<div id="piedPopupAppel2" style="display:none;">';
-        $corps .= '<a name="annuler" onclick="retourFormAppel();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-        $corps .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel();"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
-        $corps .= '</div>';
-        $corps .= '<form name="appel" method="POST" action="fiche.php">';
-        $corps .= '<input type="hidden" name="contact_app" value="'.$data['id_cont'].'" id="ACcontact_apphidden"/>';
-        $corps .= '<input type="hidden" name="contold" id="ACcontact_appold" value="'.$data['contact_app'].'" />';
-        $corps .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
-        if(array_key_exists('id_app', $data)) {
-            $corps .= '<input type="hidden" name="id_app" value="'.$data['id_app'].'" />';
-            $corps .= '<input type="hidden" name="action" value="modifAppelCont" />';
-        }
-        else {
-            $corps .= '<input type="hidden" name="action" value="addAppelCont" />';
-        }
-        $corps .= '<div class="block width33">';
-        $corps .= '<fieldset class="form" style="height: 120px"><legend>Contexte de l\'appel</legend>';
-        if($data['cont'])
-            $corps .= '<div class="row">' .
-                    '<div class="label">Contact</div>' .
-                    '<div class="field">'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'</div>' .
-                    '</div>';
-        else
-            $corps .= '<div class="row">
+	$titre = '<img alt="move" title="Appeler Contact" src="../img/prospec/appel.png" '.$onload.' /> Appeler le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'appel\', \'prospec/fiche.php\',\'ficheInterne\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	$corps = '<div id="formAppel">';
+	$corps .= '<div id="titrePopupAppel1" style="display:none;">'.$titre.'</div>';
+	$corps .= '<div id="titrePopupAppel2" style="display:none;"><img alt="projet" title="Nouveau Projet" src="../img/prospec/projet.png" /> Nouveau projet pour le nouvel appel</div>';
+	$corps .= '<div id="piedPopupAppel1" style="display:none;">'.$pied.'</div>';
+	$corps .= '<div id="piedPopupAppel2" style="display:none;">';
+	$corps .= '<a name="annuler" onclick="retourFormAppel();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
+	$corps .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel();"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	$corps .= '</div>';
+	$corps .= '<form name="appel" method="POST" action="fiche.php">';
+	$corps .= '<input type="hidden" name="contact_app" value="'.$data['id_cont'].'" id="ACcontact_apphidden"/>';
+	$corps .= '<input type="hidden" name="contold" id="ACcontact_appold" value="'.$data['contact_app'].'" />';
+	$corps .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
+	if(array_key_exists('id_app', $data)) {
+	    $corps .= '<input type="hidden" name="id_app" value="'.$data['id_app'].'" />';
+	    $corps .= '<input type="hidden" name="action" value="modifAppelCont" />';
+	}
+	else {
+	    $corps .= '<input type="hidden" name="action" value="addAppelCont" />';
+	}
+	$corps .= '<div class="block width33">';
+	$corps .= '<fieldset class="form" style="height: 120px"><legend>Contexte de l\'appel</legend>';
+	if($data['cont'])
+	    $corps .= '<div class="row">' .
+		    '<div class="label">Contact</div>' .
+		    '<div class="field">'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'</div>' .
+		    '</div>';
+	else
+	    $corps .= '<div class="row">
 					<div class="label">Contact</div>
 					<div class="field" onmouseover="zuno.tooltip(this,ZTips.contactPers.ajaxField);">'.inputTag('text', 'contact','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_app" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<div id="ACcontact_app_choix" class="autocomplete"></div>
 				</div>';
-        if($data['appel_app'] != '')
-            $appelT = strftime('%d/%m/%Y', strtotime($data['appel_app']));
-        else
-            $appelT = date('d/m/Y');
-        $corps .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelDate);">Date de l\'appel</div>' .
-                '<div class="field">'.inputDateTag('text', 'appel_app', $appelT).'</div>' .
-                '</div>';
-        if($data['rappel_app'] != '') {
-            $check = 'checked="checked"';
-            $style = '';
-        }
-        else {
-            $check = '';
-            $style = 'style="display:none;"';
-        }
-        $corps .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappel);">Prévoir un rappel</div>' .
-                '<div class="field"><input type="checkbox" name="rappel" value="1" '.$check.' onchange="afficherRappel();"/></div>' .
-                '</div>';
-        if($data['rappel_app'] != '')
-            $rappelT = strftime('%d/%m/%Y', strtotime($data['rappel_app']));
-        else
-            $rappelT = date('d/m/Y',strtotime('+1 month'));
-        $corps .= '<div class="row" id="dateRappel" '.$style.'>' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelD);">Date du rappel</div>' .
-                '<div class="field">'.inputDateTag('text', 'rappel_app', $rappelT).'</div>' .
-                '</div>';
-        $corps .= '<div class="row" id="heureRappel" '.$style.'>' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelH);">Heure du rappel</div>' .
-                '<div class="field">'.inputTag('text', 'heure_app','', '', '16', $data['heure_app']).'</div>' .
-                '</div></fieldset></div>';
-        $corps .= '<div class="block width33"><fieldset class="form" style="height: 120px"><legend>Complément d\'information</legend>';
-        $corps .= '<div class="row">
+	if($data['appel_app'] != '')
+	    $appelT = strftime('%d/%m/%Y', strtotime($data['appel_app']));
+	else
+	    $appelT = date('d/m/Y');
+	$corps .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelDate);">Date de l\'appel</div>' .
+		'<div class="field">'.inputDateTag('text', 'appel_app', $appelT).'</div>' .
+		'</div>';
+	if($data['rappel_app'] != '') {
+	    $check = 'checked="checked"';
+	    $style = '';
+	}
+	else {
+	    $check = '';
+	    $style = 'style="display:none;"';
+	}
+	$corps .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappel);">Prévoir un rappel</div>' .
+		'<div class="field"><input type="checkbox" name="rappel" value="1" '.$check.' onchange="afficherRappel();"/></div>' .
+		'</div>';
+	if($data['rappel_app'] != '')
+	    $rappelT = strftime('%d/%m/%Y', strtotime($data['rappel_app']));
+	else
+	    $rappelT = date('d/m/Y',strtotime('+1 month'));
+	$corps .= '<div class="row" id="dateRappel" '.$style.'>' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelD);">Date du rappel</div>' .
+		'<div class="field">'.inputDateTag('text', 'rappel_app', $rappelT).'</div>' .
+		'</div>';
+	$corps .= '<div class="row" id="heureRappel" '.$style.'>' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelH);">Heure du rappel</div>' .
+		'<div class="field">'.inputTag('text', 'heure_app','', '', '16', $data['heure_app']).'</div>' .
+		'</div></fieldset></div>';
+	$corps .= '<div class="block width33"><fieldset class="form" style="height: 120px"><legend>Complément d\'information</legend>';
+	$corps .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelProjet);">Projet</div>
 					<div class="field">'.inputTag('text', 'projet','icon', '', '16',$data['titre_proj'], ' id="ACprojet_app" onchange="verifAutocompleteur(this);" ').'<a name="proj" onclick="changePopupProjet();"><img alt="addProjet" title="Créer un projet" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingProj" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="projet_app" id="ACprojet_apphidden" value="'.$data['projet_app'].'" /><input type="hidden" name="contold" id="ACprojet_appold" value="'.$data['projet_app'].'" />
 					<div id="ACprojet_app_choix" class="autocomplete"></div>
 				</div>';
-        $corps .= '<div class="row">
+	$corps .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelAffaire);">Affaire</div>
 					<div class="field">'.inputTag('text', 'affaire','icon', '', '16',$data['affaire_app'], ' id="ACaffaire_app" onchange="verifAutocompleteur(this);" ').'<a name="aff" onclick="changePopupAffaire();"><img alt="addAffaire" title="Créer une affaire" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingAff" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="affaire_app" id="ACaffaire_apphidden" value="'.$data['affaire_app'].'" /><input type="hidden" name="contold" id="ACaffaire_appold" value="'.$data['affaire_app'].'" />
 					<div id="ACaffaire_app_choix" class="autocomplete"></div>
 				</div>';
-        $corps .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelComment);">Détails</div>' .
-                '<div class="field"><textarea name="comm_app" cols="35" rows="3">'.$data['comm_app'].'</textarea></div>' .
-                '</div>';
-        $corps .= '</fieldset></div></form>';
-        $corps .= '</div>';
-        $corps .= $this->internePopupProjet($data);
-        $corps .= $this->internePopupAffaire($data);
-        return '<div id="erreurPopupAppel"></div>'.generateZBox($titre,$titre,$corps,'<div id="piedPopupID">'.$pied.'</div>','popupAppel','');
+	$corps .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelComment);">Détails</div>' .
+		'<div class="field"><textarea name="comm_app" cols="35" rows="3">'.$data['comm_app'].'</textarea></div>' .
+		'</div>';
+	$corps .= '</fieldset></div></form>';
+	$corps .= '</div>';
+	$corps .= $this->internePopupProjet($data);
+	$corps .= $this->internePopupAffaire($data);
+	return '<div id="erreurPopupAppel"></div>'.generateZBox($titre,$titre,$corps,'<div id="piedPopupID">'.$pied.'</div>','popupAppel','');
 
     }
 
     private function internePopupAffaire($data) {
-        include_once('AffaireView.inc');
-        $aff = new affaireView();
-        $block = $aff->popupCreation($data);
+	include_once('AffaireView.inc');
+	$aff = new affaireView();
+	$block = $aff->popupCreation($data);
 
-        $titre = '<img alt="move" title="Nouvelle affaire" src="../img/prospec/affaire.png"  /> Nouvelle affaire ';
+	$titre = '<img alt="move" title="Nouvelle affaire" src="../img/prospec/affaire.png"  /> Nouvelle affaire ';
 
-        $pied = '<a name="annuler" onclick="retourFormAppel2();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-        $pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'AffaireCreate\', \'draco/AffaireCreate.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel2();"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	$pied = '<a name="annuler" onclick="retourFormAppel2();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'AffaireCreate\', \'draco/AffaireCreate.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel2();"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
 
 	$out = '<div id="formAffaire" style="display:none;">';
 	$out .= $block;
@@ -1484,158 +1486,196 @@ class contactEntrepriseView extends contactView {
     }
 
     private function internePopupProjet($data) {
-        if($data['contact_proj'] == '' and $data['id_cont'] != '')
-            $contact = $data['id_cont'];
-        else
-            $contact = $data['contact_proj'];
-        $style = '';
-        if($data['action'] == 'addProj')
-            $todo = 'addProjet';
-        elseif($data['action'] == 'modifProj')
-            $todo = 'modifProj';
-        else {
-            $todo = 'addProjAppel';
-            $style = 'style="display:none;"';
-        }
+	if($data['contact_proj'] == '' and $data['id_cont'] != '')
+	    $contact = $data['id_cont'];
+	else
+	    $contact = $data['contact_proj'];
+	$style = '';
+	if($data['action'] == 'addProj')
+	    $todo = 'addProjet';
+	elseif($data['action'] == 'modifProj')
+	    $todo = 'modifProj';
+	else {
+	    $todo = 'addProjAppel';
+	    $style = 'style="display:none;"';
+	}
 
-        $out = '<div id="formProjet" '.$style.'>';
-        $out .= '<form name="addProjet" action="fiche.php" method="POST">';
-        $out .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
-        $out .= '<input type="hidden" name="action" value="'.$todo.'" />';
-        if($data['action'] == 'modifProj')
-            $out .= '<input type="hidden" name="id_proj" value="'.$data['id_proj'].'" />';
-        $out .= '<input type="hidden" name="contact_proj" value="'.$contact.'" id="ACcontact_projApphidden" />';
-        $out .= '<div class="block width33">';
-        $out .= '<fieldset class="form">';
-        $out .= '<legend>Projet</legend>';
-        $out .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.titre);">Titre</div>' .
-                '<div class="field">'.inputTag('text', 'titre_proj', '', '', '16', $data['titre_proj']).'</div>' .
-                '</div>';
-        $out .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.type);">Type</div>' .
-                '<div class="field">'.selectTag('typeproj_proj', $data['types'], $data['typeproj_proj'], '', '', false).'</div>' .
-                '</div>';
-        $out .= '<div class="row">
+	$out = '<div id="formProjet" '.$style.'>';
+	$out .= '<form name="addProjet" action="fiche.php" method="POST">';
+	$out .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
+	$out .= '<input type="hidden" name="action" value="'.$todo.'" />';
+	if($data['action'] == 'modifProj')
+	    $out .= '<input type="hidden" name="id_proj" value="'.$data['id_proj'].'" />';
+	$out .= '<input type="hidden" name="contact_proj" value="'.$contact.'" id="ACcontact_projApphidden" />';
+	$out .= '<div class="block width33">';
+	$out .= '<fieldset class="form">';
+	$out .= '<legend>Projet</legend>';
+	$out .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.titre);">Titre</div>' .
+		'<div class="field">'.inputTag('text', 'titre_proj', '', '', '16', $data['titre_proj']).'</div>' .
+		'</div>';
+	$out .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.type);">Type</div>' .
+		'<div class="field">'.selectTag('typeproj_proj', $data['types'], $data['typeproj_proj'], '', '', false).'</div>' .
+		'</div>';
+	$out .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.contact);">Contact</div>
 					<div class="field">'.inputTag('text', 'contact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_projApp" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont3" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="contold" id="ACcontact_projAppold" value="'.$data['contact_proj'].'" />
 					<div id="ACcontact_projApp_choix" class="autocomplete"></div>
 				</div>';
-        if($data['rdv_proj'] != '')
-            $dateRDV = strftime('%d/%m/%Y',strtotime($data['rdv_proj']));
-        else
-            $dateRDV = '';
-        $out .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.dateRdv);">Date de rendez-vous</div>' .
-                '<div class="field">'.inputDateTag('text', 'rdv_proj', $dateRDV).'</div>' .
-                '</div>';
-        $out .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.heureRdv);">Heure du rendez-vous</div>' .
-                '<div class="field">'.inputTag('text', 'heure_proj', '', '', '16', $data['heure_proj']).'</div>' .
-                '</div>';
-        $out .= '</fieldset>';
-        $out .= '</div>';
-        $out .= '<div class="block width33">';
-        $out .= '<fieldset class="form">';
-        $out .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.budget);">Budget (€)</div>' .
-                '<div class="field">'.inputTag('text', 'budget_proj', '', '', '16', $data['budget_proj']).'</div>' .
-                '</div>';
-        $out .= '<div class="row">' .
-                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.desc);">Description</div>' .
-                '<div class="field"><textarea name="desc_proj" cols="35" rows="3">'.$data['desc_proj'].'</textarea></div>' .
-                '</div>';
-        $out .= '</fieldset></div>';
-        $out .= '</form>';
-        $out .= '</div>';
-        return $out;
+	if($data['rdv_proj'] != '')
+	    $dateRDV = strftime('%d/%m/%Y',strtotime($data['rdv_proj']));
+	else
+	    $dateRDV = '';
+	$out .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.dateRdv);">Date de rendez-vous</div>' .
+		'<div class="field">'.inputDateTag('text', 'rdv_proj', $dateRDV).'</div>' .
+		'</div>';
+	$out .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.heureRdv);">Heure du rendez-vous</div>' .
+		'<div class="field">'.inputTag('text', 'heure_proj', '', '', '16', $data['heure_proj']).'</div>' .
+		'</div>';
+	$out .= '</fieldset>';
+	$out .= '</div>';
+	$out .= '<div class="block width33">';
+	$out .= '<fieldset class="form">';
+	$out .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.budget);">Budget (€)</div>' .
+		'<div class="field">'.inputTag('text', 'budget_proj', '', '', '16', $data['budget_proj']).'</div>' .
+		'</div>';
+	$out .= '<div class="row">' .
+		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.desc);">Description</div>' .
+		'<div class="field"><textarea name="desc_proj" cols="35" rows="3">'.$data['desc_proj'].'</textarea></div>' .
+		'</div>';
+	$out .= '</fieldset></div>';
+	$out .= '</form>';
+	$out .= '</div>';
+	return $out;
     }
 
     public function popupProjet($data) {
-        $pied .= '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png" onload="autoComplete3();"/> Annuler</a>';
-        $pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
-        if($data['action'] == 'modifProj')
-            $titre = '<img alt="projet" title="Modifier Projet" src="../img/prospec/projet.modif.png" /> Modifier projet';
-        else
-            $titre = '<img alt="projet" title="Nouveau Projet" src="../img/prospec/projet.png" /> Nouveau projet';
-        $corps = $this->internePopupProjet($data);
-        return '<div id="erreurPopupProj"></div>'.generateZBox($titre, $titre, $corps, $pied, 'popupAddProjet');
+	$pied .= '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png" onload="autoComplete3();"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	if($data['action'] == 'modifProj')
+	    $titre = '<img alt="projet" title="Modifier Projet" src="../img/prospec/projet.modif.png" /> Modifier projet';
+	else
+	    $titre = '<img alt="projet" title="Nouveau Projet" src="../img/prospec/projet.png" /> Nouveau projet';
+	$corps = $this->internePopupProjet($data);
+	return '<div id="erreurPopupProj"></div>'.generateZBox($titre, $titre, $corps, $pied, 'popupAddProjet');
+    }
+
+    public function popupSearch($data = array(), $tout = true) {
+	if($tout) {
+	    $form = new ZunoForm('formSearchCont', 'prospec/PopupEntreprise.php', "POST");
+	    $fieldset = new ZunoFieldset('Recherche', 'idPopupRecherche', "");
+	    $fieldset->ligneInput('Recherche', 'recherche_cont', $data['recherche_cont'], '');
+	    $form->newBlock($fieldset->generateFieldset(), '33');
+	    $form->newInputHidden('action', 'searchPopup');
+	    $form->newInputHidden('entreprise', $data['entreprise']);
+	    $form->newInputHidden('idChamp', $data['idChamp']);
+	    $rendu = new ZunoRenduHtml('popupIdSearch');
+	    $rendu->generateZBox('Recherche contact', 'Recherche Contact', $form->generateForm(), $form->generateButtons('resultSearchPopup', 'Fermer', 'Rechercher', 'popup', ''), 'idDivSearchPopupContact');
+	}
+	$tableau = new ZunoTableau();
+	$champs = array('Nom' => '', 'Prénom' => '', 'CP-Ville' => '', 'Entreprise' => '');
+	$tableau->ligneTitre($champs);
+	if(is_array($data['result']))
+	    foreach($data['result'][1] as $v) {
+		$l = array();
+		$a = '<a name="rempli" onclick="autoRemplir(\''.$data['idChamp'].'\', \''.$v['id_cont'].'\', \''.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'\');">';
+		$l[$a.$v['nom_cont'].'</a>'] = "+ center";
+		$l[$a.$v['prenom_cont'].'</a>'] = "+ center";
+		$l[$a.$v['cp_cont'].' '.$v['ville_cont'].'</a>'] ='';
+		$l[$a.$v['nom_ent'].'</a>'] ='';
+		$tableau->ligneTableau($l);
+
+	    }
+	if($tout) {
+	    $rendu->generateZBox('Résultats', 'Résultats', $tableau->generateTableau('33'), '', 'resultSearchPopup');
+	    return $rendu->generateRendu();
+
+	}
+	else {
+	    return $tableau->generateTableau('33');
+	}
+
+
     }
 }
 
 class contactParticulierView extends contactView {
     public function view($datas, $light = '', $mess = '') {
-        $addEntInTitle = ($datas['data']['id_ent'] != '') ? ' ('.$datas['data']['nom_ent'].')' : '';
-        if(array_key_exists('out',$GLOBALS))
-            $GLOBALS['out']->setTitle('Fiche contact '.$datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'].$addEntInTitle,'',true);
-        $script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
-        $script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-        $script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
-        $script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
-        $script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
-        $script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
-        $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-        $script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
-        $script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function autoComplete4() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
+	$addEntInTitle = ($datas['data']['id_ent'] != '') ? ' ('.$datas['data']['nom_ent'].')' : '';
+	if(array_key_exists('out',$GLOBALS))
+	    $GLOBALS['out']->setTitle('Fiche contact '.$datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'].$addEntInTitle,'',true);
+	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
+	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function autoComplete4() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
 
-        $script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
-        $script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
-        $script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
-        $script .= '</script>';
-        if($light == 'infosContact')
-            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneInfosContact($datas);
-        elseif($light == 'all' or $light == 'Traitement')
-            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->ContactsInfos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas);
-        elseif($light == 'listeCont')
-            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneContacts($datas);
-        elseif($light == 'interneAppel')
-            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneAppels($datas);
-        elseif($light == 'interneProjet')
-            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneProjets($datas);
-        else
-            return $script.'<div id="error"></div><div id="ficheInterne">'.$this->contactsInfos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas).'</div>';
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
+	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
+	$script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
+	$script .= '</script>';
+	if($light == 'infosContact')
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneInfosContact($datas);
+	elseif($light == 'all' or $light == 'Traitement')
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->ContactsInfos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas);
+	elseif($light == 'listeCont')
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneContacts($datas);
+	elseif($light == 'interneAppel')
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneAppels($datas);
+	elseif($light == 'interneProjet')
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneProjets($datas);
+	else
+	    return $script.'<div id="error"></div><div id="ficheInterne">'.$this->contactsInfos($datas).$this->contactsLies($datas).$this->projets($datas).$this->appels($datas).'</div>';
     }
 
     public function creerContact($datas) {
-        $script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
-        $script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
-        $script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
-        $script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
-        $script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
-        $script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
-        $script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
-        $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-        $script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
-        $script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
-        $script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
-        $script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
-        $script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
-        $script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
-        $script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
-        $script .= "\n".'function changeToDo (value) {$(\'toDO\').value = value; } ';
-        $script .= '</script>';
-        return $script.'<div id="ficheComplete">'.$this->contactsInfos($datas).'</div>';
+	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
+	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
+	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
+	$script .= "\n".'function modifContact(cont) { var ent=\'action=modifContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
+	$script .= "\n".'function modifAppel(cont) { var ent=\'action=modifAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function modifProj(cont) { var ent=\'action=modifProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,430,360); } ';
+	$script .= "\n".'function suppContact(cont) { var ent=\'action=suppContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppAppel(cont) { var ent=\'action=suppAppelEnt&entreprise='.$datas['data']['id_ent'].'&appel=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function suppProj(cont) { var ent=\'action=suppProjetEnt&entreprise='.$datas['data']['id_ent'].'&projet=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function appelContact(cont) { var ent=\'action=appelCont&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent, 770, 220);} ';
+	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+	$script .= "\n".'function autoComplete() { new Ajax.Autocompleter("ACentreprise_cont", "ACentreprise_cont_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); } ';
+	$script .= "\n".'function autoComplete2() { new Ajax.Autocompleter("ACaffaire_app", "ACaffaire_app_choix", "../ajaxRef.php?action=listeAffaire", { paramName:"value", minChars: 2, indicator: "loadingAff", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACprojet_app", "ACprojet_app_choix", "../ajaxRef.php?action=listeProjet", { paramName:"value", minChars: 2, indicator: "loadingProj", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_app", "ACcontact_app_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function autoComplete3() {new Ajax.Autocompleter("ACcontact_projApp", "ACcontact_projApp_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName:"value", minChars: 2, indicator: "loadingCont3", afterUpdateElement : autoCompleteHidden }); } ';
+	$script .= "\n".'function moveContact(cont) { var ent=\'action=moveContEnt&entreprise='.$datas['data']['id_ent'].'&contact=\'+cont; zuno.popup.open(\'fiche.php\', ent,300,150);} ';
+	$script .= "\n".'function afficherRappel() {if($(\'dateRappel\').style.display == \'none\') { $(\'dateRappel\').style.display = \'table-row\'; $(\'heureRappel\').style.display = \'table-row\'; } else { $(\'dateRappel\').value = ""; $(\'heureRappel\').value = ""; $(\'dateRappel\').style.display = \'none\'; $(\'heureRappel\').style.display = \'none\'; } }';
+	$script .= "\n".'function changePopupProjet() {Effect.SlideUp(\'formAppel\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel2\').innerHTML; Effect.SlideDown(\'formProjet\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel2\').innerHTML; } ';
+	$script .= "\n".'function retourFormAppel() {Effect.SlideUp(\'formProjet\');$(\'ZunoPopupWindowTitle\').innerHTML = $(\'titrePopupAppel1\').innerHTML; Effect.SlideDown(\'formAppel\'); $(\'piedPopupID\').innerHTML = $(\'piedPopupAppel1\').innerHTML;} ';
+	$script .= "\n".'function changeToDo (value) {$(\'toDO\').value = value; } ';
+	$script .= '</script>';
+	return $script.'<div id="ficheComplete">'.$this->contactsInfos($datas).'</div>';
 
     }
 }

@@ -57,8 +57,9 @@ class contactParticulierModel extends GeneralModel {
                     "WHERE nom_cont $qTag OR prenom_cont $qTag OR mail_cont $qTag");
         }
         else {
-            $this->makeRequeteFree("SELECT id_cont,civ_cont,nom_cont,prenom_cont,nom_fct " .
+            $this->makeRequeteFree("SELECT id_cont,civ_cont,nom_cont,prenom_cont,nom_fct, cp_cont, ville_cont, nom_ent " .
                     "FROM contact " .
+                    "LEFT JOIN entreprise ON id_ent = entreprise_cont ".
                     "LEFT JOIN ref_fonction ON ref_fonction.id_fct = contact.fonction_cont " .
                     "WHERE nom_cont $qTag OR prenom_cont $qTag OR mail_cont $qTag" .
                     "ORDER BY nom_cont ASC LIMIT $from , $limit");
@@ -576,7 +577,7 @@ class contactEntrepriseModel extends GeneralModel {
         else {
             $this->makeRequeteFree("SELECT id_ent, nom_ent, ville_ent, tel_ent, type_ent, nom_tyent FROM entreprise " .
                     "left join ref_typeentreprise on id_tyent = type_ent " .
-                    "where id_ent is not null $search order by $endSql nom_ent ASC ");
+                    "where id_ent is not null $search order by $endSql nom_ent ASC LIMIT $from,$limit");
         }
         return $this->process2();
     }
@@ -608,7 +609,7 @@ class contactEntrepriseModel extends GeneralModel {
         else {
             $this->makeRequeteFree("select id_ent, id_cont, nom_ent, ville_cont, tel_ent, type_ent, civ_cont, prenom_cont, nom_cont, mail_cont from contact " .
                     "left join entreprise on id_ent = entreprise_cont " .
-                    "where id_cont is not null and $search order by $endSql nom_ent ASC, id_ent ASC, nom_cont ASC ");
+                    "where id_cont is not null and $search order by $endSql nom_ent ASC, id_ent ASC, nom_cont ASC LIMIT $from,$limit ");
         }
         return $this->process2();
     }

@@ -66,6 +66,7 @@ class factureView extends generalView {
 		$(\'modifiedCB\').value = \'false\';
 		}'."\n";
         $script .= "\n".'function change() {$(\'modifiedCB\').value = \'true\';}';
+        $script .= "\n".'function autoRemplir(dest, id, val){$(dest).value=val; $(dest+\'hidden\').value=id; zuno.popup.close();}';
         $script .= '</script>';
 
         $datas['nom'] = ($datas['data']['type_fact'] == 'Facture')?'la facture' : 'l\'avoir';
@@ -157,13 +158,13 @@ class factureView extends generalView {
 		</div>
 		<div class="row">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
-			<div class="field">'.inputTag('text', 'contact_fact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+			<div class="field">'.inputTag('text', 'contact_fact2','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
 			<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="'.$data['contact_fact'].'" /><input type="hidden" name="contold" id="ACcontact_factold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
 			<div id="ACcontact_fact_choix" class="autocomplete"></div>
 		</div>
 		<div class="row">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact Achat</div>
-			<div class="field">'.inputTag('text', 'contact_achat_fact2','', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+			<div class="field">'.inputTag('text', 'contact_achat_fact2','icon', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
 			<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="'.$data['contact_achat_fact'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_factold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
 			<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>
 		</div>
@@ -319,7 +320,7 @@ class factureView extends generalView {
     private function interneProduits($datas) {
         $out = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
 		<tbody><tr class="titre">
-			<th style="width: 135px">ID</th>
+			<th style="width: 135px">Référence</th>
 			<th>Description</th>
 			<th style="width: 30px">Quantité</th>
 			<th style="width: 90px">Prix</th>
@@ -721,9 +722,11 @@ class factureView extends generalView {
             $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormFacture\');"/></th>';
         $out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
         $out .= '<th class="barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
+        $out .= '<th class="barre">'.$this->$linkOrderFunction('Contact','c1.nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
         $out .= '<th>'.$this->$linkOrderFunction('Titre','titre_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
+        $out .= '<th class="barre">'.$this->$linkOrderFunction('Création','daterecord_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
         $out .= '<th class="barre">'.$this->$linkOrderFunction('Règlement','datereglement_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
-        $out .= '<th>'.$this->$linkOrderFunction('Montant HT','sommeHT_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
+        //$out .= '<th>'.$this->$linkOrderFunction('Montant HT','sommeHT_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
         $out .= '<th>Montant TTC</th>';
         $out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
         if(!$modHistorique)
@@ -734,6 +737,7 @@ class factureView extends generalView {
         foreach($datas['data'] as $v) {
             $action = '';
             $datereglement_fact = ($v['datereglement_fact'] != '') ? DateUniv2Human($v['datereglement_fact'], 'simpleLong') : '';
+            $daterecord_fact = ($v['daterecord_fact'] != '') ? DateUniv2Human($v['daterecord_fact'], 'simpleLong') : '';
             $sommeTTC_fact = round(($v['sommeHT_fact']*(100+$v['tauxTVA_fact']))/100,2);
             //traitement des boutons de modification et d'action
             // recherche du fichier PDF
@@ -779,9 +783,11 @@ class factureView extends generalView {
                 $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_fact'].'" checked="checked"/></td>';
             $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'"><b>'.$this->prepareAffichageID($v).'</b></td>';
             $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['contact'].'</td>';
+            $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
             $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$v['titre_fact'].'</td>';
+            $out .= '<td class="barre right" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$daterecord_fact.'</td>';
             $out .= '<td class="barre right" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.$datereglement_fact.'</td>';
-            $out .= '<td class="barre right" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.prepareNombreAffichage($v['sommeHT_fact']).' &euro;</td>';
+            //$out .= '<td class="barre right" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.prepareNombreAffichage($v['sommeHT_fact']).' &euro;</td>';
             $out .= '<td class="barre right" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'">'.prepareNombreAffichage($sommeTTC_fact).' &euro;</td>';
             $out .= '<td class="barre" style="cursor : pointer; color : #'.$v['color_stfact'].' !important;" onclick="window.location=\''.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'\'"><div class="square" style="background-color:#'.$v['color_stfact'].';">&nbsp;</div>'.$v['nom_stfact'].'</td>';
             if(!$modHistorique)
@@ -794,9 +800,9 @@ class factureView extends generalView {
         $out .= '<tr class="titre noround roundbottom">';
         if(!$modHistorique)
              $out .= '<td colspan="5"></td>';
-        else $out .= '<td colspan="4"></td>';
-        $out .= '<th class="bordG right">'.prepareNombreAffichage($totalDisplay).' &euro;</th>';
-        $out .= '<th class="bordD right">'.prepareNombreAffichage($totalTTCDisplay).' &euro;</th>';
+        else $out .= '<td colspan="5"></td>';
+        //$out .= '<th class="bordG right">'.prepareNombreAffichage($totalDisplay).' &euro;</th>';
+        $out .= '<th class="bordD bordG right">'.prepareNombreAffichage($totalTTCDisplay).' &euro;</th>';
         $out .= '<td colspan="2"></td>';
         $out .= '</tr>';
 

@@ -148,7 +148,7 @@ if(array_key_exists('action', $PC->rcvG)) {
             $search = '';
         else
             $search = $PC->rcvP['value'];
-        $sql->makeRequeteFree("SELECT * from entreprise where nom_ent LIKE '%".$search."%' or cp_ent LIKE '".$search."%' or ville_ent LIKE '%".$search."%' Limit 0,10 ");
+        $sql->makeRequeteFree("SELECT * from entreprise where nom_ent LIKE '".$search."%' Limit 0,10 ");
         $resultat = $sql->process2();
         if(is_array($resultat[1])) {
             foreach($resultat[1] as $v) {

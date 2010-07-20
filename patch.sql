@@ -1,7 +1,7 @@
  
 --
 -- Début du patch.sql généré par CompareSQL V1
--- Mon Jul 12 00:54:58 +0200 2010
+-- Tue Jul 20 18:57:39 +0200 2010
 --
  
 --

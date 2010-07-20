@@ -126,12 +126,12 @@ class commandeView extends generalView {
 	$sqlConn->makeRequeteFree("select id_modereg, nom_modereg from ref_modereglement;");
 	$temp = $sqlConn->process2();
 	$temp=$temp[1];
-        if($data['modereglement_cmd'] == ''){
-            $data['modereglement_cmd'] = 3;
-        }
-        if($data['condireglement_cmd'] == ''){
-            $data['condireglement_cmd'] = 4;
-        }
+	if($data['modereglement_cmd'] == '') {
+	    $data['modereglement_cmd'] = 3;
+	}
+	if($data['condireglement_cmd'] == '') {
+	    $data['condireglement_cmd'] = 4;
+	}
 	foreach($temp as $k => $v)
 	    $list[$v['id_modereg']] = $v['nom_modereg'];
 	$tag['ModeReglement'] = selectTag('modereglement_cmd', $list, $data['modereglement_cmd']);
@@ -176,6 +176,7 @@ class commandeView extends generalView {
 	$script .= "\n".'function changeFourn(produit, fourn) {if(fourn != "") {$(produit+\'PF\').value = prix[produit][fourn];$(produit+\'RF\').value = remise[produit][fourn]; calculette();} else {$(produit+\'PF\').value = 0; $(produit+\'RF\').value = 0; calculette();} } '."\n";
 	$script .= 'function ChangeCommandeAction(value) {	$(\'MakeCommandeAction\').value = value; }'."\n";
 	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+	$script .= "\n".'function autoRemplir(dest, id, val){$(dest).value=val; $(dest+\'hidden\').value=id; zuno.popup.close();}';
 	$script .= '</script>';
 
 	if($light == 'interneInfos')
@@ -301,13 +302,13 @@ class commandeView extends generalView {
 	$out .= '</div>';
 	$out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactTech);">Contact Tech</div>
-                    <div class="field">'.inputTag('text', 'contact_cmd2','icon', '', '16',$Ncont, ' id="ACcontact_cmd" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+                    <div class="field">'.inputTag('text', 'contact_cmd2','icon', '', '16',$Ncont, ' id="ACcontact_cmd" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
                     <input type="hidden" name="contact_cmd" id="ACcontact_cmdhidden" value="'.$datas['data']['contact_cmd'].'" /><input type="hidden" name="contold" id="ACcontact_cmdold" value="'.$Ncont.'" />
                     <div id="ACcontact_cmd_choix" class="autocomplete" style="display:none;"></div>
 		</div>';
 	$out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactAchat);">Contact Achat</div>
-                    <div class="field">'.inputTag('text', 'contact_achat_cmd2','icon', '', '16',$Nachat, ' id="ACcontact_achat_cmd" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_achat_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+                    <div class="field">'.inputTag('text', 'contact_achat_cmd2','icon', '', '16',$Nachat, ' id="ACcontact_achat_cmd" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_achat_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
                     <input type="hidden" name="contact_achat_cmd" id="ACcontact_achat_cmdhidden" value="'.$datas['data']['contact_achat_cmd'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_cmdold" value="'.$Nachat.'" />
                     <div id="ACcontact_achat_cmd_choix" class="autocomplete" style="display:none;"></div>
 		</div>';
@@ -352,7 +353,7 @@ class commandeView extends generalView {
     private function interneProduits($datas) {
 	$out = '<table width="100%" cellspacing="0" cellpadding="2" border="0">
 		<tbody><tr class="titre"> 
-			<th rowspan="2" style="width: 135px">ID</th>
+			<th rowspan="2" style="width: 135px">Référence</th>
 			<th rowspan="2">Description</th>
                         <th rowspan="2">Fournisseur</th>
 			<th rowspan="2" style="width: 16px">Stock</th>
@@ -381,8 +382,8 @@ class commandeView extends generalView {
 	    $out2 = '<tr class="altern'.$alternance.'" id="'.$v['id'].'M" style="display:none;">';
 	    $out .= '<td id="ID'.$v['id'].'">'.$v['id_produit'].'</td>';
 	    $out2 .= '<td>'.$v['id_produit'].'</td>';
-            $out .= '<td>'.$v['desc'].'</td>';
-            $out2 .= '<td>'.$v['desc'].'</td>';
+	    $out .= '<td>'.$v['desc'].'</td>';
+	    $out2 .= '<td>'.$v['desc'].'</td>';
 	    if($v['fournisseur'] != '') {
 		$out .= '<td class="barre"><a name="fourn'.$v['fournisseur'].'" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'id_fourn='.$v['fournisseur'].'\', \'950\', \'220\',\'\',\'\', \'resize\', \'Fournisseur\')"><img alt="fourn" title="Fournisseur" src="../img/prospec/TypeEntreprise/5.png" /> '.$v['fournisseurs'][$v['fournisseur']].'</a></td>';
 		$out2 .= '<td class="barre">'.selectTag('fournisseur['.$v['id'].']', $v['fournisseurs'], $v['fournisseur'], '', 'onchange="changeFourn(\''.$v['id'].'\', this.value);"').'</td>';
@@ -489,8 +490,7 @@ class commandeView extends generalView {
 	    if(verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd'])) {
 		$bouton .= '<a onclick="ChangeCommandeAction(\'RecordSend\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Enregistrer puis envoyer" name="enregistrerEnvoyer"><img align="middle" title="Enregistrer et envoyer" alt="enregEnvoy" name="img" src="../img/prospec/commande.recsend.png"/> Enregistrer & envoyer</a>';
 		if($datas['data']['status_cmd'] >= "3")
-		    $bouton .= '<a onclick="ChangeCommandeAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="../img/prospec/commande.send.png"/> Envoyer</a>
-				<a title="Traitement" name="traitement" onclick="ChangeCommandeAction(\'traitement\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');"><img align="middle" title="Traitement" alt="Traitement" name="img" src="../img/prospec/commande.AR.png"/> Commande en traitement</a>';
+		    $bouton .= '<a onclick="ChangeCommandeAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="../img/prospec/commande.send.png"/> Envoyer</a>';
 
 	    }
 	}
@@ -937,7 +937,7 @@ class commandeView extends generalView {
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if($modHistorique)
-	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commandeHisto');
+	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commandeHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commande');
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeCmdResultPage",$suffixeLink);
 	loadPlugin(array('OOConverter'));

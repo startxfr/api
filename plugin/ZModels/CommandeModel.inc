@@ -332,11 +332,11 @@ class commandeModel extends GeneralModel {
      */
     public function getFullDataFromID($id) {
 	$this->makeRequeteFree("Select fournisseur from commande_produit where id_commande = '".$id."'");
-        $fourn = $this->process2();
-        $result = $this->getDataFromID($id);
-        $datas['data'] = $result[1][0];
-        $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
-        $datas['produit'] = $this->getAllFournisseursFromID($id);
+	$fourn = $this->process2();
+	$result = $this->getDataFromID($id);
+	$datas['data'] = $result[1][0];
+	$datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+	$datas['produit'] = $this->getAllFournisseursFromID($id);
 
 	return $datas;
     }
@@ -496,9 +496,9 @@ class commandeModel extends GeneralModel {
 	$sql = $this->makeRequeteInsert('commande_produit',$this->bindVarCommandeProduit($data));
 	Logg::loggerInfo('commandeModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour la commande '.$data['id_commande'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
-	$this->updateMontant($data['id_commande']);
+	$sommeHT = $this->updateMontant($data['id_commande']);
 	if($rs[0] and $actu)
-	    $this->addActualite($data['id_commande'], 'update');
+	    $this->addActualite($data['id_commande'], 'free','ajout du produit '.$data['id_produit'].' pour la commande '.$data['id_commande'],'ajout du produit '.$data['id_produit'].' x '.formatCurencyDisplay($data['prix']).' pour la commande '.$data['id_commande'].'<br/> La commande vaut maintenant '.formatCurencyDisplay($sommeHT['sommeHT_cmd']).' pour le client <br/> et '.formatCurencyDisplay($sommeHT['sommeFHT_cmd']).'pour le fournisseur','',false);
 	return $rs;
     }
 
@@ -519,8 +519,8 @@ class commandeModel extends GeneralModel {
 	Logg::loggerInfo('commandeModel::deleteProduits() ~ suppression de produits sur la commande '.$data['id_commande'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
-	    $this->updateMontant($data['id_commande']);
-	    $this->addActualite($data['id_commande'], 'update');
+	    $sommeHT = $this->updateMontant($data['id_commande']);
+	    $this->addActualite($data['id_commande'], 'free','suppression de produit sur la commande '.$data['id_commande'],'suppression du produit '.$data['id_produit'].' pour la commande '.$data['id_commande'].'<br/> La commande vaut maintenant '.formatCurencyDisplay($sommeHT['sommeHT_cmd']).' pour le client <br/> et '.formatCurencyDisplay($sommeHT['sommeFHT_cmd']).'pour le fournisseur','',false);
 	}
 	return $rs;
     }
@@ -535,8 +535,8 @@ class commandeModel extends GeneralModel {
 	Logg::loggerInfo('commandeModel::updateProduits() ~ mise à jour du produit '.$data['id'].' sur la commande',$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0]) {
-	    $this->updateMontant($data['id_commande']);
-	    $this->addActualite($data['id_commande'], 'update');
+	    $sommeHT = $this->updateMontant($data['id_commande']);
+	    $this->addActualite($data['id_commande'], 'free','modification de produit sur la commande '.$data['id_commande'],'modification du produit '.$data['id_produit'].' x '.formatCurencyDisplay($data['prix']).' pour la commande '.$data['id_commande'].'<br/> La commande vaut maintenant '.formatCurencyDisplay($sommeHT['sommeHT_cmd']).' pour le client <br/> et '.formatCurencyDisplay($sommeHT['sommeFHT_cmd']).'pour le fournisseur','',false);
 	}
 	return $rs;
     }
@@ -552,7 +552,9 @@ class commandeModel extends GeneralModel {
 	    $sommeFHT += $v['prixF']*(1-$v['remiseF']/100)*$v['quantite_cmd'];
 	    $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
 	}
-	$this->update(array('sommeHT_cmd' => $sommeHT, 'sommeFHT_cmd' => $sommeFHT), $id);
+	$up = array('sommeHT_cmd' => $sommeHT, 'sommeFHT_cmd' => $sommeFHT);
+	$this->update($up, $id);
+	return $up;
     }
 
     /**
@@ -843,7 +845,7 @@ class commandeModel extends GeneralModel {
 	$color = $cmd['color_stcmd'];
 	$out['score'] = $score;
 	if($bureau)
-	     $out['img'] = imageTag('Img.CommandeScore.php?score='.$score,$score.'%');
+	    $out['img'] = imageTag('Img.CommandeScore.php?score='.$score,$score.'%');
 	else $out['img'] = imageTag('../Img.CommandeScore.php?score='.$score,$score.'%');
 	$out['color'] = $color;
 	$out['desc'] = $desc;
@@ -913,20 +915,31 @@ class commandeModel extends GeneralModel {
 	    $bddtmp->makeRequeteSelect('commande','id_cmd',$id_cmd);
 	    $cmd = $bddtmp->process();
 	    $cmd = $cmd[0];
-	    if($newAttribList['titre_cmd'] != '')
+	    $propMess = '';
+	    if($newAttribList['titre_cmd'] != '') {
+		$propMess .= "<br/>titre de la commande: \"".$newAttribList['titre_cmd'].'", ';
 		$newData['titre_cmd'] = $newAttribList['titre_cmd'];
-	    if($newAttribList['tva_cmd'] != '')
+	    }
+	    if($newAttribList['tva_cmd'] != '') {
+		$propMess .= "<br/>taux de TVA: \"".$newAttribList['tva_cmd'].'", ';
 		$newData['tva_cmd'] = $newAttribList['tva_cmd'];
-	    if($newAttribList['commercial_cmd'] != '')
+	    }
+	    if($newAttribList['commercial_cmd'] != '') {
+		$propMess .= "<br/>Commercial: \"".$newAttribList['commercial_cmd'].'", ';
 		$newData['commercial_cmd'] = $newAttribList['commercial_cmd'];
-	    if($newAttribList['modereglement_cmd'] != '')
+	    }
+	    if($newAttribList['modereglement_cmd'] != '') {
+		$propMess .= "<br/>nouveau mode de règlement, ";
 		$newData['modereglement_cmd'] = $newAttribList['modereglement_cmd'];
-	    if($newAttribList['condireglement_cmd'] != '')
+	    }
+	    if($newAttribList['condireglement_cmd'] != '') {
+		$propMess .= "<br/>nouvelles conditions de règlement, ";
 		$newData['condireglement_cmd'] = $newAttribList['condireglement_cmd'];
-
+	    }
+	    $propMess = substr($propMess, 0, -2);
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'free', 'Changement d\'attribut(s)', 'changement par lot des propriétés suivantes : '.$propMess, '',false);
 	    Logg::loggerInfo('commandeModel::changeAttributeCommandeInDB() ~ changement d\'attribut de la commande '.$id_cmd,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -963,7 +976,7 @@ class commandeModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'free', 'Commande client '.$id_cmd.' reçue', 'Marqué comme reçue lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markRecuCommandeInDB() ~ Commande '.$id_cmd.' marquée comme supprimée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -984,7 +997,7 @@ class commandeModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'send', '', 'Marqué comme envoyé lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme envoyé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1003,7 +1016,7 @@ class commandeModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'free', 'Commande fournisseur '.$id_cmd.' reçue par le partenaire', 'Marqué comme reçue par le partenaire lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markBDCFRecuCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme reçu',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1022,7 +1035,7 @@ class commandeModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'free', 'Commande '.$id_cmd.' validée', 'Marqué comme validée lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markBDCFEnvoyeCommandeInDB() ~ Bon de commande '.$id_cmd.' marquée comme validé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1041,7 +1054,7 @@ class commandeModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'free', 'Commande '.$id_cmd.' expédiée', 'Marqué comme expédiée lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markExpedieCommandeInDB() ~ Commande '.$id_cmd.' marquée comme expédiée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1060,7 +1073,7 @@ class commandeModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'free', 'Commande '.$id_cmd.' récéptionnée', 'Marqué comme récéptionnée lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markReceptionneCommandeInDB() ~ Commande '.$id_cmd.' marquée comme réceptionnée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1079,7 +1092,7 @@ class commandeModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_cmd, $bddtmp->bindVarCommande($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_cmd, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_cmd, 'free', 'Commande '.$id_cmd.' terminée', 'Marqué comme terminée lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('commandeModel::markTermineCommandeInDB() ~ Commande '.$id_cmd.' marquée comme terminée',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}

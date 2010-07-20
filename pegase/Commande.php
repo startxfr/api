@@ -47,10 +47,10 @@ elseif($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'supp') {
     echo generateZBox($titre, $titre, $corps,$pied,'CommandeBox','');
 }
 elseif ($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'suppconfirm') {
-    $bddtmp = new CommandeModel();
+    $bddtmp = new commandeModel();
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$PC->rcvG['id_commande'],array("status_cmd"=>"2"));
     $bddtmp->process();
-    $bddtmp->addActualite($id_cmd, 'delete');
+    $bddtmp->addActualite($PC->rcvG['id_commande'], 'delete');
     $out = new PageDisplayHeader();
     echo $out->Process();
     echo "<script language=\"javascript\">location.href= 'CommandeListe.php';</script>";

@@ -253,7 +253,7 @@ class FournisseurView extends generalView {
 	$this->fieldset2->ligneInput('Faximile', 'fax_ent', $datas['data']['fax_ent'],'','ZTips.contactEnt.fax');
 	$this->fieldset2->ligneInput('Web', 'www_ent', $datas['data']['www_ent'],'','ZTips.contactEnt.web');
 
-	$this->fieldset3->ligneSelect('Civilité', 'civ_cont', $datas['data']['civ_cont'], array('M.' => 'Monsieur', 'Mme' => 'Madame', 'Melle' => 'Mademoiselle'), false,'','ZTips.contactPers.civ');
+	$this->fieldset3->ligneSelect('Civilité', 'civ_cont', $datas['data']['civ_cont'], array('M.' => 'Monsieur', 'Mme' => 'Madame', 'Mlle' => 'Mademoiselle'), false,'','ZTips.contactPers.civ');
 	$this->fieldset3->ligneInput('Prenom', 'prenom_cont', $datas['data']['prenom_cont'],'','ZTips.contactPers.prenom');
 	$this->fieldset3->ligneInput('Nom', 'nom_cont', $datas['data']['nom_cont'],'','ZTips.contactPers.nom');
 	$this->fieldset3->ligneInput('E-mail', 'mail_cont', $datas['data']['mail_cont'],'','ZTips.contactPers.mail');

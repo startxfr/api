@@ -46,6 +46,7 @@ if(verifDroits('facture',10)) {
 else {
     $plus = "WHERE commercial_fact = '".$_SESSION['user']['id']."' ";
 }
+    $info = new factureModel();
 /**
  * Recherche simple d'une facture
  */
@@ -76,7 +77,6 @@ elseif($PC->rcvG['action'] == 'view') {
  * Génération d'un avoir à partir d'une facture
  */
 elseif($PC->rcvG['action'] == 'avoir') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
     aiJeLeDroit('avoir', 20);
     ?>
@@ -90,7 +90,6 @@ elseif($PC->rcvG['action'] == 'avoir') {
 }
 
 elseif($PC->rcvG['action'] == 'doAvoir') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
     $prod=$info->getProduitsFromID($PC->rcvG['id_fact']);
     $id = $info->GetLastId();
@@ -127,7 +126,6 @@ elseif($PC->rcvG['action'] == 'modifProduit') {
     viewFormulaireRessourcesLies($PC->rcvG['id_fact'], 'facture', $PC->rcvG['id_prod'], '1', 'iphone', $PC->rcvG['type'], $PC->rcvG['tva']);
 }
 elseif($PC->rcvG['action'] == 'doModifProduit') {
-    $info= new factureModel();
     $idp = array($PC->rcvP['id_produitF']);
 
     $data['id_produit']=FileCleanFileName($idp[0], 'SVN_PROP');
@@ -190,7 +188,6 @@ elseif($PC->rcvG['action'] == 'addProduit') {
 //J'affiche simplement le formulaire d'ajout.
 }
 elseif($PC->rcvG['action'] == 'doAddProduit') {
-    $info= new factureModel();
     $idp = array($PC->rcvP['id_produitF']);
 
     $data['id_produit']=FileCleanFileName($idp[0], 'SVN_PROP');
@@ -248,7 +245,6 @@ elseif($PC->rcvG['action'] == 'doAddProduit') {
 elseif($PC->rcvG['action'] == 'suppProduit') {
     $data['id_facture'] = $PC->rcvG['id_fact'];
     $data['id_produit'] = $PC->rcvP['id_produit'];
-    $info= new factureModel();
     $result = $info->deleteProduits($data);//J'effectue la suppression du produit de la BDD.
     if($result[0]) {
         $result = $info->getProduitsFromID($PC->rcvG['id_fact']);
@@ -290,7 +286,6 @@ elseif($PC->rcvG['action'] == 'modifFacture') {
  * S'il faut vraiment faire la modification
  */
 elseif($PC->rcvG['action'] == 'doModifFacture') {
-    $info = new factureModel();
     $result = $info->update($PC->rcvP,$PC->rcvG['id_fact']);//Je fais l'insertion
     if($result[0]) {
         $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
@@ -311,7 +306,6 @@ elseif($PC->rcvG['action'] == 'suppFacture') {
  * Si on a validé la demande de suppression d'une facture.
  */
 elseif($PC->rcvG['action'] == 'doDeleteFacture') {
-    $info = new factureModel();
     $commande = $info->getDataFromID($PC->rcvG['id_fact']);
     $result = $info->delete($PC->rcvG['id_fact']);
     $prod=$info->getProduitsFromID($PC->rcvG['id_fact']);
@@ -368,7 +362,6 @@ elseif($PC->rcvG['action'] == 'addFacture') {
  * Si on a confirmé la demande d'ajout d'une facture.
  */
 elseif($PC->rcvG['action'] == 'doAddFacture') {
-    $info = new factureModel();
     $cmd = $info->getEntrepriseData($PC->rcvP['commande_fact']);
     $cmd = $cmd[1][0];
     $devisM = new devisModel();
@@ -402,18 +395,15 @@ elseif($PC->rcvG['action'] == 'doAddFacture') {
     $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
     $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '3' ; ");
     $bddtmp->process2();
-    if($result[0]) {
-
+    if($result[0])
         viewFiche($data['id_fact'], 'facture');
-    }
-
 }
 elseif($PC->rcvG['action'] == 'addFactureFromDevis') {
     aiJeLeDroit('commande', 20);
-    $info = new commandeModel();
-    $aijecommande = $info->getDataFromID($PC->rcvG['devis_cmd']."BC");
+    $infocmd = new commandeModel();
+    $aijecommande = $infocmd->getDataFromID($PC->rcvG['devis_cmd']."BC");
     if($aijecommande[1][0]['id_cmd'] == null || $aijecommande[1][0]['id_cmd'] == '') {
-        $dev = $info->getEntrepriseData($PC->rcvG['devis_cmd']);
+        $dev = $infocmd->getEntrepriseData($PC->rcvG['devis_cmd']);
         $dev = $dev[1][0];
         $devisM = new devisModel();
         $produit = $devisM->getProduitsFromID($PC->rcvP['devis_cmd']);
@@ -440,16 +430,12 @@ elseif($PC->rcvG['action'] == 'addFactureFromDevis') {
         $data['complementdelivery_cmd'] = $dev['complementdelivery_dev'];
         $data['tva_cmd'] = $dev['tva_dev'];
         $data['status_cmd'] = 9;
-        $result = $info->insert($data, 'cloner', $produit);
+        $result = $infocmd->insert($data, 'cloner', $produit);
         $aijecommande[1][0] = $data;
-        if($result[0]) {
-
-        }
     }
-    $produit = $info->getProduitsFromID($aijecommande[1][0]['id_cmd']);
+    $produit = $infocmd->getProduitsFromID($aijecommande[1][0]['id_cmd']);
     $produit = $produit[1];
-    $facture = new factureModel();
-    $id = $facture->GetLastId();
+    $id = $info->GetLastId();
     $id ++;
     $data['id_fact'] = $id;
     $data['commande_fact'] = $aijecommande[1][0]['id_cmd'];
@@ -472,23 +458,16 @@ elseif($PC->rcvG['action'] == 'addFactureFromDevis') {
     $data['maildelivery_fact'] = $aijecommande[1][0]['maildelivery_cmd'];
     $data['complementdelivery_fact'] = $aijecommande[1][0]['complementdelivery_cmd'];
     $data['type_fact'] = 'Facture';
-    $result2 = $facture->insert($data, 'cloner', $produit);
-    $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-    $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '3' ; ");
-    $bddtmp->process2();
-    if($result2[0]) {
-
+    $result2 = $info->insert($data, 'cloner', $produit);
+    $info->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = ".$data['entreprise_fact']." AND type_ent < '3' ; ");
+    $info->process2();
+    if($result2[0])
         viewFiche($data['id_fact'], 'facture', 'afterModif');
-    }
-
-
 }
 elseif($PC->rcvG['action'] == 'cloner') {
     viewFormulaire($PC->rcvG['id_fact'], 'facture', 'cloner', 'iphone', true, '');
 }
-
 elseif($PC->rcvG['action'] == 'doCloner') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
     $prod=$info->getProduitsFromID($PC->rcvG['id_fact']);
     $id = $info->GetLastId();
@@ -496,10 +475,8 @@ elseif($PC->rcvG['action'] == 'doCloner') {
     $result[1][0]['id_fact'] = $id;
     $result[1][0]['status_fact'] = '1';
     $resultat = $info->insert($result[1][0], 'cloner', $prod[1]);
-    if($resultat[0]) {
-
+    if($resultat[0])
         viewFiche($id, 'facture');
-    }
     else {
         ?>
 <root><go to="waFactureCloner"/>
@@ -704,10 +681,8 @@ elseif($PC->rcvG['action'] == 'doAddFactureExpress') {
         $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
         $bddtmp->makeRequeteFree("UPDATE entreprise SET type_ent = '3' WHERE id_ent = '".$_SESSION['factureExpress']['entreprise_fact']."' AND type_ent < '3' ; ");
         $bddtmp->process2();
-        if($result[0]) {
-
+        if($result[0])
             viewFiche($_SESSION['factureExpress']['id'], 'facture');
-        }
         else {
             ?>
 <root><go to="waFactureAdd"/>
@@ -721,14 +696,10 @@ elseif($PC->rcvG['action'] == 'doAddFactureExpress') {
     }
 }
 elseif($PC->rcvG['action'] == 'voir') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
-    if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('facture', 63);
-    }
-    else {
-        aiJeLeDroit('facture', 62);
-    }
+    if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+         aiJeLeDroit('facture', 63);
+    else aiJeLeDroit('facture', 62);
     ?>
 <root><go to="waFactureAction"/>
     <title set="waFactureAction">Voir</title>
@@ -739,7 +710,6 @@ elseif($PC->rcvG['action'] == 'voir') {
     <?php
 }
 elseif($PC->rcvG['action'] == 'send') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
     ?>
 <root><go to="waFactureAction"/>
@@ -751,7 +721,6 @@ elseif($PC->rcvG['action'] == 'send') {
     <?php
 }
 elseif($PC->rcvG['action'] == 'send1') {
-    $info = new factureModel();
     $gnose = new factureGnose();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
     $r = $result[1][0];
@@ -766,12 +735,9 @@ elseif($PC->rcvG['action'] == 'send1') {
     $_SESSION['FactureActionRecSend']['file'] = $dir.$Doc;
 
     if($PC->rcvP['type'] == 'courrier') {
-        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('facture', 55);
-        }
-        else {
-            aiJeLeDroit('facture', 54);
-        }
+        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+             aiJeLeDroit('facture', 55);
+        else aiJeLeDroit('facture', 54);
         $_SESSION['FactureActionRecSend']['nom'] = $r['nomdelivery_fact'];
         $_SESSION['FactureActionRecSend']['add1'] = $r['adressedelivery_fact'];
         $_SESSION['FactureActionRecSend']['add2'] = $r['adresse1delivery_fact'];
@@ -780,12 +746,9 @@ elseif($PC->rcvG['action'] == 'send1') {
         $_SESSION['FactureActionRecSend']['code_pays'] = $r['paysdelivery_fact'];
     }
     elseif($PC->rcvP['type'] == 'fax') {
-        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('facture', 53);
-        }
-        else {
-            aiJeLeDroit('facture', 52);
-        }
+        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+             aiJeLeDroit('facture', 53);
+        else aiJeLeDroit('facture', 52);
         if($r['nomdelivery_fact'] != '')
             $_SESSION['FactureActionRecSend']['nom'] = $r['nomdelivery_fact'];
         else  $_SESSION['FactureActionRecSend']['nom'] = $r['civ_cont'].' '.$r['prenom_cont'].' '.$r['nom_cont'];
@@ -796,12 +759,9 @@ elseif($PC->rcvG['action'] == 'send1') {
         else  $_SESSION['FactureActionRecSend']['fax'] = $r['fax_achat'];
     }
     else {
-        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('facture', 51);
-        }
-        else {
-            aiJeLeDroit('facture', 50);
-        }
+        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+             aiJeLeDroit('facture', 51);
+        else aiJeLeDroit('facture', 50);
         if($r['maildelivery_fact'] != '')
             $_SESSION['FactureActionRecSend']['email'] = $r['maildelivery_fact'];
         elseif($r['mail_cont'] != '')
@@ -820,14 +780,10 @@ elseif($PC->rcvG['action'] == 'send1') {
     <?php
 }
 elseif($PC->rcvG['action'] == 'rec') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
-    if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('facture', 61);
-    }
-    else {
-        aiJeLeDroit('facture', 60);
-    }
+    if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+         aiJeLeDroit('facture', 61);
+    else aiJeLeDroit('facture', 60);
     ?>
 <root><go to="waFactureAction"/>
     <title set="waFactureAction">Enregistrer</title>
@@ -838,14 +794,10 @@ elseif($PC->rcvG['action'] == 'rec') {
     <?php
 }
 elseif($PC->rcvG['action'] == 'recsend') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
-    if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('facture', 61);
-    }
-    else {
-        aiJeLeDroit('facture', 60);
-    }
+    if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+         aiJeLeDroit('facture', 61);
+    else aiJeLeDroit('facture', 60);
     ?>
 <root><go to="waFactureAction"/>
     <title set="waFactureAction">Enregistrer et envoyer</title>
@@ -856,7 +808,6 @@ elseif($PC->rcvG['action'] == 'recsend') {
     <?php
 }
 elseif($PC->rcvG['action'] == 'recsend1') {
-    $info = new factureModel();
     $result = $info->getDataFromID($PC->rcvG['id_fact']);
     $r = $result[1][0];
     $gnose = new factureGnose();
@@ -871,12 +822,9 @@ elseif($PC->rcvG['action'] == 'recsend1') {
     $_SESSION['FactureActionRecSend']['file'] = $dir.$Doc;
 
     if($PC->rcvP['type'] == 'courrier') {
-        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('facture', 55);
-        }
-        else {
-            aiJeLeDroit('facture', 54);
-        }
+        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+             aiJeLeDroit('facture', 55);
+        else aiJeLeDroit('facture', 54);
         $_SESSION['FactureActionRecSend']['nom'] = $r['nomdelivery_fact'];
         $_SESSION['FactureActionRecSend']['add1'] = $r['adressedelivery_fact'];
         $_SESSION['FactureActionRecSend']['add2'] = $r['adresse1delivery_fact'];
@@ -885,12 +833,9 @@ elseif($PC->rcvG['action'] == 'recsend1') {
         $_SESSION['FactureActionRecSend']['code_pays'] = $r['paysdelivery_fact'];
     }
     elseif($PC->rcvP['type'] == 'fax') {
-        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('facture', 53);
-        }
-        else {
-            aiJeLeDroit('facture', 52);
-        }
+        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+             aiJeLeDroit('facture', 53);
+        else aiJeLeDroit('facture', 52);
         if($r['nomdelivery_fact'] != '')
             $_SESSION['FactureActionRecSend']['nom'] = $r['nomdelivery_fact'];
         else  $_SESSION['FactureActionRecSend']['nom'] = $r['civ_cont'].' '.$r['prenom_cont'].' '.$r['nom_cont'];
@@ -901,12 +846,9 @@ elseif($PC->rcvG['action'] == 'recsend1') {
         else  $_SESSION['FactureActionRecSend']['fax'] = $r['fax_achat'];
     }
     else {
-        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('facture', 51);
-        }
-        else {
-            aiJeLeDroit('facture', 50);
-        }
+        if($result[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+             aiJeLeDroit('facture', 51);
+        else aiJeLeDroit('facture', 50);
         if($r['maildelivery_fact'] != '')
             $_SESSION['FactureActionRecSend']['email'] = $r['maildelivery_fact'];
         elseif($r['mail_cont'] != '')
@@ -930,7 +872,6 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
         ($PC->rcvG['action'] == 'doRecsend')) {
     if ($PC->rcvG['action'] == 'doRecsend') $PC->rcvP = array_merge($_SESSION['FactureActionRecSend'],$PC->rcvP);
     $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-    $info = new factureModel();
     $gnose = new factureGnose();
     $facture = $info->getDataFromID($PC->rcvG['id_fact']);
     $dev = $facture[1][0];
@@ -974,8 +915,6 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
             $bddtmp->makeRequeteUpdate('facture','id_fact',$dev['id_fact'],array('status_fact'=>$inActualiteRec['status_fact']));
             $bddtmp->process();
         }
-
-
         if ($PC->rcvG['action'] == 'doRec') {	?>
 <root><go to="waFactureAction"/>
     <part><destination mode="replace" zone="waFactureAction"/>
@@ -1063,15 +1002,11 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
 }
 elseif($PC->rcvG['action'] == 'nonregle') {
     $data['status_fact'] = '5';
-    $requete = new factureModel();
-    $result = $requete->update($data, $PC->rcvG['id_fact']);
-    $donnee = $requete->getDataFromID($PC->rcvG['id_fact']);
-    if($donnee[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('facture', 14);
-    }
-    else {
-        aiJeLeDroit('facture', 13);
-    }
+    $result = $info->update($data, $PC->rcvG['id_fact']);
+    $donnee = $info->getDataFromID($PC->rcvG['id_fact']);
+    if($donnee[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+         aiJeLeDroit('facture', 14);
+    else aiJeLeDroit('facture', 13);
     if($result[0]) {
 
         ?>
@@ -1086,15 +1021,11 @@ elseif($PC->rcvG['action'] == 'nonregle') {
 }
 elseif($PC->rcvG['action'] == 'regle') {
     $data['status_fact'] = '6';
-    $requete = new factureModel();
-    $result = $requete->update($data, $PC->rcvG['id_fact']);
-    $donnee = $requete->getDataFromID($PC->rcvG['id_fact']);
-    if($donnee[1][0]['commercial_fact'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('facture', 14);
-    }
-    else {
-        aiJeLeDroit('facture', 13);
-    }
+    $result = $info->update($data, $PC->rcvG['id_fact']);
+    $donnee = $info->getDataFromID($PC->rcvG['id_fact']);
+    if($donnee[1][0]['commercial_fact'] != $_SESSION['user']['id'])
+         aiJeLeDroit('facture', 14);
+    else aiJeLeDroit('facture', 13);
     if($result[0]) {
         
         ?>

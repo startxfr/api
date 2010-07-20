@@ -319,10 +319,12 @@ abstract class GeneralModel extends Bdd_mysql_2 {
      * @param string $desc Précise une phrase de description optionnelle pour remplacer l'auto générée
      * @param string $precision Permet de rajouter quelque chose à la description
      * @param string $cloneID Permet de préciser l'id de la fiche d'origine du clone ou de l'avoir (le cas échéant)
+     * @param string $isVisibleFilActu Permet de préciser si l'acualité doit appraitre dans le fil d'actualité
+     * @param string $paramAdd Permet de pousser des parametres aditionnels qui seront envoyés vers la base de donnée
      * @return array Indique si la requête s'est bien déroulée
      */
     public function addActualite($id, $action, $desc = '', $precision = '', $cloneID = '', $isVisibleFilActu = true,$paramAdd = array()) {
-	$param = array_merge(array('date' => date('Y-m-d H:i:s'), 'user' => $_SESSION['user']['id']),$paramAdd);
+	$param = $paramAdd;
 	$e = "e";
 	$pronom = "Elle";
 
@@ -339,10 +341,10 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 		    $type2 = "l'affaire";
 		    $status = $rs[1][0]['nom_staff'];
 		    if($rs[1][0]['budget_aff'] != '')
-			 $montant = "de ".prepareNombreAffichage($rs[1][0]['budget_aff'])."€";
+			$montant = "de ".prepareNombreAffichage($rs[1][0]['budget_aff'])."€";
 		    else $montant = "indéterminé";
 		    if($rs[1][0]['archived_aff'])
-			 $action = "archive";
+			$action = "archive";
 		    break;
 		case "devis" :
 		    $rs = $this->getDataFromID($id);
@@ -357,8 +359,8 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 		    $pronom = "Il";
 		    $e = "";
 		    $status = $rs[1][0]['nom_stdev'];
-                    if($rs[1][0]['status_dev'] == '4')
-                        $action = 'send';
+		    if($rs[1][0]['status_dev'] == '4')
+			$action = 'send';
 		    $montant = "de ".prepareNombreAffichage($rs[1][0]['sommeHT_dev'])."€ Hors Taxes";
 		    break;
 		case "commande" :
@@ -366,15 +368,15 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 		    $param['type'] = "commande";
 		    $param['id_ent'] = $rs[1][0]['entreprise_cmd'];
 		    $param['id_cont'] = $rs[1][0]['contact_cmd'];
-		    $param['id_aff'] = $rs[1][0]['affaire_dev'];
+		    $param['id_aff'] = $rs[1][0]['id_aff'];
 		    $param['id_dev'] = $rs[1][0]['id_dev'];
 		    $param['status_cmd'] = $rs[1][0]['status_cmd'];
 		    $param['id_cmd'] = $rs[1][0]['id_cmd'];
 		    $type = "de la commande";
 		    $type2 = "la commande";
 		    $status = $rs[1][0]['nom_stcmd'];
-                    if($rs[1][0]['status_cmd'] == '4')
-                        $action = 'send';
+		    if($rs[1][0]['status_cmd'] == '4')
+			$action = 'send';
 		    $montant = "de ".prepareNombreAffichage($rs[1][0]['sommeHT_cmd'])."€ Hors taxes";
 		    break;
 		case "facture" :
@@ -399,8 +401,8 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 			$type2 = "la facture";
 		    }
 		    $status = $rs[1][0]['nom_stfact'];
-                    if($rs[1][0]['status_fact'] == '4')
-                        $action = 'send';
+		    if($rs[1][0]['status_fact'] == '4')
+			$action = 'send';
 		    if(strlen($id) == 1)
 			$id = "00".$id;
 		    elseif(strlen($id) == 2)
@@ -419,6 +421,9 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 		    $status = $rs[1][0]['nom_stfactfourn'];
 		    $montant = "de ".prepareNombreAffichage($rs[1][0]['montantTTC_factfourn'])."€ TTC";
 		    break;
+		default :
+		    $param['type'] = 'general';
+		    break;
 	    }
 	    $client = ($rs[1][0]['nom_ent'] != '') ? $rs[1][0]['nom_ent'] : $rs[1][0]['prenom_cont'].' '.$rs[1][0]['nom_cont'];
 	}
@@ -426,46 +431,89 @@ abstract class GeneralModel extends Bdd_mysql_2 {
 	    case "add" :
 		$param['titre'] = "Création ".$type." ".$id." pour le client ".$client;
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
 		break;
 	    case "clone" :
 		$param['titre'] = "Création ".$type." ".$id." à partir ".$type." ".$cloneID;
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
 		break;
 	    case "avoir" :
 		$param['titre'] = "Création ".$type." ".$id." à partir de la facture ".$cloneID;
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être généré".$e." par ".$_SESSION['user']['fullnom']." pour l'entreprise ".$rs[1][0]['nom_ent']." (".$rs[1][0]['cp_ent'].")." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
 		break;
 	    case "update" :
 		$param['titre'] ="Modification ".$type." ".$id." pour le client ".$client;
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être modifié".$e." par ".$_SESSION['user']['fullnom'].". ".$pronom." a désormais le status ".$status." avec un montant ".$montant."." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
+		break;
+	    case "updateFree" :
+		$param['titre'] =($desc == '') ? "Modification ".$type." ".$id." pour le client ".$client : $desc." ".$type." ".$id." pour le client ".$client;
+		$param['desc'] = ($precision == '') ? ucfirst($type2)." ".$id." vient d'être modifié".$e." par ".$_SESSION['user']['fullnom'].". ".$pronom." a désormais le status ".$status." avec un montant ".$montant."." : $precision."\n".$type2." ".$id." est d'un montant ".$montant.".";
 		break;
 	    case "delete" :
 		$param['titre'] ="Suppression ".$type." ".$id." pour le client ".$client;
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être supprimé".$e." par ".$_SESSION['user']['fullnom'].". ".$pronom." a désormais le status ".$status."." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
 		break;
 	    case "archive" :
 		$param['titre'] ="Archivage ".$type." ".$id." pour le client ".$client;
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être archivé".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
 		break;
 	    case "perdu" :
 		$param['titre'] = ucfirst($type2)." ".$id." pour le client ".$client.' est perdu';
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être marqué".$e." comme perdu".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
 		break;
-            case "send" :
-                $param['titre'] = "Envoi ".$type." ".$id." relative au client ".$client;
+	    case "send" :
+		$param['titre'] = "Envoi ".$type." ".$id." relative au client ".$client;
 		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être envoyé".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
-                break;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
+		break;
+	    case "record" :
+		$param['titre'] = 'Enregistrement dans le Disque Dur Virtuel '.$type.' '.$id." relative au client ".$client;
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être enregistré".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
+		break;
+	    case "valid" :
+		$param['titre'] = $type.' '.$id.' validée';
+		$param['desc'] = ($desc == '') ? ucfirst($type2)." ".$id." vient d'être validé".$e." par ".$_SESSION['user']['fullnom']."." : $desc;
+		$param['desc'] .= ($precision != '') ? " Complément d'informations : ".$precision : '';
+		break;
 	    default :
-		$param['type'] = 'general';
 		$param['titre'] = ($desc == '') ? 'Information générale' : $desc;
 		$param['desc'] = ($precision == '') ? '' : $precision;
 		break;
 	}
-	$param['desc'] .= ($precision != '' and $action != 'free') ? " Complément d'informations : ".$precision : '';
-	$param['isVisibleFilActu'] .= ($isVisibleFilActu !== true) ? 0 : 1;
+	$param['isVisibleFilActu'] = ($isVisibleFilActu !== true) ? 0 : 1;
+	$this->addActualiteinDb($param);
+	return true;
+
+    }
+
+
+
+    /**
+     * Méthode qui insert une actualité correspondate à une action sur une fiche
+     * @param string $id L'id de la fiche
+     * @param string $action L'action réalisée [add/update/delete/clone/avoir]
+     * @param string $desc Précise une phrase de description optionnelle pour remplacer l'auto générée
+     * @param string $precision Permet de rajouter quelque chose à la description
+     * @param string $cloneID Permet de préciser l'id de la fiche d'origine du clone ou de l'avoir (le cas échéant)
+     * @return array Indique si la requête s'est bien déroulée
+     */
+    public function addActualiteinDb($param) {
+	if($param['date'] == '')	$param['date'] = date('Y-m-d H:i:s');
+	if($param['user'] == '')	$param['user'] = $_SESSION['user']['id'];
+	if($param['type'] == '')	$param['type'] = 'general';
+	if($param['titre'] == '')	$param['titre'] = 'Information générale';
+	$param['isVisibleFilActu']	= ($param['isVisibleFilActu'] != true) ? 0 : 1;
+	$param['isPublic']		= ($param['isPublic']) ? 1 : 0;
+	$param['isPublieForClient']	= ($param['isPublieForClient']) ? 1 : 0;
 	$this->makeRequeteInsert("actualite", $param);
 	return $this->process2();
-
     }
 }
 ?>

@@ -67,7 +67,7 @@ class FactureFournisseurModel extends GeneralModel {
 	Logg::loggerInfo('FactureFournisseurModel::update() ~ modification de la facture fournisseur '.$id,$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
 	if($rs[0] and ($datas['montantTTC_factfourn'] != '' or $datas['tauxTVA_factfourn'] != ''))
-	    $this->addActualite($id, 'update');
+	    $this->addActualite($id, 'update','','','',false);
 	return $rs;
     }
 

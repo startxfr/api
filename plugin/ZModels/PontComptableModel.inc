@@ -195,8 +195,9 @@ class pontComptableModel extends GeneralModel {
 		unset($infoBrutFact);
 		foreach($factures as $idFact => $produits) {
 		    $infoFacture = $produits[0];
-
 		    $tauxTVA = $infoFacture['tauxTVA_fact'];
+		    if($infoFacture['dateenvoi_fact'] == '')
+			$infoFacture['dateenvoi_fact'] =$infoFacture['daterecord_fact'];
 		    $dateFacture = $infoFacture['dateenvoi_fact'];
 		    $numeroFacture = (($infoFacture['type_fact'] == 'Avoir') ? 'A' : 'F').$infoFacture['id_fact'];
 		    $numeroCompteTiers = $infoFacture['id_ent'];
@@ -228,6 +229,8 @@ class pontComptableModel extends GeneralModel {
 		foreach($infoBrutFact[1] as $idFact => $infoFacture) {
 		    $idFact = $infoFacture['id_factfourn'];
 		    $tauxTVA = $infoFacture['tauxTVA_factfourn'];
+		    if($infoFacture['dateFact_factfourn'] == '')
+			$infoFacture['dateFact_factfourn'] =$infoFacture['datePaye_factfourn'];
 		    $dateFacture = $infoFacture['dateFact_factfourn'];
 		    $numeroCompteTiers = $infoFacture['id_ent'];
 		    $libelle = $infoFacture['nom_ent'];

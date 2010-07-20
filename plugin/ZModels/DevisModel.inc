@@ -493,10 +493,9 @@ class devisModel extends GeneralModel {
 	$sql = $this->makeRequeteInsert('devis_produit', $this->bindVarDevisProduit($data));
 	Logg::loggerInfo('devisModel::insertProduits() ~ ajout du produit '.$data['id_produit'].' pour le devis '.$data['id_devis'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
-	$this->updateMontant($data['id_devis']);
-	if($rs[0] and $actu) {
-	    $this->addActualite($data['id_devis'], 'update');
-	}
+	$sommeHT = $this->updateMontant($data['id_devis']);
+	if($rs[0] and $actu)
+	    $this->addActualite($data['id_devis'], 'free','Ajout du produit '.$data['id_produit'].' pour le devis '.$data['id_devis'],'Produit '.$data['id_produit'].' x '.$data['quantite'].' x '.formatCurencyDisplay($data['prix']).' ajouté.<br/>Le devis à maintenant une valeur de '.formatCurencyDisplay($sommeHT),'',false);
 	return $rs;
     }
 
@@ -512,10 +511,9 @@ class devisModel extends GeneralModel {
 	else $sql = $this->makeRequeteFree("delete from devis_produit where id='".$data['id']."';");
 	Logg::loggerInfo('devisModel::deleteProduits() ~ suppression du produit '.$id_produit.' pour le devis '.$data['id_devis'],$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
-	if($rs[0]) {
-	    $this->updateMontant($data['id_devis']);
-	    $this->addActualite($data['id_devis'], 'update');
-	}
+	$sommeHT = $this->updateMontant($data['id_devis']);
+	if($rs[0])
+	    $this->addActualite($data['id_devis'], 'free','Suppression du produit '.$data['id_produit'].' pour le devis '.$data['id_devis'],'Le devis à maintenant une valeur de '.formatCurencyDisplay($sommeHT),'',false);
 	return $rs;
     }
 
@@ -535,10 +533,9 @@ class devisModel extends GeneralModel {
 	$sql = $this->makeRequeteUpdate('devis_produit', 'id', $data['id'], $this->bindVarDevisProduit($data));
 	Logg::loggerInfo('devisModel::updateProduits() ~ modification du produit pour le devis (id='.$data['id_devis'].')',$sql,__FILE__.'@'.__LINE__);
 	$rs = $this->process2();
-	if($rs[0]) {
-	    $this->updateMontant($data['id_devis']);
-	    $this->addActualite($data['id_devis'], 'update');
-	}
+	$sommeHT = $this->updateMontant($data['id_devis']);
+	if($rs[0] and $actu)
+	    $this->addActualite($data['id_devis'], 'free','Modification du produit '.$data['id_produit'].' pour le devis '.$data['id_devis'],'Produit '.$data['id_produit'].' x '.$data['quantite'].' x '.formatCurencyDisplay($data['prix']).' modifié.<br/>Le devis à maintenant une valeur de '.formatCurencyDisplay($sommeHT),'',false);
 	return $rs;
     }
 
@@ -553,7 +550,7 @@ class devisModel extends GeneralModel {
 	    $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
 	}
 	$this->update(array('sommeHT_dev' => $sommeHT), $id);
-
+	return $sommeHT;
     }
 
     /**
@@ -649,7 +646,7 @@ class devisModel extends GeneralModel {
 	    Logg::loggerInfo('devisModel::update() ~ modification du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_dev'] != '' and $addActu)
-		$this->addActualite($id_dev, 'update', '', $cplmt);
+		$this->addActualite($id_dev, 'update', '', $cplmt,'',false);
 	    return $rs;
 	}
 	else {
@@ -657,7 +654,7 @@ class devisModel extends GeneralModel {
 	    Logg::loggerInfo('devisModel::update() ~ modification du devis '.$data['id_dev'],$sql,__FILE__.'@'.__LINE__);
 	    $rs = $this->process2();
 	    if($rs[0] and $data['status_dev'] != '')
-		$this->addActualite($din['id_dev'], 'update', '', $cplmt);
+		$this->addActualite($din['id_dev'], 'update', '', $cplmt,'',false);
 	    return $rs;
 	}
     }
@@ -952,16 +949,23 @@ class devisModel extends GeneralModel {
 	    $bddtmp->makeRequeteSelect('devis','id_dev',$id_dev);
 	    $dev = $bddtmp->process();
 	    $dev = $dev[0];
-	    if($newAttribList['titre_dev'] != '')
+	    $propMess = '';
+	    if($newAttribList['titre_dev'] != '') {
+		$propMess .= "<br/>titre du devis: \"".$newAttribList['titre_dev'].'", ';
 		$newData['titre_dev'] = $newAttribList['titre_dev'];
-	    if($newAttribList['tva_dev'] != '')
+	    }
+	    if($newAttribList['tva_dev'] != '') {
+		$propMess .= "<br/>Taux de TVA: \"".$newAttribList['tva_dev'].'", ';
 		$newData['tva_dev'] = $newAttribList['tva_dev'];
-	    if($newAttribList['commercial_dev'] != '')
+	    }
+	    if($newAttribList['commercial_dev'] != '') {
+		$propMess .= "<br/>Commercial: \"".$newAttribList['commercial_dev'].'", ';
 		$newData['commercial_dev'] = $newAttribList['commercial_dev'];
-
+	    }
+	    $propMess = substr($propMess, 0, -2);
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_dev, 'free', 'Changement d\'attribut', 'changement par lot des propriétés suivantes : '.$propMess, '',false);
 	    Logg::loggerInfo('devisModel::changeAttributeDevisInDB() ~ changement d\'attribut du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -997,7 +1001,7 @@ class devisModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_dev, 'delete', '', 'suppression par lot', '',false);
 	    Logg::loggerInfo('devisModel::markDeleteDevisInDB() ~ Devis '.$id_dev.' marqué comme supprimé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1018,7 +1022,7 @@ class devisModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_dev, 'send', '', 'traitement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markEnvoyeDevisInDB() ~ Devis '.$id_dev.' marqué comme envoyé',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1038,7 +1042,7 @@ class devisModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_dev, 'free', 'Devis '.$id_dev.' perdu', 'Marqué comme perdu lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markPerduDevisInDB() ~ Devis '.$id_dev.' marqué comme perdu',$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
@@ -1055,7 +1059,7 @@ class devisModel extends GeneralModel {
 
 	    $sql = $bddtmp->makeRequeteUpdate($bddtmp->sqlTableName, $bddtmp->sqlIdField, $id_dev, $bddtmp->bindVarDevis($newData));
 	    $bddtmp->process();
-	    $bddtmp->addActualite($id_dev, 'update', '', 'changement par lot', '',false);
+	    $bddtmp->addActualite($id_dev, 'free', 'Devis '.$id_dev.' reinitialisé', 'Re-initialisé lors d\'un traitement par lot', '',false);
 	    Logg::loggerInfo('devisModel::markReinitDevisInDB() ~ Re-initialisation du devis '.$id_dev,$sql,__FILE__.'@'.__LINE__);
 	    return true;
 	}
