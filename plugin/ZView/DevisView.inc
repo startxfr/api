@@ -208,8 +208,8 @@ function IsNumeric(input)
 		    <div class="field">
 			    <textarea name="complementdelivery_dev" cols="55" rows="2" >'.$data['complementdelivery_dev'].'</textarea></div>
 		</div>
-		<div class="row">
-		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.tauxTva);">TVA</div>
+		<div class="row oblig">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.tauxTva);">Taux de TVA</div>
 		    <div class="field">'.selectTVATag("tva_dev", array(), $data['tva_dev'], '', '', false).'</div>
 		</div>
 		</fieldset>
@@ -221,21 +221,21 @@ function IsNumeric(input)
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.entreprise);">Entreprise</div>
 		    <div class="field"><a href="#" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" id="entrepriseFiche" title="voir les informations de l\'entreprise '.$data['nom_ent'].'">'.$data['nom_entH'].'</a></div>
 		</div>
-		<div class="row">
+		<div class="row oblig">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactTech);">Contact Tech</div>
-		    <div class="field">'.inputTag('text', 'contact_dev2','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_dev" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+		    <div class="field">'.inputTag('text', 'contact_dev2','icon2', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_dev" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_dev\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
 		    <input type="hidden" name="contact_dev" id="ACcontact_devhidden" value="'.$data['contact_dev'].'" /><input type="hidden" name="contold" id="ACcontact_devold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
 		    <div id="ACcontact_dev_choix" class="autocomplete"></div>
 		</div>
-		<div class="row">
+		<div class="row oblig">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.contactAchat);">Contact Achat</div>
-		    <div class="field">'.inputTag('text', 'contact_achat_dev2','icon', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_dev" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+		    <div class="field">'.inputTag('text', 'contact_achat_dev2','icon2', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_dev" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Devis.php\', \'action=addContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_dev\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
 		    <input type="hidden" name="contact_achat_dev" id="ACcontact_achat_devhidden" value="'.$data['contact_achat_dev'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_devold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
 		    <div id="ACcontact_achat_dev_choix" class="autocomplete"></div>
 		</div>
-		<div class="row">
+		<div class="row oblig">
 		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.commercial);">Commercial</div>
-		    <div class="field">'.selectTag('commercial_dev',$datas['user'],$data['commercial_dev']).'</div>
+		    <div class="field">'.selectTag('commercial_dev',$datas['user'],$data['commercial_dev'],'','',false).'</div>
 		</div>
 		</fieldset>';
 	if($data['id_fact'] != '' or $data['id_cmd'] != '' or $data['id_dev'] != '' or $data['id_aff'] != '') {
@@ -264,8 +264,7 @@ function IsNumeric(input)
 		<fieldset class="form" style="height: 150px">
 		    <legend>Informations sur la livraison</legend>
 		    <div class="row">
-			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryNom);">Entreprise</div>
-
+			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryNom);">Nom</div>
 			    <div class="field">'.inputTag('text', "nomdelivery_dev", '', '', '30', $data['nomdelivery_dev']).'</div>
 		    </div>
 		    <div class="row">
@@ -275,7 +274,6 @@ function IsNumeric(input)
 		    <div class="row">
 			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryComplement);">Complément</div>
 			    <div class="field">'.inputTag('text', "adresse1delivery_dev", '', '', '40', $data['adresse1delivery_dev']).'</div>
-
 		    </div>
 		    <div class="row">
 			    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.deliveryCpVille);">CP - Ville</div>
@@ -314,19 +312,19 @@ function IsNumeric(input)
 			    <div class="label" style="width:100px">Activer</div>
 			    <div class="field"><input type="checkbox" name="actif_ren" value="1" onchange="affRen(this)" '.$checked.' /></div>
 		    </div>
-		    <div class="row"'.$styleDisplay.'>
+		    <div class="row oblig"'.$styleDisplay.'>
 			    <div class="label">Fréquence</div>
 			    <div class="field">'.selectTag("periode_ren", $datas['periode'], $datas['ren']['periode_ren'], "", " id='selectF' ", false).'</div>
 		    </div>
-		    <div class="row"'.$styleDisplay.'>
+		    <div class="row oblig"'.$styleDisplay.'>
 			    <div class="label">Date de fin </div>
 			    <div class="field">'.inputDateTag("text", "fin_ren", $date2).'</div>
 		     </div>
-		     <div class="row"'.$styleDisplay.'>
+		     <div class="row oblig"'.$styleDisplay.'>
 			    <div class="label">Statut</div>
 			    <div class="field">'.selectTag("statusChamp_ren", $datas['status'], $datas['ren']['statusChamp_ren'], "", " id='statusF' ", false).'</div>
 		     </div>
-		     <div class="row"'.$styleDisplay.'>
+		     <div class="row oblig"'.$styleDisplay.'>
 			    <div class="label">E-Mail</div>
 			    <div class="field">'.inputTag("text", "mail_ren", "", "", "16", $datas['ren']['mail_ren'], " id='mailF' ").'</div>
 		     </div>
@@ -571,11 +569,11 @@ function IsNumeric(input)
 			<div class="block width50">
 				<fieldset class="form">
 					<legend>Détail de l\'envoi</legend>
-					<div class="row">
+					<div class="row oblig">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendType);">Type d\'envoi</div>
 						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"',false).'</div>
 					</div>
-					<div class="row">
+					<div class="row oblig">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendSujet);">Sujet</div>
 						<div class="field">'.inputTag('text', 'sujet','','','','','id="MessageTitle"').'</div>
 					</div>
@@ -597,7 +595,7 @@ function IsNumeric(input)
 			<div class="block width50">
 				<fieldset class="form">
 					<legend>Informations sur le destinataire</legend>
-					<div class="row" id="champEmail">
+					<div class="row oblig" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendMail);">Courriel</div>
 						<div class="field">'.inputTag('text', 'mail', '', '', '', $datas['data']['mail_cont']).'</div>
 					</div>
@@ -605,15 +603,15 @@ function IsNumeric(input)
 						<div class="label">Me mettre en copie</div>
 						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'"  checked="checked"/></div>
 					</div>
-					<div class="row" style="display:none;" id="champFax">
+					<div class="row oblig" style="display:none;" id="champFax">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendFax);">Fax</div>
 						<div class="field">'.inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']).'</div>
 					</div>
-					<div class="row" id="champDestinataire" style="display:none;">
+					<div class="row oblig" id="champDestinataire" style="display:none;">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendDestinataire);">Destinataire</div>
 						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd1">
+					<div class="row oblig" style="display:none;" id="champAdd1">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendAdd);">Adresse</div>
 						<div class="field">'.inputTag('text', 'add1', '', '', '', $datas['data']['adressedelivery_dev']).'</div>
 					</div>
@@ -621,12 +619,12 @@ function IsNumeric(input)
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendComplement);">Complément</div>
 						<div class="field">'.inputTag('text', 'add2', '', '', '', $datas['data']['adresse1delivery_dev']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd3">
+					<div class="row oblig" style="display:none;" id="champAdd3">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendCpVille);">CP - Ville</div>
 						<div class="field">'.inputTag('text', "cp", 'civ', '', '', $datas['data']['cpdelivery_dev'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'envoiVille\');"').
 		'<select name=\'ville\'  id="envoiVille"  onblur="finishEditing();" onclick="beginEditing(this);" class="nextciv"><option value=""> </option><option value="'.$datas['data']['villedelivery_dev'].'" selected="selected">'.$datas['data']['villedelivery_dev'].'</option></select></div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd4">
+					<div class="row oblig" style="display:none;" id="champAdd4">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.sendPays);">Pays</div>
 						<div class="field">'.selectTag('pays',$datas['pays'],$datas['data']['paysdelivery_dev']).'</div>
 					</div>

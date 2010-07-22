@@ -179,13 +179,13 @@ class FournisseurView extends generalView {
     private function initioFieldset($datas) {
 	$this->fieldset1 = new ZunoFieldset('Fournisseur','','height:100px');
 	$this->fieldset2 = new ZunoFieldset('Contacts','','height:100px');
-	$this->fieldset1->ligneLinkTo('Entreprise', '../prospec/fiche.php?id_ent='.$datas['data']['entreprise_fourn'], $datas['data']['nom_ent']);
-	$this->fieldset1->ligneCheckBox('Actif', 'actif', true,'','ZTips.fournisseur.actif');
+	$this->fieldset1->ligneLinkToObligatoire('Entreprise', '../prospec/fiche.php?id_ent='.$datas['data']['entreprise_fourn'], $datas['data']['nom_ent']);
+	$this->fieldset1->ligneCheckBoxObligatoire('Actif', 'actif', true,'','ZTips.fournisseur.actif');
 	$this->fieldset1->ligneLinkTo('Produits liés', 'ProduitListe.php?fourn='.$datas['data']['id_fourn'].'', $datas['produits'].' produit(s)');
-	$this->fieldset1->ligneInput('Remise', 'remise_fourn', prepareNombreAffichage($datas['data']['remise_fourn']), '', 'ZTips.fournisseur.remise');
+	$this->fieldset1->ligneInputObligatoire('Remise', 'remise_fourn', prepareNombreAffichage($datas['data']['remise_fourn']), '', 'ZTips.fournisseur.remise');
 	$this->fieldset2->ligneSelect('Commercial', 'contactComm_fourn', $datas['data']['contactComm_fourn'], $datas['contacts'], false,'','ZTips.fournisseur.commercial');
-	$this->fieldset2->ligneSelect('ADV', 'ContactADV_fourn', $datas['data']['ContactADV_fourn'], $datas['contacts'],true,'','ZTips.fournisseur.contactAdv');
-	$this->fieldset2->ligneSelect('Facturation', 'contactFact_fourn', $datas['data']['contactFact_fourn'], $datas['contacts'], false,'','ZTips.fournisseur.contactFacturation');
+	$this->fieldset2->ligneSelectObligatoire('ADV', 'ContactADV_fourn', $datas['data']['ContactADV_fourn'], $datas['contacts'],true,'','ZTips.fournisseur.contactAdv');
+	$this->fieldset2->ligneSelectObligatoire('Facturation', 'contactFact_fourn', $datas['data']['contactFact_fourn'], $datas['contacts'], false,'','ZTips.fournisseur.contactFacturation');
     }
 
     /**
@@ -243,19 +243,19 @@ class FournisseurView extends generalView {
 	$this->fieldset2 = new ZunoFieldset("Autres coordonnées",'','height:130px');
 	$this->fieldset3 = new ZunoFieldset("Contact",'','height:130px');
 
-	$this->fieldset1->ligneInput('Nom', 'nom_ent', $datas['data']['nom_ent'],'','ZTips.contactEnt.nom');
-	$this->fieldset1->ligneInput('Adresse', 'add1_ent', $datas['data']['add1_ent'],'','ZTips.contactEnt.add');
-	$this->fieldset1->ligneInput('Complément', 'add2_ent', $datas['data']['add2_ent'],'','ZTips.contactEnt.add');
-	$this->fieldset1->ligneInputCPVille('cp_ent', $datas['data']['cp_ent'], 'ville_ent', $datas['data']['ville_ent'],'ZTips.contactEnt.cpVille');
-	$this->fieldset1->ligneSelect('Pays', 'pays_ent', $datas['data']['pays_ent'], $datas['pays'], false,'','ZTips.contactEnt.pays');
+	$this->fieldset1->ligneInputObligatoire('Nom', 'nom_ent', $datas['data']['nom_ent'],'','ZTips.contactEnt.nom');
+	$this->fieldset1->ligneInputObligatoire('Adresse', 'add1_ent', $datas['data']['add1_ent'],'','ZTips.contactEnt.add');
+	$this->fieldset1->ligneInputObligatoire('Complément', 'add2_ent', $datas['data']['add2_ent'],'','ZTips.contactEnt.add');
+	$this->fieldset1->ligneInputCPVilleObligatoire('cp_ent', $datas['data']['cp_ent'], 'ville_ent', $datas['data']['ville_ent'],'ZTips.contactEnt.cpVille');
+	$this->fieldset1->ligneSelectObligatoire('Pays', 'pays_ent', $datas['data']['pays_ent'], $datas['pays'], false,'','ZTips.contactEnt.pays');
 
 	$this->fieldset2->ligneInput('Téléphone', 'tel_ent', $datas['data']['tel_ent'],'','ZTips.contactEnt.tel');
 	$this->fieldset2->ligneInput('Faximile', 'fax_ent', $datas['data']['fax_ent'],'','ZTips.contactEnt.fax');
 	$this->fieldset2->ligneInput('Web', 'www_ent', $datas['data']['www_ent'],'','ZTips.contactEnt.web');
 
-	$this->fieldset3->ligneSelect('Civilité', 'civ_cont', $datas['data']['civ_cont'], array('M.' => 'Monsieur', 'Mme' => 'Madame', 'Mlle' => 'Mademoiselle'), false,'','ZTips.contactPers.civ');
+	$this->fieldset3->ligneSelectObligatoire('Civilité', 'civ_cont', $datas['data']['civ_cont'], array('M.' => 'Monsieur', 'Mme' => 'Madame', 'Mlle' => 'Mademoiselle'), false,'','ZTips.contactPers.civ');
 	$this->fieldset3->ligneInput('Prenom', 'prenom_cont', $datas['data']['prenom_cont'],'','ZTips.contactPers.prenom');
-	$this->fieldset3->ligneInput('Nom', 'nom_cont', $datas['data']['nom_cont'],'','ZTips.contactPers.nom');
+	$this->fieldset3->ligneInputObligatoire('Nom', 'nom_cont', $datas['data']['nom_cont'],'','ZTips.contactPers.nom');
 	$this->fieldset3->ligneInput('E-mail', 'mail_cont', $datas['data']['mail_cont'],'','ZTips.contactPers.mail');
 	$this->fieldset3->ligneInput('Téléphone', 'tel_cont', $datas['data']['tel_cont'],'','ZTips.contactPers.tel');
     }

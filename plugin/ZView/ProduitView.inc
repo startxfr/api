@@ -94,13 +94,13 @@ class ProduitViewOriginal extends generalView {
 	$this->fieldset1 = new ZunoFieldset('Produit','','height:110px');
 	$this->fieldset2 = new ZunoFieldset('Informations complémentaires','','height:110px');
 	$this->fieldset3 = new ZunoFieldset('Description','','height:110px');
-	$this->fieldset1->ligneInput('Référence', 'id_prod', $datas['data']['id_prod'],'','ZTips.produit.reference');
-	$this->fieldset1->ligneInput('Nom', 'nom_prod', $datas['data']['nom_prod'],'','ZTips.produit.nom');
+	$this->fieldset1->ligneInputObligatoire('Référence', 'id_prod', $datas['data']['id_prod'],'','ZTips.produit.reference');
+	$this->fieldset1->ligneInputObligatoire('Nom', 'nom_prod', $datas['data']['nom_prod'],'','ZTips.produit.nom');
 	if($popup)
-	     $this->fieldset1->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille&popup=popup', 800,330)");
-	else $this->fieldset1->ligneSelect('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)");
-	$this->fieldset3->ligneTArea('Description', 'description_prod',$datas['data']['description_prod'],'','ZTips.produit.desc');
-	$this->fieldset1->ligneInput('Prix (€)', 'prix_prod', $datas['data']['prix_prod'],'','ZTips.produit.prix');
+	     $this->fieldset1->ligneSelectObligatoire('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille&popup=popup', 800,330)");
+	else $this->fieldset1->ligneSelectObligatoire('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)");
+	$this->fieldset3->ligneTAreaObligatoire('Description', 'description_prod',$datas['data']['description_prod'],'','ZTips.produit.desc');
+	$this->fieldset1->ligneInputObligatoire('Prix (€)', 'prix_prod', $datas['data']['prix_prod'],'','ZTips.produit.prix');
 	$this->fieldset2->ligneInput('Stock', 'stock_prod', $datas['data']['stock_prod'],'','ZTips.produit.stock');
 	$this->fieldset2->ligneSelect('Renouvellement', 'dureeRenouvellement_prod', $datas['data']['dureeRenouvellement_prod'], $datas['dureeR'],true,'','ZTips.produit.renew');
 	$this->fieldset2->ligneCheckBox('BestSeller', 'bestsell_prod', $datas['data']['bestsell_prod'],'','ZTips.produit.bestsell');
@@ -221,10 +221,10 @@ class ProduitViewOriginal extends generalView {
 		$pxrevient = $v['prixF']*(1-$v['remiseF']/100);
 		$pxrevient = prepareNombreAffichage($pxrevient);
 		$fieldset = new ZunoFieldset($v['id_fourn'].' - '.$v['nom_ent'],'','height:130px');
-		$fieldset->ligneLinkTo("Entreprise", "../prospec/fiche.php?id_ent=".$v['id_ent'], $v['nom_ent'],'','');
-		$fieldset->ligneInput("Px public (€)", 'prixF['.$this->compteurFourn.']', prepareNombreAffichage($v['prixF']), ' onchange="autoCalcul('.$this->compteurFourn.');" id="px'.$this->compteurFourn.'" ','ZTips.produit.fournPxPub');
-		$fieldset->ligneInput("Remise (%)", 'remiseF['.$this->compteurFourn.']', prepareNombreAffichage($v['remiseF']), ' onchange="autoCalcul('.$this->compteurFourn.');" id="rem'.$this->compteurFourn.'" ','ZTips.produit.fournRemise');
-		$fieldset->ligneInput("Px achat (€)", 'pxRevient', $pxrevient, 'disabled="disabled" id="tot'.$this->compteurFourn.'"','ZTips.produit.fournPxAchat');
+		$fieldset->ligneLinkToObligatoire("Entreprise", "../prospec/fiche.php?id_ent=".$v['id_ent'], $v['nom_ent'],'','');
+		$fieldset->ligneInputObligatoire("Px public (€)", 'prixF['.$this->compteurFourn.']', prepareNombreAffichage($v['prixF']), ' onchange="autoCalcul('.$this->compteurFourn.');" id="px'.$this->compteurFourn.'" ','ZTips.produit.fournPxPub');
+		$fieldset->ligneInputObligatoire("Remise (%)", 'remiseF['.$this->compteurFourn.']', prepareNombreAffichage($v['remiseF']), ' onchange="autoCalcul('.$this->compteurFourn.');" id="rem'.$this->compteurFourn.'" ','ZTips.produit.fournRemise');
+		$fieldset->ligneInputObligatoire("Px achat (€)", 'pxRevient', $pxrevient, 'disabled="disabled" id="tot'.$this->compteurFourn.'"','ZTips.produit.fournPxAchat');
 		$fieldset->ligneCheckBox("Désactiver", "actif[".$this->compteurFourn."]",false,'','ZTips.produit.fournDisable');
 		$fieldset->ligneInputHidden('idFourn['.$this->compteurFourn.']', $v['id_fourn']);
 		$this->fieldsetF[] = $fieldset;
@@ -241,7 +241,7 @@ class ProduitViewOriginal extends generalView {
 	if($datas['fournEx'][0] and count($datas['fournEx'][1]) >0) {
 	    foreach($datas['fournEx'][1] as $v) {
 		$fieldset = new ZunoFieldset($v['id_fourn'],'','height:130px');
-		$fieldset->ligneLinkTo("Entreprise", "../prospec/fiche.php?id_ent=".$v['id_ent'], $v['nom_ent']);
+		$fieldset->ligneLinkToObligatoire("Entreprise", "../prospec/fiche.php?id_ent=".$v['id_ent'], $v['nom_ent']);
 		$fieldset->ligneCheckBox("Réactiver", "ractif[".$this->compteurFourn."]",false,'','ZTips.produit.fournEnable');
 		$fieldset->ligneCheckBox("Supprimer", "supp[".$this->compteurFourn."]",false,'','ZTips.produit.fournDelete');
 		$fieldset->ligneInputHidden('idFourn['.$this->compteurFourn.']', $v['id_fourn']);

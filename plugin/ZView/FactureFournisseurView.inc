@@ -87,16 +87,16 @@ class FactureFournisseurView extends generalView {
 
 	$fieldset = new ZunoFieldset("Facture",'','height:150px');
 	$fieldset2 = new ZunoFieldset("Règlement",'','height:150px');
-	$fieldset->ligneInput("Nom", "titre_factfourn",'','','ZTips.factFourn.nom');
-	$fieldset->ligneAutoComplete("Fournisseur", "entreprise_factfourn", "", "", "listeEntreprise",'',false,'',true,'ZTips.factFourn.fournisseur');
-	$fieldset->ligneAutoComplete("Contact", "contact_factfourn", "", "", "", "", false, "", false,'ZTips.factFourn.contact');
+	$fieldset->ligneInputObligatoire("Nom", "titre_factfourn",'','','ZTips.factFourn.nom');
+	$fieldset->ligneAutoCompleteObligatoire("Fournisseur", "entreprise_factfourn", "", "", "listeEntreprise",'',false,'',true,'ZTips.factFourn.fournisseur');
+	$fieldset->ligneAutoCompleteObligatoire("Contact", "contact_factfourn", "", "", "", "", false, "", false,'ZTips.factFourn.contact');
 	$fieldset->ligneTArea("Description", "desc_factfourn",'','','ZTips.factFourn.desc');
 
-	$fieldset2->ligneInputDate("Attendu le", "datePaye_factfourn", date('d/m/Y'),'','','','ZTips.factFourn.dateReglementAttendu');
+	$fieldset2->ligneInputDateObligatoire("Attendu le", "datePaye_factfourn", date('d/m/Y'),'','','','ZTips.factFourn.dateReglementAttendu');
 	$fieldset2->ligneInput("Montant HT (€)", "montantHT", "0", ' id="HT" readonly="readonly" ','ZTips.factFourn.montantHT');
-	$fieldset2->ligneInputTVA('montantTVA_factfourn', "0", 'taux_tva', '19.6','ZTips.factFourn.tauxTVA');
-	$fieldset2->ligneInput("Montant TTC (€)", "TTC", "0", ' id="TTC" onchange="calculette();" ','ZTips.factFourn.montantTTC');
-	$fieldset2->ligneSelect("Mode", "modeReglement_factfourn", "3", $datas['mode'], false,'','ZTips.factFourn.reglementMode');
+	$fieldset2->ligneInputTVAObligatoire('montantTVA_factfourn', "0", 'taux_tva', '19.6','ZTips.factFourn.tauxTVA');
+	$fieldset2->ligneInputObligatoire("Montant TTC (€)", "TTC", "0", ' id="TTC" onchange="calculette();" ','ZTips.factFourn.montantTTC');
+	$fieldset2->ligneSelectObligatoire("Mode", "modeReglement_factfourn", "3", $datas['mode'], false,'','ZTips.factFourn.reglementMode');
 
 	$this->formAdd = new ZunoForm("addFactFourn", "FactureFournisseurCreate.php", "POST");
 	$this->formAdd->newInputHidden("action", "addFactFourn");
@@ -119,17 +119,17 @@ class FactureFournisseurView extends generalView {
 	$fieldset2 = new ZunoFieldset("Règlement",'','height:160px');
 	$fieldsetR = new ZunoFieldset("Récurence",'','height:160px');
 
-	$fieldset->ligneInput("Nom", "titre_factfourn", $datas['data']['titre_factfourn'],'','ZTips.factFourn.nom');
-	$fieldset->ligneAutoComplete("Fournisseur", "entreprise_factfourn", $datas['data']['nom_ent'], $datas['data']['entreprise_factfourn'], "listeEntreprise",'',false,'',true,'ZTips.factFourn.fournisseur');
-	$fieldset->ligneAutoComplete("Contact", "contact_factfourn", $datas['data']['civ_cont']." ".$datas['data']['prenom_cont']." ".$datas['data']['nom_cont'], $datas['data']['contact_factfourn'], "", "", false, "", false,'ZTips.factFourn.contact');
-	$fieldset->ligneSelect("Statut", "status_factfourn", $datas['data']['status_factfourn'], $datas['status'], false, ' onchange="getReg(this.value);" ','ZTips.factFourn.statut');
+	$fieldset->ligneInputObligatoire("Nom", "titre_factfourn", $datas['data']['titre_factfourn'],'','ZTips.factFourn.nom');
+	$fieldset->ligneAutoCompleteObligatoire("Fournisseur", "entreprise_factfourn", $datas['data']['nom_ent'], $datas['data']['entreprise_factfourn'], "listeEntreprise",'',false,'',true,'ZTips.factFourn.fournisseur');
+	$fieldset->ligneAutoCompleteObligatoire("Contact", "contact_factfourn", $datas['data']['civ_cont']." ".$datas['data']['prenom_cont']." ".$datas['data']['nom_cont'], $datas['data']['contact_factfourn'], "", "", false, "", false,'ZTips.factFourn.contact');
+	$fieldset->ligneSelectObligatoire("Statut", "status_factfourn", $datas['data']['status_factfourn'], $datas['status'], false, ' onchange="getReg(this.value);" ','ZTips.factFourn.statut');
 	$fieldset->ligneTArea("Description", "desc_factfourn", $datas['data']['desc_factfourn'],'','ZTips.factFourn.desc');
 
-	$fieldset2->ligneInputDate("Attendu le", "datePaye_factfourn", $date,'','','','ZTips.factFourn.dateReglementAttendu');
+	$fieldset2->ligneInputDateObligatoire("Attendu le", "datePaye_factfourn", $date,'','','','ZTips.factFourn.dateReglementAttendu');
 	$fieldset2->ligneInput("Montant HT (€)", "montantHT", prepareNombreAffichage($ht), ' id="HT" readonly="readonly" ','ZTips.factFourn.montantHT');
-	$fieldset2->ligneInputTVA('montantTVA_factfourn', prepareNombreAffichage($tva), 'taux_tva', $datas['data']['tauxTVA_factfourn'],'ZTips.factFourn.tauxTVA');
-	$fieldset2->ligneInput("Montant TTC (€)", "TTC", prepareNombreAffichage($datas['data']['montantTTC_factfourn']), ' id="TTC" onchange="calculette();" ','ZTips.factFourn.montantTTC');
-	$fieldset2->ligneSelect("Mode", "modeReglement_factfourn", $datas['data']['modeReglement_factfourn'], $datas['mode'], false,'','ZTips.factFourn.reglementMode');
+	$fieldset2->ligneInputTVAObligatoire('montantTVA_factfourn', prepareNombreAffichage($tva), 'taux_tva', $datas['data']['tauxTVA_factfourn'],'ZTips.factFourn.tauxTVA');
+	$fieldset2->ligneInputObligatoire("Montant TTC (€)", "TTC", prepareNombreAffichage($datas['data']['montantTTC_factfourn']), ' id="TTC" onchange="calculette();" ','ZTips.factFourn.montantTTC');
+	$fieldset2->ligneSelectObligatoire("Mode", "modeReglement_factfourn", $datas['data']['modeReglement_factfourn'], $datas['mode'], false,'','ZTips.factFourn.reglementMode');
 
 	if($datas['ren']['fin_ren'] != '0000-00-00 00:00:00' and $datas['ren']['fin_ren'] != "") {
 	    $date2 = $datas['ren']['fin_ren'];
@@ -143,16 +143,16 @@ class FactureFournisseurView extends generalView {
 	else $styleDisplay = ' style="display:none" ';
 	if($datas['data']['id_factfourn'] == $datas['ren']['idChamp_ren']) {
 	    $fieldsetR->ligneCheckBox("Activer", "actif_ren", $datas['ren']['actif_ren'], " onchange='affRen(this)' ",'ZTips.factFourn.renewActiver');
-	    $fieldsetR->ligneSelect("Fréquence", "periode_ren", $datas['ren']['periode_ren'], $datas['periode'], false, " id='selectF' ",'ZTips.factFourn.renewFrequence',$styleDisplay);
-	    $fieldsetR->ligneInputDate("Date de fin", "fin_ren", $date2, "",'',$styleDisplay,'ZTips.factFourn.renewDateFin');
-	    $fieldsetR->ligneSelect("Statut", "statusChamp_ren", $datas['ren']['statusChamp_ren'], $datas['status'], false, " id='statusF' ",'ZTips.factFourn.renewStatut',$styleDisplay);
+	    $fieldsetR->ligneSelectObligatoire("Fréquence", "periode_ren", $datas['ren']['periode_ren'], $datas['periode'], false, " id='selectF' ",'ZTips.factFourn.renewFrequence',$styleDisplay);
+	    $fieldsetR->ligneInputDateObligatoire("Date de fin", "fin_ren", $date2, "",'',$styleDisplay,'ZTips.factFourn.renewDateFin');
+	    $fieldsetR->ligneSelectObligatoire("Statut", "statusChamp_ren", $datas['ren']['statusChamp_ren'], $datas['status'], false, " id='statusF' ",'ZTips.factFourn.renewStatut',$styleDisplay);
 	    $fieldsetR->ligneInput("E-Mail", "mail_ren", $datas['ren']['mail_ren'], " id='mailF' ",'ZTips.factFourn.renewMail',$styleDisplay);
 	}
 	else if($datas['data']['ren_factfourn'] == "") {
 	    $fieldsetR->ligneCheckBox("Activer", "actif_ren", "", " onchange='affRen(this)' ",'ZTips.factFourn.renewActiver');
-	    $fieldsetR->ligneSelect("Fréquence", "periode_ren", "", $datas['periode'], false, " id='selectF' ",'ZTips.factFourn.renewFrequence',$styleDisplay);
-	    $fieldsetR->ligneInputDate("Date de fin", "fin_ren", $date2, "",'',$styleDisplay,'ZTips.factFourn.renewDateFin');
-	    $fieldsetR->ligneSelect("Statut", "statusChamp_ren", "", $datas['status'], false, " id='statusF' ",'ZTips.factFourn.renewStatut',$styleDisplay);
+	    $fieldsetR->ligneSelectObligatoire("Fréquence", "periode_ren", "", $datas['periode'], false, " id='selectF' ",'ZTips.factFourn.renewFrequence',$styleDisplay);
+	    $fieldsetR->ligneInputDateObligatoire("Date de fin", "fin_ren", $date2, "",'',$styleDisplay,'ZTips.factFourn.renewDateFin');
+	    $fieldsetR->ligneSelectObligatoire("Statut", "statusChamp_ren", "", $datas['status'], false, " id='statusF' ",'ZTips.factFourn.renewStatut',$styleDisplay);
 	    $fieldsetR->ligneInput("E-Mail", "mail_ren", $_SESSION['user']['mail'], " id='mailF' ",'ZTips.factFourn.renewMail',$styleDisplay);
 	}
 	else {

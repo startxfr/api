@@ -78,8 +78,9 @@
     </group>
     <group name="zunoPontComptable" modifRight="0" title="Configuration de prospec">
 	<value id="histoDir">PontComptable/</value>
-	<value id="fileExt">.csv</value>
-	<value id="CodeJournal">002</value>
+	<value id="filePrefix">pontComptableZuno.</value>
+	<value id="fileExt">.txt</value>
+	<value id="CodeJournal">2</value>
 	<value id="CreationDefaultSelectedStatutFactClient">4,5,6</value>
 	<value id="CreationDefaultSelectedStatutFactFourn">2,3,4,5</value>
 	<value id="FCCompteProduitDefaut">70617000</value>

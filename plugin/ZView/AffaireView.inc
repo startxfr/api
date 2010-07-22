@@ -115,7 +115,7 @@ class affaireView extends generalView {
 	$fieldset = new ZunoFieldset('Informations','','height: 90px');
 	$fieldset->ligneInput('Nom', 'titre_aff');
 	$fieldset->ligneAutoComplete('Entreprise', 'entreprise_aff', $data['nom_ent'], $data['id_ent'], 'listeEntreprise', '', false, '', false);
-	$fieldset->ligneAutoComplete('Contact', 'contact_aff', $nom, $data['id_cont'], 'listeContact', '', false, '', false);
+	$fieldset->ligneAutoCompleteObligatoire('Contact', 'contact_aff', $nom, $data['id_cont'], 'listeContact', '', false, '', false);
 	$this->blockCreate->newBlock($fieldset->generateFieldset(), '50');
 
     }

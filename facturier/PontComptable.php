@@ -101,7 +101,7 @@ elseif($PC->rcvG['action'] == 'get' and $PC->rcvG['id_pcth'] != '') {
     $sql = new PontComptableModel();
     $data = $sql->getDataFromID($PC->rcvG['id_pcth']);
     $rs = $sql->genererPontComptableHistoTmpFileWithData($data[1][0]);
-    PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$rs);
+    PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$rs,'','application/download');
     exit;
 }
 elseif($PC->rcvP['action'] == 'generer') {
@@ -122,7 +122,7 @@ elseif($PC->rcvP['action'] == 'generer') {
 	$PC->rcvP['config_statutFactFourn_pcth'] = substr($statutFournList, 0, -1);
     }
     $rs = $sql->genererPontComptableHistoTmpFileWithData($PC->rcvP);
-    PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$rs);
+    PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$rs,'','application/download');
     exit;
 }
 elseif($PC->rcvG['id_pcth'] != '') {

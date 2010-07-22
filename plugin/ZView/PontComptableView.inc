@@ -79,17 +79,17 @@ class PontComptableView extends generalView {
 	$this->fieldset1 = new ZunoFieldset('Enregistrement','','height: 150px');
 	$this->fieldset1->ligneFree('Référence', $datas['data']['id_pcth'],'ZTips.pontComptable.reference');
 	$this->fieldset1->ligneFree('Date', $datas['data']['date_pcth'],'ZTips.pontComptable.date');
-	$this->fieldset1->ligneInput('Nom', 'nom_pcth', $datas['data']['nom_pcth'],'','ZTips.pontComptable.nom');
-	$this->fieldset1->ligneInputDate('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
-	$this->fieldset1->ligneInputDate('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
+	$this->fieldset1->ligneInputObligatoire('Nom', 'nom_pcth', $datas['data']['nom_pcth'],'','ZTips.pontComptable.nom');
+	$this->fieldset1->ligneInputDateObligatoire('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
+	$this->fieldset1->ligneInputDateObligatoire('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
 	$this->fieldset1->ligneLinkTo('Fichier', '../facturier/PontComptable.php?action=get&id_pcth='.$datas['data']['id_pcth'], $datas['data']['fichier_pcth'], '../img/download.png');
 
 	$this->fieldset2 = new ZunoFieldset('Facture Client','','height: 150px');
-	$this->fieldset2->ligneCheckBox('inclure', 'config_hasFactureClient_pcth', $datas['data']['config_dateDebut_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
+	$this->fieldset2->ligneCheckBoxObligatoire('inclure', 'config_hasFactureClient_pcth', $datas['data']['config_dateDebut_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
 	$this->fieldset2->ligneSelectMultiple('Statuts', 'config_statutFact_pcth',  explode(',', $datas['data']['config_statutFact_pcth']), $this->model->getAllFactureClientStatut(), false,'','ZTips.pontComptable.config_statutFact');
 	
 	$this->fieldset3 = new ZunoFieldset('Facture Fournisseur','','height: 150px');
-	$this->fieldset3->ligneCheckBox('inclure', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
+	$this->fieldset3->ligneCheckBoxObligatoire('inclure', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
 	$this->fieldset3->ligneSelectMultiple('Statuts', 'config_statutFactFourn_pcth',  explode(',', $datas['data']['config_statutFactFourn_pcth']), $this->model->getAllFactureFournStatut(), false,'','ZTips.pontComptable.config_statutFactFourn');
     }
 
@@ -117,15 +117,15 @@ class PontComptableView extends generalView {
 	$this->fieldset1->ligneFree('Référence', '<i>aucun</i>','ZTips.pontComptable.reference');
 	$this->fieldset1->ligneFree('Date', $datas['data']['date_pcth'],'ZTips.pontComptable.date');
 	$this->fieldset1->ligneInput('Nom', 'nom_pcth', $datas['data']['nom_pcth'],'','ZTips.pontComptable.nom');
-	$this->fieldset1->ligneInputDate('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
-	$this->fieldset1->ligneInputDate('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
+	$this->fieldset1->ligneInputDateObligatoire('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
+	$this->fieldset1->ligneInputDateObligatoire('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
 
 	$this->fieldset2 = new ZunoFieldset('Facture Client','','height: 130px');
-	$this->fieldset2->ligneCheckBox('inclure', 'config_hasFactureClient_pcth', $datas['data']['config_hasFactureClient_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
+	$this->fieldset2->ligneCheckBoxObligatoire('inclure', 'config_hasFactureClient_pcth', $datas['data']['config_hasFactureClient_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
 	$this->fieldset2->ligneSelectMultiple('Statuts', 'config_statutFact_pcth', explode(',', $datas['data']['config_statutFact_pcth']), $this->model->getAllFactureClientStatut(), false,'','ZTips.pontComptable.config_statutFact');
 
 	$this->fieldset3 = new ZunoFieldset('Facture Fournisseur','','height: 130px');
-	$this->fieldset3->ligneCheckBox('Facture Fournisseur', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
+	$this->fieldset3->ligneCheckBoxObligatoire('Facture Fournisseur', 'config_hasFactureFourn_pcth', $datas['data']['config_hasFactureFourn_pcth'], '', 'ZTips.pontComptable.hasFactureFourn');
 	$this->fieldset3->ligneSelectMultiple('Statuts', 'config_statutFactFourn_pcth',  explode(',', $datas['data']['config_statutFactFourn_pcth']), $this->model->getAllFactureFournStatut(), false,'','ZTips.pontComptable.config_statutFactFourn');
      }
 
@@ -176,8 +176,9 @@ class PontComptableView extends generalView {
 	$this->form->newBlock($this->fieldset2->generateFieldset());
 	$this->form->newBlock($this->fieldset3->generateFieldset());
 	$this->form->newInputHidden('action', 'addPontComptableHisto', 'addPontComptableID');
+	$this->form->addButton('Enregistrer le fichier', '$(\'addPontComptableID\').value = \'addPontComptableHisto\';zuno.business.formTools.sendFormAjah(\'formPontComptable\', \'facturier/PontComptable.php\',\'ficheCompletePontComptaHisto\');', '../img/prospec/record.png');
 	$this->form->addButton('Générer le fichier d\'export', '$(\'addPontComptableID\').value = \'generer\';document.formPontComptable.action = \'../facturier/PontComptable.php\';document.formPontComptable.submit();', '../img/download.png');
-	$pied = $this->form->generateButtons('ficheCompletePontComptaHisto', 'Annuler', 'Enregistrer le fichier');
+	$pied = $this->form->generateButtons('ficheCompletePontComptaHisto', 'Annuler', '');
 
 	$this->html = new ZunoRenduHtml('ficheCompletePontComptaHisto');
 	$this->html->replaceJS($this->script);

@@ -143,7 +143,7 @@ class factureView extends generalView {
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infoTitre);">Titre</div>
 			<div class="field">'.inputTag('text', 'titre_fact', '', '', '35', $data['titre_fact']).'</div>
 		</div>
-		<div class="row">
+		<div class="row oblig">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.infotauxTva);">Taux TVA</div>
 			<div class="field">'.selectTVATag('tauxTVA_fact', array(), $tva, '', '', false).'</div>
 		</div>
@@ -156,21 +156,21 @@ class factureView extends generalView {
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.entreprise);">Entreprise</div>
 			<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$data['id_ent'].'\',950,220,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$data['nom_ent'].'</a></div>
 		</div>
-		<div class="row">
+		<div class="row oblig">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
 			<div class="field">'.inputTag('text', 'contact_fact2','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_fact\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
 			<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="'.$data['contact_fact'].'" /><input type="hidden" name="contold" id="ACcontact_factold" value="'.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'" />
 			<div id="ACcontact_fact_choix" class="autocomplete"></div>
 		</div>
-		<div class="row">
+		<div class="row oblig">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact Achat</div>
 			<div class="field">'.inputTag('text', 'contact_achat_fact2','icon', '', '16',$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_fact\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
 			<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="'.$data['contact_achat_fact'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_factold" value="'.$data['civ_achat'].' '.$data['prenom_achat'].' '.$data['nom_achat'].'" />
 			<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>
 		</div>
-		<div class="row">
+		<div class="row oblig">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.commercial);">Commercial</div>
-			<div class="field">'.selectTag('commercial_fact',$datas['user'],$data['commercial_fact']).'</div>
+			<div class="field">'.selectTag('commercial_fact',$datas['user'],$data['commercial_fact'],'','',false).'</div>
 		</div>
 		</fieldset>';
         if($data['id_cmd'] != '' or $data['id_dev'] != '' or $data['id_aff'] != '') {
@@ -193,10 +193,9 @@ class factureView extends generalView {
         $out.='</div>
 		<div class="block width50">
 		<fieldset class="form" style="height: 180px">
-			<legend>Informations sur la livraison</legend>
-			<div class="row">
-				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryNom);">Entreprise</div>
-
+			<legend>Informations sur le client</legend>
+			<div class="row oblig">
+				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryNom);">Nom</div>
 				<div class="field">'.inputTag('text', "nomentreprise_fact", '', '', '30', $data['nomentreprise_fact']).'</div>
 			</div>
 			<div class="row">
@@ -206,7 +205,6 @@ class factureView extends generalView {
 			<div class="row">
 				<div class="label">Complément</div>
 				<div class="field">'.inputTag('text', "add2_fact", '', '', '40', $data['add2_fact']).'</div>
-
 			</div>
 			<div class="row">
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryCpVille);">CP - Ville</div>
@@ -535,11 +533,11 @@ class factureView extends generalView {
 			<div class="block width50">
 				<fieldset class="form">
 				<legend>Envoyer</legend>
-					<div class="row">
-						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendType);">Détail de l\'envoi</div>
+					<div class="row oblig">
+						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendType);">Type d\'envoi</div>
 						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"',false).'</div>
 					</div>
-					<div class="row">
+					<div class="row oblig">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendSujet);">Sujet</div>
 						<div class="field">'.inputTag('text', 'sujet','','','','','id="MessageTitle"').'</div>
 					</div>
@@ -561,7 +559,7 @@ class factureView extends generalView {
 			<div class="block width50">
 				<fieldset class="form">
 				<legend>Informations sur le destinataire</legend>
-					<div class="row" id="champEmail">
+					<div class="row oblig" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendMail);">Courriel</div>
 						<div class="field">'.inputTag('text', 'mail', '', '', '', $datas['data']['mail_cont']).'</div>
 					</div>
@@ -569,15 +567,15 @@ class factureView extends generalView {
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendCopyToMe);">Me mettre en copie</div>
 						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'" checked="checked"/></div>
 					</div>
-					<div class="row" style="display:none;" id="champFax">
+					<div class="row oblig" style="display:none;" id="champFax">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendFax);">Fax</div>
 						<div class="field">'.inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champDestinataire">
+					<div class="row oblig" style="display:none;" id="champDestinataire">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendDestinataire);">Destinataire</div>
 						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd1">
+					<div class="row oblig" style="display:none;" id="champAdd1">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendAdd);">Adresse</div>
 						<div class="field">'.inputTag('text', 'add1', '', '', '', $datas['data']['add1_fact']).'</div>
 					</div>
@@ -585,12 +583,12 @@ class factureView extends generalView {
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendComplement);">Complément</div>
 						<div class="field">'.inputTag('text', 'add2', '', '', '', $datas['data']['add2_fact']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd3">
+					<div class="row oblig" style="display:none;" id="champAdd3">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendCpVille);">CP - Ville</div>
 						<div class="field">'.inputTag('text', "cp", '', '', '', $datas['data']['cp_fact'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'envoiVille\');"').
                 '<select name=\'ville\'  id="envoiVille"  onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$datas['data']['ville_fact'].'" selected="selected">'.$datas['data']['ville_fact'].'</option></select></div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd4">
+					<div class="row oblig" style="display:none;" id="champAdd4">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.sendPays);">Pays</div>
 						<div class="field">'.selectTag('pays',$datas['pays'],$datas['data']['pays_fact']).'</div>
 					</div>
@@ -919,13 +917,13 @@ class factureView extends generalView {
         $out .= '<legend>Informations sur la facture</legend>';
         $out .= '<div class="row">';
         $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.cmdOuEnt);">Commande / Entreprise</div>';
-        $out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '16', $data['entreprise'], ' id="ACentreprise_fact" onchange="verifAutocompleteur(this);"');
+        $out .= '<div class="field">'.inputTag('text', 'entreprise', 'icon', '', '16', $data['entreprise'], ' id="ACentreprise_fact" onchange="verifAutocompleteur(this);"');
         $out .= '<a id="addEnt" name="addEnt" title="Ajouter une entreprise" onclick="addEntreprise();"><img alt="ent" title="Ajouter une entreprise" src="../img/prospec/entreprise.png" /></a>';
         $out .= '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div>';
         $out .= '<input type="hidden" name="entreprise_fact" id="ACentreprise_facthidden" value="'.$data['entreprise_fact'].'" /><input type="hidden" name="commande_fact" id="ACaffaire_facthidden" value="'.$data['commande_fact'].'" />
 					<div id="ACentreprise_fact_choix" class="autocomplete"></div>';
         $out .= '</div>';
-        $out .= '<div class="row">';
+        $out .= '<div class="row oblig">';
         $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact technique</div>';
         $out .= '<div class="field">'.inputTag('text', 'contact', '', '', '16', $data['contact'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);"');
         $out .= '<a id="addContTech" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a>';
@@ -933,7 +931,7 @@ class factureView extends generalView {
         $out .= '<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="'.$data['contact_fact'].'" />
 					<div id="ACcontact_fact_choix" class="autocomplete"></div>';
         $out .= '</div>';
-        $out .= '<div class="row">';
+        $out .= '<div class="row oblig">';
         $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact facturation</div>';
         $out .= '<div class="field">'.inputTag('text', 'contact2', '', '', '16', $data['contact2'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"');
         $out .= '<a id="addContFact" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_achat_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a>';

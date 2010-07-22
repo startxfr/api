@@ -261,28 +261,28 @@ class commandeView extends generalView {
 	$out .= '</div>';
 	$out .= '</fieldset></div>';
 
-	$out .= '<div class="block width50">';
-	$out .= '<fieldset class="form" style="height:183px"><legend>Adresse de livraison</legend>';
-	$out .= '<div class="row">';
-	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryNom);">Entreprise</div>';
-	if ($datas['data']['type_ent'] != '')
-	    $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$datas['data']['type_ent'].'.png',$datas['data']['nom_tyent']).' '.$datas['data']['nom_ent'];
-	else $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').'<i>Particulier</i>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
-	$out .= '</div>';
-	$out .= '<div class="row">';
-	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd);">Adresse</div>';
-	$out .= '<div class="field">'.inputTag('text', 'adressedelivery_cmd', '', '', '', $datas['data']['adressedelivery_cmd']).'</div>';
-	$out .= '</div>';
-	$out .= '<div class="row">';
-	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd2);">Complément</div>';
-	$out .= '<div class="field">'.inputTag('text', 'adresse1delivery_cmd', '', '', '', $datas['data']['adresse1delivery_cmd']).'</div>';
-	$out .= '</div>';
-	$out .= '<div class="row">
+        $out .= '<div class="block width50">';
+        $out .= '<fieldset class="form" style="height:183px"><legend>Adresse de livraison</legend>';
+        $out .= '<div class="row">';
+        $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryNom);">Nom</div>';
+        if ($datas['data']['type_ent'] != '')
+            $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$datas['data']['type_ent'].'.png',$datas['data']['nom_tyent']).' '.$datas['data']['nom_ent'];
+        else $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').'<i>Particulier</i>';
+        $out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+        $out .= '</div>';
+        $out .= '<div class="row oblig">';
+        $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd);">Adresse</div>';
+        $out .= '<div class="field">'.inputTag('text', 'adressedelivery_cmd', '', '', '', $datas['data']['adressedelivery_cmd']).'</div>';
+        $out .= '</div>';
+        $out .= '<div class="row">';
+        $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd2);">Complément</div>';
+        $out .= '<div class="field">'.inputTag('text', 'adresse1delivery_cmd', '', '', '', $datas['data']['adresse1delivery_cmd']).'</div>';
+        $out .= '</div>';
+        $out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryCpVille);">CP - Ville</div>
                     <div class="field">'.inputTag('text', "cpdelivery_cmd", 'civ', '', '6', $datas['data']['cpdelivery_cmd'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'cmdVille\');"').'<select name=\'villedelivery_cmd\'  id="cmdVille"  onblur="finishEditing();" onclick="beginEditing(this);" class="nextciv"><option value=""> </option><option value="'.$datas['data']['villedelivery_cmd'].'" selected="selected">'.$datas['data']['villedelivery_cmd'].'</option></select></div>
 		</div>';
-	$out .= '<div class="row">
+        $out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryPays);">Pays</div>
                     <div class="field">'.selectTag('paysdelivery_cmd',$datas['pays'],$datas['data']['paysdelivery_cmd']).'</div>
 		</div>
@@ -294,31 +294,31 @@ class commandeView extends generalView {
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryMail);">Mail</div>
                     <div class="field">'.inputTag('text', "maildelivery_cmd", '', '', '30', $datas['data']['maildelivery_cmd']).'</div>
 		</div></fieldset></div>';
-	$out .= '<div class="block width50">';
-	$out .= '<fieldset class="form" style="height:100px"><legend>Informations sur les contacts</legend>';
-	$out .= '<div class="row">';
-	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.entreprise);">Entreprise</div>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
-	$out .= '</div>';
-	$out .= '<div class="row">
+        $out .= '<div class="block width50">';
+        $out .= '<fieldset class="form" style="height:100px"><legend>Informations sur les contacts</legend>';
+        $out .= '<div class="row">';
+        $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.entreprise);">Entreprise</div>';
+        $out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+        $out .= '</div>';
+        $out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactTech);">Contact Tech</div>
-                    <div class="field">'.inputTag('text', 'contact_cmd2','icon', '', '16',$Ncont, ' id="ACcontact_cmd" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+                    <div class="field">'.inputTag('text', 'contact_cmd2','icon2', '', '16',$Ncont, ' id="ACcontact_cmd" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
                     <input type="hidden" name="contact_cmd" id="ACcontact_cmdhidden" value="'.$datas['data']['contact_cmd'].'" /><input type="hidden" name="contold" id="ACcontact_cmdold" value="'.$Ncont.'" />
                     <div id="ACcontact_cmd_choix" class="autocomplete" style="display:none;"></div>
 		</div>';
-	$out .= '<div class="row">
+        $out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactAchat);">Contact Achat</div>
-                    <div class="field">'.inputTag('text', 'contact_achat_cmd2','icon', '', '16',$Nachat, ' id="ACcontact_achat_cmd" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_achat_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+                    <div class="field">'.inputTag('text', 'contact_achat_cmd2','icon2', '', '16',$Nachat, ' id="ACcontact_achat_cmd" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_achat_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
                     <input type="hidden" name="contact_achat_cmd" id="ACcontact_achat_cmdhidden" value="'.$datas['data']['contact_achat_cmd'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_cmdold" value="'.$Nachat.'" />
                     <div id="ACcontact_achat_cmd_choix" class="autocomplete" style="display:none;"></div>
 		</div>';
-	$out .= '<div class="row">';
-	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.commercial);">Commercial</div>';
-	$out .= '<div class="field">'.selectTag('commercial_cmd',$datas['user'],$datas['data']['commercial_cmd']).'</div>';
-	$out .= '</div>';
-	$out .= '</fieldset>';
-	$out .= '<fieldset class="form" style="height:60px"><legend>Commentaires de la commande</legend>';
-	$out .= '<div class="row">
+        $out .= '<div class="row oblig">';
+        $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.commercial);">Commercial</div>';
+        $out .= '<div class="field">'.selectTag('commercial_cmd',$datas['user'],$datas['data']['commercial_cmd'],'','',false).'</div>';
+        $out .= '</div>';
+        $out .= '</fieldset>';
+        $out .= '<fieldset class="form" style="height:60px"><legend>Commentaires de la commande</legend>';
+        $out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryComplement);">Commentaires</div>
                     <div class="field">
 			<textarea name="commentaire_cmd" cols="55" rows="2">'.$datas['data']['commentaire_cmd'].'</textarea></div>
@@ -647,11 +647,11 @@ class commandeView extends generalView {
 			</div>
 			<div class="block width50">
 				<fieldset class="form"><legend>Envoyer</legend>
-					<div class="row">
+					<div class="row oblig">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendType);">Type d\'envoi</div>
 						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"',false).'</div>
 					</div>
-					<div class="row">
+					<div class="row oblig">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendSujet);">Sujet</div>
 						<div class="field">'.inputTag('text', 'sujet','','','','','id="MessageTitle"').'</div>
 					</div>
@@ -672,7 +672,7 @@ class commandeView extends generalView {
 			</div>
 			<div class="block width50">
 				<fieldset class="form"><legend>Informations sur le destinataire</legend>
-					<div class="row" id="champEmail">
+					<div class="row oblig" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendMail);">Courriel</div>
 						<div class="field">'.inputTag('text', 'mail', '', '', '', $_SESSION['user']['mail']).'</div>
 					</div>
@@ -680,15 +680,15 @@ class commandeView extends generalView {
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCopyToMe);">Me mettre en copie</div>
 						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'"  checked="checked"/></div>
 					</div>
-					<div class="row" style="display:none;" id="champFax">
+					<div class="row oblig" style="display:none;" id="champFax">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendFax);">Fax</div>
 						<div class="field">'.inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champDestinataire">
+					<div class="row oblig" style="display:none;" id="champDestinataire">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendDestinataire);">Destinataire</div>
 						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd1">
+					<div class="row oblig" style="display:none;" id="champAdd1">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendAdd);">Adresse</div>
 						<div class="field">'.inputTag('text', 'add1', '', '', '', $datas['data']['adressedelivery_dev']).'</div>
 					</div>
@@ -696,12 +696,12 @@ class commandeView extends generalView {
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendComplement);">Complément</div>
 						<div class="field">'.inputTag('text', 'add2', '', '', '', $datas['data']['adresse1delivery_cmd']).'</div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd3"> 
+					<div class="row oblig" style="display:none;" id="champAdd3">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCpVille);">CP - Ville</div>
 						<div class="field">'.inputTag('text', "cp", '', '', '', $datas['data']['cpdelivery_dev'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'envoiVille\');"').
 		    '<select name=\'ville\'  id="envoiVille"  onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$datas['data']['villedelivery_dev'].'" selected="selected">'.$datas['data']['villedelivery_dev'].'</option></select></div>
 					</div>
-					<div class="row" style="display:none;" id="champAdd4"> 
+					<div class="row oblig" style="display:none;" id="champAdd4">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendPays);">Pays</div>
 						<div class="field">'.selectTag('pays',$datas['pays'],$datas['data']['paysdelivery_dev']).'</div>
 					</div>

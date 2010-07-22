@@ -76,10 +76,10 @@ class pontComptableModel extends GeneralModel {
      * @return array Indique si la requête s'est bien exécutée
      */
     public function addPontComptableHistoFile($data) {
-	$tmpFile = $this->genererPontComptableHistoTmpFileWithData($data);
+	$filePrefix =$GLOBALS['zunoPontComptable']['filePrefix'].$data[$this->sqlIdField];
+	$tmpFile = $this->genererPontComptableHistoTmpFileWithData($data,$filePrefix);
 	$tmpFilePath = $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$tmpFile;
-	$fileName =$data[$this->sqlIdField].'-'.FileCleanFileName(str_replace(':','',str_replace('-','',$data['date_pcth']))).$GLOBALS['zunoPontComptable']['fileExt'];
-
+	$fileName = $filePrefix.$GLOBALS['zunoPontComptable']['fileExt'];
 	$message = escapeshellcmd("Ajout du fichier d'export comptable numero ".$data[$this->sqlIdField]." par ".$_SESSION['user']['id']);
 	$Path = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['zunoPontComptable']['histoDir'];
 
@@ -183,9 +183,11 @@ class pontComptableModel extends GeneralModel {
      * @param string $fourn L'id du fournisseur à supprimer
      * @return array Indique si la requête s'est bien exécutée
      */
-    public function genererPontComptableHistoTmpFileWithData($data) {
+    public function genererPontComptableHistoTmpFileWithData($data,$fileName = "") {
 	$Path = $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
-	$sageObj = new SageCsvGenerator(rand(0, 1000).'test.pontComptable');
+	if($fileName == "")
+	    $fileName = substr($GLOBALS['zunoPontComptable']['filePrefix'],0,-1);
+	$sageObj = new SageCsvGenerator($fileName);
 	if($data['config_hasFactureClient_pcth'] == '1') {
 	    $infoBrutFact = $this->getFactureClientData($data);
 	    if($infoBrutFact[0]) {
@@ -198,10 +200,10 @@ class pontComptableModel extends GeneralModel {
 		    $tauxTVA = $infoFacture['tauxTVA_fact'];
 		    if($infoFacture['dateenvoi_fact'] == '')
 			$infoFacture['dateenvoi_fact'] =$infoFacture['daterecord_fact'];
-		    $dateFacture = $infoFacture['dateenvoi_fact'];
+		    $dateFacture = DateUniv2Human( $infoFacture['dateenvoi_fact'], 'simpleLong');
 		    $numeroFacture = (($infoFacture['type_fact'] == 'Avoir') ? 'A' : 'F').$infoFacture['id_fact'];
 		    $numeroCompteTiers = $infoFacture['id_ent'];
-		    $libelle = $infoFacture['nom_ent'];
+		    $libelle = strtoupper(FileCleanFileName($infoFacture['nom_ent'],"TOLOWER"));
 
 		    $totalHT = 0;
 		    $produitArray = array();
@@ -214,12 +216,12 @@ class pontComptableModel extends GeneralModel {
 		    }
 		    // ajout des lignes de credit produit
 		    foreach($produitArray as $compte => $montant)
-			$sageObj->quickAddFCLigne($dateFacture,$numeroFacture,$compte,$montant,'C',$numeroCompteTiers,$libelle);
+			$sageObj->quickAddFCLigneCredit($dateFacture,$numeroFacture,$compte,$montant,$libelle);
 		    $totalTVA = round(($totalHT*$tauxTVA/100),2);
 		    // ajout de la ligne de credit TVA
-		    $sageObj->quickAddFCLigne($dateFacture,$numeroFacture,$GLOBALS['zunoPontComptable']['FCCompteTVADefaut'],$totalTVA,'C',$numeroCompteTiers,$libelle);
+		    $sageObj->quickAddFCLigneCredit($dateFacture,$numeroFacture,$GLOBALS['zunoPontComptable']['FCCompteTVADefaut'],$totalTVA,$libelle);
 		    // ajout de la ligne de debit
-		    $sageObj->quickAddFCLigne($dateFacture,$numeroFacture,$GLOBALS['zunoPontComptable']['FCCompteDebitDefaut'],($totalTVA+$totalHT),'D',$numeroCompteTiers,$libelle);
+		    $sageObj->quickAddFCLigneDebit($dateFacture,$numeroFacture,$GLOBALS['zunoPontComptable']['FCCompteDebitDefaut'],($totalTVA+$totalHT),$libelle,$numeroCompteTiers);
 		}
 	    }
 	}
@@ -231,9 +233,9 @@ class pontComptableModel extends GeneralModel {
 		    $tauxTVA = $infoFacture['tauxTVA_factfourn'];
 		    if($infoFacture['dateFact_factfourn'] == '')
 			$infoFacture['dateFact_factfourn'] =$infoFacture['datePaye_factfourn'];
-		    $dateFacture = $infoFacture['dateFact_factfourn'];
+		    $dateFacture = DateUniv2Human( $infoFacture['dateFact_factfourn'], 'simpleLong');
 		    $numeroCompteTiers = $infoFacture['id_ent'];
-		    $libelle = $infoFacture['nom_ent'];
+		    $libelle = strtoupper(FileCleanFileName($infoFacture['nom_ent'],"TOLOWER"));
 
 		    $totalHT = $infoFacture['montantTTC_factfourn']*(1-($tauxTVA/100));
 		    $sageObj->quickAddFFLigne($dateFacture,$idFact,$GLOBALS['zunoPontComptable']['FFCompteProduitDefaut'],round($totalHT,2),'D',$numeroCompteTiers,$libelle);

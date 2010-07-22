@@ -92,30 +92,30 @@ class contactView extends generalView {
 
 	$web = ($data['www_ent'] != "") ? $data['www_ent'] : "http://";
 
-	$out = '<div class="block width50">' .
-		'<fieldset class="form" style="height:100px">' .
-		'<legend>Information sur l\'entreprise</legend>' .
-		'<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>' .
-		'<div class="field">'.inputTag('text', 'nom_ent', '', '', '16', $data['nom_ent']).'</div>' .
-		'</div>' .
-		'<div class="row">'.
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>'.
-		'<div class="field">'.selectTag('type_ent', $datas['type'], $data['type_ent'],'','',false).'</div>'.
-		'</div>'.
-		'</fieldset></div>';
-	$out .= '<div class="block width50">'.
-		'<fieldset class="form" style="height:100px">'.
-		'<legend>Coordonnées</legend>' .
-		'<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Web</div>' .
-		'<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
-		'</div>' .
-		'<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
-		'<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
-		'</div>'.
-		'<div class="row">
+        $out = '<div class="block width50">' .
+                '<fieldset class="form" style="height:100px">' .
+                '<legend>Information sur l\'entreprise</legend>' .
+                '<div class="row oblig">' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>' .
+                '<div class="field">'.inputTag('text', 'nom_ent', '', '', '16', $data['nom_ent']).'</div>' .
+                '</div>' .
+                '<div class="row oblig">'.
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>'.
+                '<div class="field">'.selectTag('type_ent', $datas['type'], $data['type_ent'],'','',false).'</div>'.
+                '</div>'.
+                '</fieldset></div>';
+        $out .= '<div class="block width50">'.
+                '<fieldset class="form" style="height:100px">'.
+                '<legend>Coordonnées</legend>' .
+                '<div class="row">' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Web</div>' .
+                '<div class="field">'.inputTag('text', 'www_ent', '', '', '16', $web).'</div>' .
+                '</div>' .
+                '<div class="row">' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Fax</div>' .
+                '<div class="field">'.inputTag('text', 'fax_ent', '', '', '16', prepareTelAffichage($data['fax_ent'])).'</div>' .
+                '</div>'.
+                '<div class="row">
 							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.cpVille);">CP - Ville</div>
 							<div class="field">'.inputTag('text', "cp_ent", 'civ', '', '6', $data['cp_ent'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'entVille\');"').'<select name=\'ville_ent\'  id="entVille" class="nextciv" onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$data['ville_ent'].'" selected="selected">'.$data['ville_ent'].'</option></select></div>
 						</div>'.
@@ -136,12 +136,12 @@ class contactView extends generalView {
 	$out = '<div class="block width50">
 			<fieldset class="form" style="height:140px">
 				<legend>Adresse</legend>
-			  	<div class="row">
+			  	<div class="row oblig">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>
 
 					<div class="field">'.inputTag('text', "nom_ent", '', '', '30', $data['nom_ent']).'</div>
 				</div>
-				<div class="row">
+				<div class="row oblig">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.add);">Adresse</div>
 					<div class="field">'.inputTag('text', "add1_ent", '', '', '40', $data['add1_ent']).'</div>
 				</div>
@@ -150,11 +150,11 @@ class contactView extends generalView {
 					<div class="field">'.inputTag('text', "add2_ent", '', '', '40', $data['add2_ent']).'</div>
 
 				</div>
-				<div class="row">
+				<div class="row oblig">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.cpVille);">CP - Ville</div>
 					<div class="field">'.inputTag('text', "cp_ent", 'civ', '', '6', $data['cp_ent'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'ent2Ville\');"').'<select name=\'ville_ent\'  id="ent2Ville" class="nextciv" onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$data['ville_ent'].'" selected="selected">'.$data['ville_ent'].'</option></select></div>
 				</div>
-				<div class="row">
+				<div class="row oblig">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.pays);">Pays</div>
 					<div class="field">'.selectTag('pays_ent',$datas['pays'],$data['pays_ent'], '', '', false).'</div>
 				</div>
@@ -162,7 +162,7 @@ class contactView extends generalView {
 	$out .= '<div class="block width50">
 					<fieldset class="form" style="height:140px">
 						<legend>Profil de l\'entreprise</legend>
-						<div class="row">
+						<div class="row oblig">
 							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>
 							<div class="field">'.selectTag('type_ent', $datas['type'], $data['type_ent'], '', '', false).'</div>
 						</div>
@@ -184,7 +184,6 @@ class contactView extends generalView {
 						</div>
 					</fieldset>
 				</div>
-
 				<div class="block width50">
 					<fieldset class="form" style="height:140px">
 						<legend>Autres informations</legend>
@@ -200,7 +199,7 @@ class contactView extends generalView {
 							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ntva);">N° TVA</div>
 							<div class="field">'.inputTag('text', 'numeroTVA_ent', '', '', '16', $data['numeroTVA_ent']).'</div>
 						</div>
-						<div class="row">
+						<div class="row oblig">
 							<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tva);">Taux TVA</div>
 							<div class="field">'.selectTVATag('tauxTVA_ent', array(), $tva).'</div>
 						</div>
@@ -423,7 +422,7 @@ class contactView extends generalView {
 	$out .= '<div class="block width33">
 		<fieldset class="form" style="height:120px">
 			<legend>Détails du contact</legend>
-			<div class="row">
+			<div class="row oblig">
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.civ);">Civilité</div>
 				<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Mlle'=>'Mademoiselle'), $data['civ_cont']).'</div>
 			</div>
@@ -431,7 +430,7 @@ class contactView extends generalView {
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.prenom);">Prénom</div>
 				<div class="field">'.inputTag('text', 'prenom_cont', '', '', '16', $data['prenom_cont']).'</div>
 			</div>
-			<div class="row">
+			<div class="row oblig">
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.nom);">Nom</div>
 				<div class="field">'.inputTag('text', 'nom_cont', '', '', '16', $data['nom_cont']).'</div>
 			</div>
@@ -477,7 +476,7 @@ class contactView extends generalView {
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.fax);">Fax</div>
 				<div class="field">'.inputTag('text', 'fax_cont', '', '', '16', prepareTelAffichage($data['fax_cont'])).'</div>
 			</div>
-			<div class="row">
+			<div class="row oblig">
 				<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.mail);">E-mail</div>
 				<div class="field">'.inputTag('text', 'mail_cont', $ifcl, '', '16', $data['mail_cont']).$mail.'</div>
 			</div>
@@ -550,18 +549,18 @@ class contactView extends generalView {
 	$corps .= '<input type="hidden" name="idChamp" value="'.$data['idChamp'].'" />';
 	$corps .= '<div class="block width33">';
 	$corps .= '<fieldset class="form"><legend>Détail du contact</legend>';
-	$corps .= '<div class="row">';
+	$corps .= '<div class="row oblig">';
 	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.civ);">Civilité</div>';
 	$corps .= '<div class="field">'.selectTag('civ_cont', array('M.'=>'Monsieur', 'Mme'=>'Madame', 'Mlle'=>'Mademoiselle'), $data['civ_cont'], '', '', false).'</div></div>';
 	$corps .= '<div class="row">';
 	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.prenom);">Prenom</div>';
 	$corps .= '<div class="field">'.inputTag('text', 'prenom_cont', '', '', '', $data['prenom_cont']).'</div></div>';
-	$corps .= '<div class="row">';
+	$corps .= '<div class="row oblig">';
 	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.nom);">Nom</div>';
 	$corps .= '<div class="field">'.inputTag('text', 'nom_cont', '', '', '', $data['nom_cont']).'</div></div>';
 	$corps .= '</fieldset>';
 	$corps .= '<fieldset class="form"><legend>Autres Coordonnées</legend>';
-	$corps .= '<div class="row">';
+	$corps .= '<div class="row oblig">';
 	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactPers.mail);">Mail</div>';
 	$corps .= '<div class="field">'.inputTag('text', 'mail_cont', '', '', '', $data['mail_cont']).'</div></div>';
 	$corps .= '<div class="row">';
@@ -608,48 +607,48 @@ class contactView extends generalView {
 
 	$tva = ($data['tauxTVA_ent'] != "") ? $data['tauxTVA_ent'] : $GLOBALS['zunoClientStatut']['tauxTVA'];
 
-	$corps = '<form name="addEntDevis" method="post" action="Contact.php">';
-	$corps .= '<input type="hidden" name="action" value="addEntPopup" />';
-	$corps .= '<div class="block width33">';
-	$corps .= '<fieldset class="form"><legend>Informations sur l\'entreprise</legend>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>';
-	$corps .= '<div class="field">'.inputTag('text', 'nom_ent', '', '', '', $data['nom_ent']).'</div></div>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>';
-	$corps .= '<div class="field">'.selectTag('type_ent', $data['types'], $data['type_ent'], '', '', false).'</div></div>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ttva);">Taux TVA</div>';
-	$corps .= '<div class="field">'.selectTVATag('tauxTVA_ent', array(), $tva, '', '', false).'</div></div>';
-	$corps .= '</fieldset></div>';
-	$corps .= '<div class="block width33">';
-	$corps .= '<fieldset class="form"><legend>Autres coordonnées</legend>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Faximile</div>';
-	$corps .= '<div class="field">'.inputTag('text', 'fax_ent', '', '', '', prepareTelAffichage($data['fax_ent'])).'</div></div>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphonne</div>';
-	$corps .= '<div class="field">'.inputTag('text', 'tel_ent', '', '', '', prepareTelAffichage($data['tel_ent'])).'</div></div>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site Web</div>';
-	$corps .= '<div class="field">'.inputTag('text', 'www_ent', '', '', '', $data['www_ent']).'</div></div>';
-	$corps .= '</fieldset></div>';
-	$corps .= '<div class="block width33">';
-	$corps .= '<fieldset class="form"><legend>Coordonnées postales</legend>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.add);">Adresse</div>';
-	$corps .= '<div class="field">'.inputTag('text', 'add1_ent', '', '', '', $data['add1_ent']).'</div></div>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label">Complément</div>';
-	$corps .= '<div class="field">'.inputTag('text', 'add2_ent', '', '', '', $data['add2_ent']).'</div></div>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.cpVille);">CP - Ville</div>';
-	$corps .= '<div class="field">'.inputTag('text','cp_ent','civ','',4,$data['cp_ent'],' id="entcp" onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'entVille\');"').selectTag('ville_ent',array($data['ville_ent']),$data['ville_ent'], 'nextciv',' id="entVille"  onblur="finishEditing();" onclick="beginEditing(this);"').'</div></div>';
-	$corps .= '<div class="row">';
-	$corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.pays);">Pays</div>';
-	$corps .= '<div class="field">'.selectTag('pays_ent', $data['listePays'], $data['pays_ent']).'</div></div>';
-	$corps .= '</fieldset></div></form>';
-	return $corps;
+        $corps = '<form name="addEntDevis" method="post" action="Contact.php">';
+        $corps .= '<input type="hidden" name="action" value="addEntPopup" />';
+        $corps .= '<div class="block width33">';
+        $corps .= '<fieldset class="form"><legend>Informations sur l\'entreprise</legend>';
+        $corps .= '<div class="row oblig">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.nom);">Nom</div>';
+        $corps .= '<div class="field">'.inputTag('text', 'nom_ent', '', '', '', $data['nom_ent']).'</div></div>';
+        $corps .= '<div class="row oblig">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.type);">Type</div>';
+        $corps .= '<div class="field">'.selectTag('type_ent', $data['types'], $data['type_ent'], '', '', false).'</div></div>';
+        $corps .= '<div class="row oblig">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ttva);">Taux TVA</div>';
+        $corps .= '<div class="field">'.selectTVATag('tauxTVA_ent', array(), $tva, '', '', false).'</div></div>';
+        $corps .= '</fieldset></div>';
+        $corps .= '<div class="block width33">';
+        $corps .= '<fieldset class="form"><legend>Autres coordonnées</legend>';
+        $corps .= '<div class="row">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.fax);">Faximile</div>';
+        $corps .= '<div class="field">'.inputTag('text', 'fax_ent', '', '', '', prepareTelAffichage($data['fax_ent'])).'</div></div>';
+        $corps .= '<div class="row">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.tel);">Téléphone</div>';
+        $corps .= '<div class="field">'.inputTag('text', 'tel_ent', '', '', '', prepareTelAffichage($data['tel_ent'])).'</div></div>';
+        $corps .= '<div class="row">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.web);">Site Web</div>';
+        $corps .= '<div class="field">'.inputTag('text', 'www_ent', '', '', '', $data['www_ent']).'</div></div>';
+        $corps .= '</fieldset></div>';
+        $corps .= '<div class="block width33">';
+        $corps .= '<fieldset class="form"><legend>Coordonnées postales</legend>';
+        $corps .= '<div class="row">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.add);">Adresse</div>';
+        $corps .= '<div class="field">'.inputTag('text', 'add1_ent', '', '', '', $data['add1_ent']).'</div></div>';
+        $corps .= '<div class="row">';
+        $corps .= '<div class="label">Complément</div>';
+        $corps .= '<div class="field">'.inputTag('text', 'add2_ent', '', '', '', $data['add2_ent']).'</div></div>';
+        $corps .= '<div class="row">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.cpVille);">CP - Ville</div>';
+        $corps .= '<div class="field">'.inputTag('text','cp_ent','civ','',4,$data['cp_ent'],' id="entcp" onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'entVille\');"').selectTag('ville_ent',array($data['ville_ent']),$data['ville_ent'], 'nextciv',' id="entVille"  onblur="finishEditing();" onclick="beginEditing(this);"').'</div></div>';
+        $corps .= '<div class="row">';
+        $corps .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.pays);">Pays</div>';
+        $corps .= '<div class="field">'.selectTag('pays_ent', $data['listePays'], $data['pays_ent']).'</div></div>';
+        $corps .= '</fieldset></div></form>';
+        return $corps;
     }
 
     public function listeResult($datas, $tableau = 'classic') {
@@ -1335,14 +1334,14 @@ class contactEntrepriseView extends contactView {
     }
 
     public function moveContact($data) {
-	$titre = '<img alt="move" title="Déplacer Contact" src="../img/prospec/contact.move.png" onload="autoComplete();" /> Déplacer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
-	$corps = '<form name="move" action="fiche.php">';
-	$corps .= '<input type="hidden" name="action" value="moveCont" />';
-	$corps .= '<input type="hidden" name="entrepriseC" value="'.$data['entreprise_cont'].'" />';
-	$corps .= '<input type="hidden" name="id_cont" value="'.$data['id_cont'].'" />';
-	$corps .= '<div class="block width50">';
-	$corps .= '<fieldset class="form">';
-	$corps .= '<div class="row">
+        $titre = '<img alt="move" title="Déplacer Contact" src="../img/prospec/contact.move.png" onload="autoComplete();" /> Déplacer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+        $corps = '<form name="move" action="fiche.php">';
+        $corps .= '<input type="hidden" name="action" value="moveCont" />';
+        $corps .= '<input type="hidden" name="entrepriseC" value="'.$data['entreprise_cont'].'" />';
+        $corps .= '<input type="hidden" name="id_cont" value="'.$data['id_cont'].'" />';
+        $corps .= '<div class="block width50">';
+        $corps .= '<fieldset class="form">';
+        $corps .= '<div class="row oblig">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ajaxField);">Entreprise</div>
 					<div class="field">'.inputTag('text', 'entreprise','icon', '', '16',$data['nom_ent'], ' id="ACentreprise_cont" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="entreprise_cont" id="ACentreprise_conthidden" value="'.$data['entreprise_cont'].'" /><input type="hidden" name="contold" id="ACentreprise_contold" value="'.$data['entreprise_cont'].'" />
@@ -1410,40 +1409,40 @@ class contactEntrepriseView extends contactView {
 					<div class="field" onmouseover="zuno.tooltip(this,ZTips.contactPers.ajaxField);">'.inputTag('text', 'contact','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_app" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<div id="ACcontact_app_choix" class="autocomplete"></div>
 				</div>';
-	if($data['appel_app'] != '')
-	    $appelT = strftime('%d/%m/%Y', strtotime($data['appel_app']));
-	else
-	    $appelT = date('d/m/Y');
-	$corps .= '<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelDate);">Date de l\'appel</div>' .
-		'<div class="field">'.inputDateTag('text', 'appel_app', $appelT).'</div>' .
-		'</div>';
-	if($data['rappel_app'] != '') {
-	    $check = 'checked="checked"';
-	    $style = '';
-	}
-	else {
-	    $check = '';
-	    $style = 'style="display:none;"';
-	}
-	$corps .= '<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappel);">Prévoir un rappel</div>' .
-		'<div class="field"><input type="checkbox" name="rappel" value="1" '.$check.' onchange="afficherRappel();"/></div>' .
-		'</div>';
-	if($data['rappel_app'] != '')
-	    $rappelT = strftime('%d/%m/%Y', strtotime($data['rappel_app']));
-	else
-	    $rappelT = date('d/m/Y',strtotime('+1 month'));
-	$corps .= '<div class="row" id="dateRappel" '.$style.'>' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelD);">Date du rappel</div>' .
-		'<div class="field">'.inputDateTag('text', 'rappel_app', $rappelT).'</div>' .
-		'</div>';
-	$corps .= '<div class="row" id="heureRappel" '.$style.'>' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelH);">Heure du rappel</div>' .
-		'<div class="field">'.inputTag('text', 'heure_app','', '', '16', $data['heure_app']).'</div>' .
-		'</div></fieldset></div>';
-	$corps .= '<div class="block width33"><fieldset class="form" style="height: 120px"><legend>Complément d\'information</legend>';
-	$corps .= '<div class="row">
+        if($data['appel_app'] != '')
+            $appelT = strftime('%d/%m/%Y', strtotime($data['appel_app']));
+        else
+            $appelT = date('d/m/Y');
+        $corps .= '<div class="row oblig">' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelDate);">Date de l\'appel</div>' .
+                '<div class="field">'.inputDateTag('text', 'appel_app', $appelT).'</div>' .
+                '</div>';
+        if($data['rappel_app'] != '') {
+            $check = 'checked="checked"';
+            $style = '';
+        }
+        else {
+            $check = '';
+            $style = 'style="display:none;"';
+        }
+        $corps .= '<div class="row">' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappel);">Prévoir un rappel</div>' .
+                '<div class="field"><input type="checkbox" name="rappel" value="1" '.$check.' onchange="afficherRappel();"/></div>' .
+                '</div>';
+        if($data['rappel_app'] != '')
+            $rappelT = strftime('%d/%m/%Y', strtotime($data['rappel_app']));
+        else
+            $rappelT = date('d/m/Y',strtotime('+1 month'));
+        $corps .= '<div class="row oblig" id="dateRappel" '.$style.'>' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelD);">Date du rappel</div>' .
+                '<div class="field">'.inputDateTag('text', 'rappel_app', $rappelT).'</div>' .
+                '</div>';
+        $corps .= '<div class="row oblig" id="heureRappel" '.$style.'>' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelRappelH);">Heure du rappel</div>' .
+                '<div class="field">'.inputTag('text', 'heure_app','', '', '16', $data['heure_app']).'</div>' .
+                '</div></fieldset></div>';
+        $corps .= '<div class="block width33"><fieldset class="form" style="height: 120px"><legend>Complément d\'information</legend>';
+        $corps .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelProjet);">Projet</div>
 					<div class="field">'.inputTag('text', 'projet','icon', '', '16',$data['titre_proj'], ' id="ACprojet_app" onchange="verifAutocompleteur(this);" ').'<a name="proj" onclick="changePopupProjet();"><img alt="addProjet" title="Créer un projet" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingProj" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="projet_app" id="ACprojet_apphidden" value="'.$data['projet_app'].'" /><input type="hidden" name="contold" id="ACprojet_appold" value="'.$data['projet_app'].'" />
@@ -1500,25 +1499,25 @@ class contactEntrepriseView extends contactView {
 	    $style = 'style="display:none;"';
 	}
 
-	$out = '<div id="formProjet" '.$style.'>';
-	$out .= '<form name="addProjet" action="fiche.php" method="POST">';
-	$out .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
-	$out .= '<input type="hidden" name="action" value="'.$todo.'" />';
-	if($data['action'] == 'modifProj')
-	    $out .= '<input type="hidden" name="id_proj" value="'.$data['id_proj'].'" />';
-	$out .= '<input type="hidden" name="contact_proj" value="'.$contact.'" id="ACcontact_projApphidden" />';
-	$out .= '<div class="block width33">';
-	$out .= '<fieldset class="form">';
-	$out .= '<legend>Projet</legend>';
-	$out .= '<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.titre);">Titre</div>' .
-		'<div class="field">'.inputTag('text', 'titre_proj', '', '', '16', $data['titre_proj']).'</div>' .
-		'</div>';
-	$out .= '<div class="row">' .
-		'<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.type);">Type</div>' .
-		'<div class="field">'.selectTag('typeproj_proj', $data['types'], $data['typeproj_proj'], '', '', false).'</div>' .
-		'</div>';
-	$out .= '<div class="row">
+        $out = '<div id="formProjet" '.$style.'>';
+        $out .= '<form name="addProjet" action="fiche.php" method="POST">';
+        $out .= '<input type="hidden" name="id_ent" value="'.$data['id_ent'].'" />';
+        $out .= '<input type="hidden" name="action" value="'.$todo.'" />';
+        if($data['action'] == 'modifProj')
+            $out .= '<input type="hidden" name="id_proj" value="'.$data['id_proj'].'" />';
+        $out .= '<input type="hidden" name="contact_proj" value="'.$contact.'" id="ACcontact_projApphidden" />';
+        $out .= '<div class="block width33">';
+        $out .= '<fieldset class="form">';
+        $out .= '<legend>Projet</legend>';
+        $out .= '<div class="row oblig">' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.titre);">Titre</div>' .
+                '<div class="field">'.inputTag('text', 'titre_proj', '', '', '16', $data['titre_proj']).'</div>' .
+                '</div>';
+        $out .= '<div class="row oblig">' .
+                '<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.type);">Type</div>' .
+                '<div class="field">'.selectTag('typeproj_proj', $data['types'], $data['typeproj_proj'], '', '', false).'</div>' .
+                '</div>';
+        $out .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.contact);">Contact</div>
 					<div class="field">'.inputTag('text', 'contact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_projApp" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont3" src="../img/ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="contold" id="ACcontact_projAppold" value="'.$data['contact_proj'].'" />

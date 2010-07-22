@@ -977,6 +977,13 @@ a.bouton {
     padding-right: .5em;
     color: rgba(150,150,150,1);
 }
+.ZBox .body .block .form .oblig .label {
+    color: rgb(225,50, 50);
+    font-weight: bold;
+}
+.ZBox .body .block .form .oblig .label:after {
+    content: "*";
+}
 .ZBox .body .block .form .row .field {
     display: table-cell;
     vertical-align:top;
@@ -1022,9 +1029,13 @@ a.bouton {
     margin-left: .25em;
     width: 206px !important;
 }
-.ZBox .field .icon { 
+.ZBox .field .icon {
     margin-right: .25em;
     width: 232px !important;
+}
+.ZBox .field .icon2 {
+    margin-right: .25em;
+    width: 212px !important;
 }
 .ZBox .field textarea {
     height: auto;

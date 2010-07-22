@@ -273,21 +273,24 @@ class ZunoFieldset {
      * @param string $value Le texte à placer dans le lien
      * @param string $srcImage Une image dans le lien, le cas échéant
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneLinkTo($label, $link, $value, $srcImage = '', $attRow='') {
-	if($srcImage == '') {
-	    $img = '';
-	}
-	else {
-	    $img = '<img src="'.$srcImage.'" alt="Image" />';
-	}
+    public function ligneLinkTo($label, $link, $value, $srcImage = '', $attRow='', $obligatoire = false) {
+	if($srcImage == '')
+	     $img = '';
+	else $img = '<img src="'.$srcImage.'" alt="Image" />';
 	$lien = '<a href="'.$link.'" title="'.$value.'">'.$img.' '.$value.'</a>';
-	$out = '<div class="row" '.$attRow.'>' .
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>' .
 		'<div class="label">'.$label.'</div>' .
 		'<div class="field">'.$lien.'</div>' .
 		'</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneLinkToObligatoire($label, $link, $value, $srcImage = '', $attRow='', $obligatoire = true) {
+	return $this->ligneLinkTo($label, $link, $value, $srcImage, $attRow, $obligatoire);
     }
 
     /**
@@ -298,17 +301,50 @@ class ZunoFieldset {
      * @param string $autre Si besoin d'autres tags dans le champ
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
 
-    public function ligneInput($label, $nom, $value='', $autre='', $tips = '', $attRow='') {
+    public function ligneInput($label, $nom, $value='', $autre='', $tips = '', $attRow='', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
-	$out = '<div class="row" '.$attRow.'>'
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>'
 		.'<div class="label" '.$tips.' >'.$label.'</div>'
 		.'<div class="field">'.$this->inputTag('text', $nom, '', '', '16', $value, $autre).'</div>'
 		.'</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneInputObligatoire($label, $nom, $value='', $autre='', $tips = '', $attRow='', $obligatoire = true) {
+	return $this->ligneInput($label, $nom, $value, $autre, $tips, $attRow, $obligatoire);
+    }
+
+    /**
+     * Méthode ligneInput qui ressort directement un champ préfait pour afficher dans ZUNO
+     * @param string $label Le label du champ
+     * @param string $nom Le nom du champ
+     * @param string $value La valeur du champ
+     * @param string $autre Si besoin d'autres tags dans le champ
+     * @param string $tips Permet d'ajouter si besoin un tips au champ
+     * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
+     */
+
+    public function ligneInputFile($label, $nom, $value='', $autre='', $tips = '', $attRow='', $obligatoire = false) {
+	if($tips != '')
+	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>'
+		.'<div class="label" '.$tips.' >'.$label.'</div>'
+		.'<div class="field">'.$this->inputTag('file', $nom, '', '', '16', $value, $autre).'</div>'
+		.'</div>';
+	$this->lastLigne = $out;
+	$this->listeLignes[] = $out;
+    }
+
+    public function ligneInputFileObligatoire($label, $nom, $value='', $autre='', $tips = '', $attRow='', $obligatoire = true) {
+	return $this->ligneInputFile($label, $nom, $value, $autre, $tips, $attRow, $obligatoire);
     }
 
     /**
@@ -320,16 +356,22 @@ class ZunoFieldset {
      * @param string $autre D'autres tags
      * @param string $attRow Permet de préciser d'autres tags sur la div row
      * @param string $tips Permet d'ajouter si besoin un tips au champ
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneInputDate($label, $nom, $value, $format = "", $autre = "", $attRow="", $tips='') {
+    public function ligneInputDate($label, $nom, $value, $format = "", $autre = "", $attRow="", $tips='', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
-	$out = '<div class="row" '.$attRow.'>'
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>'
 		.'<div class="label" '.$tips.' >'.$label.'</div>'
 		.'<div class="field">'.$this->inputDateTag('text', $nom, $value, $format, '', '../', $autre).'</div>'
 		.'</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneInputDateObligatoire($label, $nom, $value, $format = "", $autre = "", $attRow="", $tips='',$obligatoire = true) {
+	return $this->ligneInputDate($label, $nom, $value, $format, $autre, $attRow, $tips, $obligatoire);
     }
 
     /**
@@ -340,8 +382,9 @@ class ZunoFieldset {
      * @param string $valueVille La valeur initiale du champ ville à afficher (le nom de la ville sélectionnée)
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise div englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneInputCPVille($nomCP, $valueCP = '', $nomVille = '', $valueVille = '', $tips='', $attRow='') {
+    public function ligneInputCPVille($nomCP, $valueCP = '', $nomVille = '', $valueVille = '', $tips='', $attRow='', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	if($valueVille == '')
@@ -350,12 +393,17 @@ class ZunoFieldset {
 	    $values = array($valueVille => $valueVille);
 	if($nomVille == '')
 	    $nomVille = $nomCP."-Ville";
-	$out .= '<div class="row" '.$attRow.'>';
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>';
 	$out .= '<div class="label" '.$tips.' >CP - ville</div>';
 	$out .= '<div class="field">'.$this->inputTag('text',$nomCP,'civ','',4,$valueCP,' id="ID'.$nomCP.'" onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'ID'.$nomVille.'\');"').$this->selectTag($nomVille,$values,$valueVille, 'nextciv',' id="ID'.$nomVille.'"  onblur="finishEditing();" onclick="beginEditing(this);"').'</div>';
 	$out .= '</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneInputCPVilleObligatoire($nomCP, $valueCP = '', $nomVille = '', $valueVille = '', $tips='', $attRow='', $obligatoire = true) {
+	return $this->ligneInputCPVille($nomCP, $valueCP, $nomVille, $valueVille, $tips, $attRow, $obligatoire);
     }
 
     /**
@@ -366,19 +414,24 @@ class ZunoFieldset {
      * @param string $valueSelect La valeur initiale du champ taux tva à afficher (le taux TVA sélectionnée)
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise div englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneInputTVA($nomInput, $valueInput = '', $nomSelect = '', $valueSelect = '', $tips='', $attRow='') {
+    public function ligneInputTVA($nomInput, $valueInput = '', $nomSelect = '', $valueSelect = '', $tips='', $attRow='', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 
 	if($nomSelect == '')
 	    $nomSelect = $nomInput."-Taux";
-	$out .= '<div class="row" '.$attRow.'>';
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>';
 	$out .= '<div class="label" '.$tips.' >Taux / Montant TVA</div>';
 	$out .= '<div class="field">'.$this->selectTVATag($nomSelect,$values,$valueSelect, 'civ',' id="ID'.$nomSelect.'" onchange="calculette();"  ', false).$this->inputTag('text',$nomInput,'nextciv','',4,$valueInput,' id="ID'.$nomInput.'" readonly="readonly" style="width:197px !important;" ').'</div>';
 	$out .= '</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+    public function ligneInputTVAObligatoire($nomInput, $valueInput = '', $nomSelect = '', $valueSelect = '', $tips='', $attRow='', $obligatoire = true) {
+	return $this->ligneInputTVA($nomInput, $valueInput, $nomSelect, $valueSelect, $tips, $attRow, $obligatoire);
     }
 
     /**
@@ -394,14 +447,16 @@ class ZunoFieldset {
      * @param bool $autoScript Permet de ne pas générer le script automatique du autoCompleteur
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneAutoComplete($label, $nom, $value='', $valueBis = '', $listing='', $autre='', $plus = false, $actionPlus = '', $autoScript = true, $tips='', $attRow='') {
+    public function ligneAutoComplete($label, $nom, $value='', $valueBis = '', $listing='', $autre='', $plus = false, $actionPlus = '', $autoScript = true, $tips='', $attRow='', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	if($valueBis == '')
 	    $valueBis = $value;
 
-	$out = '<div class="row" '.$attRow.'>'
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>'
 		.'<div class="label" '.$tips.' >'.$label.'</div>'
 		.'<div class="field">'.$this->inputTag('text', $nom.'aff','', '', '16',$value, ' id="AC'.$nom.'" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loading'.$nom.'" src="../img/ajax-loader.gif" alt="loader"/></div>';
 	if($plus)
@@ -419,6 +474,10 @@ class ZunoFieldset {
 	$this->listeLignes[] = $out.$script;
     }
 
+    public function ligneAutoCompleteObligatoire($label, $nom, $value='', $valueBis = '', $listing='', $autre='', $plus = false, $actionPlus = '', $autoScript = true, $tips='', $attRow='', $obligatoire = true) {
+	return $this->ligneAutoComplete($label, $nom, $value, $valueBis, $listing, $autre, $plus, $actionPlus, $autoScript, $tips, $attRow, $obligatoire);
+    }
+
     /**
      * Méthode ligneTArea qui génère un textArea directement dans une ligne pour Zuno
      * @param string $label Le label du champ
@@ -427,16 +486,22 @@ class ZunoFieldset {
      * @param string $autre D'autres tags si nécessaires
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneTArea($label, $nom, $value='', $autre='', $tips='', $attRow='') {
+    public function ligneTArea($label, $nom, $value='', $autre='', $tips='', $attRow='', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
-	$out = '<div class="row" '.$attRow.'>
-                    <div class="label" '.$tips.' >'.$label.'</div>
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>
+	            <div class="label" '.$tips.' >'.$label.'</div>
                     <div class="field"><textarea rows="3" cols="35" name="'.$nom.'" '.$autre.' >'.$value.'</textarea></div>
 		</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneTAreaObligatoire($label, $nom, $value='', $autre='', $tips='', $attRow='', $obligatoire = true) {
+	return $this->ligneTArea($label, $nom, $value, $autre, $tips, $attRow, $obligatoire);
     }
 
     /**
@@ -451,8 +516,9 @@ class ZunoFieldset {
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
      * @param bool $plus Permet de préciser si on veut le petit plus
      * @param string $actionplus Précise l'action à faire après click sur le plus
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneSelect($label, $nom, $value, $liste = array(), $withBlank = true, $autre = '', $tips='', $attRow='', $plus = false, $actionplus = '') {
+    public function ligneSelect($label, $nom, $value, $liste = array(), $withBlank = true, $autre = '', $tips='', $attRow='', $plus = false, $actionplus = '', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	if($plus) {
@@ -460,7 +526,8 @@ class ZunoFieldset {
 	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
 	}
 	else $class = $img = "";
-	$out ='<div class="row" '.$attRow.'>' .
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>'.
 		'<div class="label" '.$tips.' >'.$label.'</div>' .
 		'<div class="field">'.$this->selectTag($nom, $liste, $value, $class, $autre, $withBlank).$img.'</div>'
 		.'</div>';
@@ -468,6 +535,10 @@ class ZunoFieldset {
 	$this->listeLignes[] = $out;
     }
 
+    public function ligneSelectObligatoire($label, $nom, $value, $liste = array(), $withBlank = true, $autre = '', $tips='', $attRow='', $plus = false, $actionplus = '', $obligatoire = true) {
+	return $this->ligneSelect($label, $nom, $value, $liste, $withBlank, $autre, $tips, $attRow, $plus, $actionplus, $obligatoire);
+    }
+
     /**
      * Méthode ligneSelect qui génère une ligne avec un select pour Zuno
      * @param string $label Le label du champ
@@ -480,8 +551,9 @@ class ZunoFieldset {
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
      * @param bool $plus Permet de préciser si on veut le petit plus
      * @param string $actionplus Précise l'action à faire après click sur le plus
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneSelectMultiple($label, $nom, $value, $liste = array(), $withBlank = true, $autre = '', $tips='', $attRow='', $plus = false, $actionplus = '') {
+    public function ligneSelectMultiple($label, $nom, $value, $liste = array(), $withBlank = true, $autre = '', $tips='', $attRow='', $plus = false, $actionplus = '', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	if($plus) {
@@ -489,12 +561,17 @@ class ZunoFieldset {
 	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
 	}
 	else $class = $img = "";
-	$out ='<div class="row" '.$attRow.'>' .
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>'.
 		'<div class="label" '.$tips.' >'.$label.'</div>' .
 		'<div class="field">'.$this->selectTag($nom, $liste, $value, $class, $autre, $withBlank,true).$img.'</div>'
 		.'</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneSelectMultipleObligatoire($label, $nom, $value, $liste = array(), $withBlank = true, $autre = '', $tips='', $attRow='', $plus = false, $actionplus = '', $obligatoire = true) {
+	return $this->ligneSelectMultiple($label, $nom, $value, $liste, $withBlank, $autre, $tips, $attRow, $plus, $actionplus, $obligatoire);
     }
 
     /**
@@ -505,8 +582,9 @@ class ZunoFieldset {
      * @param string $autre D'autres tags si nécessaires
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneCheckBox($label, $nom, $checked = false, $autre = '', $tips='', $attRow='') {
+    public function ligneCheckBox($label, $nom, $checked = false, $autre = '', $tips='', $attRow='', $obligatoire = false) {
 	if($checked == false or $checked == '0' or $checked == null)
 	    $checked = '';
 	else
@@ -514,12 +592,17 @@ class ZunoFieldset {
 
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
-	$out = '<div class="row" '.$attRow.'>' .
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>'.
 		'<div class="label" '.$tips.' >'.$label.'</div>' .
 		'<div class="field"><input type="checkbox" name="'.$nom.'" value="1" '.$checked.' '.$autre.' /></div>'
 		.'</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneCheckBoxObligatoire($label, $nom, $checked = false, $autre = '', $tips='', $attRow='', $obligatoire = true) {
+	return $this->ligneCheckBox($label, $nom, $checked, $autre, $tips, $attRow, $obligatoire);
     }
 
     /**
@@ -532,12 +615,14 @@ class ZunoFieldset {
      * @param string $tips Permet d'ajouter si besoin un tips au champ
      * @param string $attRow Attribut a ajouter dans la balise englobante class=row
      * @param boolean $withbr Précise si on veut un retour chariot entre chaque option
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneRadio($label, $nom, $checked = '', $liste = array(), $autre = '', $tips='', $withbr = true) {
+    public function ligneRadio($label, $nom, $checked = '', $liste = array(), $autre = '', $tips='', $withbr = true, $obligatoire = false) {
 	if(is_array($liste)) {
 	    if($tips != '')
 		$tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
-	    $out = '<div class="row" '.$attRow.'>
+	    $ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'" '.$attRow.'>
 			<div class="label" '.$tips.' >'.$label.'</div>
 			<div class="field">
 				<optgroup label="type">';
@@ -554,21 +639,31 @@ class ZunoFieldset {
 	}
     }
 
+    public function ligneRadioObligatoire($label, $nom, $checked = '', $liste = array(), $autre = '', $tips='', $withbr = true, $obligatoire = true) {
+	return $this->ligneRadio($label, $nom, $checked, $liste, $autre, $tips, $withbr, $obligatoire);
+    }
+
     /**
      * Méthode ligneRadio qui génère un block de champ radio avec le même nom, un seul est sélectionable
      * @param string $titre Le label du champ
      * @param string $desc La valeur du champ
      * @param string $tips Permet d'ajouter si besoin un tips au champ
+     * @param string $obligatoire Permet d'ajouter si besoin un signe visuel pour rendre le champs obligatoire
      */
-    public function ligneFree($titre, $desc, $tips='') {
+    public function ligneFree($titre, $desc, $tips='', $obligatoire = false) {
 	if($tips != '')
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
-	$out = '<div class="row">
+	$ob = ($obligatoire) ? ' oblig' : '';
+	$out = '<div class="row'.$ob.'">
 			<div class="label" '.$tips.' >'.$titre.'</div>
 			<div class="field">'.$desc.'</div>
 		    </div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
+    }
+
+    public function ligneFreeObligatoire($titre, $desc, $tips='', $obligatoire = true) {
+	return $this->ligneFree($titre, $desc, $tips, $obligatoire);
     }
 
     /**
@@ -966,7 +1061,7 @@ class ZunoForm {
 	if($previous)
 	    $pied .= '<a name="submit" onclick="window.history.back();" style="cursor: pointer;"><img '.$plus.' align="middle" title="Arrière" alt="Arrière" src="../img/prospec/cancel.png"/> Ecran précédent</a>';
 	$pied.= '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();" '.$close.' ><img '.$plus.' align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> '.$annuler.'</a>';
-	if($this->droit)
+	if($this->droit and $valider != '')
 	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\''.$this->nom.'\', \''.$this->action.'\',\''.$retour.'\''.$popup.');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> '.$valider.'</a>';
 	$this->pied = $pied.$this->pied;
 	return $this->pied;

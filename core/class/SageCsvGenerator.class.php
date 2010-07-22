@@ -24,8 +24,7 @@ class SageCsvGenerator
 		'COMPTES'		=> array('type'=>'N','length'=>10,'value'=>''),
 		'COMPTE_TIERS'		=> array('type'=>'A','length'=>12,'value'=>''),
 		'LIBELLE'		=> array('type'=>'A','length'=>24,'value'=>''),
-		'DEBIT'			=> array('type'=>'N','length'=>14,'value'=>''),
-		'CREDIT'		=> array('type'=>'N','length'=>14,'value'=>'')
+		'MONTANT'		=> array('type'=>'N','length'=>14,'value'=>'')
 	);
 	private $schemaFF = array(
 		'DATE_FACT'		=> array('type'=>'D','length'=>10 ,'value'=>''),
@@ -34,8 +33,7 @@ class SageCsvGenerator
 		'COMPTES'		=> array('type'=>'N','length'=>10,'value'=>''),
 		'COMPTE_TIERS'		=> array('type'=>'A','length'=>12,'value'=>''),
 		'LIBELLE'		=> array('type'=>'A','length'=>24,'value'=>''),
-		'DEBIT'			=> array('type'=>'N','length'=>14,'value'=>''),
-		'CREDIT'		=> array('type'=>'N','length'=>14,'value'=>'')
+		'MONTANT'		=> array('type'=>'N','length'=>14,'value'=>'')
 	);
 
 	private $additionalFC = array();
@@ -158,13 +156,18 @@ class SageCsvGenerator
 		$this->addFCInfo('DATE_FACT',$date);
 		$this->addFCInfo('NUMERO_FACT',$id);
 		$this->addFCInfo('COMPTES',$compte);
-		$this->addFCInfo('COMPTE_TIERS',$id_client);
+		if($id_client != '')
+		    $this->addFCInfo('COMPTE_TIERS',$id_client);
 		$this->addFCInfo('LIBELLE',$nom_client);
-		if($sens == 'D')
-		     $this->addFCInfo('DEBIT',$montant);
-		else $this->addFCInfo('CREDIT',$montant);
+		$this->addFCInfo('MONTANT',$montant);
 		$this->createFCLigne();
 		return $this;
+	}
+	public function quickAddFCLigneCredit($date,$id,$compte,$montant,$nom_client='') {
+	    	return $this->quickAddFCLigne($date,$id,$compte,$montant,'C',null,$nom_client);
+	}
+	public function quickAddFCLigneDebit($date,$id,$compte,$montant,$nom_client='',$id_client='') {
+	    	return $this->quickAddFCLigne($date,$id,$compte,$montant,'D',$id_client,$nom_client);
 	}
 
 
@@ -172,16 +175,15 @@ class SageCsvGenerator
 	 * Remplit tout le tableau des informations FF et ajoute la ligne
 	 */
 	public function quickAddFFLigne($date,$id,$compte,$montant,$sens= 'D',$id_client='',$nom_client='') {
-	    	$this->addFCInfo('CODE_JOURN',$GLOBALS['zunoPontComptable']['CodeJournal']);
-		$this->addFCInfo('DATE_FACT',$date);
-		$this->addFCInfo('NUMERO_FACT',$id);
-		$this->addFCInfo('COMPTES',$compte);
-		$this->addFCInfo('COMPTE_TIERS',$id_client);
-		$this->addFCInfo('LIBELLE',$nom_client);
-		if($sens == 'D')
-		     $this->addFCInfo('DEBIT',$montant);
-		else $this->addFCInfo('CREDIT',$montant);
-		$this->createFCLigne();
+	    	$this->addFFInfo('CODE_JOURN',$GLOBALS['zunoPontComptable']['CodeJournal']);
+		$this->addFFInfo('DATE_FACT',$date);
+		$this->addFFInfo('NUMERO_FACT',$id);
+		$this->addFFInfo('COMPTES',$compte);
+		if($id_client != '')
+		    $this->addFFInfo('COMPTE_TIERS',$id_client);
+		$this->addFFInfo('LIBELLE',$nom_client);
+		$this->addFCInfo('MONTANT',$montant);
+		$this->createFFLigne();
 		return $this;
 	}
 	
@@ -220,9 +222,10 @@ class SageCsvGenerator
 					$desc['length'] = $data[$key]['length'];
 				if(array_key_exists('type',$data[$key]))
 					$desc['type'] = $data[$key]['type'];
-			}
 			$out .= $this->formatChaine($desc['value'],$desc['length'],$desc['type']);
-		}	
+			}
+		}
+		$out = substr($out,0,-1);
 		$this->fileContent .= $out."\r\n";
 	
 	}
@@ -253,7 +256,7 @@ class SageCsvGenerator
 		if($stringLength > $rowLength)
 			$string = substr($string,0,$rowLength);
 		
-		return '"'.$string.'";';
+		return str_replace("\t", " ",$string)."\t";
 	}
 }
 

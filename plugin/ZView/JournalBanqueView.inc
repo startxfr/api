@@ -89,19 +89,19 @@ class JournalBanqueView extends generalView {
     protected function initioFieldSet($datas) {
 	$modelFact = new factureModel();
 	$this->fieldset1 = new ZunoFieldset('Enregistrement','','height: 150px');
-	$this->fieldset1->ligneFree('Référence', $datas['id_jb'],'ZTips.journalBanque.reference');
-	$this->fieldset1->ligneInputDate('Date de création', 'date_record_jb', DateUniv2Human($datas['date_record_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateRecord');
+	$this->fieldset1->ligneFreeObligatoire('Référence', $datas['id_jb'],'ZTips.journalBanque.reference');
+	$this->fieldset1->ligneInputDateObligatoire('Date de création', 'date_record_jb', DateUniv2Human($datas['date_record_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateRecord');
 	$this->fieldset1->ligneTArea('Commentaire', 'commentaire_jb', $datas['commentaire_jb'],'','ZTips.journalBanque.commentaire');
 
 	$this->fieldset2 = new ZunoFieldset('Détail de l\'écriture','','height: 150px');
 	$sens = ($datas['montant_jb'] < 0) ? 'D' : 'C';
 	$radioOpt = array(0 => array('value'=>'C','label'=>'Crédit'), 1 => array('value'=>'D','label'=>'Débit'));
-	$this->fieldset2->ligneRadio('sens', 'sens', $sens, $radioOpt,'','ZTips.journalBanque.sens', false);
-	$this->fieldset2->ligneInput('Montant', 'montant_jb', abs($datas['montant_jb']),'','ZTips.journalBanque.montant');
-	$this->fieldset2->ligneInput('Libellé', 'libelle_jb', $datas['libelle_jb'],'','ZTips.journalBanque.libelle');
-	$this->fieldset2->ligneInputDate('Date d\'effet', 'date_effet_jb', DateUniv2Human($datas['date_effet_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateEffet');
-	$this->fieldset2->ligneSelect('Banque', 'banque_jb',  $datas['banque_jb'], $this->model->getAllBanques(), false,'','ZTips.journalBanque.banque');
-	$this->fieldset2->ligneSelect('Mode', 'modereglement_jb',  $datas['modereglement_jb'], $this->model->getModeReglement(), false,'','ZTips.journalBanque.modereglement');
+	$this->fieldset2->ligneRadioObligatoire('sens', 'sens', $sens, $radioOpt,'','ZTips.journalBanque.sens', false);
+	$this->fieldset2->ligneInputObligatoire('Montant', 'montant_jb', abs($datas['montant_jb']),'','ZTips.journalBanque.montant');
+	$this->fieldset2->ligneInputObligatoire('Libellé', 'libelle_jb', $datas['libelle_jb'],'','ZTips.journalBanque.libelle');
+	$this->fieldset2->ligneInputDateObligatoire('Date d\'effet', 'date_effet_jb', DateUniv2Human($datas['date_effet_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateEffet');
+	$this->fieldset2->ligneSelectObligatoire('Banque', 'banque_jb',  $datas['banque_jb'], $this->model->getAllBanques(), false,'','ZTips.journalBanque.banque');
+	$this->fieldset2->ligneSelectObligatoire('Mode', 'modereglement_jb',  $datas['modereglement_jb'], $this->model->getModeReglement(), false,'','ZTips.journalBanque.modereglement');
 	
 	$this->fieldset3 = new ZunoFieldset('Pièces attachées','','height: 150px');
 	$this->fieldset3->ligneInputFile('Justificatif', 'file_jb', $datas['file_jb'],'','ZTips.journalBanque.file');
@@ -131,19 +131,19 @@ class JournalBanqueView extends generalView {
 
 	$this->fieldset1 = new ZunoFieldset('Enregistrement','','height: 150px');
 	$this->fieldset1->ligneFree('Référence', '<i>aucun</i>','ZTips.journalBanque.reference');
-	$this->fieldset1->ligneInputDate('Date de création', 'date_record_jb', DateUniv2Human($datas['date_record_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateRecord');
+	$this->fieldset1->ligneInputDateObligatoire('Date de création', 'date_record_jb', DateUniv2Human($datas['date_record_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateRecord');
 	$this->fieldset1->ligneTArea('Commentaire', 'commentaire_jb', $datas['commentaire_jb'],'','ZTips.journalBanque.commentaire');
 
 	$this->fieldset2 = new ZunoFieldset('Détail de l\'écriture','','height: 150px');
 	$radioOpt = array(0 => array('value'=>'C','label'=>'Crédit'), 1 => array('value'=>'D','label'=>'Débit'));
-	$this->fieldset2->ligneRadio('sens', 'sens', $datas['sens'], $radioOpt,'','ZTips.journalBanque.sens', false);
+	$this->fieldset2->ligneRadioObligatoire('sens', 'sens', $datas['sens'], $radioOpt,'','ZTips.journalBanque.sens', false);
 	$nomFact = ($datas['facture_jb'] != '') ? "Facture ".$datas['facture_jb'] : '';
 	$idFact  = ($datas['facture_jb'] != '') ? $datas['facture_jb'] : '';
-	$this->fieldset2->ligneInput('Montant', 'montant_jb', $datas['montant_jb'],'','ZTips.journalBanque.montant');
-	$this->fieldset2->ligneInput('Libellé', 'libelle_jb', $datas['libelle_jb'],'','ZTips.journalBanque.libelle');
-	$this->fieldset2->ligneInputDate('Date d\'effet', 'date_effet_jb', DateUniv2Human($datas['date_effet_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateEffet');
-	$this->fieldset2->ligneSelect('Banque', 'banque_jb',  $datas['banque_jb'], $this->model->getAllBanques(), false,'','ZTips.journalBanque.banque');
-	$this->fieldset2->ligneSelect('Mode', 'modereglement_jb',  $datas['modereglement_jb'], $this->model->getModeReglement(), false,'','ZTips.journalBanque.modereglement');
+	$this->fieldset2->ligneInputObligatoire('Montant', 'montant_jb', $datas['montant_jb'],'','ZTips.journalBanque.montant');
+	$this->fieldset2->ligneInputObligatoire('Libellé', 'libelle_jb', $datas['libelle_jb'],'','ZTips.journalBanque.libelle');
+	$this->fieldset2->ligneInputDateObligatoire('Date d\'effet', 'date_effet_jb', DateUniv2Human($datas['date_effet_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateEffet');
+	$this->fieldset2->ligneSelectObligatoire('Banque', 'banque_jb',  $datas['banque_jb'], $this->model->getAllBanques(), false,'','ZTips.journalBanque.banque');
+	$this->fieldset2->ligneSelectObligatoire('Mode', 'modereglement_jb',  $datas['modereglement_jb'], $this->model->getModeReglement(), false,'','ZTips.journalBanque.modereglement');
 
 	$this->fieldset3 = new ZunoFieldset('Pièces attachées','','height: 150px');
 	$radioOpt = array(0 => array('value'=>'C','label'=>'Crédit'), 1 => array('value'=>'D','label'=>'Débit'));
