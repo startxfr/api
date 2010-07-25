@@ -8,12 +8,12 @@
     <group name="zunoClientCoordonnee" modifRight="0" title="Configuration de l'utilisateur et des droits">
 	<value id="nom">STARTX</value>
 	<value id="nom_court">STARTX</value>
-	<value id="adresse">83 rue de Reuilly</value>
+	<value id="adresse">177 Avenue Georges CLEMENCEAU</value>
 	<value id="adresse2"></value>
-	<value id="cp">75012</value>
-	<value id="ville">PARIS</value>
-	<value id="tel">+33 (0)1 48 25 03 64</value>
-	<value id="fax">+33 (0)1 46 99 89 97</value>
+	<value id="cp">92000</value>
+	<value id="ville">NANTERRE</value>
+	<value id="tel">+33 (0)1 46 69 00 00</value>
+	<value id="fax">+33 (0)9 72 14 70 16 </value>
 	<value id="mail">info@startx.fr</value>
 	<value id="url">www.startx.fr</value>
     </group>
