@@ -10,10 +10,10 @@
 	<value id="nom_court">STARTX</value>
 	<value id="adresse">177 Avenue Georges CLEMENCEAU</value>
 	<value id="adresse2"></value>
-	<value id="cp">92000</value>
-	<value id="ville">NANTERRE</value>
+	<value id="cp">92024</value>
+	<value id="ville">NANTERRE Cedex</value>
 	<value id="tel">+33 (0)1 46 69 00 00</value>
-	<value id="fax">+33 (0)9 72 14 70 16 </value>
+	<value id="fax">+33 (0)9 72 14 70 16</value>
 	<value id="mail">info@startx.fr</value>
 	<value id="url">www.startx.fr</value>
     </group>
