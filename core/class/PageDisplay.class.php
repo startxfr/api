@@ -181,7 +181,7 @@ class PageDisplay {
             $this->headerHTML->SetTitle($text);
 
         $imgPath = ($this->Channel == 'normal') ? '' : '../';
-        $imgTag = ($this->title['img'] != '') ? '<img alt="'.$this->title['text'].'" name="'.$this->title['text'].'" src="'.$imgPath.$this->title['img'].'"/>' : '';
+        $imgTag = (array_key_exists('img', $this->title) and $this->title['img'] != '') ? '<img alt="'.$this->title['text'].'" name="'.$this->title['text'].'" src="'.$imgPath.$this->title['img'].'"/>' : '';
         $this->title['tag'] = '<h1>'.$imgTag.$this->title['text'].'</h1>';
     }
 

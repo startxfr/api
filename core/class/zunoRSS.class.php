@@ -237,7 +237,7 @@ class RSSItem {
     }
 
     function out() {
-	$out .= "<item>\n";
+	$out  = "<item>\n";
 	$out .= "<title>" . $this->title . "</title>\n";
 	$out .= "<link>" . $this->link . "</link>\n";
 	$out .= "<description>" . $this->description . "</description>\n";

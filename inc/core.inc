@@ -31,7 +31,7 @@ function __autoload($maclasse){
      require_once $GLOBALS['REP']['appli'].$GLOBALS['REP']['class'].$maclasse.$GLOBALS['EXT']['class'];
 }
 
-
+Logg::loggerInfo('core::loader() ~ Demarrage du script '.$_SERVER['SCRIPT_FILENAME'],$_SERVER['SCRIPT_FILENAME'],__FILE__.'@'.__LINE__);
 /**
  * Chargement à la demande des plugins
  */

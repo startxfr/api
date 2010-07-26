@@ -114,7 +114,8 @@ class Bdd_mysql {
      * @param $liste Array: array with data to fill
      */
     function makeRequeteInsert($table,$liste) {
-        $top = "INSERT INTO `".$table."` ( ";
+        $head   = $bottom = '';
+	$top = "INSERT INTO `".$table."` ( ";
         foreach ($liste as $key => $val) {
             $valclean1 = addslashes(stripslashes(trim($val)));
             if($valclean1 == '')

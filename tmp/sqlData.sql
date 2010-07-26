@@ -1201,4 +1201,4 @@ INSERT INTO `user_iphoneConfig` VALUES ('nm','send','oui');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-07-20 18:48:49
+-- Dump completed on 2010-07-26 16:24:56

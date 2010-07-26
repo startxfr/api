@@ -62,12 +62,13 @@ else {
     $GLOBALS['logSearchSqlQuery'] = 'SELECT * FROM log ORDER BY id_log DESC LIMIT 0, 50';
 }
 
-$bddtmp = new Bdd($GLOBALS['LOG']['base_pool']);
+$bddtmp = new Bdd($GLOBALS['LOG_DB']['base_pool']);
 $bddtmp->makeRequeteFree($GLOBALS['logSearchSqlQuery']);
 $res = $bddtmp->process();
 
 $tab['liste'] = '';
 if(count($res) > 0) {
+    $tmptab = '';
     foreach ($res as $key => $val) {
 	$val["trace_log"] = htmlentities($val["trace_log"], ENT_QUOTES);
 	$val["date_log"] = DateUniv2Human(DateTimestamp2Univ(substr($val["date_log"], 0, strpos($val["date_log"], '.'))), 'shortdetail').' '.substr($val["date_log"],strpos($val["date_log"], '.')+1).'ms';

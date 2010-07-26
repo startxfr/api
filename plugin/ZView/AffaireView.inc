@@ -293,7 +293,7 @@ class affaireView extends generalView {
     private function interneSearch($datas) {
 	$tag['action']   = '';
 	//Bouton de l'echeance
-	$tag['echeance_aff']  =inputDateTag('','echeance_aff',$datas['echeance_aff']);
+	$tag['echeance_aff']  =inputDateTag('','echeance_aff',((array_key_exists('echeance_aff', $datas)) ? $datas['echeance_aff'] : ''));
 	$bddtmp = new Bdd('');
 	$bddtmp->makeRequeteFree('SELECT * FROM user WHERE actif = \'1\' ORDER BY nom ASC');
 	$res = $bddtmp->process();
@@ -303,8 +303,8 @@ class affaireView extends generalView {
 	    }
 	}
 	$tag['FormName'] = "SearchAffaire";
-	$tag['commercial_aff'] = selectTag('commercial_aff',$champ,$datas['commercial_aff']);
-	$tag['cp_ent']= HtmlForm::addAutoSelect('cp_ent','ref_departement',$datas['cp_ent'],'','','',$GLOBALS['PropsecConf']['DBPool']);
+	$tag['commercial_aff'] = selectTag('commercial_aff',$champ,((array_key_exists('commercial_aff', $datas)) ? $datas['commercial_aff'] : ''));
+	$tag['cp_ent']= HtmlForm::addAutoSelect('cp_ent','ref_departement',((array_key_exists('cp_ent', $datas)) ? $datas['cp_ent'] : ''),'','','',$GLOBALS['PropsecConf']['DBPool']);
 	$tag['typeproj_aff']= HtmlForm::addAutoSelect('typeproj_aff','ref_typeproj',$datas['typeproj_aff'],'','','',$GLOBALS['PropsecConf']['DBPool']);
 	$tag['status_aff']= HtmlForm::addAutoSelect('status_aff','ref_statusaffaire',$datas['status_aff'],'','',' ORDER by id_staff ASC',$GLOBALS['PropsecConf']['DBPool']);
 	$tag['titre_aff'] 	= inputTag('text','titre_aff','','',20,$datas['titre_aff']);

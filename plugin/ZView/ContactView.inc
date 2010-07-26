@@ -350,13 +350,13 @@ class contactView extends generalView {
     }
 
     protected function appels($datas) {
-	if(is_array($datas['appel'][0]))
-	    $corps = '<div id="ContenuAppelsEntreprise" >'.$this->interneAppels($datas).'</div>';
-	else
-	    $corps = '<div id="ContenuAppelsEntreprise" ><span class="important" style="text-align:center;">Aucun appel passé à cette entreprise</span></div>';
-	$titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Appels passés à l\'entreprise '.$datas['data']['nom_ent'];
-	$pied = '<a name="addapp" onclick="addAppel(\'\');" ><img alt="add" title="Ajouter un appel" src="../img/prospec/add.png" /> Ajouter un appel </a>';
-	return generateZBox($titre,$titre,$corps,$pied,'appelsEntreprise','');
+        if(is_array($datas) and array_key_exists('appel', $datas) and is_array($datas['appel']) and is_array($datas['appel'][0]))
+            $corps = '<div id="ContenuAppelsEntreprise" >'.$this->interneAppels($datas).'</div>';
+        else
+            $corps = '<div id="ContenuAppelsEntreprise" ><span class="important" style="text-align:center;">Aucun appel passé à cette entreprise</span></div>';
+        $titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Appels passés à l\'entreprise '.$datas['data']['nom_ent'];
+        $pied = '<a name="addapp" onclick="addAppel(\'\');" ><img alt="add" title="Ajouter un appel" src="../img/prospec/add.png" /> Ajouter un appel </a>';
+        return generateZBox($titre,$titre,$corps,$pied,'appelsEntreprise','');
     }
 
     protected function interneAppels($datas, $mess = '') {
@@ -517,24 +517,24 @@ class contactView extends generalView {
     }
 
     public function popupCont($data, $light ='', $mess='', $action='addContPopup') {
-	if($light == 'erreurCont') {
-	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupCont($data, $action);
-	}
-	else {
-	    if($action == 'modifContPopup')
-		$titre = $data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
-	    else
-		$titre = 'Nouveau Contact';
-	    $corps = '<div id="popupAddCont" >';
-	    $corps .= $this->formPopupCont($data, $action);
-	    $corps .= '</div>';
-	    $pied = '<a href="javascript:document.addContDevis.reset();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
-	    if($data['from'] == 'contactEntreprise')
-		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
-	    else
-		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'popupAddCont\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
-	    return generateZBox($titre, $titre, $corps, $pied, 'popupAddContDevis');
-	}
+        if($light == 'erreurCont') {
+            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupCont($data, $action);
+        }
+        else {
+            if($action == 'modifContPopup')
+                $titre = $data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+            else
+                $titre = 'Nouveau Contact';
+            $corps = '<div id="popupAddCont" >';
+            $corps .= $this->formPopupCont($data, $action);
+            $corps .= '</div>';
+            $pied = '<a href="javascript:document.addContDevis.reset();" onclick="zuno.popup.close();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
+            if($data['from'] == 'contactEntreprise')
+                $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+            else
+                $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'popupAddCont\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+            return generateZBox($titre, $titre, $corps, $pied, 'popupAddContDevis');
+        }
     }
 
     private function formPopupCont($data, $action = 'addContPopup') {
@@ -589,18 +589,18 @@ class contactView extends generalView {
     }
 
     public function popupEnt($data, $light ='', $mess='') {
-	if($light == 'erreurEnt') {
-	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupEnt($data);
-	}
-	else {
-	    $titre = 'Nouvelle Entreprise';
-	    $corps = '<div id="popupAddEnt" >';
-	    $corps .= $this->formPopupEnt($data);
-	    $corps .= '</div>';
-	    $pied = '<a href="javascript:document.addEntDevis.reset();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
-	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addEntDevis\', \'prospec/Contact.php\',\'popupAddEnt\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
-	    return generateZBox($titre, $titre, $corps, $pied, 'popupAddEntDevis');
-	}
+        if($light == 'erreurEnt') {
+            return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->formPopupEnt($data);
+        }
+        else {
+            $titre = 'Nouvelle Entreprise';
+            $corps = '<div id="popupAddEnt" >';
+            $corps .= $this->formPopupEnt($data);
+            $corps .= '</div>';
+            $pied = '<a href="javascript:document.addEntDevis.reset();" onclick="zuno.popup.close();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
+            $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addEntDevis\', \'prospec/Contact.php\',\'popupAddEnt\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+            return generateZBox($titre, $titre, $corps, $pied, 'popupAddEntDevis');
+        }
     }
 
     private function formPopupEnt($data) {
@@ -664,6 +664,12 @@ class contactView extends generalView {
 	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
 	    $modHistorique = true;
 	}
+	if(!array_key_exists('orderSens', $datas))
+	    $datas['orderSens'] = 'ASC';
+	if(!array_key_exists('order', $datas))
+	    $datas['order'] = 'nom_ent';
+	if(!array_key_exists('limit', $datas))
+	    $datas['limit'] = '30';
 
 	if($tableau == 'ent') {
 	    $out = "<script type=\"text/javascript\">
@@ -982,15 +988,16 @@ class contactView extends generalView {
      * @return form Le formulaire généré
      */
     private function searchForm($datas) {
-	$liste[0]['value'] = 'entreprise';
-	$liste[0]['label'] = 'Recherche sur les entreprises';
-	$liste[1]['value'] = 'contact';
-	$liste[1]['label'] = 'Recherche sur les contacts';
-	$liste[2]['value'] = 'global';
-	$liste[2]['label'] = 'Recherche globale';
-	$form = new ZunoForm('searchProspec', 'prospec/Recherche.php', 'POST','searchProspecFormId');
-	$fieldset = new ZunoFieldset('Recherche assistée','','height: 100px');
-	$fieldset->ligneAutoComplete('Recherche', 'arecherche', $datas['recherche'], $datas['recherche'], '', '', false, '', false);
+        $liste[0]['value'] = 'entreprise';
+        $liste[0]['label'] = 'Recherche sur les entreprises';
+        $liste[1]['value'] = 'contact';
+        $liste[1]['label'] = 'Recherche sur les contacts';
+        $liste[2]['value'] = 'global';
+        $liste[2]['label'] = 'Recherche globale';
+	if(!array_key_exists('recherche', $datas)) $datas['recherche'] = '';
+        $form = new ZunoForm('searchProspec', 'prospec/Recherche.php', 'POST','searchProspecFormId');
+        $fieldset = new ZunoFieldset('Recherche assistée','','height: 100px');
+        $fieldset->ligneAutoComplete('Recherche', 'arecherche', $datas['recherche'], $datas['recherche'], '', '', false, '', false);
 
 	$fieldset2 = new ZunoFieldset('Recherche classique','','height: 100px');
 	$fieldset2->ligneInput('Recherche', 'recherche', $datas['recherche'], 'id="champsRecherche"');

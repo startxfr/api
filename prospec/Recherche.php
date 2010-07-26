@@ -31,6 +31,7 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
+$message = '';
 aiJeLeDroit('contact', 05, 'web');
 if ($PC->rcvP['action'] == 'search') {
     $_SESSION['prospec']['search']['recherche'] = $PC->rcvP['recherche'];

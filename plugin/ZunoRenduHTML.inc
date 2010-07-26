@@ -234,8 +234,7 @@ class ZunoFieldset {
      * @return string Le fieldset généré
      */
     public function generateFieldset() {
-	if($this->style != '')
-	     $styleCss = ' style="'.$this->style.'"';
+	$styleCss = ($this->style != '') ? ' style="'.$this->style.'"' : '';
 	if($this->fieldsetId != '')
 	     $this->fieldset = '<fieldset class="form" id="'.$this->fieldsetId.'"'.$styleCss.'>';
 	else $this->fieldset = '<fieldset class="form"'.$styleCss.'>';
@@ -619,6 +618,7 @@ class ZunoFieldset {
      */
     public function ligneRadio($label, $nom, $checked = '', $liste = array(), $autre = '', $tips='', $withbr = true, $obligatoire = false) {
 	if(is_array($liste)) {
+	    $attRow = '';
 	    if($tips != '')
 		$tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	    $ob = ($obligatoire) ? ' oblig' : '';
@@ -857,6 +857,7 @@ class ZunoFieldset {
 	    $chaine_class =  '';
 	    $chaine = "<select ";
 	    // Select  field name
+	    $nameAdd = '';
 	    if ($withMultiple) {
 		$nameAdd =  '[]';
 		$chaine .=  'multiple=\'multiple\' ';

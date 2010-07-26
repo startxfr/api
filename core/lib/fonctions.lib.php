@@ -156,75 +156,72 @@ function viewFiche($id, $partie, $mode = '', $fournisseur = 'non', $channel = 'i
 	}
     }
     elseif($channel == 'web') {
-	$datas['data'] = $result[1][0];
-	if($partie != 'produit' and $partie != 'factureFournisseur') {
-	    $datas['pays'] =  $info->getPays();
-	    $datas['user'] = $info->getUser();
-	}
-	if($partie == 'commande') {
-	    $datas['produits'] = $info->getAllFournisseursFromID($id);
-	    $datas['actu'] = $info->getActualites($id);
-	    $datas['LF'] = $info->getAllFournisseursFromID($id, $datas['data']['status_cmd']);
-	}
-	elseif($partie =='contactEntreprise') {
-	    $datas['type'] = $info->getTypesEnt();
-	    $datas['groupe'] = $info->getGroupesEnt($id);
-	    $datas['activite'] = $info->getActivitesEnt();
-	    $datas['projet'] = $info->getProjets($id);
-	    $datas['affaire'] = $info->getAffaires($id);
-	    $datas['appel'] = $info->getAppels($id);
-	}
-	elseif($partie == 'contactParticulier') {
-	    $datas['fonctions'] = $info->getFonction();
-	    $datas['projet'] = $info->getProjets($id);
-	    $datas['affaire'] = $info->getAffaires($id);
-	    $datas['appel'] = $info->getAppels($id);
-	    $datas['data']['contact'] = $info->getCollegue($id);
-	}
-	elseif($partie == 'produit' and $fournisseur != 'fourn') {
-	    $datas['dureeR'] = $info->getRenews();
-	    $datas['famille'] = $info->getAllFamille();
-	    $datas['fourn'] = $info->getFournisseurByProduitID($id);
-	    $datas['fournEx'] = $info->getExFournisseurByProduitID($id);
-	}
-	elseif($partie == 'produit' and $fournisseur == 'fourn') {
-	    $partie = 'Fournisseur';
-	    $datas['produits'] = $prod[1][0]['counter'];
-	    $datas['prod'] = $info->getProduitsByFournisseurID($id);
-	    $datas['contacts'] = $info->getContactsPotentiels($id);
-	}
-	elseif($partie == 'affaire') {
-	    $datas['related'] = $info->getRelatedRessourcesForAffaire($id);
-	    $datas['actu'] = $info->getActusByID($id);
-	    $datas['type'] = $info->getTypesProj();
-	}
-	elseif($partie == 'factureFournisseur') {
-	    $datas['status'] = $info->getStatutFactFourn();
-	    $datas['mode'] = $info->getModeReglement();
-	    $datas['periode'] = $info->getRenews();
-	    if($datas['data']['ren_factfourn'] != "")
-		$datas['ren'] = $info->getRenouvellement($datas['data']['ren_factfourn']);
-	}
-	elseif($partie == 'facture') {
-	    $result = $info->getProduitsFromID($id);
-	    $datas['produits'] = $result[1];
-	    $datas['periode'] = $info->getRenews();
-	    $datas['status'] = $info->getStatutFact();
-	    $datas['modereglement'] = $info->getModeReglement();
-	    $datas['condireglement'] = $info->getCondReglement();
-	    $datas['last'] = $info->getLastId();
-	    if($datas['data']['ren_fact'] != "")
-		$datas['ren'] = $info->getRenouvellement($datas['data']['ren_fact']);
-	}
-	elseif($partie == 'devis') {
-	    $result = $info->getProduitsFromID($id);
-	    $datas['produits'] = $result[1];
-	    $datas['periode'] = $info->getRenews();
-	    $datas['status'] = $info->getStatutDevis();
-	    if($datas['data']['ren_dev'] != "")
-		$datas['ren'] = $info->getRenouvellement($datas['data']['ren_dev']);
-	}
-	elseif($partie == 'pontComptable' or $partie == 'journalBanque') {
+        $datas['data'] = $result[1][0];
+        if($partie != 'produit' and $partie != 'factureFournisseur') {
+            $datas['pays'] =  $info->getPays();
+            $datas['user'] = $info->getUser();
+        }
+        if($partie == 'commande') {
+            $datas['produits'] = $info->getAllFournisseursFromID($id);
+            $datas['actu'] = $info->getActualites($id);
+            $datas['LF'] = $info->getAllFournisseursFromID($id, $datas['data']['status_cmd']);
+        }
+        elseif($partie =='contactEntreprise') {
+            $datas['type'] = $info->getTypesEnt();
+            $datas['groupe'] = $info->getGroupesEnt($id);
+            $datas['activite'] = $info->getActivitesEnt();
+            $datas['projet'] = $info->getProjets($id);
+            $datas['affaire'] = $info->getAffaires($id);
+            $datas['appel'] = $info->getAppels($id);
+        }
+        elseif($partie == 'contactParticulier') {
+            $datas['fonctions'] = $info->getFonction();
+            $datas['projet'] = $info->getProjets($id);
+            $datas['affaire'] = $info->getAffaires($id);
+            $datas['appel'] = $info->getAppels($id);
+            $datas['data']['contact'] = $info->getCollegue($id);
+        }
+        elseif($partie == 'produit' and $fournisseur != 'fourn') {
+            $datas['dureeR'] = $info->getRenews();
+            $datas['famille'] = $info->getAllFamille();
+            $datas['fourn'] = $info->getFournisseurByProduitID($id);
+            $datas['fournEx'] = $info->getExFournisseurByProduitID($id);
+        }
+        elseif($partie == 'produit' and $fournisseur == 'fourn') {
+            $partie = 'Fournisseur';
+            $datas['produits'] = $prod[1][0]['counter'];
+            $datas['prod'] = $info->getProduitsByFournisseurID($id);
+            $datas['contacts'] = $info->getContactsPotentiels($id);
+        }
+        elseif($partie == 'affaire') {
+            $datas['related'] = $info->getRelatedRessourcesForAffaire($id);
+            $datas['actu'] = $info->getActusByID($id);
+            $datas['type'] = $info->getTypesProj();
+        }
+        elseif($partie == 'factureFournisseur') {
+            $datas['status'] = $info->getStatutFactFourn();
+            $datas['mode'] = $info->getModeReglement();
+            $datas['periode'] = $info->getRenews();
+            $datas['ren'] = ($datas['data']['ren_factfourn'] != "") ? $info->getRenouvellement($datas['data']['ren_factfourn']) : array();
+        }
+        elseif($partie == 'facture') {
+            $result = $info->getProduitsFromID($id);
+            $datas['produits'] = $result[1];
+            $datas['periode'] = $info->getRenews();
+            $datas['status'] = $info->getStatutFact();
+            $datas['modereglement'] = $info->getModeReglement();
+            $datas['condireglement'] = $info->getCondReglement();
+            $datas['last'] = $info->getLastId();
+            $datas['ren'] = ($datas['data']['ren_fact'] != "") ? $info->getRenouvellement($datas['data']['ren_fact']) : array();
+        }
+        elseif($partie == 'devis') {
+            $result = $info->getProduitsFromID($id);
+            $datas['produits'] = $result[1];
+            $datas['periode'] = $info->getRenews();
+            $datas['status'] = $info->getStatutDevis();
+            $datas['ren'] = ($datas['data']['ren_dev'] != "") ? $info->getRenouvellement($datas['data']['ren_dev']) : array();
+        }
+        elseif($partie == 'pontComptable' or $partie == 'journalBanque') {
 
 	}
 	else {
@@ -1446,7 +1443,7 @@ function formatCurencyDatabase($number,$round = 2) {
 
 function afficherMessages() {
     $sortie = "";
-    if($_SESSION['message'][0]['titre_mess'] != '' and $_SESSION['message']['dejaVu'] != true) {
+    if(array_key_exists('message', $_SESSION) and $_SESSION['message'][0]['titre_mess'] != '' and $_SESSION['message']['dejaVu'] != true) {
 	$mess = '<div class="ZBox"><div class="body"><div class="content"><div class="block width50">';
 	foreach($_SESSION['message'] as $v) {
 	    if($v['contenu_mess'] != '') {

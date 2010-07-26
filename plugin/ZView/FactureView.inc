@@ -106,7 +106,7 @@ class factureView extends generalView {
             $pied .= '<a name="supprimer" onclick="zuno.popup.open(\'Facture.php\',\'action=popupSupp&facture='.$data['id_fact'].'\',200,150);"><img alt="Supp" title="Supprimer cette facture" src="../img/prospec/facture.delete.png"  /> Supprimer cette facture</a>';
         $pied .= '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture='.$data['id_fact'].'\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img align="middle" title="Actualités" alt="Actualités" src="../img/prospec/actu.png"/> Historique de cette facture</a>';
         if ($data['status_fact'] == '6') {
-	    $pied = '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture='.$data['id_fact'].'\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img onload="autoCompletage();" align="middle" title="Actualités" alt="Actualités" src="../img/prospec/actu.png"/> Historique de cette facture</a>';
+            $pied = '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture='.$data['id_fact'].'\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img onload="autoCompletage();" align="middle" title="Actualités" alt="Actualités" src="../img/prospec/actu.png"/> Historique de cette facture</a>';
         }
         return generateZBox($titre,$titre,$corps,$pied,'infosFacture','');
     }
@@ -797,7 +797,7 @@ class factureView extends generalView {
         }
         $out .= '<tr class="titre noround roundbottom">';
         if(!$modHistorique)
-             $out .= '<td colspan="5"></td>';
+            $out .= '<td colspan="5"></td>';
         else $out .= '<td colspan="5"></td>';
         //$out .= '<th class="bordG right">'.prepareNombreAffichage($totalDisplay).' &euro;</th>';
         $out .= '<th class="bordD bordG right">'.prepareNombreAffichage($totalTTCDisplay).' &euro;</th>';
@@ -881,10 +881,11 @@ class factureView extends generalView {
         }
         else {
             $script = '<script type="text/javascript">function autoCompletage() {new Ajax.Autocompleter("ACentreprise_fact", "ACentreprise_fact_choix", "../ajaxRef.php?action=listeEntCmdFact", { paramName: "value", minChars: 2, indicator : "loadingEnt", afterUpdateElement : autoCompleteChamps } ); ';
-            $script .= 'contact_completer = new Ajax.Autocompleter("ACcontact_fact", "ACcontact_fact_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingCont", afterUpdateElement : autoCompleteHidden } ); ';
-            $script .= 'contact2_completer = new Ajax.Autocompleter("ACcontact_achat_fact", "ACcontact_achat_fact_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingCont2", afterUpdateElement : autoCompleteHidden } ); ';
+            $script .= 'contact_completer = new Ajax.Autocompleter("ACcontact_fact", "ACcontact_fact_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingCont", afterUpdateElement : autoCompleteHiddenBis } ); ';
+            $script .= 'contact2_completer = new Ajax.Autocompleter("ACcontact_achat_fact", "ACcontact_achat_fact_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingCont2", afterUpdateElement : autoCompleteHiddenBis } ); ';
             $script .= 'new Ajax.Autocompleter("ACpays_fact", "ACpays_fact_choix", "../ajaxRef.php?action=listePays", { paramName: "value", minChars: 2, afterUpdateElement : autoCompleteHidden, indicator : "loadingPays" } ); } ';
-            $script .= 'function autoCompleteChamps(text, li) { id = li.title.split(\'-_-\'); $(\'ACaffaire_facthidden\').value = id[0]; $(\'ACentreprise_facthidden\').value = id[1]; $(\'devisadd\').value = id[2]; $(\'devisadd1\').value = id[3]; $(\'deviscp\').value = id[4]; $(\'devisVille\').options[0]= new Option(id[5], id[5]); $(\'ACpays_facthidden\').value = id[6];  $(\'ACpays_fact\').value = id[7]; contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_facthidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_facthidden\'); $(\'addContTech\').style.display="inline"; $(\'addContFact\').style.display="inline"; } ';
+            $script .= "\n".'function autoCompleteHiddenBis(text, li) {$(text.id+\'hidden\').value = li.title; if(li.getAttribute(\'value\')) {var id = li.getAttribute(\'value\').split(\'-_-\'); $(\'devisadd\').value = id[0]; $(\'devisadd1\').value = id[1]; $(\'deviscp\').value = id[2]; $(\'devisVille\').options[0]= new Option(id[3], id[3]); $(\'ACpays_facthidden\').value = id[4]; $(\'ACpays_fact\').value = id[5];} }';
+            $script .= 'function autoCompleteChamps(text, li) { id = li.title.split(\'-_-\'); $(\'ACaffaire_facthidden\').value = id[0]; $(\'ACentreprise_facthidden\').value = id[1]; $(\'devisadd\').value = id[2]; $(\'devisadd1\').value = id[3]; $(\'deviscp\').value = id[4]; $(\'devisVille\').options[0]= new Option(id[5], id[5]); $(\'ACpays_facthidden\').value = id[6];  $(\'ACpays_fact\').value = id[7]; $(\'ACcontact_facthidden\').value = $(\'ACcontact_achat_facthidden\').value = id[8]; $(\'ACcontact_fact\').value = $(\'ACcontact_achat_fact\').value = id[9]+\' \'+id[10]+\' \'+id[11]; contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_facthidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_facthidden\'); $(\'addContTech\').style.display="inline"; $(\'addContFact\').style.display="inline"; } ';
             $script .= 'function ChangeFactureAction(value) { $(\'actionFactureAdd\').value = value; } ';
             $script .= 'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_fact\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'hidden\').value = ""; } } } ';
             $script .= 'function resetForm() {var form = $(\'formAddFacture\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';

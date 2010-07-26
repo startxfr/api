@@ -50,7 +50,7 @@ class devisModel extends GeneralModel {
 		    "AND status_dev != '2' ".$plus);
 	}
 	else {
-	    $this->makeRequeteFree("SELECT titre_dev, nom_ent, nom_cont, prenom_cont, civ_cont, id_dev, ville_ent, sommeHT_dev, nom_stdev, color_stdev " .
+	    $this->makeRequeteFree("SELECT titre_dev, nom_ent, nom_cont, prenom_cont, civ_cont, id_dev, ville_ent, sommeHT_dev, nom_stdev, color_stdev, commercial_dev " .
 		    "FROM devis " .
 		    "LEFT JOIN entreprise ON entreprise.id_ent = devis.entreprise_dev
 			 LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent

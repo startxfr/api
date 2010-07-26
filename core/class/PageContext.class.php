@@ -60,8 +60,8 @@ class PageContext {
      * Process analyse of the CHANNEL context
      */
     function GetChannelContext() {
-	Logg::loggerNotice('PageContext::getChannelContext() ~ informations sur le channel '.$this->channel,'',__FILE__.'@'.__LINE__);
 	$this->channelData = $GLOBALS['CHANNEL_'.$this->channel];
+	Logg::loggerNotice('pageContext::GetChannelContext() ~ Chargement du channel "'.$this->channel.'" ',$this->channelData,__FILE__.'@'.__LINE__);
     }
 
     /**

@@ -47,7 +47,7 @@
     </group>
     <group name="LOG_FILE" modifRight="0" title="Configuration des log fichiers">
 	<value id="activate">FALSE</value>
-	<value id="level">0,1,2,4,16,32,64,128,256,512,2048,4096,8192</value>
+	<value id="level">8,1024,16384</value>
 	<value id="file_path">tmp/</value>
 	<value id="file_extention">.log</value>
 	<value id="file_nameDate">Ymd</value>

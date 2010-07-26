@@ -34,25 +34,25 @@ class affaireModel extends GeneralModel {
      */
     public function getDataForSearchWeb($search,$limit = 10, $from = 0, $plus = '') {
 	$qTag = " LIKE '%".$search."%' ";
-	if ($search['echeance_aff'] != '')	$reqAdd .= "AND echeance_aff <= '".DateHuman2Univ($search['echeance_aff'])."' ";
-	if ($search['commercial_aff'] != '')	$reqAdd .= "AND commercial_aff = '".$search['commercial_aff']."' ";
-	if ($search['typeproj_aff'] != '')	$reqAdd .= "AND typeproj_aff = '".$search['typeproj_aff']."' ";
-	if ($search['status_aff'] != '')	$reqAdd .= "AND status_aff = '".$search['status_aff']."' ";
-	if ($search['archived_aff'] == '1') {
+	if (is_array($search) and $search['echeance_aff'] != '')	$reqAdd .= "AND echeance_aff <= '".DateHuman2Univ($search['echeance_aff'])."' ";
+	if (is_array($search) and $search['commercial_aff'] != '')	$reqAdd .= "AND commercial_aff = '".$search['commercial_aff']."' ";
+	if (is_array($search) and $search['typeproj_aff'] != '')	$reqAdd .= "AND typeproj_aff = '".$search['typeproj_aff']."' ";
+	if (is_array($search) and $search['status_aff'] != '')		$reqAdd .= "AND status_aff = '".$search['status_aff']."' ";
+	if (is_array($search) and $search['archived_aff'] == '1') {
 	    $reqAdd .= 'AND archived_aff = \'1\' ';
 	    $search['actif_aff'] = '0';
 	}
 	else $reqAdd .= 'AND archived_aff = \'0\' ';
-	if ($search['actif_aff'] == '1')
-	    $reqAdd .= 'AND actif_aff = \'1\' ';
+	if (is_array($search) and $search['actif_aff'] == '1')
+	     $reqAdd .= 'AND actif_aff = \'1\' ';
 	else $reqAdd .= 'AND actif_aff = \'0\' ';
-	if ($search['cp_ent'] != '')		$reqAdd .= 'AND cp_ent LIKE \''.$search['cp_ent'].'%\' ';
-	if ($search['titre_aff'] != '')		$reqAdd .= 'AND titre_aff LIKE \'%'.$search['titre_aff'].'%\' ';
-	if ($search['id_aff'] != '')		$reqAdd .= 'AND id_aff LIKE \''.$search['id_aff'].'%\' ';
-	if ($search['nom_ent'] != '')		$reqAdd .= 'AND nom_ent LIKE \'%'.$search['nom_ent'].'%\' ';
-	if ($search['status_aff'] != '')	$reqAdd .= 'AND status_aff = \''.$search['status_aff'].'\' ';
+	if (is_array($search) and $search['cp_ent'] != '')		$reqAdd .= 'AND cp_ent LIKE \''.$search['cp_ent'].'%\' ';
+	if (is_array($search) and $search['titre_aff'] != '')		$reqAdd .= 'AND titre_aff LIKE \'%'.$search['titre_aff'].'%\' ';
+	if (is_array($search) and $search['id_aff'] != '')		$reqAdd .= 'AND id_aff LIKE \''.$search['id_aff'].'%\' ';
+	if (is_array($search) and $search['nom_ent'] != '')		$reqAdd .= 'AND nom_ent LIKE \'%'.$search['nom_ent'].'%\' ';
+	if (is_array($search) and $search['status_aff'] != '')		$reqAdd .= 'AND status_aff = \''.$search['status_aff'].'\' ';
 
-	if($search['order'] != '')		$reqOrder = $search['order'].' '.((strtolower($search['orderSens']) == 'asc') ? 'ASC' : 'DESC').', ';
+	if (is_array($search) and $search['order'] != '')		$reqOrder = $search['order'].' '.((strtolower($search['orderSens']) == 'asc') ? 'ASC' : 'DESC').', ';
 
 	if($limit == 'ALL') {
 	    $this->makeRequeteFree("SELECT COUNT(DISTINCT id_aff) AS counter

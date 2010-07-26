@@ -188,7 +188,7 @@ class devisControl {
 	    $mess.= 'Merci de fournir un contact<br/>';
 	    $fields[] = 'contact_dev';
 	}
-	if($value['adressedelivery_dev'] == '' || $value['adressedelivery_dev'] == ' ' || $value['adressedelivery_dev'] == NULL) {
+/*	if($value['adressedelivery_dev'] == '' || $value['adressedelivery_dev'] == ' ' || $value['adressedelivery_dev'] == NULL) {
 	    $mess.= 'Merci de fournir une adresse<br />';
 	    $fields[] = 'adressedelivery_dev';
 	}
@@ -199,7 +199,7 @@ class devisControl {
 	if($value['villedelivery_dev'] == '' || $value['villedelivery_dev'] == ' ' || $value['villedelivery_dev'] == NULL) {
 	    $mess.= 'Merci de fournir une ville<br />';
 	    $fields[] = 'villedelivery_dev';
-	}
+	}*/
 
 	if($mess != '') return array(false,$mess,$fields);
 	else 		return array(true);

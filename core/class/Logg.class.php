@@ -35,11 +35,11 @@ class Logg extends Singleton {
      * @see singleton::getInstance()
      */
     protected function initSingleton() {
-        $this->conf &= $GLOBALS['LOG'];
-        $this->confChannel['db']   &= $GLOBALS['LOG_DB'];
-        $this->confChannel['file'] &= $GLOBALS['LOG_FILE'];
-        $this->confChannel['sys']  &= $GLOBALS['LOG_SYS'];
-        $this->confChannel['mail'] &= $GLOBALS['LOG_MAIL'];
+	$this->conf = &$GLOBALS['LOG'];
+	$this->confChannel['db']   = &$GLOBALS['LOG_DB'];
+	$this->confChannel['file'] = &$GLOBALS['LOG_FILE'];
+	$this->confChannel['sys']  = &$GLOBALS['LOG_SYS'];
+	$this->confChannel['mail'] = &$GLOBALS['LOG_MAIL'];
     }
 
     /**
@@ -245,26 +245,26 @@ compostant:  ".$content['component_log']."
      */
     protected function processLog($texte, $level = 256,$vars = '', $filename = '', $logchannel = '') {
 
-        if($this->confChannel['file']['activate'] or
-                $this->confChannel['sys']['activate'] or
-                $this->confChannel['db']['activate'] or
-                $logchannel != '') {
-
-            $out['date_log']   = microtime(true);
-            $out['fichier_log']= $filename;
-            $out['level_log']  = ($level == '') ? 256 : $level;
-            $out['session_log']= session_id();
-            $out['channel_log']= $GLOBALS['currentChannel'];
-            $r = explode("~", $texte,2);
-            if(count($r) == 2) {
-                $out['component_log'] = $r[0];
-                $out['nom_log'] = $r[1];
-            }
-            else $out['nom_log'] = $texte;
-            if (is_array($vars))
-                $out['trace_log'] = wddx_serialize_value($vars,"trace");
-            elseif ($vars != '')
-                $out['trace_log'] = $vars;
+	if($this->confChannel['file']['activate'] or
+		$this->confChannel['sys']['activate'] or
+		$this->confChannel['db']['activate'] or
+		$logchannel != '') {
+	    $out = array();
+	    $out['date_log']   = microtime(true);
+	    $out['fichier_log']= $filename;
+	    $out['level_log']  = ($level == '') ? 256 : $level;
+	    $out['session_log']= session_id();
+	    $out['channel_log']= (array_key_exists('currentChannel',$GLOBALS)) ? $GLOBALS['currentChannel'] : '';
+	    $r = explode("~", $texte,2);
+	    if(count($r) == 2) {
+		$out['component_log'] = $r[0];
+		$out['nom_log'] = $r[1];
+	    }
+	    else $out['nom_log'] = $texte;
+	    if (is_array($vars))
+		$out['trace_log'] = wddx_serialize_value($vars,"trace");
+	    elseif ($vars != '')
+		$out['trace_log'] = $vars;
 
             //Process log according to rules defined in log.ini or to the given log channel
             if($logchannel == '') {
@@ -440,17 +440,14 @@ $GLOBALS['LogBddProcessTime'] =
 
 if(!$GLOBALS['LOG']['DisplayError'])
     error_reporting(0);
-/*
- * Erreur sur PHP 5.1
- *
+
 // Fonction spéciale de gestion des erreurs
 function zunoErrorHandler($errno,$errmsg,$filename,$linenum,$vars) {
-    $logger= Logg::getInstance();
-    $logger->logTriggeredError($errno,$errmsg,$filename,$linenum,$vars);
+    if(class_exists('Logg')) {
+	$logger= Logg::getInstance();
+	$logger->logTriggeredError($errno,$errmsg,$filename,$linenum,$vars);
+    }
 }
 $old_error_handler = set_error_handler("zunoErrorHandler");
-
-*/
-
 
 ?>

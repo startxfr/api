@@ -80,7 +80,7 @@ class factureControl {
 	    $mess.= 'Merci de fournir un contact<br/>';
 	    $fields[] = 'contact_dev';
 	}
-	if($value['add1_fact'] == '' || $value['add1_fact'] == ' ' || $value['add1_fact'] == NULL) {
+/*	if($value['add1_fact'] == '' || $value['add1_fact'] == ' ' || $value['add1_fact'] == NULL) {
 	    $mess.= 'Merci de fournir une adresse<br />';
 	    $fields[] = 'add1_fact';
 	}
@@ -91,7 +91,7 @@ class factureControl {
 	if($value['ville_fact'] == '' || $value['ville_fact'] == ' ' || $value['ville_fact'] == NULL) {
 	    $mess.= 'Merci de fournir une ville<br />';
 	    $fields[] = 'ville_fact';
-	}
+	}*/
 
 	if($mess != '') return array(false,$mess,$fields);
 	else 		return array(true);

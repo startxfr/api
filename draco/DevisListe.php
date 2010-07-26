@@ -225,6 +225,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
     $message = $message.'<script type="text/javascript">setTimeout("window.location.href = \'DevisListe.php\';",1000);</script>';
 }
 else {
+    $data = array();
     if($PC->rcvG['status_dev'] != '')
 	$data['status_dev'] = $PC->rcvG['status_dev'];
     $datas['from'] = 0;

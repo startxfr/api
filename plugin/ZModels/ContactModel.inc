@@ -57,7 +57,7 @@ class contactParticulierModel extends GeneralModel {
                     "WHERE nom_cont $qTag OR prenom_cont $qTag OR mail_cont $qTag");
         }
         else {
-            $this->makeRequeteFree("SELECT id_cont,civ_cont,nom_cont,prenom_cont,nom_fct, cp_cont, ville_cont, nom_ent " .
+            $this->makeRequeteFree("SELECT id_cont,civ_cont,nom_cont,prenom_cont,nom_fct, cp_cont, ville_cont, nom_ent,www_ent " .
                     "FROM contact " .
                     "LEFT JOIN entreprise ON id_ent = entreprise_cont ".
                     "LEFT JOIN ref_fonction ON ref_fonction.id_fct = contact.fonction_cont " .
@@ -538,7 +538,7 @@ class contactEntrepriseModel extends GeneralModel {
         $search .= " OR cp_ent LIKE '%".$recherche."%'";
         $search .= " OR cp_cont LIKE '%".$recherche."%'";
         //$requete = "(select id_cont, id_ent, nom_ent, ville_ent, tel_ent, type_ent, civ_cont, prenom_cont, nom_cont, mail_cont, tel_cont from contact left join entreprise on id_ent = entreprise_cont where $search ) union (select id_cont, id_ent, nom_ent, ville_ent, tel_ent, type_ent, civ_cont, prenom_cont, nom_cont, mail_cont, tel_cont  from entreprise left join contact on entreprise_cont = id_ent where $search) ";
-        $requete = "select id_cont, id_ent, nom_ent, ville_ent, tel_ent, type_ent, civ_cont, prenom_cont, nom_cont, mail_cont, tel_cont from contact left join entreprise on id_ent = entreprise_cont where $search";
+        $requete = "select id_cont, id_ent, nom_ent, ville_ent, tel_ent, type_ent, www_ent, civ_cont, prenom_cont, nom_cont, mail_cont, tel_cont from contact left join entreprise on id_ent = entreprise_cont where $search";
 
         if($order != '')
             $endSql = ' ORDER BY '.$order.' '.((strtolower($orderSens) == 'asc') ? 'ASC' : 'DESC');
@@ -575,7 +575,7 @@ class contactEntrepriseModel extends GeneralModel {
                     "where id_ent is not null $search ");
         }
         else {
-            $this->makeRequeteFree("SELECT id_ent, nom_ent, ville_ent, tel_ent, type_ent, nom_tyent FROM entreprise " .
+            $this->makeRequeteFree("SELECT id_ent, nom_ent, ville_ent, tel_ent, type_ent, www_ent, nom_tyent FROM entreprise " .
                     "left join ref_typeentreprise on id_tyent = type_ent " .
                     "where id_ent is not null $search order by $endSql nom_ent ASC LIMIT $from,$limit");
         }
@@ -607,7 +607,7 @@ class contactEntrepriseModel extends GeneralModel {
                     "where id_cont is not null and $search ");
         }
         else {
-            $this->makeRequeteFree("select id_ent, id_cont, nom_ent, ville_cont, tel_ent, type_ent, civ_cont, prenom_cont, nom_cont, mail_cont from contact " .
+            $this->makeRequeteFree("select id_ent, id_cont, nom_ent, ville_cont, tel_ent, type_ent, www_ent, civ_cont, prenom_cont, nom_cont, mail_cont from contact " .
                     "left join entreprise on id_ent = entreprise_cont " .
                     "where id_cont is not null and $search order by $endSql nom_ent ASC, id_ent ASC, nom_cont ASC LIMIT $from,$limit ");
         }
@@ -641,7 +641,7 @@ class contactEntrepriseModel extends GeneralModel {
                     "where id_app is not null and $search ");
         }
         else {
-            $this->makeRequeteFree("select id_app, id_ent, id_cont, nom_ent, ville_ent, tel_ent, type_ent, civ_cont, prenom_cont, nom_cont, mail_cont from appel " .
+            $this->makeRequeteFree("select id_app, id_ent, id_cont, nom_ent, ville_ent, tel_ent, type_ent, www_ent, civ_cont, prenom_cont, nom_cont, mail_cont from appel " .
                     "left join contact on id_cont =contact_app left join entreprise on id_ent = entreprise_cont " .
                     "where id_app is not null and $search order by $endSql nom_ent ASC, id_ent ASC, nom_cont ASC, id_app ASC ");
         }

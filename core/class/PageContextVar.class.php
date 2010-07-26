@@ -29,7 +29,7 @@ class PageContextVar {
      * @return nothing but public varible are filed with appropriate data.
      */
     function __construct() {
-	Logg::loggerNotice('PageContextVar::__construct() ~ Paramètres en entrées : GET="'.count($_GET).'"; POST="'.count($_POST).'"; FILES="'.count($_FILES).'")',array($_GET,$_POST,$_FILES),__FILE__.'@'.__LINE__);
+	Logg::loggerNotice('PageContextVar::__construct() ~ Paramètres en entrées : GET="'.count($_GET).'"; POST="'.count($_POST).'"; FILES="'.count($_FILES).'"',array($_GET,$_POST,$_FILES),__FILE__.'@'.__LINE__);
 	// Netoyage des variables POST reçues
 	foreach($_POST as $key => $val) {
 	    if(!is_array($val))
