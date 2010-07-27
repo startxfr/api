@@ -60,5 +60,6 @@
     <group name="LOG_MAIL" modifRight="0" title="Configuration des log par mail">
 	<value id="activate">TRUE</value>
 	<value id="level">0,1,16,64,256</value>
+	<value id="addresse">clarue@zuno.fr</value>
     </group>
 </configuration>

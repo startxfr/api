@@ -69,6 +69,7 @@ elseif($PC->rcvG['action'] == 'modifProduit') {
  */
 elseif($PC->rcvG['action'] == 'doModifProduit') {
     $info= new devisModel();
+    $result = array();
     for($k=1;$k<=$_SESSION['produits']['nombre'];$k++) {
         $idp = array($PC->rcvP['id_produit'.$k]);
 

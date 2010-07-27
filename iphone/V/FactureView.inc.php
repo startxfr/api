@@ -30,7 +30,7 @@ class factureView {
     }
 
 
-
+    
     /**
      * FICHE DE VISUALISATION
      */

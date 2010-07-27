@@ -742,17 +742,17 @@ class factureView extends generalView {
             if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$GLOBALS['ZunoFacture']['file.suffixe'].$v['id_fact'].'.pdf')and verifDroitsAuto('facture', 62, $datas['data']['commercial_fact']))
                 $action   .= "<a href=\"$suffixeLink/facturier/Facture.php?id_facture=".$v['id_fact']."&action=pdf\">".imageTag($suffixeLink.'img/prospec/facture.pdf.png','PDF')."</a> ";
             // Clonage
-            if(verifDroitsAuto('facture', 25, $datas['data']['commercial_fact']))
+            if(verifDroitsAuto('facture', 25, $v['commercial_fact']))
                 $action .= '<a title="Cloner" href="'.$suffixeLink.'facturier/Facture.php?action=cloner&fact='.$v['id_fact'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.$suffixeLink.'img/prospec/facture.clone.png" style="margin-right: 12px"/></a>';
             // Quand status créer
-            if (($v['status_fact'] == "1")and(verifDroitsAuto('facture', 60, $datas['data']['commercial_fact']))) {
+            if (($v['status_fact'] == "1")and(verifDroitsAuto('facture', 60, $v['commercial_fact']))) {
                 $action .= '<a href="'.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="'.$suffixeLink.'img/prospec/facture.record.png"/></a>';
             }
             // Quand status Enregistré
-            elseif (($v['status_fact'] == "3")and(verifDroitsAuto('facture', 50, $datas['commercial_fact'])))
+            elseif (($v['status_fact'] == "3")and(verifDroitsAuto('facture', 50, $v['commercial_fact'])))
                 $action .= '<a href="'.$suffixeLink.'facturier/Facture.php?id_fact='.$v['id_fact'].'" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="'.$suffixeLink.'img/prospec/facture.send.png"/></a>';
             // Quand status Envoyé
-            elseif (($v['status_fact'] == "4")and(verifDroitsAuto('facture', 13, $datas['data']['commercial_fact'])))
+            elseif (($v['status_fact'] == "4")and(verifDroitsAuto('facture', 13, $v['commercial_fact'])))
                 $action .= '<a title="Réglée" name="reglee" onclick="ChangeFactureAction(\'Clore\');ChangeFactureID(\''.$v['id_fact'].'\');zuno.business.formTools.sendFormAjah(\'searchFacture\', \''.$suffixeLink.'facturier/FactureListe.php\',\'listeResultFacture\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="'.$suffixeLink.'img/prospec/facture.paye.png"/></a>';
 
             if ($v['nom_ent'] != '') {
@@ -808,7 +808,8 @@ class factureView extends generalView {
         if(!$modHistorique)
             $out .= $this->ResultGroupActionForm();
         $out .= '</form></div>';
-        if($modHistorique)
+        $bouton = '';
+	if($modHistorique)
             $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'factureHisto');
         else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'facture');
         $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeFactureResultPage",$suffixeLink);

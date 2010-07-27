@@ -1443,7 +1443,13 @@ function formatCurencyDatabase($number,$round = 2) {
 
 function afficherMessages() {
     $sortie = "";
-    if(array_key_exists('message', $_SESSION) and $_SESSION['message'][0]['titre_mess'] != '' and $_SESSION['message']['dejaVu'] != true) {
+    if(array_key_exists('message', $_SESSION) and
+       is_array($_SESSION['message']) and
+       array_key_exists(0, $_SESSION['message'])  and 
+       is_array($_SESSION['message'][0]) and 
+       array_key_exists('titre_mess', $_SESSION['message'][0]) and 
+       $_SESSION['message'][0]['titre_mess'] != '' and
+       $_SESSION['message']['dejaVu'] != true) {
 	$mess = '<div class="ZBox"><div class="body"><div class="content"><div class="block width50">';
 	foreach($_SESSION['message'] as $v) {
 	    if($v['contenu_mess'] != '') {

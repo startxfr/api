@@ -5,10 +5,11 @@ class generalView {
 
     public function resultNavigation($from,$limit,$total,$jsFunction = '',$suffixeLink = './') {
 
-        if($total == 0)
-            return '';
-        elseif($limit != $total) {
-            $nbpage = ceil($total/$limit);
+	$bouton = '';
+	if($total == 0)
+	    return '';
+	elseif($limit != $total) {
+	    $nbpage = ceil($total/$limit);
 
 	    $pagecourrante = ($from/$limit)+1;
 	    if($nbpage != 1 and $pagecourrante != 1) {

@@ -91,13 +91,13 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
     $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
     $action = $PC->rcvP['groupedAction'];
 
-    if (count($PC->rcvP['selectC']) > 0) {
+    if (is_array($PC->rcvP['selectC']) and count($PC->rcvP['selectC']) > 0) {
         $contactListString = '';
         foreach ($PC->rcvP['selectC'] as $k => $contact)
             $contactListString .= ', \''.$contact.'\'';
         $contactListString = substr($contactListString,1);
     }
-    if (count($PC->rcvP['selectE']) > 0) {
+    if (is_array($PC->rcvP['selectE']) and count($PC->rcvP['selectE']) > 0) {
         $entrepriseListString = '';
         foreach ($PC->rcvP['selectE'] as $k => $entreprise)
             $entrepriseListString .= ', \''.$entreprise.'\'';
@@ -110,7 +110,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		GROUP BY id_cont ORDER BY id_cont ASC";
         $bddtmp->makeRequeteFree($req);
         $res = $bddtmp->process();
-        if(count($res) > 0) {
+        if(is_array($res) and count($res) > 0) {
             foreach($res as $k => $contact) {
                 contactParticulierModel::changeAttributeInDB($contact['id_cont'],$PC->rcvP);
                 $message.= "Contact ".$contact['nom_cont']." modifié\n";
@@ -125,7 +125,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		GROUP BY id_ent ORDER BY id_ent ASC";
         $bddtmp->makeRequeteFree($req);
         $res = $bddtmp->process();
-        if(count($res) > 0) {
+        if(is_array($res) and count($res) > 0) {
             foreach($res as $k => $entreprise) {
                 contactEntrepriseModel::changeAttributeInDB($entreprise['id_ent'],$PC->rcvP);
                 $message.= "Entreprise ".$entreprise['nom_ent']." modifiée\n";
@@ -156,7 +156,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		GROUP BY id_cont ORDER BY id_cont ASC";
         $bddtmp->makeRequeteFree($req);
         $res = $bddtmp->process();
-        if(count($res) > 0) {
+        if(is_array($res) and count($res) > 0) {
             foreach($res as $k => $contact) {
                 contactParticulierModel::deleteInDB($contact['id_cont'],$PC->rcvP);
                 $message.= "Contact ".$contact['nom_cont']." supprimé \n";
@@ -185,7 +185,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		GROUP BY id_ent ORDER BY id_ent ASC";
         $bddtmp->makeRequeteFree($req);
         $res = $bddtmp->process();
-        if(count($res) > 0) {
+        if(is_array($res) and count($res) > 0) {
             foreach($res as $k => $entreprise) {
                 contactEntrepriseModel::deleteInDB($entreprise['id_ent'],$PC->rcvP);
                 $message.= "Entreprise ".$entreprise['nom_ent']." supprimée \n";

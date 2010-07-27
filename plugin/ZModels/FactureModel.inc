@@ -74,6 +74,7 @@ class factureModel extends GeneralModel {
      */
     public function getDataForSearchWeb($search, $from = '0', $limit ='30', $order='ORDER BY id_fact DESC', $conditions = '') {
 
+	$where = "";
 	if(is_array($conditions)) {
 	    $where = " WHERE ";
 	    foreach($conditions as $k => $v) {

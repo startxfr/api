@@ -610,7 +610,7 @@ class commandeView {
 			</div>';
 	return $out;
     }
-    
+
     /**
      * Fonction qui gère l'affichage lors de l'ajout d'un commande.
      */
@@ -709,7 +709,7 @@ class commandeView {
      */
     static function cloner($value = array()) {
 	return
-'<div class="iPanel"><br/><br/>
+		'<div class="iPanel"><br/><br/>
     <div class="msg"><br/>Merci de confirmer le clonage de cette commande<br/></div>
     <br/>
     <fieldset>
@@ -765,7 +765,7 @@ class commandeView {
 	$extention = HtmlFormIphone::SelectLabel('OutputExt',$availableConvFormat,$value['OutputExt'],'Format : ',false);
 
 	return
-'<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+		'<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
 <form id="formCommandeDoVoir" action="Commande.php?action=doVoir&id_cmd='.$id_cmd.'" onsubmit="return WA.Submit(this,null,event)">
 <div class="iPanel">
     <fieldset>
@@ -799,7 +799,7 @@ class commandeView {
 	$mess = HtmlFormIphone::TextareaLabel('message',$value['message'],'','Message :');
 
 	return
-'<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+		'<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
 <form id="formCommandeDoRec" action="Commande.php?action=doRec&id_cmd='.$value["id_cmd"].'" onsubmit="return WA.Submit(this,null,event)">
 <div class="iPanel">
     <fieldset>

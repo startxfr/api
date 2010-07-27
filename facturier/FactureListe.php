@@ -32,6 +32,7 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
 aiJeLeDroit('facture', 05, 'web');
+$message = $sortie = '';
 $model = new factureModel();
 if($PC->rcvP['action'] == 'searchFacture') {
     if($PC->rcvP['entreprise_fact'] != '')
@@ -235,6 +236,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
     $message = $message.'<script type="text/javascript">setTimeout("window.location.href = \'FactureListe.php\';",1000);</script>';
 }
 else {
+    $data = array();
     if($PC->rcvG['status_fact'] != '')
 	$data['status_fact'] = $PC->rcvG['status_fact'];
     $datas['from'] = 0;

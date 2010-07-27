@@ -28,7 +28,7 @@ include ("plugin/jpgraph/src/jpgraph.php");
 include ("plugin/jpgraph/src/jpgraph_pie.php");
 include ("plugin/jpgraph/src/jpgraph_pie3d.php");
 
-
+$lesdata = array();
 $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 $bddtmp->makeRequeteFree("SELECT COUNT(id_cmd) commande FROM commande WHERE sommeHT_cmd < 1000.00");
 $lesdataTmp = $bddtmp->process();
