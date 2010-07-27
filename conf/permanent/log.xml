@@ -41,13 +41,13 @@
     -->
     <group name="LOG_DB" modifRight="0" title="Configuration des log sql">
 	<value id="activate">TRUE</value>
-	<value id="level">0,1,2,4,16,32,64,128,256,512,1024,1500,2048,4096,8192</value>
+	<value id="level">256,512,1024,1500</value>
 	<value id="base_pool">1</value>
 	<value id="base_table">log</value>
     </group>
     <group name="LOG_FILE" modifRight="0" title="Configuration des log fichiers">
 	<value id="activate">TRUE</value>
-	<value id="level">8,1024,16384</value>
+	<value id="level">0,1,2,4,8,16,32,64,128,2048,4096,8192,16384</value>
 	<value id="file_path">tmp/</value>
 	<value id="file_extention">.log</value>
 	<value id="file_nameDate">Ymd</value>
@@ -59,7 +59,7 @@
     </group>
     <group name="LOG_MAIL" modifRight="0" title="Configuration des log par mail">
 	<value id="activate">TRUE</value>
-	<value id="level">0,1,16,64,256</value>
+	<value id="level">0,1,16,64,256,4096</value>
 	<value id="addresse">clarue@zuno.fr</value>
     </group>
 </configuration>
