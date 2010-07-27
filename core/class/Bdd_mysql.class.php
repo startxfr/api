@@ -117,7 +117,7 @@ class Bdd_mysql {
         $top = "INSERT INTO `".$table."` ( ";
 	$head = $bottom = '';
 	foreach ($liste as $key => $val) {
-	    $valclean1 = mysql_real_escape_string(stripslashes(trim($val)));
+	    $valclean1 = @mysql_real_escape_string(stripslashes(trim($val)));
 	    if($valclean1 == '')
 		$bottom .= ", NULL ";
 	    else  $bottom .= ", '".$valclean1."' ";
@@ -142,14 +142,14 @@ class Bdd_mysql {
         $top = "UPDATE `".$table."` SET ";
 	$head = '';
 	foreach ($liste as $key => $val) {
-	    $valclean1 = mysql_real_escape_string(stripslashes(trim($val)));
+	    $valclean1 = @mysql_real_escape_string(stripslashes(trim($val)));
 	    if($valclean1 == '')
 		$head   .= " `".$key."` = NULL, ";
 	    else $head   .= " `".$key."` = '".$valclean1."', ";
 	}
 	$head   = substr($head, 0, -2);
 
-	$this->requete = $top.$head." WHERE ".$col_id." = '".mysql_real_escape_string($id)."' ".$autre;
+	$this->requete = $top.$head." WHERE ".$col_id." = '".@mysql_real_escape_string($id)."' ".$autre;
 	return $this->requete;
     }
 
@@ -162,7 +162,7 @@ class Bdd_mysql {
     function makeRequeteSelect($table,$col_id,$id) {
         $top = "SELECT * FROM `".$table."` WHERE ";
 
-	$this->requete = $top.$col_id." = '".mysql_real_escape_string($id)."'";
+	$this->requete = $top.$col_id." = '".@mysql_real_escape_string($id)."'";
 	return $this->requete;
     }
 
@@ -175,7 +175,7 @@ class Bdd_mysql {
        if(is_array($liste)) {
 	    $head = '';
 	    foreach ($liste as $key => $val)
-		$head   .= " `".$key."` = '".mysql_real_escape_string($val)."' AND";
+		$head   .= " `".$key."` = '".@mysql_real_escape_string($val)."' AND";
 	    $head   = substr($head, 0, -3);
 	    $this->requete = "DELETE FROM `".$table."` WHERE ".$head;
 	    return $this->requete;
@@ -201,7 +201,7 @@ class Bdd_mysql {
 	    foreach ($liste as $key => $val) {
 		if ($val{0} == '`')
 		    $lescrit   .= " `".$key."` = ".$val."` AND";
-		else  $lescrit   .= " `".$key."` = '".$val."' AND";
+		else  $lescrit   .= " `".$key."` = '".@mysql_real_escape_string($val)."' AND";
 	    }
 	    $lescrit   = " WHERE ".substr($lescrit, 0, -3);
 	}

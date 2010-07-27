@@ -237,7 +237,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 }
 else {
     $data = array();
-    if($PC->rcvG['status_fact'] != '')
+    if(array_key_exists('status_fact', $PC->rcvG) and $PC->rcvG['status_fact'] != '')
 	$data['status_fact'] = $PC->rcvG['status_fact'];
     $datas['from'] = 0;
     $datas['limit'] = 30;
@@ -250,7 +250,7 @@ else {
     $datas['data'] = $result[1];
     $datas['status'] = $model->getAllStatusFacture();
     $view = new factureView();
-    $mess = ($PC->rcvG['mess']!='') ? $PC->rcvG['mess'] : '';
+    $mess = (array_key_exists('mess', $PC->rcvG)) ? $PC->rcvG['mess'] : '';
     $sortie = $view->searchResult($datas, $mess);
 }
 /*------------------------------------------------------------------------+

@@ -452,6 +452,6 @@ function zunoErrorHandler($errno,$errmsg,$filename,$linenum,$vars) {
 	$logger->logTriggeredError($errno,$errmsg,$filename,$linenum,$vars);
     }
 }
-$old_error_handler = set_error_handler("zunoErrorHandler");
+//$old_error_handler = set_error_handler("zunoErrorHandler");
 
 ?>

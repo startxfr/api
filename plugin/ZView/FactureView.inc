@@ -739,7 +739,7 @@ class factureView extends generalView {
             $sommeTTC_fact = round(($v['sommeHT_fact']*(100+$v['tauxTVA_fact']))/100,2);
             //traitement des boutons de modification et d'action
             // recherche du fichier PDF
-            if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$GLOBALS['ZunoFacture']['file.suffixe'].$v['id_fact'].'.pdf')and verifDroitsAuto('facture', 62, $datas['data']['commercial_fact']))
+            if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$GLOBALS['ZunoFacture']['file.suffixe'].$v['id_fact'].'.pdf')and verifDroitsAuto('facture', 62, $v['commercial_fact']))
                 $action   .= "<a href=\"$suffixeLink/facturier/Facture.php?id_facture=".$v['id_fact']."&action=pdf\">".imageTag($suffixeLink.'img/prospec/facture.pdf.png','PDF')."</a> ";
             // Clonage
             if(verifDroitsAuto('facture', 25, $v['commercial_fact']))

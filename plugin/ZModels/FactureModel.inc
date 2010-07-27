@@ -72,30 +72,30 @@ class factureModel extends GeneralModel {
      * @param array $conditions Les champs et les valeurs recherchés
      * @return array Les données recherchées
      */
-    public function getDataForSearchWeb($search, $from = '0', $limit ='30', $order='ORDER BY id_fact DESC', $conditions = '') {
+    public function getDataForSearchWeb($search, $from = '0', $limit ='30', $order='ORDER BY id_fact DESC', $conditions = array()) {
 
 	$where = "";
 	if(is_array($conditions)) {
-	    $where = " WHERE ";
+	    $where = " WHERE";
 	    foreach($conditions as $k => $v) {
 		if($k == 'cp_ent')
-		    $where .= "$k LIKE '".$v."%' AND ";
+		    $where .= " $k LIKE '".$v."%' AND  ";
 		elseif($k == 'sommeHT_fact')
-		    $where .= " $k >= '$v' AND ";
+		    $where .= " $k >= '$v' AND  ";
 		elseif($k == 'sommeHT_fact2')
-		    $where .= " sommeHT_fact < '$v' AND ";
+		    $where .= " sommeHT_fact < '$v' AND  ";
 		elseif($k == 'status_fact') {
-		    $where .= "$k = '".$v."' AND ";
+		    $where .= " $k = '".$v."' AND  ";
 		    $archives = $v;
 		}
 		elseif($k == 'status_fact')
-		    $where .= "$k = '".$v."' AND ";
+		    $where .= " $k = '".$v."' AND  ";
 		elseif($k == 'entreprise_fact')
-		    $where .= "$k = '".$v."' AND ";
+		    $where .= " $k = '".$v."' AND  ";
 		else
-		    $where .= "$k LIKE '%".$v."%' AND ";
+		    $where .= " $k LIKE '%".$v."%' AND  ";
 	    }
-	    $where = substr($where, 0, (strlen($where)-4));
+	    $where = substr($where, 0,-5);
 	}
 
 	if($limit != 'ALL')

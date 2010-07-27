@@ -222,10 +222,10 @@ CREATE TABLE `commande_produit` (
   `desc` varchar(255) DEFAULT NULL,
   `quantite` decimal(8,2) DEFAULT '1.00',
   `quantite_cmd` decimal(8,2) DEFAULT NULL,
-  `remise` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `remise` decimal(5,2) NOT NULL DEFAULT '0.00',
   `prix` decimal(10,2) NOT NULL DEFAULT '0.00',
   `fournisseur` varchar(4) DEFAULT NULL,
-  `remiseF` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `remiseF` decimal(5,2) NOT NULL DEFAULT '0.00',
   `prixF` decimal(10,2) DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -348,7 +348,7 @@ CREATE TABLE `devis_produit` (
   `id_produit` varchar(32) NOT NULL DEFAULT '0',
   `desc` varchar(500) DEFAULT NULL,
   `quantite` decimal(8,2) DEFAULT '1.00',
-  `remise` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `remise` decimal(5,2) NOT NULL DEFAULT '0.00',
   `prix` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Detail des produits devisés ';
@@ -398,7 +398,7 @@ CREATE TABLE `entreprise` (
   `SIRET_ent` varchar(32) DEFAULT NULL,
   `numeroTVA_ent` varchar(32) DEFAULT NULL,
   `tauxTVA_ent` decimal(3,1) NOT NULL DEFAULT '19.6',
-  `remise_ent` float DEFAULT '0',
+  `remise_ent` decimal(5,2) DEFAULT '0.00',
   `groupe_ent` int(4) unsigned DEFAULT NULL,
   `siege_ent` int(1) unsigned DEFAULT NULL,
   `commsociete_ent` text,
@@ -509,7 +509,7 @@ CREATE TABLE `facture_produit` (
   `id_produit` varchar(32) NOT NULL DEFAULT '0',
   `desc` varchar(255) DEFAULT NULL,
   `quantite` decimal(8,2) DEFAULT '1.00',
-  `remise` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `remise` decimal(5,2) NOT NULL DEFAULT '0.00',
   `prix` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Detail des produits d''une facture ';
@@ -1255,4 +1255,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-07-26 16:24:56
+-- Dump completed on 2010-07-27 18:49:03
