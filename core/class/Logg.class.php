@@ -40,6 +40,7 @@ class Logg extends Singleton {
 	$this->confChannel['file'] = &$GLOBALS['LOG_FILE'];
 	$this->confChannel['sys']  = &$GLOBALS['LOG_SYS'];
 	$this->confChannel['mail'] = &$GLOBALS['LOG_MAIL'];
+	date_default_timezone_set('Europe/Paris');
     }
 
     /**
@@ -53,7 +54,7 @@ class Logg extends Singleton {
      * destructeur pour des log plus clair (virable en prod)
      */
     public function  __destruct() {
-	Logg::loggerInfo('==============FIN================== ~ ',null,__FILE__.'@'.__LINE__);
+	//Logg::loggerInfo('==============FIN================== ~ ',null,__FILE__.'@'.__LINE__);
     }
 
     /**
@@ -79,19 +80,19 @@ class Logg extends Singleton {
      * @param $level	String containing level of information
      */
     protected function LogSystem($content) {
-        if(in_array($content['level_log'],array(1,16,64,256,4096)))
-            $typlog = LOG_ERR;
-        elseif(in_array($content['level_log'],array(8,1024,2048)))
-            $typlog = LOG_INFO;
-        else $typlog = LOG_INFO;
-        $texte = $this->conf['Name'].":";
-        $texte.= $this->errortype[$content['level_log']]." : ";
-        $texte.= $content['nom_log']." (";
-        $texte.= $content['fichier_log']."-";
-        $texte.= $content['component_log'].")";
-        openlog($this->conf['Name'],LOG_PID | LOG_PERROR, LOG_LOCAL0);
-        syslog($typlog,$texte);
-        closelog();
+	if(in_array($content['level_log'],array(1,2,4,16,32,64,128,256,512,4096)))
+	    $typlog = LOG_ERR;
+	elseif(in_array($content['level_log'],array(8,1024,2048,8192,16384)))
+	    $typlog = LOG_INFO;
+	else $typlog = LOG_INFO;
+	$texte = $this->conf['Name'].":";
+	$texte.= $this->errortype[$content['level_log']]." : ";
+	$texte.= $content['nom_log']." (";
+	$texte.= $content['fichier_log']."-";
+	$texte.= $content['component_log'].")";
+	openlog($this->conf['Name'],LOG_PID | LOG_PERROR, LOG_LOCAL0);
+	syslog($typlog,$texte);
+	closelog();
     }
 
     /**
@@ -103,22 +104,24 @@ class Logg extends Singleton {
      * @param $type		String containing type of information
      */
     protected function Log2File($content) {
-        $texte = date($this->confChannel['file']['file_ligneDate'],$content['date_log']).";";
-        $texte.= $this->errortype[$content['level_log']].";";
-        $texte.= $content['fichier_log'].";";
-        $texte.= $content['component_log'].";";
-        $texte.= $content['nom_log'].";";
-        $texte.= $content['trace_log'].";";
-        $type = 'log';
-        if(in_array($content['level_log'],array(1,16,64,256,4096)))
-            $type.= '.error';
-        elseif(in_array($content['level_log'],array(8,1024,2048)))
-            $type.= '.notice';
-        else $type.= '.warning';
-        $URISuffix= ($this->confChannel['file']['file_path']{0} == '/') ? $this->confChannel['file']['file_path']:$GLOBALS['REP']['appli'].$this->confChannel['file']['file_path'];
-        $fileName	= $type.".".date($this->confChannel['file']['file_nameDate'],time()).$this->confChannel['file']['file_extention'];
-        $fileurl	= $URISuffix.$fileName;
-        error_log($texte."\n", 3,$fileurl);
+	$texte = date($this->confChannel['file']['file_ligneDate'],$content['date_log']).";";
+	$texte.= $this->errortype[$content['level_log']].";";
+	$texte.= $content['fichier_log'].";";
+	$texte.= $content['component_log'].";";
+	$texte.= $content['nom_log'].";";
+	$texte.= $content['trace_log'].";";
+	$type = 'log';
+	if(in_array($content['level_log'],array(1,4,16,64,256,4096)))
+	    $type.= '.error';
+	elseif(in_array($content['level_log'],array(8,1024,2048,8192,16384)))
+	    $type.= '.notice';
+	elseif(in_array($content['level_log'],array(2,32,128,512)))
+	    $type.= '.warning';
+	else $type.= '.info';
+	$URISuffix= ($this->confChannel['file']['file_path']{0} == '/') ? $this->confChannel['file']['file_path']:$GLOBALS['REP']['appli'].$this->confChannel['file']['file_path'];
+	$fileName	= $type.".".date($this->confChannel['file']['file_nameDate'],time()).$this->confChannel['file']['file_extention'];
+	$fileurl	= $URISuffix.$fileName;
+	error_log($texte."\n", 3,$fileurl);
 
     }
 
@@ -248,6 +251,7 @@ compostant:  ".$content['component_log']."
 	if($this->confChannel['file']['activate'] or
 		$this->confChannel['sys']['activate'] or
 		$this->confChannel['db']['activate'] or
+		$this->confChannel['mail']['activate'] or
 		$logchannel != '') {
 	    $out = array();
 	    $out['date_log']   = microtime(true);
@@ -266,28 +270,28 @@ compostant:  ".$content['component_log']."
 	    elseif ($vars != '')
 		$out['trace_log'] = $vars;
 
-            //Process log according to rules defined in log.ini or to the given log channel
-            if($logchannel == '') {
-                if($this->confChannel['file']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['db']['level'])))
-                    Logg::Log2File($out);
-                if($this->confChannel['sys']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['db']['level'])))
-                    Logg::LogSystem($out);
-                if($this->confChannel['db']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['db']['level'])))
-                    Logg::Log2Db($out);
-                if($this->confChannel['mail']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['mail']['level'])))
-                    Logg::Log2Mail($out);
-            }
-            else {
-                if($logchannel == 'file')
-                    Logg::Log2File($out);
-                elseif($logchannel == 'system')
-                    Logg::LogSystem($out);
-                elseif($logchannel == 'db')
-                    Logg::Log2Db($out);
-                elseif($logchannel == 'db')
-                    Logg::Log2Mail($out);
-            }
-        }
+	    //Process log according to rules defined in log.ini or to the given log channel
+	    if($logchannel == '') {
+		if($this->confChannel['file']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['file']['level'])))
+		    Logg::Log2File($out);
+		if($this->confChannel['sys']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['sys']['level'])))
+		    Logg::LogSystem($out);
+		if($this->confChannel['db']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['db']['level'])))
+		    Logg::Log2Db($out);
+		if($this->confChannel['mail']['activate'] and in_array($out['level_log'],explode(',',$this->confChannel['mail']['level'])))
+		    Logg::Log2Mail($out);
+	    }
+	    else {
+		if($logchannel == 'file')
+		    Logg::Log2File($out);
+		elseif($logchannel == 'system')
+		    Logg::LogSystem($out);
+		elseif($logchannel == 'db')
+		    Logg::Log2Db($out);
+		elseif($logchannel == 'mail')
+		    Logg::Log2Mail($out);
+	    }
+	}
     }
 
     /**
