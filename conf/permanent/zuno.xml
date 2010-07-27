@@ -66,8 +66,8 @@
     </group>
     <group name="zunoManagerWebService" modifRight="0" title="Configuration de prospec">
 	<value id="manager_name">sxa</value>
-	<value id="manager_key">00011bd1c6da921c60cfd5ea110f0844</value>
-	<value id="superBase_token">000189ed278331b20e41758e77fc5582</value>
+	<value id="manager_key">00017beeb22bedca8a1bc7d9c6ee4b19</value>
+	<value id="superBase_token">00017beeb22bedca8a1bc7d9c6ee4b19</value>
 	<value id="superBaseWebServicePath">https://superbase.zuno.fr/ws/</value>
 	<value id="webServicePath">https://sxa.startx.fr/ws/</value>
 	<value id="wsdlCacheEnabled">1</value>
