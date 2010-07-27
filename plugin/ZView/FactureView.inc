@@ -890,6 +890,7 @@ class factureView extends generalView {
             $script .= 'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_fact\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'hidden\').value = ""; } } } ';
             $script .= 'function resetForm() {var form = $(\'formAddFacture\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
             $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+            $script .= "\n".'function verifAutocompleteurBis(champ) {if(champ.value == "" || champ.value == null) {$(\'ACentreprise_facthidden\').value = ""; $(\'ACaffaire_facthidden\').value = "";} }';
             $script .= 'function addContact(idRetour) { var ent=\'action=addContFact&entreprise=\'+$(\'ACentreprise_facthidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Facture.php\', ent,800,300);} ';
             $script .= 'function addEntreprise() { zuno.popup.open(\'Facture.php\', \'action=addEnt\',800,320);} ';
             $script .= '</script>';
@@ -918,7 +919,7 @@ class factureView extends generalView {
         $out .= '<legend>Informations sur la facture</legend>';
         $out .= '<div class="row">';
         $out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.cmdOuEnt);">Commande / Entreprise</div>';
-        $out .= '<div class="field">'.inputTag('text', 'entreprise', 'icon', '', '16', $data['entreprise'], ' id="ACentreprise_fact" onchange="verifAutocompleteur(this);"');
+        $out .= '<div class="field">'.inputTag('text', 'entreprise', 'icon', '', '16', $data['entreprise'], ' id="ACentreprise_fact" onchange="verifAutocompleteurBis(this);"');
         $out .= '<a id="addEnt" name="addEnt" title="Ajouter une entreprise" onclick="addEntreprise();"><img alt="ent" title="Ajouter une entreprise" src="../img/prospec/entreprise.png" /></a>';
         $out .= '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div>';
         $out .= '<input type="hidden" name="entreprise_fact" id="ACentreprise_facthidden" value="'.$data['entreprise_fact'].'" /><input type="hidden" name="commande_fact" id="ACaffaire_facthidden" value="'.$data['commande_fact'].'" />

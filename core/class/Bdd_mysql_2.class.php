@@ -115,8 +115,9 @@ class Bdd_mysql_2 {
      */
     public function makeRequeteInsert($table,$liste) {
 	$top = "INSERT INTO `".$table."` ( ";
+	$head = $bottom = '';
 	foreach ($liste as $key => $val) {
-	    $valclean1 = addslashes(stripslashes(trim($val)));
+	    $valclean1 = mysql_real_escape_string(stripslashes(trim($val)));
 	    if($valclean1 == '')
 		$bottom .= ", NULL ";
 	    else  $bottom .= ", '".$valclean1."' ";
@@ -143,14 +144,14 @@ class Bdd_mysql_2 {
 	$top = "UPDATE `".$table."` SET ";
 	$head = '';
 	foreach ($liste as $key => $val) {
-	    $valclean1 = addslashes(stripslashes(trim($val)));
+	    $valclean1 = mysql_real_escape_string(stripslashes(trim($val)));
 	    if($valclean1 == '')
 		$head   .= " `".$key."` = NULL, ";
 	    else $head   .= " `".$key."` = '".$valclean1."', ";
 	}
 	$head   = substr($head, 0, -2);
 
-	$this->requete = $top.$head." WHERE ".$col_id." = '".$id."' ".$autre;
+	$this->requete = $top.$head." WHERE ".$col_id." = '".mysql_real_escape_string($id)."' ".$autre;
 	return $this->requete;
     }
 
@@ -164,7 +165,7 @@ class Bdd_mysql_2 {
     public function makeRequeteSelect($table,$col_id,$id) {
 	$top = "SELECT * FROM `".$table."` WHERE ";
 
-	$this->requete = $top.$col_id." = '".$id."'";
+	$this->requete = $top.$col_id." = '".mysql_real_escape_string($id)."'";
 	return $this->requete;
     }
 
@@ -176,8 +177,9 @@ class Bdd_mysql_2 {
      */
     public function makeRequeteDelete($table,$liste) {
 	if(is_array($liste)) {
+	    $head = '';
 	    foreach ($liste as $key => $val)
-		$head   .= " `".$key."` = '".$val."' AND";
+		$head   .= " `".$key."` = '".mysql_real_escape_string($val)."' AND";
 	    $head   = substr($head, 0, -3);
 	    $this->requete = "DELETE FROM `".$table."` WHERE ".$head;
 	    return $this->requete;
@@ -193,6 +195,7 @@ class Bdd_mysql_2 {
      */
     public function makeRequeteAuto($table,$liste = "",$other = "") {
 	if(is_array($table)) {
+	    $lestables = '';
 	    foreach ($table as $key => $val)
 		$lestables   .= " `".$val."`,";
 	    $lestables   = substr($lestables, 0, -1);
@@ -206,8 +209,7 @@ class Bdd_mysql_2 {
 		    $lescrit   .= " `".$key."` = ".$val."` AND";
 		else  $lescrit   .= " `".$key."` = '".$val."' AND";
 	    }
-	    $lescrit   = substr($lescrit, 0, -3);
-	    $lescrit   = " WHERE ".$lescrit;
+	    $lescrit   = " WHERE ".substr($lescrit, 0, -3);
 	}
 	else  $lescrit   = " ";
 
@@ -321,23 +323,28 @@ class Bdd_mysql_2 {
      */
 
     public function process($log = true) {
-	$this->connect();
-	$generate_time_begin = microtime(true);
-	$this->requete = trim($this->requete);
-	$pos = strpos($this->requete, ';');
-	$taille = strlen($this->requete);
-	if(($pos+1 != $taille) && ($pos !== false) ) {
-	    if($log)
-		Logg::loggerError('Bdd_mysql_2::process() ~ protection anti injection SQL '.$this->requete,'Plusieurs requêtes à la fois',__FILE__.'@'.__LINE__);
-	    return $this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete.' /');
-	}
-	$resultat = mysql_query($this->requete);
-	$generate_time_end = microtime(true);
-	$time = $generate_time_end-$generate_time_begin;
-	if ($GLOBALS['LOG']['DisplayDebug']) {
-	    $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
-	    $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
-	}
+        $this->connect();
+        $generate_time_begin = microtime(true);
+        $this->requete = trim($this->requete);
+        $pos = strpos($this->requete, ';');
+        $taille = strlen($this->requete);
+        if(strpos($this->requete, '; SELECT') !== false or strpos($this->requete, ';SELECT') !== false or
+                strpos($this->requete, '; INSERT') !== false or strpos($this->requete, ';INSERT') !== false or
+                strpos($this->requete, '; UPDATE') !== false or strpos($this->requete, ';UPDATE') !== false or
+                strpos($this->requete, '; DELETE') !== false or strpos($this->requete, ';DELETE') !== false or
+                strpos($this->requete, '; ALTER')  !== false or strpos($this->requete, ';ALTER')  !== false or
+                strpos($this->requete, '; DROP')   !== false or strpos($this->requete, ';DROP')   !== false) {
+            if($log)
+                Logg::loggerError('Bdd_mysql_2::process() ~ protection anti injection SQL '.$this->requete,'Plusieurs requêtes à la fois',__FILE__.'@'.__LINE__);
+            return $this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete.' /');
+        }
+        $resultat = mysql_query($this->requete);
+        $generate_time_end = microtime(true);
+        $time = $generate_time_end-$generate_time_begin;
+        if ($GLOBALS['LOG']['DisplayDebug']) {
+            $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
+            $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
+        }
 
 	if(!$this->persistant)
 	    mysql_close($this->connexion);
@@ -365,23 +372,28 @@ class Bdd_mysql_2 {
      */
 
     public function process2($log = true) {
-	$this->connect();
-	$generate_time_begin = microtime(true);
-	$this->requete = trim($this->requete);
-	$pos = strpos($this->requete, ';');
-	$taille = strlen($this->requete);
-	if(($pos+1 != $taille) && ($pos !== false)) {
-	    if($log)
-		Logg::loggerError('Bdd_mysql_2::process2() ~ protection anti injection SQL '.$this->requete,'Plusieurs requêtes à la fois',__FILE__.'@'.__LINE__);
-	    return $this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete.' /');
-	}
-	$resultat = mysql_query($this->requete);
-	$generate_time_end = microtime(true);
-	$time = $generate_time_end-$generate_time_begin;
-	if ($GLOBALS['LOG']['DisplayDebug']) {
-	    $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
-	    $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
-	}
+        $this->connect();
+        $generate_time_begin = microtime(true);
+        $this->requete = trim($this->requete);
+        $pos = strpos($this->requete, ';');
+        $taille = strlen($this->requete);
+        if(strpos($this->requete, '; SELECT') !== false or strpos($this->requete, ';SELECT') !== false or
+                strpos($this->requete, '; INSERT') !== false or strpos($this->requete, ';INSERT') !== false or
+                strpos($this->requete, '; UPDATE') !== false or strpos($this->requete, ';UPDATE') !== false or
+                strpos($this->requete, '; DELETE') !== false or strpos($this->requete, ';DELETE') !== false or
+                strpos($this->requete, '; ALTER')  !== false or strpos($this->requete, ';ALTER')  !== false or
+                strpos($this->requete, '; DROP')   !== false or strpos($this->requete, ';DROP')   !== false) {
+            if($log)
+                Logg::loggerError('Bdd_mysql_2::process2() ~ protection anti injection SQL '.$this->requete,'Plusieurs requêtes à la fois',__FILE__.'@'.__LINE__);
+            return $this->dieAndPrint('deux requètes en une !', 'Impossible de lancer plusieurs requètes à la fois : / '.$this->requete.' /');
+        }
+        $resultat = mysql_query($this->requete);
+        $generate_time_end = microtime(true);
+        $time = $generate_time_end-$generate_time_begin;
+        if ($GLOBALS['LOG']['DisplayDebug']) {
+            $GLOBALS['LogBddProcess'][] = "Mysql::".$this->pool.":: ". $this->requete;
+            $GLOBALS['LogBddProcessTime'] = $GLOBALS['LogBddProcessTime']+$time;
+        }
 
 	if (!$resultat) {
 	    if($log)

@@ -112,6 +112,11 @@ INSERT INTO `banque` VALUES (1,'FORTIS','1','1','');
 
 
 --
+-- Dumping data for table `log`
+--
+
+
+--
 -- Dumping data for table `message`
 --
 

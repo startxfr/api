@@ -284,7 +284,7 @@ elseif($PC->rcvG['action'] == 'addContDev') {
     $data['entreprise_cont'] = $PC->rcvG['entreprise'];
     $data['idRetour'] = $PC->rcvG['idRetour'];
     $data['from'] = 'devis';
-    $data['idChamp'] = $PC->rcvG['idChamp'];
+    $data['idChamp'] = ($PC->rcvG['idChamp'] != null) ? $PC->rcvG['idChamp'] : $PC->rcvG['idRetour'];
     echo $view->popupCont($data);
     exit;
 }

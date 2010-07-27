@@ -933,6 +933,7 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
         $script .= "\n".'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_dev\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'hidden\').value = ""; } } } ';
         $script .= "\n".'function resetForm() {var form = $(\'formAddDevis\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ';
         $script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+        $script .= "\n".'function verifAutocompleteurBis(champ) {if(champ.value == "" || champ.value == null) {$(\'ACentreprise_dev_hidden\').value = ""; $(\'ACaffaire_dev_hidden\').value = "";} }';
         $script .= "\n".'function addContact(idRetour) { var ent=\'action=addContDev&entreprise=\'+$(\'ACentreprise_dev_hidden\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'Devis.php\', ent, 800, 300);} ';
         $script .= "\n".'function addEntreprise() { zuno.popup.open(\'Devis.php\', \'action=addEnt\',800,320);} ';
         $script .= "\n".'</script>';
@@ -941,7 +942,7 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
         $fieldset = new ZunoFieldset('Client et titre du devis','','height: 100px');
         $ligne = '<div class="row">';
         $ligne .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.addEntAff);">Entreprise ou affaire</div>';
-        $ligne .= '<div class="field">'.inputTag('text', 'entreprise', 'icon', '', '16', $data['entreprise'], ' id="ACentreprise_dev" onchange="verifAutocompleteur(this);"');
+        $ligne .= '<div class="field">'.inputTag('text', 'entreprise', 'icon', '', '16', $data['entreprise'], ' id="ACentreprise_dev" onchange="verifAutocompleteurBis(this);"');
         $ligne .= '<a id="addEnt" name="addEnt" title="Ajouter une entreprise" onclick="addEntreprise();"><img alt="ent" title="Ajouter une entreprise" src="../img/prospec/entreprise.png" /></a>';
         $ligne .= '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div>';
         $ligne .= '<input type="hidden" name="entreprise_dev" id="ACentreprise_dev_hidden" value="'.$data['entreprise_dev'].'" /><input type="hidden" name="affaire_dev" id="ACaffaire_dev_hidden" value="'.$data['affaire_dev'].'" />

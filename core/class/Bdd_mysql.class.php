@@ -114,20 +114,20 @@ class Bdd_mysql {
      * @param $liste Array: array with data to fill
      */
     function makeRequeteInsert($table,$liste) {
-        $head   = $bottom = '';
-	$top = "INSERT INTO `".$table."` ( ";
-        foreach ($liste as $key => $val) {
-            $valclean1 = addslashes(stripslashes(trim($val)));
-            if($valclean1 == '')
-                $bottom .= ", NULL ";
-            else  $bottom .= ", '".$valclean1."' ";
-            $head   .= ", `".$key."` ";
-        }
-        $head   = substr($head, 1);
-        $bottom = substr($bottom, 1);
+        $top = "INSERT INTO `".$table."` ( ";
+	$head = $bottom = '';
+	foreach ($liste as $key => $val) {
+	    $valclean1 = mysql_real_escape_string(stripslashes(trim($val)));
+	    if($valclean1 == '')
+		$bottom .= ", NULL ";
+	    else  $bottom .= ", '".$valclean1."' ";
+	    $head   .= ", `".$key."` ";
+	}
+	$head   = substr($head, 1);
+	$bottom = substr($bottom, 1);
 
-        $this->requete = $top.$head.") VALUES (".$bottom.")";
-        return $this->requete;
+	$this->requete = $top.$head.") VALUES (".$bottom.")";
+	return $this->requete;
     }
 
 
@@ -140,16 +140,17 @@ class Bdd_mysql {
      */
     function makeRequeteUpdate($table,$col_id,$id,$liste,$autre = "") {
         $top = "UPDATE `".$table."` SET ";
-        foreach ($liste as $key => $val) {
-            $valclean1 = addslashes(stripslashes(trim($val)));
-            if($valclean1 == '')
-                $head   .= " `".$key."` = NULL, ";
-            else  $head   .= " `".$key."` = '".$valclean1."', ";
-        }
-        $head   = substr($head, 0, -2);
+	$head = '';
+	foreach ($liste as $key => $val) {
+	    $valclean1 = mysql_real_escape_string(stripslashes(trim($val)));
+	    if($valclean1 == '')
+		$head   .= " `".$key."` = NULL, ";
+	    else $head   .= " `".$key."` = '".$valclean1."', ";
+	}
+	$head   = substr($head, 0, -2);
 
-        $this->requete = $top.$head." WHERE ".$col_id." = '".$id."' ".$autre;
-        return $this->requete;
+	$this->requete = $top.$head." WHERE ".$col_id." = '".mysql_real_escape_string($id)."' ".$autre;
+	return $this->requete;
     }
 
     /**
@@ -161,8 +162,8 @@ class Bdd_mysql {
     function makeRequeteSelect($table,$col_id,$id) {
         $top = "SELECT * FROM `".$table."` WHERE ";
 
-        $this->requete = $top.$col_id." = '".$id."'";
-        return $this->requete;
+	$this->requete = $top.$col_id." = '".mysql_real_escape_string($id)."'";
+	return $this->requete;
     }
 
     /**
@@ -171,13 +172,14 @@ class Bdd_mysql {
      * @param $liste Array: with col_name to fill
      */
     function makeRequeteDelete($table,$liste) {
-        if(is_array($liste)) {
-            foreach ($liste as $key => $val)
-                $head   .= " `".$key."` = '".$val."' AND";
-            $head   = substr($head, 0, -3);
-            $this->requete = "DELETE FROM `".$table."` WHERE ".$head;
-            return $this->requete;
-        }
+       if(is_array($liste)) {
+	    $head = '';
+	    foreach ($liste as $key => $val)
+		$head   .= " `".$key."` = '".mysql_real_escape_string($val)."' AND";
+	    $head   = substr($head, 0, -3);
+	    $this->requete = "DELETE FROM `".$table."` WHERE ".$head;
+	    return $this->requete;
+	}
     }
 
     /**
@@ -187,26 +189,26 @@ class Bdd_mysql {
      */
     function makeRequeteAuto($table,$liste = "",$other = "") {
         if(is_array($table)) {
-            foreach ($table as $key => $val)
-                $lestables   .= " `".$val."`,";
-            $lestables   = substr($lestables, 0, -1);
-        }
-        else  $lestables   = " `".$table."`";
+	    $lestables = '';
+	    foreach ($table as $key => $val)
+		$lestables   .= " `".$val."`,";
+	    $lestables   = substr($lestables, 0, -1);
+	}
+	else  $lestables   = " `".$table."`";
 
-        if(is_array($liste)) {
-            $lescrit = '';
-            foreach ($liste as $key => $val) {
-                if (strlen($val) and $val{0} == '`')
-                    $lescrit   .= " `".$key."` = ".$val."` AND";
-                else  $lescrit   .= " `".$key."` = '".$val."' AND";
-            }
-            $lescrit   = substr($lescrit, 0, -3);
-            $lescrit   = " WHERE ".$lescrit;
-        }
-        else  $lescrit   = " ";
+	if(is_array($liste)) {
+	    $lescrit = '';
+	    foreach ($liste as $key => $val) {
+		if ($val{0} == '`')
+		    $lescrit   .= " `".$key."` = ".$val."` AND";
+		else  $lescrit   .= " `".$key."` = '".$val."' AND";
+	    }
+	    $lescrit   = " WHERE ".substr($lescrit, 0, -3);
+	}
+	else  $lescrit   = " ";
 
-        $this->requete = "SELECT * FROM ".$lestables." ".$lescrit.' '.$other;
-        return $this->requete;
+	$this->requete = "SELECT * FROM ".$lestables." ".$lescrit.' '.$other;
+	return $this->requete;
     }
 
 

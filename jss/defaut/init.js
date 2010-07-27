@@ -1729,3 +1729,4 @@ function viderCloud(module, user){
         
     });
 }
+

@@ -50,8 +50,8 @@ class CloudModel extends GeneralModel {
         $recherche = ucfirst(strtolower($recherche));
         $this->makeRequeteFree("SELECT recherche_cloud, total_cloud FROM ".$this->sqlTableName." WHERE recherche_cloud = '".$recherche."' AND module_cloud = '".$module."' AND user_cloud = '".$_SESSION['user']['id']."'");
         $already = $this->process2();
-        if($already[0]) {
-            if(is_array($already[1]) and count($already[1]) > 0 and array_key_exists('recherche_cloud', $already[1][0]) and $already[1][0]['recherche_cloud'] == $recherche) {
+	if($already[0]) {
+            if(is_array($already[1]) and count($already[1]) > 0 and array_key_exists('recherche_cloud', $already[1][0]) and ucfirst(strtolower($already[1][0]['recherche_cloud'])) == $recherche) {
                 $total = (array_key_exists('total_cloud', $already[1][0])) ? $already[1][0]['total_cloud']++ : 1;
                 $this->makeRequeteFree("UPDATE ".$this->sqlTableName." SET total_cloud = ".$total." WHERE recherche_cloud = '".$recherche."' AND module_cloud = '".$module."' AND user_cloud = '".$_SESSION['user']['id']."'");
             }
