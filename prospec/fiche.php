@@ -46,7 +46,7 @@ elseif($PC->rcvP['action'] == 'modifLightEnt') {
     $PC->rcvP['remise_ent'] = prepareNombreTraitement($PC->rcvP['remise_ent']);
     $PC->rcvP['tauxTVA_ent'] = prepareNombreTraitement($PC->rcvP['tauxTVA_ent']);
     if(!array_key_exists('siege_ent', $PC->rcvP))
-        $PC->rcvP['siege_ent'] = '0';
+	$PC->rcvP['siege_ent'] = '0';
     echo updateBDD($PC->rcvP['id_ent'], 'contactEntreprise', $PC->rcvP, 'LightInfo', 'web', true);
     exit;
 }
@@ -59,7 +59,7 @@ elseif($PC->rcvP['action'] == 'modifEntPopup') {
     $PC->rcvP['remise_ent'] = prepareNombreTraitement($PC->rcvP['remise_ent']);
     $PC->rcvP['tauxTVA_ent'] = prepareNombreTraitement($PC->rcvP['tauxTVA_ent']);
     if(!array_key_exists('siege_ent', $PC->rcvP))
-        $PC->rcvP['siege_ent'] = '0';
+	$PC->rcvP['siege_ent'] = '0';
     echo updateBDD($PC->rcvP['id_ent'], 'contactEntreprise', $PC->rcvP, 'popup', 'web', true);
     exit;
 }
@@ -71,7 +71,7 @@ elseif($PC->rcvP['action'] == 'modifBigEnt') {
     $PC->rcvP['remise_ent'] = prepareNombreTraitement($PC->rcvP['remise_ent']);
     $PC->rcvP['tauxTVA_ent'] = prepareNombreTraitement($PC->rcvP['tauxTVA_ent']);
     if(!array_key_exists('siege_ent', $PC->rcvP))
-        $PC->rcvP['siege_ent'] = '0';
+	$PC->rcvP['siege_ent'] = '0';
     echo updateBDD($PC->rcvP['id_ent'], 'contactEntreprise', $PC->rcvP, 'BigInfo', 'web', true);
 
     exit;
@@ -157,19 +157,19 @@ elseif($PC->rcvG['action'] == 'appelCont') {
 }
 elseif($PC->rcvP['action'] == 'addAppelCont') {
     if($PC->rcvP['contact_app'] != '') {
-        $PC->rcvP['utilisateur_app'] = $_SESSION['user']['id'];
-        if($PC->rcvP['rappel'] != "1") {
-            $PC->rcvP['rappel_app'] = null;
-            $PC->rcvP['heure_app'] = null;
-        }
-        $model = new appelModel();
-        $result = $model->insert($PC->rcvP);
-        echo viewFiche($PC->rcvP['id_ent'], 'contactEntreprise', 'all', 'non', 'web', true, 'Appel Enregistré');
-        exit;
+	$PC->rcvP['utilisateur_app'] = $_SESSION['user']['id'];
+	if($PC->rcvP['rappel'] != "1") {
+	    $PC->rcvP['rappel_app'] = null;
+	    $PC->rcvP['heure_app'] = null;
+	}
+	$model = new appelModel();
+	$result = $model->insert($PC->rcvP);
+	echo viewFiche($PC->rcvP['id_ent'], 'contactEntreprise', 'all', 'non', 'web', true, 'Appel Enregistré');
+	exit;
     }
     else {
-        echo '<erreur>erreurPopupAppel</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
-        exit;
+	echo '<erreur>erreurPopupAppel</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
+	exit;
     }
 }
 elseif($PC->rcvG['action'] == 'addAppelEnt') {
@@ -179,10 +179,10 @@ elseif($PC->rcvG['action'] == 'addAppelEnt') {
     $res = $sql->getDataFromID($PC->rcvG['entreprise']);
 
     if(count($res[1][0]['contact']) < 5 and count($res[1][0]['contact'] > 0)) {
-        $data['civ_def'] = $res[1][0]['contact'][0]['civ_cont'];
-        $data['prenom_def'] = $res[1][0]['contact'][0]['prenom_cont'];
-        $data['nom_def'] = $res[1][0]['contact'][0]['nom_cont'];
-        $data['id_def'] = $res[1][0]['contact'][0]['id_cont'];
+	$data['civ_def'] = $res[1][0]['contact'][0]['civ_cont'];
+	$data['prenom_def'] = $res[1][0]['contact'][0]['prenom_cont'];
+	$data['nom_def'] = $res[1][0]['contact'][0]['nom_cont'];
+	$data['id_def'] = $res[1][0]['contact'][0]['id_cont'];
     }
 
     $data['nom_ent'] = $res[1][0]['nom_ent'];
@@ -217,30 +217,30 @@ elseif($PC->rcvG['action'] == 'modifProjetEnt') {
 }
 elseif($PC->rcvP['action'] == 'modifProj') {
     if($PC->rcvP['contact_proj'] != '') {
-        $model = new projetModel();
-        $result = $model->update($PC->rcvP, $PC->rcvP['id_proj']);
-        $model = new contactEntrepriseModel();
-        $datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
-        $datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
-        $view = new contactEntrepriseView();
-        echo $view->view($datas, 'interneProjet', 'Projet Modifié');
-        exit;
+	$model = new projetModel();
+	$result = $model->update($PC->rcvP, $PC->rcvP['id_proj']);
+	$model = new contactEntrepriseModel();
+	$datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
+	$datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
+	$view = new contactEntrepriseView();
+	echo $view->view($datas, 'interneProjet', 'Projet Modifié');
+	exit;
     }
     else {
-        echo '<erreur>erreurPopupProj</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
-        exit;
+	echo '<erreur>erreurPopupProj</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
+	exit;
     }
 }
 elseif($PC->rcvP['action'] == 'modifAppelCont') {
     if($PC->rcvP['contact_app'] != '') {
-        $model = new appelModel();
-        $result = $model->update($PC->rcvP, $PC->rcvP['id_app']);
-        echo viewFiche($PC->rcvP['id_ent'], 'contactEntreprise', 'all', 'non', 'web', true, 'Appel Modifié');
-        exit;
+	$model = new appelModel();
+	$result = $model->update($PC->rcvP, $PC->rcvP['id_app']);
+	echo viewFiche($PC->rcvP['id_ent'], 'contactEntreprise', 'all', 'non', 'web', true, 'Appel Modifié');
+	exit;
     }
     else {
-        echo '<erreur>erreurPopupAppel</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
-        exit;
+	echo '<erreur>erreurPopupAppel</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
+	exit;
     }
 
 }
@@ -282,18 +282,18 @@ elseif($PC->rcvP['action'] == 'suppApp') {
 }
 elseif($PC->rcvP['action'] == 'addProjAppel') {
     if($PC->rcvP['contact_proj'] != '') {
-        $model = new projetModel();
-        $result = $model->insert($PC->rcvP);
-        $model = new contactEntrepriseModel();
-        $datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
-        $datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
-        $view = new contactEntrepriseView();
-        echo $view->view($datas, 'interneProjet', 'Projet enregistré');
-        exit;
+	$model = new projetModel();
+	$result = $model->insert($PC->rcvP);
+	$model = new contactEntrepriseModel();
+	$datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
+	$datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
+	$view = new contactEntrepriseView();
+	echo $view->view($datas, 'interneProjet', 'Projet enregistré');
+	exit;
     }
     else {
-        echo '<erreur>erreurPopupProj</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
-        exit;
+	echo '<erreur>erreurPopupProj</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
+	exit;
     }
 }
 elseif($PC->rcvG['action'] == 'addProjetEnt') {
@@ -307,18 +307,18 @@ elseif($PC->rcvG['action'] == 'addProjetEnt') {
 }
 elseif($PC->rcvP['action'] == 'addProjet') {
     if($PC->rcvP['contact_proj'] != '') {
-        $model = new projetModel();
-        $result = $model->insert($PC->rcvP);
-        $model = new contactEntrepriseModel();
-        $datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
-        $datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
-        $view = new contactEntrepriseView();
-        echo $view->view($datas, 'interneProjet', 'Projet enregistré');
-        exit;
+	$model = new projetModel();
+	$result = $model->insert($PC->rcvP);
+	$model = new contactEntrepriseModel();
+	$datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
+	$datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
+	$view = new contactEntrepriseView();
+	echo $view->view($datas, 'interneProjet', 'Projet enregistré');
+	exit;
     }
     else {
-        echo '<erreur>erreurPopupProj</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
-        exit;
+	echo '<erreur>erreurPopupProj</erreur><span class="important" style="text-align:center;">Il faut un contact !</span>';
+	exit;
     }
 }
 else {

@@ -57,33 +57,33 @@ elseif($PC->rcvG['action'] == 'doModifAffaire') {
 
     if($control[0]) // si elles sont bonnes, on lance le modèle pour modification
     {
-        $jour = substr($PC->rcvP['echeance_aff'],0,2);
-        $mois = substr($PC->rcvP['echeance_aff'], 3, 2);
-        $année = substr($PC->rcvP['echeance_aff'], 6, 4);
-        $heure = substr($PC->rcvP['echeance_aff'], 14, 2);
-        $minute = substr($PC->rcvP['echeance_aff'], 17, 2);
-        $PC->rcvP['echeance_aff'] = $année.'-'.$mois.'-'.$jour.' '.$heure.':'.$minute;
-        $PC->rcvP['actif_aff'] = (array_key_exists('actif_aff', $PC->rcvP)) ? 1 : 0;
+	$jour = substr($PC->rcvP['echeance_aff'],0,2);
+	$mois = substr($PC->rcvP['echeance_aff'], 3, 2);
+	$année = substr($PC->rcvP['echeance_aff'], 6, 4);
+	$heure = substr($PC->rcvP['echeance_aff'], 14, 2);
+	$minute = substr($PC->rcvP['echeance_aff'], 17, 2);
+	$PC->rcvP['echeance_aff'] = $année.'-'.$mois.'-'.$jour.' '.$heure.':'.$minute;
+	$PC->rcvP['actif_aff'] = (array_key_exists('actif_aff', $PC->rcvP)) ? 1 : 0;
 
-        $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $sqlConn->makeRequeteFree('select entreprise_cont from contact where id_cont = '.$PC->rcvP['contact_aff'].';');
-        $temp = $sqlConn->process2();
-        $entreprise_aff=$temp[1][0]['entreprise_cont'];
-        $model  = new affaireModel();
-        $result = $model->update(stripslashs($PC->rcvP),$PC->rcvG['id_aff'], $entreprise_aff);
-        if($result[0]) {
-            viewFiche($PC->rcvG['id_aff'], 'affaire', 'afterModif');
-        }
+	$sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	$sqlConn->makeRequeteFree('select entreprise_cont from contact where id_cont = '.$PC->rcvP['contact_aff'].';');
+	$temp = $sqlConn->process2();
+	$entreprise_aff=$temp[1][0]['entreprise_cont'];
+	$model  = new affaireModel();
+	$result = $model->update(stripslashs($PC->rcvP),$PC->rcvG['id_aff'], $entreprise_aff);
+	if($result[0]) {
+	    viewFiche($PC->rcvG['id_aff'], 'affaire', 'afterModif');
+	}
     }
     else {
-        ?>
+	?>
 <root><go to="waAffaireModif"/>
     <title set="waAffaireModif"><?php echo $result[1][0]['id_aff'];?></title>
     <part><destination mode="replace" zone="waAffaireModif" create="true"/>
         <data><![CDATA[ <?php echo affaireView::Modif($PC->rcvP,$control[2],$control[1],$PC->rcvG['id_aff']); ?> ]]></data>
     </part><script><![CDATA[ _KK(); ]]></script>
 </root>
-        <?php
+	<?php
     }
 }
 
@@ -91,10 +91,10 @@ elseif($PC->rcvG['action'] == 'archiver') {
     $info = new affaireModel();
     $result = $info->getDataFromID($PC->rcvG['id_aff']);
     if($result[1][0]['commercial_aff'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('affaire', 37);
+	aiJeLeDroit('affaire', 37);
     }
     else {
-        aiJeLeDroit('affaire', 27);
+	aiJeLeDroit('affaire', 27);
     }
     if($result[0]) { ?>
 <root><go to="waAffaireAction"/>
@@ -103,14 +103,14 @@ elseif($PC->rcvG['action'] == 'archiver') {
         <data><![CDATA[ <?php echo affaireView::archiver($result[1][0]); ?> ]]></data>
     </part>
 </root>
-        <?php }
+	<?php }
     else { ?>
 <root><go to="waAffaireModif"/>
     <part><destination mode="replace" zone="waAffaireModif" create="true"/>
         <data><![CDATA[ <div class="iBlock"><div class="err">Cette affaire n'<strong>existe plus</strong><br/></div></div> ]]></data>
     </part>
 </root>
-        <?php
+	<?php
     }
 }
 elseif($PC->rcvG['action'] == 'doArchivage') {
@@ -119,8 +119,8 @@ elseif($PC->rcvG['action'] == 'doArchivage') {
     $devis = new devisModel();
     $info = $devis->getDataFromAffaire($PC->rcvG['id_aff']);
     foreach($info[1] as $v) {
-        $v['status_dev'] = 7;
-        $result = $devis->update($v, $v['id_dev']);
+	$v['status_dev'] = 7;
+	$result = $devis->update($v, $v['id_dev']);
     }
 
     ?>
@@ -138,22 +138,22 @@ elseif($PC->rcvG['action'] == 'doMarqueSuppAffaire') {
     $model = new affaireModel();
     $result = $model->update($data,$PC->rcvG['id_aff'], $PC->rcvG['entreprise']);
     if($result[0]) {
-        $result = $model->getDataFromID($PC->rcvG['id_aff']);
-        if($result[0]) { ?>
+	$result = $model->getDataFromID($PC->rcvG['id_aff']);
+	if($result[0]) { ?>
 <root><go to="waAffaireFiche"/>
     <title set="waAffaireFiche"><?php echo $result[1][0]['id_aff']." Marquée supprimée."; ?></title>
     <part><destination mode="replace" zone="waAffaireFiche" create="true"/>
         <data><![CDATA[ <?php echo affaireView::view($result[1][0]); ?> ]]></data>
     </part>
 </root>
-            <?php }
-        else { ?>
+	    <?php }
+	else { ?>
 <root><go to="waAffaireFiche"/>
     <part><destination mode="replace" zone="waAffaireFiche" create="true"/>
         <data><![CDATA[ <div class="iBlock"><div class="err">Cette affaire n'<strong>existe plus</strong><br/></div></div> ]]></data>
     </part>
 </root>
-            <?php }
+	    <?php }
     }
 }
 elseif($PC->rcvG['action'] == 'doDeleteAffaire') {
@@ -161,21 +161,21 @@ elseif($PC->rcvG['action'] == 'doDeleteAffaire') {
     $affaire = $info->getDataFromID($PC->rcvG['id_aff']);
     $result = $info->delete($PC->rcvG['id_aff']);
     if($result[0]) {
-        ?>
+	?>
 <root><go to="waAffaireDelete"/>
     <title set="waAffaireDelete"><?php echo $result[1][0]['id_aff']; ?></title>
     <part><destination mode="replace" zone="waAffaireDelete" create="true"/>
         <data><![CDATA[ <?php echo affaireView::delete($result[1][0]); ?> ]]></data>
     </part>
 </root>
-        <?php }
+	<?php }
     else { ?>
 <root><go to="waAffaireFiche"/>
     <part><destination mode="replace" zone="waAffaireFiche" create="true"/>
         <data><![CDATA[ <div class="iBlock"><div class="err">Cette affaire n'<strong>existe plus</strong><br/></div></div> ]]></data>
     </part>
 </root>
-        <?php }
+	<?php }
 }
 elseif($PC->rcvG['action'] == 'cloner') {
     viewFormulaire($PC->rcvG['id_aff'], 'affaire', 'cloner', 'iphone', true, '');
@@ -210,35 +210,35 @@ elseif($PC->rcvG['action'] == 'doAddAffaire') {
     $control = affaireControl::affaire($PC->rcvP);
     if($control[0]) // si elles sont bonnes, on lance le model pour insertion
     {
-        $jour = substr($PC->rcvP['echeance_aff'],0,2);
-        $mois = substr($PC->rcvP['echeance_aff'], 3, 2);
-        $année = substr($PC->rcvP['echeance_aff'], 6, 4);
-        $heure = substr($PC->rcvP['echeance_aff'], 14, 2);
-        $minute = substr($PC->rcvP['echeance_aff'], 17, 2);
-        $PC->rcvP['actif_aff'] = 1;
-        $PC->rcvP['archived_aff'] = 0;
-        $PC->rcvP['status_aff'] = 1;
-        $PC->rcvP['echeance_aff'] = $année.'-'.$mois.'-'.$jour.' '.$heure.':'.$minute;
-        $PC->rcvP['actif_aff'] = (array_key_exists('actif_aff', $PC->rcvP)) ? 1 : 0;
+	$jour = substr($PC->rcvP['echeance_aff'],0,2);
+	$mois = substr($PC->rcvP['echeance_aff'], 3, 2);
+	$année = substr($PC->rcvP['echeance_aff'], 6, 4);
+	$heure = substr($PC->rcvP['echeance_aff'], 14, 2);
+	$minute = substr($PC->rcvP['echeance_aff'], 17, 2);
+	$PC->rcvP['actif_aff'] = 1;
+	$PC->rcvP['archived_aff'] = 0;
+	$PC->rcvP['status_aff'] = 1;
+	$PC->rcvP['echeance_aff'] = $année.'-'.$mois.'-'.$jour.' '.$heure.':'.$minute;
+	$PC->rcvP['actif_aff'] = (array_key_exists('actif_aff', $PC->rcvP)) ? 1 : 0;
 
-        $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $sqlConn->makeRequeteFree('select entreprise_cont from contact where id_cont = '.$PC->rcvP['contact_aff'].';');
-        $temp = $sqlConn->process2();
-        $PC->rcvP['entreprise_aff']=$temp[1][0]['entreprise_cont'];
-        $model  = new affaireModel();
-        $resultinsert = $model->insert($PC->rcvP);
-        viewFiche($resultinsert['id_aff'], 'affaire');
+	$sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	$sqlConn->makeRequeteFree('select entreprise_cont from contact where id_cont = '.$PC->rcvP['contact_aff'].';');
+	$temp = $sqlConn->process2();
+	$PC->rcvP['entreprise_aff']=$temp[1][0]['entreprise_cont'];
+	$model  = new affaireModel();
+	$resultinsert = $model->insert($PC->rcvP);
+	viewFiche($resultinsert['id_aff'], 'affaire');
 
     }
     else {
-        ?>
+	?>
 <root><go to="waAffaireNew"/>
     <title set="waAffaireNew"><?php echo Affaire; ?></title>
     <part><destination mode="replace" zone="waAffaireNew" create="true"/>
         <data><![CDATA[ <?php echo affaireView::add($PC->rcvP, $control[2], $control[1]); ?> ]]></data>
     </part><script><![CDATA[ _KK(); ]]></script>
 </root>
-        <?php
+	<?php
     }
 
 }
@@ -282,10 +282,10 @@ elseif($PC->rcvG['action'] == 'rechercheavancee') {
 }
 elseif($PC->rcvG['action'] == 'doRechercheAvancee') {
     if(verifDroits('affaire',10)) {
-        $plus = '';
+	$plus = '';
     }
     else {
-        $plus = "AND commercial_aff = '".$_SESSION['user']['id']."' ";
+	$plus = "AND commercial_aff = '".$_SESSION['user']['id']."' ";
     }
     $info = new affaireModel();
     $result = $info->getDataForRA(stripslashs($PC->rcvP), $plus);
@@ -321,21 +321,21 @@ elseif($PC->rcvG['action'] == 'inputAffaireResult') {
     $_SESSION['searchAffaireQuery'] = $PC->rcvP['search'];
     aiJeLeDroit('affaire',5);
     if(verifDroits('affaire',10)) {
-        $plus = '';
+	$plus = '';
     }
     else {
-        $plus = "AND commercial_aff = '".$_SESSION['user']['id']."' ";
+	$plus = "AND commercial_aff = '".$_SESSION['user']['id']."' ";
     }
     $info = new affaireModel();
     $from = 0;
     $limit = $_SESSION['user']['config']['LenghtSearchAffaire'];
     $affaire = $info->getDataForSearch(stripslashs($PC->rcvP['search']),$limit,$from, $plus);
     if($affaire[0]) {
-        $out .= '<ul id="searchResultInputAffaireUl">';
-        $out .= affaireView::searchInputResultRow($affaire[1],$_SESSION['searchAffaireLayerBackTo'],$_SESSION['searchAffaireTagsBackTo']);
-        if(count($affaire[1]) >= $limit)
-            $out .= '<li class="iMore" id="searchResultInputAffaireMore'.$from.'"><a href="Affaire.php?action=inputAffaireContinue&from='.$limit.'" rev="async">Plus de résultats</a></li>';
-        $out .= '</ul>';
+	$out .= '<ul id="searchResultInputAffaireUl">';
+	$out .= affaireView::searchInputResultRow($affaire[1],$_SESSION['searchAffaireLayerBackTo'],$_SESSION['searchAffaireTagsBackTo']);
+	if(count($affaire[1]) >= $limit)
+	    $out .= '<li class="iMore" id="searchResultInputAffaireMore'.$from.'"><a href="Affaire.php?action=inputAffaireContinue&from='.$limit.'" rev="async">Plus de résultats</a></li>';
+	$out .= '</ul>';
     }
     else	$out .= '<h2 class="Contact">Affaire (0)</h2>';
 
@@ -345,7 +345,7 @@ elseif($PC->rcvG['action'] == 'inputAffaireResult') {
         <destination mode="replace" zone="SearchAffaireResultAsync"/>
         <data><![CDATA[
             <div class="iList">
-    <?php echo $out; ?>
+		    <?php echo $out; ?>
             </div>
 			]]></data>
     </part>
@@ -354,10 +354,10 @@ elseif($PC->rcvG['action'] == 'inputAffaireResult') {
 }
 elseif($PC->rcvG['action'] == 'inputAffaireContinue') {
     if(verifDroits('affaire',10)) {
-        $plus = '';
+	$plus = '';
     }
     else {
-        $plus = "AND commercial_aff = '".$_SESSION['user']['id']."' ";
+	$plus = "AND commercial_aff = '".$_SESSION['user']['id']."' ";
     }
     $info = new affaireModel();
     $zoneTo = $outJs = $out = '';
@@ -365,11 +365,11 @@ elseif($PC->rcvG['action'] == 'inputAffaireContinue') {
     $from = ($PC->rcvG['from'] != '') ? $PC->rcvG['from'] : 0;
     $result = $info->getDataForSearch($_SESSION['searchAffaireQuery'],$limit,$from, $plus);
     if($result[0]) {
-        $out .= affaireView::searchInputResultRow($result[1],$_SESSION['searchAffaireLayerBackTo'],$_SESSION['searchAffaireTagsBackTo']);
-        if(count($result[1]) >= $limit)
-            $out .= '<li class="iMore" id="searchResultInputAffaireMore'.$from.'"><a href="Affaire.php?action=inputAffaireContinue&from='.($from+$limit).'" rev="async">Plus de résultats</a></li>';
-        $outJs = 'removeElementFromDom(\'searchResultInputAffaireMore'.($from-$limit).'\')';
-        $zoneTo = 'searchResultInputAffaireUl';
+	$out .= affaireView::searchInputResultRow($result[1],$_SESSION['searchAffaireLayerBackTo'],$_SESSION['searchAffaireTagsBackTo']);
+	if(count($result[1]) >= $limit)
+	    $out .= '<li class="iMore" id="searchResultInputAffaireMore'.$from.'"><a href="Affaire.php?action=inputAffaireContinue&from='.($from+$limit).'" rev="async">Plus de résultats</a></li>';
+	$outJs = 'removeElementFromDom(\'searchResultInputAffaireMore'.($from-$limit).'\')';
+	$zoneTo = 'searchResultInputAffaireUl';
     }
 
     if($zoneTo != '') {	?>
@@ -380,7 +380,7 @@ elseif($PC->rcvG['action'] == 'inputAffaireContinue') {
         <script><![CDATA[ <?php echo $outJs; ?> ]]></script>
     </part>
 </root>
-        <?php
+	<?php
     }
 }
 elseif($PC->rcvG['action'] == 'statistiques') {

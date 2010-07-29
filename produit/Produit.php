@@ -38,22 +38,22 @@ elseif($PC->rcvP['action'] == 'modifProduit') {
     $control = new produitControl();
     $rs = $control->controlModif($PC->rcvP);
     if($rs[0]) {
-        $sql = new ProduitModel();
-        if(!array_key_exists('bestsell_prod', $PC->rcvP))
-            $PC->rcvP['bestsell_prod'] = 0;
-        if(!array_key_exists('stillAvailable_prod', $PC->rcvP))
-            $PC->rcvP['stillAvailable_prod'] = 0;
-        if($PC->rcvP['stock_prod'] == null)
-            $PC->rcvP['stock_prod'] = 0;
-        $rs = $sql->updateProduit($PC->rcvP, 'non', $PC->rcvP['idProduit']);
-        if($rs[0]) {
-            echo viewFiche($PC->rcvP['id_prod'], 'produit', 'interneInfos', 'non', 'web', true, 'Enregistré');
-            exit;
-        }
+	$sql = new ProduitModel();
+	if(!array_key_exists('bestsell_prod', $PC->rcvP))
+	    $PC->rcvP['bestsell_prod'] = 0;
+	if(!array_key_exists('stillAvailable_prod', $PC->rcvP))
+	    $PC->rcvP['stillAvailable_prod'] = 0;
+	if($PC->rcvP['stock_prod'] == null)
+	    $PC->rcvP['stock_prod'] = 0;
+	$rs = $sql->updateProduit($PC->rcvP, 'non', $PC->rcvP['idProduit']);
+	if($rs[0]) {
+	    echo viewFiche($PC->rcvP['id_prod'], 'produit', 'interneInfos', 'non', 'web', true, 'Enregistré');
+	    exit;
+	}
     }
     else {
-        echo '<erreur>error</erreur><span class="important" style="text-align:center;">'.$rs[1].'</span>';
-        exit;
+	echo '<erreur>error</erreur><span class="important" style="text-align:center;">'.$rs[1].'</span>';
+	exit;
     }
 
 }
@@ -62,26 +62,26 @@ elseif($PC->rcvP['action'] == 'addProduit') {
     $control = new produitControl();
     $rs = $control->controlajout($PC->rcvP);
     if($rs[0]) {
-        $sql = new ProduitModel();
-        if(!array_key_exists('bestsell_prod', $PC->rcvP))
-            $PC->rcvP['bestsell_prod'] = 0;
-        if(!array_key_exists('stillAvailable_prod', $PC->rcvP))
-            $PC->rcvP['stillAvailable_prod'] = 0;
-        if($PC->rcvP['stock_prod'] == null)
-            $PC->rcvP['stock_prod'] = 0;
-        $rs = $sql->insertProduit($PC->rcvP);
-        if($rs[0]) {
-            echo viewFiche($PC->rcvP['id_prod'], 'produit', 'afterCreate', 'non', 'web', true, 'Enregistré');
-            exit;
-        }
-        else {
-            echo '<erreur>error</erreur>'.$rs[1];
-            exit;
-        }
+	$sql = new ProduitModel();
+	if(!array_key_exists('bestsell_prod', $PC->rcvP))
+	    $PC->rcvP['bestsell_prod'] = 0;
+	if(!array_key_exists('stillAvailable_prod', $PC->rcvP))
+	    $PC->rcvP['stillAvailable_prod'] = 0;
+	if($PC->rcvP['stock_prod'] == null)
+	    $PC->rcvP['stock_prod'] = 0;
+	$rs = $sql->insertProduit($PC->rcvP);
+	if($rs[0]) {
+	    echo viewFiche($PC->rcvP['id_prod'], 'produit', 'afterCreate', 'non', 'web', true, 'Enregistré');
+	    exit;
+	}
+	else {
+	    echo '<erreur>error</erreur>'.$rs[1];
+	    exit;
+	}
     }
     else {
-        echo '<erreur>error</erreur><span class="important" style="text-align:center;">'.$rs[1].'</span>';
-        exit;
+	echo '<erreur>error</erreur><span class="important" style="text-align:center;">'.$rs[1].'</span>';
+	exit;
     }
 
 }
@@ -89,26 +89,26 @@ elseif($PC->rcvP['action'] == 'modifPF') {
     aiJeLeDroit('produit', 15, 'web');
     $sql = new produitModel();
     foreach($PC->rcvP['idFourn'] as $k=>$v) {
-        if($PC->rcvP['ractif'][$k] != 1) {
-            $data['fournisseur_id'] = $v;
-            $data['produit_id'] = $PC->rcvP['idProduit'];
-            $data['prixF'] = $PC->rcvP['prixF'][$k];
-            $data['remiseF'] = $PC->rcvP['remiseF'][$k];
-            if($PC->rcvP['actif'][$k] == 1)
-                $data['actif'] = 0;
-            else
-                $data['actif'] = 1;
-        }
-        else {
-            unset($data);
-            $data['fournisseur_id'] = $v;
-            $data['produit_id'] = $PC->rcvP['idProduit'];
-            $data['actif'] = 1;
-        }
-        if($PC->rcvP['supp'][$k] != 1)
-            $rs = $sql->updateProduitFournisseur($data);
-        else
-            $rs = $sql->supprimerProduitFournisseur($v, $PC->rcvP['idProduit']);
+	if($PC->rcvP['ractif'][$k] != 1) {
+	    $data['fournisseur_id'] = $v;
+	    $data['produit_id'] = $PC->rcvP['idProduit'];
+	    $data['prixF'] = $PC->rcvP['prixF'][$k];
+	    $data['remiseF'] = $PC->rcvP['remiseF'][$k];
+	    if($PC->rcvP['actif'][$k] == 1)
+		$data['actif'] = 0;
+	    else
+		$data['actif'] = 1;
+	}
+	else {
+	    unset($data);
+	    $data['fournisseur_id'] = $v;
+	    $data['produit_id'] = $PC->rcvP['idProduit'];
+	    $data['actif'] = 1;
+	}
+	if($PC->rcvP['supp'][$k] != 1)
+	    $rs = $sql->updateProduitFournisseur($data);
+	else
+	    $rs = $sql->supprimerProduitFournisseur($v, $PC->rcvP['idProduit']);
     }
     echo viewFiche($PC->rcvP['idProduit'], 'produit', 'interneFourn', 'non', 'web', true, 'Enregistré');
     exit;
@@ -128,11 +128,11 @@ elseif($PC->rcvG['action'] == 'addFournProd') {
 elseif($PC->rcvP['action'] == 'addProduitFourn') {
     aiJeLeDroit('produit', 15, 'web');
     if($PC->rcvP['fournisseur_id'] == '') {
-        exit;
+	exit;
     }
     if($PC->rcvP['prixF'] == '') {
-        echo '<erreur>error</erreur><span class="important" >Il vous faut remplir un prix public à ce fournisseur</span>';
-        exit;
+	echo '<erreur>error</erreur><span class="important" >Il vous faut remplir un prix public à ce fournisseur</span>';
+	exit;
     }
     $sql = new produitModel();
     $PC->rcvP['produit_id'] = $PC->rcvP['idProduit'];
@@ -166,26 +166,26 @@ elseif($PC->rcvP['action'] == 'addProdPopup') {
     $control = new produitControl();
     $rs = $control->controlajout($PC->rcvP);
     if($rs[0]) {
-        $sql = new ProduitModel();
-        if(!array_key_exists('bestsell_prod', $PC->rcvP))
-            $PC->rcvP['bestsell_prod'] = 0;
-        if(!array_key_exists('stillAvailable_prod', $PC->rcvP))
-            $PC->rcvP['stillAvailable_prod'] = 0;
-        if($PC->rcvP['stock_prod'] == null)
-            $PC->rcvP['stock_prod'] = 0;
-        $rs = $sql->insertProduit($PC->rcvP);
-        if($rs[0]) {
-            echo '{ "datas" : { "id_prod" : "'.$PC->rcvP['id_prod'].'", "prix_prod" : "'.$PC->rcvP['prix_prod'].'", "description_prod" : "'.$PC->rcvP['description_prod'].'" } }';
-            exit;
-        }
-        else {
-            echo '{ "error" : "'.$rs[1].'"}';
-            exit;
-        }
+	$sql = new ProduitModel();
+	if(!array_key_exists('bestsell_prod', $PC->rcvP))
+	    $PC->rcvP['bestsell_prod'] = 0;
+	if(!array_key_exists('stillAvailable_prod', $PC->rcvP))
+	    $PC->rcvP['stillAvailable_prod'] = 0;
+	if($PC->rcvP['stock_prod'] == null)
+	    $PC->rcvP['stock_prod'] = 0;
+	$rs = $sql->insertProduit($PC->rcvP);
+	if($rs[0]) {
+	    echo '{ "datas" : { "id_prod" : "'.$PC->rcvP['id_prod'].'", "prix_prod" : "'.$PC->rcvP['prix_prod'].'", "description_prod" : "'.$PC->rcvP['description_prod'].'" } }';
+	    exit;
+	}
+	else {
+	    echo '{ "error" : "'.$rs[1].'"}';
+	    exit;
+	}
     }
     else {
-        echo '{ "error" : "<span class=\"important\">'.$rs[1].'</span>"}';
-        exit;
+	echo '{ "error" : "<span class=\"important\">'.$rs[1].'</span>"}';
+	exit;
     }
 }
 elseif($PC->rcvG['action'] == 'addFamille') {
@@ -195,23 +195,23 @@ elseif($PC->rcvG['action'] == 'addFamille') {
 }
 elseif($PC->rcvP['action'] == 'addFamille') {
     if($PC->rcvP['nom_prodfam'] == "") {
-        $view = new ProduitView();
-        echo $view->popupAddFamille("Vous devez entrer un nom pour votre famille");
-        exit;
+	$view = new ProduitView();
+	echo $view->popupAddFamille("Vous devez entrer un nom pour votre famille");
+	exit;
     }
     else {
-        $model = new produitModel();
-        $model->insertFamille($PC->rcvP['nom_prodfam']);
-        if($PC->rcvP['popup'] != 'popup')
-            echo '<img alt="loader" src="../img/ajax-loader.gif" onload="$(\'selectFamilleProd\').options['.$model->getLastFamille().'] = new Option(\''.$PC->rcvP['nom_prodfam'].'\', \''.$model->getLastFamille().'\');$(\'selectFamilleProd\').selectedIndex = '.$model->getLastFamille().'; zuno.popup.close();" />';
-        else {
-            $view = new ProduitView();
-            $datas['dureeR'] = $model->getRenews();
-            $datas['famille'] = $model->getAllFamille();
-            $datas['data']['famille_prod'] = $model->getLastFamille();
-            echo $view->creer($datas, true);
-        }
-        exit;
+	$model = new produitModel();
+	$model->insertFamille($PC->rcvP['nom_prodfam']);
+	if($PC->rcvP['popup'] != 'popup')
+	    echo '<img alt="loader" src="../img/ajax-loader.gif" onload="$(\'selectFamilleProd\').options['.$model->getLastFamille().'] = new Option(\''.$PC->rcvP['nom_prodfam'].'\', \''.$model->getLastFamille().'\');$(\'selectFamilleProd\').selectedIndex = '.$model->getLastFamille().'; zuno.popup.close();" />';
+	else {
+	    $view = new ProduitView();
+	    $datas['dureeR'] = $model->getRenews();
+	    $datas['famille'] = $model->getAllFamille();
+	    $datas['data']['famille_prod'] = $model->getLastFamille();
+	    echo $view->creer($datas, true);
+	}
+	exit;
     }
 }
 else {

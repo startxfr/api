@@ -137,48 +137,48 @@ function mp_FileReadFile($filename) {
 function mp_new_message($message_array) {
     $headers = $data = array();
     $boundary = mp_new_boundary();
-	while(list(, $chunk) = each($message_array)) {
-	    $mess = TRUE;
-	    unset($headers);
-	    unset($data);
-	    if (!$chunk['no_base64']) {
+    while(list(, $chunk) = each($message_array)) {
+	$mess = TRUE;
+	unset($headers);
+	unset($data);
+	if (!$chunk['no_base64']) {
 	    $headers['Content-ID'] = mp_new_message_id();
-		$headers['Content-Transfer-Encoding'] = 'BASE64';
-		if (strlen($chunk['filename'])) {
-		    $headers['Content-Type'] = $chunk['content_type'].'; name="'.$chunk['filename'].'"';
-		    $headers['Content-Disposition'] = 'attachment; filename="'.$chunk['filename'].'"';
-		}
-		else $headers['Content-Type'] = $chunk['content_type'];
-		$data = chunk_split(base64_encode($chunk['data']),60,"\n");
+	    $headers['Content-Transfer-Encoding'] = 'BASE64';
+	    if (strlen($chunk['filename'])) {
+		$headers['Content-Type'] = $chunk['content_type'].'; name="'.$chunk['filename'].'"';
+		$headers['Content-Disposition'] = 'attachment; filename="'.$chunk['filename'].'"';
 	    }
-	    else {
-		$headers['Content-Type'] = $chunk['content_type'];
-		$data = $chunk['data'] . "\n";
-	    }
-
-	    if (is_array($chunk['headers']) && count($chunk['headers']))
-		while(list($key, $val) = each($chunk['headers']))
-		    $headers[$key] = $val;
-
-	    $buf .= '--' . $boundary. "\n";
-	    while(list($key, $val) = each($headers))
-		$buf .= $key.': '.$val."\n";
-	    $buf .= "\n";
-	    $buf .= $data;
+	    else $headers['Content-Type'] = $chunk['content_type'];
+	    $data = chunk_split(base64_encode($chunk['data']),60,"\n");
 	}
-	if ($mess) {
-	    $buf .= '--' . $boundary. '--' ;
-	    return array(
-		    0 => $buf,
-		    1 => 'MIME-Version: 1.0'."\n".
-			    'Content-Type: MULTIPART/MIXED;'."\r\n".
+	else {
+	    $headers['Content-Type'] = $chunk['content_type'];
+	    $data = $chunk['data'] . "\n";
+	}
+
+	if (is_array($chunk['headers']) && count($chunk['headers']))
+	    while(list($key, $val) = each($chunk['headers']))
+		$headers[$key] = $val;
+
+	$buf .= '--' . $boundary. "\n";
+	while(list($key, $val) = each($headers))
+	    $buf .= $key.': '.$val."\n";
+	$buf .= "\n";
+	$buf .= $data;
+    }
+    if ($mess) {
+	$buf .= '--' . $boundary. '--' ;
+	return array(
+		0 => $buf,
+		1 => 'MIME-Version: 1.0'."\n".
+			'Content-Type: MULTIPART/MIXED;'."\r\n".
 			'  BOUNDARY="'.$boundary.'"'."\r\n",
-		    2 => array('MIME-Version: 1.0',
-			    'Content-Type: MULTIPART/MIXED;'."\r\n".
+		2 => array('MIME-Version: 1.0',
+			'Content-Type: MULTIPART/MIXED;'."\r\n".
 				'  BOUNDARY="'.$boundary.'"\r\n','')
-	    );
+	);
 
-	}
+    }
 }
 
 

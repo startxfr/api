@@ -36,32 +36,26 @@ $portlet = new PageAdminPortlet();
 
 /////////////////////////////////
 
-if ($PC->rcvP['bouton'] == 'Annuler')
-{
+if ($PC->rcvP['bouton'] == 'Annuler') {
+    header("Location: PageManage.php ");
+}
+elseif ($PC->rcvP['action'] == 'delete') {
+    //analyse des données renvoyées
+    if($PC->rcvP['id'] != '') {
+	PageAdminToolkit::DBDelete($PC->rcvP['id'], $PC->rcvP['channel']);
 	header("Location: PageManage.php ");
-}
-elseif ($PC->rcvP['action'] == 'delete')
-{
-	//analyse des données renvoyées
-	if($PC->rcvP['id'] != '')
-	{
-		PageAdminToolkit::DBDelete($PC->rcvP['id'], $PC->rcvP['channel']);
-		header("Location: PageManage.php ");
-	}
-	else
-	{
-		header("Location: PageManage.php ");
-	}
-}
-elseif ($PC->rcvG['id'] != '')
-{
-	$portlet->SetSelected($PC->rcvG['id']);
-	$portlet->Type('DELETE');
-	$content = $portlet->process();
-}
-else
-{
+    }
+    else {
 	header("Location: PageManage.php ");
+    }
+}
+elseif ($PC->rcvG['id'] != '') {
+    $portlet->SetSelected($PC->rcvG['id']);
+    $portlet->Type('DELETE');
+    $content = $portlet->process();
+}
+else {
+    header("Location: PageManage.php ");
 }
 
 /*------------------------------------------------------------------------+

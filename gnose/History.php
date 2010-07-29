@@ -36,36 +36,32 @@ $XML	= $toto->process();
 //On charge le processeur XSL
 $output = new Xml2Xsl();
 
-if ($PC->rcvG['rev'] != '')
-{
-	$varinXSL['Rev'] = $PC->rcvG['rev'];
-	$output->xslFile("GNOSE/History.xsl");
+if ($PC->rcvG['rev'] != '') {
+    $varinXSL['Rev'] = $PC->rcvG['rev'];
+    $output->xslFile("GNOSE/History.xsl");
+    $output->xmlFile($XML);
+    $output->xslParameter($varinXSL);
+    $sortie = stripslashs($output->Process());
+    if ($sortie == '') {
+	//modifie le fichier de cache utilisé
+	$toto->switchSVNPool('PERSO','',"History");
+	$XML	= $toto->process();
 	$output->xmlFile($XML);
-	$output->xslParameter($varinXSL);
-	$sortie = stripslashs($output->Process());
-	if ($sortie == '')
-	{
-		//modifie le fichier de cache utilisé
-		$toto->switchSVNPool('PERSO','',"History");
-		$XML	= $toto->process();
-		$output->xmlFile($XML);
-		$sortie = $output->Process();
-		if ($sortie == '')
-		{
-			//modifie le fichier de cache utilisé
-			$toto->switchSVNPool('ARCHIVES','',"History");
-			$XML	= $toto->process();
-			$output->xmlFile($XML);
-			$sortie = $output->Process();
-		}
+	$sortie = $output->Process();
+	if ($sortie == '') {
+	    //modifie le fichier de cache utilisé
+	    $toto->switchSVNPool('ARCHIVES','',"History");
+	    $XML	= $toto->process();
+	    $output->xmlFile($XML);
+	    $sortie = $output->Process();
 	}
+    }
 }
-else
-{
-	//On crée le XSL
-	$output->xslFile("GNOSE/HistoryList.xsl");
-	$output->xmlFile($XML);
-	$sortie = stripslashs($output->Process());
+else {
+    //On crée le XSL
+    $output->xslFile("GNOSE/HistoryList.xsl");
+    $output->xmlFile($XML);
+    $sortie = stripslashs($output->Process());
 }
 
 /*------------------------------------------------------------------------+

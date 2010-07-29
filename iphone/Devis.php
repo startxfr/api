@@ -71,49 +71,49 @@ elseif($PC->rcvG['action'] == 'doModifProduit') {
     $info= new devisModel();
     $result = array();
     for($k=1;$k<=$_SESSION['produits']['nombre'];$k++) {
-        $idp = array($PC->rcvP['id_produit'.$k]);
+	$idp = array($PC->rcvP['id_produit'.$k]);
 
-        $data['id_produit']=FileCleanFileName($idp[0], 'SVN_PROP');
-        $data['quantite']=($PC->rcvP['quantite'.$k] == NULL || $PC->rcvP['quantite'.$k] == '') ? 1 : $PC->rcvP['quantite'.$k];
-        $data['remise']=($PC->rcvP['remise'.$k] == NULL || $PC->rcvP['remise'.$k] == '') ? 0 : $PC->rcvP['remise'.$k];
-        $data['id_devis']=$PC->rcvG['id_dev'];
-        $temp=$info->getInfoProduits($data['id_produit']);
-        $data['desc']=($PC->rcvP['desc'.$k] == NULL || $PC->rcvP['desc'.$k] == '') ? '*'.$temp[1][0]['nom_prod'].'*' : $PC->rcvP['desc'.$k];
-        $data['prix']= ($PC->rcvP['prix'.$k] == NULL || $PC->rcvP['prix'.$k] == '') ? $temp[1][0]['prix_prod'] : $PC->rcvP['prix'.$k];
-        $id_produit = $PC->rcvP['old_id'.$k];
-        $result[$k]=$info->updateProduits($data);
-        if($PC->rcvP['memorize'.'id_produit'.$k] == 'ok') {
-            $datab['id_prod']=$data['id_produit'];
-            $datab['nom_prod'] = $PC->rcvP['desc'.$k];
-            $datab['prix_prod'] = $data['prix'];
-            $datab['famille_prod'] = '0';
-            $datab['remisefournisseur_prod'] = '0';
-            $resultat = $info->addProduit($datab);
+	$data['id_produit']=FileCleanFileName($idp[0], 'SVN_PROP');
+	$data['quantite']=($PC->rcvP['quantite'.$k] == NULL || $PC->rcvP['quantite'.$k] == '') ? 1 : $PC->rcvP['quantite'.$k];
+	$data['remise']=($PC->rcvP['remise'.$k] == NULL || $PC->rcvP['remise'.$k] == '') ? 0 : $PC->rcvP['remise'.$k];
+	$data['id_devis']=$PC->rcvG['id_dev'];
+	$temp=$info->getInfoProduits($data['id_produit']);
+	$data['desc']=($PC->rcvP['desc'.$k] == NULL || $PC->rcvP['desc'.$k] == '') ? '*'.$temp[1][0]['nom_prod'].'*' : $PC->rcvP['desc'.$k];
+	$data['prix']= ($PC->rcvP['prix'.$k] == NULL || $PC->rcvP['prix'.$k] == '') ? $temp[1][0]['prix_prod'] : $PC->rcvP['prix'.$k];
+	$id_produit = $PC->rcvP['old_id'.$k];
+	$result[$k]=$info->updateProduits($data);
+	if($PC->rcvP['memorize'.'id_produit'.$k] == 'ok') {
+	    $datab['id_prod']=$data['id_produit'];
+	    $datab['nom_prod'] = $PC->rcvP['desc'.$k];
+	    $datab['prix_prod'] = $data['prix'];
+	    $datab['famille_prod'] = '0';
+	    $datab['remisefournisseur_prod'] = '0';
+	    $resultat = $info->addProduit($datab);
 
-        }
+	}
 
     }//On effectue la mise à jour dans la BDD autant de fois qu'il y a de produits.
     $ok = 1;
     foreach($result as $v) {
-        if(!$v[0]) {
-            $ok=0;
-        }
+	if(!$v[0]) {
+	    $ok=0;
+	}
     }//Si une requète a planté, on le récupère ici.
     if($ok) {
-        $result = $info->getProduitsFromID($PC->rcvG['id_dev']);
-        $sommeHT = 0;
-        foreach($result[1] as $v) {
-            $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
-        }//On génère le total à entrer dans la BDD devis.
-        $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
-        $infoprod=$sqlConn->process2();
-        $sommeHT = formatCurencyDatabase($sommeHT);
-        $sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
-        $temp = $sqlConn->process2();
+	$result = $info->getProduitsFromID($PC->rcvG['id_dev']);
+	$sommeHT = 0;
+	foreach($result[1] as $v) {
+	    $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
+	}//On génère le total à entrer dans la BDD devis.
+	$sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	$sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
+	$infoprod=$sqlConn->process2();
+	$sommeHT = formatCurencyDatabase($sommeHT);
+	$sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
+	$temp = $sqlConn->process2();
     }
     else {
-        $result[0] = 0;
+	$result[0] = 0;
     }//S'il y a eu une erreur, on balance l'erreur au bon endroit.
 
     if($result[0]) { ?>
@@ -123,14 +123,14 @@ elseif($PC->rcvG['action'] == 'doModifProduit') {
         <data><![CDATA[ <?php echo devisView::produits($result[1], $PC->rcvG['id_dev']); ?> ]]></data>
     </part>
 </root>
-        <?php }//Tout s'est bien passé, j'affiche.
+	<?php }//Tout s'est bien passé, j'affiche.
     else { ?>
 <root><go to="waDevisProduits"/>
     <part><destination mode="replace" zone="waDevisProduits" create="true"/>
         <data><![CDATA[ <div class="iBlock"><div class="err">Ce devis n'<strong>existe plus</strong><br/></div></div> ]]></data>
     </part>
 </root>
-        <?php }//Rien ne va plus, je le dis à l'utilisateur.
+	<?php }//Rien ne va plus, je le dis à l'utilisateur.
 }
 /**
  * Dans le cas où l'on souhaite ajouter un produit à un devis
@@ -146,67 +146,67 @@ elseif($PC->rcvG['action'] == 'doAddProduit') {
     $control = produitControl::control($PC->rcvP);//Je controle les données
 
     if($control[0]) {
-        $idp = array($PC->rcvP['id_produit']);
-        $info= new devisModel();
-        $data['id_produit']=FileCleanFileName($idp[0], 'SVN_PROP');
-        $data['quantite']=($PC->rcvP['quantite'] == NULL || $PC->rcvP['quantite'] == '') ? 1 : $PC->rcvP['quantite'];
-        $data['remise']=($PC->rcvP['remise'] == NULL || $PC->rcvP['remise'] == '') ? 0 : $PC->rcvP['remise'];
-        $data['id_devis']=$PC->rcvG['id_dev'];
-        $temp=$info->getInfoProduits($data['id_produit']);
-        $data['desc']=($PC->rcvP['desc0'] == NULL || $PC->rcvP['desc0'] == '') ? '*'.$temp[1][0]['nom_prod'].'*' : '*'.$PC->rcvP['desc0'].'*';
-        $data['prix']= ($PC->rcvP['prix'] == NULL || $PC->rcvP['prix'] == '') ? $temp[1][0]['prix_prod'] : $PC->rcvP['prix'];
-        $result = $info->insertProduits($data);//Je fais l'insertion dans la BDD
-        if($result[0]) {
-            if($PC->rcvP['memorize'.'id_produit'] == 'ok') {
-                $datab['id_prod']=$PC->rcvP['id_produit'];
-                $datab['nom_prod'] = $PC->rcvP['desc0'];
-                $datab['prix_prod'] = $PC->rcvP['prix'];
-                $datab['famille_prod'] = '0';
-                $datab['remisefournisseur_prod'] = '0';
-                $result = $info->addProduit($datab);
+	$idp = array($PC->rcvP['id_produit']);
+	$info= new devisModel();
+	$data['id_produit']=FileCleanFileName($idp[0], 'SVN_PROP');
+	$data['quantite']=($PC->rcvP['quantite'] == NULL || $PC->rcvP['quantite'] == '') ? 1 : $PC->rcvP['quantite'];
+	$data['remise']=($PC->rcvP['remise'] == NULL || $PC->rcvP['remise'] == '') ? 0 : $PC->rcvP['remise'];
+	$data['id_devis']=$PC->rcvG['id_dev'];
+	$temp=$info->getInfoProduits($data['id_produit']);
+	$data['desc']=($PC->rcvP['desc0'] == NULL || $PC->rcvP['desc0'] == '') ? '*'.$temp[1][0]['nom_prod'].'*' : '*'.$PC->rcvP['desc0'].'*';
+	$data['prix']= ($PC->rcvP['prix'] == NULL || $PC->rcvP['prix'] == '') ? $temp[1][0]['prix_prod'] : $PC->rcvP['prix'];
+	$result = $info->insertProduits($data);//Je fais l'insertion dans la BDD
+	if($result[0]) {
+	    if($PC->rcvP['memorize'.'id_produit'] == 'ok') {
+		$datab['id_prod']=$PC->rcvP['id_produit'];
+		$datab['nom_prod'] = $PC->rcvP['desc0'];
+		$datab['prix_prod'] = $PC->rcvP['prix'];
+		$datab['famille_prod'] = '0';
+		$datab['remisefournisseur_prod'] = '0';
+		$result = $info->addProduit($datab);
 
 
-            }
-            $result = $info->getProduitsFromID($PC->rcvG['id_dev']);
-            $sommeHT = 0;
-            foreach($result[1] as $v) {
-                $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
-            }
-            $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-            $sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
-            $infoprod=$sqlConn->process2();
-            $sommeHT = formatCurencyDatabase($sommeHT);
-            $sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
-            $temp = $sqlConn->process2();
+	    }
+	    $result = $info->getProduitsFromID($PC->rcvG['id_dev']);
+	    $sommeHT = 0;
+	    foreach($result[1] as $v) {
+		$sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
+	    }
+	    $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	    $sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
+	    $infoprod=$sqlConn->process2();
+	    $sommeHT = formatCurencyDatabase($sommeHT);
+	    $sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
+	    $temp = $sqlConn->process2();
 
-            ?>
+	    ?>
 <root><go to="waDevisProduits"/>
     <title set="waDevisProduits"><?php echo 'Produits'; ?></title>
     <part><destination mode="replace" zone="waDevisProduits" create="true"/>
         <data><![CDATA[ <?php echo devisView::produits($result[1], $PC->rcvG['id_dev']); ?> ]]></data>
     </part>
 </root>
-            <?php
-        }//Tout va bien, je l'affiche.
-        else {
-            $test = ereg("Duplicate",$result[1],$erreur);
-            if ($test == 9 ) {
-                $mess = "Ce produit est déjà présent dans le devis en cours.";
-            }
-            else {
-                $mess = "Une erreur est survenue";
-            }
-            ?><root><go to="waModifProduits"/>
+	    <?php
+	}//Tout va bien, je l'affiche.
+	else {
+	    $test = ereg("Duplicate",$result[1],$erreur);
+	    if ($test == 9 ) {
+		$mess = "Ce produit est déjà présent dans le devis en cours.";
+	    }
+	    else {
+		$mess = "Une erreur est survenue";
+	    }
+	    ?><root><go to="waModifProduits"/>
     <title set="waModifProduits"><?php echo 'Produits'; ?></title>
     <part><destination mode="replace" zone="waModifProduits" create="true"/>
         <data><![CDATA[ <?php echo devisView::addProduits($PC->rcvP, $PC->rcvG['id_dev'], $mess); ?> ]]></data>
     </part>
 </root><?php
-        }
+	}
 
     }
     else {
-        ?><root><go to="waModifProduits"/>
+	?><root><go to="waModifProduits"/>
     <title set="waModifProduits"><?php echo 'Produits'; ?></title>
     <part><destination mode="replace" zone="waModifProduits" create="true"/>
         <data><![CDATA[ <?php echo devisView::addProduits($PC->rcvP, $PC->rcvG['id_dev'], $control[1]); ?> ]]></data>
@@ -224,26 +224,26 @@ elseif($PC->rcvG['action'] == 'suppProduit') {
 
     $result = $info->deleteProduits($data);//J'effectue la suppression du produit de la BDD.
     if($result[0]) {
-        $result = $info->getProduitsFromID($PC->rcvG['id_dev']);
-        $sommeHT = 0;
-        foreach($result[1] as $v) {
-            $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
-        }
-        $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        $sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
-        $infoprod=$sqlConn->process2();
-        $sommeHT = formatCurencyDatabase($sommeHT);
-        $sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
-        $temp = $sqlConn->process2();
+	$result = $info->getProduitsFromID($PC->rcvG['id_dev']);
+	$sommeHT = 0;
+	foreach($result[1] as $v) {
+	    $sommeHT += $v['prix']*(1-$v['remise']/100)*$v['quantite'];
+	}
+	$sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	$sqlConn->makeRequeteFree("select e.id_ent, e.nom_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
+	$infoprod=$sqlConn->process2();
+	$sommeHT = formatCurencyDatabase($sommeHT);
+	$sqlConn->makeRequeteFree("update devis set sommeHT_dev='".$sommeHT."' WHERE id_dev = '".$PC->rcvG['id_dev']."'");
+	$temp = $sqlConn->process2();
 
-        ?>
+	?>
 <root><go to="waDevisProduits"/>
     <title set="waDevisProduits"><?php echo 'Produits'; ?></title>
     <part><destination mode="replace" zone="waDevisProduits" create="true"/>
         <data><![CDATA[ <?php echo devisView::produits($result[1], $PC->rcvG['id_dev']); ?> ]]></data>
     </part>
 </root>
-        <?php
+	<?php
     }//J'affiche le résultat.
 }
 /**
@@ -262,26 +262,26 @@ elseif($PC->rcvG['action'] == 'doModifDevis') {
 
     if($control[0]) // si elles sont bonnes, on lance le modèle pour modification
     {
-        $info = new devisModel();
-        $result = $info->update($PC->rcvP,$PC->rcvG['id_dev']);//Je fais l'insertion
-        if($result[0]) {
+	$info = new devisModel();
+	$result = $info->update($PC->rcvP,$PC->rcvG['id_dev']);//Je fais l'insertion
+	if($result[0]) {
 
-            $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-            $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
-            $infoprod=$sqlConn->process2();
+	    $sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	    $sqlConn->makeRequeteFree("select e.id_ent, c.id_cont from devis left join entreprise e on e.id_ent=devis.entreprise_dev left join contact c on c.id_cont=devis.contact_dev where id_dev='".$PC->rcvG['id_dev']."';");
+	    $infoprod=$sqlConn->process2();
 
-            viewFiche($PC->rcvG['id_dev'], 'devis');
-        }//J'affiche le résultat.
+	    viewFiche($PC->rcvG['id_dev'], 'devis');
+	}//J'affiche le résultat.
     }
     else {
-        ?>
+	?>
 <root><go to="waDevisModif"/>
     <title set="waDevisModif"><?php echo $result[1][0]['id_dev'];?></title>
     <part><destination mode="replace" zone="waDevisModif" create="true"/>
         <data><![CDATA[ <?php echo devisView::modif($PC->rcvP,$control[2],$control[1],$PC->rcvG['id_dev']); ?> ]]></data>
     </part><script><![CDATA[ _KK(); ]]></script>
 </root>
-        <?php
+	<?php
     }//L'utilisateur n'a pas passé le controleur, je lui renvois son formulaire.
 }
 /**
@@ -300,21 +300,21 @@ elseif($PC->rcvG['action'] == 'doDeleteDevis') {
     //Je récupère l'ID du devis puis le supprime.
     if($result[0]) {
 
-        ?>
+	?>
 <root><go to="waDevisDelete"/>
     <title set="waDevisDelete"><?php echo $result[1][0]['id_dev']; ?></title>
     <part><destination mode="replace" zone="waDevisDelete" create="true"/>
         <data><![CDATA[ <?php echo devisView::delete($result[1][0]); ?> ]]></data>
     </part>
 </root>
-        <?php }//J'affiche le résultat.
+	<?php }//J'affiche le résultat.
     else { ?>
 <root><go to="waDevisFiche"/>
     <part><destination mode="replace" zone="waDevisFiche" create="true"/>
         <data><![CDATA[ <div class="iBlock"><div class="err">Ce devis n'<strong>existe plus</strong><br/></div></div> ]]></data>
     </part>
 </root>
-        <?php }//Problème, je préviens l'utilisateur.
+	<?php }//Problème, je préviens l'utilisateur.
 }
 /**
  * Si on veut ajouter un nouveau devis.
@@ -349,112 +349,112 @@ elseif($PC->rcvG['action'] == 'doAddDevis') {
 
     $control = devisControl::controlAdd($PC->rcvP);//Je controle les données forunies.
     if($control[0]) {
-        $info = new devisModel();
-        $id = $info->createId($PC->rcvP['affaire_dev']);
-        $ent = $info->getEntrepriseData($PC->rcvP['affaire_dev']);
-        $cont = $info->getContactData($PC->rcvP['contact_dev']);
-        if((!$ent[0] and !$cont[0]) or
-                ($ent[0] and (
-                        $ent[1][0]['add1_ent'] == NULL ||
-                                $ent[1][0]['cp_ent'] == NULL ||
-                                $ent[1][0]['ville_ent'] == NULL)) or
-                ($cont[0] and (
-                        $cont[1][0]['add1_cont'] == NULL ||
-                                $cont[1][0]['cp_cont'] == NULL ||
-                                $cont[1][0]['ville_cont'] == NULL))) {//Si je n'ai pas d'entreprise liée, ou si les adresses sont vides, je préviens l'utilisateur.
-            if($cont[0]) {
-                $data['nomdelivery_dev'] 	= $ent[1][0]['nom_cont'];
-                $data['adressedelivery_dev'] 	= $ent[1][0]['add1_cont'];
-                $data['adresse1delivery_dev'] = $ent[1][0]['add2_cont'];
-                $data['villedelivery_dev'] 	= $ent[1][0]['ville_cont'];
-                $data['cpdelivery_dev'] 	= $ent[1][0]['cp_cont'];
-                $data['paysdelivery_dev'] 	= $ent[1][0]['pays_cont'];
-            }
-            elseif($ent[0]) {
-                $data['nomdelivery_dev'] 	= $ent[1][0]['nom_ent'];
-                $data['adressedelivery_dev'] 	= $ent[1][0]['add1_ent'];
-                $data['adresse1delivery_dev'] = $ent[1][0]['add2_ent'];
-                $data['villedelivery_dev'] 	= $ent[1][0]['ville_ent'];
-                $data['cpdelivery_dev'] 	= $ent[1][0]['cp_ent'];
-                $data['paysdelivery_dev'] 	= $ent[1][0]['pays_ent'];
-            }
-            else  $data = array();
-            $in = array_merge($data,$PC->rcvP);
-            ?>
+	$info = new devisModel();
+	$id = $info->createId($PC->rcvP['affaire_dev']);
+	$ent = $info->getEntrepriseData($PC->rcvP['affaire_dev']);
+	$cont = $info->getContactData($PC->rcvP['contact_dev']);
+	if((!$ent[0] and !$cont[0]) or
+		($ent[0] and (
+			$ent[1][0]['add1_ent'] == NULL ||
+				$ent[1][0]['cp_ent'] == NULL ||
+				$ent[1][0]['ville_ent'] == NULL)) or
+		($cont[0] and (
+			$cont[1][0]['add1_cont'] == NULL ||
+				$cont[1][0]['cp_cont'] == NULL ||
+				$cont[1][0]['ville_cont'] == NULL))) {//Si je n'ai pas d'entreprise liée, ou si les adresses sont vides, je préviens l'utilisateur.
+	    if($cont[0]) {
+		$data['nomdelivery_dev'] 	= $ent[1][0]['nom_cont'];
+		$data['adressedelivery_dev'] 	= $ent[1][0]['add1_cont'];
+		$data['adresse1delivery_dev'] = $ent[1][0]['add2_cont'];
+		$data['villedelivery_dev'] 	= $ent[1][0]['ville_cont'];
+		$data['cpdelivery_dev'] 	= $ent[1][0]['cp_cont'];
+		$data['paysdelivery_dev'] 	= $ent[1][0]['pays_cont'];
+	    }
+	    elseif($ent[0]) {
+		$data['nomdelivery_dev'] 	= $ent[1][0]['nom_ent'];
+		$data['adressedelivery_dev'] 	= $ent[1][0]['add1_ent'];
+		$data['adresse1delivery_dev'] = $ent[1][0]['add2_ent'];
+		$data['villedelivery_dev'] 	= $ent[1][0]['ville_ent'];
+		$data['cpdelivery_dev'] 	= $ent[1][0]['cp_ent'];
+		$data['paysdelivery_dev'] 	= $ent[1][0]['pays_ent'];
+	    }
+	    else  $data = array();
+	    $in = array_merge($data,$PC->rcvP);
+	    ?>
 <root><go to="waDevisAddPlus"/>
     <title set="waDevisAddPlus"><?php echo "Coordonnées";?></title>
     <part><destination mode="replace" zone="waDevisAddPlus" create="true"/>
         <data><![CDATA[ <?php echo devisView::addPlus($in,array(),''); ?> ]]></data>
     </part><script><![CDATA[ _KK(); ]]></script>
 </root>
-            <?php //J'affiche un nouveau formulaire pour être sur que l'utilisateur sait ce qu'il fait.
+	    <?php //J'affiche un nouveau formulaire pour être sur que l'utilisateur sait ce qu'il fait.
 
-        }
-        elseif($ent[0] or $cont[0]) {//Conditions parfaites, je prépare les variables pour insertion.
-            if($cont[0]) {
-                $data['nomdelivery_dev'] 	= $ent[1][0]['nom_cont'];
-                $data['adressedelivery_dev'] 	= $ent[1][0]['add1_cont'];
-                $data['adresse1delivery_dev'] = $ent[1][0]['add2_cont'];
-                $data['villedelivery_dev'] 	= $ent[1][0]['ville_cont'];
-                $data['cpdelivery_dev'] 	= $ent[1][0]['cp_cont'];
-                $data['paysdelivery_dev'] 	= $ent[1][0]['pays_cont'];
-                $data['maildelivery_dev'] 	= $cont[1][0]['mail_cont'];
-            }
-            if($ent[0]) {
-                $data['entreprise_dev'] 	= $ent[1][0]['id_ent'];
-                $data['nomdelivery_dev'] 	= $ent[1][0]['nom_ent'];
-                $data['adressedelivery_dev'] 	= $ent[1][0]['add1_ent'];
-                $data['adresse1delivery_dev'] = $ent[1][0]['add2_ent'];
-                $data['villedelivery_dev'] 	= $ent[1][0]['ville_ent'];
-                $data['cpdelivery_dev'] 	= $ent[1][0]['cp_ent'];
-                $data['paysdelivery_dev'] 	= $ent[1][0]['pays_ent'];
-            }
+	}
+	elseif($ent[0] or $cont[0]) {//Conditions parfaites, je prépare les variables pour insertion.
+	    if($cont[0]) {
+		$data['nomdelivery_dev'] 	= $ent[1][0]['nom_cont'];
+		$data['adressedelivery_dev'] 	= $ent[1][0]['add1_cont'];
+		$data['adresse1delivery_dev'] = $ent[1][0]['add2_cont'];
+		$data['villedelivery_dev'] 	= $ent[1][0]['ville_cont'];
+		$data['cpdelivery_dev'] 	= $ent[1][0]['cp_cont'];
+		$data['paysdelivery_dev'] 	= $ent[1][0]['pays_cont'];
+		$data['maildelivery_dev'] 	= $cont[1][0]['mail_cont'];
+	    }
+	    if($ent[0]) {
+		$data['entreprise_dev'] 	= $ent[1][0]['id_ent'];
+		$data['nomdelivery_dev'] 	= $ent[1][0]['nom_ent'];
+		$data['adressedelivery_dev'] 	= $ent[1][0]['add1_ent'];
+		$data['adresse1delivery_dev'] = $ent[1][0]['add2_ent'];
+		$data['villedelivery_dev'] 	= $ent[1][0]['ville_ent'];
+		$data['cpdelivery_dev'] 	= $ent[1][0]['cp_ent'];
+		$data['paysdelivery_dev'] 	= $ent[1][0]['pays_ent'];
+	    }
 
-            $data['id_dev'] = $id;
-            $data['affaire_dev'] = $PC->rcvP['affaire_dev'];
-            $data['status_dev'] = '1';
-            $data['titre_dev'] = ($PC->rcvP['titre_dev'] != '') ? $PC->rcvP['titre_dev'] : '';
-            $data['commercial_dev'] = $PC->rcvP['commercial_dev'];
-            $data['sommeHT_dev'] = '0';
-            $data['contact_dev'] = $PC->rcvP['contact_dev'];
-            $data['contact_achat_dev'] = ($PC->rcvP['contact_achat_dev'] != '') ? $PC->rcvP['contact_achat_dev'] : NULL;
-            $data['tva_dev'] = $ent[1][0]['tauxTVA_ent'];
-            $resultinsert = $info->insert($data);//Je fais l'insertion.
-            if($resultinsert[0]) {
+	    $data['id_dev'] = $id;
+	    $data['affaire_dev'] = $PC->rcvP['affaire_dev'];
+	    $data['status_dev'] = '1';
+	    $data['titre_dev'] = ($PC->rcvP['titre_dev'] != '') ? $PC->rcvP['titre_dev'] : '';
+	    $data['commercial_dev'] = $PC->rcvP['commercial_dev'];
+	    $data['sommeHT_dev'] = '0';
+	    $data['contact_dev'] = $PC->rcvP['contact_dev'];
+	    $data['contact_achat_dev'] = ($PC->rcvP['contact_achat_dev'] != '') ? $PC->rcvP['contact_achat_dev'] : NULL;
+	    $data['tva_dev'] = $ent[1][0]['tauxTVA_ent'];
+	    $resultinsert = $info->insert($data);//Je fais l'insertion.
+	    if($resultinsert[0]) {
 
-                viewFiche($id, 'devis');
-            }
-            else {
-                ?>
+		viewFiche($id, 'devis');
+	    }
+	    else {
+		?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
     </part>
 </root>
-                <?php
-            }//Problème que j'explique à l'utilisateur.
-        }
-        else {
-            ?>
+		<?php
+	    }//Problème que j'explique à l'utilisateur.
+	}
+	else {
+	    ?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
     </part>
 </root>
-            <?php
-        }//Un autre problème...
+	    <?php
+	}//Un autre problème...
     }
     else {
-        ?>
+	?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo devisView::add($PC->rcvP,$control[2],$control[1]); ?> ]]></data>
     </part><script><![CDATA[ _KK(); ]]></script>
 </root>
-        <?php //L'utilisateur n'a pas passé le controleur.
+	<?php //L'utilisateur n'a pas passé le controleur.
     }
 }
 /**
@@ -463,110 +463,110 @@ elseif($PC->rcvG['action'] == 'doAddDevis') {
 elseif($PC->rcvG['action'] == 'doAddDevisPlus') {
     $control = devisControl::controlAdd($PC->rcvP);//Je passe les données au controleur.
     if($control[0]) {
-        $info = new devisModel();
-        $id = $info->createId($PC->rcvP['affaire_dev']);
-        $ent = $info->getEntrepriseData($PC->rcvP['affaire_dev']);
-        $cont = $info->getContactData($PC->rcvP['contact_dev']);
-        if($ent[0] && $cont[0] && ($PC->rcvP['affaire_dev'] != $PC->rcvG['id_aff']) && ($ent[1][0]['add1_ent'] == NULL || $ent[1][0]['cp_ent'] == NULL || $ent[1][0]['ville_ent'] == NULL)) {//Si l'utilisateur a modifié l'affaire liée à son devis, et que cette dernière n'est toujours pas liée à une entreprise ayant une adresse.
+	$info = new devisModel();
+	$id = $info->createId($PC->rcvP['affaire_dev']);
+	$ent = $info->getEntrepriseData($PC->rcvP['affaire_dev']);
+	$cont = $info->getContactData($PC->rcvP['contact_dev']);
+	if($ent[0] && $cont[0] && ($PC->rcvP['affaire_dev'] != $PC->rcvG['id_aff']) && ($ent[1][0]['add1_ent'] == NULL || $ent[1][0]['cp_ent'] == NULL || $ent[1][0]['ville_ent'] == NULL)) {//Si l'utilisateur a modifié l'affaire liée à son devis, et que cette dernière n'est toujours pas liée à une entreprise ayant une adresse.
 
-            ?>
+	    ?>
 <root><go to="waDevisAddPlus"/>
     <title set="waDevisAddPlus"><?php echo "Coordonnées";?></title>
     <part><destination mode="replace" zone="waDevisAddPlus" create="true"/>
         <data><![CDATA[ <?php echo devisView::addPlus($PC->rcvP, array(),'', $cont[1][0]); ?> ]]></data>
     </part><script><![CDATA[ _KK(); ]]></script>
 </root>
-            <?php //Je lui redemande confirmation que c'est bien son choix.
+	    <?php //Je lui redemande confirmation que c'est bien son choix.
 
-        }
-        elseif($ent[0] && $cont[0] && ($PC->rcvP['affaire_dev'] != $PC->rcvG['id_aff']) && ($ent[1][0]['add1_ent'] != NULL&& $ent[1][0]['cp_ent'] != NULL && $ent[1][0]['ville_ent'] != NULL)) {//La nouvelle affaire est liée à une entreprise, je prend en compte !
-            $data['id_dev'] = $id;
-            $data['affaire_dev'] = $PC->rcvP['affaire_dev'];
-            $data['entreprise_dev'] = $ent[1][0]['id_ent'];
-            $data['status_dev'] = '1';
-            $data['titre_dev'] = ($PC->rcvP['titre_dev'] != '') ? $PC->rcvP['titre_dev'] : $ent[1][0]['titre_aff'];
-            $data['commercial_dev'] = $PC->rcvP['commercial_dev'];
-            $data['sommeHT_dev'] = '0';
-            $data['contact_dev'] = $PC->rcvP['contact_dev'];
-            $data['contact_achat_dev'] = ($PC->rcvP['contact_achat_dev'] != '') ? $PC->rcvP['contact_achat_dev'] : NULL;
-            $data['nomdelivery_dev'] = $ent[1][0]['nom_ent'];
-            $data['adressedelivery_dev'] = $ent[1][0]['add1_ent'];
-            $data['adresse1delivery_dev'] = $ent[1][0]['add2_ent'];
-            $data['villedelivery_dev'] = $ent[1][0]['ville_ent'];
-            $data['cpdelivery_dev'] = $ent[1][0]['cp_ent'];
-            $data['paysdelivery_dev'] = $ent[1][0]['pays_ent'];
-            $data['maildelivery_dev'] = $cont[1][0]['mail_cont'];
-            $data['tva_dev'] = $ent[1][0]['tauxTVA_ent'];
-            $resultinsert = $info->insert($data);//Je fais l'insertion.
-            if($resultinsert[0]) {
+	}
+	elseif($ent[0] && $cont[0] && ($PC->rcvP['affaire_dev'] != $PC->rcvG['id_aff']) && ($ent[1][0]['add1_ent'] != NULL&& $ent[1][0]['cp_ent'] != NULL && $ent[1][0]['ville_ent'] != NULL)) {//La nouvelle affaire est liée à une entreprise, je prend en compte !
+	    $data['id_dev'] = $id;
+	    $data['affaire_dev'] = $PC->rcvP['affaire_dev'];
+	    $data['entreprise_dev'] = $ent[1][0]['id_ent'];
+	    $data['status_dev'] = '1';
+	    $data['titre_dev'] = ($PC->rcvP['titre_dev'] != '') ? $PC->rcvP['titre_dev'] : $ent[1][0]['titre_aff'];
+	    $data['commercial_dev'] = $PC->rcvP['commercial_dev'];
+	    $data['sommeHT_dev'] = '0';
+	    $data['contact_dev'] = $PC->rcvP['contact_dev'];
+	    $data['contact_achat_dev'] = ($PC->rcvP['contact_achat_dev'] != '') ? $PC->rcvP['contact_achat_dev'] : NULL;
+	    $data['nomdelivery_dev'] = $ent[1][0]['nom_ent'];
+	    $data['adressedelivery_dev'] = $ent[1][0]['add1_ent'];
+	    $data['adresse1delivery_dev'] = $ent[1][0]['add2_ent'];
+	    $data['villedelivery_dev'] = $ent[1][0]['ville_ent'];
+	    $data['cpdelivery_dev'] = $ent[1][0]['cp_ent'];
+	    $data['paysdelivery_dev'] = $ent[1][0]['pays_ent'];
+	    $data['maildelivery_dev'] = $cont[1][0]['mail_cont'];
+	    $data['tva_dev'] = $ent[1][0]['tauxTVA_ent'];
+	    $resultinsert = $info->insert($data);//Je fais l'insertion.
+	    if($resultinsert[0]) {
 
-                viewFiche($id, 'devis');
-            }
-            else {
-                ?>
+		viewFiche($id, 'devis');
+	    }
+	    else {
+		?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
     </part>
 </root>
-                <?php
-            }//Problème que j'explique à l'utilisateur.
-        }
-        elseif($ent[0] && $cont[0]) {//Sinon, je fais l'insertion dans la BDD.
-            $data['id_dev'] = $id;
-            $data['affaire_dev'] = $PC->rcvP['affaire_dev'];
-            $data['entreprise_dev'] = ($ent[1][0]['id_ent'] == NULL || $ent[1][0]['id_ent'] == '') ? NULL : $ent[1][0]['id_ent'];
-            $data['status_dev'] = '1';
-            $data['titre_dev'] = ($PC->rcvP['titre_dev'] != '') ? $PC->rcvP['titre_dev'] : $ent[1][0]['titre_aff'];
-            $data['commercial_dev'] = $PC->rcvP['commercial_dev'];
-            $data['sommeHT_dev'] = '0';
-            $data['contact_dev'] = $PC->rcvP['contact_dev'];
-            $data['contact_achat_dev'] = ($PC->rcvP['contact_achat_dev'] != '') ? $PC->rcvP['contact_achat_dev'] : NULL;
-            $data['nomdelivery_dev'] = ($PC->rcvP['nomdelivery_dev'] != '') ? $PC->rcvP['nomdelivery_dev'] : NULL;
-            $data['adressedelivery_dev'] = ($PC->rcvP['adressedelivery_dev'] != '') ? $PC->rcvP['adressedelivery_dev'] : NULL;
-            $data['adresse1delivery_dev'] = ($PC->rcvP['adresse1delivery_dev'] != '') ? $PC->rcvP['adresse1delivery_dev'] : NULL;
-            $data['villedelivery_dev'] = ($PC->rcvP['villedelivery_dev'] != '') ? $PC->rcvP['villedelivery_dev'] : NULL;
-            $data['cpdelivery_dev'] = ($PC->rcvP['cpdelivery_dev'] != '') ? $PC->rcvP['cpdelivery_dev'] : NULL;
-            $data['paysdelivery_dev'] = $PC->rcvP['paysdelivery_dev'];
-            $data['maildelivery_dev'] = $cont[1][0]['mail_cont'];
-            $data['tva_dev'] = ($data['paysdelivery_dev'] == NULL || $data['paysdelivery_dev'] == '' || $data['paysdelivery_dev'] == '1') ? '19.6' : '0';
-            $resultinsert = $info->insert($data);
-            if($resultinsert[0]) {
+		<?php
+	    }//Problème que j'explique à l'utilisateur.
+	}
+	elseif($ent[0] && $cont[0]) {//Sinon, je fais l'insertion dans la BDD.
+	    $data['id_dev'] = $id;
+	    $data['affaire_dev'] = $PC->rcvP['affaire_dev'];
+	    $data['entreprise_dev'] = ($ent[1][0]['id_ent'] == NULL || $ent[1][0]['id_ent'] == '') ? NULL : $ent[1][0]['id_ent'];
+	    $data['status_dev'] = '1';
+	    $data['titre_dev'] = ($PC->rcvP['titre_dev'] != '') ? $PC->rcvP['titre_dev'] : $ent[1][0]['titre_aff'];
+	    $data['commercial_dev'] = $PC->rcvP['commercial_dev'];
+	    $data['sommeHT_dev'] = '0';
+	    $data['contact_dev'] = $PC->rcvP['contact_dev'];
+	    $data['contact_achat_dev'] = ($PC->rcvP['contact_achat_dev'] != '') ? $PC->rcvP['contact_achat_dev'] : NULL;
+	    $data['nomdelivery_dev'] = ($PC->rcvP['nomdelivery_dev'] != '') ? $PC->rcvP['nomdelivery_dev'] : NULL;
+	    $data['adressedelivery_dev'] = ($PC->rcvP['adressedelivery_dev'] != '') ? $PC->rcvP['adressedelivery_dev'] : NULL;
+	    $data['adresse1delivery_dev'] = ($PC->rcvP['adresse1delivery_dev'] != '') ? $PC->rcvP['adresse1delivery_dev'] : NULL;
+	    $data['villedelivery_dev'] = ($PC->rcvP['villedelivery_dev'] != '') ? $PC->rcvP['villedelivery_dev'] : NULL;
+	    $data['cpdelivery_dev'] = ($PC->rcvP['cpdelivery_dev'] != '') ? $PC->rcvP['cpdelivery_dev'] : NULL;
+	    $data['paysdelivery_dev'] = $PC->rcvP['paysdelivery_dev'];
+	    $data['maildelivery_dev'] = $cont[1][0]['mail_cont'];
+	    $data['tva_dev'] = ($data['paysdelivery_dev'] == NULL || $data['paysdelivery_dev'] == '' || $data['paysdelivery_dev'] == '1') ? '19.6' : '0';
+	    $resultinsert = $info->insert($data);
+	    if($resultinsert[0]) {
 
-                viewFiche($id, 'devis');
-            }
-            else {
-                ?>
+		viewFiche($id, 'devis');
+	    }
+	    else {
+		?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
     </part>
 </root>
-                <?php
-            }//Une erreur est survenue avec la BDD.
-        }
-        else {
-            ?>
+		<?php
+	    }//Une erreur est survenue avec la BDD.
+	}
+	else {
+	    ?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
     </part>
 </root>
-            <?php
-        }//Une autre erreur avec la BDD
+	    <?php
+	}//Une autre erreur avec la BDD
     }
     else {
-        ?>
+	?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo devisView::add($PC->rcvP,$control[2],$control[1]); ?> ]]></data>
     </part><script><![CDATA[ _KK(); ]]></script>
 </root>
-        <?php
+	<?php
     }//L'utilisateur n'a pas passé le controleur.
 
 }
@@ -635,12 +635,12 @@ elseif($PC->rcvG['action'] == 'inputProduitResult') {
     $total = $info->getDataForSearchProd($PC->rcvP['search']);
     $total = $total[1][0]["counter"];
     if($produit[0]) {
-        $out .= '<ul id="searchResultInputProduitUl">';
-        $out .= devisView::searchInputResultRowProd($produit[1],$_SESSION['searchProduitLayerBackTo'],$_SESSION['searchProduitTagsBackTo']);
-        if($total > $limit)
-            $out .= '<li class="iMore" id="searchResultInputProduitMore'.$from.'"><a href="Devis.php?action=inputProduitContinue&from='.$limit.'&total='.$total.'" rev="async">Plus de résultats</a></li>';
-        $out .= '<li class="iMore" id="addProduit'.$from.'"><a href="#_'.substr($layerBackTo,2).'" onclick="returnAjaxInputResultProdNew(\''.$tagsBackTo.'\',\''.$_SESSION['searchProduitQuery'].'\',\''.$_SESSION['searchProduitQuery'].'\');WA.Back()">Utiliser cette référence</a></li>';
-        $out .= '</ul>';
+	$out .= '<ul id="searchResultInputProduitUl">';
+	$out .= devisView::searchInputResultRowProd($produit[1],$_SESSION['searchProduitLayerBackTo'],$_SESSION['searchProduitTagsBackTo']);
+	if($total > $limit)
+	    $out .= '<li class="iMore" id="searchResultInputProduitMore'.$from.'"><a href="Devis.php?action=inputProduitContinue&from='.$limit.'&total='.$total.'" rev="async">Plus de résultats</a></li>';
+	$out .= '<li class="iMore" id="addProduit'.$from.'"><a href="#_'.substr($layerBackTo,2).'" onclick="returnAjaxInputResultProdNew(\''.$tagsBackTo.'\',\''.$_SESSION['searchProduitQuery'].'\',\''.$_SESSION['searchProduitQuery'].'\');WA.Back()">Utiliser cette référence</a></li>';
+	$out .= '</ul>';
     }
     else	$out .= '<h2 class="Devis">Produit (0)</h2>';
 
@@ -650,7 +650,7 @@ elseif($PC->rcvG['action'] == 'inputProduitResult') {
         <destination mode="replace" zone="SearchProduitResultAsync"/>
         <data><![CDATA[
             <div class="iList">
-    <?php echo $out; ?>
+		    <?php echo $out; ?>
             </div>
 			]]></data>
     </part>
@@ -666,12 +666,12 @@ elseif($PC->rcvG['action'] == 'inputProduitContinue') {
     $from = ($PC->rcvG['from'] != '') ? $PC->rcvG['from'] : 0;
     $result = $info->getDataForSearchProd($_SESSION['searchProduitQuery'],$limit,$from);
     if($result[0]) {
-        $out .= devisView::searchInputResultRowProd($result[1],$_SESSION['searchProduitLayerBackTo'],$_SESSION['searchProduitTagsBackTo']);
-        if($PC->rcvG['total'] > $limit+$from)
-            $out .= '<li class="iMore" id="searchResultInputProduitMore'.$from.'"><a href="Devis.php?action=inputProduitContinue&from='.($from+$limit).'&total='.$PC->rcvG['total'].'" rev="async">Plus de résultats</a></li>';
-        $out .= '<li class="iMore" id="addProduit'.$from.'"><a href="#_'.substr($layerBackTo,2).'" onclick="returnAjaxInputResultProdNew(\''.$tagsBackTo.'\',\''.$_SESSION['searchProduitQuery'].'\',\''.$_SESSION['searchProduitQuery'].'\');WA.Back()">Utiliser cette référence</a></li>';
-        $outJs = 'removeElementFromDom(\'searchResultInputProduitMore'.($from-$limit).'\');removeElementFromDom(\'addProduit'.($from-$limit).'\')';
-        $zoneTo = 'searchResultInputProduitUl';
+	$out .= devisView::searchInputResultRowProd($result[1],$_SESSION['searchProduitLayerBackTo'],$_SESSION['searchProduitTagsBackTo']);
+	if($PC->rcvG['total'] > $limit+$from)
+	    $out .= '<li class="iMore" id="searchResultInputProduitMore'.$from.'"><a href="Devis.php?action=inputProduitContinue&from='.($from+$limit).'&total='.$PC->rcvG['total'].'" rev="async">Plus de résultats</a></li>';
+	$out .= '<li class="iMore" id="addProduit'.$from.'"><a href="#_'.substr($layerBackTo,2).'" onclick="returnAjaxInputResultProdNew(\''.$tagsBackTo.'\',\''.$_SESSION['searchProduitQuery'].'\',\''.$_SESSION['searchProduitQuery'].'\');WA.Back()">Utiliser cette référence</a></li>';
+	$outJs = 'removeElementFromDom(\'searchResultInputProduitMore'.($from-$limit).'\');removeElementFromDom(\'addProduit'.($from-$limit).'\')';
+	$zoneTo = 'searchResultInputProduitUl';
     }
 
     if($zoneTo != '') {	?>
@@ -682,7 +682,7 @@ elseif($PC->rcvG['action'] == 'inputProduitContinue') {
         <script><![CDATA[ <?php echo $outJs; ?> ]]></script>
     </part>
 </root>
-        <?php
+	<?php
     }
 }
 elseif($PC->rcvG['action'] == 'cloner') {
@@ -699,27 +699,27 @@ elseif($PC->rcvG['action'] == 'doCloner') {
     $resultat = $info->insert($result[1][0], 'cloner', $prod[1], $PC->rcvG['id_dev']);
     if($resultat[0]) {
 
-        viewFiche($id, 'devis');
+	viewFiche($id, 'devis');
     }
     else {
-        ?>
+	?>
 <root><go to="waDevisAction"/>
     <title set="waDevisAction"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAction" create="true"/>
         <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
     </part>
 </root>
-        <?php
+	<?php
     }
 }
 elseif($PC->rcvG['action'] == 'voir') {
     $info = new devisModel();
     $result = $info->getDataFromID($PC->rcvG['id_dev']);
     if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('devis', 63);
+	aiJeLeDroit('devis', 63);
     }
     else {
-        aiJeLeDroit('devis', 62);
+	aiJeLeDroit('devis', 62);
     }
     ?>
 <root><go to="waDevisAction"/>
@@ -758,48 +758,48 @@ elseif($PC->rcvG['action'] == 'send1') {
     $_SESSION['DevisActionRecSend']['file'] = $dir.$Doc;
 
     if($PC->rcvP['type'] == 'courrier') {
-        if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('devis', 55);
-        }
-        else {
-            aiJeLeDroit('devis', 54);
-        }
-        $_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
-        $_SESSION['DevisActionRecSend']['add1'] = $r['adressedelivery_dev'];
-        $_SESSION['DevisActionRecSend']['add2'] = $r['adresse1delivery_dev'];
-        $_SESSION['DevisActionRecSend']['cp'] = $r['cpdelivery_dev'];
-        $_SESSION['DevisActionRecSend']['ville'] = $r['villedelivery_dev'];
-        $_SESSION['DevisActionRecSend']['code_pays'] = $r['paysdelivery_dev'];
+	if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('devis', 55);
+	}
+	else {
+	    aiJeLeDroit('devis', 54);
+	}
+	$_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
+	$_SESSION['DevisActionRecSend']['add1'] = $r['adressedelivery_dev'];
+	$_SESSION['DevisActionRecSend']['add2'] = $r['adresse1delivery_dev'];
+	$_SESSION['DevisActionRecSend']['cp'] = $r['cpdelivery_dev'];
+	$_SESSION['DevisActionRecSend']['ville'] = $r['villedelivery_dev'];
+	$_SESSION['DevisActionRecSend']['code_pays'] = $r['paysdelivery_dev'];
     }
     elseif($PC->rcvP['type'] == 'fax') {
-        if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('devis', 53);
-        }
-        else {
-            aiJeLeDroit('devis', 52);
-        }
-        if($r['nomdelivery_dev'] != '')
-            $_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
-        else  $_SESSION['DevisActionRecSend']['nom'] = $r['civ_cont'].' '.$r['prenom_cont'].' '.$r['nom_cont'];
-        if($r['fax_cont'] != '')
-            $_SESSION['DevisActionRecSend']['fax'] = $r['fax_cont'];
-        elseif($r['fax_ent'] != '')
-            $_SESSION['DevisActionRecSend']['fax'] = $r['fax_ent'];
-        else  $_SESSION['DevisActionRecSend']['fax'] = $r['fax_achat'];
+	if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('devis', 53);
+	}
+	else {
+	    aiJeLeDroit('devis', 52);
+	}
+	if($r['nomdelivery_dev'] != '')
+	    $_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
+	else  $_SESSION['DevisActionRecSend']['nom'] = $r['civ_cont'].' '.$r['prenom_cont'].' '.$r['nom_cont'];
+	if($r['fax_cont'] != '')
+	    $_SESSION['DevisActionRecSend']['fax'] = $r['fax_cont'];
+	elseif($r['fax_ent'] != '')
+	    $_SESSION['DevisActionRecSend']['fax'] = $r['fax_ent'];
+	else  $_SESSION['DevisActionRecSend']['fax'] = $r['fax_achat'];
     }
     else {
-        if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('devis', 51);
-        }
-        else {
-            aiJeLeDroit('devis', 50);
-        }
-        if($r['maildelivery_dev'] != '')
-            $_SESSION['DevisActionRecSend']['email'] = $r['maildelivery_dev'];
-        elseif($r['mail_cont'] != '')
-            $_SESSION['DevisActionRecSend']['email'] = $r['mail_cont'];
-        else  $_SESSION['DevisActionRecSend']['email'] = $r['mail_achat'];
-        $_SESSION['DevisActionRecSend']['titre'] = 'STARTX : Devis '.$r['id_dev'];
+	if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('devis', 51);
+	}
+	else {
+	    aiJeLeDroit('devis', 50);
+	}
+	if($r['maildelivery_dev'] != '')
+	    $_SESSION['DevisActionRecSend']['email'] = $r['maildelivery_dev'];
+	elseif($r['mail_cont'] != '')
+	    $_SESSION['DevisActionRecSend']['email'] = $r['mail_cont'];
+	else  $_SESSION['DevisActionRecSend']['email'] = $r['mail_achat'];
+	$_SESSION['DevisActionRecSend']['titre'] = 'STARTX : Devis '.$r['id_dev'];
     }
     $in = array_merge($r,$_SESSION['DevisActionRecSend']);
     ?>
@@ -815,10 +815,10 @@ elseif($PC->rcvG['action'] == 'rec') {
     $info = new devisModel();
     $result = $info->getDataFromID($PC->rcvG['id_dev']);
     if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('devis', 61);
+	aiJeLeDroit('devis', 61);
     }
     else {
-        aiJeLeDroit('devis', 60);
+	aiJeLeDroit('devis', 60);
     }
     ?>
 <root><go to="waDevisAction"/>
@@ -833,10 +833,10 @@ elseif($PC->rcvG['action'] == 'recsend') {
     $info = new devisModel();
     $result = $info->getDataFromID($PC->rcvG['id_dev']);
     if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-        aiJeLeDroit('devis', 61);
+	aiJeLeDroit('devis', 61);
     }
     else {
-        aiJeLeDroit('devis', 60);
+	aiJeLeDroit('devis', 60);
     }
     ?>
 <root><go to="waDevisAction"/>
@@ -863,48 +863,48 @@ elseif($PC->rcvG['action'] == 'recsend1') {
     $_SESSION['DevisActionRecSend']['file'] = $dir.$Doc;
 
     if($PC->rcvP['type'] == 'courrier') {
-        if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('devis', 55);
-        }
-        else {
-            aiJeLeDroit('devis', 54);
-        }
-        $_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
-        $_SESSION['DevisActionRecSend']['add1'] = $r['adressedelivery_dev'];
-        $_SESSION['DevisActionRecSend']['add2'] = $r['adresse1delivery_dev'];
-        $_SESSION['DevisActionRecSend']['cp'] = $r['cpdelivery_dev'];
-        $_SESSION['DevisActionRecSend']['ville'] = $r['villedelivery_dev'];
-        $_SESSION['DevisActionRecSend']['code_pays'] = $r['paysdelivery_dev'];
+	if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('devis', 55);
+	}
+	else {
+	    aiJeLeDroit('devis', 54);
+	}
+	$_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
+	$_SESSION['DevisActionRecSend']['add1'] = $r['adressedelivery_dev'];
+	$_SESSION['DevisActionRecSend']['add2'] = $r['adresse1delivery_dev'];
+	$_SESSION['DevisActionRecSend']['cp'] = $r['cpdelivery_dev'];
+	$_SESSION['DevisActionRecSend']['ville'] = $r['villedelivery_dev'];
+	$_SESSION['DevisActionRecSend']['code_pays'] = $r['paysdelivery_dev'];
     }
     elseif($PC->rcvP['type'] == 'fax') {
-        if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('devis', 53);
-        }
-        else {
-            aiJeLeDroit('devis', 52);
-        }
-        if($r['nomdelivery_dev'] != '')
-            $_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
-        else  $_SESSION['DevisActionRecSend']['nom'] = $r['civ_cont'].' '.$r['prenom_cont'].' '.$r['nom_cont'];
-        if($r['fax_cont'] != '')
-            $_SESSION['DevisActionRecSend']['fax'] = $r['fax_cont'];
-        elseif($r['fax_ent'] != '')
-            $_SESSION['DevisActionRecSend']['fax'] = $r['fax_ent'];
-        else  $_SESSION['DevisActionRecSend']['fax'] = $r['fax_achat'];
+	if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('devis', 53);
+	}
+	else {
+	    aiJeLeDroit('devis', 52);
+	}
+	if($r['nomdelivery_dev'] != '')
+	    $_SESSION['DevisActionRecSend']['nom'] = $r['nomdelivery_dev'];
+	else  $_SESSION['DevisActionRecSend']['nom'] = $r['civ_cont'].' '.$r['prenom_cont'].' '.$r['nom_cont'];
+	if($r['fax_cont'] != '')
+	    $_SESSION['DevisActionRecSend']['fax'] = $r['fax_cont'];
+	elseif($r['fax_ent'] != '')
+	    $_SESSION['DevisActionRecSend']['fax'] = $r['fax_ent'];
+	else  $_SESSION['DevisActionRecSend']['fax'] = $r['fax_achat'];
     }
     else {
-        if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
-            aiJeLeDroit('devis', 51);
-        }
-        else {
-            aiJeLeDroit('devis', 50);
-        }
-        if($r['maildelivery_dev'] != '')
-            $_SESSION['DevisActionRecSend']['email'] = $r['maildelivery_dev'];
-        elseif($r['mail_cont'] != '')
-            $_SESSION['DevisActionRecSend']['email'] = $r['mail_cont'];
-        else  $_SESSION['DevisActionRecSend']['email'] = $r['mail_achat'];
-        $_SESSION['DevisActionRecSend']['titre'] = 'STARTX : Devis '.$r['id_dev'];
+	if($result[1][0]['commercial_dev'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('devis', 51);
+	}
+	else {
+	    aiJeLeDroit('devis', 50);
+	}
+	if($r['maildelivery_dev'] != '')
+	    $_SESSION['DevisActionRecSend']['email'] = $r['maildelivery_dev'];
+	elseif($r['mail_cont'] != '')
+	    $_SESSION['DevisActionRecSend']['email'] = $r['mail_cont'];
+	else  $_SESSION['DevisActionRecSend']['email'] = $r['mail_achat'];
+	$_SESSION['DevisActionRecSend']['titre'] = 'STARTX : Devis '.$r['id_dev'];
     }
     $in = array_merge($r,$_SESSION['DevisActionRecSend']);
     ?>
@@ -917,9 +917,9 @@ elseif($PC->rcvG['action'] == 'recsend1') {
     <?php
 }
 elseif (($PC->rcvG['action'] == 'doVoir')or
-        ($PC->rcvG['action'] == 'doRec')or
-        ($PC->rcvG['action'] == 'doSend')or
-        ($PC->rcvG['action'] == 'doRecsend')) {
+	($PC->rcvG['action'] == 'doRec')or
+	($PC->rcvG['action'] == 'doSend')or
+	($PC->rcvG['action'] == 'doRecsend')) {
     $ooGnose = new devisGnose();
     if ($PC->rcvG['action'] == 'doRecsend') $PC->rcvP = array_merge($_SESSION['DevisActionRecSend'],$PC->rcvP);
     $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
@@ -928,118 +928,118 @@ elseif (($PC->rcvG['action'] == 'doVoir')or
     $dev = $devis[1][0];
     $Doc = $ooGnose->DevisGenerateDocument($dev['id_dev'],$PC->rcvP['OutputExt'],$PC->rcvP['Cannevas']);
     if ($PC->rcvG['action'] == 'doVoir') {
-        $dir = $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
-        if($Doc != '' and file_exists($dir.$Doc)) {
-            $fileSize = FileConvertSize2Human(filesize($dir.$Doc));
-            $fileIcon = FileOutputType($Doc,'image','../');
-            $fileAdd = '<fieldset>
+	$dir = $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
+	if($Doc != '' and file_exists($dir.$Doc)) {
+	    $fileSize = FileConvertSize2Human(filesize($dir.$Doc));
+	    $fileIcon = FileOutputType($Doc,'image','../');
+	    $fileAdd = '<fieldset>
 						<ul><li><a target="_blank" href="File.php?type=view&amp;file='.$GLOBALS['REP']['tmp'].$Doc.'">'.$fileIcon.$Doc.' ('.$fileSize.')</a></li></ul>
 					</fieldset>';
-        }
-        ?>
+	}
+	?>
 <root>
     <part><destination mode="append" zone="formDevisDoVoirResponse"/>
         <data><![CDATA[ <?php echo $fileAdd; ?> ]]></data>
     </part>
 </root>
-        <?php
+	<?php
     }
     if (($PC->rcvG['action'] == 'doRec')or($PC->rcvG['action'] == 'doRecsend')) {
-        if (trim($PC->rcvP['message']) == "")
-            $PC->rcvP['message'] = "Changement du devis ".$dev['id_dev'];
-        $save = $ooGnose->DevisSaveDocInGnose($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc,$dev['id_aff'],$PC->rcvP['message']);
+	if (trim($PC->rcvP['message']) == "")
+	    $PC->rcvP['message'] = "Changement du devis ".$dev['id_dev'];
+	$save = $ooGnose->DevisSaveDocInGnose($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc,$dev['id_aff'],$PC->rcvP['message']);
 
-        $actuTitre = 'Re-enregistrement du devis '.$dev['id_dev'].' pour le client '.$dev['nom_ent'];
-        $actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être re-enregistré. Il a une valeur de '.formatCurencyDisplay($dev['sommeHT_dev']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
-        if ($dev['status_dev'] < 3) {
-            $actuTitre = 'Enregistrement du devis '.$dev['id_dev'].' pour le client '.$dev['nom_ent'];
-            $actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être enregistré. Il a une valeur de '.formatCurencyDisplay($dev['sommeHT_dev']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
-        }
+	$actuTitre = 'Re-enregistrement du devis '.$dev['id_dev'].' pour le client '.$dev['nom_ent'];
+	$actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être re-enregistré. Il a une valeur de '.formatCurencyDisplay($dev['sommeHT_dev']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
+	if ($dev['status_dev'] < 3) {
+	    $actuTitre = 'Enregistrement du devis '.$dev['id_dev'].' pour le client '.$dev['nom_ent'];
+	    $actuDesc = 'Le devis '.$dev['id_dev'].' vient d\'être enregistré. Il a une valeur de '.formatCurencyDisplay($dev['sommeHT_dev']).' HT. Commentaire de l\'enregistrement : '.$PC->rcvP['message'];
+	}
 
-        if($dev['status_aff'] < 3) {
-            $inActualiteRec['status_aff'] = '3';
-            $bddtmp->makeRequeteUpdate('affaire','id_aff',$dev['id_aff'],array('status_aff'=>$inActualiteRec['status_aff']));
-            $bddtmp->process();
-        }
-        if($dev['status_dev'] < 3) {
-            $inActualiteRec['status_dev'] = '3';
-            $bddtmp->makeRequeteUpdate('devis','id_dev',$dev['id_dev'],array('status_dev'=>$inActualiteRec['status_dev']));
-            $bddtmp->process();
-        }
+	if($dev['status_aff'] < 3) {
+	    $inActualiteRec['status_aff'] = '3';
+	    $bddtmp->makeRequeteUpdate('affaire','id_aff',$dev['id_aff'],array('status_aff'=>$inActualiteRec['status_aff']));
+	    $bddtmp->process();
+	}
+	if($dev['status_dev'] < 3) {
+	    $inActualiteRec['status_dev'] = '3';
+	    $bddtmp->makeRequeteUpdate('devis','id_dev',$dev['id_dev'],array('status_dev'=>$inActualiteRec['status_dev']));
+	    $bddtmp->process();
+	}
 
 
 
-        if ($PC->rcvG['action'] == 'doRec') {	?>
+	if ($PC->rcvG['action'] == 'doRec') {	?>
 <root><go to="waDevisAction"/>
     <part><destination mode="replace" zone="waDevisAction"/>
         <data><![CDATA[ <div class="msg">Votre document est maintenant enregistré dans le module ZunoGed.</div> ]]></data>
     </part>
 </root>
-            <?php
-        }
+	    <?php
+	}
     }
     if (($PC->rcvG['action'] == 'doRecsend')or($PC->rcvG['action'] == 'doSend')) {
-        if ($PC->rcvG['action'] == 'doRecsend')
-            $PC->rcvP = array_merge($_SESSION['DevisActionRecSend'],$PC->rcvP);
+	if ($PC->rcvG['action'] == 'doRecsend')
+	    $PC->rcvP = array_merge($_SESSION['DevisActionRecSend'],$PC->rcvP);
 
-        if ($PC->rcvP['type'] == 'courrier')
-            $control = sendControl::sendCourrier($PC->rcvP);
-        elseif ($PC->rcvP['type'] == 'fax')
-            $control = sendControl::sendFax($PC->rcvP);
-        else  $control = sendControl::sendMail($PC->rcvP);
+	if ($PC->rcvP['type'] == 'courrier')
+	    $control = sendControl::sendCourrier($PC->rcvP);
+	elseif ($PC->rcvP['type'] == 'fax')
+	    $control = sendControl::sendFax($PC->rcvP);
+	else  $control = sendControl::sendMail($PC->rcvP);
 
-        if($control[0]) {
-            $PC->rcvP['dir_aff'] = $dev['dir_aff'];
-            $PC->rcvP['partie'] = "devis";
-            $PC->rcvP['typeE'] = $PC->rcvP['type'];
-            $PC->rcvP['cc'] = $PC->rcvP['emailcc'];
-            $PC->rcvP['mail'] = $PC->rcvP['email'];
-            $PC->rcvP['from'] = $_SESSION['user']['mail'];
-            $PC->rcvP['expediteur'] = $_SESSION['user']['fullnom'];
-            $PC->rcvP['destinataire'] = $PC->rcvP['nom'];
-            $PC->rcvP['fichier'] = substr($PC->rcvP['file'], strripos($PC->rcvP['file'], "/")+1);
-            $PC->rcvP['id'] = $_SESSION['DevisActionRecSend']['id_dev'];
-            $PC->rcvP['channel'] = 'iphone';
-            $PC->rcvP['sujet'] = $PC->rcvP['titre'];
-            $send = new Sender($PC->rcvP);
-            $result = $send->send($_SESSION['user']['mail']);
-            $dest = ($PC->rcvP['destinataire'] == '') ? $PC->rcvP['mail'] : $PC->rcvP['destinataire'];
-            if($result[0]) {
-                $actuPrefix = ($dev['status_dev'] >= 3) ? 'Re-e' : 'E';
-                if($dev['status_aff'] < 4) {
-                    $inActualiteEnvoi['status_aff'] = '4';
-                    $bddtmp->makeRequeteUpdate('affaire','id_aff',$dev['id_aff'],array('status_aff'=>$inActualiteEnvoi['status_aff']));
-                    $bddtmp->process();
-                }
-                if($dev['status_dev'] < 4) {
-                    $inActualiteEnvoi['status_dev'] = '4';
-                    $bddtmp->makeRequeteUpdate('devis','id_dev',$dev['id_dev'],array('status_dev'=>$inActualiteEnvoi['status_dev']));
-                    $bddtmp->process();
-                }
-                unset($_SESSION['DevisActionRecSend']);
-                ?>
+	if($control[0]) {
+	    $PC->rcvP['dir_aff'] = $dev['dir_aff'];
+	    $PC->rcvP['partie'] = "devis";
+	    $PC->rcvP['typeE'] = $PC->rcvP['type'];
+	    $PC->rcvP['cc'] = $PC->rcvP['emailcc'];
+	    $PC->rcvP['mail'] = $PC->rcvP['email'];
+	    $PC->rcvP['from'] = $_SESSION['user']['mail'];
+	    $PC->rcvP['expediteur'] = $_SESSION['user']['fullnom'];
+	    $PC->rcvP['destinataire'] = $PC->rcvP['nom'];
+	    $PC->rcvP['fichier'] = substr($PC->rcvP['file'], strripos($PC->rcvP['file'], "/")+1);
+	    $PC->rcvP['id'] = $_SESSION['DevisActionRecSend']['id_dev'];
+	    $PC->rcvP['channel'] = 'iphone';
+	    $PC->rcvP['sujet'] = $PC->rcvP['titre'];
+	    $send = new Sender($PC->rcvP);
+	    $result = $send->send($_SESSION['user']['mail']);
+	    $dest = ($PC->rcvP['destinataire'] == '') ? $PC->rcvP['mail'] : $PC->rcvP['destinataire'];
+	    if($result[0]) {
+		$actuPrefix = ($dev['status_dev'] >= 3) ? 'Re-e' : 'E';
+		if($dev['status_aff'] < 4) {
+		    $inActualiteEnvoi['status_aff'] = '4';
+		    $bddtmp->makeRequeteUpdate('affaire','id_aff',$dev['id_aff'],array('status_aff'=>$inActualiteEnvoi['status_aff']));
+		    $bddtmp->process();
+		}
+		if($dev['status_dev'] < 4) {
+		    $inActualiteEnvoi['status_dev'] = '4';
+		    $bddtmp->makeRequeteUpdate('devis','id_dev',$dev['id_dev'],array('status_dev'=>$inActualiteEnvoi['status_dev']));
+		    $bddtmp->process();
+		}
+		unset($_SESSION['DevisActionRecSend']);
+		?>
 <root><go to="waDevisAction"/>
     <part><destination mode="replace" zone="waDevisAction" />
         <data><![CDATA[ <div class="msg">Votre document vient d'être envoyé par <?php echo $PC->rcvP['type']; ?>. </div> ]]></data>
     </part>
 </root>
-                <?php
+		<?php
 
-            }
-            else {
-                echo $result[1];
-                exit;
-            }
-        }
-        else {	?>
+	    }
+	    else {
+		echo $result[1];
+		exit;
+	    }
+	}
+	else {	?>
 <root><go to="waDevisAction1"/>
     <title set="waDevisAction1">Envoi de <?php echo $PC->rcvP['type']; ?></title>
     <part><destination mode="replace" zone="waDevisAction1" create="true"/>
         <data><![CDATA[ <?php echo devisView::actionRecordSend1($PC->rcvP,$control[2],$control[1]); ?> ]]></data>
     </part>
 </root>
-            <?php
-        }
+	    <?php
+	}
     }
 }
 
@@ -1065,11 +1065,11 @@ elseif($PC->rcvG['action'] == 'inputDevisResult') {
     $limit = $_SESSION['user']['config']['LenghtSearchDevis'];
     $devis = $info->getDataForSearchCommande($PC->rcvP['search'],$limit,$from);
     if($devis[0]) {
-        $out .= '<ul id="searchResultInputDevisUl">';
-        $out .= devisView::searchInputResultRow($devis[1],$_SESSION['searchDevisLayerBackTo'],$_SESSION['searchDevisTagsBackTo']);
-        if(count($devis[1]) >= $limit)
-            $out .= '<li class="iMore" id="searchResultInputDevisMore'.$from.'"><a href="Devis.php?action=inputDevisContinue&from='.$limit.'" rev="async">Plus de résultats</a></li>';
-        $out .= '</ul>';
+	$out .= '<ul id="searchResultInputDevisUl">';
+	$out .= devisView::searchInputResultRow($devis[1],$_SESSION['searchDevisLayerBackTo'],$_SESSION['searchDevisTagsBackTo']);
+	if(count($devis[1]) >= $limit)
+	    $out .= '<li class="iMore" id="searchResultInputDevisMore'.$from.'"><a href="Devis.php?action=inputDevisContinue&from='.$limit.'" rev="async">Plus de résultats</a></li>';
+	$out .= '</ul>';
     }
     else	$out .= '<h2 class="Contact">Devis (0)</h2>';
 
@@ -1080,7 +1080,7 @@ elseif($PC->rcvG['action'] == 'inputDevisResult') {
         <data><![CDATA[
             <div style="height:25px;width:200px"> </div>
             <div class="iList">
-    <?php echo $out; ?>
+		    <?php echo $out; ?>
             </div>
 			]]></data>
     </part>
@@ -1094,11 +1094,11 @@ elseif($PC->rcvG['action'] == 'inputDevisContinue') {
     $from = ($PC->rcvG['from'] != '') ? $PC->rcvG['from'] : 0;
     $result = $info->getDataForSearchCommande($_SESSION['searchDevisQuery'],$limit,$from);
     if($result[0]) {
-        $out .= devisView::searchInputResultRow($result[1],$_SESSION['searchDevisLayerBackTo'],$_SESSION['searchDevisTagsBackTo']);
-        if(count($result[1]) >= $limit)
-            $out .= '<li class="iMore" id="searchResultInputDevisMore'.$from.'"><a href="Devis.php?action=inputDevisContinue&from='.($from+$limit).'" rev="async">Plus de résultats</a></li>';
-        $outJs = 'removeElementFromDom(\'searchResultInputDevisMore'.($from-$limit).'\')';
-        $zoneTo = 'searchResultInputDevisUl';
+	$out .= devisView::searchInputResultRow($result[1],$_SESSION['searchDevisLayerBackTo'],$_SESSION['searchDevisTagsBackTo']);
+	if(count($result[1]) >= $limit)
+	    $out .= '<li class="iMore" id="searchResultInputDevisMore'.$from.'"><a href="Devis.php?action=inputDevisContinue&from='.($from+$limit).'" rev="async">Plus de résultats</a></li>';
+	$outJs = 'removeElementFromDom(\'searchResultInputDevisMore'.($from-$limit).'\')';
+	$zoneTo = 'searchResultInputDevisUl';
     }
 
     if($zoneTo != '') {	?>
@@ -1109,7 +1109,7 @@ elseif($PC->rcvG['action'] == 'inputDevisContinue') {
         <script><![CDATA[ <?php echo $outJs; ?> ]]></script>
     </part>
 </root>
-        <?php
+	<?php
     }
 }
 elseif($PC->rcvG['action'] == 'addDevisExpress') {
@@ -1139,25 +1139,25 @@ elseif($PC->rcvG['action'] == 'entrepriseDevisExpress') {
     $outJS .= 'contact = new Array();'."\n";
     $numberEnt = 1;
     foreach($val['ent'] as $v) {
-        $outJS .= 'entreprise["'.$numberEnt.'"] = new Array();'."\n";
-        $outJS .= ($v['nom_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["nom_ent"] = "'.$v['nom_ent'].'"'.";\n" : '';
-        $outJS .= ($v['id_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["id_ent"] = "'.$v['id_ent'].'"'.";\n" : '';
-        $outJS .= ($v['add1_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["add1_ent"] = "'.$v['add1_ent'].'"'.";\n" : '';
-        $outJS .= ($v['add2_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["add2_ent"] = "'.$v['add2_ent'].'"'.";\n" : '';
-                        $outJS .= ($v['cp_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["cp_ent"] = "'.$v['cp_ent'].'"'.";\n" : '';
-        $outJS .= ($v['ville_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["ville_ent"] = "'.$v['ville_ent'].'"'.";\n" : '';
-                    $outJS .= ($v['pays_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["pays_ent"] = "'.$v['pays_ent'].'"'.";\n" : '';
-        $numberEnt++;
+	$outJS .= 'entreprise["'.$numberEnt.'"] = new Array();'."\n";
+	$outJS .= ($v['nom_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["nom_ent"] = "'.$v['nom_ent'].'"'.";\n" : '';
+	$outJS .= ($v['id_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["id_ent"] = "'.$v['id_ent'].'"'.";\n" : '';
+	$outJS .= ($v['add1_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["add1_ent"] = "'.$v['add1_ent'].'"'.";\n" : '';
+	$outJS .= ($v['add2_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["add2_ent"] = "'.$v['add2_ent'].'"'.";\n" : '';
+	$outJS .= ($v['cp_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["cp_ent"] = "'.$v['cp_ent'].'"'.";\n" : '';
+	$outJS .= ($v['ville_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["ville_ent"] = "'.$v['ville_ent'].'"'.";\n" : '';
+	$outJS .= ($v['pays_ent'] != NULL) ? 'entreprise["'.$numberEnt.'"]["pays_ent"] = "'.$v['pays_ent'].'"'.";\n" : '';
+	$numberEnt++;
     }
     $numberCont = 1;
     foreach($val['cont'] as $v) {
-        $outJS .= 'contact["'.$numberCont.'"] = new Array();'."\n";
-        $outJS .= ($v['nom_cont'] != NUL) ? 'contact["'.$numberCont.'"]["nom_cont"] = "'.$v['nom_cont'].'"'.";\n" : '';
-        $outJS .= ($v['id_cont'] != NUL) ? 'contact["'.$numberCont.'"]["id_cont"] = "'.$v['id_cont'].'"'.";\n" : '';
-        $outJS .= ($v['prenom_cont'] != NUL) ? 'contact["'.$numberCont.'"]["prenom_cont"] = "'.$v['prenom_cont'].'"'.";\n" : '';
-        $outJS .= ($v['mail_cont'] != NUL) ? 'contact["'.$numberCont.'"]["mail_cont"] = "'.$v['mail_cont'].'"'.";\n" : '';
-        $outJS .= ($v['entreprise_cont'] != NUL) ? 'contact["'.$numberCont.'"]["entreprise_cont"] = "'.$v['entreprise_cont'].'"'.";\n" : '';
-        $numberCont++;
+	$outJS .= 'contact["'.$numberCont.'"] = new Array();'."\n";
+	$outJS .= ($v['nom_cont'] != NUL) ? 'contact["'.$numberCont.'"]["nom_cont"] = "'.$v['nom_cont'].'"'.";\n" : '';
+	$outJS .= ($v['id_cont'] != NUL) ? 'contact["'.$numberCont.'"]["id_cont"] = "'.$v['id_cont'].'"'.";\n" : '';
+	$outJS .= ($v['prenom_cont'] != NUL) ? 'contact["'.$numberCont.'"]["prenom_cont"] = "'.$v['prenom_cont'].'"'.";\n" : '';
+	$outJS .= ($v['mail_cont'] != NUL) ? 'contact["'.$numberCont.'"]["mail_cont"] = "'.$v['mail_cont'].'"'.";\n" : '';
+	$outJS .= ($v['entreprise_cont'] != NUL) ? 'contact["'.$numberCont.'"]["entreprise_cont"] = "'.$v['entreprise_cont'].'"'.";\n" : '';
+	$numberCont++;
     }
     $outJS .= 'doModifEntrepriseDevisExpress("Devis");';
     $outJS .= ' </script>';
@@ -1176,90 +1176,90 @@ elseif($PC->rcvG['action'] == 'addDevisExpressSuite') {
     $control = new devisControl();
     $result = $control->controlExpress1($PC->rcvP);
     if(!$result[0]) {
-        ?>
+	?>
 <root><go to="waDevisAddExpress"/>
     <title set="waDevisAddExpress"><?php echo "Devis Express"; ?></title>
     <part><destination mode="replace" zone="waDevisAddExpress" create="true"/>
         <data><![CDATA[ <?php echo devisView::addExpress($PC->rcvP, $result[2], $result[1]); ?> ]]></data>
     </part>
 </root>
-        <?php
+	<?php
     }
     else {
-        if(($PC->rcvP['entreprise_dev'] == NULL || $PC->rcvP['entreprise_dev'] == '') && ($PC->rcvP['nomdelivery_dev'] != NULL || $PC->rcvP['nomdelivery_dev'] != '')) {
-            $entreprise = new contactEntrepriseModel();
-            $data['nom_ent'] = $PC->rcvP['nomdelivery_dev'];
-            $data['type_ent'] = '1';
-            $data['add1_ent'] = $PC->rcvP['adressedelivery_dev'];
-            $data['add2_ent'] = $PC->rcvP['adresse1delivery_dev'];
-            $data['cp_ent'] = $PC->rcvP['cpdelivery_dev'];
-            $data['ville_ent'] = $PC->rcvP['villedelivery_dev'];
-            $data['pays_ent'] = $PC->rcvP['paysdelivery_dev'];
-            $data['tauxTVA_ent'] = $PC->rcvP['tva_dev'];
-            $data['tel_ent'] = $PC->rcvP['tel_ent'];
-            $result = $entreprise->insert($data);
-            $_SESSION['devisExpress']['entreprise_dev'] = $entreprise->getLastId();
-            $_SESSION['devisExpress']['contact_dev'] = '0';
+	if(($PC->rcvP['entreprise_dev'] == NULL || $PC->rcvP['entreprise_dev'] == '') && ($PC->rcvP['nomdelivery_dev'] != NULL || $PC->rcvP['nomdelivery_dev'] != '')) {
+	    $entreprise = new contactEntrepriseModel();
+	    $data['nom_ent'] = $PC->rcvP['nomdelivery_dev'];
+	    $data['type_ent'] = '1';
+	    $data['add1_ent'] = $PC->rcvP['adressedelivery_dev'];
+	    $data['add2_ent'] = $PC->rcvP['adresse1delivery_dev'];
+	    $data['cp_ent'] = $PC->rcvP['cpdelivery_dev'];
+	    $data['ville_ent'] = $PC->rcvP['villedelivery_dev'];
+	    $data['pays_ent'] = $PC->rcvP['paysdelivery_dev'];
+	    $data['tauxTVA_ent'] = $PC->rcvP['tva_dev'];
+	    $data['tel_ent'] = $PC->rcvP['tel_ent'];
+	    $result = $entreprise->insert($data);
+	    $_SESSION['devisExpress']['entreprise_dev'] = $entreprise->getLastId();
+	    $_SESSION['devisExpress']['contact_dev'] = '0';
 
-            if(($PC->rcvP['listeContact'] == NULL || $PC->rcvP['listeContact'] == '') && ($PC->rcvP['contact_dev'] != NULL || $PC->rcvP['contact_dev'] != '')) {
-                $contact = new contactParticulierModel();
-                $data['entreprise_cont'] = $entreprise->getLastId();
-                $data['nom_cont'] = $PC->rcvP['contact_dev'];
-                $data['civ_cont'] = $PC->rcvP['civ_cont'];
-                $data['prenom_cont'] = $PC->rcvP['prenom_cont'];
-                $data['add1_cont'] = $PC->rcvP['adressedelivery_dev'];
-                $data['add2_cont'] = $PC->rcvP['adresse1delivery_dev'];
-                $data['cp_cont'] = $PC->rcvP['cpdelivery_dev'];
-                $data['ville_cont'] = $PC->rcvP['villedelivery_dev'];
-                $data['pays_cont'] = $PC->rcvP['paysdelivery_dev'];
-                $data['mail_cont'] = $PC->rcvP['maildelivery_dev'];
-                $data['tel_cont'] = $PC->rcvP['tel_cont'];
-                $result = $contact->insert($data);
-                $_SESSION['devisExpress']['contact_dev'] = $contact->getLastId();
-                $_SESSION['devisExpress']['nomdelivery_dev'] = $PC->rcvP['nomdelivery_dev'];
-            }
-        }
-        elseif(($PC->rcvP['listeContact'] == NULL || $PC->rcvP['listeContact'] == '') && ($PC->rcvP['contact_dev'] != NULL || $PC->rcvP['contact_dev'] != '')) {
-            $contact = new contactParticulierModel();
-            $data['nom_cont'] = $PC->rcvP['contact_dev'];
-            $data['civ_cont'] = $PC->rcvP['civ_cont'];
-            $data['prenom_cont'] = $PC->rcvP['prenom_cont'];
-            $data['add1_cont'] = $PC->rcvP['adressedelivery_dev'];
-            $data['add2_cont'] = $PC->rcvP['adresse1delivery_dev'];
-            $data['cp_cont'] = $PC->rcvP['cpdelivery_dev'];
-            $data['ville_cont'] = $PC->rcvP['villedelivery_dev'];
-            $data['pays_cont'] = $PC->rcvP['paysdelivery_dev'];
-            $data['tel_cont'] = $PC->rcvP['tel_cont'];
-            $data['mail_cont'] = $PC->rcvP['maildelivery_dev'];
-            $data['entreprise_cont'] = $PC->rcvP['entreprise_dev'];
-            $result = $contact->insert($data);
-            $_SESSION['devisExpress']['entreprise_dev'] = $PC->rcvP['entreprise_dev'];
-            $_SESSION['devisExpress']['contact_dev'] = $contact->getLastId();
-            $_SESSION['devisExpress']['nomdelivery_dev'] = substr($PC->rcvP['nomdelivery_dev'],0,strlen($PC->rcvP['nomdelivery_dev'])-8);
-        }
-        else {
-            $_SESSION['devisExpress']['entreprise_dev'] = $PC->rcvP['entreprise_dev'];
-            $_SESSION['devisExpress']['contact_dev'] = ($PC->rcvP['listeContact'] != NULL) ? $PC->rcvP['listeContact'] : '0';
-            $_SESSION['devisExpress']['nomdelivery_dev'] = substr($PC->rcvP['nomdelivery_dev'],0,strlen($PC->rcvP['nomdelivery_dev'])-8);
-        }
+	    if(($PC->rcvP['listeContact'] == NULL || $PC->rcvP['listeContact'] == '') && ($PC->rcvP['contact_dev'] != NULL || $PC->rcvP['contact_dev'] != '')) {
+		$contact = new contactParticulierModel();
+		$data['entreprise_cont'] = $entreprise->getLastId();
+		$data['nom_cont'] = $PC->rcvP['contact_dev'];
+		$data['civ_cont'] = $PC->rcvP['civ_cont'];
+		$data['prenom_cont'] = $PC->rcvP['prenom_cont'];
+		$data['add1_cont'] = $PC->rcvP['adressedelivery_dev'];
+		$data['add2_cont'] = $PC->rcvP['adresse1delivery_dev'];
+		$data['cp_cont'] = $PC->rcvP['cpdelivery_dev'];
+		$data['ville_cont'] = $PC->rcvP['villedelivery_dev'];
+		$data['pays_cont'] = $PC->rcvP['paysdelivery_dev'];
+		$data['mail_cont'] = $PC->rcvP['maildelivery_dev'];
+		$data['tel_cont'] = $PC->rcvP['tel_cont'];
+		$result = $contact->insert($data);
+		$_SESSION['devisExpress']['contact_dev'] = $contact->getLastId();
+		$_SESSION['devisExpress']['nomdelivery_dev'] = $PC->rcvP['nomdelivery_dev'];
+	    }
+	}
+	elseif(($PC->rcvP['listeContact'] == NULL || $PC->rcvP['listeContact'] == '') && ($PC->rcvP['contact_dev'] != NULL || $PC->rcvP['contact_dev'] != '')) {
+	    $contact = new contactParticulierModel();
+	    $data['nom_cont'] = $PC->rcvP['contact_dev'];
+	    $data['civ_cont'] = $PC->rcvP['civ_cont'];
+	    $data['prenom_cont'] = $PC->rcvP['prenom_cont'];
+	    $data['add1_cont'] = $PC->rcvP['adressedelivery_dev'];
+	    $data['add2_cont'] = $PC->rcvP['adresse1delivery_dev'];
+	    $data['cp_cont'] = $PC->rcvP['cpdelivery_dev'];
+	    $data['ville_cont'] = $PC->rcvP['villedelivery_dev'];
+	    $data['pays_cont'] = $PC->rcvP['paysdelivery_dev'];
+	    $data['tel_cont'] = $PC->rcvP['tel_cont'];
+	    $data['mail_cont'] = $PC->rcvP['maildelivery_dev'];
+	    $data['entreprise_cont'] = $PC->rcvP['entreprise_dev'];
+	    $result = $contact->insert($data);
+	    $_SESSION['devisExpress']['entreprise_dev'] = $PC->rcvP['entreprise_dev'];
+	    $_SESSION['devisExpress']['contact_dev'] = $contact->getLastId();
+	    $_SESSION['devisExpress']['nomdelivery_dev'] = substr($PC->rcvP['nomdelivery_dev'],0,strlen($PC->rcvP['nomdelivery_dev'])-8);
+	}
+	else {
+	    $_SESSION['devisExpress']['entreprise_dev'] = $PC->rcvP['entreprise_dev'];
+	    $_SESSION['devisExpress']['contact_dev'] = ($PC->rcvP['listeContact'] != NULL) ? $PC->rcvP['listeContact'] : '0';
+	    $_SESSION['devisExpress']['nomdelivery_dev'] = substr($PC->rcvP['nomdelivery_dev'],0,strlen($PC->rcvP['nomdelivery_dev'])-8);
+	}
 
-        $_SESSION['devisExpress']['maildelivery_dev'] = $PC->rcvP['maildelivery_dev'];
-        $_SESSION['devisExpress']['adressedelivery_dev'] = $PC->rcvP['adressedelivery_dev'];
-        $_SESSION['devisExpress']['adresse1delivery_dev'] = $PC->rcvP['adresse1delivery_dev'];
-        $_SESSION['devisExpress']['cpdelivery_dev'] = $PC->rcvP['cpdelivery_dev'];
-        $_SESSION['devisExpress']['villedelivery_dev'] = $PC->rcvP['villedelivery_dev'];
-        $_SESSION['devisExpress']['paysdelivery_dev'] = $PC->rcvP['paysdelivery_dev'];
-        $_SESSION['devisExpress']['nb_prod'] = 1;
-        $_SESSION['devisExpress']['tva_dev'] = $PC->rcvP['tva_dev'];
-        $_SESSION['devisExpress']['titre_dev'] = 'Devis';
-        ?>
+	$_SESSION['devisExpress']['maildelivery_dev'] = $PC->rcvP['maildelivery_dev'];
+	$_SESSION['devisExpress']['adressedelivery_dev'] = $PC->rcvP['adressedelivery_dev'];
+	$_SESSION['devisExpress']['adresse1delivery_dev'] = $PC->rcvP['adresse1delivery_dev'];
+	$_SESSION['devisExpress']['cpdelivery_dev'] = $PC->rcvP['cpdelivery_dev'];
+	$_SESSION['devisExpress']['villedelivery_dev'] = $PC->rcvP['villedelivery_dev'];
+	$_SESSION['devisExpress']['paysdelivery_dev'] = $PC->rcvP['paysdelivery_dev'];
+	$_SESSION['devisExpress']['nb_prod'] = 1;
+	$_SESSION['devisExpress']['tva_dev'] = $PC->rcvP['tva_dev'];
+	$_SESSION['devisExpress']['titre_dev'] = 'Devis';
+	?>
 <root><go to="waDevisAddExpressSuite"/>
     <title set="waDevisAddExpressSuite"><?php echo "Devis Express"; ?></title>
     <part><destination mode="replace" zone="waDevisAddExpressSuite" create="true"/>
         <data><![CDATA[ <?php echo devisView::addExpressSuite(); ?> ]]></data>
     </part>
 </root>
-        <?php
+	<?php
     }
 }
 elseif($PC->rcvG['action'] == 'doAddDevisExpress') {
@@ -1267,54 +1267,54 @@ elseif($PC->rcvG['action'] == 'doAddDevisExpress') {
     $control = new devisControl();
     $result = $control->controlExpress2($PC->rcvP);
     if(!$result[0]) {
-        ?>
+	?>
 <root><go to="waDevisAddExpressSuite"/>
     <title set="waDevisAddExpressSuite"><?php echo "Devis ExpressSuite"; ?></title>
     <part><destination mode="replace" zone="waDevisAddExpressSuite" create="true"/>
         <data><![CDATA[ <?php echo devisView::addExpressSuite($PC->rcvP, $result[2], $result[1]); ?> ]]></data>
     </part>
 </root>
-        <?php
+	<?php
     }
     else {
-        $temp = 0;
-        $_SESSION['devisExpress']['status_dev'] = '1';
-        $_SESSION['devisExpress']['commercial_dev'] = $_SESSION['user']['id'];
-        $numero = 0;
-        for ($nombre = 1; $nombre <= $_SESSION['devisExpress']['nb_prod']; $nombre++) {
-            if($PC->rcvP['id_produitDevisExpress'.$nombre] != NULL || $PC->rcvP['id_produitDevisExpress'.$nombre] != '') {
-                $temp += $PC->rcvP['quantite'.$nombre]*$PC->rcvP['prix'.$nombre]*(1-$PC->rcvP['remise'.$nombre]/100);
-                $prod[$numero]['id_produit']=$PC->rcvP['id_produitDevisExpress'.$nombre];
-                $prod[$numero]['desc']=$PC->rcvP['desc'.$nombre];
-                $prod[$numero]['quantite']=$PC->rcvP['quantite'.$nombre];
-                $prod[$numero]['prix']=$PC->rcvP['prix'.$nombre];
-                $prod[$numero]['remise']=$PC->rcvP['remise'.$nombre];
-                if($PC->rcvP['memorize'.'id_produitDevisExpress'.$nombre] == 'ok') {
-                    $datab['id_prod']=$prod[$numero]['id_produit'];
-                    $datab['nom_prod'] = $prod[$numero]['desc'];
-                    $datab['prix_prod'] = $prod[$numero]['prix'];
-                    $datab['famille_prod'] = '0';
-                    $datab['remisefournisseur_prod'] = '0';
-                    $resultat = $info->addProduit($datab);
-                }
-                $numero++;
-            }
-        }
-        $_SESSION['devisExpress']['sommeHT_dev'] = $temp;
-        $result = $info->insert($_SESSION['devisExpress'], 'express', $prod);
-        if($result[0]) {
-            viewFiche($_SESSION['devisExpress']['id'], 'devis');
-        }
-        else {
-            ?>
+	$temp = 0;
+	$_SESSION['devisExpress']['status_dev'] = '1';
+	$_SESSION['devisExpress']['commercial_dev'] = $_SESSION['user']['id'];
+	$numero = 0;
+	for ($nombre = 1; $nombre <= $_SESSION['devisExpress']['nb_prod']; $nombre++) {
+	    if($PC->rcvP['id_produitDevisExpress'.$nombre] != NULL || $PC->rcvP['id_produitDevisExpress'.$nombre] != '') {
+		$temp += $PC->rcvP['quantite'.$nombre]*$PC->rcvP['prix'.$nombre]*(1-$PC->rcvP['remise'.$nombre]/100);
+		$prod[$numero]['id_produit']=$PC->rcvP['id_produitDevisExpress'.$nombre];
+		$prod[$numero]['desc']=$PC->rcvP['desc'.$nombre];
+		$prod[$numero]['quantite']=$PC->rcvP['quantite'.$nombre];
+		$prod[$numero]['prix']=$PC->rcvP['prix'.$nombre];
+		$prod[$numero]['remise']=$PC->rcvP['remise'.$nombre];
+		if($PC->rcvP['memorize'.'id_produitDevisExpress'.$nombre] == 'ok') {
+		    $datab['id_prod']=$prod[$numero]['id_produit'];
+		    $datab['nom_prod'] = $prod[$numero]['desc'];
+		    $datab['prix_prod'] = $prod[$numero]['prix'];
+		    $datab['famille_prod'] = '0';
+		    $datab['remisefournisseur_prod'] = '0';
+		    $resultat = $info->addProduit($datab);
+		}
+		$numero++;
+	    }
+	}
+	$_SESSION['devisExpress']['sommeHT_dev'] = $temp;
+	$result = $info->insert($_SESSION['devisExpress'], 'express', $prod);
+	if($result[0]) {
+	    viewFiche($_SESSION['devisExpress']['id'], 'devis');
+	}
+	else {
+	    ?>
 <root><go to="waDevisAdd"/>
     <title set="waDevisAdd"><?php echo "Nouv. devis";?></title>
     <part><destination mode="replace" zone="waDevisAdd" create="true"/>
         <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
     </part>
 </root>
-            <?php
-        }//Problème que j'explique à l'utilisateur.
+	    <?php
+	}//Problème que j'explique à l'utilisateur.
     }
 }
 elseif($PC->rcvG['action'] == 'tri_montant') {

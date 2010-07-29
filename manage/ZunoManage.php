@@ -32,18 +32,16 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
 //ACTIONS
-if ($PC->rcvP['action'] == 'Nettoyer le cache')
-{
-	rm($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp']."*");
+if ($PC->rcvP['action'] == 'Nettoyer le cache') {
+    rm($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp']."*");
 }
 
 
 //CONTENT PAGE DISPLAY
 $listesupported = explode(",",'ref_activite,ref_condireglement,ref_fonction,ref_modereglement,ref_prodfamille,ref_statusaffaire,ref_statuscommande,ref_statusdevis,ref_statusfacture,ref_typeentreprise,ref_typeproj');
-foreach ($listesupported as $val)
-{
-	$RowContent['table']	= $val;
-	$RefList .= templating('manage/ZunoConfiguration.RefRow',$RowContent);
+foreach ($listesupported as $val) {
+    $RowContent['table']	= $val;
+    $RefList .= templating('manage/ZunoConfiguration.RefRow',$RowContent);
 }
 
 $outrow['message']= $message;

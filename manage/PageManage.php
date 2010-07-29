@@ -31,29 +31,28 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 +------------------------------------------------------------------------*/
 $sortie = new PageAdminPortlet($_SESSION["language"]);
 
-foreach($GLOBALS['CHANNEL_list'] as $id => $channel)
-{
-	$DoDisplay = FALSE;
-	if ($GLOBALS['CHANNEL_'.$id]['PageManageRequiredRight'] == '')
+foreach($GLOBALS['CHANNEL_list'] as $id => $channel) {
+    $DoDisplay = FALSE;
+    if ($GLOBALS['CHANNEL_'.$id]['PageManageRequiredRight'] == '')
+	$DoDisplay = TRUE;
+    else
+	foreach(explode(",",$GLOBALS['CHANNEL_'.$id]['PageManageRequiredRight']) as $right)
+	    if ($_SESSION['user']['right'] == $right)
 		$DoDisplay = TRUE;
-	else
-		foreach(explode(",",$GLOBALS['CHANNEL_'.$id]['PageManageRequiredRight']) as $right)
-		if ($_SESSION['user']['right'] == $right)
-			$DoDisplay = TRUE;
-	
-	if ($DoDisplay) {
-		$sortie->SetChannel($id);
-		if($PC->rcvG['order'] != '')
-			$sortie->SetOrder($PC->rcvG['order']);
-		$sortie->Type("MANAGE");
-		$corps = $sortie->Process();
-		if ($id != 'normal')
-			 $option = 'close';
-		else $option = '';
-		$titre 	= 'Gestion des pages du channel '.$channel;
-		$content .= generateZBox($titre, $titre, $corps, '', 'Manage'.$id, $option);
-		$DoDisplay = FALSE;
-	}
+
+    if ($DoDisplay) {
+	$sortie->SetChannel($id);
+	if($PC->rcvG['order'] != '')
+	    $sortie->SetOrder($PC->rcvG['order']);
+	$sortie->Type("MANAGE");
+	$corps = $sortie->Process();
+	if ($id != 'normal')
+	    $option = 'close';
+	else $option = '';
+	$titre 	= 'Gestion des pages du channel '.$channel;
+	$content .= generateZBox($titre, $titre, $corps, '', 'Manage'.$id, $option);
+	$DoDisplay = FALSE;
+    }
 }
 
 /*------------------------------------------------------------------------+

@@ -102,7 +102,7 @@ class JournalBanqueView extends generalView {
 	$this->fieldset2->ligneInputDateObligatoire('Date d\'effet', 'date_effet_jb', DateUniv2Human($datas['date_effet_jb'],'simpleLong'), '', '', '', 'ZTips.journalBanque.dateEffet');
 	$this->fieldset2->ligneSelectObligatoire('Banque', 'banque_jb',  $datas['banque_jb'], $this->model->getAllBanques(), false,'','ZTips.journalBanque.banque');
 	$this->fieldset2->ligneSelectObligatoire('Mode', 'modereglement_jb',  $datas['modereglement_jb'], $this->model->getModeReglement(), false,'','ZTips.journalBanque.modereglement');
-	
+
 	$this->fieldset3 = new ZunoFieldset('Pièces attachées','','height: 150px');
 	$this->fieldset3->ligneInputFile('Justificatif', 'file_jb', $datas['file_jb'],'','ZTips.journalBanque.file');
 	if($datas['file_jb'] != '')
@@ -113,7 +113,7 @@ class JournalBanqueView extends generalView {
 	$nomEnt = ($datas['entreprise_jb'] != '') ? $datas['nom_ent'].' ('.strtoupper($datas['ville_ent']).')' : '';
 	$idEnt  = ($datas['entreprise_jb'] != '') ? $datas['entreprise_jb'] : '';
 	$this->fieldset3->ligneAutoComplete("Client", "entreprise_jb", $nomEnt, $idEnt, "listeEntreprise",'',false,'',true,'ZTips.factFourn.entreprise');
-	
+
     }
 
     /**
@@ -182,7 +182,7 @@ class JournalBanqueView extends generalView {
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Ecriture bancaire "'.$datas['data']['id_jb'].'" - '.$titrePontComptaHisto,'',true);
 	if($light == 'interneInfos')
-	     return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneInfos($datas);
+	    return '<span class="important" style="text-align:center;">'.$mess.'</span>'.$this->interneInfos($datas);
 	else return $this->vueTotale($datas);
     }
 
@@ -262,9 +262,9 @@ class JournalBanqueView extends generalView {
 		if($result['file_jb'] != '')
 		    $linkFile = linkTag($suffixeLink.'facturier/JournalEcriture.php?action=get&id_jb='.$result['id_jb'],imageTag($suffixeLink.'img/download.png','Pièce justificative').$result['file_jb'], '', 'Pièce justificative');
 		if($result['facture_jb'] != '')
-		     $linkFact = linkTag($suffixeLink.'facturier/Facture.php?id_fact='.$result['facture_jb'],imageTag($suffixeLink.'img/actualite/facture.png','Facture associée').$result['type_fact'].' '.$modelFact->getFormatedIdFromData($result), '', 'Facture associée');
+		    $linkFact = linkTag($suffixeLink.'facturier/Facture.php?id_fact='.$result['facture_jb'],imageTag($suffixeLink.'img/actualite/facture.png','Facture associée').$result['type_fact'].' '.$modelFact->getFormatedIdFromData($result), '', 'Facture associée');
 		if($result['entreprise_jb'] != '')
-		     $linkEnt = linkTag($suffixeLink.'prospec/fiche.php?id_ent='.$result['entreprise_jb'],imageTag($suffixeLink.'img/actualite/contact.png','Client associé').$result['nom_ent'], '', 'Client associé');
+		    $linkEnt = linkTag($suffixeLink.'prospec/fiche.php?id_ent='.$result['entreprise_jb'],imageTag($suffixeLink.'img/actualite/contact.png','Client associé').$result['nom_ent'], '', 'Client associé');
 		$totalC += ($result['montant_jb'] < 0) ? 0 : $result['montant_jb'];
 		$totalD += ($result['montant_jb'] < 0) ? abs($result['montant_jb']) : 0;
 		$montantC = ($result['montant_jb'] < 0) ? '' : formatCurencyDisplay($result['montant_jb']).'';

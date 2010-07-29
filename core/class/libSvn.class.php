@@ -12,7 +12,7 @@
 
 class libSvn {
 
-    
+
     static function SVNStatus($file = '',$SVNPool = 1) {
 	if($file{0} == '/') {
 	    $files[] = $file;

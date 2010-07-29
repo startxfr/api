@@ -29,28 +29,28 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 aiJeLeDroit('affaire', 20, 'web');
 if($PC->rcvP['action'] == 'creer' and !array_key_exists('from', $PC->rcvP)) {
     if($PC->rcvP['entreprise_aff'] != null ) {
-        $PC->rcvP['titre_aff'] = str_replace(" ","_", $PC->rcvP['titre_aff']);
-        $model  = new affaireModel();
-        $resultinsert = $model->insert($PC->rcvP);
-        header('Location:Affaire.php?id_aff='.$resultinsert['id_aff']);
+	$PC->rcvP['titre_aff'] = str_replace(" ","_", $PC->rcvP['titre_aff']);
+	$model  = new affaireModel();
+	$resultinsert = $model->insert($PC->rcvP);
+	header('Location:Affaire.php?id_aff='.$resultinsert['id_aff']);
 
     }
 }
-elseif($PC->rcvP['action'] == 'creer' and array_key_exists('from', $PC->rcvP)){
+elseif($PC->rcvP['action'] == 'creer' and array_key_exists('from', $PC->rcvP)) {
     if($PC->rcvP['entreprise_aff'] != null and $PC->rcvP['contact_aff'] != null) {
-        $PC->rcvP['titre_aff'] = str_replace(" ","_", $PC->rcvP['titre_aff']);
-        $model  = new affaireModel();
-        $resultinsert = $model->insert($PC->rcvP);
-        $model = new contactEntrepriseModel();
-        $datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
-        $datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
-        $view = new contactEntrepriseView();
-        echo $view->view($datas, 'interneProjet', 'Affaire enregistrée');
-        exit;
+	$PC->rcvP['titre_aff'] = str_replace(" ","_", $PC->rcvP['titre_aff']);
+	$model  = new affaireModel();
+	$resultinsert = $model->insert($PC->rcvP);
+	$model = new contactEntrepriseModel();
+	$datas['projet'] = $model->getProjets($PC->rcvP['id_ent']);
+	$datas['affaire'] = $model->getAffaires($PC->rcvP['id_ent']);
+	$view = new contactEntrepriseView();
+	echo $view->view($datas, 'interneProjet', 'Affaire enregistrée');
+	exit;
     }
     else {
-        echo '<erreur>erreurPopupAppel</erreur><span class="important">Il faut un contact et une entreprise !</span>';
-        exit;
+	echo '<erreur>erreurPopupAppel</erreur><span class="important">Il faut un contact et une entreprise !</span>';
+	exit;
     }
 }
 

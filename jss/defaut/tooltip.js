@@ -243,7 +243,7 @@ var ZTips = {
 	sendSujet:		'Sujet de votre envoi.<br/>Cette option n\'est utile que lors d\'un envoi par mail ou par fax',
 	sendType:		'Type d\'envoi que vous souhaitez réaliser.<br/>Cette option n\'est utile que si vous souhaitez "enregistrer & envoyer" ou "envoyer" votre document',
 	sendCopyToMe:		'Pour recevoir une copie du document envoyé, directement dans votre boite mail'
-    }  ,
+    } ,
 
     factFourn: {
 	contact:		'Nom du contact chez votre fournisseur',
@@ -267,7 +267,7 @@ var ZTips = {
 	searchStatut: 		'Restreindre la recherche aux factures dont le <b>statut</b> est le suivant',
 	searchTitre: 		'Restreindre la recherche aux factures dont le <b>titre contient</b>',
 	tauxTVA:		'Taux de TVA applicable sur cette facture'
-    }  ,
+    } ,
 
     produit: {
 	bestsell:		'Les produits "best Seller" apparaissent en tête de liste de vos résultats. Ils sont ainsi plus rapidement accéssibles',
@@ -293,13 +293,13 @@ var ZTips = {
 	searchDisponible:	'Le produit recherché est-il disponible en stock',
 	searchPrixMin:		'Prix minimum des produits recherchés',
 	searchPrixMax:		'Prix maximum des produits recherchés'
-    }  ,
+    } ,
 
     fournisseur: {
 	actif:			'Lorsqu\'un fournisseur est désactivé, il ne peux plus fournir de produit lors de vos commandes. </br>Vous devez dabord désactiver ce fournisseur avant de pouvoir le supprimer',
 	commercial:		'Choisissez le nom du commercial en charge de cette facture.<br/>Par defaut, c\'est l\'utilisateur ayant créé cette facture qui est enregistré',
 	remise:                 'La remise habituelle de ce fournisseur sur ses produits',
-        contactAdv:		'Contact responsable de la gestion de vos commandes chez votre fournisseur',
+	contactAdv:		'Contact responsable de la gestion de vos commandes chez votre fournisseur',
 	contactFacturation:	'Contact responsable de la facturation chez votre fournisseur',
 	searchReference:	'Référence du/des fournisseur(s) recherché(s)',
 	searchNom:		'Nom du/des fournisseurs(s) recherché(s)',
@@ -308,7 +308,7 @@ var ZTips = {
 	searchActif:		'Le fournisseur recherché est-il actif',
 	produitNewPrix:		'Saisissez un nouveau prix a appliquer sur l\'ensemble des produits séléctionnés',
 	produitNewRemise:	'Saisissez une nouvelle remise a appliquer sur l\'ensemble des produits séléctionnés'
-    }  ,
+    } ,
 
     pontComptable: {
 	reference:		    'Identifiant unique du fichier généré',
@@ -326,5 +326,30 @@ var ZTips = {
 	searchDateStart:	    'Date de génération du fichier. Si une date de fin est définie, ce champs sera la date de démarage de votre période de recherche',
 	searchDateEnd:		    'Date de fin de génération du fichier. Si aucune date de début n\'est définie, tous les fichiers générés jusqu\'à cette date seront retournés.',
 	searchNom:		    'Vous pouvez saisir un mot ou une phrase pour trouver tous les fichiers contenant votre saisie'
+    } ,
+
+    journalBanque: {
+	reference:		    'Identifiant unique du fichier généré',
+	nom:			    'Résumé du fichier d\'échange',
+	dateRecord:		    'Date de création de l\'enregistrement',
+	dateEffet:		    'Date date d\'effet de cet enregistrement',
+	banque:			    'Compte en banque utilisé pour cette écriture',
+	commentaire:		    'Commentaire additionnel sur cette écriture. Uniquement utile comme un complément d\'information interne',
+	montant:		    'Montant de l\'écriture enregistrée',
+	libelle:		    'Libellé de votre écriture. Utile lors de l\'export vers un format comptable',
+	file:			    'Fichier justificatif de dépot',
+	facture:		    'Facture liée à cette écriture',
+	entreprise:		    'Entreprise cliente liée à cette écriture',
+	sens:			    'Sens de l\'écriture enregistrée',
+	modereglement:		    'Le mode de règlement choisi pour cet écriture',
+	groupActionDelete:	    'Suppression du lot d\'écritures',
+	groupActionChangeAttribute: 'Changer un attribut pour ce lot d\'écritures',
+	groupActionDeleteWithFile:  'Cocher cette case pour supprimer les fichiers justificatifs associés à ces écritures',
+	searchMontantMin:	    'Montant minimum des écritures recherchées',
+	searchMontantMax:	    'Montant maximum des écritures recherchées',
+	searchDateEffetMin:	    'Date minimum d\'effet de l\'écriture. Si une date de fin est définie, ce champs sera la date de démarage de votre période de recherche',
+	searchDateEffetMax:	    'Date maximum d\'effet de l\'écriture. Si aucune date de début n\'est définie, tous les fichiers générés jusqu\'à cette date seront retournés.',
+	searchLibelle:		    'Vous pouvez saisir un mot ou une phrase pour trouver tous les fichiers contenant votre saisie dans le libellé',
+	searchSens:		    'Sens des écritures recherchées'
     }
 };

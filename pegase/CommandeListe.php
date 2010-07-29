@@ -59,10 +59,10 @@ if($PC->rcvP['action'] == 'searchCmd') {
     }
     $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];
     if($PC->rcvP['limit'] != '')
-	 $datas['limit'] = $PC->rcvP['limit'];
+	$datas['limit'] = $PC->rcvP['limit'];
     else $datas['limit'] = '30';
     if($PC->rcvP['from'] != '')
-	 $datas['from'] = $PC->rcvP['from'];
+	$datas['from'] = $PC->rcvP['from'];
     else $datas['from'] = '0';
     $req = new commandeModel();
     $result = $req->getDataForSearchWeb('', $datas['from'], 'ALL', $ordre, $data);
@@ -77,14 +77,13 @@ if($PC->rcvP['action'] == 'searchCmd') {
     echo $view->searchResult($datas, 'result');
     exit;
 }
-elseif($PC->rcvP['action'] == 'exportTableur')
-{
-	$req = new commandeModel();
-	$result = $req->getDataForExportTableur($PC->rcvP['select']);
-	$gnose = new commandeGnose();
-	$file = $gnose->CommandeExportTableurConverter($result[1],$PC->rcvP['exportType']);
-	PushFileToBrowser($file);
-	exit;
+elseif($PC->rcvP['action'] == 'exportTableur') {
+    $req = new commandeModel();
+    $result = $req->getDataForExportTableur($PC->rcvP['select']);
+    $gnose = new commandeGnose();
+    $file = $gnose->CommandeExportTableurConverter($result[1],$PC->rcvP['exportType']);
+    PushFileToBrowser($file);
+    exit;
 }
 elseif ($PC->rcvP['action'] == 'groupedAction') {
     $bddtmp = new CommandeModel();
@@ -108,8 +107,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (1,9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markReinitCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -129,8 +128,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markRecuCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -150,8 +149,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (1,2,9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markBDCFEnvoyeCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -171,8 +170,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (1,2,9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markBDCFRecuCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -192,8 +191,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (1,2,9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markBDCFValidCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -213,8 +212,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (1,2,9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markExpedieCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -234,8 +233,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (1,2,9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markReceptionneCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -255,8 +254,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (1,2,9,10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::markTermineCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -276,8 +275,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		AND status_cmd NOT IN (10)
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-     $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::changeAttributeCommandeInDB($cmd['id_cmd'],$PC->rcvP);
@@ -300,8 +299,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND (status_cmd IS NULL OR  status_cmd IN (8,9))
 		AND (status_fact IS NULL OR  status_fact IN (6,7))
 		GROUP BY id_cmd ORDER BY id_cmd ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $cmd) {
 		commandeModel::archivateCommandeInDB($cmd['id_cmd'],$PC->rcvP);

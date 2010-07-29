@@ -30,48 +30,48 @@ aiJeLeDroit('devis', 20, 'web');
 if($PC->rcvP['action'] == 'addDevis') {
     $control = devisControl::controlAddWeb($PC->rcvP);
     if(!$control[0]) {
-        $view = new devisView();
-        $sortie = $view->creerDevis($control[1], $PC->rcvP);
+	$view = new devisView();
+	$sortie = $view->creerDevis($control[1], $PC->rcvP);
     }
     else {
-        $PC->rcvP['commercial_dev'] = $_SESSION['user']['id'];
-        $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-        if($PC->rcvP['entreprise_dev'] != '') {
-            $req = "SELECT * from entreprise where id_ent = '".$PC->rcvP['entreprise_dev']."'";
-            $bddtmp->makeRequeteFree($req);
-            $result = $bddtmp->process2();
-            $PC->rcvP['nomdelivery_dev'] = $result[1][0]['nom_ent'];
-            $PC->rcvP['tva_dev'] = $result[1][0]['tauxTVA_ent'];
-        }
-        else{
-            $req = "SELECT * from contact where id_cont = '".$PC->rcvP['contact_dev']."'";
-            $bddtmp->makeRequeteFree($req);
-            $result = $bddtmp->process2();
-            $PC->rcvP['nomdelivery_dev'] = $result[1][0]['civ_cont'].' '.$result[1][0]['prenom_cont'].' '.$result[1][0]['nom_cont'];
-            $PC->rcvP['tva_dev'] = $GLOBALS['zunoClientStatut']['tauxTVA'];
-        }
-        $sql = new devisModel();
-        if($PC->rcvP['affaire_dev'] != 'null' and $PC->rcvP['entreprise_dev'] != '') {
-            $PC->rcvP['id_dev'] = $sql->createId($PC->rcvP['affaire_dev']);
-            $result = $sql->insert($PC->rcvP);
-            if($result[0]) {
+	$PC->rcvP['commercial_dev'] = $_SESSION['user']['id'];
+	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	if($PC->rcvP['entreprise_dev'] != '') {
+	    $req = "SELECT * from entreprise where id_ent = '".$PC->rcvP['entreprise_dev']."'";
+	    $bddtmp->makeRequeteFree($req);
+	    $result = $bddtmp->process2();
+	    $PC->rcvP['nomdelivery_dev'] = $result[1][0]['nom_ent'];
+	    $PC->rcvP['tva_dev'] = $result[1][0]['tauxTVA_ent'];
+	}
+	else {
+	    $req = "SELECT * from contact where id_cont = '".$PC->rcvP['contact_dev']."'";
+	    $bddtmp->makeRequeteFree($req);
+	    $result = $bddtmp->process2();
+	    $PC->rcvP['nomdelivery_dev'] = $result[1][0]['civ_cont'].' '.$result[1][0]['prenom_cont'].' '.$result[1][0]['nom_cont'];
+	    $PC->rcvP['tva_dev'] = $GLOBALS['zunoClientStatut']['tauxTVA'];
+	}
+	$sql = new devisModel();
+	if($PC->rcvP['affaire_dev'] != 'null' and $PC->rcvP['entreprise_dev'] != '') {
+	    $PC->rcvP['id_dev'] = $sql->createId($PC->rcvP['affaire_dev']);
+	    $result = $sql->insert($PC->rcvP);
+	    if($result[0]) {
 
-                header('Location:Devis.php?id_dev='.$PC->rcvP['id_dev']);
-                exit;
-            }
-            else {
-                $view = new devisView();
-                echo $view->creerDevis('light');
-                exit;
-            }
-        }
-        else {
-            $result = $sql->insert($PC->rcvP, 'express', array());
-            if($result[0]) {
-                header('Location:Devis.php?id_dev='.$_SESSION['devisExpress']['id']);
-                exit;
-            }
-        }
+		header('Location:Devis.php?id_dev='.$PC->rcvP['id_dev']);
+		exit;
+	    }
+	    else {
+		$view = new devisView();
+		echo $view->creerDevis('light');
+		exit;
+	    }
+	}
+	else {
+	    $result = $sql->insert($PC->rcvP, 'express', array());
+	    if($result[0]) {
+		header('Location:Devis.php?id_dev='.$_SESSION['devisExpress']['id']);
+		exit;
+	    }
+	}
     }
 
 }

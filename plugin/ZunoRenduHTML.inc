@@ -236,7 +236,7 @@ class ZunoFieldset {
     public function generateFieldset() {
 	$styleCss = ($this->style != '') ? ' style="'.$this->style.'"' : '';
 	if($this->fieldsetId != '')
-	     $this->fieldset = '<fieldset class="form" id="'.$this->fieldsetId.'"'.$styleCss.'>';
+	    $this->fieldset = '<fieldset class="form" id="'.$this->fieldsetId.'"'.$styleCss.'>';
 	else $this->fieldset = '<fieldset class="form"'.$styleCss.'>';
 	if($this->legend != '')
 	    $this->fieldset.= '<legend>'.$this->legend.'</legend>';
@@ -276,7 +276,7 @@ class ZunoFieldset {
      */
     public function ligneLinkTo($label, $link, $value, $srcImage = '', $attRow='', $obligatoire = false) {
 	if($srcImage == '')
-	     $img = '';
+	    $img = '';
 	else $img = '<img src="'.$srcImage.'" alt="Image" />';
 	$lien = '<a href="'.$link.'" title="'.$value.'">'.$img.' '.$value.'</a>';
 	$ob = ($obligatoire) ? ' oblig' : '';
@@ -622,14 +622,14 @@ class ZunoFieldset {
 	    if($tips != '')
 		$tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	    $ob = ($obligatoire) ? ' oblig' : '';
-	$out = '<div class="row'.$ob.'" '.$attRow.'>
+	    $out = '<div class="row'.$ob.'" '.$attRow.'>
 			<div class="label" '.$tips.' >'.$label.'</div>
 			<div class="field">
 				<optgroup label="type">';
 	    foreach($liste as $v) {
 		$out .= '<input type="radio" name="'.$nom.'" value="'.$v['value'].'"'.(($v["value"] == $checked) ? ' checked="checked"' : "").' '.$autre.' ><span>'.$v['label'].'</span> ';
-                if($withbr)
-                    $out .= '<br class="clear"/>';
+		if($withbr)
+		    $out .= '<br class="clear"/>';
 	    }
 	    $out .= '</optgroup>
 				</div>
@@ -810,17 +810,13 @@ class ZunoFieldset {
 		$chaine .=  'class="'.$class.'" ';
 	    }
 	    // Textarea field length
-	    if ($cols != '') {
+	    if ($cols != '')
 		$chaine .=   'cols="'.$cols.'" ';
-	    }else {
-		$chaine .=   'cols="'.$GLOBALS['HTML']['textarea_cols'].'" ';
-	    }
+	    else $chaine .=   'cols="'.$GLOBALS['HTML']['textarea_cols'].'" ';
 	    // Textarea field height
-	    if ($rows != '') {
+	    if ($rows != '')
 		$chaine .=   'rows="'.$rows.'" ';
-	    }else {
-		$chaine .=   'rows="'.$GLOBALS['HTML']['textarea_row'].'" ';
-	    }
+	    else $chaine .=   'rows="'.$GLOBALS['HTML']['textarea_row'].'" ';
 	    // Input entered data size limitation
 	    if (is_numeric($max)) {
 		$chaine .=   'maxlength="'.$max.'" ';

@@ -40,7 +40,7 @@ if (!isset($_SESSION['ZunoRelanceSearch'])) {
 }
 else {
     if (count($PC->rcvP) > 0) {
-        $_SESSION['ZunoRelanceSearch'] = array_merge($_SESSION['ZunoRelanceSearch'],$PC->rcvP);
+	$_SESSION['ZunoRelanceSearch'] = array_merge($_SESSION['ZunoRelanceSearch'],$PC->rcvP);
     }
 }
 

@@ -34,40 +34,40 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 aiJeLeDroit('produit', 05, 'web');
 if($PC->rcvP['action'] == 'searchProduit') {
     if($PC->rcvP['id_prod'] != '')
-        $data['id_prod'] = $PC->rcvP['id_prod'];
+	$data['id_prod'] = $PC->rcvP['id_prod'];
     if($PC->rcvP['nom_prod'] != '')
-        $data['nom_prod'] = $PC->rcvP['nom_prod'];
+	$data['nom_prod'] = $PC->rcvP['nom_prod'];
     if($PC->rcvP['famille_prod'] != '')
-        $data['famille_prod'] = $PC->rcvP['famille_prod'];
+	$data['famille_prod'] = $PC->rcvP['famille_prod'];
     if($PC->rcvP['fournisseur_prod'] != '')
-        $data['fournisseur_id'] = $PC->rcvP['fournisseur_prod'];
+	$data['fournisseur_id'] = $PC->rcvP['fournisseur_prod'];
     if($PC->rcvP['stillAvailable_prod'] != '')
-        $data['stillAvailable_prod'] = $PC->rcvP['stillAvailable_prod'];
+	$data['stillAvailable_prod'] = $PC->rcvP['stillAvailable_prod'];
 
     if($PC->rcvP['pxmin_prod'] != '')
-        $data['pxmin_prod'] = $PC->rcvP['pxmin_prod'];
+	$data['pxmin_prod'] = $PC->rcvP['pxmin_prod'];
     if($PC->rcvP['pxmax_prod'] != '')
-        $data['pxmax_prod'] = $PC->rcvP['pxmax_prod'];
+	$data['pxmax_prod'] = $PC->rcvP['pxmax_prod'];
     // Ajout d'un hook pour SXA
     sxaFilterVar4SearchProduit($PC->rcvP,$data);
     if($PC->rcvP['ordre_prod'] != '')
-        $ordre = 'ORDER BY '.$PC->rcvP['ordre_prod'];
+	$ordre = 'ORDER BY '.$PC->rcvP['ordre_prod'];
     if($PC->rcvP['limit'] != '')
-        $datas['limit'] = $PC->rcvP['limit'];
+	$datas['limit'] = $PC->rcvP['limit'];
     else
-        $datas['limit'] = '30';
+	$datas['limit'] = '30';
     if($PC->rcvP['from'] != '')
-        $datas['from'] = $PC->rcvP['from'];
+	$datas['from'] = $PC->rcvP['from'];
     else
-        $datas['from'] = '0';
+	$datas['from'] = '0';
     $req = new produitModel();
     $result = $req->getDataForSearchProduitWeb('', $datas['from'], 'ALL', $ordre, $data);
     $datas['total'] = $result[1][0]['counter'];
     if($datas['total'] == '')
-        $datas['total'] = '0';
+	$datas['total'] = '0';
     if($datas['limit'] == 'ALL') {
-        $datas['limit'] = $datas['total'];
-        $datas['from'] = 0;
+	$datas['limit'] = $datas['total'];
+	$datas['from'] = 0;
     }
     $result = $req->getDataForSearchProduitWeb('', $datas['from'], $datas['limit'], $ordre, $data);
     $datas['data'] = $result[1];
@@ -91,8 +91,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 	$req = "SELECT produit.id_prod FROM produit
 		WHERE id_prod IN (".$prodListString.")
 		GROUP BY id_prod ORDER BY id_prod ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $prod) {
 		produitModel::markDesactivateProduitInDB($prod['id_prod'],$PC->rcvP);
@@ -107,8 +107,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 	$req = "SELECT produit.id_prod FROM produit
 		WHERE id_prod IN (".$prodListString.")
 		GROUP BY id_prod ORDER BY id_prod ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $prod) {
 		produitModel::markActivateProduitInDB($prod['id_prod'],$PC->rcvP);
@@ -123,8 +123,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 	$req = "SELECT produit.id_prod FROM produit
 		WHERE id_prod IN (".$prodListString.")
 		GROUP BY id_prod ORDER BY id_prod ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $prod) {
 		produitModel::changeFournisseurProduitProduitInDB($prod['id_prod'],$PC->rcvP['fournisseur'],$PC->rcvP);
@@ -144,8 +144,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND commande_produit.id_produit IS NULL
 		AND facture_produit.id_produit IS NULL
 		GROUP BY id_prod ORDER BY id_prod ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $prod) {
 		produitModel::markDeleteProduitInDB($prod['id_prod'],$PC->rcvP);
@@ -160,8 +160,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 	$req = "SELECT produit.id_prod FROM produit
 		WHERE id_prod IN (".$prodListString.")
 		GROUP BY id_prod ORDER BY id_prod ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $prod) {
 		produitModel::changeAttributeProduitInDB($prod['id_prod'],$PC->rcvP);
@@ -176,11 +176,11 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 }
 else {
     if($PC->rcvG['fourn'] != '') {
-        $data['fournisseur_id'] = $PC->rcvG['fourn'];
-        $data['stillAvailable_prod'] = 1;
+	$data['fournisseur_id'] = $PC->rcvG['fourn'];
+	$data['stillAvailable_prod'] = 1;
     }
     else
-        $data['stillAvailable_prod'] = 1;
+	$data['stillAvailable_prod'] = 1;
     $req = new produitModel();
     $total = $req->getDataForSearchProduitWeb('', '0', 'ALL', 'ORDER BY nom_prod', $data);
     $total = $total[1][0]['counter'];
@@ -198,9 +198,9 @@ else {
     $datas['famille'] = $req->getAllFamille();
     $temp = $req->getAllFournisseur();
     if($temp[0] and is_array($temp[1]))
-        foreach($temp[1] as $v) {
-            $datas['fournisseur'][$v['id_fourn']] = $v['id_fourn'].' - '.$v['nom_ent'].' ('.$v['cp_ent'].')';
-        }
+	foreach($temp[1] as $v) {
+	    $datas['fournisseur'][$v['id_fourn']] = $v['id_fourn'].' - '.$v['nom_ent'].' ('.$v['cp_ent'].')';
+	}
     $view = new produitView();
     $sortie = $view->searchResult($datas, '');
 }

@@ -15,7 +15,7 @@ class SessionBDD {
      * @return bool
      */
     public static function open() {
-        return true;
+	return true;
     }
 
     /**
@@ -23,9 +23,9 @@ class SessionBDD {
      * @return bool
      */
     public static function close() {
-        $bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
-        mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
-        return mysql_close($bbb);
+	$bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
+	mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
+	return mysql_close($bbb);
     }
 
     /**
@@ -34,17 +34,17 @@ class SessionBDD {
      * @return string string of the sessoin
      */
     public static function read($id) {
-        $bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
-        mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
-        $id = mysql_real_escape_string($id);
-        $sql = "SELECT backup_sess from session where id_sess = '$id' and datefin_sess > CURRENT_TIMESTAMP";
-        if ($result = mysql_query($sql, $bbb)) {
-            if (mysql_num_rows($result)) {
-                $record = mysql_fetch_assoc($result);
-                return $record['backup_sess'];
-            }
-        }
-        return '';
+	$bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
+	mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
+	$id = mysql_real_escape_string($id);
+	$sql = "SELECT backup_sess from session where id_sess = '$id' and datefin_sess > CURRENT_TIMESTAMP";
+	if ($result = mysql_query($sql, $bbb)) {
+	    if (mysql_num_rows($result)) {
+		$record = mysql_fetch_assoc($result);
+		return $record['backup_sess'];
+	    }
+	}
+	return '';
     }
 
     /**
@@ -53,10 +53,10 @@ class SessionBDD {
      * @param string data of the session
      */
     public static function write($id, $data) {
-        $bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
-        mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
-        $sql = "UPDATE session set backup_sess = '$data' where id_sess = '$id'";
-        return mysql_query($sql, $bbb);
+	$bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
+	mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
+	$sql = "UPDATE session set backup_sess = '$data' where id_sess = '$id'";
+	return mysql_query($sql, $bbb);
     }
 
     /**
@@ -65,10 +65,10 @@ class SessionBDD {
      * @return bool
      */
     public static function destroy($id) {
-        $bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
-        mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
-        $sql = sprintf("UPDATE `session` set datefin_sess = CURRENT_TIMESTAMP WHERE `id_sess` = '%s'", $id);
-        return mysql_query($sql, $bbb);
+	$bbb = mysql_connect($GLOBALS["DBPool_1"]['serveur'],$GLOBALS["DBPool_1"]['login'],$GLOBALS["DBPool_1"]['pass']);
+	mysql_select_db($GLOBALS["DBPool_1"]['base'], $bbb);
+	$sql = sprintf("UPDATE `session` set datefin_sess = CURRENT_TIMESTAMP WHERE `id_sess` = '%s'", $id);
+	return mysql_query($sql, $bbb);
     }
 
     /**
@@ -82,7 +82,7 @@ class SessionBDD {
      *        (session.gc_probability/session.gc_divisor)
      */
     public static function gc($max) {
-        return true;
+	return true;
     }
 }
 ?>

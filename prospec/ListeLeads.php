@@ -30,9 +30,8 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
-if (isset($PC->rcvG['typeproj']))
-{
-	$PC->rcvP['typeproj_proj'] = $PC->rcvG['typeproj'];
+if (isset($PC->rcvG['typeproj'])) {
+    $PC->rcvP['typeproj_proj'] = $PC->rcvG['typeproj'];
 }
 $sortie  = projetView::BoxLeadsSearch($PC->rcvP);
 $sortie .= projetView::BoxLeadsListe($PC->rcvP,'');

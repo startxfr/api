@@ -44,7 +44,7 @@ class affaireModel extends GeneralModel {
 	}
 	else $reqAdd .= 'AND archived_aff = \'0\' ';
 	if (is_array($search) and $search['actif_aff'] == '1')
-	     $reqAdd .= 'AND actif_aff = \'1\' ';
+	    $reqAdd .= 'AND actif_aff = \'1\' ';
 	else $reqAdd .= 'AND actif_aff = \'0\' ';
 	if (is_array($search) and $search['cp_ent'] != '')		$reqAdd .= 'AND cp_ent LIKE \''.$search['cp_ent'].'%\' ';
 	if (is_array($search) and $search['titre_aff'] != '')		$reqAdd .= 'AND titre_aff LIKE \'%'.$search['titre_aff'].'%\' ';
@@ -912,15 +912,15 @@ class affaireModel extends GeneralModel {
 	    $aff = $bddtmp->process();
 	    $aff = $aff[0];
 	    $propMess = '';
-	    if($newAttribList['titre_aff'] != ''){
+	    if($newAttribList['titre_aff'] != '') {
 		$propMess .= "<br/>Nouveau titre : \"".$newAttribList['titre_aff'].'", ';
 		$newData['titre_aff'] = $newAttribList['titre_aff'];
 	    }
-	    if($newAttribList['necheance_aff'] != ''){
+	    if($newAttribList['necheance_aff'] != '') {
 		$propMess .= "<br/>Nouvelle échéance: \"".$newAttribList['necheance_aff'].'", ';
 		$newData['echeance_aff'] = $newAttribList['necheance_aff'];
 	    }
-	    if($newAttribList['typeproj_aff'] != ''){
+	    if($newAttribList['typeproj_aff'] != '') {
 		$propMess .= "<br/>vouveau type de projet, ";
 		$newData['typeproj_aff'] = $newAttribList['typeproj_aff'];
 	    }

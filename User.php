@@ -25,28 +25,27 @@ $PC->GetFullContext();
 
 /*-----------------------------------------------------------------------*/
 if($PC->rcvG['id'] != '')
-	$id = $PC->rcvG['id'];
+    $id = $PC->rcvG['id'];
 elseif($PC->rcvP['id'] != '')
-	$id = $PC->rcvP['id'];
+    $id = $PC->rcvP['id'];
 elseif($_SESSION["user"]["id"] != '')
-	$id = $_SESSION["user"]["id"];
+    $id = $_SESSION["user"]["id"];
 else  $id = "";
 
 if (($PC->rcvP['type'] == 'popup')or
-    ($PC->rcvG['type'] == 'popup'))
-{
-	if ($id != '')
-		echo UserToolkit::UserPortlet($id);
-	else  echo "<html><body><script language=\"javascript\">zuno.popup.close();</script></body></html>";
+	($PC->rcvG['type'] == 'popup')) {
+    if ($id != '')
+	echo UserToolkit::UserPortlet($id);
+    else  echo "<html><body><script language=\"javascript\">zuno.popup.close();</script></body></html>";
 }
 else {
-	if ($id != '') {
-		$out = new PageDisplay($PC->channel);
-		$out->headerHTML->initCalendar();
-		$out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
-		$out->AddBodyContent(UserToolkit::UserPortlet($id));
-		$out->Process();
-	}
-	else  echo "<html><body><script language=\"javascript\">history.back();</script></body></html>";
+    if ($id != '') {
+	$out = new PageDisplay($PC->channel);
+	$out->headerHTML->initCalendar();
+	$out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
+	$out->AddBodyContent(UserToolkit::UserPortlet($id));
+	$out->Process();
+    }
+    else  echo "<html><body><script language=\"javascript\">history.back();</script></body></html>";
 }
 ?>

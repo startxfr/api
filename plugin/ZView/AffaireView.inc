@@ -53,11 +53,11 @@ class affaireView extends generalView {
 
 	$this->script = '<script>';
 	$this->script .= "\n".'function autoCompletage() { entreprise_completer = new Ajax.Autocompleter("ACentreprise_aff", "ACentreprise_aff_choix", "../ajaxRef.php?action=listeEntreprise", {paramName: "value", minChars: 2, indicator: "loadingentreprise_aff", afterUpdateElement: autoCompleteEntreprise} );';
-        $this->script .= "\n".'contact_completer = new Ajax.Autocompleter("ACcontact_aff", "ACcontact_aff_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_aff", afterUpdateElement : autoCompleteHidden } ); ';
+	$this->script .= "\n".'contact_completer = new Ajax.Autocompleter("ACcontact_aff", "ACcontact_aff_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_aff", afterUpdateElement : autoCompleteHidden } ); ';
 	$this->script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\') }';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'function autoCompleteEntreprise(text, li) {autoCompleteHidden(text, li); contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\');}';
-        $this->script .= '</script>';
+	$this->script .= '</script>';
 	$rendu = new ZunoRenduHtml();
 	$rendu->insertJS($this->script);
 	$rendu->generateZBox('Nouvelle affaire', 'Nouvelle affaire', $this->blockCreate->generateForm(), $this->blockCreate->generateButtonsNoAjax('Annuler', 'Créer'), 'idAffaireCreation', 'open', true);
@@ -166,8 +166,11 @@ class affaireView extends generalView {
 	$fieldset = new ZunoFieldset('Informations','','height: 140px');
 	$fieldset->ligneInput('Titre', 'titre_aff', $data['titre_aff']);
 	if ($data['type_ent'] != '')
-	      $img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png';
-	else {$img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png'; $data['nom_ent'] = '<i>particulier</i>'; }
+	    $img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png';
+	else {
+	    $img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png';
+	    $data['nom_ent'] = '<i>particulier</i>';
+	}
 	$fieldset->ligneLinkTo('Entreprise', '../prospec/fiche.php?id_ent='.$data['entreprise_aff'], $data['nom_ent'],$img);
 	$fieldset->ligneAutoComplete('Contact', 'contact_aff', trim($data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont']), $data['contact_aff'], 'listeContact&id_ent='.$data['entreprise_aff']);
 	$fieldset->ligneSelect('Commercial', 'commercial_aff', $data['commercial_aff'], $datas['user']);
@@ -228,7 +231,7 @@ class affaireView extends generalView {
     private function initioBlockFiles($datas) {
 	loadPlugin(array('ZView/DocumentView'));
 	if($datas['data']['archived_aff'] == 1)
-	     $workDir = $GLOBALS['SVN_Pool1']['ArchivesDir'];
+	    $workDir = $GLOBALS['SVN_Pool1']['ArchivesDir'];
 	else $workDir = $GLOBALS['SVN_Pool1']['WorkDir'];
 	$blockFiles = new documentViewRepertoire($workDir.$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff']);
 	$this->blockFiles = $blockFiles->afficher();
@@ -481,7 +484,7 @@ class affaireView extends generalView {
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
 	if($modHistorique)
-	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaireHisto');
+	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaireHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaire');
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeAffaireResultPage",$suffixeLink);
 	loadPlugin(array('OOConverter'));

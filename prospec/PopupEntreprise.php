@@ -27,19 +27,18 @@ $PC->GetFullContext();
 +------------------------------------------------------------------------*/
 $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 if($PC->rcvG['id_ent'] != '') {
-	echo viewFiche($PC->rcvG['id_ent'], 'contactEntreprise', 'LightInfoSimpleBis', 'non', 'web', true);
+    echo viewFiche($PC->rcvG['id_ent'], 'contactEntreprise', 'LightInfoSimpleBis', 'non', 'web', true);
 }
-elseif($PC->rcvG['id_fourn'] != '')
-{
+elseif($PC->rcvG['id_fourn'] != '') {
     $model = new produitModel();
     $rs = $model->getFournisseurByID($PC->rcvG['id_fourn']);
-	echo viewFiche($rs[1][0]['entreprise_fourn'], 'contactEntreprise', 'LightInfoSimpleBis', 'non', 'web', true);
+    echo viewFiche($rs[1][0]['entreprise_fourn'], 'contactEntreprise', 'LightInfoSimpleBis', 'non', 'web', true);
 }
-elseif($PC->rcvG['action'] == 'searchContDev'){
+elseif($PC->rcvG['action'] == 'searchContDev') {
     $v = new contactEntrepriseView();
     echo $v->popupSearch($PC->rcvG);
 }
-elseif($PC->rcvP['action'] == 'searchPopup'){
+elseif($PC->rcvP['action'] == 'searchPopup') {
     $model = new contactParticulierModel();
     $datas['result'] = $model->getDataForSearch($PC->rcvP['recherche_cont']);
     $datas['idChamp'] = $PC->rcvP['idChamp'];

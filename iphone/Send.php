@@ -68,16 +68,16 @@ if($_SESSION['user']['config']['send'] != 'oui') {
 // ex: <a href="Send.php?type=courrier&nom=Mr+Christophe+LARUE&add1=16+rue+camille+Desmoulins&cp=75011&ville=PARIS&pays=FRANCE&cpays=fr&file=../tmp/todo.ods" rev="async"><img src="Img/iconMenu/zsendCourrier.png" />Envoi de Courrier </a>
 if($PC->rcvG['type'] == 'mail') {
     if($PC->rcvG['action'] == 'doConfirmSend') {
-        $_SESSION['ZSend']['data']['typeE'] = 'email';
-        $_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
-        $_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
-        $_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
-        $_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
-        $_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
-        $_SESSION['ZSend']['data']['fichier'] =$_SESSION['ZSend']['data']['file'];
-        $sender = new Sender($_SESSION['ZSend']['data']);
-        $sender->send();
-	
+	$_SESSION['ZSend']['data']['typeE'] = 'email';
+	$_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
+	$_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
+	$_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
+	$_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
+	$_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
+	$_SESSION['ZSend']['data']['fichier'] =$_SESSION['ZSend']['data']['file'];
+	$sender = new Sender($_SESSION['ZSend']['data']);
+	$sender->send();
+
 	?>
 <root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>
 	<?php
@@ -130,18 +130,18 @@ if($PC->rcvG['type'] == 'mail') {
 elseif($PC->rcvG['type'] == 'courrier') {
     if($PC->rcvG['action'] == 'doConfirmSend') {
 
-        $_SESSION['ZSend']['data']['typeE'] = 'courrier';
-        $_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
-        $_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
-        $_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
-        $_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
-        $_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
-        $_SESSION['ZSend']['data']['fichier'] = $_SESSION['ZSend']['data']['file'];
-        $_SESSION['ZSend']['data']['destinataire'] =$_SESSION['ZSend']['data']['nom'];
-        $_SESSION['ZSend']['data']['pays'] = $_SESSION['ZSend']['data']['cpays'];
-        $sender = new Sender($_SESSION['ZSend']['data']);
-        $result = $sender->send();
-	
+	$_SESSION['ZSend']['data']['typeE'] = 'courrier';
+	$_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
+	$_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
+	$_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
+	$_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
+	$_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
+	$_SESSION['ZSend']['data']['fichier'] = $_SESSION['ZSend']['data']['file'];
+	$_SESSION['ZSend']['data']['destinataire'] =$_SESSION['ZSend']['data']['nom'];
+	$_SESSION['ZSend']['data']['pays'] = $_SESSION['ZSend']['data']['cpays'];
+	$sender = new Sender($_SESSION['ZSend']['data']);
+	$result = $sender->send();
+
 
 	if($result[0]) {	?>
 <root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>
@@ -206,16 +206,16 @@ elseif($PC->rcvG['type'] == 'fax') {
     if($PC->rcvG['action'] == 'doConfirmSend') {
 	$d = $_SESSION['ZSend']['data'];
 	$_SESSION['ZSend']['data']['typeE'] = 'fax';
-        $_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
-        $_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
-        $_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
-        $_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
-        $_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
-        $_SESSION['ZSend']['data']['fichier'] = $_SESSION['ZSend']['data']['file'];
-        $_SESSION['ZSend']['data']['destinataire'] =$_SESSION['ZSend']['data']['nom'];
+	$_SESSION['ZSend']['data']['sujet'] = $_SESSION['ZSend']['data']['titre'];
+	$_SESSION['ZSend']['data']['from'] = $_SESSION['ZSend']['data']['sender'];
+	$_SESSION['ZSend']['data']['cc'] = $_SESSION['ZSend']['data']['emailcc'];
+	$_SESSION['ZSend']['data']['mail'] = $_SESSION['ZSend']['data']['email'];
+	$_SESSION['ZSend']['data']['partie'] = 'contactParticulier';
+	$_SESSION['ZSend']['data']['fichier'] = $_SESSION['ZSend']['data']['file'];
+	$_SESSION['ZSend']['data']['destinataire'] =$_SESSION['ZSend']['data']['nom'];
 
-        $sender = new Sender($_SESSION['ZSend']['data']);
-        $result = $sender->send();
+	$sender = new Sender($_SESSION['ZSend']['data']);
+	$result = $sender->send();
 
 	if($result[0]) {	?>
 <root><go to="<?php echo $_SESSION['ZSend']['returnTo']; ?>" /></root>

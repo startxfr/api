@@ -31,39 +31,38 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 +------------------------------------------------------------------------*/
 
 
-if ($PC->rcvP['action'] == 'modif')
-{
-	//Analyse des champs obligatoires en fonction du contexte de langue
-	if ($PC->rcvP['language'] != $GLOBALS['LANGUE']['default'])
-	{
-		if($PC->rcvP['nom_pg'] == '')		{ $mess_err1 .= $GLOBALS['Tx4Lg']['PageErrorNom'];}
-		if($PC->rcvP['header_pg'] == '')	{ $mess_err1 .= $GLOBALS['Tx4Lg']['PageErrorHeader'];}
+if ($PC->rcvP['action'] == 'modif') {
+    //Analyse des champs obligatoires en fonction du contexte de langue
+    if ($PC->rcvP['language'] != $GLOBALS['LANGUE']['default']) {
+	if($PC->rcvP['nom_pg'] == '') {
+	    $mess_err1 .= $GLOBALS['Tx4Lg']['PageErrorNom'];
 	}
-
-	if($mess_err1 == '')
-	{
-		$langactive = $_SESSION["language"];
-		$_SESSION["language"] = $PC->rcvP['language'];
-		//on modifie
-		PageAdminToolkit::DBRecord($PC->rcvP,FALSE,TRUE);
-		$_SESSION["language"] = $langactive;
-		echo "<html><body><script language=\"javascript\">window.location.reload();zuno.popup.close();</script></body></html>";
+	if($PC->rcvP['header_pg'] == '') {
+	    $mess_err1 .= $GLOBALS['Tx4Lg']['PageErrorHeader'];
 	}
+    }
 
-	$sortie = new PageAdminPortlet($_SESSION["language"]);
-	$sortie->SetMessage($mess_err1);
-	$sortie->SetSelected($PC->rcvP['id_pg']);
-	$sortie->Type("MODIFCONTENT");
+    if($mess_err1 == '') {
+	$langactive = $_SESSION["language"];
+	$_SESSION["language"] = $PC->rcvP['language'];
+	//on modifie
+	PageAdminToolkit::DBRecord($PC->rcvP,FALSE,TRUE);
+	$_SESSION["language"] = $langactive;
+	echo "<html><body><script language=\"javascript\">window.location.reload();zuno.popup.close();</script></body></html>";
+    }
+
+    $sortie = new PageAdminPortlet($_SESSION["language"]);
+    $sortie->SetMessage($mess_err1);
+    $sortie->SetSelected($PC->rcvP['id_pg']);
+    $sortie->Type("MODIFCONTENT");
 }
-elseif(($PC->rcvG['language'] != '')and($PC->rcvG['id'] != ''))
-{
-	$sortie = new PageAdminPortlet($PC->rcvG['language']);
-	$sortie->SetSelected($PC->rcvG['id']);
-	$sortie->Type("MODIFCONTENT");
+elseif(($PC->rcvG['language'] != '')and($PC->rcvG['id'] != '')) {
+    $sortie = new PageAdminPortlet($PC->rcvG['language']);
+    $sortie->SetSelected($PC->rcvG['id']);
+    $sortie->Type("MODIFCONTENT");
 }
-else
-{
-	echo "<html><body><script language=\"javascript\">zuno.popup.close();</script></body></html>";
+else {
+    echo "<html><body><script language=\"javascript\">zuno.popup.close();</script></body></html>";
 }
 
 /*------------------------------------------------------------------------+

@@ -258,7 +258,7 @@ class PontComptableView extends generalView {
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 	if($modHistorique)
 	    $bouton = '';
-	
+
 	return generateZBox($titre,$titre,$out,$bouton,"searchListePontComptable",'');
     }
 

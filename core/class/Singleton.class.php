@@ -8,8 +8,7 @@
  *
  * @author     Quentin Berlemont <quentinberlemont@gmail.com>
  */
-abstract class Singleton
-{
+abstract class Singleton {
     protected static $_instance; // Pour php < 5.3
 
     /**
@@ -18,7 +17,9 @@ abstract class Singleton
      * @param  void
      * @return void
      */
-    private function __construct() {}
+    private function __construct() {
+
+    }
 
     /**
      * Prevents to clone the instance.
@@ -26,14 +27,16 @@ abstract class Singleton
      * @param  void
      * @return void
      */
-    final private function __clone() {}
+    final private function __clone() {
+
+    }
 
     /**
      * Gets a single instance of the class the static method is called in.
      *
      * See the {@link http://php.net/lsb Late Static Bindings} feature for more
      * information. Only for PHP 5.3
-     * 
+     *
      * @param  void
      * @return object Returns a single instance of the class.
      */
@@ -52,10 +55,10 @@ abstract class Singleton
      * Pour php < 5.3
      */
     public static function getInstance () {
-        if (!(self::$_instance instanceof self))
-            self::$_instance = new self();
+	if (!(self::$_instance instanceof self))
+	    self::$_instance = new self();
 
-        return self::$_instance;
+	return self::$_instance;
     }
 
 }

@@ -34,16 +34,14 @@ $portlet = new UserAdminPortlet();
 
 
 // affichage du resultat de la reponse
-if (($PC->rcvP['action'] == 'remove')and($PC->rcvP['id'] != ''))
-{
-	$portlet->SetMessage('Est-vous sur de vouloir supprimer définitivement cet utilisateur ?');
-	$portlet->Type('DELETE', $PC->rcvP);
-	$content = $portlet->process();
+if (($PC->rcvP['action'] == 'remove')and($PC->rcvP['id'] != '')) {
+    $portlet->SetMessage('Est-vous sur de vouloir supprimer définitivement cet utilisateur ?');
+    $portlet->Type('DELETE', $PC->rcvP);
+    $content = $portlet->process();
 }
-elseif (($PC->rcvP['valider'] == 'remove') and ($PC->rcvP['bouton'] == 'Confirmer'))
-{
-	UserAdminToolkit::DBDelete($PC->rcvP['login'], $PC->rcvP['img']);
-	header("Location: UserManage.php ");
+elseif (($PC->rcvP['valider'] == 'remove') and ($PC->rcvP['bouton'] == 'Confirmer')) {
+    UserAdminToolkit::DBDelete($PC->rcvP['login'], $PC->rcvP['img']);
+    header("Location: UserManage.php ");
 }
 else  header("Location: UserManage.php ");
 

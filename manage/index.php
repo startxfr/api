@@ -12,8 +12,8 @@
 /*------------------------------------------------------------------------+
 | FRAMEWORK LOADING	& LOG ACTIVITY
 +------------------------------------------------------------------------*/
-	include ('../inc/conf.inc');		// Declare global variables from config files
-	include ('../inc/core.inc');		// Load core library
+include ('../inc/conf.inc');		// Declare global variables from config files
+include ('../inc/core.inc');		// Load core library
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/

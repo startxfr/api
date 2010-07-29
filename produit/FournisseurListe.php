@@ -34,35 +34,35 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 aiJeLeDroit('produit', 05, 'web');
 if($PC->rcvP['action'] == 'searchFournisseur') {
     if($PC->rcvP['id_fourn'] != '')
-        $data['id_fourn'] = $PC->rcvP['id_fourn'];
+	$data['id_fourn'] = $PC->rcvP['id_fourn'];
     if($PC->rcvP['nom_ent'] != '')
-        $data['e.nom_ent'] = $PC->rcvP['nom_ent'];
+	$data['e.nom_ent'] = $PC->rcvP['nom_ent'];
     if($PC->rcvP['cp_ent'] != '')
-        $data['e.cp_ent'] = $PC->rcvP['cp_ent'];
+	$data['e.cp_ent'] = $PC->rcvP['cp_ent'];
     if($PC->rcvP['nom_cont'] != '')
-        $data['c.nom_cont'] = $PC->rcvP['nom_cont'];
+	$data['c.nom_cont'] = $PC->rcvP['nom_cont'];
     if($PC->rcvP['actif'] != '')
-        $data['actif'] = $PC->rcvP['actif'];
+	$data['actif'] = $PC->rcvP['actif'];
 
 
     if($PC->rcvP['ordre_fourn'] != '')
-        $ordre = 'ORDER BY '.$PC->rcvP['ordre_fourn'];
+	$ordre = 'ORDER BY '.$PC->rcvP['ordre_fourn'];
     if($PC->rcvP['limit'] != '')
-        $datas['limit'] = $PC->rcvP['limit'];
+	$datas['limit'] = $PC->rcvP['limit'];
     else
-        $datas['limit'] = '30';
+	$datas['limit'] = '30';
     if($PC->rcvP['from'] != '')
-        $datas['from'] = $PC->rcvP['from'];
+	$datas['from'] = $PC->rcvP['from'];
     else
-        $datas['from'] = '0';
+	$datas['from'] = '0';
     $req = new produitModel();
     $result = $req->getDataForSearchFournisseurWeb('', $datas['from'], 'ALL', $ordre, $data);
     $datas['total'] = $result[1][0]['counter'];
     if($datas['total'] == '')
-        $datas['total'] = '0';
+	$datas['total'] = '0';
     if($datas['limit'] == 'ALL') {
-        $datas['limit'] = $datas['total'];
-        $datas['from'] = 0;
+	$datas['limit'] = $datas['total'];
+	$datas['from'] = 0;
     }
     $result = $req->getDataForSearchFournisseurWeb('', $datas['from'], $datas['limit'], $ordre, $data);
     $datas['data'] = $result[1];

@@ -87,7 +87,7 @@ class Session {
 	    $resultat = $tmp->process2();
 	    if($resultat[0] and count($resultat[1]) > 0) {
 		$_SESSION['message'] = $resultat[1];
-                $_SESSION['message']['dejaVu'] = false;
+		$_SESSION['message']['dejaVu'] = false;
 		$to = "index.php?mess=message";
 		$req = "update message set lu_mess = '1' where (";
 		foreach($resultat[1] as $v)

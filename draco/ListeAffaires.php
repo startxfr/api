@@ -79,8 +79,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND archived_aff = '0'
 		AND actif_aff = '0'
 		GROUP BY id_aff ORDER BY id_aff ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $aff) {
 		affaireModel::activateAffaireInDB($aff['id_aff']);
@@ -98,7 +98,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND actif_aff = '1'
 		GROUP BY id_aff ORDER BY id_aff ASC";
 	$bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $aff) {
 		affaireModel::desactivateAffaireInDB($aff['id_aff']);
@@ -115,7 +115,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND archived_aff = '0'
 		GROUP BY id_aff ORDER BY id_aff ASC";
 	$bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $aff) {
 		affaireModel::changeAttributeAffaireInDB($aff['id_aff'],$PC->rcvP);
@@ -138,8 +138,8 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
 		AND (status_cmd IS NULL OR  status_cmd IN (9,10))
 		AND (status_fact IS NULL OR  status_fact IN (6,7))
 		GROUP BY id_aff ORDER BY id_aff ASC";
-        $bddtmp->makeRequeteFree($req);
-        $res = $bddtmp->process();
+	$bddtmp->makeRequeteFree($req);
+	$res = $bddtmp->process();
 	if(count($res) > 0) {
 	    foreach($res as $k => $aff) {
 		affaireModel::archivateAffaireInDB($aff['id_aff']);

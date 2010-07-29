@@ -40,33 +40,33 @@ if ($PC->rcvP['action'] == 'search') {
     $cloud = new CloudModel();
     $tableau = 'classic';
     switch($PC->rcvP['type']) {
-        case 'entreprise' :
-            $cloud->addToCloud($PC->rcvP['recherche'], 'entreprise');
-            $total = $req->getDataForSearchEntWeb($PC->rcvP['recherche'], 'ALL');
-            $total = $total[1][0]['counter'];
-            $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
-            $result = $req->getDataForSearchEntWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
-            $tableau = 'ent';
-            break;
-        case 'contact' :
-            $cloud->addToCloud($PC->rcvP['recherche'], 'contact');
-            $total = $req->getDataForSearchContWeb($PC->rcvP['recherche'], 'ALL');
-            $total = $total[1][0]['counter'];
-            $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
-            $result = $req->getDataForSearchContWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
-            break;
-        case 'appel' :
-            $total = $req->getDataForSearchAppWeb($PC->rcvP['recherche'], 'ALL');
-            $total = $total[1][0]['counter'];
-            $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
-            $result = $req->getDataForSearchAppWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
-            break;
-        default:
-            $total = $req->getDataForSearchGlobal($PC->rcvP['recherche'], 'ALL','0', $PC->rcvP['order'], $PC->rcvP['orderSens']);
-            $total = $total[1][0]['counter'];
-            $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
-            $result = $req->getDataForSearchGlobal($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
-            break;
+	case 'entreprise' :
+	    $cloud->addToCloud($PC->rcvP['recherche'], 'entreprise');
+	    $total = $req->getDataForSearchEntWeb($PC->rcvP['recherche'], 'ALL');
+	    $total = $total[1][0]['counter'];
+	    $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
+	    $result = $req->getDataForSearchEntWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
+	    $tableau = 'ent';
+	    break;
+	case 'contact' :
+	    $cloud->addToCloud($PC->rcvP['recherche'], 'contact');
+	    $total = $req->getDataForSearchContWeb($PC->rcvP['recherche'], 'ALL');
+	    $total = $total[1][0]['counter'];
+	    $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
+	    $result = $req->getDataForSearchContWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
+	    break;
+	case 'appel' :
+	    $total = $req->getDataForSearchAppWeb($PC->rcvP['recherche'], 'ALL');
+	    $total = $total[1][0]['counter'];
+	    $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
+	    $result = $req->getDataForSearchAppWeb($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
+	    break;
+	default:
+	    $total = $req->getDataForSearchGlobal($PC->rcvP['recherche'], 'ALL','0', $PC->rcvP['order'], $PC->rcvP['orderSens']);
+	    $total = $total[1][0]['counter'];
+	    $PC->rcvP['limit'] = ($PC->rcvP['limit'] == 'ALL') ? $total : $PC->rcvP['limit'];
+	    $result = $req->getDataForSearchGlobal($PC->rcvP['recherche'], $PC->rcvP['limit'], $PC->rcvP['from'], $PC->rcvP['order'], $PC->rcvP['orderSens']);
+	    break;
     }
 
     $datas['total'] = $total;
@@ -105,7 +105,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
     }
 
     if($action == 'changeAttributeC') {
-        $req = "SELECT contact.id_cont, contact.nom_cont FROM contact
+	$req = "SELECT contact.id_cont, contact.nom_cont FROM contact
 		WHERE id_cont IN (".$contactListString.")
 		GROUP BY id_cont ORDER BY id_cont ASC";
         $bddtmp->makeRequeteFree($req);
@@ -120,7 +120,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
         else $message = "<span class=\"importantblue\">Aucune des contacts séléctionnés ne peut être re-initialisé</span>";
     }
     elseif($action == 'changeAttributeE') {
-        $req = "SELECT entreprise.id_ent, entreprise.nom_ent FROM entreprise
+	$req = "SELECT entreprise.id_ent, entreprise.nom_ent FROM entreprise
 		WHERE id_ent IN (".$contactListString.")
 		GROUP BY id_ent ORDER BY id_ent ASC";
         $bddtmp->makeRequeteFree($req);
@@ -135,7 +135,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
         else $message = "<span class=\"importantblue\">Aucune des entreprises séléctionnées ne peut être modifié</span>";
     }
     elseif($action == 'deleteC') {
-        $req = "SELECT contact.id_cont, contact.nom_cont FROM contact
+	$req = "SELECT contact.id_cont, contact.nom_cont FROM contact
 		LEFT JOIN affaire ON affaire.contact_aff = contact.id_cont
 		LEFT JOIN devis ON (devis.contact_achat_dev = contact.id_cont OR devis.contact_dev = contact.id_cont)
 		LEFT JOIN commande ON (commande.contact_achat_cmd = contact.id_cont OR commande.contact_cmd = contact.id_cont)
@@ -166,7 +166,7 @@ elseif ($PC->rcvP['action'] == 'groupedAction') {
         else $message = "<span class=\"importantblue\">Aucune des contacts séléctionnés ne peut être supprimé</span>";
     }
     elseif($action == 'deleteE') {
-        $req = "SELECT entreprise.id_ent, entreprise.nom_ent FROM entreprise
+	$req = "SELECT entreprise.id_ent, entreprise.nom_ent FROM entreprise
 		LEFT JOIN affaire ON affaire.entreprise_aff = entreprise.id_ent
 		LEFT JOIN devis ON devis.entreprise_dev = entreprise.id_ent
 		LEFT JOIN commande ON commande.entreprise_cmd = entreprise.id_ent

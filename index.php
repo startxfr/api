@@ -32,7 +32,7 @@ $out = new PageDisplay($PC->channel);
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 $sortie = "";
 if(is_array($_SESSION) and array_key_exists('user',$_SESSION)) {
-        header("Location: Bureau.php");
+    header("Location: Bureau.php");
 }
 else header("Location: Login.php");
 

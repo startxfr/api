@@ -86,6 +86,6 @@
 	<value id="clientId">startx.zuno</value>
 	<value id="clientPwd">sdIMUy2</value>
 	<value id="clientRfr">WP002000021883</value>
-	<value id="MessageBackAddr">maileva@zuno.fr</value> 
+	<value id="MessageBackAddr">maileva@zuno.fr</value>
     </group>
 </configuration>

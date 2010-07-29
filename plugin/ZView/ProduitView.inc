@@ -97,7 +97,7 @@ class ProduitViewOriginal extends generalView {
 	$this->fieldset1->ligneInputObligatoire('Référence', 'id_prod', $datas['data']['id_prod'],'','ZTips.produit.reference');
 	$this->fieldset1->ligneInputObligatoire('Nom', 'nom_prod', $datas['data']['nom_prod'],'','ZTips.produit.nom');
 	if($popup)
-	     $this->fieldset1->ligneSelectObligatoire('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille&popup=popup', 800,330)");
+	    $this->fieldset1->ligneSelectObligatoire('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille&popup=popup', 800,330)");
 	else $this->fieldset1->ligneSelectObligatoire('Famille', 'famille_prod', $datas['data']['famille_prod'], $datas['famille'], false, 'id=selectFamilleProd', 'ZTips.produit.famille', '', true, "zuno.popup.open('../produit/Produit.php', 'action=addFamille', 450,150)");
 	$this->fieldset3->ligneTAreaObligatoire('Description', 'description_prod',$datas['data']['description_prod'],'','ZTips.produit.desc');
 	$this->fieldset1->ligneInputObligatoire('Prix (€)', 'prix_prod', $datas['data']['prix_prod'],'','ZTips.produit.prix');

@@ -28,30 +28,27 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
-if ($PC->rcvP['table'] != '')
-{
+if ($PC->rcvP['table'] != '') {
 
-	if (substr($PC->rcvP['action'],0,6) == 'Change')
-	{
+    if (substr($PC->rcvP['action'],0,6) == 'Change') {
 
-		$table = $PC->rcvP['table'];
-		$id    = substr($PC->rcvP['action'],6);
-		// requete pour la liste
-		$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-		$structure = $bddtmp->AnalyseTableStructure($table,"");
+	$table = $PC->rcvP['table'];
+	$id    = substr($PC->rcvP['action'],6);
+	// requete pour la liste
+	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	$structure = $bddtmp->AnalyseTableStructure($table,"");
 
-		$newval = $PC->rcvP[$structure['titre'].$id];
+	$newval = $PC->rcvP[$structure['titre'].$id];
 
 
-		$var_recv[$structure['titre']] = $newval;
-		$bddtmp->makeRequeteUpdate($table,$structure['key'],$id,$var_recv);
-		$bddtmp->process();
-	}
+	$var_recv[$structure['titre']] = $newval;
+	$bddtmp->makeRequeteUpdate($table,$structure['key'],$id,$var_recv);
+	$bddtmp->process();
+    }
 }
-elseif ($PC->rcvG['table'] != '')
-{
+elseif ($PC->rcvG['table'] != '') {
 
-	$table = $PC->rcvG['table'];
+    $table = $PC->rcvG['table'];
 }
 
 
@@ -66,24 +63,21 @@ $tag['FormName'] = 'ChangeRef';
 $tag['action'] = inputTag('hidden','action','','','',$tag['FormName'],' id="MakeRefAction"');
 $tag['action'] .= inputTag('hidden','table','','','',$table,'');
 
-if (count($res) > 0)
-{
-	foreach ($res as $key => $dev1)
-	{
-		$tag['link'] = linkTag('javascript:document.'.$tag['FormName'].'.submit()',imageTag('../img/valid.png','valider','middle'),'','','onclick="ChangeRefAction(\'Change'.$dev1[$structure['key']].'\')"');
-		$tag['nom'] = inputTag('text',$structure['titre'].$dev1[$structure['key']],'','','',$dev1[$structure['titre']],'');
-		$tag['id'] = $dev1[$structure['key']];
+if (count($res) > 0) {
+    foreach ($res as $key => $dev1) {
+	$tag['link'] = linkTag('javascript:document.'.$tag['FormName'].'.submit()',imageTag('../img/valid.png','valider','middle'),'','','onclick="ChangeRefAction(\'Change'.$dev1[$structure['key']].'\')"');
+	$tag['nom'] = inputTag('text',$structure['titre'].$dev1[$structure['key']],'','','',$dev1[$structure['titre']],'');
+	$tag['id'] = $dev1[$structure['key']];
 
-		$tmptab .= templating('manage/ZunoRefConfigure.row',$tag);
-	}
-	$tag['RefList'] = $tmptab;
-	$tag['table'] = $table;
-	$tag['message'] = $message;
-	$content = templating('manage/ZunoRefConfigure',$tag);
+	$tmptab .= templating('manage/ZunoRefConfigure.row',$tag);
+    }
+    $tag['RefList'] = $tmptab;
+    $tag['table'] = $table;
+    $tag['message'] = $message;
+    $content = templating('manage/ZunoRefConfigure',$tag);
 }
-else
-{
-	$content = '<span class="important">Aucune table ne correspond a votre demande</span>';
+else {
+    $content = '<span class="important">Aucune table ne correspond a votre demande</span>';
 }
 
 

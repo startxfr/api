@@ -57,7 +57,7 @@ class PayboxModel extends GeneralModel {
 	$this->makeRequeteFree("SELECT COUNT(id_pb) AS counter FROM paybox WHERE DAYOFYEAR(date_pb) = DAYOFYEAR(NOW())");
 	$rs = $this->process2();
 	if($rs[0])
-	     $rs = $rs[1][0]['counter']+1;
+	    $rs = $rs[1][0]['counter']+1;
 	else $rs = "0123654789";
 	while (strlen($rs) != 10)
 	    $rs = "0".$rs;

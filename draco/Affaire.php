@@ -45,10 +45,10 @@ elseif($PC->rcvP['action'] == 'modif') {
     unset($PC->rcvP['id_aff']);
     $result = $req->update($PC->rcvP, $id);
     if($result[0]) {
-        echo viewFiche($id, 'affaire', 'interneInfos', 'non', 'web', true, 'Enregistré');
+	echo viewFiche($id, 'affaire', 'interneInfos', 'non', 'web', true, 'Enregistré');
     }
     else {
-        echo viewFiche($id, 'affaire', 'interneInfos', 'non', 'web', true, $result[1]);
+	echo viewFiche($id, 'affaire', 'interneInfos', 'non', 'web', true, $result[1]);
     }
     exit;
 }
@@ -59,7 +59,7 @@ elseif($PC->rcvG['action'] == "archiver") {
 }
 elseif($PC->rcvP['action'] == "doArchiver") {
     foreach($PC->rcvP['ID'] as $k => $v)
-        affaireModel::archivateAffaireInDB($k);
+	affaireModel::archivateAffaireInDB($k);
     echo viewFiche($PC->rcvP['aff'], 'affaire', 'interneInfos', 'non', 'web', true, 'Archivée');
     exit;
 }

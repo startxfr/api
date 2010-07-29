@@ -32,22 +32,22 @@ if($PC->rcvP['action'] == 'addFactFourn') {
 
     $PC->rcvP['montantTTC_factfourn'] = prepareNombreTraitement($PC->rcvP['TTC']);
     $PC->rcvP['tauxTVA_factfourn'] = prepareNombreTraitement($PC->rcvP['taux_tva']);
-    
+
 
     $model = new FactureFournisseurModel();
     $result = $model->insert($PC->rcvP);
     if($result[0]) {
 
-        $id = $model->getLastId();
+	$id = $model->getLastId();
 
-        header('Location:FactureFournisseur.php?id_factfourn='.$id);
-        exit;
+	header('Location:FactureFournisseur.php?id_factfourn='.$id);
+	exit;
     }
     else {
-        $view = new FactureFournisseurView();
-        $model = new FactureFournisseurModel();
-        $datas['mode'] = $model->getModeReglement();
-        $sortie = $view->creer($datas, 'erreur', $result[1]);
+	$view = new FactureFournisseurView();
+	$model = new FactureFournisseurModel();
+	$datas['mode'] = $model->getModeReglement();
+	$sortie = $view->creer($datas, 'erreur', $result[1]);
     }
 
 }

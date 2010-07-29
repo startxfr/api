@@ -27,8 +27,8 @@ for ($count = 0; $count < count ($files); $count++)
 /**
  * Chargement dynamique des classes
  */
-function __autoload($maclasse){
-     require_once $GLOBALS['REP']['appli'].$GLOBALS['REP']['class'].$maclasse.$GLOBALS['EXT']['class'];
+function __autoload($maclasse) {
+    require_once $GLOBALS['REP']['appli'].$GLOBALS['REP']['class'].$maclasse.$GLOBALS['EXT']['class'];
 }
 
 Logg::loggerInfo('core::loader() ~ Demarrage du script '.$_SERVER['SCRIPT_FILENAME'],$_SERVER['SCRIPT_FILENAME'],__FILE__.'@'.__LINE__);

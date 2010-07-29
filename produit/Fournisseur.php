@@ -38,67 +38,67 @@ elseif($PC->rcvP['action'] == 'modifFournisseur') {
     $sql = new ProduitModel();
     $PC->rcvP['remise_fourn'] = prepareNombreTraitement($PC->rcvP['remise_fourn']);
     if(!array_key_exists('actif', $PC->rcvP))
-        $PC->rcvP['actif'] = 0;
+	$PC->rcvP['actif'] = 0;
 
     $rs = $sql->updateFournisseur($PC->rcvP, 'non', $PC->rcvP['idFournisseur']);
     if($rs[0]) {
-        echo viewFiche($PC->rcvP['idFournisseur'], 'produit', 'interneInfos', 'fourn', 'web', true, 'Enregistré');
-        exit;
+	echo viewFiche($PC->rcvP['idFournisseur'], 'produit', 'interneInfos', 'fourn', 'web', true, 'Enregistré');
+	exit;
     }
     else {
-        echo '<erreur>error</erreur><span class="important" style="text-align:center;">Une erreur a eu lieu lors de l\'insertion !</span>';
-        exit;
+	echo '<erreur>error</erreur><span class="important" style="text-align:center;">Une erreur a eu lieu lors de l\'insertion !</span>';
+	exit;
     }
 
 }
 elseif($PC->rcvP['action'] == 'addFournisseur') {
     aiJeLeDroit('produit', 20, 'web');
     if(!array_key_exists('nom_ent', $PC->rcvP) or $PC->rcvP['nom_ent'] == '') {
-        echo '<erreur>error</erreur><span class="important" style="text-align:center;">Veuillez indiquer une entreprise comme fournisseur.</span>';
-        exit;
+	echo '<erreur>error</erreur><span class="important" style="text-align:center;">Veuillez indiquer une entreprise comme fournisseur.</span>';
+	exit;
     }
     elseif(!array_key_exists('cp_ent', $PC->rcvP) or $PC->rcvP['cp_ent'] == '') {
-        echo '<erreur>error</erreur><span class="important" style="text-align:center;">Veuillez indiquer un code postal pour cette entreprise.</span>';
-        exit;
+	echo '<erreur>error</erreur><span class="important" style="text-align:center;">Veuillez indiquer un code postal pour cette entreprise.</span>';
+	exit;
     }
     elseif($PC->rcvP['nom_cont'] == "" or $PC->rcvP['prenom_cont'] == "") {
-        echo '<erreur>error</erreur><span class="important" style="text-align:center;">Veuillez indiquer un contact pour cette entreprise.</span>';
-        exit;
+	echo '<erreur>error</erreur><span class="important" style="text-align:center;">Veuillez indiquer un contact pour cette entreprise.</span>';
+	exit;
     }
     else {
-        $sql = new contactEntrepriseModel();
-        $PC->rcvP['type_ent'] = 5;
-        $PC->rcvP['nom_ent'] = strtoupper($PC->rcvP['nom_ent']);
-        $sql->insert($PC->rcvP);
-        $PC->rcvP['entreprise_cont'] = $sql->getLastId();
-        $sql = new contactParticulierModel();
-        $sql->insert($PC->rcvP);
-        $PC->rcvP['contactComm_fourn'] = $sql->getLastId();
-        $sql = new produitModel();
-        $PC->rcvP['entreprise_fourn'] = $PC->rcvP['entreprise_cont'];
-        $PC->rcvP['actif'] = 1;
-        $cp = substr($PC->rcvP['cp_ent'],0,2);
-        $nom = strtoupper(substr($PC->rcvP['nom_ent'],0,2));
-        $id = $nom.$cp;
-        $deja = $sql->getFournisseurByID($id);
-        $k = 1;
-        while(array_key_exists('0',$deja[1])) {
-            $nom = strtoupper(substr($PC->rcvP['nomEnt'],$k,2));
-            $k++;
-            $id = $nom.$cp;
-            $deja = $sql->getFournisseurByID($id);
-        }
-        $PC->rcvP['id_fourn'] = $id;
-        $rs = $sql->insertFournisseur($PC->rcvP);
-        if($rs[0]) {
-            echo viewFiche($id, 'produit', 'afterCreate', 'fourn', 'web', true, 'Enregistré');
-            exit;
-        }
-        else {
-            echo '<erreur>error</erreur><span class="important" style="text-align:center;">Une erreur est survenue lors de l\'insertion de ce fournisseur.</span>';
-            exit;
+	$sql = new contactEntrepriseModel();
+	$PC->rcvP['type_ent'] = 5;
+	$PC->rcvP['nom_ent'] = strtoupper($PC->rcvP['nom_ent']);
+	$sql->insert($PC->rcvP);
+	$PC->rcvP['entreprise_cont'] = $sql->getLastId();
+	$sql = new contactParticulierModel();
+	$sql->insert($PC->rcvP);
+	$PC->rcvP['contactComm_fourn'] = $sql->getLastId();
+	$sql = new produitModel();
+	$PC->rcvP['entreprise_fourn'] = $PC->rcvP['entreprise_cont'];
+	$PC->rcvP['actif'] = 1;
+	$cp = substr($PC->rcvP['cp_ent'],0,2);
+	$nom = strtoupper(substr($PC->rcvP['nom_ent'],0,2));
+	$id = $nom.$cp;
+	$deja = $sql->getFournisseurByID($id);
+	$k = 1;
+	while(array_key_exists('0',$deja[1])) {
+	    $nom = strtoupper(substr($PC->rcvP['nomEnt'],$k,2));
+	    $k++;
+	    $id = $nom.$cp;
+	    $deja = $sql->getFournisseurByID($id);
+	}
+	$PC->rcvP['id_fourn'] = $id;
+	$rs = $sql->insertFournisseur($PC->rcvP);
+	if($rs[0]) {
+	    echo viewFiche($id, 'produit', 'afterCreate', 'fourn', 'web', true, 'Enregistré');
+	    exit;
+	}
+	else {
+	    echo '<erreur>error</erreur><span class="important" style="text-align:center;">Une erreur est survenue lors de l\'insertion de ce fournisseur.</span>';
+	    exit;
 
-        }
+	}
     }
 
 }
@@ -112,13 +112,13 @@ elseif($PC->rcvG['action'] == 'changeDatas') {
 elseif($PC->rcvP['action'] == 'changeDatasProdFourn') {
     aiJeLeDroit('produit', 15, 'web');
     if($PC->rcvP['idFournisseur'] == '') {
-        echo '<erreur>erreurPopup</erreur>Un problème est survenu, impossible de faire la modification !';
-        exit;
+	echo '<erreur>erreurPopup</erreur>Un problème est survenu, impossible de faire la modification !';
+	exit;
 
     }
     if(!is_array($PC->rcvP['prod'])) {
-        echo '<erreur>erreurPopup</erreur>Vous n\'avez pas sélectionné de produit !';
-        exit;
+	echo '<erreur>erreurPopup</erreur>Vous n\'avez pas sélectionné de produit !';
+	exit;
     }
     $sql = new produitModel();
     $sql->updateProduitFournisseurMasse($PC->rcvP['idFournisseur'], $PC->rcvP['newPF'], $PC->rcvP['newRF'], $PC->rcvP['prod']);

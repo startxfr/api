@@ -78,7 +78,7 @@ class projetView extends generalView {
 
 	$out .= '</tbody></table></div>';
 	if($modHistorique)
-	     $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'projetHisto');
+	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'projetHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'projet');
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProjetResultPage",$suffixeLink);
 
@@ -159,7 +159,7 @@ class projetView extends generalView {
 	    if ($projet['affaire_proj'] != '')
 		$tag['affaire']   = "<a href=\"javascript:window.location = '../draco/Affaire.php?id_aff=".$projet['affaire_proj']."';zuno.popup.close();\">".imageTag('../img/prospec/projet.affaire.png','Affaire Liée')."Voir l'affaire ".$projet['affaire_proj']."</a>";
 	    elseif(($projet['affaire_proj'] == '')and($opt != 'new'))
-		 $tag['affaire']   = "<a href=\"#\" onclick=\"return zuno.popup.open('../draco/PopupAffaire.php','id_proj=".$projet['id_proj']."',800,400,'','','resize','affaire');\">".imageTag('../img/prospec/projet.affaire.png','Affaire Liée')."Créer une affaire à partir de ce projet"."</a>";
+		$tag['affaire']   = "<a href=\"#\" onclick=\"return zuno.popup.open('../draco/PopupAffaire.php','id_proj=".$projet['id_proj']."',800,400,'','','resize','affaire');\">".imageTag('../img/prospec/projet.affaire.png','Affaire Liée')."Créer une affaire à partir de ce projet"."</a>";
 	    else $tag['affaire']   = "";
 
 	    if ($projet['rdv_proj'] != '')

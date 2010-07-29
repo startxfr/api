@@ -29,35 +29,32 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*-----------------------------------------------------------------------*/
 
 
-if (($PC->rcvP['id'] != '')and($PC->rcvP['channel'] != ''))
-{
-	$in['id_sess']	= $PC->rcvP['id'];
-	$bddtmp = new Bdd($GLOBALS['CHANNEL_'.$PC->rcvP['channel']]['SessDBPool']);
-	$bddtmp->makeRequeteAuto('session',$in);
-	$detail = $bddtmp->process();
-	$session = $detail[0];
-	$session["date_sess"] = DateUniv2Human($session["date_sess"], 'simpleDH');
-	$session["datefin_sess"] = DateUniv2Human($session["datefin_sess"], 'simpleDH');
+if (($PC->rcvP['id'] != '')and($PC->rcvP['channel'] != '')) {
+    $in['id_sess']	= $PC->rcvP['id'];
+    $bddtmp = new Bdd($GLOBALS['CHANNEL_'.$PC->rcvP['channel']]['SessDBPool']);
+    $bddtmp->makeRequeteAuto('session',$in);
+    $detail = $bddtmp->process();
+    $session = $detail[0];
+    $session["date_sess"] = DateUniv2Human($session["date_sess"], 'simpleDH');
+    $session["datefin_sess"] = DateUniv2Human($session["datefin_sess"], 'simpleDH');
 
-	//On recupère les log de cette session
-	$in1['session_slog']	= $PC->rcvP['id'];
-	$bddtmp->makeRequeteAuto($GLOBALS['LOG']['DBTable'],$in1);
-	$res = $bddtmp->process();
-	// remplissage du tableau
-	foreach ($res as $key => $val)
-	{
-		$val["date_slog"] = DateUniv2Human($val["date_slog"], 'shortdetail');
-		$tmptab .= templating('manage/Log_table.Row', $val);
-	}
-	// preparation du tableau et ajout à la page
-	$tab['liste'] = $tmptab ;
-	$session['liste'] = templating('manage/Log_table',$tab);
-	// preparation du portlet final
-	$content = templating('manage/SessionDetail',$session);
+    //On recupère les log de cette session
+    $in1['session_slog']	= $PC->rcvP['id'];
+    $bddtmp->makeRequeteAuto($GLOBALS['LOG']['DBTable'],$in1);
+    $res = $bddtmp->process();
+    // remplissage du tableau
+    foreach ($res as $key => $val) {
+	$val["date_slog"] = DateUniv2Human($val["date_slog"], 'shortdetail');
+	$tmptab .= templating('manage/Log_table.Row', $val);
+    }
+    // preparation du tableau et ajout à la page
+    $tab['liste'] = $tmptab ;
+    $session['liste'] = templating('manage/Log_table',$tab);
+    // preparation du portlet final
+    $content = templating('manage/SessionDetail',$session);
 }
-else
-{
-	header("Location: SessionView.php");
+else {
+    header("Location: SessionView.php");
 }
 
 

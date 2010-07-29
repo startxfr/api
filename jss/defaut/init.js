@@ -130,12 +130,12 @@ function toggleCheckbox(formName)
     var i=form.getElements('checkbox');
     i.each(function(item)
     {
-        if (item.checked){
-            item.checked=false;
-        }
-        else {
-            item.checked=true;
-        }
+	if (item.checked){
+	    item.checked=false;
+	}
+	else {
+	    item.checked=true;
+	}
     }
     );
 }
@@ -192,46 +192,46 @@ Utilisation : testPhone(document.form1.champs).val ou testPhone(this).statut ou 
 function testPhone(obj,alerter)
 {
     try {
-        val=obj.value;
-        if(trim(val)!="") {
-            alpha =/[a-z]|[A-Z]/;
-            res_alpha=alpha.test(val);//test si c'est de l'alpahanumerique sans espace, retour chariot, tabulation, etc...
-            car=/\d{4,10}/;
-            while (car.test(val)==true) {
-                res=car.exec(val);
-                part1=res[0].substr(0,2);
-                part2=res[0].substr(2,res[0].length-2);
-                val=val.replace(car,part1+" "+part2);
-            }
-            car=/\;|\:|\,|\-|\.|\s{2,}/;
-            while (car.test(val)==true) {
-                val=val.replace(car," ");
-            }
-            car=/^\.|\.$|\.+/;
-            while (car.test(val)==true) {
-                val=val.replace(car," ");
-            }
-            if(typeof obj == 'object') {
-                obj.value = val;
-            }
+	val=obj.value;
+	if(trim(val)!="") {
+	    alpha =/[a-z]|[A-Z]/;
+	    res_alpha=alpha.test(val);//test si c'est de l'alpahanumerique sans espace, retour chariot, tabulation, etc...
+	    car=/\d{4,10}/;
+	    while (car.test(val)==true) {
+		res=car.exec(val);
+		part1=res[0].substr(0,2);
+		part2=res[0].substr(2,res[0].length-2);
+		val=val.replace(car,part1+" "+part2);
+	    }
+	    car=/\;|\:|\,|\-|\.|\s{2,}/;
+	    while (car.test(val)==true) {
+		val=val.replace(car," ");
+	    }
+	    car=/^\.|\.$|\.+/;
+	    while (car.test(val)==true) {
+		val=val.replace(car," ");
+	    }
+	    if(typeof obj == 'object') {
+		obj.value = val;
+	    }
 
-            num =/([0-9]|\.)+/;
-            res_num= num.test(val);
-            interdit1 = /(^\.|\.$|\.\.+)/;//Interdit un mail qui commence ou finit . ou n . d'affiler, etc
-            interdit2 = /[éèàçêîûïëüùôö\[\]\{\}\##\&\;\:\/\!\$\*\!\+\=\?\|\/\é\(\)\{\[\]\}\\\@]/;//ces caractères sont interdits
-            if(res_alpha==false && res_num==true &&  interdit1.test(val)==false && interdit2.test(val)==false ) {
-                statut=true;
-            }
-            else {
-                statut=false;
-                alert('Erreur dans la saisie du numero de téléphone');
-                if(typeof obj == 'object')
-                    obj.focus();
-            }
-        }
-        else {
-            statut=true;
-        }
+	    num =/([0-9]|\.)+/;
+	    res_num= num.test(val);
+	    interdit1 = /(^\.|\.$|\.\.+)/;//Interdit un mail qui commence ou finit . ou n . d'affiler, etc
+	    interdit2 = /[éèàçêîûïëüùôö\[\]\{\}\##\&\;\:\/\!\$\*\!\+\=\?\|\/\é\(\)\{\[\]\}\\\@]/;//ces caractères sont interdits
+	    if(res_alpha==false && res_num==true &&  interdit1.test(val)==false && interdit2.test(val)==false ) {
+		statut=true;
+	    }
+	    else {
+		statut=false;
+		alert('Erreur dans la saisie du numero de téléphone');
+		if(typeof obj == 'object')
+		    obj.focus();
+	    }
+	}
+	else {
+	    statut=true;
+	}
     }
     catch(er) {
 	alert(er.message);
@@ -294,21 +294,21 @@ function znAjax() {
 
     this.get = function () {
 
-        this.get.html = function (url,param,target) {
-            var targetAjah  = target;
-            var myAjax		= new Ajax.Request(
-                url, {
-                    method: 'get',
-                    parameters: param,
-                    onComplete: function(xhr) {
-                        if (xhr.status == 200)
-                            $(targetAjah).innerHTML = xhr.responseText;
-                        else $(targetAjah).innerHTML = xhr.status;
-                    }
-                }
-                );
-        }
-        // use zuno.ajax.get.html('myscript.php','foo=bar','output-div-id');
+	this.get.html = function (url,param,target) {
+	    var targetAjah  = target;
+	    var myAjax		= new Ajax.Request(
+		url, {
+		    method: 'get',
+		    parameters: param,
+		    onComplete: function(xhr) {
+			if (xhr.status == 200)
+			    $(targetAjah).innerHTML = xhr.responseText;
+			else $(targetAjah).innerHTML = xhr.status;
+		    }
+		}
+		);
+	}
+	// use zuno.ajax.get.html('myscript.php','foo=bar','output-div-id');
 
 
 	this.get.json = function (url,param,callback) {
@@ -357,45 +357,45 @@ function znAjax() {
 
     this.post = function () {
 
-        this.post.html = function (url,param,target) {
-            var targetAjah  = target;
-            var myAjax		= new Ajax.Request(
-                url, {
-                    method: 'post',
-                    postBody: param,
-                    onComplete: function(xhr)
+	this.post.html = function (url,param,target) {
+	    var targetAjah  = target;
+	    var myAjax		= new Ajax.Request(
+		url, {
+		    method: 'post',
+		    postBody: param,
+		    onComplete: function(xhr)
 
-                    {
-                        if (xhr.status == 200)
-                            $(targetAjah).innerHTML = xhr.responseText;
-                        else $(targetAjah).innerHTML = xhr.status;
-                    }
-                }
-                );
-        }
-        // use zuno.ajax.post.html('myscript.php','foo=bar','output-div-id');
+		    {
+			if (xhr.status == 200)
+			    $(targetAjah).innerHTML = xhr.responseText;
+			else $(targetAjah).innerHTML = xhr.status;
+		    }
+		}
+		);
+	}
+	// use zuno.ajax.post.html('myscript.php','foo=bar','output-div-id');
 
 
-        this.post.json = function (url,param,callback) {
-            var myAjax = new Ajax.Request( url, {
-                method: 'post',
-                parameters: param,
-                onComplete: callback,
-                onLoading: function(x,e) {
-                    document.body.style.cursor = 'wait';
-                },
-                onException: function (x,e) {
-                    alert("Erreur zuno.ajax.post.json :"+e);
-                },
-                onSuccess: function(x,e) {
-                    document.body.style.cursor = '';
-                },
-                onFailure: function(x,e) {
-                    document.body.style.cursor = '';
-                }
-            } );
-            return true;
-        }
+	this.post.json = function (url,param,callback) {
+	    var myAjax = new Ajax.Request( url, {
+		method: 'post',
+		parameters: param,
+		onComplete: callback,
+		onLoading: function(x,e) {
+		    document.body.style.cursor = 'wait';
+		},
+		onException: function (x,e) {
+		    alert("Erreur zuno.ajax.post.json :"+e);
+		},
+		onSuccess: function(x,e) {
+		    document.body.style.cursor = '';
+		},
+		onFailure: function(x,e) {
+		    document.body.style.cursor = '';
+		}
+	    } );
+	    return true;
+	}
     // use zuno.ajax.post.json('myscript.php','foo=bar',function (xhr,json) { ... });
 
     }
@@ -408,15 +408,15 @@ function znAjax() {
 
 function ajajPost(url,param,callback) {
     var myAjax = new Ajax.Request( url, {
-        method: 'post',
-        parameters: param,
-        onLoading: function(x,e) {
-            document.body.style.cursor = 'wait';
-        },
-        onComplete: callback,
-        onException: function (x,e) {
-            alert("Erreur AjajPost :"+e);
-        }
+	method: 'post',
+	parameters: param,
+	onLoading: function(x,e) {
+	    document.body.style.cursor = 'wait';
+	},
+	onComplete: callback,
+	onException: function (x,e) {
+	    alert("Erreur AjajPost :"+e);
+	}
     } );
     return true;
 }
@@ -457,30 +457,30 @@ function znTools() {
 
     this.getBrowser = function ()
     {
-        var strChUserAgent = navigator.userAgent;
-        var intSplitStart = strChUserAgent.indexOf("(",0);
-        var intSplitEnd = strChUserAgent.indexOf(")",0);
-        var strChStart = strChUserAgent.substring(0,intSplitStart);
-        var strChMid = strChUserAgent.substring(intSplitStart, intSplitEnd);
-        var strChEnd = strChUserAgent.substring(strChEnd);
+	var strChUserAgent = navigator.userAgent;
+	var intSplitStart = strChUserAgent.indexOf("(",0);
+	var intSplitEnd = strChUserAgent.indexOf(")",0);
+	var strChStart = strChUserAgent.substring(0,intSplitStart);
+	var strChMid = strChUserAgent.substring(intSplitStart, intSplitEnd);
+	var strChEnd = strChUserAgent.substring(strChEnd);
 
-        if(strChMid.indexOf("MSIE 7") != -1)
-            return "ie7";
-        else if(strChMid.indexOf("MSIE 6") != -1)
-            return "ie6";
-        else if(strChEnd.indexOf("Firefox/2") != -1)
-            return "firefox2";
-        else if(strChEnd.indexOf("Firefox") != -1)
-            return "firefox";
-        else if(strChEnd.indexOf("Netscape/7") != -1)
-            return "netscape7";
-        else if(strChEnd.indexOf("Netscape") != -1)
-            return "netscape";
-        else if(strChStart.indexOf("Opera/9") != -1)
-            return "opera9";
-        else if(strChStart.indexOf("Opera") != -1)
-            return "opera";
-        else return "autre";
+	if(strChMid.indexOf("MSIE 7") != -1)
+	    return "ie7";
+	else if(strChMid.indexOf("MSIE 6") != -1)
+	    return "ie6";
+	else if(strChEnd.indexOf("Firefox/2") != -1)
+	    return "firefox2";
+	else if(strChEnd.indexOf("Firefox") != -1)
+	    return "firefox";
+	else if(strChEnd.indexOf("Netscape/7") != -1)
+	    return "netscape7";
+	else if(strChEnd.indexOf("Netscape") != -1)
+	    return "netscape";
+	else if(strChStart.indexOf("Opera/9") != -1)
+	    return "opera9";
+	else if(strChStart.indexOf("Opera") != -1)
+	    return "opera";
+	else return "autre";
     }
 
 
@@ -519,14 +519,14 @@ function znWorkspace() {
 
 
     this.checkDisplay = function () {
-        if(zuno.tools.checkCookie(this.cookieName)) {
-            var cookieSize = zuno.tools.getCookie(this.cookieName).split('x');
-            var windowSize = this.getWindowSize();
-            this.changeSize();
-        }
-        else {
-            this.changeSize();
-        }
+	if(zuno.tools.checkCookie(this.cookieName)) {
+	    var cookieSize = zuno.tools.getCookie(this.cookieName).split('x');
+	    var windowSize = this.getWindowSize();
+	    this.changeSize();
+	}
+	else {
+	    this.changeSize();
+	}
     }
 
 }
@@ -554,37 +554,37 @@ function znPopup() {
 	 * @return  booléen si la popup a pu s'ouvrir
 	*/
     this.open = function (url,param,width,height,gauche,haut,option,name) {
-        var targetAjah  = 'ZunoPopupWindow';
-        this.ajaxObject = new Ajax.Request(
-            url, {
-                method: 'get',
-                parameters: param,
-                onComplete: function(xhr) {
-                    var txt = '';
-                    var title = '';
-                    var footer = '';
-                    if (xhr.status == 200) {
-                        txt = xhr.responseText;
-                        zuno.popup.xhtmlContent.innerHTML = txt;
-                        var newTitle = $$('#ZunoPopupWindowContent .header .title h3 a[id]');
-                        if(newTitle[0] != undefined)
-                            title = newTitle[0].innerHTML;
-                        else title = name;
-                        var newFooter = $$('#ZunoPopupWindowContent .ZBox .footer div.content');
-                        if(newFooter[0] != undefined)
-                            footer = newFooter[0].innerHTML;
-                        else footer = '';
-                    }
-                    else {
-                        txt   = xhr.status;
-                        title = "Une erreur est survenue";
-                        footer = "Une erreur est survenue";
-                    }
-                    return zuno.popup.doOpen(txt,title,width,height,footer);
-                }
-            }
-            );
-        return false;
+	var targetAjah  = 'ZunoPopupWindow';
+	this.ajaxObject = new Ajax.Request(
+	    url, {
+		method: 'get',
+		parameters: param,
+		onComplete: function(xhr) {
+		    var txt = '';
+		    var title = '';
+		    var footer = '';
+		    if (xhr.status == 200) {
+			txt = xhr.responseText;
+			zuno.popup.xhtmlContent.innerHTML = txt;
+			var newTitle = $$('#ZunoPopupWindowContent .header .title h3 a[id]');
+			if(newTitle[0] != undefined)
+			    title = newTitle[0].innerHTML;
+			else title = name;
+			var newFooter = $$('#ZunoPopupWindowContent .ZBox .footer div.content');
+			if(newFooter[0] != undefined)
+			    footer = newFooter[0].innerHTML;
+			else footer = '';
+		    }
+		    else {
+			txt   = xhr.status;
+			title = "Une erreur est survenue";
+			footer = "Une erreur est survenue";
+		    }
+		    return zuno.popup.doOpen(txt,title,width,height,footer);
+		}
+	    }
+	    );
+	return false;
     }
 
     /**
@@ -618,19 +618,19 @@ function znPopup() {
         if(newFooter[0] != undefined)
             newFooter[0].parentNode.removeChild(newFooter[0]);
 
-        zuno.popup.xhtmlWindow.style.display = 'block';
-        if(width != undefined)
-            zuno.popup.xhtmlWindow.style.width	 = width+"px";
-        if(height != undefined){
-            zuno.popup.xhtmlWindow.style.height	 = height+"px";
-        }
-        zuno.popup.xhtmlWindow.style.left	 = Math.round((window[0]-this.xhtmlWindow.offsetWidth)/2)+"px";
-        zuno.popup.xhtmlWindow.style.top	 = Math.round((window[1]-this.xhtmlWindow.offsetHeight)/2)+"px";
-        zuno.popup.draggableObject	= new Draggable('ZunoPopupWindow',{
-            handle: 'ZunoPopupWindowDragbar'
-        });
-        zuno.popup.moveableObject	= new Resizeable('ZunoPopupWindow');
-        return true;
+	zuno.popup.xhtmlWindow.style.display = 'block';
+	if(width != undefined)
+	    zuno.popup.xhtmlWindow.style.width	 = width+"px";
+	if(height != undefined){
+	    zuno.popup.xhtmlWindow.style.height	 = height+"px";
+	}
+	zuno.popup.xhtmlWindow.style.left	 = Math.round((window[0]-this.xhtmlWindow.offsetWidth)/2)+"px";
+	zuno.popup.xhtmlWindow.style.top	 = Math.round((window[1]-this.xhtmlWindow.offsetHeight)/2)+"px";
+	zuno.popup.draggableObject	= new Draggable('ZunoPopupWindow',{
+	    handle: 'ZunoPopupWindowDragbar'
+	});
+	zuno.popup.moveableObject	= new Resizeable('ZunoPopupWindow');
+	return true;
     }
 
 
@@ -680,18 +680,18 @@ function znContextBox() {
 	*/
     this.open = function (handler,divToOpen) {
 
-        if($(divToOpen)) {
-            this.close();
-            this.hasOpen		 = true;
-            this.currentlyOpen	 = divToOpen;
-            Effect.SlideDown(divToOpen);
-            if(handler) {
-                this.currentHandler = handler;
-                this.currentHandler.setAttribute('onclick',"zuno.contextBox.close();");
-            }
-            return true;
-        }
-        return false;
+	if($(divToOpen)) {
+	    this.close();
+	    this.hasOpen		 = true;
+	    this.currentlyOpen	 = divToOpen;
+	    Effect.SlideDown(divToOpen);
+	    if(handler) {
+		this.currentHandler = handler;
+		this.currentHandler.setAttribute('onclick',"zuno.contextBox.close();");
+	    }
+	    return true;
+	}
+	return false;
     }
 
     /**
@@ -812,19 +812,19 @@ function Zbox(id,state,title1) {
 
     this.close = function (){
 
-        if(this.state == 'open1')
-            Effect.SlideUp(this.Body1Id,{
-                duration:0.2,
-                queue: 'end'
-            });
-        else Effect.SlideUp(this.BodyId,{
-            duration:0.2,
-            queue: 'end'
-        });
-        this.state = 'close';
-        this.initClose();
-        this.memorizeState();
-        return true;
+	if(this.state == 'open1')
+	    Effect.SlideUp(this.Body1Id,{
+		duration:0.2,
+		queue: 'end'
+	    });
+	else Effect.SlideUp(this.BodyId,{
+	    duration:0.2,
+	    queue: 'end'
+	});
+	this.state = 'close';
+	this.initClose();
+	this.memorizeState();
+	return true;
     }
 
     this.open = function (){
@@ -1062,21 +1062,21 @@ function afficherContenu (url, param, id)
     }
     else if($(id).getAttribute('ouvert') == 'true')
     {
-        $(id).setAttribute('ouvert', 'encours');
-        var taille = id.length;
-        var parent = $(id).parentNode;
-        var suivant = $(id).nextSibling;
-        while(suivant.getAttribute('id').substr(0, taille) == id)
-        {
-            parent.removeChild(suivant);
-            suivant = $(id).nextSibling;
-            if(suivant == null)
-            {
-                break;
-            }
-        }
+	$(id).setAttribute('ouvert', 'encours');
+	var taille = id.length;
+	var parent = $(id).parentNode;
+	var suivant = $(id).nextSibling;
+	while(suivant.getAttribute('id').substr(0, taille) == id)
+	{
+	    parent.removeChild(suivant);
+	    suivant = $(id).nextSibling;
+	    if(suivant == null)
+	    {
+		break;
+	    }
+	}
 
-        $(id).setAttribute('ouvert', 'false');
+	$(id).setAttribute('ouvert', 'false');
     }
     else
     {
@@ -1113,174 +1113,174 @@ function afficherContenu (url, param, id)
 function znBusinessForm(){
 
     this.sendAjaxForm = function (formName,toUrl) {
-        param = new Array();
-        input = $$('form[name='+formName+'] input, form[name='+formName+'] textarea');
-        for(i = 0; i < input.length; i++) {
-            k = new String(input[i].getAttribute('name'));
-            if( input[i].type == "checkbox" && input[i].checked != true)
-            {
-                continue;
-            }
-            else	{
-                v = input[i].value;
-            }
-            param[k] = v;
-        }
-        select = $$('form[name='+formName+'] select');
-        for(i = 0; i < select.length; i++) {
-            k = new String(select[i].getAttribute('name'));
-            selected = new Array();
-            for (var ii = 0; ii < select[i].options.length; ii++)
-                if (select[i].options[ii].selected)
-                    selected.push(select[i].options[ii].value);
-            param[k] = selected;
-        }
-        messageBox  = $$('form[name='+formName+'] span.important')[0];
-        var d = zuno.ajax.post.json(zuno.contextPath+toUrl,new Object(param),
-            function(xhr,json)
-            {
-                if (xhr.status == 200) {
-                    if(json.code == true) {
-                        zuno.popup.close();
-                        window.event.preventDefault();
-                    }
-                    else  {
-                        messageBox.innerHTML = json.mess;
-                        messageBox.className = 'important';
-                        messageBox.style.display = 'block';
-                        window.event.preventDefault();
-                    }
-                }
-                else {
-                    messageBox.innerHTML = xhr.statusText;
-                    messageBox.className = 'important';
-                    messageBox.style.display = 'block';
-                    window.event.preventDefault();
-                }
-            }
-            );
+	param = new Array();
+	input = $$('form[name='+formName+'] input, form[name='+formName+'] textarea');
+	for(i = 0; i < input.length; i++) {
+	    k = new String(input[i].getAttribute('name'));
+	    if( input[i].type == "checkbox" && input[i].checked != true)
+	    {
+		continue;
+	    }
+	    else	{
+		v = input[i].value;
+	    }
+	    param[k] = v;
+	}
+	select = $$('form[name='+formName+'] select');
+	for(i = 0; i < select.length; i++) {
+	    k = new String(select[i].getAttribute('name'));
+	    selected = new Array();
+	    for (var ii = 0; ii < select[i].options.length; ii++)
+		if (select[i].options[ii].selected)
+		    selected.push(select[i].options[ii].value);
+	    param[k] = selected;
+	}
+	messageBox  = $$('form[name='+formName+'] span.important')[0];
+	var d = zuno.ajax.post.json(zuno.contextPath+toUrl,new Object(param),
+	    function(xhr,json)
+	    {
+		if (xhr.status == 200) {
+		    if(json.code == true) {
+			zuno.popup.close();
+			window.event.preventDefault();
+		    }
+		    else  {
+			messageBox.innerHTML = json.mess;
+			messageBox.className = 'important';
+			messageBox.style.display = 'block';
+			window.event.preventDefault();
+		    }
+		}
+		else {
+		    messageBox.innerHTML = xhr.statusText;
+		    messageBox.className = 'important';
+		    messageBox.style.display = 'block';
+		    window.event.preventDefault();
+		}
+	    }
+	    );
     }
 
     this.sendFormAjah = function (formName,toUrl, idRetour, popup) {
-        param = new Array();
-        input = $$('form[name='+formName+'] input, form[name='+formName+'] textarea');
-        for(i = 0; i < input.length; i++) {
-            k = new String(input[i].getAttribute('name'));
-            if( (input[i].type == "checkbox" || input[i].type == "radio") && input[i].checked != true)
-            {
-                continue;
-            }
-            else	{
-                v = input[i].value;
-            }
-            param[k] = v;
-        }
-        select = $$('form[name='+formName+'] select');
-        for(i = 0; i < select.length; i++) {
-            k = new String(select[i].getAttribute('name'));
-            selected = new Array();
-            for (var ii = 0; ii < select[i].options.length; ii++)
-                if (select[i].options[ii].selected)
-                    selected.push(select[i].options[ii].value);
-            param[k] = selected;
-        }
-        var d = zuno.ajax.post.json(zuno.contextPath+toUrl,param,
-            function(xhr)
-            {
-                document.body.style.cursor = 'auto';
-                if (xhr.status == 200)
-                {
-                    var div = document.createElement('div');
-                    div.innerHTML = xhr.responseText;
-                    if(div.getElementsByTagName('redirection')[0] != undefined)
-                    {
-                        window.location = div.getElementsByTagName('redirection')[0].innerHTML;
-                    }
-                    if(div.getElementsByTagName('erreur')[0] != undefined)
-                    {
-                        var retour = div.getElementsByTagName('erreur')[0].innerHTML;
-                        div.removeChild(div.getElementsByTagName('erreur')[0]);
-                        $(retour).innerHTML = div.innerHTML;
-                        if($$('#'+retour+' span.important')[0] != undefined)
-                            setTimeout(function() {
-                                $$('#'+retour+' span.important')[0].style.display='none';
-                            }, 2000);
-                    }
-                    else
-                    {
-                        $(idRetour).innerHTML = xhr.responseText;
-                        var e = $$("#BodyContent script");
-                        for (var i=0; i<e.length; i++) {
-                            var s = e[i];
-                            if (s.src && s.src!="")
-                                eval(getFileContent(s.src));
-                            else eval(s.innerHTML);
-                        }
-                        if($$('#'+idRetour+' span.important')[0] != undefined)
-                            setTimeout(function() {
-                                for (i in $$('#'+idRetour+' span.important') ){
-                                    if($$('#'+idRetour+' span.important')[i].style != undefined)
-                                        $$('#'+idRetour+' span.important')[i].style.display='none';
-                                }
-                            }, 2000);
-                        if(popup == undefined) {
-                            autoCompletage();
-                        }
-                        if(popup == 'popup2') {
-                            zuno.popup.close();
-                        }
-                    }
-                }
-            }
-            );
+	param = new Array();
+	input = $$('form[name='+formName+'] input, form[name='+formName+'] textarea');
+	for(i = 0; i < input.length; i++) {
+	    k = new String(input[i].getAttribute('name'));
+	    if( (input[i].type == "checkbox" || input[i].type == "radio") && input[i].checked != true)
+	    {
+		continue;
+	    }
+	    else	{
+		v = input[i].value;
+	    }
+	    param[k] = v;
+	}
+	select = $$('form[name='+formName+'] select');
+	for(i = 0; i < select.length; i++) {
+	    k = new String(select[i].getAttribute('name'));
+	    selected = new Array();
+	    for (var ii = 0; ii < select[i].options.length; ii++)
+		if (select[i].options[ii].selected)
+		    selected.push(select[i].options[ii].value);
+	    param[k] = selected;
+	}
+	var d = zuno.ajax.post.json(zuno.contextPath+toUrl,param,
+	    function(xhr)
+	    {
+		document.body.style.cursor = 'auto';
+		if (xhr.status == 200)
+		{
+		    var div = document.createElement('div');
+		    div.innerHTML = xhr.responseText;
+		    if(div.getElementsByTagName('redirection')[0] != undefined)
+		    {
+			window.location = div.getElementsByTagName('redirection')[0].innerHTML;
+		    }
+		    if(div.getElementsByTagName('erreur')[0] != undefined)
+		    {
+			var retour = div.getElementsByTagName('erreur')[0].innerHTML;
+			div.removeChild(div.getElementsByTagName('erreur')[0]);
+			$(retour).innerHTML = div.innerHTML;
+			if($$('#'+retour+' span.important')[0] != undefined)
+			    setTimeout(function() {
+				$$('#'+retour+' span.important')[0].style.display='none';
+			    }, 2000);
+		    }
+		    else
+		    {
+			$(idRetour).innerHTML = xhr.responseText;
+			var e = $$("#BodyContent script");
+			for (var i=0; i<e.length; i++) {
+			    var s = e[i];
+			    if (s.src && s.src!="")
+				eval(getFileContent(s.src));
+			    else eval(s.innerHTML);
+			}
+			if($$('#'+idRetour+' span.important')[0] != undefined)
+			    setTimeout(function() {
+				for (i in $$('#'+idRetour+' span.important') ){
+				    if($$('#'+idRetour+' span.important')[i].style != undefined)
+					$$('#'+idRetour+' span.important')[i].style.display='none';
+				}
+			    }, 2000);
+			if(popup == undefined) {
+			    autoCompletage();
+			}
+			if(popup == 'popup2') {
+			    zuno.popup.close();
+			}
+		    }
+		}
+	    }
+	    );
     }
 
     this.getParamFromForm = function (formName)
     {
-        param = new Array();
-        input = $$('form[name='+formName+'] input, form[name='+formName+'] textarea');
-        for(i = 0; i < input.length; i++) {
-            k = new String(input[i].getAttribute('name'));
-            if( (input[i].type == "checkbox" || input[i].type == "radio") && input[i].checked != true)
-                continue;
-            else v = input[i].value;
-            param[k] = v;
-        }
-        select = $$('form[name='+formName+'] select');
-        for(i = 0; i < select.length; i++) {
-            k = new String(select[i].getAttribute('name'));
-            selected = new Array();
-            for (var ii = 0; ii < select[i].options.length; ii++)
-                if (select[i].options[ii].selected)
-                    selected.push(select[i].options[ii].value);
-            param[k] = selected;
-        }
-        return param;
+	param = new Array();
+	input = $$('form[name='+formName+'] input, form[name='+formName+'] textarea');
+	for(i = 0; i < input.length; i++) {
+	    k = new String(input[i].getAttribute('name'));
+	    if( (input[i].type == "checkbox" || input[i].type == "radio") && input[i].checked != true)
+		continue;
+	    else v = input[i].value;
+	    param[k] = v;
+	}
+	select = $$('form[name='+formName+'] select');
+	for(i = 0; i < select.length; i++) {
+	    k = new String(select[i].getAttribute('name'));
+	    selected = new Array();
+	    for (var ii = 0; ii < select[i].options.length; ii++)
+		if (select[i].options[ii].selected)
+		    selected.push(select[i].options[ii].value);
+	    param[k] = selected;
+	}
+	return param;
     }
 
     this.sendGetAjah = function (param,toUrl, idRetour, displayDuration) {
-        var d = ajajPost(zuno.contextPath+toUrl,param,
-            function(xhr) {
-                document.body.style.cursor = 'auto';
-                if (xhr.status == 200) {
-                    if($$('#'+idRetour+' span.important')[0] != undefined) {
-                        divTo = $$('#'+idRetour+' span.important')[0];
-                    }
-                    else {
-                        var div = document.createElement('span');
-                        div.className = 'important';
-                        $(idRetour).appendChild(div);
-                        divTo = $$('#'+idRetour+' span.important')[0];
-                    }
-                    divTo.style.display = 'block';
-                    divTo.innerHTML = xhr.responseText;
-                    ddur = (displayDuration != undefined) ? displayDuration : 2000;
-                    setTimeout(function() {
-                        $$('#'+idRetour+' span.important')[0].style.display='none';
-                    }, ddur);
-                }
-            }
-            );
+	var d = ajajPost(zuno.contextPath+toUrl,param,
+	    function(xhr) {
+		document.body.style.cursor = 'auto';
+		if (xhr.status == 200) {
+		    if($$('#'+idRetour+' span.important')[0] != undefined) {
+			divTo = $$('#'+idRetour+' span.important')[0];
+		    }
+		    else {
+			var div = document.createElement('span');
+			div.className = 'important';
+			$(idRetour).appendChild(div);
+			divTo = $$('#'+idRetour+' span.important')[0];
+		    }
+		    divTo.style.display = 'block';
+		    divTo.innerHTML = xhr.responseText;
+		    ddur = (displayDuration != undefined) ? displayDuration : 2000;
+		    setTimeout(function() {
+			$$('#'+idRetour+' span.important')[0].style.display='none';
+		    }, ddur);
+		}
+	    }
+	    );
     }
 }
 
@@ -1344,29 +1344,29 @@ function znAuthentification(){
     }
 
     this.redirectLogout = function () {
-        location.href = 'index.php';
-        return true;
+	location.href = 'index.php';
+	return true;
     }
 
     this.disconnect = new Object();
 
     this.disconnect.doLogout = function (doSave) {
-        param = new Object();
-        param.action= 'doLogout';
-        param.doSave= doSave;
-        var d = zuno.ajax.post.json(zuno.contextPath+'ajaxAuthentification.php',param,
-            function(xhr,json) {
-                if (xhr.status == 200) {
-                    if(json.code == true) {
-                        zuno.popup.doOpen('vous êtes maintenant deconnecté','Merci de votre visite');
-                        setTimeout("zuno.auth.redirectLogout()", 1500);
-                    }
-                    else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ json.mess);
-                }
-                else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ xhr.statusText);
-            }
-            );
-        return false;
+	param = new Object();
+	param.action= 'doLogout';
+	param.doSave= doSave;
+	var d = zuno.ajax.post.json(zuno.contextPath+'ajaxAuthentification.php',param,
+	    function(xhr,json) {
+		if (xhr.status == 200) {
+		    if(json.code == true) {
+			zuno.popup.doOpen('vous êtes maintenant deconnecté','Merci de votre visite');
+			setTimeout("zuno.auth.redirectLogout()", 1500);
+		    }
+		    else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ json.mess);
+		}
+		else return zuno.popup.doOpen('Erreur de deconnexion','L\'erreur suivante est survenue lors de votre deconnexion: '+ xhr.statusText);
+	    }
+	    );
+	return false;
     }
 
     this.disconnect.save = function () {
@@ -1383,77 +1383,77 @@ function znAuthentification(){
 function znActualite(){
 
     this.init = function () {
-        this.pWidth = 0;
-        this.speed = 5;
-        this.timeout = '';
-        this.go = 0;
-        this.divMarquee = document.getElementById("marquee");
-        this.divMarquee.style.overflow = 'hidden';
-        this.divMarquee.scrollLeft = 0;
+	this.pWidth = 0;
+	this.speed = 5;
+	this.timeout = '';
+	this.go = 0;
+	this.divMarquee = document.getElementById("marquee");
+	this.divMarquee.style.overflow = 'hidden';
+	this.divMarquee.scrollLeft = 0;
 
-        var divSpacer = document.getElementById("marqueeSpacer");
-        divSpacer.style.width = this.divMarquee.offsetWidth+'px';
-        this.calculWidth();
+	var divSpacer = document.getElementById("marqueeSpacer");
+	divSpacer.style.width = this.divMarquee.offsetWidth+'px';
+	this.calculWidth();
 
-        var startdiv = document.getElementById("marqueeStart");
-        startdiv.style.width = (this.pWidth)+'px';
-        this.startit();
+	var startdiv = document.getElementById("marqueeStart");
+	startdiv.style.width = (this.pWidth)+'px';
+	this.startit();
     }
     this.startit = function () {
-        this.go = 0;
-        this.defil();
+	this.go = 0;
+	this.defil();
     }
     this.calculWidth = function () {
-        this.pWidth = 0;
-        var ps = $$('#marquee p');
-        for(var j=0;j<ps.length;j++){
-            this.pWidth += ps[j].offsetWidth;
-        }
-        this.pWidth += this.divMarquee.offsetWidth;
+	this.pWidth = 0;
+	var ps = $$('#marquee p');
+	for(var j=0;j<ps.length;j++){
+	    this.pWidth += ps[j].offsetWidth;
+	}
+	this.pWidth += this.divMarquee.offsetWidth;
     }
     this.defil = function () {
-        clearTimeout(this.timeout);
-        var el = this.divMarquee;
-        if(el.scrollLeft >= this.pWidth)
-            el.scrollLeft = 0;
-        el.scrollLeft = el.scrollLeft+this.speed;
-        if(el.scrollLeft >= this.pWidth-el.offsetWidth) {
-            this.restart();
-            return;
-        }
-        if(this.go == 0)
-            this.timeout = setTimeout("zuno.filActu.defil();",40);
+	clearTimeout(this.timeout);
+	var el = this.divMarquee;
+	if(el.scrollLeft >= this.pWidth)
+	    el.scrollLeft = 0;
+	el.scrollLeft = el.scrollLeft+this.speed;
+	if(el.scrollLeft >= this.pWidth-el.offsetWidth) {
+	    this.restart();
+	    return;
+	}
+	if(this.go == 0)
+	    this.timeout = setTimeout("zuno.filActu.defil();",40);
     }
     this.stop = function () {
-        this.go = 1;
-        this.timeout = '';
-        return;
+	this.go = 1;
+	this.timeout = '';
+	return;
     }
 
     this.restart = function () {
-        //alert("restart");
-        this.addContent();
-        this.go = 0;
-        this.divMarquee.scrollLeft = 0;
-        this.defil();
-        return;
+	//alert("restart");
+	this.addContent();
+	this.go = 0;
+	this.divMarquee.scrollLeft = 0;
+	this.defil();
+	return;
     }
 
     this.addContent = function () {
-        var url = zuno.contextPath+'actualite.php';
-        zuno.ajax.get.synchrone(url, 'action=ajax&channel='+zuno.channel, 'marqueeTemp');
-        var content = '<p id="marqueeSpacer"></p>'+$('marqueeTemp').innerHTML;
-        var inDiv = document.getElementById("marqueeStart");
-        inDiv.innerHTML = content;
-        this.init();
-        return;
+	var url = zuno.contextPath+'actualite.php';
+	zuno.ajax.get.synchrone(url, 'action=ajax&channel='+zuno.channel, 'marqueeTemp');
+	var content = '<p id="marqueeSpacer"></p>'+$('marqueeTemp').innerHTML;
+	var inDiv = document.getElementById("marqueeStart");
+	inDiv.innerHTML = content;
+	this.init();
+	return;
     }
 
     this.addMessage = function (message) {
-        var p = document.createElement('p');
-        p.innerHTML = message;
-        var inDiv = document.getElementById("marqueeStart");
-        inDiv.appendChild(p);
+	var p = document.createElement('p');
+	p.innerHTML = message;
+	var inDiv = document.getElementById("marqueeStart");
+	inDiv.appendChild(p);
     }
 
     this.popupActu = function (idActu) {
@@ -1469,16 +1469,16 @@ function znActualite(){
 function zuno() {
 
     this.init = function () {
-        this.tools 	= new znTools();
-        this.ajax	= new znAjax();
-        this.workspace 	= new znWorkspace();
-        this.auth 	= new znAuthentification();
-        this.popup 	= new znPopup();
-        this.contextBox = new znContextBox();
-        this.business   = new znBusiness();
-        this.filActu    = new znActualite();
+	this.tools 	= new znTools();
+	this.ajax	= new znAjax();
+	this.workspace 	= new znWorkspace();
+	this.auth 	= new znAuthentification();
+	this.popup 	= new znPopup();
+	this.contextBox = new znContextBox();
+	this.business   = new znBusiness();
+	this.filActu    = new znActualite();
 
-        /**
+	/**
 		 * Gestion Javascript des tooltips
 		*/
 	this.tooltipStore = new Array();
@@ -1537,14 +1537,14 @@ function zuno() {
     }
 
     this.load = function (channelName) {
-        this.setChannel(channelName);
-        this.workspace.checkDisplay();
-        window.setTimeout("zuno.filActu.defil()",100);
-        if(promptForFirefox != undefined && promptForFirefox != false) {
-            var b = zuno.tools.getBrowser();
-            if(b == "ie6" || b == "ie7")
-                r = zuno.popup.doOpen('<a href="http://www.mozilla-europe.org/fr/firefox/" target="_blank" tilte="télécharger Firefox"><img src="'+this.contextPath+'img/zunoPreferedBrowser.png" alt="télécharger firefox" title="télécharger firefox"/></a>','Recommandation d\'utilisation');
-        }
+	this.setChannel(channelName);
+	this.workspace.checkDisplay();
+	window.setTimeout("zuno.filActu.defil()",100);
+	if(promptForFirefox != undefined && promptForFirefox != false) {
+	    var b = zuno.tools.getBrowser();
+	    if(b == "ie6" || b == "ie7")
+		r = zuno.popup.doOpen('<a href="http://www.mozilla-europe.org/fr/firefox/" target="_blank" tilte="télécharger Firefox"><img src="'+this.contextPath+'img/zunoPreferedBrowser.png" alt="télécharger firefox" title="télécharger firefox"/></a>','Recommandation d\'utilisation');
+	}
 
     }
 
@@ -1593,47 +1593,47 @@ function beginEditing(menu) {
     }
 
     function keyPressHandler(e){
-        stopBlinking();
-        menu.selectedIndex = selectedIndex;
-        var option = o.editOption;
-        var keyCode = (window.event) ? event.keyCode : e.keyCode;
-        var specialKey = true;
-        if(keyCode == 0){
-            keyCode = (isNN) ? e.which : event.keyCode;
-            specialKey = false;
-        }
+	stopBlinking();
+	menu.selectedIndex = selectedIndex;
+	var option = o.editOption;
+	var keyCode = (window.event) ? event.keyCode : e.keyCode;
+	var specialKey = true;
+	if(keyCode == 0){
+	    keyCode = (isNN) ? e.which : event.keyCode;
+	    specialKey = false;
+	}
 
-        if(keyCode == 16)
-            return false;
-        else if(keyCode == 116 && specialKey){
-            finishEditing();
-            window.location.reload(true);
-        }
-        else if(keyCode == 8)
-            option.text = option.text.substring(0,option.text.indexOf(pointer)-1) + pointer + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
-        //        else if(keyCode == 46  && option.text.indexOf(pointer) < option.text.length)
-        //            option.text = option.text.substring(0,option.text.indexOf(pointer)) + pointer + option.text.substring(option.text.indexOf(pointer)+2,option.text.length);
-        else if (keyCode == 13)
-            finishEditing();
-        else if(keyCode == 37 && option.text.indexOf(pointer) > 0 && specialKey)
-            option.text = option.text.substring(0,option.text.indexOf(pointer)-1) + pointer + option.text.substring(option.text.indexOf(pointer)-1,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
-        else if(keyCode == 39 && option.text.indexOf(pointer) < option.text.length && specialKey)
-            option.text = option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.indexOf(pointer)+2) + pointer + option.text.substring(option.text.indexOf(pointer)+2,option.text.length);
-        else if(((keyCode == 37 && option.text.indexOf(pointer) <= 0) || (keyCode == 39 && option.text.indexOf(pointer) >= option.text.length) || keyCode == 40 || keyCode == 38 || keyCode == 20 || keyCode == 33 || keyCode == 34) && specialKey){
-        //do nothing
-        }else if(keyCode == 36 && specialKey)
-            option.text = pointer + option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
-        else if(keyCode == 35 && specialKey)
-            option.text = option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length) + pointer;
-        else
-            option.text = option.text.substring(0,option.text.indexOf(pointer)) + String.fromCharCode(keyCode) + pointer + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
+	if(keyCode == 16)
+	    return false;
+	else if(keyCode == 116 && specialKey){
+	    finishEditing();
+	    window.location.reload(true);
+	}
+	else if(keyCode == 8)
+	    option.text = option.text.substring(0,option.text.indexOf(pointer)-1) + pointer + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
+	//        else if(keyCode == 46  && option.text.indexOf(pointer) < option.text.length)
+	//            option.text = option.text.substring(0,option.text.indexOf(pointer)) + pointer + option.text.substring(option.text.indexOf(pointer)+2,option.text.length);
+	else if (keyCode == 13)
+	    finishEditing();
+	else if(keyCode == 37 && option.text.indexOf(pointer) > 0 && specialKey)
+	    option.text = option.text.substring(0,option.text.indexOf(pointer)-1) + pointer + option.text.substring(option.text.indexOf(pointer)-1,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
+	else if(keyCode == 39 && option.text.indexOf(pointer) < option.text.length && specialKey)
+	    option.text = option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.indexOf(pointer)+2) + pointer + option.text.substring(option.text.indexOf(pointer)+2,option.text.length);
+	else if(((keyCode == 37 && option.text.indexOf(pointer) <= 0) || (keyCode == 39 && option.text.indexOf(pointer) >= option.text.length) || keyCode == 40 || keyCode == 38 || keyCode == 20 || keyCode == 33 || keyCode == 34) && specialKey){
+	//do nothing
+	}else if(keyCode == 36 && specialKey)
+	    option.text = pointer + option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
+	else if(keyCode == 35 && specialKey)
+	    option.text = option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length) + pointer;
+	else
+	    option.text = option.text.substring(0,option.text.indexOf(pointer)) + String.fromCharCode(keyCode) + pointer + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
 
-        pos = option.text.indexOf(pointer);
-        blinkDelay = setTimeout("blinkPointer()", 300);
+	pos = option.text.indexOf(pointer);
+	blinkDelay = setTimeout("blinkPointer()", 300);
 
-        if(!((keyCode >= 48 && keyCode <= 90) || (keyCode >= 96 && keyCode <= 122)))
-            return false;
-        return true;
+	if(!((keyCode >= 48 && keyCode <= 90) || (keyCode >= 96 && keyCode <= 122)))
+	    return false;
+	return true;
     }
 
 }
@@ -1659,14 +1659,14 @@ function stopBlinking(){
 
 function finishEditing() {
     if(o != null) {
-        stopBlinking();
-        option = o.editOption;
-        option.text = option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
+	stopBlinking();
+	option = o.editOption;
+	option.text = option.text.substring(0,option.text.indexOf(pointer)) + option.text.substring(option.text.indexOf(pointer)+1,option.text.length);
 
-        option.value = option.text;
-        document.onkeypress = null;
-        document.onkeydown = null;
-        o = null;
+	option.value = option.text;
+	document.onkeypress = null;
+	document.onkeydown = null;
+	o = null;
     }
 }
 
@@ -1679,13 +1679,13 @@ function toggleGroupedAction(id) {
     var div= $(id);
     toggleSubGroupedAction();
     if (div.style.display == 'none')
-        Effect.SlideDown(div,{
-            duration:0.2,
-            queue: 'end'
-        });
+	Effect.SlideDown(div,{
+	    duration:0.2,
+	    queue: 'end'
+	});
     else Effect.SlideUp(div,{
-        duration:0.5,
-        queue: 'end'
+	duration:0.5,
+	queue: 'end'
     }) ;
     return;
 }
@@ -1693,9 +1693,9 @@ function toggleGroupedAction(id) {
 function toggleSubGroupedAction(id) {
     var listAll = $$('#groupedSubAction fieldset');
     for(var j=0;j<listAll.length;j++)
-        listAll[j].style.display = 'none';
+	listAll[j].style.display = 'none';
     if($(id) != undefined)
-        $(id).style.display = 'block';
+	$(id).style.display = 'block';
     return;
 }
 
@@ -1708,10 +1708,10 @@ function submitGroupAction(idForm,idAction) {
 function makeReplace(recherche, module){
     $('champsRecherche').value = recherche;
     if(module == 'entreprise'){
-        document.forms["searchProspec"].type[0].checked = true;
+	document.forms["searchProspec"].type[0].checked = true;
     }
     if(module == 'contact'){
-        document.forms["searchProspec"].type[1].checked = true;
+	document.forms["searchProspec"].type[1].checked = true;
     }
     zuno.business.formTools.sendFormAjah('searchProspec', 'prospec/Recherche.php','listeResultProspec');
 
@@ -1720,12 +1720,12 @@ function makeReplace(recherche, module){
 function viderCloud(module, user){
 
     zuno.ajax.post.json('../ajaxRef.php?action=suppCloud', 'module='+module+'&user='+user, function(xhr){
-        if(xhr.status == 200){
-            var json = xhr.responseText.evalJSON();
-            if(json.error == 'false'){
-                $('tags').innerHTML = "<ul><li>Cette zone se remplira au fur et à mesure de vos recherches</li></ul>";
-            }
-        }
+	if(xhr.status == 200){
+	    var json = xhr.responseText.evalJSON();
+	    if(json.error == 'false'){
+		$('tags').innerHTML = "<ul><li>Cette zone se remplira au fur et à mesure de vos recherches</li></ul>";
+	    }
+	}
         
     });
 }

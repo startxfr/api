@@ -14,11 +14,11 @@ class CloudModel extends GeneralModel {
      * Constructeur de la classe qui instancie les variables
      */
     public function __construct() {
-        $this->sqlTableName = 'cloud';
-        $this->sqlIdField = 'recherche_cloud';
-        $this->availableFields = array(
-                'recherche_cloud', 'total_cloud', 'module_cloud', 'user_cloud');
-        parent::__construct();
+	$this->sqlTableName = 'cloud';
+	$this->sqlIdField = 'recherche_cloud';
+	$this->availableFields = array(
+		'recherche_cloud', 'total_cloud', 'module_cloud', 'user_cloud');
+	parent::__construct();
     }
 
     /**
@@ -26,20 +26,20 @@ class CloudModel extends GeneralModel {
      * @param string/array $module Le ou les modules dont on veut supprimer les tags
      * @return array Indique si tout s'est bien passé
      */
-    public function dropToCloud($module, $user = ''){
-        $where = "";
-        $user = ($user == '') ? $_SESSION['user']['id'] : $user;
-        if(is_array($module)){
-            foreach ($module as $v) {
-                $where .= "module_cloud = '".$v."' OR ";
-            }
-            $where = substr($where, 0, strlen($where)-4);
-        }
-        else{
-            $where .= "module_cloud = '".$module."'";
-        }
-        $this->makeRequeteFree("DELETE FROM cloud WHERE (".$where.") AND user_cloud = '".$user."'");
-        return $this->process2();
+    public function dropToCloud($module, $user = '') {
+	$where = "";
+	$user = ($user == '') ? $_SESSION['user']['id'] : $user;
+	if(is_array($module)) {
+	    foreach ($module as $v) {
+		$where .= "module_cloud = '".$v."' OR ";
+	    }
+	    $where = substr($where, 0, strlen($where)-4);
+	}
+	else {
+	    $where .= "module_cloud = '".$module."'";
+	}
+	$this->makeRequeteFree("DELETE FROM cloud WHERE (".$where.") AND user_cloud = '".$user."'");
+	return $this->process2();
     }
 
     /**
@@ -63,7 +63,7 @@ class CloudModel extends GeneralModel {
             }
         }
 
-        $this->process2();
+	$this->process2();
     }
 
 
@@ -73,19 +73,19 @@ class CloudModel extends GeneralModel {
      * @return array Les données pour faire le cloud.
      */
     public function getCloud($module = "") {
-        if(is_array($module)) {
-            $mod = "";
-            foreach($module as $v) {
-                $mod .= "module_cloud = '".$v."' OR ";
-            }
-            $mod = substr($mod, 0, strlen($mod)-4);
-            $this->makeRequeteFree("SELECT * FROM ".$this->sqlTableName." WHERE (".$mod.") AND user_cloud = '".$_SESSION['user']['id']."' ORDER BY total_cloud DESC LIMIT 0,15");
-        }
-        elseif($module != "")
-            $this->makeRequeteFree("SELECT * FROM ".$this->sqlTableName." WHERE module_cloud = '".$module."' AND user_cloud = '".$_SESSION['user']['id']."' ORDER BY total_cloud DESC LIMIT 0,15");
-        else
-            $this->makeRequeteFree("SELECT * FROM ".$this->sqlTableName." WHERE user_cloud = '".$_SESSION['user']['id']."' ORDER BY total_cloud DESC LIMIT 0,40");
-        return $this->process2();
+	if(is_array($module)) {
+	    $mod = "";
+	    foreach($module as $v) {
+		$mod .= "module_cloud = '".$v."' OR ";
+	    }
+	    $mod = substr($mod, 0, strlen($mod)-4);
+	    $this->makeRequeteFree("SELECT * FROM ".$this->sqlTableName." WHERE (".$mod.") AND user_cloud = '".$_SESSION['user']['id']."' ORDER BY total_cloud DESC LIMIT 0,15");
+	}
+	elseif($module != "")
+	    $this->makeRequeteFree("SELECT * FROM ".$this->sqlTableName." WHERE module_cloud = '".$module."' AND user_cloud = '".$_SESSION['user']['id']."' ORDER BY total_cloud DESC LIMIT 0,15");
+	else
+	    $this->makeRequeteFree("SELECT * FROM ".$this->sqlTableName." WHERE user_cloud = '".$_SESSION['user']['id']."' ORDER BY total_cloud DESC LIMIT 0,40");
+	return $this->process2();
     }
 }
 ?>

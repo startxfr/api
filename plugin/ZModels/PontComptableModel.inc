@@ -285,7 +285,7 @@ class pontComptableModel extends GeneralModel {
 	    if($data['config_dateFin_pcth'] != '')
 		$where .= " daterecord_fact <= '".$data['config_dateFin_pcth']."' AND ";
 	    if($data['config_statutFact_pcth'] != '')
-		 $where .= " status_fact IN (".$data['config_statutFact_pcth'].") AND ";
+		$where .= " status_fact IN (".$data['config_statutFact_pcth'].") AND ";
 	    else $where .= " status_fact = '4' ";
 	}
 	else $where .= " status_fact = '4' ";
@@ -316,7 +316,7 @@ class pontComptableModel extends GeneralModel {
 	    if($data['config_dateFin_pcth'] != '')
 		$where .= " dateFact_factfourn <= '".$data['config_dateFin_pcth']."' AND ";
 	    if($data['config_statutFactFourn_pcth'] != '')
-		 $where .= " status_factfourn IN (".$data['config_statutFactFourn_pcth'].") AND ";
+		$where .= " status_factfourn IN (".$data['config_statutFactFourn_pcth'].") AND ";
 	    else $where .= " status_factfourn = '2' ";
 	}
 	else $where .= " status_factfourn = '2' ";

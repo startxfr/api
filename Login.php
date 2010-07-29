@@ -33,13 +33,13 @@ if(strlen($PC->rcvG['token']) == 32) {
     $token = new TokenModel();
     $data = $token->getInfos($PC->rcvG['token']);
     if($data[1][0]['used_token'] == 0) {
-        $token->used($PC->rcvG['token']);
-        $AuthTest = new SessionUser($PC->channel);
-        $AuthTest->GetDBUser($data[1][0]['user_token']);
-        $AuthTest->CreateSession($data[1][0]['user_token'], false);
+	$token->used($PC->rcvG['token']);
+	$AuthTest = new SessionUser($PC->channel);
+	$AuthTest->GetDBUser($data[1][0]['user_token']);
+	$AuthTest->CreateSession($data[1][0]['user_token'], false);
 
-        header('Location:'.substr($data[1][0]['action_token'],1));
-        exit;
+	header('Location:'.substr($data[1][0]['action_token'],1));
+	exit;
     }
 
 }
@@ -54,37 +54,37 @@ elseif(count($PC->rcvP) == 0) {
 }
 else {
     if($PC->rcvP["login"] == '') {
-        $authentification = 'NO_LOGIN';
+	$authentification = 'NO_LOGIN';
     }
     elseif($PC->rcvP["pwd"] == '') {
-        $authentification = 'NO_PWD';
+	$authentification = 'NO_PWD';
     }
     elseif(($PC->rcvP["login"] != '')
-            and($PC->rcvP["pwd"] != '')) {
-        $AuthTest = new SessionUser($PC->channel);
-        $authentification = $AuthTest->TestUser($PC->rcvP["login"],$PC->rcvP["pwd"]);
+	    and($PC->rcvP["pwd"] != '')) {
+	$AuthTest = new SessionUser($PC->channel);
+	$authentification = $AuthTest->TestUser($PC->rcvP["login"],$PC->rcvP["pwd"]);
     }
 
     if($authentification == 'OK') {
-        $AuthTest->CreateSession($PC->rcvP["login"], true, $PC->rcvP['to']);
+	$AuthTest->CreateSession($PC->rcvP["login"], true, $PC->rcvP['to']);
     }
     elseif($authentification == 'BAD_LOGIN') {
-        $message = $GLOBALS['Tx4Lg']['LoginErrorBadLog'];
+	$message = $GLOBALS['Tx4Lg']['LoginErrorBadLog'];
     }
     elseif($authentification == 'BAD_RIGHT') {
-        $message = $GLOBALS['Tx4Lg']['LoginErrorNoRight'];
+	$message = $GLOBALS['Tx4Lg']['LoginErrorNoRight'];
     }
     elseif($authentification == 'INACTIVE_USER') {
-        $message = $GLOBALS['Tx4Lg']['LoginErrorInactive'];
+	$message = $GLOBALS['Tx4Lg']['LoginErrorInactive'];
     }
     elseif($authentification == 'BAD_PWD') {
-        $message = $GLOBALS['Tx4Lg']['LoginErrorBadPw'];
+	$message = $GLOBALS['Tx4Lg']['LoginErrorBadPw'];
     }
     elseif($authentification == 'NO_PWD') {
-        $message = $GLOBALS['Tx4Lg']['LoginErrorBadMDP'];
+	$message = $GLOBALS['Tx4Lg']['LoginErrorBadMDP'];
     }
     elseif($authentification == 'NO_LOGIN') {
-        $message = $GLOBALS['Tx4Lg']['LoginErrorBadID'];
+	$message = $GLOBALS['Tx4Lg']['LoginErrorBadID'];
     }
 }
 

@@ -12,8 +12,8 @@
 /*------------------------------------------------------------------------+
 | FRAMEWORK LOADING
 +------------------------------------------------------------------------*/
-	include ('inc/conf.inc');		// Declare global variables from config files
-	include ('inc/core.inc');		// Load core library
+include ('inc/conf.inc');		// Declare global variables from config files
+include ('inc/core.inc');		// Load core library
 
 // Whe get the page context
 $PC = new PageContext();

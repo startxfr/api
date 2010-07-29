@@ -80,7 +80,7 @@ class factureControl {
 	    $mess.= 'Merci de fournir un contact<br/>';
 	    $fields[] = 'contact_dev';
 	}
-/*	if($value['add1_fact'] == '' || $value['add1_fact'] == ' ' || $value['add1_fact'] == NULL) {
+	/*	if($value['add1_fact'] == '' || $value['add1_fact'] == ' ' || $value['add1_fact'] == NULL) {
 	    $mess.= 'Merci de fournir une adresse<br />';
 	    $fields[] = 'add1_fact';
 	}
