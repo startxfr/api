@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.47, for redhat-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.48, for redhat-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: ZunoDev_sxa
 -- ------------------------------------------------------
--- Server version	5.1.47
+-- Server version	5.1.48
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `actualite`;
 CREATE TABLE `actualite` (
   `id` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
-  `user` varchar(128) NOT NULL,
+  `user` varchar(128) DEFAULT NULL,
   `type` varchar(32) NOT NULL,
   `titre` varchar(128) NOT NULL,
   `desc` mediumtext,
@@ -1255,4 +1255,4 @@ CREATE TABLE `user_iphoneConfig` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-07-27 20:15:33
+-- Dump completed on 2010-08-30 20:19:30

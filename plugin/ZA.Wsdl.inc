@@ -111,7 +111,7 @@ class zunoWsdlClient {
     }
 
     protected function raiseError($message) {
-	Logg::loggerError('zunoWsdlClient::raiseError() ~ '.$message,$this->client->getDebug(),__FILE__.'@'.__LINE__);
+	Logg::loggerError(__CLASS__.'::'.__METHOD__.'() ~ '.$message,$this->client->getDebug(),__FILE__.'@'.__LINE__);
 	$this->message  = $message."\n";
 	return false;
     }
@@ -151,7 +151,7 @@ class zunoWsdlClient {
     public function call($action) {
 	try {
 	    $this->reponse = $this->client->call($action,$this->params);
-	    Logg::loggerInfo('zunoWsdlClient::call() ~ Appel au webservice '.$this->serviceName.'.'.$action.' sur '.$this->serviceHost,array($this->params,$this->reponse),__FILE__.'@'.__LINE__);
+	    Logg::loggerInfo(__CLASS__.'::'.__METHOD__.'() ~ Appel au webservice '.$this->serviceName.'.'.$action.' sur '.$this->serviceHost,array($this->params,$this->reponse),__FILE__.'@'.__LINE__);
 	    if ($this->reponse->fault)
 		return $this->raiseError("Erreur métier : ".$this->reponse->faultcode.'-'.$this->reponse->faultactor." : ".$this->reponse->faultstring);
 	    else {

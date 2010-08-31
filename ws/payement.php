@@ -23,6 +23,8 @@ $GLOBALS['LOG']['DisplayDebug'] =
 if($_SERVER['QUERY_STRING'] == 'wsdl')
     Logg::loggerInfo('webservice sxa.payement ~ Appel au fichier WSDL PAYEMENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);
 else Logg::loggerInfo('webservice sxa.payement ~ Appel au webservice PAYEMENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);
+if($_SESSION['user']['id'] == '')
+    $_SESSION['user']['id']= 'ws';
 
 $server = new zunoWsdlServer('payement','Gestion des payements des clients ZUNO');
 //Initialisation du serveur

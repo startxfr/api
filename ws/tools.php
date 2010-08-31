@@ -12,6 +12,8 @@ $GLOBALS['LOG']['DisplayDebug'] =
 if($_SERVER['QUERY_STRING'] == 'wsdl')
     Logg::loggerInfo('webservice sxa.tools ~ Appel au fichier WSDL CLIENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);
 else Logg::loggerInfo('webservice sxa.tools ~ Appel au webservice CLIENT',"IP : ".$_SERVER['REMOTE_ADDR'],__FILE__.'@'.__LINE__);
+if($_SESSION['user']['id'] == '')
+    $_SESSION['user']['id']= 'ws';
 
 $server = new zunoWsdlServer('tools','Ensemble de petits outils très pratique sur Sxa');
 //Initialisation du serveur

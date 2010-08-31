@@ -1,13 +1,14 @@
  
 --
 -- Début du patch.sql généré par CompareSQL V1
--- Thu Jul 29 15:58:44 +0200 2010
+-- Tue Aug 31 11:47:14 +0200 2010
 --
  
 --
 -- Gestion des différences de structures de la BDD et des tables
 --
  
+ALTER TABLE `actualite` CHANGE `user` `user` varchar(128) DEFAULT NULL;
  
 --
 -- Ajout des données supplémentaires
