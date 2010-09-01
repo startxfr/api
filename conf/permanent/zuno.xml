@@ -8,7 +8,7 @@
     <group name="zunoClientCoordonnee" modifRight="0" title="Configuration de l'utilisateur et des droits">
 	<value id="nom">STARTX</value>
 	<value id="nom_court">STARTX</value>
-	<value id="adresse">177 Avenue Georges CLEMENCEAU</value>
+	<value id="adresse">177 avenue Georges Clemenceau</value>
 	<value id="adresse2"></value>
 	<value id="cp">92024</value>
 	<value id="ville">NANTERRE Cedex</value>
@@ -73,8 +73,10 @@
 	<value id="wsdlCacheEnabled">1</value>
 	<value id="wsdlClientHttpAccess">true</value>
 	<value id="wsdlClientHttpAccesstype">Basic</value>
-	<value id="wsdlClientHttpAccessUser">cl</value>
-	<value id="wsdlClientHttpAccessPass">8j9y8hw3</value>
+	<value id="wsdlClientHttpAccessUser">zunows</value>
+        <value id="wsdlClientHttpAccessPass">11zunows09</value>
+        <!--value id="wsdlClientHttpAccessUser">cl</value>
+        <value id="wsdlClientHttpAccessPass">8j9y8hw3</value-->
     </group>
     <group name="zunoPontComptable" modifRight="0" title="Configuration de prospec">
 	<value id="histoDir">PontComptable/</value>
