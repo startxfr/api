@@ -49,10 +49,15 @@ if($PC->rcvG["mess"] == 'delsess') {
 elseif($PC->rcvG["mess"] == 'badsess') {
     $message = $GLOBALS['Tx4Lg']['LoginErrorSession'];
 }
-elseif(count($PC->rcvP) == 0) {
+elseif(count($PC->rcvP) == 0 and $_SERVER["AUTH_TYPE"] != 'Basic') {
 
 }
 else {
+    if($_SERVER["AUTH_TYPE"] == 'Basic' and $_SERVER["PHP_AUTH_USER"] != '' and $_SERVER["PHP_AUTH_PW"] != '' and $PC->rcvP["login"] == '') {
+	$PC->rcvP["login"] = $_SERVER["PHP_AUTH_USER"];
+	$PC->rcvP["pwd"] = $_SERVER["PHP_AUTH_PW"];
+    }
+
     if($PC->rcvP["login"] == '') {
 	$authentification = 'NO_LOGIN';
     }

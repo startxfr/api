@@ -2,6 +2,8 @@
 // On inclus les librairies et les fichiers de configurations
 include ('../inc/conf.inc');
 include ('../inc/core.inc');
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
 loadPlugin(array('ZDoc/FactureDoc','OOConverter','Send/Send'));
 
 // On inclus les librairies speciales iPhone

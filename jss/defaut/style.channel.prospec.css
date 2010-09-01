@@ -10,19 +10,19 @@
 
 
 /******** IMAGES DU WORKSPACE ***********/
-.ContextBox .title 			{ background-color: rgb(255,102,  0); }
-.ContextBox .body 			{ background-color: rgba(255,102,  0,0.8); }
-.ContextBox .foot 			{ background-color: rgba(255,102,  0,0.8); }
-.ZBox .header	 			{ background-color: rgba(255,102,  0,0.2); }
-.ZBox .header .title			{ background-color: rgba(255,102,  0,0.8); }
-.ZBox .footer				{ background-color: rgba(255,102,  0,0.15);}
+.ContextBox .title 			{ background-color: rgb(111,159,72); }
+.ContextBox .body 			{ background-color: rgba(111,159,72,0.8); }
+.ContextBox .foot 			{ background-color: rgba(111,159,72,0.8); }
+.ZBox .header	 			{ background-color: rgba(111,159,72,0.2); }
+.ZBox .header .title			{ background-color: rgba(111,159,72,0.8); }
+.ZBox .footer				{ background-color: rgba(111,159,72, 0.15);}
 .ZBox .blockTable .subtitre th,
-.ZBox .blockTable .subtitre .celluleH	{background-color: rgba(255,102,  0,0.7); }
+.ZBox .blockTable .subtitre .celluleH	{background-color: rgba(111,159,72,0.7); }
 
 
 /******** BACKGROUND DE COULEUR FONCE ***********/
-.ZBox .footer a:hover, 
-.ZBox .footer input[type="submit"]:hover, 
+.ZBox .footer a:hover,
+.ZBox .footer input[type="submit"]:hover,
 .ZBox .footer input[type="reset"]:hover,
 .ZBox .footer select:hover,
 .ZBox .footer .selected,
@@ -34,15 +34,15 @@ a.bouton,
 .ContextBox input[type=reset],
 #tags li a:hover,
 #ScanSearchCode:hover {
-    background-color: #ff6600;
+    background-color: #5a8338;
 }
 /******** BORDURE DE COULEUR FONCE ***********/
 .ZBox .body .block fieldset {
-    border-color: #ff6600;
+    border-color: #5a8338;
 }
 /******** TEXTE DE COULEUR FONCE ***********/
 #ZWFooter a:hover,
-body, 
+body,
 a,
 a.bouton:hover,
 #PortletPageDesc h1,
@@ -52,7 +52,7 @@ a.bouton:hover,
 .ZBox .body textarea,
 .ZBox .body select,
 .ZBox .footer a,
-.ZBox .footer input[type="submit"], 
+.ZBox .footer input[type="submit"],
 .ZBox .footer input[type="reset"],
 .ZBox .body .block fieldset legend,
 #ScanSearchCode,
@@ -61,15 +61,15 @@ a.bouton:hover,
 .ContextBox input[type=button]:hover,
 .ContextBox input[type=submit]:hover,
 .ContextBox input[type=reset]:hover {
-    color: #ff6600;
+    color: #5a8338;
 }
 .prototip .content {
-    color: #ff6600 !important;
+    color: #5a8338 !important;
 }
 
 /******** BACKGROUND DE COULEUR CLAIRE ***********/
 .ZBox .footer a,
-.ZBox .footer input[type="submit"], 
+.ZBox .footer input[type="submit"],
 .ZBox .footer input[type="reset"],
 .ZBox .body input[type="text"],
 .ZBox .body input[type="file"],
@@ -80,12 +80,12 @@ a.bouton:hover,
 .ContextBox input[type=button]:hover,
 .ContextBox input[type=submit]:hover,
 .ContextBox input[type=reset]:hover {
-    background-color: #efefca;
+    background-color: #cce3ba;
 }
 /******** BORDURE DE COULEUR CLAIRE ***********/
 .ZBox .body,
 .ZBox .blockTable .titre th.barre {
-    border-color: #efefca;
+    border-color: #cce3ba;
 }
 /******** TEXTE DE COULEUR CLAIRE ***********/
 #ZWFooter a,
@@ -93,5 +93,5 @@ a.bouton:hover,
 .ZBox .footer input[type="submit"]:hover,
 .ZBox .footer input[type="reset"]:hover,
 #ScanSearchCode:hover {
-    color: #efefca;
+    color: #cce3ba;
 }

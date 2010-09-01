@@ -329,7 +329,7 @@ class factureView extends generalView {
 	$alternance = 0;
 	$bigtotal = 0;
 	foreach($datas['produits'] as $v) {
-	    $total = abs($v['prix'])*$v['quantite']*(1-$v['remise']/100);
+	    $total = $v['prix']*$v['quantite']*(1-$v['remise']/100);
 	    $bigtotal += $total;
 	    if($v['id_prod'] == '') {
 		$v['id_prod'] = $v['id_produit'];
@@ -339,7 +339,7 @@ class factureView extends generalView {
 			<td class="barre" title="'.$v['nom_prod'].'" id="ID'.$v['id'].'">'.$v['id_prod'].'</td>
 			<td class="barre">'.$v['desc'].'</td>
 			<td class="center barre">'.$v['quantite'].'</td>
-			<td class="barre">'.prepareNombreAffichage(abs($v['prix'])).' €</td>
+			<td class="barre">'.prepareNombreAffichage($v['prix']).' €</td>
 			<td class="barre">'.prepareNombreAffichage($v['remise']).' %</td>
 			<td class="barre">'.prepareNombreAffichage($total).' €</td>
 			<td nowrap="nowrap" class="center"><a name="modif" onclick="afficherFormModif(\''.$v['id'].'\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/facture.modif.png"/></a>
@@ -349,7 +349,7 @@ class factureView extends generalView {
 			<td class="barre" title="'.$v['nom_prod'].'">'.$v['id_prod'].'</td>
 			<td class="barre">'.textareaTag('desc2', $v['desc'], '', '', '', ' id="desc_Ajout_prod_fact'.$v['id'].'" style="width:98%; height:30px;" ').'</td>
 			<td class="center barre">'.inputTag('text', 'quantite2', '', '', '16', $v['quantite'], ' id="quantite_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:28px" ').'</td>
-			<td class="barre">'.inputTag('text', 'prix2', '', '', '16', abs($v['prix']), ' id="prix_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:60px" ').' €</td>
+			<td class="barre">'.inputTag('text', 'prix2', '', '', '16', $v['prix'], ' id="prix_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:60px" ').' €</td>
 			<td class="barre">'.inputTag('text', 'remise2', '', '', '16', $v['remise'], ' id="remise_Ajout_prod_fact'.$v['id'].'" onchange="calculetteTotal(\''.$v['id'].'\');" style="width:30px" ').' %</td>
 			<td class="barre">'.inputTag('text', 'prix_total2', '', '', '16', $total, ' id="total_Ajout_prod_fact'.$v['id'].'"  readonly="readonly" style="width:80px" ').' €</td>
 			<td nowrap="nowrap" class="center"><a name="modif" onclick="autoCopieChamps(\''.$v['id'].'\');chargerAction(\'modifProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/facture.add.png"/></a>

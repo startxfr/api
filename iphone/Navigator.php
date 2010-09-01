@@ -2,6 +2,8 @@
 // On inclus les librairies et les fichiers de configurations
 include ('../inc/conf.inc');
 include ('../inc/core.inc');
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
 loadPlugin(array('ZView/FactureView','OOConverter','Send/Send'));
 include_once ('lib/Debug.inc.php');
 include_once ('lib/HtmlElement.inc.php');

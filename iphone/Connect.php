@@ -1,6 +1,8 @@
 <?php
 include ('../inc/conf.inc');
 include ('../inc/core.inc');
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
 ob_start();
 include_once ('lib/Debug.inc.php');
 include_once ('lib/ZunoLayerGeneral.inc.php');

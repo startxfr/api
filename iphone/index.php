@@ -1,6 +1,8 @@
 <?php
 include ('../inc/conf.inc');
 include ('../inc/core.inc');
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
 
 ob_start();
 
@@ -38,9 +40,9 @@ header('Content-type: text/html; charset=UTF-8');
 	<link rel="apple-touch-icon" href="Img/zuno.png" />
 	<link rel="Stylesheet" href="WebApp/Design/Render.css" />
 	<?php $cliInf = GetClientBrowserInfo();
-if($cliInf[1] == 'Firefox')
-    echo '<link rel="Stylesheet" href="WebApp/Design/Firefox.css" />';
-?>
+	if($cliInf[1] == 'Firefox')
+	    echo '<link rel="Stylesheet" href="WebApp/Design/Firefox.css" />';
+	?>
 	<link rel="Stylesheet" href="../jss/iphone/iphone.css" />
 	<link rel="Stylesheet" href="../jss/JSCal2-1.0/css/jscal2.css" />
 	<link rel="Stylesheet" href="../jss/JSCal2-1.0/css/border-radius.css" />
@@ -53,9 +55,9 @@ if($cliInf[1] == 'Firefox')
     <?php
     echo '<body ';
     if ($cfg["windowoptions"]["resizable"])
-    echo ' onmouseup="initResizeTable(1)"';
-echo '-dir="rtl">';
-?>
+	echo ' onmouseup="initResizeTable(1)"';
+    echo '-dir="rtl">';
+    ?>
 
     <div id="WebApp">
 	<div id="loader" class="iItem" style="padding:10px 5px;font-weight:bold;font-size:12px;text-align:center;">
@@ -93,9 +95,9 @@ echo '-dir="rtl">';
 	    echo ZunoLayerDevis::loadDefaultLayer();
 	    echo ZunoLayerAffaire::loadDefaultLayer();
 	    echo ZunoLayerCommande::loadDefaultLayer();
-echo ZunoLayerFacture::loadDefaultLayer();
-echo ZunoLayerProduit::loadDefaultLayer();
-?>
+	    echo ZunoLayerFacture::loadDefaultLayer();
+	    echo ZunoLayerProduit::loadDefaultLayer();
+	    ?>
 	</div>
     </div>
 </body>

@@ -2,6 +2,8 @@
 // On inclus les librairies et les fichiers de configurations
 include ('../inc/conf.inc');
 include ('../inc/core.inc');		// Load core library
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
 loadPlugin(array('Send/Send', 'ZModels/ContactModel', 'ZControl/SendControl'));
 
 // On inclus les librairies speciales iPhone

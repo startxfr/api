@@ -181,17 +181,16 @@ elseif (($PC->rcvP['action'] == "Voir") or ($PC->rcvP['action'] == "Record") or 
 	aiJeLeDroit('devis', 60, 'web');
 	$PC->rcvP['MessageRecord'] = "Changement du devis ".$id_dev." par ".$_SESSION['user']['id'];
 
-	$affaire = substr($id_dev,0,6);
-	$save = $gnose->DevisSaveDocInGnose($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc,$affaire,$PC->rcvP['MessageRecord']);
-
 	$dev = $req->getDataFromID($id_dev);
 	$dev = $dev[1][0];
+	$affaire = ($dev['id_aff'] != '') ? $dev['id_aff'] : substr($id_dev,0,6);
+	$save = $gnose->DevisSaveDocInGnose($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc,$affaire,$PC->rcvP['MessageRecord']);
 
 
 	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	if($dev['status_aff'] < 3) {
 	    $inActualiteRec['status_aff'] = '3';
-	    $bddtmp->makeRequeteUpdate('affaire','id_aff',$dev['id_aff'],array('status_aff'=>$inActualiteRec['status_aff']));
+	    $bddtmp->makeRequeteUpdate('affaire','id_aff',$affaire,array('status_aff'=>$inActualiteRec['status_aff']));
 	    $bddtmp->process();
 	}
 	if($dev['status_dev'] < 3) {

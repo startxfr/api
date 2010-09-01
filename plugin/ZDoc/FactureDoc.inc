@@ -83,7 +83,7 @@ class factureGnose {
 		foreach ($produits as $key => $produit) {
 
 		    $quantite 	= $produit['quantite'];
-		    $prix		= abs($produit['prix']);
+		    $prix		= $produit['prix'];
 		    $remise	= $produit['remise'];
 		    $totalRow	= ($quantite*$prix)-((($quantite*$prix)*$remise)/100);
 		    $produit['RefProd'] 	= $produit['id_produit'];
@@ -97,7 +97,7 @@ class factureGnose {
 			else  $produit['remise'] = formatCurencyDisplay($produit['remise'],2,'%');
 		    }
 		    else  $produit['remise'] = '';
-		    $produit['prix'] = formatCurencyDisplay(abs($produit["prix"]),2,'');
+		    $produit['prix'] = formatCurencyDisplay($produit["prix"],2,'');
 		    $produit['total']= formatCurencyDisplay(round($totalRow,2),2,'');
 		    $produits[$key] = $produit;
 		    $entreprise = array_merge($produit,$entreprise);

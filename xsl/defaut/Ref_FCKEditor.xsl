@@ -7,8 +7,6 @@
 <xsl:template name="generateEditor">
 	   <xsl:param name="idBox"/>
 	   <xsl:param name="content"/>
-		<input type="hidden" id="{$idBox}" name="{$idBox}" value="{$content}" style="display:none" />
-		<input type="hidden" id="{$idBox}___Config" value="" style="display:none" />
-		<iframe id="{$idBox}___Frame" src="../jss/fckeditor/editor/fckeditor.html?InstanceName={$idBox}&amp;Toolbar=Default" width="100%" height="400" frameborder="0" scrolling="no"><xsl:text>sss</xsl:text></iframe>
+		<textarea id="{$idBox}" name="{$idBox}"><xsl:value-of select="$content"/></textarea>
 </xsl:template>
 </xsl:stylesheet>

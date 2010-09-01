@@ -679,9 +679,9 @@ class devisModel extends GeneralModel {
      * @return string L'id du devis
      */
     public function createId($id_aff) {
-	$this->makeRequeteFree("SELECT COUNT(id_dev) AS NOW FROM `devis` WHERE id_dev LIKE '%".$id_aff."%' ");
+	$this->makeRequeteFree("SELECT COUNT(id_dev) AS nb FROM `devis` WHERE id_dev LIKE '%".$id_aff."%' ");
 	$res = $this->process();
-	$lastid = $res[0]['NOW'];
+	$lastid = $res[0]['nb'];
 	if($lastid > 0) {
 	    $lastid++;
 	    if($lastid < 10)
