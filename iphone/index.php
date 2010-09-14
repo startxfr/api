@@ -25,7 +25,7 @@ if($PC->GetSessionContext('',false) === false) {
     $isAuthentified = false;
     $_SESSION["language"] = 'fr';
 }
-else								$isAuthentified = true;
+else $isAuthentified = true;
 
 
 header('Content-type: text/html; charset=UTF-8');

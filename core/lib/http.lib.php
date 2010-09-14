@@ -39,6 +39,8 @@ function GetClientBrowserInfo() {
 	$uos="iPod";
     } else if (strstr($curos,"iphone")) {
 	$uos="iPhone";
+    } else if (strstr($curos,"ipad")) {
+	$uos="iPad";
     } else if (strstr($curos,"mac")) {
 	$uos="MacOS";
     } else {

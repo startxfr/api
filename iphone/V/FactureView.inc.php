@@ -53,8 +53,8 @@ class factureView {
 	$contact	 = ($value['contact_fact'] != NULL) ? '<li>Contact : '.contactParticulierView::contactLinkSimple($value).'</li>' : '';
 	$contactachat	 = ($value['contact_achat_fact'] != NULL && $value['contact_fact'] != $value['contact_achat_fact']) ? '<li>Acheteur : '.contactParticulierView::contactLinkSimple($value, 'achat').'</li>' : '';
 	$commercial = ($value['commercial_fact'] != NULL) ? '<li>Commercial : '.$value['nom'].' '.$value['prenom'].'</li>' : '';
-	$devis = ($value['devis_cmd'] != NULL) ? '<fieldset><ul><li>'.devisView::devisLinkSimple($value).'</li></ul></fieldset>' : '';
-	$affaire = ($value['affaire_dev'] != NULL) ? '<fieldset><ul><li>'.affaireView::affaireLinkSimple($value).'</li></ul></fieldset>' : '';
+	$devis = ($value['devis_cmd'] != NULL) ? '<li>'.devisView::devisLinkSimple($value).'</li>' : '';
+	$affaire = ($value['affaire_dev'] != NULL) ? '<li>'.affaireView::affaireLinkSimple($value).'</li>' : '';
 	$commande = ($value['commande_fact'] != NULL) ? '<li>'.commandeView::commandeLinkSimple($value).'</li>' : '';
 	$condireglement = $value['nom_condreg'];
 	if($value['condireglement_fact'] > 3) {
@@ -92,7 +92,13 @@ class factureView {
 							'.$contact.'
 							'.$contactachat.'
 					</ul>
-				</fieldset>'.self::subBlockRessourcesLiees($value).$devis.$affaire.'
+				</fieldset>
+				<fieldset>
+					<legend>Ressources Liées</legend>
+					<ul class="iArrow">
+						'.self::subBlockRessourcesLiees($value).$devis.$affaire.'
+					</ul>
+				</fieldset>
 				<fieldset>
 					<legend>Autres informations</legend>
 					<ul>
@@ -338,15 +344,8 @@ class factureView {
 	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$value['file_fact']) && $value['file_fact'] != null)
 	    $outLi   .= "<li><a href=\"../facturier/Facture.php?id_fact=".$value['id_fact']."&action=VoirFact\" target=\"_blank\">".imageTag('../img/prospec/facture.pdf.png','PDF').' '.$value['file_fact']."</a></li>";
 
-
 	//Récupération des données
-	$out = '<fieldset>
-					<legend>Ressources Liées</legend>
-					<ul class="iArrow">
-						<li><a rev="async" href="Actualite.php?action=viewFacture&amp;id_fact='.$value['id_fact'].'"><img src="Img/actualite.png"/> '.$totalActu.' Actualités</a></li>
-						'.$outLi.'
-					</ul>
-				</fieldset>';
+	$out = '<li><a rev="async" href="Actualite.php?action=viewFacture&amp;id_fact='.$value['id_fact'].'"><img src="Img/actualite.png"/> '.$totalActu.' Actualités</a></li>'.$outLi;
 	return $out;//Génération de l'affichage.
     }
 

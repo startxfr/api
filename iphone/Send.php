@@ -8,13 +8,12 @@ loadPlugin(array('Send/Send', 'ZModels/ContactModel', 'ZControl/SendControl'));
 
 // On inclus les librairies speciales iPhone
 include_once ('lib/Debug.inc.php');
+include_once ('lib/ZunoLayerGeneral.inc.php');
 include_once ('lib/HtmlElement.inc.php');
 include_once ('lib/HtmlForm.inc.php');
 include_once ('lib/ZunoLayerSend.inc.php');
-
 include_once ('V/SendView.inc.php');
 include_once ('V/ContactView.inc.php');
-
 include_once ('V/GeneralView.inc.php');
 
 

@@ -39,7 +39,6 @@ if($PC->rcvG['action'] == 'verifPin') {
 	$jeviensdepin = 'oui';
     }
 }
-
 else {
     if($PC->rcvG["mess"] == 'delsess') {
 	$message = $GLOBALS['Tx4Lg']['LoginErrorExpire'];

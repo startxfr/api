@@ -16,7 +16,7 @@ include ('inc/conf.inc');		// Declare global variables from config files
 include ('inc/core.inc');		// Load core library
 
 $uinf = GetClientBrowserInfo();
-if($uinf[0] == 'iPod' or $uinf[0] == 'iPhone') {
+if($uinf[0] == 'iPod' or $uinf[0] == 'iPad' or $uinf[0] == 'iPhone') {
     header("Location: ".$GLOBALS['CHANNEL_iPhone']['path']);
     exit;
 }

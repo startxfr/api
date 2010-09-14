@@ -994,8 +994,8 @@ INSERT INTO `ref_typeproj` VALUES (6,'Projet ZUNO','70');
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` VALUES ('cl','39cc6b9db3689b98c985258c09962f8d','LARUE','Christophe','M.','startx@startx.fr',NULL,0,NULL,'1','0','fr','6e1d1dd19e589f4bf3918ea55fc90192','1920x940');
-INSERT INTO `user` VALUES ('mg','b351bb9b0af6e4fc678749675c53ad67','GAILLARD','Maxime','M.','startx@startx.fr',NULL,0,NULL,'1','0','fr','0f98df87c7440c045496f705c7295344',NULL);
+INSERT INTO `user` VALUES ('cl','39cc6b9db3689b98c985258c09962f8d','LARUE','Christophe','M.','startx@startx.fr',NULL,0,NULL,'1','0','fr','4a7d1ed414474e4033ac29ccb8653d9b','1920x940');
+INSERT INTO `user` VALUES ('mg','b351bb9b0af6e4fc678749675c53ad67','GAILLARD','Maxime','M.','startx@startx.fr',NULL,0,NULL,'1','0','fr','4a7d1ed414474e4033ac29ccb8653d9b',NULL);
 
 --
 -- Dumping data for table `user_droits`
@@ -1202,4 +1202,4 @@ INSERT INTO `user_iphoneConfig` VALUES ('nm','send','oui');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-09-01 12:56:21
+-- Dump completed on 2010-09-14 19:30:40

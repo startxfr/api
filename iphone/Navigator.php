@@ -6,6 +6,7 @@ $GLOBALS['LOG']['DisplayDebug'] =
 $GLOBALS['LOG']['DisplayError'] = false;
 loadPlugin(array('ZView/FactureView','OOConverter','Send/Send'));
 include_once ('lib/Debug.inc.php');
+include_once ('lib/ZunoLayerGeneral.inc.php');
 include_once ('lib/HtmlElement.inc.php');
 include_once ('V/GeneralView.inc.php');
 ob_start();
