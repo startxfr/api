@@ -53,28 +53,22 @@ class factureGnose {
 	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture'][$cannevas];
 	else $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.cannevas'].$GLOBALS['ZunoFacture']['cannevas.defaut'];
 
-	$entreprise = $this->bddtmp->getDataFromID($id_fact);
-	$entreprise = $entreprise[1][0];
-	$entreprise['tauxTVA_ent'] = $entreprise['tauxTVA_fact'];
-	if(strlen($id_fact) == 1)
-	    $id = "00".$id_fact;
-	elseif(strlen($id_fact) == 2)
-	    $id = "0".$id_fact;
-	else
-	    $id = $id_fact;
-	$entreprise['id_affiche'] = substr($entreprise['daterecord_fact'], 2, 2).substr(strtoupper($entreprise['type_fact']),0,1).$id;
-	$entreprise['datemodif_fact'] = DateUniv2Human($entreprise['datemodif_fact'], 'fulldate');
-	$entreprise['date_fact'] = $entreprise['datemodif_fact'];
-	$entreprise['daterecord_fact'] = DateUniv2Human($entreprise['daterecord_fact'], 'simpleLong');
-	$entreprise['dateenvoi_fact'] = ($entreprise['dateenvoi_fact'] == null) ? " ":DateUniv2Human($entreprise['dateenvoi_fact'], 'fulldate');
-	$entreprise['datereglement_fact'] = ($entreprise['datereglement_fact'] == null) ? " ":DateUniv2Human($entreprise['datereglement_fact'], 'simpleLong');
-	if(count($entreprise) > 0) {
-	    if($entreprise['id_pays'] == "1") $entreprise['nom_pays'] = "";
+	$facture = $this->bddtmp->getDataFromID($id_fact);
+	$facture = $factureBrut = $facture[1][0];
+	$facture['tauxTVA_ent'] = $facture['tauxTVA_fact'];
+	$facture['id_affiche'] = $this->bddtmp->getFormatedIdFromData($facture);
+	$facture['datemodif_fact'] = DateUniv2Human($facture['datemodif_fact'], 'fulldate');
+	$facture['date_fact'] = $facture['datemodif_fact'];
+	$facture['daterecord_fact'] = DateUniv2Human($facture['daterecord_fact'], 'simpleLong');
+	$facture['dateenvoi_fact'] = ($facture['dateenvoi_fact'] == null) ? " ":DateUniv2Human($facture['dateenvoi_fact'], 'fulldate');
+	$facture['datereglement_fact'] = ($facture['datereglement_fact'] == null) ? " ":DateUniv2Human($facture['datereglement_fact'], 'simpleLong');
+	if(count($facture) > 0) {
+	    if($facture['id_pays'] == "1") $facture['nom_pays'] = "";
 
 
-	    $entreprise['nom_commercial'] = $entreprise['civ']." ".$entreprise['prenom']." ".$entreprise['nom'];
-	    $entreprise['mail_commercial'] = $entreprise['mail'];
-	    $entreprise['id_fact'] = $entreprise['id_fact'];
+	    $facture['nom_commercial'] = $facture['civ']." ".$facture['prenom']." ".$facture['nom'];
+	    $facture['mail_commercial'] = $facture['mail'];
+	    $facture['id_fact'] = $facture['id_fact'];
 	    $produits = $this->bddtmp->getProduitsFromID($id_fact);
 	    $produits = $produits[1];
 	    $total = 0;
@@ -100,24 +94,24 @@ class factureGnose {
 		    $produit['prix'] = formatCurencyDisplay($produit["prix"],2,'');
 		    $produit['total']= formatCurencyDisplay(round($totalRow,2),2,'');
 		    $produits[$key] = $produit;
-		    $entreprise = array_merge($produit,$entreprise);
+		    $facture = array_merge($produit,$facture);
 		    $total = $total+$totalRow;
 		}
 	    }
-	    else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux lignes produits de la facture '.$id_fact,serialize($entreprise),__FILE__.'@'.__LINE__);
+	    else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux lignes produits de la facture '.$id_fact,serialize($facture),__FILE__.'@'.__LINE__);
 
-	    $entreprise['totalHT'] = formatCurencyDisplay(round($total,2),2,'');
-	    $entreprise['totalTVA'] = formatCurencyDisplay(round(($total*$entreprise['tauxTVA_ent']/100),2),2,'');
-	    $entreprise['totalTTC'] = formatCurencyDisplay(round($total+($total*$entreprise['tauxTVA_ent']/100),2),2,'');
+	    $facture['totalHT'] = formatCurencyDisplay(round($total,2),2,'');
+	    $facture['totalTVA'] = formatCurencyDisplay(round(($total*$facture['tauxTVA_ent']/100),2),2,'');
+	    $facture['totalTTC'] = formatCurencyDisplay(round($total+($total*$facture['tauxTVA_ent']/100),2),2,'');
 	}
-	else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux données de la facture '.$id_fact,serialize($entreprise),__FILE__.'@'.__LINE__);
+	else Logg::loggerNotice('factureGnose::FactureGenerateDocument() ~ Erreur lors de l\'accès aux données de la facture '.$id_fact,serialize($facture),__FILE__.'@'.__LINE__);
 
 
 	if(is_file($cannevasFile) and
-		count($entreprise) > 0 and
+		count($facture) > 0 and
 		FileGetExtention($cannevasFile) == "odt") {
-	    $prefixDoc  = 'Facture';
-	    $fileSuffix = $prefixDoc.'.'.$id_fact.'.';
+	    $prefixDoc  = $facture['type_fact'];
+	    $fileSuffix = $prefixDoc.'.'.$this->bddtmp->getFormatedIdFromData($factureBrut).'.';
 	    $TmpPath = $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$prefixDoc.substr(md5(rand(1000,9999)+rand(1000,9999)),0,8).'/';
 	    $extract = docGeneratorOpenWorkingDoc($cannevasFile,$prefixDoc);
 	    if ($extract[0]) {
@@ -147,13 +141,13 @@ class factureGnose {
 			    if($cutLigneProd[0]) $OutLigne .= docGeneratorFragmentTemplating($produit,$DevisLigneProd,'FactureLigneProd');
 			}
 
-		    $entreprise   = docGeneratorCleanArrayBeforeTemplating($entreprise);
-		    docGeneratorAddZunoConfInfoBeforeTemplating($entreprise);
-		    $DevisDebutProd = docGeneratorFragmentTemplating($entreprise,$DevisDebutProd,'FactureDebutProd');
-		    $DevisFinProd = docGeneratorFragmentTemplating($entreprise,$DevisFinProd,'FactureFinProd');
+		    $facture   = docGeneratorCleanArrayBeforeTemplating($facture);
+		    docGeneratorAddZunoConfInfoBeforeTemplating($facture);
+		    $DevisDebutProd = docGeneratorFragmentTemplating($facture,$DevisDebutProd,'FactureDebutProd');
+		    $DevisFinProd = docGeneratorFragmentTemplating($facture,$DevisFinProd,'FactureFinProd');
 		    $NewXMLcontent = $DevisDebutProd.$OutLigne.$DevisFinProd;
 		    $xmls = file_get_contents($TmpPath.'styles.xml');
-		    $xmls = docGeneratorFragmentTemplating($entreprise,$xmls,'StyleGenerator');
+		    $xmls = docGeneratorFragmentTemplating($facture,$xmls,'StyleGenerator');
 		    File_Add2File($TmpPath.'styles.xml',$xmls,true);
 
 		    $ArchivePath = $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
@@ -176,7 +170,7 @@ class factureGnose {
 	    }
 	    else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible d\'extraire le cannevas',array($cannevasFile,$extract),__FILE__.'@'.__LINE__);
 	}
-	else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible de trouver le cannevas ou le tableau des informations sur la facture'.$cannevasFile,array($cannevasFile,$entreprise),__FILE__.'@'.__LINE__);
+	else Logg::loggerError('factureGnose::FactureGenerateDocument() ~ Erreur lors de la génération du fichier '.$ODTName.' impossible de trouver le cannevas ou le tableau des informations sur la facture'.$cannevasFile,array($cannevasFile,$facture),__FILE__.'@'.__LINE__);
     }
 
     /**
@@ -187,17 +181,14 @@ class factureGnose {
      * @return bool Indique si tout s'est bien déroulé
      */
     public function FactureSaveDocInGnose($fileFrom,$facture,$message = "") {
-	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-	$bddtmp->makeRequeteFree("SELECT * FROM facture
-						  LEFT JOIN affaire ON id_aff = SUBSTRING(commande_fact,1,6)
-						  WHERE id_fact = '".$facture."'");
-	$res = $bddtmp->process();
-	$factData = $res[0];
+	$res =$this->bddtmp->getDataFromID($facture);
+	$factData = $res[1][0];
 	$prefixDoc = ($factData['type_fact'] == 'Avoir') ? 'Avoir' : 'Facture';
 	$typeDocLa = ($factData['type_fact'] == 'Avoir') ? 'l\'avoir' : 'la facture';
+	$factureIdAffiche = $this->bddtmp->getFormatedIdFromData($factData);
 
 	if ($message == "")
-	    $message = "Changement de $typeDocLa ".$facture." par ".$_SESSION['user']['id'];
+	    $message = "Changement de $typeDocLa $factureIdAffiche par ".$_SESSION['user']['fullnom'];
 	$message = escapeshellcmd($message);
 
 	$PathToAff = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$factData['dir_aff'];
@@ -250,8 +241,8 @@ class factureGnose {
 		if(!copy($PathFrom.$fileFrom,$PathTo.$fileFrom))
 		    Logg::loggerError('factureGnose::FactureSaveDocInGnose() ~ impossible de copier le fichier '.$PathFrom.$fileFrom.' vers '.$pathTo,'',__FILE__.'@'.__LINE__);
 		else Logg::loggerInfo('factureGnose::FactureSaveDocInGnose() ~ Sauvegarde du document de la facture '.$facture.' après un changement de nom de fichier',array($factData,$fileFrom),__FILE__.'@'.__LINE__);
-		$bddtmp->makeRequeteUpdate('facture','id_fact',$facture,array('file_fact'=>$fileFrom));
-		$bddtmp->process();
+		$this->bddtmp->makeRequeteUpdate('facture','id_fact',$facture,array('file_fact'=>$fileFrom));
+		$this->bddtmp->process();
 		$return = 'Changement de '.$typeDocLa.' '.$facture.' en changement de son nom de '.$factData['file_fact'].' vers '.$fileFrom;
 		chmod($PathTo.$fileFrom,0770);
 		$fileCI.= $PathTo.$factData['file_fact'].' '.$PathTo.$fileFrom.' ';
@@ -287,8 +278,8 @@ class factureGnose {
 		$return = "ajout de la facture ".$fileFrom;
 		chmod($PathTo.$fileFrom,0770);
 		$fileCI.= $PathTo.$fileFrom.' ';
-		$bddtmp->makeRequeteUpdate('facture','id_fact',$facture,array('file_fact'=>$fileFrom));
-		$bddtmp->process();
+		$this->bddtmp->makeRequeteUpdate('facture','id_fact',$facture,array('file_fact'=>$fileFrom));
+		$this->bddtmp->process();
 		// S'il y a une affaire
 		if($factData['dir_aff'] != '') {
 		    // On copie le fichier dans l'affaire

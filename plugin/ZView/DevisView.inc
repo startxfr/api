@@ -529,21 +529,24 @@ function IsNumeric(input)
 	    $TypeSend['fax'] = "par fax";
 	if(verifDroitsAuto('devis', 54, $datas['data']['commercial_dev']))
 	    $TypeSend['courrier'] = "par courrier";
+	$AffDir= ($value['archived_aff'] == '1') ? $GLOBALS['SVN_Pool1']['ArchivesDir'] : $GLOBALS['SVN_Pool1']['WorkDir'];
+	$AffDir.= $GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'];
+	$fileName= $GLOBALS['ZunoDevis']['file.suffixe'] . $datas['data']['id_dev'];
 
-	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'Devis.'.$datas['data']['id_dev'].'.pdf') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
-	    $listeDoc['Devis.'.$datas['data']['id_dev'].'.pdf'] = 'Devis.'.$datas['data']['id_dev'].'.pdf';
-	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field">Devis.'.$datas['data']['id_dev'].'.pdf</div></div>';
-	    $selected = 'Devis.'.$datas['data']['id_dev'].'.pdf';
+	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$AffDir . $fileName.'.pdf') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
+	    $listeDoc[$fileName.'.pdf'] = $fileName.'.pdf';
+	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'pdf\');">'.$fileName.'.pdf</a></div></div>';
+	    $selected = $fileName.'.pdf';
 	}
-	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'Devis.'.$datas['data']['id_dev'].'.odt') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
-	    $listeDoc['Devis.'.$datas['data']['id_dev'].'.odt'] = 'Devis.'.$datas['data']['id_dev'].'.odt';
-	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field">Devis.'.$datas['data']['id_dev'].'.odt</div></div>';
-	    $selected = ($selected == "") ? 'Devis.'.$datas['data']['id_dev'].'.odt' : $selected;
+	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$AffDir . $fileName.'.odt') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
+	    $listeDoc[$fileName.'.odt'] = $fileName.'.odt';
+	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'odt\');">'.$fileName.'.odt</a></div></div>';
+	    $selected = ($selected == "") ? $fileName.'.odt' : $selected;
 	}
-	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'Devis.'.$datas['data']['id_dev'].'.doc') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
-	    $listeDoc['Devis.'.$datas['data']['id_dev'].'.doc'] = 'Devis.'.$datas['data']['id_dev'].'.doc';
-	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field">Devis.'.$datas['data']['id_dev'].'.doc</div></div>';
-	    $selected = ($selected == "") ? 'Devis.'.$datas['data']['id_dev'].'.doc' : $selected;
+	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$AffDir . $fileName.'.doc') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
+	    $listeDoc[$fileName.'.doc'] = $fileName.'.doc';
+	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" />'.$fileName.'.doc</a></div><div class="field"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'doc\');">'.$fileName.'.doc</a></div></div>';
+	    $selected = ($selected == "") ? $fileName.'.doc' : $selected;
 	}
 	$out = '<form name="ActionDevisPDF" action="Devis.php" method="post">
 		<input type="hidden" id="MakeDevisAction" value="ActionDevis" name="action"/>

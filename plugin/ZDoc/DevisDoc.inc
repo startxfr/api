@@ -105,7 +105,7 @@ class devisGnose {
 	if(is_file($cannevasFile) and
 		count($entreprise) > 0 and
 		FileGetExtention($cannevasFile) == "odt") {
-	    $prefixDoc  = 'Devis';
+	    $prefixDoc  = substr($GLOBALS['ZunoDevis']['file.suffixe'],0,-1);
 	    $fileSuffix = $prefixDoc.'.'.$id_dev.'.';
 	    $TmpPath = $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$prefixDoc.substr(md5(rand(1000,9999)+rand(1000,9999)),0,8).'/';
 	    $extract = docGeneratorOpenWorkingDoc($cannevasFile,$prefixDoc);

@@ -134,8 +134,16 @@ class devisView {
 	$sqlConn->makeRequeteFree("select count(id) as C FROM actualite WHERE id_dev = '" . $value['id_dev'] . "'");
 	$temp = $sqlConn->process2();
 	$totalActu = $temp[1][0]['C'];
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'] . $GLOBALS['SVN_Pool1']['WorkDir'] . $GLOBALS['ZunoAffaire']['dir.affaire'] . $value['dir_aff'] . $GLOBALS['ZunoDevis']['file.suffixe'] . $value['id_dev'] . '.pdf'))
-	    $outLi .= "<li><a href=\"../draco/Devis.php?id_devis=" . $value['id_dev'] . "&action=pdf\" target=\"_blank\">" . imageTag('../img/prospec/devis.pdf.png', 'PDF') . ' ' . $GLOBALS['ZunoDevis']['file.suffixe'] . $value['id_dev'] . ".pdf</a></li>";
+	$AffDir= ($value['archived_aff'] == '1') ? $GLOBALS['SVN_Pool1']['ArchivesDir'] : $GLOBALS['SVN_Pool1']['WorkDir'];
+	$AffDir.= $GLOBALS['ZunoAffaire']['dir.affaire'].$value['dir_aff']; 
+	$fileName= $GLOBALS['ZunoDevis']['file.suffixe'] . $value['id_dev'];
+	
+	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy']. $AffDir . $fileName . '.pdf'))
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$AffDir . $fileName . ".pdf\" target=\"_blank\">" . imageTag('../img/files/pdf.png', 'version PDF') . ' ' . $fileName . ".pdf</a></li>";
+	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy']. $AffDir . $fileName . '.odt'))
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$AffDir . $fileName . ".odt\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version ODT') . ' ' . $fileName . ".odt</a></li>";
+	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy']. $AffDir . $fileName . '.doc'))
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$AffDir . $fileName . ".doc\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version DOC') . ' ' . $fileName . ".doc</a></li>";
 	//Récupération des données
 	$out = '<li><a rev="async" href="Actualite.php?action=viewDevis&amp;id_dev=' . $value['id_dev'] . '"><img src="Img/actualite.png"/> ' . $totalActu . ' Actualités</a></li> ' . $commande . $facture . $outLi;
 	return $out; //Génération de l'affichage.

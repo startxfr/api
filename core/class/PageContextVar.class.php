@@ -18,11 +18,11 @@
  */
 class PageContextVar {
     /** incoming GET data. */
-    public $rcvG;
+    public $rcvG = array();
     /** incoming POST data. */
-    public $rcvP;
+    public $rcvP = array();
     /** incoming FILE data. */
-    public $rcvF;
+    public $rcvF = array();
 
     /**
      * Constructor

@@ -63,6 +63,7 @@ function getImg($file) {
 function Naviguer($dirname = '', $nombre = 0) {
     $taillemax = $GLOBALS['SVN_Pool1']['NbCharAffIphone'];
     if($dirname == "") $dirname = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'];
+   else $dirname = $GLOBALS['SVN_Pool1']['WorkCopy'].$dirname;
     if(is_dir($dirname)) {
 	$folder_nb = 0;
 	$files_nb = 0;
@@ -79,8 +80,9 @@ function Naviguer($dirname = '', $nombre = 0) {
 		continue;
 	    }
 	    $aumoinsunaffiche = 1;
-	    $relname = $dirname."/".$item;
-	    if (is_dir($relname)) {
+	    $absname = $dirname."/".$item;
+	    $relname = str_replace($GLOBALS['SVN_Pool1']['WorkCopy'], '', $absname);
+	    if (is_dir($absname)) {
 		if(strlen($item) > 25 && strlen($item) < 35) {
 		    $taille = 'style="font-size:13px;"';
 		}
@@ -92,9 +94,9 @@ function Naviguer($dirname = '', $nombre = 0) {
 		}
 		//			$tailleDossier = nicesize(DirSize($relname));
 		$out .= '<li>';
-		$out .= '<a href="Navigator.php?file='.$relname.'&nombre='.$nombre.'" rev="async" '.$taille.' >';
+		$out .= '<a href="Navigator.php?file='.urlencode($relname).'&nombre='.$nombre.'" rev="async" '.$taille.' >';
 		$out .= '<img src="../img/files/folder.gif" alt="folder"/>  '.$item.'</a>';
-		$out .= '<span title="'.str_replace('"', '\"', $relname).'"></span></li>';
+		$out .= '<span title="'.str_replace('"', '\"', $absname).'"></span></li>';
 		$folder_nb++;
 	    }
 	    else {
@@ -109,7 +111,8 @@ function Naviguer($dirname = '', $nombre = 0) {
 	if ($files_nb>0) {
 	    $i = $folder_nb;
 	    foreach ($files as $item) {
-		$relname = $dirname."/".$item;
+		$absname = $dirname."/".$item;
+		$relname = str_replace($GLOBALS['SVN_Pool1']['WorkCopy'], '', $absname);
 		if(strlen($item) > 25 && strlen($item) < 35) {
 		    $taille = 'style="font-size:13px;"';
 		}
@@ -119,7 +122,7 @@ function Naviguer($dirname = '', $nombre = 0) {
 		else {
 		    $taille = '';
 		}
-		$out .= '<li><a href="./inc/explorer.php?download='.$relname.'" target="_blank" '.$taille.' ><img src="'.getImg($item).'" alt="img" />  '.$item.'</a></li>';
+		$out .= '<li><a href="./inc/explorer.php?download='.urlencode($relname).'" target="_blank" '.$taille.' ><img src="'.getImg($item).'" alt="img" />  '.$item.'</a></li>';
 		$i++;
 	    }
 	}
@@ -162,7 +165,7 @@ elseif($PC->rcvG['download'] != NULL) {
     $path = $PC->rcvG['download'];
     $name=explode("/",$path);
     $name = $name[sizeof($name)-1];
-    readfile($path);
+    readfile($GLOBALS['SVN_Pool1']['WorkCopy'].$path);
 }
 
 ?>

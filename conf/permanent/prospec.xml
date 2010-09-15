@@ -67,7 +67,6 @@
     </group>
     <group name="ZunoFacture" modifRight="1" title="Documents à joindre lors d'un envoi">
 	<value id="right.record" title="Droit pour l'enregistrement">1</value>
-	<value id="file.suffixe" title="Suffixe des PDF">Facture.</value>
 	<value id="cannevas.exportTableur">_ExportFacture.ods</value>
 	<value id="dir.cannevas" title="Répertoire des cannevas de facture">Cannevas/Factures/</value>
 	<value id="dir.facture" title="Répertoire de stockage des factures">Factures/Clients/</value>

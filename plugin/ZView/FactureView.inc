@@ -491,21 +491,23 @@ class factureView extends generalView {
 	    $TypeSend['courrier'] = "par courrier";
 
 	if(verifDroitsAuto('facture', 62, $datas['data']['commercial_fact'])) {
+	$factDir= $GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
+	$fileName = $datas['data']['type_fact'].'.'.$this->prepareAffichageID($datas['data']);
 
-	    if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].'Facture.'.$datas['data']['id_fact'].'.pdf')) {
-		$listeDoc['Facture.'.$datas['data']['id_fact'].'.pdf'] = 'Facture.'.$datas['data']['id_fact'].'.pdf';
-		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field">Facture.'.$datas['data']['id_fact'].'.pdf</div></div>';
-		$selected = 'Facture.'.$datas['data']['id_fact'].'.pdf';
+	    if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.pdf')) {
+		$listeDoc[$fileName.'.pdf'] = $fileName.'.pdf';
+		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'pdf\');">'.$fileName.'.pdf</a></div></div>';
+		$selected = $fileName.'.pdf';
 	    }
-	    if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].'Facture.'.$datas['data']['id_fact'].'.odt')) {
-		$listeDoc['Facture.'.$datas['data']['id_fact'].'.odt'] = 'Facture.'.$datas['data']['id_fact'].'.odt';
-		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field">Facture.'.$datas['data']['id_fact'].'.odt</div></div>';
-		$selected = ($selected == "") ? 'Facture.'.$datas['data']['id_fact'].'.odt' : $selected;
+	    if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.odt')) {
+		$listeDoc[$fileName.'.odt'] = $fileName.'.odt';
+		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'odt\');">'.$fileName.'.odt</a></div></div>';
+		$selected = ($selected == "") ? $fileName.'.odt' : $selected;
 	    }
-	    if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].'Facture.'.$datas['data']['id_fact'].'.doc')) {
-		$listeDoc['Facture.'.$datas['data']['id_fact'].'.doc'] = 'Facture.'.$datas['data']['id_fact'].'.doc';
-		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field">Facture.'.$datas['data']['id_fact'].'.doc</div></div>';
-		$selected = ($selected == "") ? 'Facture.'.$datas['data']['id_fact'].'.doc' : $selected;
+	    if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.doc')) {
+		$listeDoc[$fileName.'.doc'] = $fileName.'.doc';
+		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'doc\');">'.$fileName.'.doc</a></div></div>';
+		$selected = ($selected == "") ? $fileName.'.doc' : $selected;
 	    }
 	}
 
@@ -519,7 +521,7 @@ class factureView extends generalView {
 				<legend>Génération des fichiers</legend>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.generateCannevas);">Cannevas</div>
-						<div class="field">'.selectTag("Cannevas", $toto, ($datas['data']['type_fact'] == 'Facture') ? '' : 'cannevas.avoir', '', '', false).'</div>
+						<div class="field">'.selectTag("Cannevas", $toto,( ($datas['data']['type_fact'] == 'Avoir') ? 'cannevas.avoir' : 'cannevas.defaut'), '', '', false).'</div>
 					</div>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.generateOutput);">Sortie</div>

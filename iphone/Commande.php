@@ -104,14 +104,15 @@ if ($PC->rcvG['action'] == 'searchCommande') {
 	<root><go to="waCommandeProduits"/>
 	    <title set="waCommandeProduits"><?php echo 'Produits'; ?></title>
 	    <part><destination mode="replace" zone="waCommandeProduits" create="true"/>
-	        <data><![CDATA[ <?php echo commandeView::produits($result[1], $PC->rcvG['id_cmd'], $PC->rcvG['tva']); ?> ]]></data>
+		<data><![CDATA[ <?php echo commandeView::produits($result[1], $PC->rcvG['id_cmd'], $PC->rcvG['tva']); ?> ]]></data>
 	    </part>
 	</root>
 <?php }//Tout s'est bien passé, j'affiche.
-    else { ?>
+    else {
+ ?>
 	<root><go to="waCommandeProduits"/>
 	    <part><destination mode="replace" zone="waCommandeProduits" create="true"/>
-	        <data><![CDATA[ <div class="iBlock"><div class="err">Cette commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
+		<data><![CDATA[ <div class="iBlock"><div class="err">Cette commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
 	    </part>
 	</root>
 <?php
@@ -161,19 +162,20 @@ if ($PC->rcvG['action'] == 'searchCommande') {
 	$result[0] = 0;
     }//S'il y a eu une erreur, on balance l'erreur au bon endroit.
     if ($result[0]) {
- ?>
+?>
 	<root><go to="waCommandeProduits"/>
 	    <title set="waCommandeProduits"><?php echo 'Produits'; ?></title>
 	    <part><destination mode="replace" zone="waCommandeProduits" create="true"/>
-	        <data><![CDATA[ <?php echo commandeView::produits($result[1], $PC->rcvG['id_cmd'], $PC->rcvG['tva']); ?> ]]></data>
+		<data><![CDATA[ <?php echo commandeView::produits($result[1], $PC->rcvG['id_cmd'], $PC->rcvG['tva']); ?> ]]></data>
 	    </part>
 	</root>
-<?php }//Tout s'est bien passé, j'affiche.
+<?php
+    }//Tout s'est bien passé, j'affiche.
     else {
- ?>
+?>
 	<root><go to="waCommandeProduits"/>
 	    <part><destination mode="replace" zone="waCommandeProduits" create="true"/>
-	        <data><![CDATA[ <div class="iBlock"><div class="err">Cette commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
+		<data><![CDATA[ <div class="iBlock"><div class="err">Cette commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
 	    </part>
 	</root>
 <?php
@@ -199,19 +201,20 @@ if ($PC->rcvG['action'] == 'searchCommande') {
 	$result[0] = 0;
     }//S'il y a eu une erreur, on balance l'erreur au bon endroit.
     if ($result[0]) {
- ?>
+?>
 	<root><go to="waCommandeProduits"/>
 	    <title set="waCommandeProduits"><?php echo 'Produits'; ?></title>
 	    <part><destination mode="replace" zone="waCommandeProduits" create="true"/>
-	        <data><![CDATA[ <?php echo commandeView::produits($result[1], $PC->rcvG['id_cmd'], $PC->rcvG['tva']); ?> ]]></data>
+		<data><![CDATA[ <?php echo commandeView::produits($result[1], $PC->rcvG['id_cmd'], $PC->rcvG['tva']); ?> ]]></data>
 	    </part>
 	</root>
-<?php }//Tout s'est bien passé, j'affiche.
+<?php
+    }//Tout s'est bien passé, j'affiche.
     else {
- ?>
+?>
 	<root><go to="waCommandeProduits"/>
 	    <part><destination mode="replace" zone="waCommandeProduits" create="true"/>
-	        <data><![CDATA[ <div class="iBlock"><div class="err">Cette commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
+		<data><![CDATA[ <div class="iBlock"><div class="err">Cette commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
 	    </part>
 	</root>
 <?php
@@ -251,15 +254,16 @@ if ($PC->rcvG['action'] == 'searchCommande') {
 	<root><go to="waCommandeDelete"/>
 	    <title set="waCommandeDelete"><?php echo $result[1][0]['id_cmd']; ?></title>
 	    <part><destination mode="replace" zone="waCommandeDelete" create="true"/>
-	        <data><![CDATA[ <?php echo commandeView::delete($result[1][0]); ?> ]]></data>
+		<data><![CDATA[ <?php echo commandeView::delete($result[1][0]); ?> ]]></data>
 	    </part>
 	</root>
-<?php }//J'affiche le résultat.
+<?php
+    }//J'affiche le résultat.
     else {
- ?>
+?>
 	<root><go to="waCommandeFiche"/>
 	    <part><destination mode="replace" zone="waCommandeFiche" create="true"/>
-	        <data><![CDATA[ <div class="iBlock"><div class="err">Ce commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
+		<data><![CDATA[ <div class="iBlock"><div class="err">Ce commande n'<strong>existe plus</strong><br/></div></div> ]]></data>
 	    </part>
 	</root>
 <?php
@@ -275,7 +279,7 @@ if ($PC->rcvG['action'] == 'searchCommande') {
     <root><go to="waCommandeAdd"/>
         <title set="waCommandeAdd"><?php echo "Nouv. commande"; ?></title>
         <part><destination mode="replace" zone="waCommandeAdd" create="true"/>
-            <data><![CDATA[ <?php echo commandeView::addPre($default); ?> ]]></data>
+    	<data><![CDATA[ <?php echo commandeView::addPre($default); ?> ]]></data>
         </part>
     </root>
 <?php
@@ -349,7 +353,7 @@ if ($PC->rcvG['action'] == 'searchCommande') {
 	<root><go to="waCommandeCloner"/>
 	    <title set="waCommandeCloner"><?php echo "Nouv. commande"; ?></title>
 	    <part><destination mode="replace" zone="waCommandeCloner" create="true"/>
-	        <data><![CDATA[ <?php echo "Impossible de cloner cette commande. Nombre maximal de clones atteint."; ?> ]]></data>
+		<data><![CDATA[ <?php echo "Impossible de cloner cette commande. Nombre maximal de clones atteint."; ?> ]]></data>
 	    </part>
 	</root>
 <?php
@@ -364,7 +368,7 @@ if ($PC->rcvG['action'] == 'searchCommande') {
 	    <root><go to="waCommandeCloner"/>
 	        <title set="waCommandeCloner"><?php echo "Nouv. commande"; ?></title>
 	        <part><destination mode="replace" zone="waCommandeCloner" create="true"/>
-	            <data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
+	    	<data><![CDATA[ <?php echo "Erreur lors de la connexion à la base de données"; ?> ]]></data>
 	        </part>
 	    </root>
 <?php
@@ -377,7 +381,7 @@ if ($PC->rcvG['action'] == 'searchCommande') {
     <root><go to="waCommandeInputAjax"/>
         <title set="waCommandeInputAjax">Choix d'une commande</title>
         <part><destination mode="replace" zone="waCommandeInputAjax" create="true"/>
-            <data><![CDATA[ <?php echo ZunoLayerCommande::headerFormSearchCmd(); ?> ]]></data>
+    	<data><![CDATA[ <?php echo ZunoLayerCommande::headerFormSearchCmd(); ?> ]]></data>
         </part>
         <script><![CDATA[ new dynAjax('formSearchCommandeInput',3,'formSearchCommandeajax'); ]]></script>
     </root>
@@ -405,14 +409,14 @@ if ($PC->rcvG['action'] == 'searchCommande') {
 ?>
     <root>
         <part>
-            <destination mode="replace" zone="SearchCommandeResultAsync"/>
-            <data><![CDATA[
-                <div class="iList">
+    	<destination mode="replace" zone="SearchCommandeResultAsync"/>
+    	<data><![CDATA[
+    	    <div class="iList">
 <?php echo $out; ?>
-                </div>
+	    </div>
     			]]></data>
-        </part>
-    </root>
+    </part>
+</root>
 <?php
 }
 elseif ($PC->rcvG['action'] == 'inputCommandeContinue') {
@@ -433,517 +437,517 @@ elseif ($PC->rcvG['action'] == 'inputCommandeContinue') {
     }
 
     if ($zoneTo != '') {
- ?>
-<root>
-    <part>
-        <destination mode="append" zone="<?php echo $zoneTo; ?>"/>
-            <data><![CDATA[ <?php echo $out; ?> ]]></data>
-		        <script><![CDATA[ <?php echo $outJs; ?> ]]></script>
-		    </part>
-		</root>
-<?php
-	    }
-	} elseif ($PC->rcvG['action'] == 'voir') {
-	    $result = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
-	    $resultat = $info->getDataFromID($PC->rcvG['id_cmd']);
-	    if ($resultat[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		aiJeLeDroit('commande', 63);
-	    } else {
-		aiJeLeDroit('commande', 62);
-	    }
 ?>
-	    <root><go to="waCommandeAction"/>
-	        <title set="waCommandeAction">Voir la commande</title>
-	        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
-	            <data><![CDATA[ <?php echo commandeView::actionVoir($result[1], $PC->rcvG['id_cmd']); ?> ]]></data>
-	        </part>
-	    </root>
+	<root>
+	    <part>
+	        <destination mode="append" zone="<?php echo $zoneTo; ?>"/>
+		<data><![CDATA[ <?php echo $out; ?> ]]></data>
+		<script><![CDATA[ <?php echo $outJs; ?> ]]></script>
+	    </part>
+	</root>
 <?php
-	} elseif ($PC->rcvG['action'] == 'send') {
-	    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
-	    $resultF = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
+    }
+} elseif ($PC->rcvG['action'] == 'voir') {
+    $result = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
+    $resultat = $info->getDataFromID($PC->rcvG['id_cmd']);
+    if ($resultat[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	aiJeLeDroit('commande', 63);
+    } else {
+	aiJeLeDroit('commande', 62);
+    }
 ?>
-	    <root><go to="waCommandeAction"/>
-	        <title set="waCommandeAction">Envoyer la Commande</title>
-	        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
-	            <data><![CDATA[ <?php echo commandeView::actionSend($result[1][0], $resultF[1]); ?> ]]></data>
-	        </part>
-	    </root>
+    <root><go to="waCommandeAction"/>
+        <title set="waCommandeAction">Voir la commande</title>
+        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
+    	<data><![CDATA[ <?php echo commandeView::actionVoir($result[1], $PC->rcvG['id_cmd']); ?> ]]></data>
+        </part>
+    </root>
 <?php
-	} elseif ($PC->rcvG['action'] == 'send1') {
-	    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
-	    $datas['data'] = $r = $result[1][0];
-	    $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
-	    $datas['pays'] = $info->getPays();
-	    $datas['user'] = $info->getUser($PC->rcvG['id_cmd']);
-	    $datas['produit'] = $info->getAllFournisseursFromID($PC->rcvG['id_cmd']);
-	    switch ($PC->rcvP['document']) {
-		case 'ri':
-		    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
-		    break;
-		case 'bdcc':
-		    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BC');
-		    break;
-		case 'bdl':
-		    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
-		    break;
-		default:
-		    $bdd = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-		    $bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
-		    $datas['fournisseur'] = $bdd->process2();
-		    $datas['fournisseur'] = $datas['fournisseur'][1][0];
-		    $bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
-		    $datas['produit'] = $bdd->process2();
-		    $datas['produit'] = $datas['produit'][1];
-		    $Doc = commandeGnose::CommandeGenerateBDCF($datas, $PC->rcvP['document']);
-		    break;
-	    }
-	    $dir = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
+} elseif ($PC->rcvG['action'] == 'send') {
+    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
+    $resultF = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
+?>
+    <root><go to="waCommandeAction"/>
+        <title set="waCommandeAction">Envoyer la Commande</title>
+        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
+    	<data><![CDATA[ <?php echo commandeView::actionSend($result[1][0], $resultF[1]); ?> ]]></data>
+        </part>
+    </root>
+<?php
+} elseif ($PC->rcvG['action'] == 'send1') {
+    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
+    $datas['data'] = $r = $result[1][0];
+    $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+    $datas['pays'] = $info->getPays();
+    $datas['user'] = $info->getUser($PC->rcvG['id_cmd']);
+    $datas['produit'] = $info->getAllFournisseursFromID($PC->rcvG['id_cmd']);
+    switch ($PC->rcvP['document']) {
+	case 'ri':
+	    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
+	    break;
+	case 'bdcc':
+	    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BC');
+	    break;
+	case 'bdl':
+	    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
+	    break;
+	default:
+	    $bdd = new commandeModel();
+	     $bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
+	    $datas['fournisseur'] = $bdd->process2();
+	    $datas['fournisseur'] = $datas['fournisseur'][1][0];
+	    $bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
+	    $datas['produit'] = $bdd->process2();
+	    $datas['produit'] = $datas['produit'][1];
+	    $Doc = commandeGnose::CommandeGenerateBDCF($datas, $PC->rcvP['document']);
+	    break;
+    }
+    $dir = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
 
-	    $_SESSION['CommandeActionRecSend']['id_cmd'] = $PC->rcvG['id_cmd'];
-	    $_SESSION['CommandeActionRecSend']['Cannevas'] = $PC->rcvP['Cannevas'];
-	    $_SESSION['CommandeActionRecSend']['OutputExt'] = $PC->rcvP['OutputExt'];
-	    $_SESSION['CommandeActionRecSend']['message'] = $PC->rcvP['message'];
-	    $_SESSION['CommandeActionRecSend']['type'] = $PC->rcvP['type'];
-	    $_SESSION['CommandeActionRecSend']['file'] = $dir . $Doc;
+    $_SESSION['CommandeActionRecSend']['id_cmd'] = $PC->rcvG['id_cmd'];
+    $_SESSION['CommandeActionRecSend']['Cannevas'] = $PC->rcvP['Cannevas'];
+    $_SESSION['CommandeActionRecSend']['OutputExt'] = $PC->rcvP['OutputExt'];
+    $_SESSION['CommandeActionRecSend']['message'] = $PC->rcvP['message'];
+    $_SESSION['CommandeActionRecSend']['type'] = $PC->rcvP['type'];
+    $_SESSION['CommandeActionRecSend']['file'] = $dir . $Doc;
 
-	    if ($PC->rcvP['type'] == 'courrier') {
-		if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		    aiJeLeDroit('commande', 55);
-		} else {
-		    aiJeLeDroit('commande', 54);
-		}
-		$_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['add1'] = $r['adressedelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['add2'] = $r['adresse1delivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['cp'] = $r['cpdelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['ville'] = $r['villedelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['code_pays'] = $r['paysdelivery_cmd'];
-	    } elseif ($PC->rcvP['type'] == 'fax') {
-		if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		    aiJeLeDroit('commande', 53);
-		} else {
-		    aiJeLeDroit('commande', 52);
-		}
-		if ($r['nomdelivery_cmd'] != '')
-		    $_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
-		else
-		    $_SESSION['CommandeActionRecSend']['nom'] = $r['civ_cont'] . ' ' . $r['prenom_cont'] . ' ' . $r['nom_cont'];
-		if ($r['fax_cont'] != '')
-		    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_cont'];
-		elseif ($r['fax_ent'] != '')
-		    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_ent'];
-		else
-		    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_achat'];
-	    }
-	    else {
-		if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		    aiJeLeDroit('commande', 51);
-		} else {
-		    aiJeLeDroit('commande', 50);
-		}
-		if ($r['maildelivery_cmd'] != '')
-		    $_SESSION['CommandeActionRecSend']['email'] = $r['maildelivery_cmd'];
-		elseif ($r['mail_cont'] != '')
-		    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_cont'];
-		else
-		    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_achat'];
-		$_SESSION['CommandeActionRecSend']['titre'] = 'STARTX : Commande n°' . $r['id_cmd'];
-	    }
-	    $in = array_merge($r, $_SESSION['CommandeActionRecSend']);
-?>
-	    <root><go to="waCommandeAction1"/>
-	        <title set="waCommandeAction1">Enregistrer et envoyer</title>
-	        <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
-	            <data><![CDATA[ <?php echo commandeView::actionSend1($in); ?> ]]></data>
-	        </part>
-	    </root>
-<?php
+    if ($PC->rcvP['type'] == 'courrier') {
+	if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('commande', 55);
+	} else {
+	    aiJeLeDroit('commande', 54);
 	}
-	elseif ($PC->rcvG['action'] == 'rec') {
-	    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
-	    $resultF = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
-	    if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		aiJeLeDroit('commande', 61);
-	    } else {
-		aiJeLeDroit('commande', 60);
-	    }
-?>
-	    <root><go to="waCommandeAction"/>
-	        <title set="waCommandeAction">Enregistrer la Commande</title>
-	        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
-	            <data><![CDATA[ <?php echo commandeView::actionRecord($result[1][0], $resultF[1]); ?> ]]></data>
-	        </part>
-	    </root>
-<?php
-	} elseif ($PC->rcvG['action'] == 'recsend') {
-	    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
-	    $resultF = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
-	    if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		aiJeLeDroit('commande', 61);
-	    } else {
-		aiJeLeDroit('commande', 60);
-	    }
-?>
-	    <root><go to="waCommandeAction"/>
-	        <title set="waCommandeAction">Enregistrer et envoyer</title>
-	        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
-	            <data><![CDATA[ <?php echo commandeView::actionRecordSend($result[1][0], $resultF[1]); ?> ]]></data>
-	        </part>
-	    </root>
-<?php
-	} elseif ($PC->rcvG['action'] == 'recsend1') {
-	    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
-	    $datas['data'] = $r = $result[1][0];
-	    $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
-	    $datas['pays'] = $info->getPays();
-	    $datas['user'] = $info->getUser($PC->rcvG['id_cmd']);
-	    $datas['produit'] = $info->getAllFournisseursFromID($PC->rcvG['id_cmd']);
-	    switch ($PC->rcvP['document']) {
-		case 'ri':
-		    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
-		    break;
-		case 'bdcc':
-		    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BC');
-		    break;
-		case 'bdl':
-		    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
-		    break;
-		default:
-		    $bdd = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-		    $bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
-		    $datas['fournisseur'] = $bdd->process2();
-		    $datas['fournisseur'] = $datas['fournisseur'][1][0];
-		    $bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
-		    $datas['produit'] = $bdd->process2();
-		    $datas['produit'] = $datas['produit'][1];
-		    $Doc = commandeGnose::CommandeGenerateBDCF($datas, $PC->rcvP['document']);
-		    break;
-	    }
-	    $dir = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
-
-	    $_SESSION['CommandeActionRecSend']['id_cmd'] = $PC->rcvG['id_cmd'];
-	    $_SESSION['CommandeActionRecSend']['Cannevas'] = $PC->rcvP['Cannevas'];
-	    $_SESSION['CommandeActionRecSend']['OutputExt'] = $PC->rcvP['OutputExt'];
-	    $_SESSION['CommandeActionRecSend']['message'] = $PC->rcvP['message'];
-	    $_SESSION['CommandeActionRecSend']['type'] = $PC->rcvP['type'];
-	    $_SESSION['CommandeActionRecSend']['file'] = $dir . $Doc;
-
-	    if ($PC->rcvP['type'] == 'courrier') {
-		if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		    aiJeLeDroit('commande', 55);
-		} else {
-		    aiJeLeDroit('commande', 54);
-		}
-		$_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['add1'] = $r['adressedelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['add2'] = $r['adresse1delivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['cp'] = $r['cpdelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['ville'] = $r['villedelivery_cmd'];
-		$_SESSION['CommandeActionRecSend']['code_pays'] = $r['paysdelivery_cmd'];
-	    } elseif ($PC->rcvP['type'] == 'fax') {
-		if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
-		    aiJeLeDroit('commande', 53);
-		else
-		    aiJeLeDroit('commande', 52);
-		if ($r['nomdelivery_cmd'] != '')
-		    $_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
-		else
-		    $_SESSION['CommandeActionRecSend']['nom'] = $r['civ_cont'] . ' ' . $r['prenom_cont'] . ' ' . $r['nom_cont'];
-		if ($r['fax_cont'] != '')
-		    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_cont'];
-		elseif ($r['fax_ent'] != '')
-		    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_ent'];
-		else
-		    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_achat'];
-	    }
-	    else {
-		if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
-		    aiJeLeDroit('commande', 51);
-		}
-		else
-		    aiJeLeDroit('commande', 50);
-		if ($r['maildelivery_cmd'] != '')
-		    $_SESSION['CommandeActionRecSend']['email'] = $r['maildelivery_cmd'];
-		elseif ($r['mail_cont'] != '')
-		    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_cont'];
-		else
-		    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_achat'];
-		$_SESSION['CommandeActionRecSend']['titre'] = 'STARTX : Commande n°' . $r['id_cmd'];
-	    }
-	    $in = array_merge($r, $_SESSION['CommandeActionRecSend']);
-?>
-	    <root><go to="waCommandeAction1"/>
-	        <title set="waCommandeAction1">Enregistrer et envoyer</title>
-	        <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
-	            <data><![CDATA[ <?php echo commandeView::actionRecordSend1($in); ?> ]]></data>
-	        </part>
-	    </root>
-<?php
+	$_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['add1'] = $r['adressedelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['add2'] = $r['adresse1delivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['cp'] = $r['cpdelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['ville'] = $r['villedelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['code_pays'] = $r['paysdelivery_cmd'];
+    } elseif ($PC->rcvP['type'] == 'fax') {
+	if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('commande', 53);
+	} else {
+	    aiJeLeDroit('commande', 52);
 	}
-	elseif (($PC->rcvG['action'] == 'doVoir') or
-		($PC->rcvG['action'] == 'doRec') or
-		($PC->rcvG['action'] == 'doSend') or
-		($PC->rcvG['action'] == 'doRecsend')) {
-	    if ($PC->rcvG['action'] == 'doRecsend')
-		$PC->rcvP = array_merge($_SESSION['CommandeActionRecSend'], $PC->rcvP);
-	    $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-	    $commande = $info->getDataFromID($PC->rcvG['id_cmd']);
-	    $dev = $commande[1][0];
-	    if ($PC->rcvP['document'] != NULL) {
-		$datas['data'] = $dev;
-		$datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
-		$datas['pays'] = $info->getPays();
-		$datas['user'] = $info->getUser($PC->rcvG['id_cmd']);
-		$datas['produit'] = $info->getAllFournisseursFromID($PC->rcvG['id_cmd']);
-		switch ($PC->rcvP['document']) {
-		    case 'ri':
-			$Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
-			break;
-		    case 'bdcc':
-			$Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BC');
-			break;
-		    case 'bdl':
-			$Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
-			break;
-		    default:
-			$bdd = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-			$bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
-			$datas['fournisseur'] = $bdd->process2();
-			$datas['fournisseur'] = $datas['fournisseur'][1][0];
-			$bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
-			$datas['produit'] = $bdd->process2();
-			$datas['produit'] = $datas['produit'][1];
-			$Doc = commandeGnose::CommandeGenerateBDCF($datas, $PC->rcvP['document']);
-			break;
-		}
-	    } else {
-		$datas['data'] = $dev;
-		$datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
-		$datas['pays'] = $bdd->getPays();
-		$datas['user'] = $bdd->getUser($PC->rcvP['id_cmd']);
-		$datas['produit'] = $bdd->getAllFournisseursFromID($PC->rcvP['id_cmd']);
-		foreach ($PC->rcvP as $v => $k) {
-		    if ($v != 'bdcc' && $v != 'bdl' && $v != 'ri' && $v != 'OutputExt' && $v != 'message' && $k == 'ok' && $v != NULL) {
-			$bdd = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-			$bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
-			$datas['fournisseur'] = $bdd->process2();
-			$datas['fournisseur'] = $datas['fournisseur'][1][0];
-			$bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
-			$datas['produit'] = $bdd->process2();
-			$datas['produit'] = $datas['produit'][1];
-			$Doc[] = commandeGnose::CommandeGenerateBDCF($datas, $v);
-			$mess .= $v . ', ';
-		    }
-		}
-		if ($PC->rcvP['bdcc'] == 'ok') {
-		    $Doc[] = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
-		    $mess .='BDCC, ';
-		}
-		if ($PC->rcvP['bdl'] == 'ok') {
-		    $Doc[] = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
-		    $mess .='BDL, ';
-		}
-		if ($PC->rcvP['ri'] == 'ok') {
-		    $Doc[] = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
-		    $mess .='RI, ';
-		}
+	if ($r['nomdelivery_cmd'] != '')
+	    $_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
+	else
+	    $_SESSION['CommandeActionRecSend']['nom'] = $r['civ_cont'] . ' ' . $r['prenom_cont'] . ' ' . $r['nom_cont'];
+	if ($r['fax_cont'] != '')
+	    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_cont'];
+	elseif ($r['fax_ent'] != '')
+	    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_ent'];
+	else
+	    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_achat'];
+    }
+    else {
+	if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('commande', 51);
+	} else {
+	    aiJeLeDroit('commande', 50);
+	}
+	if ($r['maildelivery_cmd'] != '')
+	    $_SESSION['CommandeActionRecSend']['email'] = $r['maildelivery_cmd'];
+	elseif ($r['mail_cont'] != '')
+	    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_cont'];
+	else
+	    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_achat'];
+	$_SESSION['CommandeActionRecSend']['titre'] = 'STARTX : Commande n°' . $r['id_cmd'];
+    }
+    $in = array_merge($r, $_SESSION['CommandeActionRecSend']);
+?>
+    <root><go to="waCommandeAction1"/>
+        <title set="waCommandeAction1">Enregistrer et envoyer</title>
+        <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
+    	<data><![CDATA[ <?php echo commandeView::actionSend1($in); ?> ]]></data>
+        </part>
+    </root>
+<?php
+}
+elseif ($PC->rcvG['action'] == 'rec') {
+    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
+    $resultF = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
+    if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	aiJeLeDroit('commande', 61);
+    } else {
+	aiJeLeDroit('commande', 60);
+    }
+?>
+    <root><go to="waCommandeAction"/>
+        <title set="waCommandeAction">Enregistrer la Commande</title>
+        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
+    	<data><![CDATA[ <?php echo commandeView::actionRecord($result[1][0], $resultF[1]); ?> ]]></data>
+        </part>
+    </root>
+<?php
+} elseif ($PC->rcvG['action'] == 'recsend') {
+    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
+    $resultF = $info->getFournisseurFromID($PC->rcvG['id_cmd']);
+    if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	aiJeLeDroit('commande', 61);
+    } else {
+	aiJeLeDroit('commande', 60);
+    }
+?>
+    <root><go to="waCommandeAction"/>
+        <title set="waCommandeAction">Enregistrer et envoyer</title>
+        <part><destination mode="replace" zone="waCommandeAction" create="true"/>
+    	<data><![CDATA[ <?php echo commandeView::actionRecordSend($result[1][0], $resultF[1]); ?> ]]></data>
+        </part>
+    </root>
+<?php
+} elseif ($PC->rcvG['action'] == 'recsend1') {
+    $result = $info->getDataFromID($PC->rcvG['id_cmd']);
+    $datas['data'] = $r = $result[1][0];
+    $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+    $datas['pays'] = $info->getPays();
+    $datas['user'] = $info->getUser($PC->rcvG['id_cmd']);
+    $datas['produit'] = $info->getAllFournisseursFromID($PC->rcvG['id_cmd']);
+    switch ($PC->rcvP['document']) {
+	case 'ri':
+	    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
+	    break;
+	case 'bdcc':
+	    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BC');
+	    break;
+	case 'bdl':
+	    $Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
+	    break;
+	default:
+	    $bdd = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+	    $bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
+	    $datas['fournisseur'] = $bdd->process2();
+	    $datas['fournisseur'] = $datas['fournisseur'][1][0];
+	    $bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
+	    $datas['produit'] = $bdd->process2();
+	    $datas['produit'] = $datas['produit'][1];
+	    $Doc = commandeGnose::CommandeGenerateBDCF($datas, $PC->rcvP['document']);
+	    break;
+    }
+    $dir = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
+
+    $_SESSION['CommandeActionRecSend']['id_cmd'] = $PC->rcvG['id_cmd'];
+    $_SESSION['CommandeActionRecSend']['Cannevas'] = $PC->rcvP['Cannevas'];
+    $_SESSION['CommandeActionRecSend']['OutputExt'] = $PC->rcvP['OutputExt'];
+    $_SESSION['CommandeActionRecSend']['message'] = $PC->rcvP['message'];
+    $_SESSION['CommandeActionRecSend']['type'] = $PC->rcvP['type'];
+    $_SESSION['CommandeActionRecSend']['file'] = $dir . $Doc;
+
+    if ($PC->rcvP['type'] == 'courrier') {
+	if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('commande', 55);
+	} else {
+	    aiJeLeDroit('commande', 54);
+	}
+	$_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['add1'] = $r['adressedelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['add2'] = $r['adresse1delivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['cp'] = $r['cpdelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['ville'] = $r['villedelivery_cmd'];
+	$_SESSION['CommandeActionRecSend']['code_pays'] = $r['paysdelivery_cmd'];
+    } elseif ($PC->rcvP['type'] == 'fax') {
+	if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
+	    aiJeLeDroit('commande', 53);
+	else
+	    aiJeLeDroit('commande', 52);
+	if ($r['nomdelivery_cmd'] != '')
+	    $_SESSION['CommandeActionRecSend']['nom'] = $r['nomdelivery_cmd'];
+	else
+	    $_SESSION['CommandeActionRecSend']['nom'] = $r['civ_cont'] . ' ' . $r['prenom_cont'] . ' ' . $r['nom_cont'];
+	if ($r['fax_cont'] != '')
+	    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_cont'];
+	elseif ($r['fax_ent'] != '')
+	    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_ent'];
+	else
+	    $_SESSION['CommandeActionRecSend']['fax'] = $r['fax_achat'];
+    }
+    else {
+	if ($result[1][0]['commercial_cmd'] != $_SESSION['user']['id']) {
+	    aiJeLeDroit('commande', 51);
+	}
+	else
+	    aiJeLeDroit('commande', 50);
+	if ($r['maildelivery_cmd'] != '')
+	    $_SESSION['CommandeActionRecSend']['email'] = $r['maildelivery_cmd'];
+	elseif ($r['mail_cont'] != '')
+	    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_cont'];
+	else
+	    $_SESSION['CommandeActionRecSend']['email'] = $r['mail_achat'];
+	$_SESSION['CommandeActionRecSend']['titre'] = 'STARTX : Commande n°' . $r['id_cmd'];
+    }
+    $in = array_merge($r, $_SESSION['CommandeActionRecSend']);
+?>
+    <root><go to="waCommandeAction1"/>
+        <title set="waCommandeAction1">Enregistrer et envoyer</title>
+        <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
+    	<data><![CDATA[ <?php echo commandeView::actionRecordSend1($in); ?> ]]></data>
+        </part>
+    </root>
+<?php
+}
+elseif (($PC->rcvG['action'] == 'doVoir') or
+	($PC->rcvG['action'] == 'doRec') or
+	($PC->rcvG['action'] == 'doSend') or
+	($PC->rcvG['action'] == 'doRecsend')) {
+    if ($PC->rcvG['action'] == 'doRecsend')
+	$PC->rcvP = array_merge($_SESSION['CommandeActionRecSend'], $PC->rcvP);
+    $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+    $commande = $info->getDataFromID($PC->rcvG['id_cmd']);
+    $dev = $commande[1][0];
+    if ($PC->rcvP['document'] != NULL) {
+	$datas['data'] = $dev;
+	$datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+	$datas['pays'] = $info->getPays();
+	$datas['user'] = $info->getUser($PC->rcvG['id_cmd']);
+	$datas['produit'] = $info->getAllFournisseursFromID($PC->rcvG['id_cmd']);
+	switch ($PC->rcvP['document']) {
+	    case 'ri':
+		$Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
+		break;
+	    case 'bdcc':
+		$Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BC');
+		break;
+	    case 'bdl':
+		$Doc = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
+		break;
+	    default:
+		$bdd = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+		$bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
+		$datas['fournisseur'] = $bdd->process2();
+		$datas['fournisseur'] = $datas['fournisseur'][1][0];
+		$bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
+		$datas['produit'] = $bdd->process2();
+		$datas['produit'] = $datas['produit'][1];
+		$Doc = commandeGnose::CommandeGenerateBDCF($datas, $PC->rcvP['document']);
+		break;
+	}
+    } else {
+	$datas['data'] = $dev;
+	$datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+	$datas['pays'] = $bdd->getPays();
+	$datas['user'] = $bdd->getUser($PC->rcvP['id_cmd']);
+	$datas['produit'] = $bdd->getAllFournisseursFromID($PC->rcvP['id_cmd']);
+	foreach ($PC->rcvP as $v => $k) {
+	    if ($v != 'bdcc' && $v != 'bdl' && $v != 'ri' && $v != 'OutputExt' && $v != 'message' && $k == 'ok' && $v != NULL) {
+		$bdd = new Bdd($GLOBALS['PropsecConf']['DBPool']);
+		$bdd->makeRequeteFree("SELECT * FROM fournisseur f LEFT JOIN entreprise e ON e.id_ent = f.entreprise_fourn LEFT JOIN contact c ON c.id_cont=f.contactComm_fourn where id_fourn = '" . $fourn . "'");
+		$datas['fournisseur'] = $bdd->process2();
+		$datas['fournisseur'] = $datas['fournisseur'][1][0];
+		$bdd->makeRequeteFree("Select * from commande_produit cp left join produit p ON p.id_prod = cp.id_produit where cp.fournisseur = '" . $fourn . "' AND cp.id_commande = '" . $PC->rcvP['id_cmd'] . "'");
+		$datas['produit'] = $bdd->process2();
+		$datas['produit'] = $datas['produit'][1];
+		$Doc[] = commandeGnose::CommandeGenerateBDCF($datas, $v);
+		$mess .= $v . ', ';
 	    }
-	    if ($PC->rcvG['action'] == 'doVoir') {
-		$dir = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
-		if ($Doc != '' and file_exists($dir . $Doc)) {
-		    $fileSize = FileConvertSize2Human(filesize($dir . $Doc));
-		    $fileIcon = FileOutputType($Doc, 'image', '../');
-		    $fileAdd = '<fieldset>
+	}
+	if ($PC->rcvP['bdcc'] == 'ok') {
+	    $Doc[] = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
+	    $mess .='BDCC, ';
+	}
+	if ($PC->rcvP['bdl'] == 'ok') {
+	    $Doc[] = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'BDL');
+	    $mess .='BDL, ';
+	}
+	if ($PC->rcvP['ri'] == 'ok') {
+	    $Doc[] = commandeGnose::CommandeGenerateBDC($datas, 'pdf', 'RI');
+	    $mess .='RI, ';
+	}
+    }
+    if ($PC->rcvG['action'] == 'doVoir') {
+	$dir = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
+	if ($Doc != '' and file_exists($dir . $Doc)) {
+	    $fileSize = FileConvertSize2Human(filesize($dir . $Doc));
+	    $fileIcon = FileOutputType($Doc, 'image', '../');
+	    $fileAdd = '<fieldset>
 						<ul><li><a target="_blank" href="File.php?type=view&amp;file=' . $GLOBALS['REP']['tmp'] . $Doc . '">' . $fileIcon . $Doc . ' (' . $fileSize . ')</a></li></ul>
 					</fieldset>';
-		}
-?>
-		<root>
-		    <part><destination mode="append" zone="formCommandeDoVoirResponse"/>
-		        <data><![CDATA[ <?php echo $fileAdd; ?> ]]></data>
-		    </part>
-		</root>
-<?php
-	    }
-	    if (($PC->rcvG['action'] == 'doRec') or ($PC->rcvG['action'] == 'doRecsend')) {
-		if (trim($PC->rcvP['message']) == "")
-		    $PC->rcvP['message'] = "Enregistrement des documents relatifs à la commande " . $dev['id_cmd'];
-		if ($PC->rcvG['action'] == 'doRecsend')
-		    $Doc[] = substr($PC->rcvP['file'], strlen($GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp']), strlen($PC->rcvP['file']));
-		$save = commandeGnose::CommandeSaveDocInGnose($Doc, $dev, $PC->rcvP['message']);
-
-		$actuDesc = 'Les documents' . substr($mess, 0, -2) . ' de la commande ' . $dev['id_cmd'] . ' vient d\'être re-enregistrée. Elle a une valeur de ' . formatCurencyDisplay($dev['sommeHT_cmd']) . ' HT. Commentaire de l\'enregistrement : ' . $PC->rcvP['message'];
-		if (is_array($Doc) and count($Doc) > 1)
-		    $actuDesc = 'Les documents ' . substr($mess, 0, -2) . ' de la commande ' . $dev['id_cmd'] . ' ont été généré. Ils sont disponibles dans le disque Dur Virtuel. Commentaire de l\'enregistrement : ' . $PC->rcvP['message'];
-		else
-		    $actuDesc = 'Le document ' . substr($mess, 0, -2) . ' de la commande ' . $dev['id_cmd'] . ' vient d\'être généré. Il est disponible dans le disque Dur Virtuel. Commentaire de l\'enregistrement : ' . $PC->rcvP['message'];
-
-		if ($dev['status_aff'] < 8) {
-		    $bddtmp->makeRequeteUpdate('affaire', 'id_aff', $dev['id_aff'], array('status_aff' => '8'));
-		    $bddtmp->process();
-		}
-		if ($dev['status_cmd'] < 3) {
-		    $bddtmp->makeRequeteUpdate('commande', 'id_cmd', $dev['id_cmd'], array('status_cmd' => '3'));
-		    $bddtmp->process();
-		}
-		$info->addActualite($dev['id_cmd'], 'record', $actuDesc, '', '', false);
-
-		if ($PC->rcvG['action'] == 'doRec') {
-?>
-		    <root><go to="waCommandeAction"/>
-		        <part><destination mode="replace" zone="waCommandeAction"/>
-		            <data><![CDATA[ <div class="msg">Votre document est maintenant enregistré dans le module ZunoGed.</div> ]]></data>
-		        </part>
-		    </root>
-<?php
-		}
-	    }
-	    if (($PC->rcvG['action'] == 'doRecsend') or ($PC->rcvG['action'] == 'doSend')) {
-		if ($PC->rcvG['action'] == 'doRecsend')
-		    $PC->rcvP = array_merge($_SESSION['CommandeActionRecSend'], $PC->rcvP);
-
-		if ($PC->rcvP['type'] == 'courrier')
-		    $control = sendControl::sendCourrier($PC->rcvP);
-		elseif ($PC->rcvP['type'] == 'fax')
-		    $control = sendControl::sendFax($PC->rcvP);
-		else
-		    $control = sendControl::sendMail($PC->rcvP);
-
-		if ($control[0]) {
-		    $actuPrefix = ($dev['status_cmd'] >= 3) ? 'Re-e' : 'E';
-		    $PC->rcvP['dir_aff'] = $dev['dir_aff'];
-		    $PC->rcvP['partie'] = "devis";
-		    $PC->rcvP['typeE'] = $PC->rcvP['type'];
-		    $PC->rcvP['cc'] = $PC->rcvP['emailcc'];
-		    $PC->rcvP['mail'] = $PC->rcvP['email'];
-		    $PC->rcvP['from'] = $_SESSION['user']['mail'];
-		    $PC->rcvP['expediteur'] = $_SESSION['user']['fullnom'];
-		    $PC->rcvP['destinataire'] = $PC->rcvP['nom'];
-		    $PC->rcvP['fichier'] = substr($PC->rcvP['file'], strripos($PC->rcvP['file'], "/") + 1);
-		    $PC->rcvP['id'] = $_SESSION['CommandeActionRecSend']['id_cmd'];
-		    $PC->rcvP['channel'] = 'iphone';
-		    $PC->rcvP['sujet'] = $PC->rcvP['titre'];
-		    $send = new Sender($PC->rcvP);
-		    $result = $send->send($_SESSION['user']['mail']);
-		    $dest = ($PC->rcvP['destinataire'] == '') ? $PC->rcvP['mail'] : $PC->rcvP['destinataire'];
-		    if ($result[0]) {
-			if ($dev['status_aff'] < 9) {
-			    $bddtmp->makeRequeteUpdate('affaire', 'id_aff', $dev['id_aff'], array('status_aff' => '9'));
-			    $bddtmp->process();
-			}
-			if ($dev['status_cmd'] < 4) {
-			    $bddtmp->makeRequeteUpdate('commande', 'id_cmd', $dev['id_cmd'], array('status_cmd' => '4'));
-			    $bddtmp->process();
-			}
-			$actuDesc = 'La commande ' . $dev['id_cmd'] . ' vient d\'être ' . strtolower($actuPrefix) . 'nvoyée par ' . $PC->rcvP['type'] . ' à ' . $dest;
-			$info->addActualite($dev['id_cmd'], 'send', $actuDesc);
-?>
-			<root><go to="waCommandeAction"/>
-			    <part><destination mode="replace" zone="waCommandeAction"/>
-			        <data><![CDATA[ <div class="msg">Votre document vient d'être envoyé par <?php echo $PC->rcvP['type']; ?>. </div> ]]></data>
-			    </part>
-			</root>
-<?php
-			unset($_SESSION['CommandeActionRecSend']);
-		    } else {
- ?><root><go to="waCommandeAction1"/>
-			    <title set="waCommandeAction1">Erreur de <?php echo $PC->rcvP['type']; ?></title>
-			    <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
-			        <data><![CDATA[ <?php echo commandeView::actionRecordSend1($PC->rcvP, array(), $result[1]); ?> ]]></data>
-			    </part>
-			</root>
-<?php
-		    }
-		} else {
- ?>
-		    <root><go to="waCommandeAction1"/>
-		        <title set="waCommandeAction1">Envoi de <?php echo $PC->rcvP['type']; ?></title>
-		        <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
-		            <data><![CDATA[ <?php echo commandeView::actionRecordSend1($PC->rcvP, $control[2], $control[1]); ?> ]]></data>
-		        </part>
-		    </root>
-<?php
-		}
-	    }
-	} elseif ($PC->rcvG['action'] == 'valide') {
-	    $data['status_cmd'] = '6';
-	    $result = $requete->update($data, $PC->rcvG['id_cmd']);
-	    $donnee = $requete->getDataFromID($PC->rcvG['id_cmd']);
-	    if ($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
-		aiJeLeDroit('commande', 14);
-	    else
-		aiJeLeDroit('commande', 13);
-	    if ($result[0]) {
-		$inActualite = array(
-		    'type' => 'commande',
-		    'titre' => 'Commande : ' . $donnee[1][0]['id_cmd'] . ' validée',
-		    'desc' => 'La commande ' . $PC->rcvG['id_cmd'] . ' vient d\'être marquée validée.',
-		    'date' => date('y-m-d H:i:s'),
-		    'user' => $_SESSION['user']['id'],
-		    'id_ent' => $donnee[1][0]['entreprise_fact'],
-		    'id_cont' => $donnee[1][0]['contact_fact'],
-		    'id_aff' => substr($donnee[1][0]['id_cmd'], 0, 6),
-		    'id_cmd' => $donnee[1][0]['id_cmd'],
-		    'status_fact' => '5');
-		$requete->addActualite($PC->rcvG['id_cmd'], 'valid');
-?>
-		<root><go to="waCommandeFiche"/>
-		    <title set="waCommandeFiche"><?php echo $donnee[1][0]['id_cmd']; ?></title>
-		    <part><destination mode="replace" zone="waCommandeFiche" create="true"/>
-		        <data><![CDATA[ <?php echo commandeView::view($donnee[1][0]); ?> ]]></data>
-		    </part>
-		</root>
-<?php
-	    }//Tout va bien, on affiche
-	} elseif ($PC->rcvG['action'] == 'recep') {
-	    $data['status_cmd'] = '8';
-	    $result = $requete->update($data, $PC->rcvG['id_cmd']);
-	    $donnee = $requete->getDataFromID($PC->rcvG['id_cmd']);
-	    if ($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
-		aiJeLeDroit('commande', 14);
-	    else
-		aiJeLeDroit('commande', 13);
-	    if ($result[0]) {
-		$inActualite = array('isPublieForClient' => 1);
-		$requete->addActualite($PC->rcvG['id_cmd'], 'free', 'Commande : ' . $donnee[1][0]['id_cmd'] . ' réceptionnée', 'La commande ' . $PC->rcvG['id_cmd'] . ' vient d\'être réceptionnée.', '', false, $inActualite);
-		$produit = $requete->getProduitsFromCommande($dev['id_cmd']);
-		if ($produit[0]) {
-		    foreach ($produit[1] as $v) {
-			$totalProd = $v['stock_prod'] + $v['quantite'];
-			$bddtmp->makeRequeteUpdate('produit', 'id_prod', $v['id_prod'], array('stock_prod' => $totalProd));
-			$bddtmp->process();
-		    }
-		}
-?>
-		<root><go to="waCommandeFiche"/>
-		    <title set="waCommandeFiche"><?php echo $donnee[1][0]['id_cmd']; ?></title>
-		    <part><destination mode="replace" zone="waCommandeFiche" create="true"/>
-		        <data><![CDATA[ <?php echo commandeView::view($donnee[1][0]); ?> ]]></data>
-		    </part>
-		</root>
-<?php
-	    }//Tout va bien, on affiche
-	} elseif ($PC->rcvG['action'] == 'tri_montant') {
-	    viewTri('commande', 'montant', 'reset', 0, 0, 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'triMontantMore') {
-	    viewTri('commande', 'montant', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'tri_creation') {
-	    viewTri('commande', 'creation', 'reset', 0, 0, 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'triCreationMore') {
-	    viewTri('commande', 'creation', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'tri_entreprise') {
-	    viewTri('commande', 'entreprise', 'reset', 0, 0, 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'triEntrepriseMore') {
-	    viewTri('commande', 'entreprise', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'tri_contact') {
-	    viewTri('commande', 'contact', 'reset', 0, 0, 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'triContactMore') {
-	    viewTri('commande', 'contact', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
-	} elseif ($PC->rcvG['action'] == 'voirStats') {
-	    aiJeLeDroit('commande', 45);
-	    $datas = getStats('commande', 'oui');
-	    placementAffichage('Statistiques', "waStatsCommande", 'commandeView::afficherStats', array($datas), '', 'replace');
 	}
-	ob_end_flush();
+?>
+	<root>
+	    <part><destination mode="append" zone="formCommandeDoVoirResponse"/>
+		<data><![CDATA[ <?php echo $fileAdd; ?> ]]></data>
+	    </part>
+	</root>
+<?php
+    }
+    if (($PC->rcvG['action'] == 'doRec') or ($PC->rcvG['action'] == 'doRecsend')) {
+	if (trim($PC->rcvP['message']) == "")
+	    $PC->rcvP['message'] = "Enregistrement des documents relatifs à la commande " . $dev['id_cmd'];
+	if ($PC->rcvG['action'] == 'doRecsend')
+	    $Doc[] = substr($PC->rcvP['file'], strlen($GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp']), strlen($PC->rcvP['file']));
+	$save = commandeGnose::CommandeSaveDocInGnose($Doc, $dev, $PC->rcvP['message']);
+
+	$actuDesc = 'Les documents' . substr($mess, 0, -2) . ' de la commande ' . $dev['id_cmd'] . ' vient d\'être re-enregistrée. Elle a une valeur de ' . formatCurencyDisplay($dev['sommeHT_cmd']) . ' HT. Commentaire de l\'enregistrement : ' . $PC->rcvP['message'];
+	if (is_array($Doc) and count($Doc) > 1)
+	    $actuDesc = 'Les documents ' . substr($mess, 0, -2) . ' de la commande ' . $dev['id_cmd'] . ' ont été généré. Ils sont disponibles dans le disque Dur Virtuel. Commentaire de l\'enregistrement : ' . $PC->rcvP['message'];
+	else
+	    $actuDesc = 'Le document ' . substr($mess, 0, -2) . ' de la commande ' . $dev['id_cmd'] . ' vient d\'être généré. Il est disponible dans le disque Dur Virtuel. Commentaire de l\'enregistrement : ' . $PC->rcvP['message'];
+
+	if ($dev['status_aff'] < 8) {
+	    $bddtmp->makeRequeteUpdate('affaire', 'id_aff', $dev['id_aff'], array('status_aff' => '8'));
+	    $bddtmp->process();
+	}
+	if ($dev['status_cmd'] < 3) {
+	    $bddtmp->makeRequeteUpdate('commande', 'id_cmd', $dev['id_cmd'], array('status_cmd' => '3'));
+	    $bddtmp->process();
+	}
+	$info->addActualite($dev['id_cmd'], 'record', $actuDesc, '', '', false);
+
+	if ($PC->rcvG['action'] == 'doRec') {
+?>
+	    <root><go to="waCommandeAction"/>
+	        <part><destination mode="replace" zone="waCommandeAction"/>
+	    	<data><![CDATA[ <div class="msg">Votre document est maintenant enregistré dans le module ZunoGed.</div> ]]></data>
+	        </part>
+	    </root>
+<?php
+	}
+    }
+    if (($PC->rcvG['action'] == 'doRecsend') or ($PC->rcvG['action'] == 'doSend')) {
+	if ($PC->rcvG['action'] == 'doRecsend')
+	    $PC->rcvP = array_merge($_SESSION['CommandeActionRecSend'], $PC->rcvP);
+
+	if ($PC->rcvP['type'] == 'courrier')
+	    $control = sendControl::sendCourrier($PC->rcvP);
+	elseif ($PC->rcvP['type'] == 'fax')
+	    $control = sendControl::sendFax($PC->rcvP);
+	else
+	    $control = sendControl::sendMail($PC->rcvP);
+
+	if ($control[0]) {
+	    $actuPrefix = ($dev['status_cmd'] >= 3) ? 'Re-e' : 'E';
+	    $PC->rcvP['dir_aff'] = $dev['dir_aff'];
+	    $PC->rcvP['partie'] = "devis";
+	    $PC->rcvP['typeE'] = $PC->rcvP['type'];
+	    $PC->rcvP['cc'] = $PC->rcvP['emailcc'];
+	    $PC->rcvP['mail'] = $PC->rcvP['email'];
+	    $PC->rcvP['from'] = $_SESSION['user']['mail'];
+	    $PC->rcvP['expediteur'] = $_SESSION['user']['fullnom'];
+	    $PC->rcvP['destinataire'] = $PC->rcvP['nom'];
+	    $PC->rcvP['fichier'] = substr($PC->rcvP['file'], strripos($PC->rcvP['file'], "/") + 1);
+	    $PC->rcvP['id'] = $_SESSION['CommandeActionRecSend']['id_cmd'];
+	    $PC->rcvP['channel'] = 'iphone';
+	    $PC->rcvP['sujet'] = $PC->rcvP['titre'];
+	    $send = new Sender($PC->rcvP);
+	    $result = $send->send($_SESSION['user']['mail']);
+	    $dest = ($PC->rcvP['destinataire'] == '') ? $PC->rcvP['mail'] : $PC->rcvP['destinataire'];
+	    if ($result[0]) {
+		if ($dev['status_aff'] < 9) {
+		    $bddtmp->makeRequeteUpdate('affaire', 'id_aff', $dev['id_aff'], array('status_aff' => '9'));
+		    $bddtmp->process();
+		}
+		if ($dev['status_cmd'] < 4) {
+		    $bddtmp->makeRequeteUpdate('commande', 'id_cmd', $dev['id_cmd'], array('status_cmd' => '4'));
+		    $bddtmp->process();
+		}
+		$actuDesc = 'La commande ' . $dev['id_cmd'] . ' vient d\'être ' . strtolower($actuPrefix) . 'nvoyée par ' . $PC->rcvP['type'] . ' à ' . $dest;
+		$info->addActualite($dev['id_cmd'], 'send', $actuDesc);
+?>
+		<root><go to="waCommandeAction"/>
+		    <part><destination mode="replace" zone="waCommandeAction"/>
+			<data><![CDATA[ <div class="msg">Votre document vient d'être envoyé par <?php echo $PC->rcvP['type']; ?>. </div> ]]></data>
+		    </part>
+		</root>
+<?php
+		unset($_SESSION['CommandeActionRecSend']);
+	    } else {
+?><root><go to="waCommandeAction1"/>
+		    <title set="waCommandeAction1">Erreur de <?php echo $PC->rcvP['type']; ?></title>
+		    <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
+			<data><![CDATA[ <?php echo commandeView::actionRecordSend1($PC->rcvP, array(), $result[1]); ?> ]]></data>
+		    </part>
+		</root>
+<?php
+	    }
+	} else {
+?>
+	    <root><go to="waCommandeAction1"/>
+	        <title set="waCommandeAction1">Envoi de <?php echo $PC->rcvP['type']; ?></title>
+	        <part><destination mode="replace" zone="waCommandeAction1" create="true"/>
+	    	<data><![CDATA[ <?php echo commandeView::actionRecordSend1($PC->rcvP, $control[2], $control[1]); ?> ]]></data>
+	        </part>
+	    </root>
+<?php
+	}
+    }
+} elseif ($PC->rcvG['action'] == 'valide') {
+    $data['status_cmd'] = '6';
+    $result = $requete->update($data, $PC->rcvG['id_cmd']);
+    $donnee = $requete->getDataFromID($PC->rcvG['id_cmd']);
+    if ($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
+	aiJeLeDroit('commande', 14);
+    else
+	aiJeLeDroit('commande', 13);
+    if ($result[0]) {
+	$inActualite = array(
+	    'type' => 'commande',
+	    'titre' => 'Commande : ' . $donnee[1][0]['id_cmd'] . ' validée',
+	    'desc' => 'La commande ' . $PC->rcvG['id_cmd'] . ' vient d\'être marquée validée.',
+	    'date' => date('y-m-d H:i:s'),
+	    'user' => $_SESSION['user']['id'],
+	    'id_ent' => $donnee[1][0]['entreprise_fact'],
+	    'id_cont' => $donnee[1][0]['contact_fact'],
+	    'id_aff' => substr($donnee[1][0]['id_cmd'], 0, 6),
+	    'id_cmd' => $donnee[1][0]['id_cmd'],
+	    'status_fact' => '5');
+	$requete->addActualite($PC->rcvG['id_cmd'], 'valid');
+?>
+	<root><go to="waCommandeFiche"/>
+	    <title set="waCommandeFiche"><?php echo $donnee[1][0]['id_cmd']; ?></title>
+	    <part><destination mode="replace" zone="waCommandeFiche" create="true"/>
+		<data><![CDATA[ <?php echo commandeView::view($donnee[1][0]); ?> ]]></data>
+	    </part>
+	</root>
+<?php
+    }//Tout va bien, on affiche
+} elseif ($PC->rcvG['action'] == 'recep') {
+    $data['status_cmd'] = '8';
+    $result = $requete->update($data, $PC->rcvG['id_cmd']);
+    $donnee = $requete->getDataFromID($PC->rcvG['id_cmd']);
+    if ($donnee[1][0]['commercial_cmd'] != $_SESSION['user']['id'])
+	aiJeLeDroit('commande', 14);
+    else
+	aiJeLeDroit('commande', 13);
+    if ($result[0]) {
+	$inActualite = array('isPublieForClient' => 1);
+	$requete->addActualite($PC->rcvG['id_cmd'], 'free', 'Commande : ' . $donnee[1][0]['id_cmd'] . ' réceptionnée', 'La commande ' . $PC->rcvG['id_cmd'] . ' vient d\'être réceptionnée.', '', false, $inActualite);
+	$produit = $requete->getProduitsFromCommande($dev['id_cmd']);
+	if ($produit[0]) {
+	    foreach ($produit[1] as $v) {
+		$totalProd = $v['stock_prod'] + $v['quantite'];
+		$bddtmp->makeRequeteUpdate('produit', 'id_prod', $v['id_prod'], array('stock_prod' => $totalProd));
+		$bddtmp->process();
+	    }
+	}
+?>
+	<root><go to="waCommandeFiche"/>
+	    <title set="waCommandeFiche"><?php echo $donnee[1][0]['id_cmd']; ?></title>
+	    <part><destination mode="replace" zone="waCommandeFiche" create="true"/>
+		<data><![CDATA[ <?php echo commandeView::view($donnee[1][0]); ?> ]]></data>
+	    </part>
+	</root>
+<?php
+    }//Tout va bien, on affiche
+} elseif ($PC->rcvG['action'] == 'tri_montant') {
+    viewTri('commande', 'montant', 'reset', 0, 0, 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'triMontantMore') {
+    viewTri('commande', 'montant', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'tri_creation') {
+    viewTri('commande', 'creation', 'reset', 0, 0, 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'triCreationMore') {
+    viewTri('commande', 'creation', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'tri_entreprise') {
+    viewTri('commande', 'entreprise', 'reset', 0, 0, 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'triEntrepriseMore') {
+    viewTri('commande', 'entreprise', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'tri_contact') {
+    viewTri('commande', 'contact', 'reset', 0, 0, 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'triContactMore') {
+    viewTri('commande', 'contact', 'suite', $PC->rcvG['from'], $PC->rcvG['total'], 'iphone', true);
+} elseif ($PC->rcvG['action'] == 'voirStats') {
+    aiJeLeDroit('commande', 45);
+    $datas = getStats('commande', 'oui');
+    placementAffichage('Statistiques', "waStatsCommande", 'commandeView::afficherStats', array($datas), '', 'replace');
+}
+ob_end_flush();
 ?>

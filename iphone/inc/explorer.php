@@ -1,5 +1,12 @@
 <?php
-header('Content-Type: text/html; charset=utf-8');/*Encodage*/
+include ('../../inc/conf.inc');
+include ('../../inc/core.inc');
+$GLOBALS['LOG']['DisplayDebug'] =
+$GLOBALS['LOG']['DisplayError'] = false;
+include_once ('../lib/Debug.inc.php');
+include_once ('../lib/ZunoLayerGeneral.inc.php');
+include_once ('../lib/HtmlElement.inc.php');
+include_once ('../V/GeneralView.inc.php');
 
 /*
 Programme par : kiki67100
@@ -7,11 +14,6 @@ le mardi 27 novembre 2007
 
 Navigateur de fichier permet de crée , supprimmer , lister les fichier présent sur un serveur
 */
-
-if(!@include('fonction.php')){
-echo '<div style="position:absolute; top:45%; left:40%; color:red;">Impossible d\'inclure fonction.php ...</div>';
-exit;
-}
 
 $DEFAULT=$_SERVER['DOCUMENT_ROOT']; /*Default redirection quand le script commence*/
 $IMGFOLDER='img/file.png'; /*L'icon pour le dossier*/
@@ -112,10 +114,9 @@ if(file_exists($_GET['pathren'].'/'.$_GET['en']))
 }
 
 
-
-if(isset($_GET['download'])&&!empty($_GET['download'])&&file_exists($_GET['download'])&&is_file($_GET['download']))/*Telecharge un fichier*/
+if(isset($_GET['download'])&&!empty($_GET['download'])&&file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].urldecode($_GET['download']))&&is_file($GLOBALS['SVN_Pool1']['WorkCopy'].urldecode($_GET['download'])))/*Telecharge un fichier*/
 {
-  download($_GET['download']);/*....*/
+  download($GLOBALS['SVN_Pool1']['WorkCopy'].urldecode($_GET['download']));/*....*/
 }
 
 if(isset($_GET['delete'])&&!empty($_GET['delete'])&&file_exists($_GET['delete'])&&is_file($_GET['delete']))/*Supprimé un fichier ...*/

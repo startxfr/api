@@ -216,13 +216,9 @@ elseif (($PC->rcvP['action'] == "Voir") or ($PC->rcvP['action'] == "Record") or 
     }
     if (($PC->rcvP['action'] == 'Record')or($PC->rcvP['action'] == 'RecordSend')) {
 	aiJeLeDroit($type, 60, 'web');
-	$PC->rcvP['MessageRecord'] = "Changement de la '.$type.' ".$id_fact." par ".$_SESSION['user']['id'];
-
 	$dev = $model->getDataFromID($id_fact);
 	$dev = $dev[1][0];
-
-	$save = $gnose->FactureSaveDocInGnose($Doc,$PC->rcvP['id_fact'],$PC->rcvP['MessageRecord']);
-
+	$save = $gnose->FactureSaveDocInGnose($Doc,$PC->rcvP['id_fact']);
 
 	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	if($dev['status_aff'] < 13 and $type == 'facture') {
@@ -347,9 +343,9 @@ elseif($PC->rcvP['action'] == "addFactFromCmd") {
 }
 elseif($PC->rcvP['action'] == "Zieuter") {
     aiJeLeDroit('facture', 62, 'web');
-    $Doc = 'Facture.'.$PC->rcvP["id_fact"].'.'.$PC->rcvP['format'];
+    $datas = $model->getDataFromID($PC->rcvP['id_fact']);
+    $Doc = $datas[1][0]['type_fact'].'.'.$model->getFormatedIdFromData($datas[1][0]).'.'.$PC->rcvP['format'];
     PushFileToBrowser($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$Doc, $Doc);
-
 }
 elseif ($PC->rcvG['action'] == 'VoirFact') {
     $PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
@@ -472,9 +468,9 @@ elseif($PC->rcvP['action'] == 'payerCB') {
 	$f = $model->getDataFromID($PC->rcvP['id_fact']);
 	loadPlugin(array('docGenerator'));
 
-	foreach ($a = docGeneratorGetZunoConfInfo() as $in => $out) {
+	foreach ($a = docGeneratorGetZunoConfInfo() as $in => $outZ) {
 	    $cleanFrom[] = "{".$in."}";
-	    $cleanTo[] = $out;
+	    $cleanTo[] = $outZ;
 	}
 	$cleanFrom[] = "{civ_cont}";
 	$cleanTo[] = $PC->rcvP['civ_cont'];

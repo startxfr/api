@@ -341,8 +341,15 @@ class factureView {
 	$sqlConn->makeRequeteFree("select count(id) as C FROM actualite WHERE id_fact = '".$value['id_fact']."'");
 	$temp = $sqlConn->process2();
 	$totalActu = $temp[1][0]['C'];
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$value['file_fact']) && $value['file_fact'] != null)
-	    $outLi   .= "<li><a href=\"../facturier/Facture.php?id_fact=".$value['id_fact']."&action=VoirFact\" target=\"_blank\">".imageTag('../img/prospec/facture.pdf.png','PDF').' '.$value['file_fact']."</a></li>";
+	$info = new factureModel();
+	$factDir= $GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
+	$fileName = $value['type_fact'].'.'.$info->getFormatedIdFromData($value);
+	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.pdf') )
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$factDir . $fileName . ".pdf\" target=\"_blank\">" . imageTag('../img/files/pdf.png', 'version PDF') . ' ' . $fileName . ".pdf</a></li>";
+	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.odt') )
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$factDir . $fileName . ".odt\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version ODT') . ' ' . $fileName . ".odt</a></li>";
+	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.doc') )
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$factDir . $fileName . ".doc\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version DOC') . ' ' . $fileName . ".doc</a></li>";
 
 	//Récupération des données
 	$out = '<li><a rev="async" href="Actualite.php?action=viewFacture&amp;id_fact='.$value['id_fact'].'"><img src="Img/actualite.png"/> '.$totalActu.' Actualités</a></li>'.$outLi;
@@ -975,7 +982,7 @@ class factureView {
     static function actionSend($value = array(), $type = 'Facture') {
 	foreach ($GLOBALS['ZunoFacture'] as $key => $val) {
 	    $k = explode('.',$key,2);
-	    if ($k[0] == 'cannevas')
+	    if ($k[0] == 'cannevas' and $k[1] != 'exportTableur')
 		$toto[$key] = $key;
 	}
 	$availableConvFormat = OOConverterAvailable('document');
@@ -1044,7 +1051,7 @@ class factureView {
     static function actionRecordSend($value = array(), $type = 'Facture') {
 	foreach ($GLOBALS['ZunoFacture'] as $key => $val) {
 	    $k = explode('.',$key,2);
-	    if ($k[0] == 'cannevas')
+	    if ($k[0] == 'cannevas' and $k[1] != 'exportTableur')
 		$toto[$key] = $key;
 	}
 	$availableConvFormat = OOConverterAvailable('document');
