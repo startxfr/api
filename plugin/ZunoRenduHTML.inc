@@ -10,6 +10,7 @@
 class ZunoRenduHtml {
     private $listeBox;
     private $js;
+    private $jsTop;
     private $grandID;
     private $rendu;
 
@@ -28,6 +29,8 @@ class ZunoRenduHtml {
      */
     public function generateRendu() {
 	$this->rendu = '<div id="error"></div>';
+	if($this->getTopJS() != '')
+	    $this->rendu .= $this->getTopJS();
 	if($this->grandID != '')
 	    $this->rendu .= '<div id="'.$this->grandID.'">';
 	if(is_array($this->listeBox))
@@ -35,7 +38,7 @@ class ZunoRenduHtml {
 		$this->rendu .= $v;
 	if($this->grandID != '')
 	    $this->rendu .= '</div>';
-	$this->rendu .= $this->js;
+	$this->rendu .= $this->getJS();
 	return $this->rendu;
     }
 
@@ -61,6 +64,14 @@ class ZunoRenduHtml {
     }
 
     /**
+     * Méthode qui retourne le contenu du Javascript
+     * @return string Le code Javascript
+     */
+    public function getTopJS() {
+	return $this->jsTop;
+    }
+
+    /**
      * Méthode replaceJS permet d'initialiser le javascript
      * @param string $javascript Le javascript à mettre
      */
@@ -83,6 +94,33 @@ class ZunoRenduHtml {
 		$javascript = '<script>'.$javascript.'</script>';
 	    }
 	    $this->js = $javascript;
+	}
+    }
+
+    /**
+     * Méthode insertTopJS permet de rajouter du javascript sans supprimer le code déjà inséré
+     * @param string $javascript Le javascript à rajouter
+     */
+    public function insertTopJS($javascript) {
+	if($this->jsTop == '')
+	    $this->jsTop = $javascript;
+	else {
+	    $debut = strpos($javascript, '<script>');
+	    $fin = strpos($javascript, '</script>');
+	    if($debut ===false and  $fin === false)
+		$this->jsTop = substr($this->jsTop,0,strlen($this->jsTop)-9)."\n".$javascript.'</script>';
+	    else {
+		while($debut !== false) {
+		    $javascript = substr($javascript, 0, $debut).substr($javascript,$debut+8);
+		    $debut = strpos($javascript, '<script>');
+		}
+		$fin = strpos($javascript, '</script>');
+		while($fin !== false) {
+		    $javascript = substr($javascript, 0, $fin).substr($javascript,$fin+9);
+		    $fin = strpos($javascript, '</script>');
+		}
+		$this->jsTop = substr($this->jsTop,0,strlen($this->jsTop)-9)."\n".$javascript.'</script>';
+	    }
 	}
     }
 
@@ -802,13 +840,11 @@ class ZunoFieldset {
 	if ($name != '') {
 	    $chaine = '<textarea ';
 	    // Textarea field name
-	    if ($name != '') {
+	    if ($name != '')
 		$chaine .=  'name="'.$name.'" ';
-	    }
 	    // Textarea CSS class
-	    if ($class != '') {
+	    if ($class != '')
 		$chaine .=  'class="'.$class.'" ';
-	    }
 	    // Textarea field length
 	    if ($cols != '')
 		$chaine .=   'cols="'.$cols.'" ';
@@ -818,23 +854,18 @@ class ZunoFieldset {
 		$chaine .=   'rows="'.$rows.'" ';
 	    else $chaine .=   'rows="'.$GLOBALS['HTML']['textarea_row'].'" ';
 	    // Input entered data size limitation
-	    if (is_numeric($max)) {
+	    if (is_numeric($max))
 		$chaine .=   'maxlength="'.$max.'" ';
-	    }
 	    // Ad other element into the tag
-	    if ($autre != '') {
+	    if ($autre != '')
 		$chaine .=  $autre." ";
-	    }
 	    $chaine .=  ">";
 	    // Textarea field value
-	    if ($text != '') {
+	    if ($text != '')
 		$chaine .=  $text;
-	    }
 	    $chaine .= '</textarea>';
 	}
-	else {
-	    error ('HTML:TAG_GENERATOR:TEXTAREA:no_tag_name',FALSE);
-	}
+	else error('HTML:TAG_GENERATOR:TEXTAREA:no_tag_name',FALSE);
 	return "\n".$chaine."\n";
     }
 
@@ -913,6 +944,7 @@ class ZunoForm {
     private $nom;
     private $action;
     private $method;
+    private $enctype;
     private $listeBlock;
     private $lastBlock;
     private $form;
@@ -926,11 +958,12 @@ class ZunoForm {
      * @param string $action	La page php à appeller lorsque le formulaire est envoyé
      * @param string $method	La méthode d'envoi du formulaire
      */
-    public function __construct($nom, $action="#", $method = "POST", $id = "") {
+    public function __construct($nom, $action="#", $method = "POST", $id = "", $enctype = false) {
 	$this->id = $id;
 	$this->nom = $nom;
 	$this->action = $action;
 	$this->method = $method;
+	$this->setEnctype($enctype);
 	$this->retour = 'id'.$nom.'formAutoRetour';
 	$this->pied = '';
 	$this->droit = true;
@@ -942,13 +975,21 @@ class ZunoForm {
     public function setDroit($value = true) {
 	$this->droit = $value;
     }
+    /**
+     * Méthode qui change la valeur de droit par défault à true
+     * @param bool $value Vrai pour vérifier les droits
+     */
+    public function setEnctype($value = false) {
+	$this->enctype = $value;
+    }
 
     /**
      * Méthode generateForm qui génère le formulaire
      * @return string Le formulaire généré
      */
     public function generateForm() {
-	if($this->id != '') $addId = ' id="'.$this->id.'"';
+	if($this->id != '') $addId  = ' id="'.$this->id.'"';
+	if($this->enctype)  $addId .= ' enctype="multipart/form-data"';
 	$this->form = '<form name="'.$this->nom.'" action="'.$this->action.'" method="'.$this->method.'"'.$addId.'>';
 	if(is_array($this->listeInputsHidden))
 	    foreach($this->listeInputsHidden as $v) {
