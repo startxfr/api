@@ -831,11 +831,19 @@ class devisModel extends GeneralModel {
      * @return int Le nombre de devis à renouveller
      */
     public function getTotalDevisToRenew() {
-	$this->makeRequeteFree("SELECT COUNT(*) AS counter FROM devis
-						  LEFT JOIN entreprise ON entreprise_dev = id_ent ,
+	$this->makeRequeteFree("SELECT COUNT(*) AS counter 
+						  FROM devis
+						  LEFT JOIN entreprise ON entreprise.id_ent = devis.entreprise_dev
+						  LEFT JOIN ref_typeentreprise te ON te.id_tyent = entreprise.type_ent
+						  LEFT JOIN contact c2 ON c2.id_cont = devis.contact_achat_dev
+						  LEFT JOIN contact c1 ON c1.id_cont = devis.contact_dev
+						  LEFT JOIN affaire ON affaire.id_aff = devis.affaire_dev
+						  LEFT JOIN ref_statusdevis rsd ON rsd.id_stdev = devis.status_dev
+						  LEFT JOIN ref_pays rfp ON rfp.id_pays = devis.paysdelivery_dev
+						  LEFT JOIN user ON user.login = devis.commercial_dev ,
 						  devis_renew
 						  LEFT JOIN ref_renewperiode ON ref_renewperiode.id_refrnw = devis_renew.cyclerenew
-						  WHERE  AND id_dev = id_devis");
+						  WHERE devis.id_dev = devis_renew.id_devis");
 	$r = $this->process2();
 	if($r[0])	return $r[1][0]['counter'];
 	else 		return 0;

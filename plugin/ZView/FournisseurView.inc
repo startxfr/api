@@ -30,7 +30,7 @@ class FournisseurView extends generalView {
 	$this->resultats = new ZunoTableau();
 	$this->listeProd = new ZunoTableau();
 	$this->script = '<script type="text/javascript">';
-	$this->script .= 'function autoCompletage() {var ent = 1;} ';
+	$this->script .= 'ent = 1; ';
 	$this->script .= "function ChangeFournisseurResultPage(limit,from) {
 					ChangeAction('searchFournisseur');
 					ChangeLimit(limit);
@@ -118,7 +118,7 @@ class FournisseurView extends generalView {
 	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeFournisseurResultPage",'../');
 	    $rendu->generateZBox($titreF,$titreF, $form->generateForm(), $form->generateButtons('listeResultFournisseur', 'Annuler', 'Rechercher'), 'divSerachFourn', 'open');
 	    $rendu->generateZBox($titreR, $titreR, $this->resultats->generateTableau(), $bouton, 'searchListeFournisseur', 'open', true,'listeResultFournisseur');
-	    $rendu->insertJS("<script>function autoCompletage() { var ent = 1;} </script><script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchFourn', 'produit/FournisseurListe.php','listeResultFournisseur'); return false;}, false);</script>".$this->script);
+	    $rendu->insertJS("<script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchFourn', 'produit/FournisseurListe.php','listeResultFournisseur'); return false;}, false);</script>".$this->script);
 	    return $rendu->generateRendu();
 	}
     }
@@ -232,7 +232,7 @@ class FournisseurView extends generalView {
                 $(\'NOM\').value = json.datas.nomEntreprise;
                 $(\'CP\').value = json.datas.cpEntreprise;
  		} );}';
-	$this->script .= 'function autoCompletage() {var ent = 1;} ';
+	$this->script .= 'ent = 1; ';
 	$this->script .= '</script>';
 	return $this->vueCreation($datas);
     }

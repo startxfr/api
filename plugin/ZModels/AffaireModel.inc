@@ -246,6 +246,25 @@ class affaireModel extends GeneralModel {
 	return array($nbaff[1][0], $nbdev[1][0], $nbcmd[1][0], $nbfact[1][0]);
     }
 
+
+
+    public function getAffaireDirectoryPathById($id_aff,$absPath=true) {
+	$Aff= $this->getDataFromID($id_aff);
+	return $this->getAffaireDirectoryPath($Aff[1][0]);
+    }
+
+    public function getAffaireDirectoryPath($data,$absPath=true) {
+	$AffDir= ($data['archived_aff'] == '1') ? $GLOBALS['SVN_Pool1']['ArchivesDir'] : $GLOBALS['SVN_Pool1']['WorkDir'];
+	$AffDir.= $GLOBALS['ZunoAffaire']['dir.affaire'].$data['dir_aff'];
+	if($absPath)
+	    $AffDir= $GLOBALS['SVN_Pool1']['WorkCopy'].$AffDir;
+	return $AffDir;
+    }
+
+    public function isAffaireDirectoryFileExist($data,$fileName) {
+	return is_file($this->getAffaireDirectoryPath($data).$fileName);
+    }
+
     /**
      * Méthode qui donne la médiane des infos d'une colonne d'une table
      * Ceci est une méthode très générique
@@ -799,8 +818,7 @@ class affaireModel extends GeneralModel {
 	    $bddtmp->addActualite($id_aff, 'delete');
 
 	    if ($deleteGnose) {
-		//On créer le projet dans l'entrepot gnose
-		$uri   = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
+		$uri   = $this->getAffaireDirectoryPath($aff);
 		$CmdBase = "svn rm --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." ";
 		if ($GLOBALS['LOG']['DisplayDebug']) {
 		    $GLOBALS['LogSVNProcess'][] = $CmdBase.$uri;
@@ -836,8 +854,8 @@ class affaireModel extends GeneralModel {
 	    $bddtmp->addActualite($id_aff, 'archive', 'L\'affaire '.$id_aff.' est maintenant archivée. Cette affaire ne peut plus être modifiée. Les documents sont dorénavant consultables dans le répertoire '.$aff['dir_aff'].' des affaires archivés.', 'changement par lot', '',false);
 
 	    if ($moveGnose) {
-		$uri   = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
-		$uriTo = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['ArchivesDir'].$GLOBALS['ZunoAffaire']['dir.archives'].$aff['dir_aff'];
+		$uri   = $bddtmp->getAffaireDirectoryPath($aff);
+		$uriTo   = $bddtmp->getAffaireDirectoryPath(array_merge($aff,array('archived_aff' => '1')));
 		$CmdBase = "svn mv --config-dir ".$GLOBALS['REP']['appli'].$GLOBALS['SVN_Pool1']['ConfigDir']." ";
 		if ($GLOBALS['LOG']['DisplayDebug']) {
 		    $GLOBALS['LogSVNProcess'][] = $CmdBase.$uri." ".$uriTo;

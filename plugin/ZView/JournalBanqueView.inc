@@ -33,7 +33,7 @@ class JournalBanqueView extends generalView {
 	$this->model = new journalBanqueModel();
 	$this->compteurFourn = 0;
 	$this->script = "<script>
-	    function autoCompletage() { var ent = 1; } 
+	   ent = 1;
 	    function ChangeJournalBanqueResultPage(limit,from) {
 	    ChangeAction('searchJournalBanque');
 	    ChangeLimit(limit);

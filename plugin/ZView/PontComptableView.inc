@@ -31,7 +31,7 @@ class PontComptableView extends generalView {
 	$this->model = new pontComptableModel();
 	$this->compteurFourn = 0;
 	$this->script = '<script>';
-	$this->script .= 'function autoCompletage() {var ent = 1;} ';
+	$this->script .= 'ent = 1; ';
 	$this->script .= "function ChangePontComptableResultPage(limit,from) {
 				ChangeAction('searchPontComptable');
 				ChangeLimit(limit);
@@ -66,7 +66,7 @@ class PontComptableView extends generalView {
 
 	$this->html = new ZunoRenduHtml('ficheCompletePontComptaHisto');
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/pontComptable.png','PontComptables').' PontComptable '.$datas['data']['id_pcth'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce fichier d\'export','','onload="autoCompletage();"',true),'formPontComptableModif', 'open');
+	$this->html->generateZBox(imageTag('../img/prospec/pontComptable.png','PontComptables').' PontComptable '.$datas['data']['id_pcth'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce fichier d\'export','','',true),'formPontComptableModif', 'open');
 
 	return $this->html->generateRendu();
     }
@@ -303,7 +303,7 @@ class PontComptableView extends generalView {
      */
     public function searchResult($datas, $light='') {
 	if($light == 'result' or $light == 'jsResult')
-	    return $this->script.$this->Result($datas,$light);
+	    return $this->Result($datas,$light).$this->script;
 	else {
 	    $popup = '';
 	    if($light == 'jsReturn') {

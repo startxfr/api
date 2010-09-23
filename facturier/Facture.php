@@ -29,7 +29,15 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
 $model = new factureModel();
-if($PC->rcvG['id_fact'] != '') {
+
+if($PC->rcvG['action'] == "Zieuter") {
+    aiJeLeDroit('facture', 62, 'web');
+    $datas = $model->getDataFromID($PC->rcvG['id_fact']);
+    $Doc = $model->getFactureRecordedFileName($datas[1][0]);
+    PushFileToBrowser($model->getFactureDirectory().$Doc, $Doc);
+    exit;
+}
+elseif($PC->rcvG['id_fact'] != '') {
     $sortie = viewFiche($PC->rcvG['id_fact'], $model->getType($PC->rcvG['id_fact']), '', 'non', 'web', true);
 }
 elseif($PC->rcvG['action'] == 'cloner') {
@@ -344,15 +352,13 @@ elseif($PC->rcvP['action'] == "addFactFromCmd") {
 elseif($PC->rcvP['action'] == "Zieuter") {
     aiJeLeDroit('facture', 62, 'web');
     $datas = $model->getDataFromID($PC->rcvP['id_fact']);
-    $Doc = $datas[1][0]['type_fact'].'.'.$model->getFormatedIdFromData($datas[1][0]).'.'.$PC->rcvP['format'];
-    PushFileToBrowser($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$Doc, $Doc);
+    $Doc = $model->getFactureFileName($datas[1][0],$PC->rcvP['format']);
+    PushFileToBrowser($model->getFactureDirectory().$Doc, $Doc);
+    exit;
 }
 elseif ($PC->rcvG['action'] == 'VoirFact') {
-    $PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
-    $bddtmp->makeRequeteFree("SELECT file_fact FROM facture WHERE id_fact = '".$PC->rcvG['id_fact']."'");
-    $facture = $bddtmp->process();
-    $facture = $facture[0];
-    PushFileToBrowser($PathTo.$facture['file_fact'],$facture['file_fact']);
+    $datas = $model->getDataFromID($PC->rcvP['id_fact']);
+    PushFileToBrowser($model->getFactureDirectory().$model->getFactureRecordedFileName($datas[1][0]),$model->getFactureRecordedFileName($datas[1][0]));
 }
 elseif($PC->rcvG['action'] == 'addContFact') {
     aiJeLeDroit('contact', 20, 'web');
@@ -525,7 +531,7 @@ elseif($PC->rcvP['action'] == 'payerCB') {
 	if($PC->rcvP['journalise'] == 'true') {
 	    loadPlugin('ZModels/JournalBanqueModel');
 	    $jb = new journalBanqueModel();
-	    $jb->insertFromFacture($PC->rcvP['id_fact']);
+	    $jb->insertFromFacture($PC->rcvP['id_fact'],$f[1][0]['modereglement_fact'],$f[1][0]['commentreglement_fact']);
 	    $model->addActualite($PC->rcvP['id_fact'], 'updateFree', 'Encaissement par CB ','La facture vient d\'être payée par carte bleue.'."\nCe payement est lié à la facture ".$PC->rcvP['id_fact']." et a été effectué ce jour, le ".date('d')." ".date('M')." ".date('Y')."\n".$mess.' Elle est maintenant considérée comme encaissée et une trace de cette transaction à été enregistrée dans le journal de banque.','',true);
 	}
 	else $model->addActualite($PC->rcvP['id_fact'], 'updateFree', 'Encaissement par CB ','La facture vient d\'être payée par carte bleue.'."\nCe payement est lié à la facture ".$PC->rcvP['id_fact']." et a été effectué ce jour, le ".date('d')." ".date('M')." ".date('Y')."<br />".$mess.' Elle est maintenant considérée comme encaissée.','',true);
@@ -552,7 +558,7 @@ elseif($PC->rcvP['action'] == "Clore") {
 elseif($PC->rcvP['action'] == "JournaliseAndClore") {
     loadPlugin('ZModels/JournalBanqueModel');
     $jb = new journalBanqueModel();
-    $jb->insertFromFacture($PC->rcvP['facture']);
+    $jb->insertFromFacture($PC->rcvP['facture'],$PC->rcvP['modereglement_jb'],$PC->rcvP['commentaire_jb']);
     $model->update(array("status_fact"=>"6"), $PC->rcvP['facture']);
     $model->addActualite($PC->rcvP['facture'], 'updateFree', 'Encaissement ','La facture vient d\'être cloturée. Elle est maintenant considérée comme encaissée et une trace de cette transaction à été enregistrée dans le journal de banque.','',true);
     echo viewFiche($PC->rcvP['facture'], 'facture', 'Traitement', 'non', 'web', true, "Votre facture est maintenant payée, cloturée et inscrite dans le journal de banque.");
@@ -570,7 +576,9 @@ elseif($PC->rcvP['action'] == "doSupp") {
 }
 elseif($PC->rcvG['action'] == 'confirmClore') {
     $view = new factureView();
-    echo $view->popupConfirmClore($PC->rcvG['facture'], $model->getType($PC->rcvG['facture']));
+    $datas = $model->getDataFromID($PC->rcvG['facture']);
+    $Data = $datas[1][0];
+    echo $view->popupConfirmClore($PC->rcvG['facture'], $model->getType($PC->rcvG['facture']),$Data['modereglement_fact'],$Data['commentreglement_fact']);
     exit;
 }
 /*------------------------------------------------------------------------+

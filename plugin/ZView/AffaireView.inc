@@ -17,13 +17,15 @@ class affaireView extends generalView {
     private $blockSearch;
     private $blockResult;
     private $blockCreate;
+    public $model;
 
     /**
      * Constrcuteur de la classe qui instancie le javascript par défault
      */
     public function __construct() {
+	$this->model = new affaireModel();
 	$this->script = '<script>';
-	$this->script .= "\n".'function autoCompletage() { ent = 1;} ';
+	$this->script .= "\n".'ent = 1; ';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= '</script>';
     }
@@ -52,9 +54,9 @@ class affaireView extends generalView {
 	$this->formCreation();
 
 	$this->script = '<script>';
-	$this->script .= "\n".'function autoCompletage() { entreprise_completer = new Ajax.Autocompleter("ACentreprise_aff", "ACentreprise_aff_choix", "../ajaxRef.php?action=listeEntreprise", {paramName: "value", minChars: 2, indicator: "loadingentreprise_aff", afterUpdateElement: autoCompleteEntreprise} );';
+	$this->script .= "\n".'entreprise_completer = new Ajax.Autocompleter("ACentreprise_aff", "ACentreprise_aff_choix", "../ajaxRef.php?action=listeEntreprise", {paramName: "value", minChars: 2, indicator: "loadingentreprise_aff", afterUpdateElement: autoCompleteEntreprise} );';
 	$this->script .= "\n".'contact_completer = new Ajax.Autocompleter("ACcontact_aff", "ACcontact_aff_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_aff", afterUpdateElement : autoCompleteHidden } ); ';
-	$this->script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\') }';
+	$this->script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\')';
 	$this->script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
 	$this->script .= "\n".'function autoCompleteEntreprise(text, li) {autoCompleteHidden(text, li); contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_affhidden\');}';
 	$this->script .= '</script>';
@@ -230,10 +232,10 @@ class affaireView extends generalView {
      */
     private function initioBlockFiles($datas) {
 	loadPlugin(array('ZView/DocumentView'));
-	if($datas['data']['archived_aff'] == 1)
+	if($datas['data']['archived_aff'] == '1')
 	    $workDir = $GLOBALS['SVN_Pool1']['ArchivesDir'];
 	else $workDir = $GLOBALS['SVN_Pool1']['WorkDir'];
-	$blockFiles = new documentViewRepertoire($workDir.$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff']);
+	$blockFiles = new documentViewRepertoire($workDir.$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'],$workDir);
 	$this->blockFiles = $blockFiles->afficher();
     }
 
@@ -245,10 +247,10 @@ class affaireView extends generalView {
     }
 
     private function searchForm($datas) {
-	$script = '<script type="text/javascript">function autoCompletage() { /* new Ajax.Autocompleter("cpAffaireSearch", "cpAffaireSearch_choix", "../ajaxRef.php?action=listeCp", { paramName: "value", minChars: 2, indicator : "loadingCp" , afterUpdateElement : autoCompleteHidden } ); ';
+	$script = '<script type="text/javascript">/* new Ajax.Autocompleter("cpAffaireSearch", "cpAffaireSearch_choix", "../ajaxRef.php?action=listeCp", { paramName: "value", minChars: 2, indicator : "loadingCp" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("affaireAffaireSearch", "affaireAffaireSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("entrepriseAffaireSearch", "entrepriseAffaireSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); ';
-	$script .= 'new Ajax.Autocompleter("userAffaireSearch", "userAffaireSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );*/   } ';
+	$script .= 'new Ajax.Autocompleter("userAffaireSearch", "userAffaireSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );*/  ';
 	$script .= 'function ChangeAffaireID(value) { $(\'idAffaireSearch\').value = value; } ';
 	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } ';
 	$script.= "function ChangeAffaireResultPage(limit,from,order,sens) {
@@ -290,7 +292,7 @@ class affaireView extends generalView {
 	$corps .= '</div></form>';
 	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
 	$bouton.= '<a name="valider" onclick="ChangeAffaireAction(\'searchAffaire\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
-	return generateZBox($titre,$titre,$corps.$script,$bouton,'searchBox');
+	return generateZBox($titre,$titre,$corps,$bouton,'searchBox').$script;
     }
 
     private function interneSearch($datas) {
@@ -499,7 +501,6 @@ class affaireView extends generalView {
     }
 
     private function ResultGroupActionForm() {
-	$sql = new affaireModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
 	$fieldset = new ZunoFieldset('Type d\'action','','height: 130px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'activate', ' onclick="toggleSubGroupedAction(\'groupedSubActionActivate\')"'),'Activer ces affaires','ZTips.affaire.groupActionActivate');
@@ -520,7 +521,7 @@ class affaireView extends generalView {
 	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 70px');
 	$fieldset->ligneInput('Titre de l\'affaire', 'titre_aff');
 	$fieldset->ligneInputDate('Echeance', 'necheance_aff','');
-	$fieldset->ligneSelect('Type d\'affaire', 'typeproj_aff','',$sql->getTypesProj());
+	$fieldset->ligneSelect('Type d\'affaire', 'typeproj_aff','',$this->model->getTypesProj());
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');

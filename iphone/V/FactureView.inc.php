@@ -342,14 +342,15 @@ class factureView {
 	$temp = $sqlConn->process2();
 	$totalActu = $temp[1][0]['C'];
 	$info = new factureModel();
-	$factDir= $GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
-	$fileName = $value['type_fact'].'.'.$info->getFormatedIdFromData($value);
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.pdf') )
-	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$factDir . $fileName . ".pdf\" target=\"_blank\">" . imageTag('../img/files/pdf.png', 'version PDF') . ' ' . $fileName . ".pdf</a></li>";
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.odt') )
-	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$factDir . $fileName . ".odt\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version ODT') . ' ' . $fileName . ".odt</a></li>";
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$factDir.$fileName.'.doc') )
-	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$factDir . $fileName . ".doc\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version DOC') . ' ' . $fileName . ".doc</a></li>";
+	$fileName = $info->getFactureFileName($value,'pdf');
+	if (file_exists($info->getFactureDirectory().$fileName) )
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag('../img/files/pdf.png', 'version PDF') . ' ' . $fileName . "</a></li>";
+	$fileName = $info->getFactureFileName($value,'odt');
+	if (file_exists($info->getFactureDirectory().$fileName) )
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version ODT') . ' ' . $fileName . "</a></li>";
+	$fileName = $info->getFactureFileName($value,'doc');
+	if (file_exists($info->getFactureDirectory().$fileName) )
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version DOC') . ' ' . $fileName . "</a></li>";
 
 	//Récupération des données
 	$out = '<li><a rev="async" href="Actualite.php?action=viewFacture&amp;id_fact='.$value['id_fact'].'"><img src="Img/actualite.png"/> '.$totalActu.' Actualités</a></li>'.$outLi;

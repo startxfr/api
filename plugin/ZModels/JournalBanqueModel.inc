@@ -63,6 +63,7 @@ class journalBanqueModel extends GeneralModel {
     /**
      * Méthode qui insert une entrée de la table journal_banque
      * @param array $data Les données à insérer
+     * @param string $tmpFile chemin absolut depuis un fichier a ajouter
      * @return array Indique si la requête s'est bien exécutée
      */
     public function insertJournalEcriture($data, $tmpFile = '') {
@@ -258,28 +259,31 @@ class journalBanqueModel extends GeneralModel {
 	return $this->bindVar($data,$this->availableFields);
     }
 
-    public function insertFromFacture($id_fact) {
-	$this->makeRequeteSelect("facture", "id_fact", $id_fact);
-	$fact = $this->process2();
+    public function insertFromFacture($id_fact,$modeReglement = '3', $commentaire = '') {
+	loadPlugin('ZModels/FactureModel');
+	$factModel = new factureModel();
+	$fact = $factModel->getDataFromID($id_fact);
 	if($fact[0]) {
+	    $factureData = $fact[1][0];
 	    $datas[$this->sqlIdField] = $this->getLastId()+1;
 	    $datas['date_record_jb'] = strftime('%Y-%m-%d %H:%M:%S',time());
 	    $datas['date_effet_jb'] = strftime('%Y-%m-%d %H:%M:%S',time());
 	    $datas['banque_jb'] = '1';
-	    $datas['modereglement_jb'] = $fact[1][0]['modereglement_fact'];
-	    $datas['libelle_jb'] = $fact[1][0]['titre_fact'];
-	    $datas['montant_jb'] = prepareNombreTraitement(prepareNombreAffichage($fact[1][0]['sommeHT_fact']*(1+($fact[1][0]['tauxTVA_fact']/100))));
-	    $datas['commentaire_jb'] = $fact[1][0]['commentaire_fact'];
-	    $datas['file_jb'] = "Piece-".$datas[$this->sqlIdField].'.'.FileGetExtention($fact[1][0]['file_fact']);
-	    $datas['facture_jb'] = $fact[1][0]['id_fact'];
-	    $datas['entreprise_jb'] = $fact[1][0]['entreprise_fact'];
-	    if($fact[1][0]['type_fact'] != 'Facture')
+	    $datas['modereglement_jb'] = $modeReglement;
+	    $datas['libelle_jb'] = (($factureData['type_fact'] == 'Avoir') ?" Décaissement  de la " : " Encaissement  de la ") . $factureData['type_fact'] . " " . $factModel->getFormatedIdFromData($factureData).' pour '.$factureData['nom_ent'];
+	    $datas['montant_jb'] = prepareNombreTraitement(prepareNombreAffichage($factureData['sommeHT_fact']*(1+($factureData['tauxTVA_fact']/100))));
+	    $datas['commentaire_jb'] = ($commentaire != '') ? $commentaire : $factureData['commentaire_fact'];
+	    if($factureData['file_fact']!='')
+		$datas['file_jb'] = "Piece-".$datas[$this->sqlIdField].'.'.FileGetExtention($factureData['file_fact']);
+	    $datas['facture_jb'] = $factureData['id_fact'];
+	    $datas['entreprise_jb'] = $factureData['entreprise_fact'];
+	    if($factureData['type_fact'] != 'Facture')
 		$datas['montant_jb'] = -1*$datas['montant_jb'];
 	    $datas = $this->bindVarJournalBanqueHisto($datas);
 	    $this->makeRequeteInsert($this->sqlTableName, $datas);
 	    $rs =$this->process2();
 	    if($rs[0] and $datas['file_jb'] != '') {
-		$this->addJournalEcritureFile($datas, $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'].$fact[1][0]['file_fact'], true);
+		$this->addJournalEcritureFile($datas, $factModel->getFactureDirectory().$factModel->getFactureRecordedFileName($factureData), true);
 	    }
 	    return $rs;
 	}
@@ -292,23 +296,24 @@ class journalBanqueModel extends GeneralModel {
 	$this->makeRequeteSelect("facture_fournisseur", "id_factfourn", $id_fact);
 	$fact = $this->process2();
 	if($fact[0]) {
+	    $factureData = $fact[1][0];
 	    $datas[$this->sqlIdField] = $this->getLastId()+1;
 	    $datas['date_record_jb'] = strftime('%Y-%m-%d %H:%M:%S',time());
 	    $datas['date_effet_jb'] = strftime('%Y-%m-%d %H:%M:%S',time());
 	    $datas['banque_jb'] = '1';
-	    $datas['modereglement_jb'] = $fact[1][0]['modeReglement_factfourn'];
-	    $datas['libelle_jb'] = $fact[1][0]['titre_factfourn'];
-	    $datas['montant_jb'] = -1*$fact[1][0]['montantTTC_factfourn'];
-	    $datas['commentaire_jb'] = $fact[1][0]['desc_factfourn'];
-	    if($fact[1][0]['file_factfourn'] != '')
-		$datas['file_jb'] = "Piece-".$datas[$this->sqlIdField].'.'.FileGetExtention($fact[1][0]['file_factfourn']);
-	    $datas['facture_jb'] = $fact[1][0]['id_factfourn'];
-	    $datas['entreprise_jb'] = $fact[1][0]['entreprise_factfourn'];
+	    $datas['modereglement_jb'] = $factureData['modeReglement_factfourn'];
+	    $datas['libelle_jb'] = " Décaissement  de la facture fournisseur "  . $factureData['id_factfourn'] .' - '.$factureData['titre_factfourn'];
+	    $datas['montant_jb'] = -1*$factureData['montantTTC_factfourn'];
+	    $datas['commentaire_jb'] = $factureData['desc_factfourn'];
+	    if($factureData['file_factfourn'] != '')
+		$datas['file_jb'] = "Piece-".$datas[$this->sqlIdField].'.'.FileGetExtention($factureData['file_factfourn']);
+	    $datas['facture_jb'] = $factureData['id_factfourn'];
+	    $datas['entreprise_jb'] = $factureData['entreprise_factfourn'];
 	    $datas = $this->bindVarJournalBanqueHisto($datas);
 	    $this->makeRequeteInsert($this->sqlTableName, $datas);
 	    $rs =$this->process2();
 	    if($rs[0] and $datas['file_jb'] != '') {
-		$this->addJournalEcritureFile($datas, $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.factureFournisseur'].$fact[1][0]['file_factfourn'], true);
+		$this->addJournalEcritureFile($datas, $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.factureFournisseur'].$factureData['file_factfourn'], true);
 	    }
 	    return $rs;
 	}

@@ -14,8 +14,7 @@
 +------------------------------------------------------------------------*/
 include ('../inc/conf.inc');	// Declare global variables from config files
 include ('../inc/core.inc');	// Load core library
-loadPlugin(array('ZunoCore', 'ZView/CommandeView', 'Send/Send', 'ZModels/ActualiteModel'));
-loadPlugin(array('ZControl/GeneralControl'));
+loadPlugin(array('ZunoCore', 'ZView/CommandeView', 'ZModels/AffaireModel', 'Send/Send', 'ZModels/ActualiteModel','ZControl/GeneralControl'));
 
 // Whe get the page context
 $PC = new PageContext('pegase');
@@ -27,6 +26,8 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
+    $bddtmp = new commandeModel();
+        $bddAff = new affaireModel();
 if($PC->rcvG['action'] == 'actuCommande') {
     aiJeLeDroit('actualite', 10, 'web');
     $sql = new actualiteModel();
@@ -47,7 +48,6 @@ elseif($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'supp') {
     echo generateZBox($titre, $titre, $corps,$pied,'CommandeBox','');
 }
 elseif ($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'suppconfirm') {
-    $bddtmp = new commandeModel();
     $bddtmp->makeRequeteUpdate('commande',"id_cmd",$PC->rcvG['id_commande'],array("status_cmd"=>"2"));
     $bddtmp->process();
     $bddtmp->addActualite($PC->rcvG['id_commande'], 'delete');
@@ -60,10 +60,7 @@ elseif ($PC->rcvG['action'] == 'VoirBDCC' or
 	$PC->rcvG['action'] == 'VoirBDCF' or
 	$PC->rcvG['action'] == 'VoirBDL' or
 	$PC->rcvG['action'] == 'VoirRI') {
-    $bddtmp->makeRequeteSelect('affaire','id_aff',substr($PC->rcvG['id_commande'],0,-5));
-    $aff = $bddtmp->process();
-    $aff = $aff[0];
-    $PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
+    $PathTo  = $bddAff->getAffaireDirectoryPathById(substr($PC->rcvG['id_commande'],0,-5));
     if ($PC->rcvG['action'] == 'VoirBDCC')		$Doc = $PC->rcvG['id_commande'].'C.pdf';
     elseif ($PC->rcvG['action'] == 'VoirBDCF')		$Doc = $PC->rcvG['id_commande'].'F-'.$PC->rcvG['fourn'].'.pdf';
     elseif ($PC->rcvG['action'] == 'VoirBDL')		$Doc = substr($PC->rcvG['id_commande'],0,-1).'L.pdf';
@@ -115,7 +112,6 @@ elseif($PC->rcvP['action'] == 'addCmd') {
 
     $result = $sql->insert($data, 'cloner', $produit);
     if($result[0]) {
-	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	$bddtmp->makeRequeteUpdate('devis', 'id_dev', $data['devis_cmd'], array('status_dev' => '6'));
 	$bddtmp->process();
 	echo $view->popupCommande($PC->rcvP, 'ok', '<img src="../img/ajax-loader.gif" alt="loading" onload="redirectCommande(\''.$data['id_cmd'].'\');"');
@@ -320,7 +316,6 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
 	$sender = new Sender($PC->rcvP);
 	$result = $sender->send();
 	if($result[0]) {
-	    $bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
 	    $bddtmp->makeRequeteFree("SELECT id_cmd, entreprise_cmd, contact_cmd FROM commande WHERE  id_cmd = '".$PC->rcvP['id_cmd']."'");
 	    $lignes = $bddtmp->process();
 	    $dev = $lignes[0];
@@ -347,22 +342,22 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
 elseif($PC->rcvP['action'] == 'VoirRI') {
     aiJeLeDroit('commande', 62, 'web');
     $Doc = 'RapportIntervention.'.substr($PC->rcvP['id_cmd'],0,9).'.'.$PC->rcvP['format'];
-    PushFileToBrowser($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$PC->rcvP['dir_aff'].$Doc, $Doc);
+    PushFileToBrowser($bddAff->getAffaireDirectoryPathById(substr($PC->rcvP['id_cmd'],0,-5)).$Doc, $Doc);
 }
 elseif($PC->rcvP['action'] == 'VoirBC') {
     aiJeLeDroit('commande', 62, 'web');
     $Doc = 'BC.'.substr($PC->rcvP['id_cmd'],0,9).'.'.$PC->rcvP['format'];
-    PushFileToBrowser($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$PC->rcvP['dir_aff'].$Doc, $Doc);
+    PushFileToBrowser($bddAff->getAffaireDirectoryPathById(substr($PC->rcvP['id_cmd'],0,-5)).$Doc, $Doc);
 }
 elseif($PC->rcvP['action'] == 'VoirBDL') {
     aiJeLeDroit('commande', 62, 'web');
     $Doc = 'BDL.'.substr($PC->rcvP['id_cmd'],0,9).'.'.$PC->rcvP['format'];
-    PushFileToBrowser($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$PC->rcvP['dir_aff'].$Doc, $Doc);
+    PushFileToBrowser($bddAff->getAffaireDirectoryPathById(substr($PC->rcvP['id_cmd'],0,-5)).$Doc, $Doc);
 }
 elseif(substr($PC->rcvP['action'],0,7) == 'VoirBCF') {
     aiJeLeDroit('commande', 62, 'web');
     $Doc = 'BCF.'.substr($PC->rcvP['id_cmd'],0,9).'-'.substr($PC->rcvP['action'],7,4).'.'.$PC->rcvP['format'];
-    PushFileToBrowser($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$PC->rcvP['dir_aff'].$Doc, $Doc);
+    PushFileToBrowser($bddAff->getAffaireDirectoryPathById(substr($PC->rcvP['id_cmd'],0,-5)).$Doc, $Doc);
 }
 elseif($PC->rcvP['action'] == "traitement") {
     aiJeLeDroit('commande', 13, 'web');

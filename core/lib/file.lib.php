@@ -48,7 +48,7 @@ function FileCleanFileName($filename, $type="") {
 	if ($type == 'SVN_PROP' or $type == 'FILE_PATH')
 	    $table = array_merge($table, $tableSign, array(' ' => '_'));
 	elseif ($type == 'FILE_PATH_LOWER')
-	    $table = array_merge($tableToLower, $tableSign, array(' ' => '_'));
+	    $table = array_merge($tableToLower, $tableSign, $tableApos,array(' ' => '_'));
 	elseif ($type == 'TOLOWER')
 	    $table = $tableToLower;
 	elseif ($type == 'APOSTROPHE')

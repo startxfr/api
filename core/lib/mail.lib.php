@@ -50,7 +50,7 @@ function simple_mail($to,$message,$subject = '',$from = '',$cc = '',$type ='html
     }
     if ($bcc != '')
 	$headers .= "Bcc: ".$bcc."\r\n";
-    $o	= mail($to, $subject, $message, $headers);
+    $o	= mail($to, $subject, stripslashes($message), $headers);
     return array($o);
 }
 /*------------------------------------------------------------------------+
@@ -87,7 +87,7 @@ function MailAttach($to,$messager,$file,$filetype = '',$messagetype = '',$subjec
     $message[1]['content_type'] = $messagetype;
     $message[1]['filename'] = '';
     $message[1]['no_base64'] = TRUE;
-    $message[1]['data'] = stripslashs($messager);
+    $message[1]['data'] = stripslashes($messager);
 
     if (!is_array($file))
 	$fileIn[] = $file;

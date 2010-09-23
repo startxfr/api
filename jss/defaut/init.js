@@ -1223,9 +1223,6 @@ function znBusinessForm(){
 					$$('#'+idRetour+' span.important')[i].style.display='none';
 				}
 			    }, 2000);
-			if(popup == undefined) {
-			    autoCompletage();
-			}
 			if(popup == 'popup2') {
 			    zuno.popup.close();
 			}

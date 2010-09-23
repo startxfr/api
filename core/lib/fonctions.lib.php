@@ -204,7 +204,7 @@ function viewFiche($id, $partie, $mode = '', $fournisseur = 'non', $channel = 'i
 	    $datas['periode'] = $info->getRenews();
 	    $datas['ren'] = ($datas['data']['ren_factfourn'] != "") ? $info->getRenouvellement($datas['data']['ren_factfourn']) : array();
 	}
-	elseif($partie == 'facture') {
+	elseif($partie == 'facture' or $partie == 'avoir') {
 	    $result = $info->getProduitsFromID($id);
 	    $datas['produits'] = $result[1];
 	    $datas['periode'] = $info->getRenews();

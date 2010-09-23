@@ -1044,7 +1044,7 @@ class ZunoForm {
      * @param string $plus Permet de rajouter des éléments sur l'image d'anulation
      * @return string Le code HTML du pied de formulaire
      */
-    public function generateButtons($retour = '', $annuler = 'Annuler', $valider = 'Valider', $popup = '', $plus = 'onload="autoCompletage();"', $previous = false) {
+    public function generateButtons($retour = '', $annuler = 'Annuler', $valider = 'Valider', $popup = '', $plus = '', $previous = false) {
 	$pied = '';
 	$close = '';
 	if($retour == '')
@@ -1085,7 +1085,7 @@ class ZunoForm {
      * @return string Le code HTML du pied de formulaire
      */
     public function generateButtonsNoAjax($annuler = 'Annuler', $valider = 'Valider') {
-	$pied = '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();"  ><img onload="autoCompletage();" align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> '.$annuler.'</a>';
+	$pied = '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();"  ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> '.$annuler.'</a>';
 	$pied .= '<a name="submit" href="javascript:document.'.$this->nom.'.submit();" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> '.$valider.'</a>';
 	$this->pied = $pied.$this->pied;
 	return $this->pied;

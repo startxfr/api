@@ -50,8 +50,8 @@ class Sender {
 	$this->id = $data['id'];
 	$this->partie = $data['partie'];
 	$this->type = ($data['typeE'] == 'email') ? 'mail' : $data['typeE'];
-	$this->message = $data['message'];
-	$this->sujet = $data['sujet'];
+	$this->message = stripslashes($data['message']);
+	$this->sujet = stripslashes($data['sujet']);
 	$this->nomExpediteur = $data['expediteur'];
 	$this->from = (generalControl::mailControl($data['from'])) ? $data['from'] : $GLOBALS['zunoClientCoordonnee']['mail'];
 	if(is_array($data['cc'])) {
@@ -419,7 +419,7 @@ class Sender {
 	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
 	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
 
-	$o	= mail($this->email, $this->sujet, $this->message.$this->signature, $headers);
+	$o	= mail($this->email, $this->sujet, stripslashes($this->message.$this->signature), $headers);
 	return array($o);
     }
 
@@ -460,7 +460,7 @@ class Sender {
 	$message[1]['content_type'] = $messagetype;
 	$message[1]['filename'] = '';
 	$message[1]['no_base64'] = TRUE;
-	$message[1]['data'] = stripslashs ($this->message.$this->signature);
+	$message[1]['data'] = stripslashes($this->message.$this->signature);
 	if($format == 'classic') {
 	    if (!is_array($this->fichier))
 		$fileIn[] = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$this->dossierPrincipal.$this->fichier;

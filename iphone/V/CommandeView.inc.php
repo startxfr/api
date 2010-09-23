@@ -364,16 +364,19 @@ class commandeView {
 	$sqlConn->makeRequeteFree("select count(id) as C FROM actualite WHERE id_cmd = '".$value['id_cmd']."'");
 	$temp = $sqlConn->process2();
 	$totalActu = $temp[1][0]['C'];
+	loadPlugin(array('ZModels/AffaireModel'));
+        $bddAff = new affaireModel();
+	$PathAff  = $bddAff->getAffaireDirectoryPath($value);
 	foreach($fourn as $v) {
-	    if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$value['dir_aff'].$value['id_cmd'].'F-'.$v['fournisseur'].'.pdf'))
-		$outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirBDCF&fourn=".$v['fournisseur']."\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' '.$value['id_cmd']."F-".$v['fournisseur'].".pdf</a></li>";
+	    if (file_exists($PathAff.'BCF.' . $value['id_dev'] . '-' . $v['fournisseur'].'.pdf'))
+		$outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirBDCF&fourn=".$v['fournisseur']."\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' BCF.' . $value['id_dev'] . '-' . $v['fournisseur'].".pdf</a></li>";
 	}
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$value['dir_aff'].$value['id_cmd'].'C.pdf'))
-	    $outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirBDCC\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' '.$value['id_cmd']."C.pdf</a></li>";
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$value['dir_aff'].substr($value['id_cmd'],0,-1).'L.pdf'))
-	    $outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirBDL\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' '.substr($value['id_cmd'],0,-1)."L.pdf</a></li>";
-	if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$value['dir_aff'].'RapportIntervention.'.$value['id_cmd'].'.pdf'))
-	    $outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirRI\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' '.substr($value['id_cmd'],0,-2)."RI.pdf</a></li>";
+	if (file_exists($PathAff.'BC.'.$value['id_dev'].'.pdf'))
+	    $outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirBDCC\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' BC.'.$value['id_dev'].".pdf</a></li>";
+	if (file_exists($PathAff.'BDL.'.$value['id_dev'].'.pdf'))
+	    $outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirBDL\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' BDL.'.$value['id_dev'].".pdf</a></li>";
+	if (file_exists($PathAff.'RapportIntervention.'.$value['id_dev'].'.pdf'))
+	    $outLi   .= "<li><a href=\"../pegase/Commande.php?id_commande=".$value['id_cmd']."&action=VoirRI\" target=\"_blank\">".imageTag('../img/prospec/commande.pdf.png','PDF').' RapportIntervention.'.$value['id_dev'].".pdf</a></li>";
 
 	//Récupération des données
 	$out = '<fieldset>

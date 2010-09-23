@@ -309,12 +309,14 @@ class commandeGnose {
     static function CommandeSaveDocInGnose($fileFrom,$commande,$message = "") {
 	if ($message == "") $message = "Changement de la commande pour l'affaire ".$commande['id_cmd']." par ".$_SESSION['user']['id'];
 	$message = escapeshellcmd($message);
-	$PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$commande['dir_aff'];
+
+	loadPlugin(array('ZModels/AffaireModel'));
+        $bddAff = new affaireModel();
+	$PathTo  = $bddAff->getAffaireDirectoryPath($commande);
 	$PathFrom= $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
 
-	if(!is_dir($PathTo) or !is_writable($PathTo)) {
-	    return "Le répértoire ".$GLOBALS['ZunoAffaire']['dir.affaire'].$commande['dir_aff']." n'existe pas.";
-	}
+	if(!is_dir($PathTo) or !is_writable($PathTo))
+	    return "Le répertoire ".$bddAff->getAffaireDirectoryPath($commande,false)." n'existe pas ou n'est pas inscriptible.";
 
 	foreach ($fileFrom as $in => $file) {
 	    $FileExist = file_exists($PathTo.$file);

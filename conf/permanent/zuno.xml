@@ -59,7 +59,7 @@
 	<value id="PROXY_LOGIN"></value>
 	<value id="PROXY_PASSWORD"></value>
     </group>
-    <group name="zunoWebService" modifRight="0" title="Configuration de prospec">
+    <group name="zunoWebService" modifRight="0" title="Configuration ddes webservices ZUNO">
 	<value id="instance_code">75_SXA01</value>
 	<value id="managerWebServicePath">https://manager1.zuno.fr/ws/</value>
 	<value id="wsdlCacheEnabled">1</value>
@@ -78,7 +78,7 @@
         <!--value id="wsdlClientHttpAccessUser">cl</value>
         <value id="wsdlClientHttpAccessPass">8j9y8hw3</value-->
     </group>
-    <group name="zunoPontComptable" modifRight="0" title="Configuration de prospec">
+    <group name="zunoPontComptable" modifRight="0" title="Configuration du pont comptable">
 	<value id="histoDir">PontComptable/</value>
 	<value id="filePrefix">pontComptableZuno.</value>
 	<value id="fileExt">.txt</value>
@@ -94,5 +94,9 @@
     </group>
     <group name="zunoProduit" modifRight="0" title="Configuration de prospec">
 	<value id="defautNewFamilleCode">R19</value>
+    </group>
+    <group name="zunoJournalBanque" modifRight="0" title="Configuration du journal de banque">
+	<value id="pieceDir">Compta/PiecesBancaires/</value>
+	<value id="pieceFilePrefix">Piece-</value>
     </group>
 </configuration>

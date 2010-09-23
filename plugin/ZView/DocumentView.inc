@@ -265,15 +265,15 @@ class documentViewRepertoire extends generalView {
 
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Répertoire "'.$path.'"','',true);
-	if($lieu == $GLOBALS['SVN_Pool1']['WorkDir']) {
-	    $pathDefaut = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'];
-	    $this->m_lieu=$GLOBALS['SVN_Pool1']['WorkDir'];
-	    $this->m_page = '../gnose/BrowseWork.php';
-	}
-	elseif($lieu == $GLOBALS['SVN_Pool1']['ArchivesDir']) {
+	if($lieu == $GLOBALS['SVN_Pool1']['ArchivesDir']) {
 	    $pathDefaut = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['ArchivesDir'];
 	    $this->m_lieu=$GLOBALS['SVN_Pool1']['ArchivesDir'];
 	    $this->m_page = '../gnose/BrowseArchive.php';
+	}
+	else {
+	    $pathDefaut = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'];
+	    $this->m_lieu=$GLOBALS['SVN_Pool1']['WorkDir'];
+	    $this->m_page = '../gnose/BrowseWork.php';
 	}
 	$path2 = $path;
 	$path = $GLOBALS['SVN_Pool1']['WorkCopy'].$path;
@@ -511,9 +511,6 @@ class documentViewRepertoire extends generalView {
 								<a title="Supprimer le dossier" href="'.$this->m_page.'?action=suppD&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce dossier ?\'));">
 								<img alt="Supprimer le dossier" src="../img/gnose/delete.png"/>
 								</a>
-								<a title="Déplacer le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Déplacer\');">
-								<img alt="Déplacer le dossier" src="../img/gnose/move.png"/>
-								</a>
 								</div>';
 		    $sortie .= $ligne.'</div>';
 		}
@@ -580,9 +577,6 @@ class documentViewRepertoire extends generalView {
 		    $ligne .= '<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;">
 							<a title="Supprimer le fichier" href="'.$this->m_page.'?action=suppF&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce fichier ?\'));">
 							<img alt="Supprimer le fichier" src="../img/gnose/delete.png"/>
-							</a>
-							<a title="Déplacer le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerF&format=popup&nom='.$k.'\',\'640\',\'480\',\'\',\'\',\'\',\'Déplacer\');">
-							<img alt="Déplacer le fichier" src="../img/gnose/move.png"/>
 							</a>
 							<a title="Envoyer le fichier" onclick="zuno.popup.open(\'../gnose/Send.php\',\'?file='.$v->sousPath().'\',\'500\',\'400\',\'\',\'\',\'resize\',\'Envoyer\');">
 							<img alt="Envoyer le fichier" src="../img/gnose/send.png"/>

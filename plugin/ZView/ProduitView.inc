@@ -31,7 +31,7 @@ class ProduitViewOriginal extends generalView {
     public function __construct() {
 	$this->compteurFourn = 0;
 	$this->script = '<script>';
-	$this->script .= 'function autoCompletage() {var ent = 1;} ';
+	$this->script .= 'ent = 1; ';
 	$this->script .= "function ChangeProduitResultPage(limit,from) {
 				ChangeAction('searchProduit');
 				ChangeLimit(limit);
@@ -164,7 +164,7 @@ class ProduitViewOriginal extends generalView {
 	}
 	else {
 	    $this->form->newInputHidden('action', 'addProdPopup');
-	    $pied = '<a name="closePopup" onclick="zuno.popup.close()" title="Reset"><img align="middle" src="../img/prospec/cancel.png" alt="Effacer" title="Effacer" onload="autoCompletage();"/> Annuler</a>';
+	    $pied = '<a name="closePopup" onclick="zuno.popup.close()" title="Reset"><img align="middle" src="../img/prospec/cancel.png" alt="Effacer" title="Effacer"/> Annuler</a>';
 	    $pied .= '<a style="cursor: pointer;" onclick="saveProd();" name="submit"><img align="middle" src="../img/prospec/record.png" alt="Enregistrer" title="Enregistrer"/> Créer le produit</a>';
 	}
 
@@ -451,7 +451,7 @@ class ProduitViewOriginal extends generalView {
      */
     public function searchResult($datas, $light='') {
 	if($light == 'result' or $light == 'jsResult')
-	    return $this->script.$this->Result($datas,$light);
+	    return $this->Result($datas,$light).$this->script;
 	else {
 	    $popup = '';
 	    if($light == 'jsReturn') {
@@ -463,7 +463,7 @@ class ProduitViewOriginal extends generalView {
 	    $rendu = new ZunoRenduHtml('rechercheProd');
 	    $rendu->generateZBox('Recherche', 'Recherche', $form->generateForm(), $form->generateButtons('listeResultProduit', 'Annuler', 'Rechercher',$popup), 'divSerachProd', 'open');
 	    $rendu->addBox($this->listeResult($datas,$light));
-	    $rendu->insertJS("<script>function autoCompletage() { var ent = 1;} </script><script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchProd', 'produit/ProduitListe.php','listeResultProduit'); return false;}, false);</script>".$this->script);
+	    $rendu->insertJS("<script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchProd', 'produit/ProduitListe.php','listeResultProduit'); return false;}, false);</script>".$this->script);
 	    return $rendu->generateRendu();
 	}
 

@@ -1,5 +1,5 @@
 <?php
-loadPlugin(array('ZModels/DevisModel','ZDoc/DevisDoc', 'ZView/GeneralView', 'ZunoRenduHTML'));
+loadPlugin(array('ZModels/AffaireModel','ZModels/DevisModel','ZDoc/DevisDoc', 'ZView/GeneralView', 'ZunoRenduHTML'));
 
 /**
  * Classe devisView, elle gère l'affichage des devis dans la partie web
@@ -9,12 +9,20 @@ loadPlugin(array('ZModels/DevisModel','ZDoc/DevisDoc', 'ZView/GeneralView', 'Zun
  * @version 1
  */
 class devisView extends generalView {
+    public $model;
+    public $modelAffaire;
+
+    function __construct() {
+	$this->model = new devisModel();
+	$this->modelAffaire = new affaireModel();
+    }
+
     public function view($datas, $light, $mess) {
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Fiche devis "'.$datas['data']['id_dev'].'" - '.$datas['data']['nom_ent'],'',true);
-	$script = '<script type="text/javascript">function autoCompletage() { new Ajax.Autocompleter("ACcontact_dev", "ACcontact_dev_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); ';
+	$script = '<script type="text/javascript">new Ajax.Autocompleter("ACcontact_dev", "ACcontact_dev_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= "\n".'new Ajax.Autocompleter("ACproduit_ajout_dev", "ACproduit_ajout_dev_choix", "../ajaxRef.php?action=listeProduit", { paramName: "value", minChars: 2, afterUpdateElement : calculetteAjoutProd } ); ';
-	$script .= "\n".'new Ajax.Autocompleter("ACcontact_achat_dev", "ACcontact_achat_dev_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName: "value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden } );} ';
+	$script .= "\n".'new Ajax.Autocompleter("ACcontact_achat_dev", "ACcontact_achat_dev_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName: "value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden } ); ';
 
 	$script .= "\n".'function calculetteAjoutProd(text, li) {id = li.title.split(\'-_-\'); $(text.id+\'hidden\').value = id[0]; $(\'prix_Ajout_prod_dev\').value = id[2]; $(\'desc_Ajout_prod_dev\').innerHTML = id[3]; $(\'maxPrix_Ajout_prod_dev\').value = id[4]; calculetteTotal();} ';
 	$script .= "\n".'function calculetteTotal(id) {  if(id == undefined) { var qtt = $(\'quantite_Ajout_prod_dev\').value.replace(/,/, ".").replace(/ /,""); var prix = $(\'prix_Ajout_prod_dev\').value.replace(/,/, ".").replace(/ /,""); var rem = $(\'remise_Ajout_prod_dev\').value.replace(/,/, ".").replace(/ /,""); var pxM = $(\'maxPrix_Ajout_prod_dev\').value; $(\'total_Ajout_prod_dev\').value = qtt*prix*(1-rem/100); if(prix*(1-rem/100) < pxM) {$(\'img_Ajout_prod_dev\').style.display = \'block\';} else {$(\'img_Ajout_prod_dev\').style.display = \'none\'; } } else { var qtt = $(\'quantite_Ajout_prod_dev\'+id).value.replace(/,/, ".").replace(/ /,""); var prix = $(\'prix_Ajout_prod_dev\'+id).value.replace(/,/, ".").replace(/ /,""); var rem = $(\'remise_Ajout_prod_dev\'+id).value.replace(/,/, ".").replace(/ /,""); var pxM = $(\'maxPrix_Ajout_prod_dev\'+id).value; $(\'total_Ajout_prod_dev\'+id).value = qtt*prix*(1-rem/100); if(prix*(1-rem/100) < pxM) {$(\'img_Ajout_prod_dev\'+id).style.display = \'block\';} else {$(\'img_Ajout_prod_dev\'+id).style.display = \'none\'; }} } ';
@@ -144,13 +152,13 @@ function IsNumeric(input)
 	elseif($light == 'interneTraitement' or $light == 'Traitement')
 	    return $this->traitement($datas, '<span class="important" style="text-align:center;">'.$mess.'</span>');
 	else
-	    return '<div id="error"></div>'.$script.$this->infos($datas).$this->produits($datas).'<div id="boxTraitementDevis">'.$this->traitement($datas).'</div>';
+	    return '<div id="error"></div>'.$this->infos($datas).$this->produits($datas).'<div id="boxTraitementDevis">'.$this->traitement($datas).'</div>'.$script;
     }
 
     private function infos($datas) {
 	$data = $datas['data'];
 
-	$titre = '<img src="../img/prospec/devis.png" onload="autoCompletage();" alt="devis" title="Devis" /> Informations sur le devis '.$data['id_dev'];
+	$titre = '<img src="../img/prospec/devis.png" alt="devis" title="Devis" /> Informations sur le devis '.$data['id_dev'];
 
 	$corps = '<form name="ModifInfosDevis" action="#" method="post">';
 	$corps .= '<input type="hidden" name="action" value="modifDevis" />';
@@ -529,23 +537,21 @@ function IsNumeric(input)
 	    $TypeSend['fax'] = "par fax";
 	if(verifDroitsAuto('devis', 54, $datas['data']['commercial_dev']))
 	    $TypeSend['courrier'] = "par courrier";
-	$AffDir= ($value['archived_aff'] == '1') ? $GLOBALS['SVN_Pool1']['ArchivesDir'] : $GLOBALS['SVN_Pool1']['WorkDir'];
-	$AffDir.= $GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'];
-	$fileName= $GLOBALS['ZunoDevis']['file.suffixe'] . $datas['data']['id_dev'];
 
-	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$AffDir . $fileName.'.pdf') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
+	$fileName= $GLOBALS['ZunoDevis']['file.suffixe'] . $datas['data']['id_dev'];
+	if($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'],$fileName.'.pdf') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
 	    $listeDoc[$fileName.'.pdf'] = $fileName.'.pdf';
 	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'pdf\');">'.$fileName.'.pdf</a></div></div>';
 	    $selected = $fileName.'.pdf';
 	}
-	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$AffDir . $fileName.'.odt') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
+	if($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'],$fileName.'.odt') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
 	    $listeDoc[$fileName.'.odt'] = $fileName.'.odt';
 	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'odt\');">'.$fileName.'.odt</a></div></div>';
 	    $selected = ($selected == "") ? $fileName.'.odt' : $selected;
 	}
-	if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$AffDir . $fileName.'.doc') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
+	if($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'],$fileName.'.doc') and verifDroitsAuto('devis', 62, $datas['data']['commercial_dev'])) {
 	    $listeDoc[$fileName.'.doc'] = $fileName.'.doc';
-	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" />'.$fileName.'.doc</a></div><div class="field"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'doc\');">'.$fileName.'.doc</a></div></div>';
+	    $docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionDevisPDF.submit();" onclick="ChangeDevisAction(\'Zieuter\');changeDevisFormat(\'doc\');">'.$fileName.'.doc</a></div></div>';
 	    $selected = ($selected == "") ? $fileName.'.doc' : $selected;
 	}
 	$out = '<form name="ActionDevisPDF" action="Devis.php" method="post">
@@ -645,10 +651,10 @@ function IsNumeric(input)
     }
 
     private function searchForm($datas) {
-	$script = '<script type="text/javascript">function autoCompletage() { new Ajax.Autocompleter("cpDevisSearch", "cpDevisSearch_choix", "../ajaxRef.php?action=listeCp", { paramName: "value", minChars: 2, indicator : "loadingCp" , afterUpdateElement : autoCompleteHidden } ); ';
+	$script = '<script type="text/javascript">new Ajax.Autocompleter("cpDevisSearch", "cpDevisSearch_choix", "../ajaxRef.php?action=listeCp", { paramName: "value", minChars: 2, indicator : "loadingCp" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("affaireDevisSearch", "affaireDevisSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'new Ajax.Autocompleter("entrepriseDevisSearch", "entrepriseDevisSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); ';
-	$script .= 'new Ajax.Autocompleter("userDevisSearch", "userDevisSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );} ';
+	$script .= 'new Ajax.Autocompleter("userDevisSearch", "userDevisSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } ); ';
 	$script .= 'function ChangeDevisID(value) { $(\'idDevisSearch\').value = value; } ';
 	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } ';
 	$script.= "function ChangeDevisResultPage(limit,from,order,sens) {
@@ -676,7 +682,7 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }';
 	$script .= '</script>';
 
-	$titre = '<img title="recherche" alt="Rechercher" onload="autoCompletage();" name="img" src="../img/prospec/voir.png" /> Recherche de devis';
+	$titre = '<img title="recherche" alt="Rechercher" name="img" src="../img/prospec/voir.png" /> Recherche de devis';
 	$corps = '<form name="searchDevis" action="DevisListe.php" method="post" id="searchFormDevis">';
 	$corps .= '<div id="PortletSearchDevis">';
 	$corps .= '<input type="hidden" name="action" value="searchDevis" id="listeDevisAction" />';
@@ -689,7 +695,7 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 	$corps .= '</div></form>';
 	$bouton = '<a name="reset" onclick="resetForm();"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
 	$bouton .= '<a name="valider" onclick="ChangeDevisAction(\'searchDevis\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
-	return generateZBox($titre,$titre,$corps.$script,$bouton,"searchBox",'');
+	return generateZBox($titre,$titre,$corps.$script,$bouton,"searchBox",'').$script;
     }
 
     private function interneSearch($datas) {
@@ -777,8 +783,8 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 	    $action = '';
 	    //traitement des boutons de modification et d'action
 	    // recherche du fichier PDF
-	    if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$v['dir_aff'].$GLOBALS['ZunoDevis']['file.suffixe'].$v['id_dev'].'.pdf') and verifDroitsAuto('devis', 62, $v['commercial_dev']))
-		$action   .= "<a href=\"${suffixeLink}draco/Devis.php?id_devis=".$v['id_dev']."&action=pdf\">".imageTag($suffixeLink.'img/prospec/devis.pdf.png','PDF')."</a> ";
+	    if (file_exists( $this->modelAffaire->getAffaireDirectoryPath($v).$GLOBALS['ZunoDevis']['file.suffixe'].$v['id_dev'].'.pdf') and verifDroitsAuto('devis', 62, $v['commercial_dev']))
+		$action   .= "<a href=\"${suffixeLink}draco/Devis.php?id_devis=".$v['id_dev']."&action=ZieuterPDF\">".imageTag($suffixeLink.'img/prospec/devis.pdf.png','PDF')."</a> ";
 	    // Clonage
 	    if(verifDroitsAuto('devis', 25, $v['commercial_dev']))
 		$action .= '<a title="Cloner" href="Devis.php?action=cloner&dev='.$v['id_dev'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.$suffixeLink.'img/prospec/devis.clone.png"/></a>';
@@ -875,7 +881,6 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 
 
     private function ResultGroupActionForm() {
-	$sql = new devisModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
 	$fieldset = new ZunoFieldset('Type d\'action','','height: 150px');
 	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'reinit', ' onclick="toggleSubGroupedAction(\'groupedSubActionReinit\')"'),'Re-initialiser ces devis','ZTips.devis.groupActionReinit');
@@ -905,7 +910,7 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 90px');
 	$fieldset->ligneInput('Titre du devis', 'titre_dev');
 	$fieldset->ligneFree('TVA',selectTVATag("tva_dev", array(), '', '', '', true));
-	$fieldset->ligneSelect('Commercial', 'commercial_dev','',$sql->getUser());
+	$fieldset->ligneSelect('Commercial', 'commercial_dev','',$this->model->getUser());
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
@@ -924,13 +929,13 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 
     public function creerDevis($mess = '', $data = array()) {
 
-	$script = '<script type="text/javascript">function autoCompletage() {new Ajax.Autocompleter("ACentreprise_dev", "ACentreprise_dev_choix", "../ajaxRef.php?action=listeEntAffDevis", { paramName: "value", minChars: 2, indicator : "loadingEnt", afterUpdateElement : autoCompleteChamps } );  ';
+	$script = '<script type="text/javascript">new Ajax.Autocompleter("ACentreprise_dev", "ACentreprise_dev_choix", "../ajaxRef.php?action=listeEntAffDevis", { paramName: "value", minChars: 2, indicator : "loadingEnt", afterUpdateElement : autoCompleteChamps } );  ';
 	$script .= "\n".'contact_completer = new Ajax.Autocompleter("ACcontact_dev", "ACcontact_dev_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_dev", afterUpdateElement : autoCompleteHiddenBis } ); ';
 	$script .= "\n".'contact2_completer = new Ajax.Autocompleter("ACcontact_achat_dev", "ACcontact_achat_dev_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_achat_dev", afterUpdateElement : autoCompleteHiddenBis } ); ';
 	if($mess != '' or $data != array())
-	    $script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); } ';
+	    $script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); ';
 	else
-	    $script .= "\n".'} ';
+	    $script .= "\n";
 	$script .= "\n".'function autoCompleteChamps(text, li) { id = li.title.split(\'-_-\'); $(\'ACaffaire_dev_hidden\').value = id[0]; $(\'ACentreprise_dev_hidden\').value = id[1]; $(\'devisadd\').value = id[2]; $(\'devisadd1\').value = id[3]; $(\'IDcpdelivery_dev\').value = id[4]; $(\'IDvilledelivery_dev\').options[0]= new Option(id[5], id[5]); $(\'ACpaysdelivery_devhidden\').value = id[6];  $(\'ACpaysdelivery_dev\').value = id[7];$(\'ACcontact_devhidden\').value = $(\'ACcontact_achat_devhidden\').value = id[8]; $(\'ACcontact_dev\').value = $(\'ACcontact_achat_dev\').value = id[9]+\' \'+id[10]+\' \'+id[11]; contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); contact2_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_dev_hidden\'); $(\'ACcontact_devAddImg\').style.display="inline"; $(\'ACcontact_achat_devAddImg\').style.display="inline"; } ';
 	$script .= "\n".'function autoCompleteHiddenBis(text, li) {$(text.id+\'hidden\').value = li.title; if(li.getAttribute(\'value\')) {var id = li.getAttribute(\'value\').split(\'-_-\'); $(\'devisadd\').value = id[0]; $(\'devisadd1\').value = id[1]; $(\'IDcpdelivery_dev\').value = id[2]; $(\'IDvilledelivery_dev\').options[0]= new Option(id[3], id[3]); $(\'ACpaysdelivery_devhidden\').value = id[4]; $(\'ACpaysdelivery_dev\').value = id[5];} }';
 	$script .= "\n".'function verifVide(objet) { if(objet.value == "") { if(objet.id == \'ACentreprise_dev\') {$(\'boutonSubmitForm\').style.display = \'none\';} { $(objet.id+\'hidden\').value = ""; } } } ';

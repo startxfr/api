@@ -1,5 +1,6 @@
 <?php
-loadPlugin(array('ZModels/CommandeModel','ZDoc/CommandeDoc','ZView/GeneralView', 'ZunoRenduHTML'));
+
+loadPlugin(array('ZModels/AffaireModel', 'ZModels/CommandeModel', 'ZDoc/CommandeDoc', 'ZView/GeneralView', 'ZunoRenduHTML'));
 
 /**
  * Classe qui gère les vues de la partie commande pour un rendu web classique
@@ -10,6 +11,14 @@ loadPlugin(array('ZModels/CommandeModel','ZDoc/CommandeDoc','ZView/GeneralView',
  */
 class commandeView extends generalView {
 
+    public $model;
+    public $modelAffaire;
+
+    function __construct() {
+	$this->model = new commandeModel();
+	$this->modelAffaire = new affaireModel();
+    }
+
     /**
      * Méthode qui affiche un popup de création d'une nouvelle commande
      * @param array $data Les données à afficher
@@ -18,15 +27,13 @@ class commandeView extends generalView {
      * @return string Le code HTML du popup
      */
     public function popupCommande($data, $light='', $mess='') {
-	if($light == 'erreurCmd') {
-	    return '<span class="important">'.$mess.'</span>'.$this->formPopupCmd($data);
-	}
-	elseif($light == 'ok') {
-	    return '<span class="importantgreen">'.$mess.'</span>';
-	}
-	else {
+	if ($light == 'erreurCmd') {
+	    return '<span class="important">' . $mess . '</span>' . $this->formPopupCmd($data);
+	} elseif ($light == 'ok') {
+	    return '<span class="importantgreen">' . $mess . '</span>';
+	} else {
 	    $titre = 'Nouvelle Commande';
-	    $corps .= '<div id="formAddCmdFromDevis">'.$this->formPopupCmd($data).'</div>';
+	    $corps .= '<div id="formAddCmdFromDevis">' . $this->formPopupCmd($data) . '</div>';
 	    $pied = '<a name="close" onclick="zuno.popup.close();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
 	    $pied .= '<a name="submit" onclick="validFormPopup();zuno.popup.close();"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
 	    return generateZBox($titre, $titre, $corps, $pied, 'popupAddCmd');
@@ -40,8 +47,8 @@ class commandeView extends generalView {
      */
     public function popupValidFacturation($id) {
 	$titre = 'Création Facture';
-	$corps = '<div id="formAddFact"><span class="importantgreen">Etes vous sûr de vouloir créer la facture associé à la commande '.$id.' et cloturer cette dernière ?</span></div>';
-	$corps .= '<form name="addFact" action="../facturier/Facture.php" method="POST"><input type="hidden" name="id_cmd" value="'.$id.'" /><input type="hidden" name="action" value="addFactFromCmd" /></form>';
+	$corps = '<div id="formAddFact"><span class="importantgreen">Etes vous sûr de vouloir créer la facture associé à la commande ' . $id . ' et cloturer cette dernière ?</span></div>';
+	$corps .= '<form name="addFact" action="../facturier/Facture.php" method="POST"><input type="hidden" name="id_cmd" value="' . $id . '" /><input type="hidden" name="action" value="addFactFromCmd" /></form>';
 	$pied = '<a onclick="javascript:zuno.popup.close();" ><img align="middle" title="Non" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Non</a>';
 	$pied .= '<a name="submit" href="javascript:document.forms.addFact.submit();"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/confirm.png"/>Oui</a>';
 	return generateZBox($titre, $titre, $corps, $pied, 'popupFact');
@@ -58,17 +65,17 @@ class commandeView extends generalView {
 	$corps .= '<th></th><th>Date</th><th>Titre</th><th>Utilisateur</th>';
 	$corps .= '</tr>';
 
-	foreach($datas as $v) {
-	    $corps .= '<tr class="altern'.($alternance % 2).'">
-			    <td class="nowrap"><img src=\'../img/actualite/'.$v['type'].'.png\' alt=\''.$v['type'].'\'/>'.$v['type'].'</td>
-			    <td class="barre nowrap">'.DateUniv2Human($v['date'],'shortdetail').'</td>
-			    <td class="barre"><b>'.$v['titre'].'</b><br/><span style="font-size:.8em;font-style:italic;">'.$v['desc'].'</span></td>
-			    <td class="barre nowrap">'.$v['user'].'</td></tr>';
+	foreach ($datas as $v) {
+	    $corps .= '<tr class="altern' . ($alternance % 2) . '">
+			    <td class="nowrap"><img src=\'../img/actualite/' . $v['type'] . '.png\' alt=\'' . $v['type'] . '\'/>' . $v['type'] . '</td>
+			    <td class="barre nowrap">' . DateUniv2Human($v['date'], 'shortdetail') . '</td>
+			    <td class="barre"><b>' . $v['titre'] . '</b><br/><span style="font-size:.8em;font-style:italic;">' . $v['desc'] . '</span></td>
+			    <td class="barre nowrap">' . $v['user'] . '</td></tr>';
 	    $alternance++;
 	}
 	$corps .= '</tbody></table></div>';
 
-	return generateZBox($titre,$titre,$corps,'',"popupAffaireActu",'');
+	return generateZBox($titre, $titre, $corps, '', "popupAffaireActu", '');
     }
 
     /**
@@ -80,68 +87,66 @@ class commandeView extends generalView {
 	$increment = 0;
 	$totalHT = 0;
 	$tag['script'] = '';
-	if(is_array($data['produits']))
-	    foreach($data['produits'] as $v) {
-		if($v['quantite_cmd'] == '')
+	if (is_array($data['produits']))
+	    foreach ($data['produits'] as $v) {
+		if ($v['quantite_cmd'] == '')
 		    $v['quantite_cmd'] = $v['quantite'];
-		if($v['stock_prod'] == '')
+		if ($v['stock_prod'] == '')
 		    $v['stock_prod'] = '0';
-		$tag['script'] .= 'produit['.$increment.']=\''.$v['id_produit'].'\'; ';
-		$tag['LinkBox'] = '<input type="hidden" name="id_produit['.$increment.']" value="'.$v['id_produit'].'" /><input type="hidden" name="desc['.$increment.']" value="'.$v['desc'].'" />'.$v['id_produit'];
+		$tag['script'] .= 'produit[' . $increment . ']=\'' . $v['id_produit'] . '\'; ';
+		$tag['LinkBox'] = '<input type="hidden" name="id_produit[' . $increment . ']" value="' . $v['id_produit'] . '" /><input type="hidden" name="desc[' . $increment . ']" value="' . $v['desc'] . '" />' . $v['id_produit'];
 		$tag['stock'] = prepareNombreAffichage($v['stock_prod']);
-		$tag['quantite'] = inputTag('text', 'quantite['.$increment.']', '', '', '', prepareNombreAffichage($v['quantite']), ' style="width:28px" readonly="readonly" id="'.$v['id_produit'].'qtt"');
-		$tag['prix'] = inputTag('text', 'prix['.$increment.']', '', '', '', prepareNombreAffichage($v['prix']), ' style="width:60px" readonly="readonly" id="'.$v['id_produit'].'prixC"').' &euro;';
-		$tag['remise'] = inputTag('text', 'remise['.$increment.']', '', '', '', prepareNombreAffichage($v['remise']), ' style="width:30px" readonly="readonly" id="'.$v['id_produit'].'remiseC"').' %';
-		$tag['total'] = $v['quantite']*$v['prix']*(1-$v['remise']/100);
+		$tag['quantite'] = inputTag('text', 'quantite[' . $increment . ']', '', '', '', prepareNombreAffichage($v['quantite']), ' style="width:28px" readonly="readonly" id="' . $v['id_produit'] . 'qtt"');
+		$tag['prix'] = inputTag('text', 'prix[' . $increment . ']', '', '', '', prepareNombreAffichage($v['prix']), ' style="width:60px" readonly="readonly" id="' . $v['id_produit'] . 'prixC"') . ' &euro;';
+		$tag['remise'] = inputTag('text', 'remise[' . $increment . ']', '', '', '', prepareNombreAffichage($v['remise']), ' style="width:30px" readonly="readonly" id="' . $v['id_produit'] . 'remiseC"') . ' %';
+		$tag['total'] = $v['quantite'] * $v['prix'] * (1 - $v['remise'] / 100);
 		$totalHT += $tag['total'];
-		if($v['fournisseurs'] != null) {
-		    $tag['quantiteF'] = inputTag('text', 'quantite_cmd['.$increment.']', '', '', '', prepareNombreAffichage($v['quantite_cmd']), ' style="width:28px" readonly="readonly" id="'.$v['id_produit'].'qtt_cmd" onchange="changeData(\''.$v['id_produit'].'\');" ');
-		    $tag['fournisseur'] = selectTag('fournisseur['.$increment.']', $v['fournisseurs'], prepareNombreAffichage($v['fournisseur']), '', 'id="'.$v['id_produit'].'fournisseur" onchange="aCVF(\''.$v['id_produit'].'\', this.value);" ', true);
-		    $tag['remiseF'] = inputTag('text', 'remiseF['.$increment.']', '', '', '', 0, ' style="width:30px" readonly="readonly" id="'.$v['id_produit'].'remiseF" onchange="changeData(\''.$v['id_produit'].'\');"').' %';
-		    $tag['prixF'] = inputTag('text', 'prixF['.$increment.']', '', '', '', 0, ' style="width:60px" readonly="readonly" id="'.$v['id_produit'].'prixF" onchange="changeData(\''.$v['id_produit'].'\');"').' &euro;';
+		if ($v['fournisseurs'] != null) {
+		    $tag['quantiteF'] = inputTag('text', 'quantite_cmd[' . $increment . ']', '', '', '', prepareNombreAffichage($v['quantite_cmd']), ' style="width:28px" readonly="readonly" id="' . $v['id_produit'] . 'qtt_cmd" onchange="changeData(\'' . $v['id_produit'] . '\');" ');
+		    $tag['fournisseur'] = selectTag('fournisseur[' . $increment . ']', $v['fournisseurs'], prepareNombreAffichage($v['fournisseur']), '', 'id="' . $v['id_produit'] . 'fournisseur" onchange="aCVF(\'' . $v['id_produit'] . '\', this.value);" ', true);
+		    $tag['remiseF'] = inputTag('text', 'remiseF[' . $increment . ']', '', '', '', 0, ' style="width:30px" readonly="readonly" id="' . $v['id_produit'] . 'remiseF" onchange="changeData(\'' . $v['id_produit'] . '\');"') . ' %';
+		    $tag['prixF'] = inputTag('text', 'prixF[' . $increment . ']', '', '', '', 0, ' style="width:60px" readonly="readonly" id="' . $v['id_produit'] . 'prixF" onchange="changeData(\'' . $v['id_produit'] . '\');"') . ' &euro;';
 
-		    $tag['script'] .= "prix['".$v['id_produit']."']= new Array(); remise['".$v['id_produit']."']= new Array(); ";
-		    foreach($v['fournisseurs'] as $kk => $vv) {
-			$tag['script'] .= "prix['".$v['id_produit']."']['".$kk."'] = '".prepareNombreTraitement($v['PF'][$kk])."'; ";
-			$tag['script'] .= "remise['".$v['id_produit']."']['".$kk."'] = '".prepareNombreTraitement($v['RF'][$kk])."'; ";
+		    $tag['script'] .= "prix['" . $v['id_produit'] . "']= new Array(); remise['" . $v['id_produit'] . "']= new Array(); ";
+		    foreach ($v['fournisseurs'] as $kk => $vv) {
+			$tag['script'] .= "prix['" . $v['id_produit'] . "']['" . $kk . "'] = '" . prepareNombreTraitement($v['PF'][$kk]) . "'; ";
+			$tag['script'] .= "remise['" . $v['id_produit'] . "']['" . $kk . "'] = '" . prepareNombreTraitement($v['RF'][$kk]) . "'; ";
 		    }
-		}
-		else {
+		} else {
 		    $tag['quantiteF'] = $tag['prixF'] = $tag['remiseF'] = '';
 		    $tag['fournisseur'] = '<i>Aucun fournisseur</i>';
 		}
 		$tag['id_produit'] = $v['id_produit'];
-		$tag['altern'] = ($increment%2);
+		$tag['altern'] = ($increment % 2);
 		$increment++;
-		$tmptab .= templating('draco/Devis2BDC.ListProduct.row',$tag);
+		$tmptab .= templating('draco/Devis2BDC.ListProduct.row', $tag);
 	    }
-	$tag['renew'] = inputTag('checkbox',"renew",'','','','1', 'onclick="if(this.checked) {$(\'renewPeriode\').style.display = \'table-row\';} else {$(\'renewPeriode\').style.display = \'none\';}"');
-	$tag['renewperiode']= HtmlForm::addAutoSelect('renewperiode','ref_renewperiode','','','','',$GLOBALS['PropsecConf']['DBPool']);
+	$tag['renew'] = inputTag('checkbox', "renew", '', '', '', '1', 'onclick="if(this.checked) {$(\'renewPeriode\').style.display = \'table-row\';} else {$(\'renewPeriode\').style.display = \'none\';}"');
+	$tag['renewperiode'] = HtmlForm::addAutoSelect('renewperiode', 'ref_renewperiode', '', '', '', '', $GLOBALS['PropsecConf']['DBPool']);
 	$tag['nom_cmd'] = inputTag('text', 'titre_cmd', '', '', '', $data['titre_dev']);
 	$tag['BDC'] = inputTag('text', 'BDCclient_cmd', '', '', '', $data['BDCclient_dev']);
 	$tag['totalHT'] = prepareNombreAffichage($totalHT);
 	$tag['id_dev'] = $data['id_dev'];
 	$tag['liste'] = $tmptab;
-	$sqlConn = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-	$sqlConn->makeRequeteFree("select id_modereg, nom_modereg from ref_modereglement;");
-	$temp = $sqlConn->process2();
-	$temp=$temp[1];
-	if($data['modereglement_cmd'] == '') {
+	$this->model->makeRequeteFree("select id_modereg, nom_modereg from ref_modereglement;");
+	$temp = $this->model->process2();
+	$temp = $temp[1];
+	if ($data['modereglement_cmd'] == '') {
 	    $data['modereglement_cmd'] = 3;
 	}
-	if($data['condireglement_cmd'] == '') {
+	if ($data['condireglement_cmd'] == '') {
 	    $data['condireglement_cmd'] = 4;
 	}
-	foreach($temp as $k => $v)
+	foreach ($temp as $k => $v)
 	    $list[$v['id_modereg']] = $v['nom_modereg'];
 	$tag['ModeReglement'] = selectTag('modereglement_cmd', $list, $data['modereglement_cmd']);
-	$sqlConn->makeRequeteFree("select id_condreg, nom_condreg from ref_condireglement;");
-	$temp = $sqlConn->process2();
-	$temp=$temp[1];
-	foreach($temp as $k => $v)
+	$this->model->makeRequeteFree("select id_condreg, nom_condreg from ref_condireglement;");
+	$temp = $this->model->process2();
+	$temp = $temp[1];
+	foreach ($temp as $k => $v)
 	    $list[$v['id_condreg']] = $v['nom_condreg'];
 	$tag['CondiReglement'] = selectTag('condireglement_cmd', $list, $data['condireglement_cmd']);
-	return templating('draco/Devis2BDC.ListProduct',$tag);
+	return templating('draco/Devis2BDC.ListProduct', $tag);
     }
 
     /**
@@ -152,43 +157,43 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     public function view($datas, $light, $mess) {
-	if(array_key_exists('out',$GLOBALS))
-	    $GLOBALS['out']->setTitle('Fiche commande "'.$datas['data']['id_cmd'].'" - '.$datas['data']['nom_ent'],'',true);
-	$script = '<script type="text/javascript">function autoCompletage() { new Ajax.Autocompleter("ACcontact_cmd", "ACcontact_cmd_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); ';
-	$script .= "\n".'new Ajax.Autocompleter("ACcontact_achat_cmd", "ACcontact_achat_cmd_choix", "../ajaxRef.php?action=listeContact&id_ent='.$datas['data']['id_ent'].'", { paramName: "value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden } );} ';
-	$script .= "\n".'function afficherFormModif(id) { if($(\'suisJeEnModif\').value != 0) { $($(\'suisJeEnModif\').value+\'M\').style.display = \'none\'; $($(\'suisJeEnModif\').value).style.display = \'table-row\'; } $(\'suisJeEnModif\').value = id; $(id).style.display = \'none\'; $(id+\'M\').style.display = \'table-row\';} ';
-	$script .= "\n".'function annulerModif() {$($(\'suisJeEnModif\').value+\'M\').style.display=\'none\'; $($(\'suisJeEnModif\').value).style.display=\'table-row\'; $(\'suisJeEnModif\').value = 0;} ';
-	$script .= "\n".'function calculette() { var id=$(\'suisJeEnModif\').value; var total = $(id+\'QTT\').value*$(id+\'PF\').value*(1-$(id+\'RF\').value/100); $(id+\'FHT\').value = Math.round(total*100)/100; $(id+\'HT\').value = Math.round(($(id+\'QTTC\').value*$(id+\'PC\').value*(1-($(id+\'RC\').value/100)))*100)/100; $(id+\'MARGE\').innerHTML = Math.round(($(id+\'HT\').value-total)*100)/100+\' &euro;\';} ';
-	foreach($datas['produits'] as $v) {
-	    if(is_array($v['fournisseurs'])) {
+	if (array_key_exists('out', $GLOBALS))
+	    $GLOBALS['out']->setTitle('Fiche commande "' . $datas['data']['id_cmd'] . '" - ' . $datas['data']['nom_ent'], '', true);
+	$script = '<script type="text/javascript">new Ajax.Autocompleter("ACcontact_cmd", "ACcontact_cmd_choix", "../ajaxRef.php?action=listeContact&id_ent=' . $datas['data']['id_ent'] . '", { paramName: "value", minChars: 2, indicator: "loadingCont",  afterUpdateElement : autoCompleteHidden } ); ';
+	$script .= "\n" . 'new Ajax.Autocompleter("ACcontact_achat_cmd", "ACcontact_achat_cmd_choix", "../ajaxRef.php?action=listeContact&id_ent=' . $datas['data']['id_ent'] . '", { paramName: "value", minChars: 2, indicator: "loadingCont2", afterUpdateElement : autoCompleteHidden } ); ';
+	$script .= "\n" . 'function afficherFormModif(id) { if($(\'suisJeEnModif\').value != 0) { $($(\'suisJeEnModif\').value+\'M\').style.display = \'none\'; $($(\'suisJeEnModif\').value).style.display = \'table-row\'; } $(\'suisJeEnModif\').value = id; $(id).style.display = \'none\'; $(id+\'M\').style.display = \'table-row\';} ';
+	$script .= "\n" . 'function annulerModif() {$($(\'suisJeEnModif\').value+\'M\').style.display=\'none\'; $($(\'suisJeEnModif\').value).style.display=\'table-row\'; $(\'suisJeEnModif\').value = 0;} ';
+	$script .= "\n" . 'function calculette() { var id=$(\'suisJeEnModif\').value; var total = $(id+\'QTT\').value*$(id+\'PF\').value*(1-$(id+\'RF\').value/100); $(id+\'FHT\').value = Math.round(total*100)/100; $(id+\'HT\').value = Math.round(($(id+\'QTTC\').value*$(id+\'PC\').value*(1-($(id+\'RC\').value/100)))*100)/100; $(id+\'MARGE\').innerHTML = Math.round(($(id+\'HT\').value-total)*100)/100+\' &euro;\';} ';
+	foreach ($datas['produits'] as $v) {
+	    if (is_array($v['fournisseurs'])) {
 		$script .= "\n prix = new Array(); remise = new Array(); ";
-		$script .= "\n"."prix['".$v['id']."']= new Array(); remise['".$v['id']."']= new Array(); ";
-		foreach($v['fournisseurs'] as $kk => $vv) {
-		    $script .= "prix['".$v['id']."']['".$kk."'] = '".prepareNombreTraitement($v['PF'][$kk])."'; ";
-		    $script .= "remise['".$v['id']."']['".$kk."'] = '".prepareNombreTraitement($v['RF'][$kk])."'; ";
+		$script .= "\n" . "prix['" . $v['id'] . "']= new Array(); remise['" . $v['id'] . "']= new Array(); ";
+		foreach ($v['fournisseurs'] as $kk => $vv) {
+		    $script .= "prix['" . $v['id'] . "']['" . $kk . "'] = '" . prepareNombreTraitement($v['PF'][$kk]) . "'; ";
+		    $script .= "remise['" . $v['id'] . "']['" . $kk . "'] = '" . prepareNombreTraitement($v['RF'][$kk]) . "'; ";
 		}
 	    }
 	}
-	$script .= "\n".'function ChangeCannevas() { var choix = document.getElementById(\'CannevasListe\').value; if(choix.length > 0) { document.getElementById(\'MessageTitle\').value =  CannevasTitre[choix]; document.getElementById(\'MessageToSend\').value = Cannevas[choix]; }  } ';
-	$script .= "\n".'function changeCommandeFormat(value) { $(\'formatCommandePDF\').value = value;} ';
-	$script .= "\n".'function montreForm(value) {if(value == \'mail\') {  $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') { champAdd(\'none\'); $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'table-row\'; $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') {  $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
-	$script .= "\n".'function champAdd(display) {$(\'champDestinataire\').style.display = $(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
-	$script .= "\n".'function changeFourn(produit, fourn) {if(fourn != "") {$(produit+\'PF\').value = prix[produit][fourn];$(produit+\'RF\').value = remise[produit][fourn]; calculette();} else {$(produit+\'PF\').value = 0; $(produit+\'RF\').value = 0; calculette();} } '."\n";
-	$script .= 'function ChangeCommandeAction(value) {	$(\'MakeCommandeAction\').value = value; }'."\n";
-	$script .= "\n".'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
-	$script .= "\n".'function autoRemplir(dest, id, val){$(dest).value=val; $(dest+\'hidden\').value=id; zuno.popup.close();}';
+	$script .= "\n" . 'function ChangeCannevas() { var choix = document.getElementById(\'CannevasListe\').value; if(choix.length > 0) { document.getElementById(\'MessageTitle\').value =  CannevasTitre[choix]; document.getElementById(\'MessageToSend\').value = Cannevas[choix]; }  } ';
+	$script .= "\n" . 'function changeCommandeFormat(value) { $(\'formatCommandePDF\').value = value;} ';
+	$script .= "\n" . 'function montreForm(value) {if(value == \'mail\') {  $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'table-row\'; champAdd(\'none\'); $(\'champEmail\').style.display = \'table-row\';} else if(value == \'fax\') { champAdd(\'none\'); $(\'champDestinataire\').style.display = $(\'champFax\').style.display = \'table-row\'; $(\'champEmail\').style.display =\'none\'; $(\'champCC\').style.display = \'none\';} else if(value == \'courrier\') {  $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = $(\'champEmail\').style.display = \'none\'; champAdd(\'table-row\')} else {$(\'champEmail\').style.display = $(\'champFax\').style.display = \'none\'; $(\'champCC\').style.display = \'none\'; champAdd(\'none\'); } } ';
+	$script .= "\n" . 'function champAdd(display) {$(\'champDestinataire\').style.display = $(\'champAdd1\').style.display = $(\'champAdd2\').style.display = $(\'champAdd3\').style.display = $(\'champAdd4\').style.display = display;} ';
+	$script .= "\n" . 'function changeFourn(produit, fourn) {if(fourn != "") {$(produit+\'PF\').value = prix[produit][fourn];$(produit+\'RF\').value = remise[produit][fourn]; calculette();} else {$(produit+\'PF\').value = 0; $(produit+\'RF\').value = 0; calculette();} } ' . "\n";
+	$script .= 'function ChangeCommandeAction(value) {	$(\'MakeCommandeAction\').value = value; }' . "\n";
+	$script .= "\n" . 'function verifAutocompleteur(champ) {if(champ.value == "" || champ.value == null) {$(champ.id+\'hidden\').value = "";} else if(!$(champ.id+\'_choix\').hasChildNodes()) {alert(\'Cette valeur n\\\'existe pas.\'); champ.value=$(champ.id+\'old\').value; setTimeout(function() { champ.focus(); }, 100) } } ';
+	$script .= "\n" . 'function autoRemplir(dest, id, val){$(dest).value=val; $(dest+\'hidden\').value=id; zuno.popup.close();}';
 	$script .= '</script>';
 
-	if($light == 'interneInfos')
-	    return '<span class="important">'.$mess.'</span>'.$this->blockInfosCommande($datas);
-	elseif($light == 'interneProduit')
-	    return '<span class="important">'.$mess.'</span>'.$this->interneProduits($datas);
-	elseif($light == 'interneTraitement')
-	    return '<span class="important">'.$mess.'</span>'.$this->interneTraitement($datas);
-	elseif($light == 'Traitement')
-	    return $this->traitement($datas, '<span class="important" style="text-align:center;">'.$mess.'</span>');
+	if ($light == 'interneInfos')
+	    return '<span class="important">' . $mess . '</span>' . $this->blockInfosCommande($datas);
+	elseif ($light == 'interneProduit')
+	    return '<span class="important">' . $mess . '</span>' . $this->interneProduits($datas);
+	elseif ($light == 'interneTraitement')
+	    return '<span class="important">' . $mess . '</span>' . $this->interneTraitement($datas);
+	elseif ($light == 'Traitement')
+	    return $this->traitement($datas, '<span class="important" style="text-align:center;">' . $mess . '</span>');
 	else
-	    return $script.$this->infosCommande($datas).$this->produits($datas).'<div id="traitementCommande">'.$this->traitement($datas).'</div>';
+	    return $this->infosCommande($datas) . $this->produits($datas) . '<div id="traitementCommande">' . $this->traitement($datas) . '</div>'.$script;
     }
 
     /**
@@ -197,21 +202,21 @@ class commandeView extends generalView {
      * @return string Le code HTML généré
      */
     private function infosCommande($datas) {
-	$titre = '<img src="../img/prospec/commande.png" alt="commande" title="Commande" onload="autoCompletage();" /> Informations sur la commande '.$datas['data']['id_cmd'];
+	$titre = '<img src="../img/prospec/commande.png" alt="commande" title="Commande" /> Informations sur la commande ' . $datas['data']['id_cmd'];
 
 	$corps = '<form name="ModifInfosCmd" action="#" method="post">';
 	$corps .= '<input type="hidden" name="action" value="modifCmd" />';
-	$corps .= '<input type="hidden" name="id_cmd" value="'.$datas['data']['id_cmd'].'" />';
+	$corps .= '<input type="hidden" name="id_cmd" value="' . $datas['data']['id_cmd'] . '" />';
 	$corps .= '<div id="ContenuFormInfosCmd">';
 	$corps .= $this->blockInfosCommande($datas);
 	$corps .= '</div></form>';
 	$pied = '<a title="Reset" href="javascript:document.ModifInfosCmd.reset();" ><img align="middle" title="Effacer" alt="Effacer" name="img" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	$pied .= (verifDroitsAuto('commande', 15, $datas['data']['commercial_cmd'])) ? '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'ModifInfosCmd\', \'../pegase/Commande.php\',\'ContenuFormInfosCmd\');"><img align="middle" title="Enregistrer" alt="Enregistrer" name="img" src="../img/prospec/record.png"/> Modifier cette commande</a>' : '';
+	$pied .= ( verifDroitsAuto('commande', 15, $datas['data']['commercial_cmd'])) ? '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'ModifInfosCmd\', \'../pegase/Commande.php\',\'ContenuFormInfosCmd\');"><img align="middle" title="Enregistrer" alt="Enregistrer" name="img" src="../img/prospec/record.png"/> Modifier cette commande</a>' : '';
 	if ($datas['data']['status_cmd'] >= '7') {
-	    $pied 	= "";
+	    $pied = "";
 	}
-	$pied .= '<a name="submit" onclick="return zuno.popup.open(\'pegase/Commande.php\', \'action=actuCommande&id_cmd='.$datas['data']['id_cmd'].'\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');"><img align="middle" title="Historique" alt="Historique" name="img" src="../img/prospec/actu.png"/> Historique de cette commande</a>';
-	return generateZBox($titre,$titre,$corps,$pied,'infosCmd','');
+	$pied .= '<a name="submit" onclick="return zuno.popup.open(\'pegase/Commande.php\', \'action=actuCommande&id_cmd=' . $datas['data']['id_cmd'] . '\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');"><img align="middle" title="Historique" alt="Historique" name="img" src="../img/prospec/actu.png"/> Historique de cette commande</a>';
+	return generateZBox($titre, $titre, $corps, $pied, 'infosCmd', '');
     }
 
     /**
@@ -220,44 +225,44 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     private function blockInfosCommande($datas) {
-	$Ncont = ($datas['data']['nom_cont'] != '') ? $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'] : '';
-	$Nachat = ($datas['data']['nom_achat'] != '') ? $datas['data']['civ_achat'].' '.$datas['data']['prenom_achat'].' '.$datas['data']['nom_achat'] : '';
+	$Ncont = ($datas['data']['nom_cont'] != '') ? $datas['data']['civ_cont'] . ' ' . $datas['data']['prenom_cont'] . ' ' . $datas['data']['nom_cont'] : '';
+	$Nachat = ($datas['data']['nom_achat'] != '') ? $datas['data']['civ_achat'] . ' ' . $datas['data']['prenom_achat'] . ' ' . $datas['data']['nom_achat'] : '';
 
 	$out = '<div class="block width50">';
 	$out .= '<fieldset class="form" style="height:183px"><legend>Informations sur la commande</legend>';
-	if($datas['data']['id_fact'] != '' or $datas['data']['id_dev'] != '' or $datas['data']['id_aff'] != '') {
-	    if($datas['data']['id_aff'] != '') {
+	if ($datas['data']['id_fact'] != '' or $datas['data']['id_dev'] != '' or $datas['data']['id_aff'] != '') {
+	    if ($datas['data']['id_aff'] != '') {
 		$out .= '<div class="row"><div class="label">Affaire : </div>';
-		$out .= '<div class="field"><a href="../draco/Affaire.php?id_aff='.$datas['data']['id_aff'].'"><img src="../img/actualite/affaire.png" title="Affaire", alt="affaire" /> '.$datas['data']['id_aff'].' - '.$datas['data']['titre_aff'].' </a></div></div>';
+		$out .= '<div class="field"><a href="../draco/Affaire.php?id_aff=' . $datas['data']['id_aff'] . '"><img src="../img/actualite/affaire.png" title="Affaire", alt="affaire" /> ' . $datas['data']['id_aff'] . ' - ' . $datas['data']['titre_aff'] . ' </a></div></div>';
 	    }
-	    if($datas['data']['id_dev'] != '') {
+	    if ($datas['data']['id_dev'] != '') {
 		$out .= '<div class="row"><div class="label">Devis : </div>';
-		$out .= '<div class="field"><a href="../draco/Devis.php?id_dev='.$datas['data']['id_dev'].'"><img src="../img/actualite/devis.png" title="Devis", alt="devis" /> '.$datas['data']['id_dev'].' - '.$datas['data']['titre_dev'].'</a></div></div>';
+		$out .= '<div class="field"><a href="../draco/Devis.php?id_dev=' . $datas['data']['id_dev'] . '"><img src="../img/actualite/devis.png" title="Devis", alt="devis" /> ' . $datas['data']['id_dev'] . ' - ' . $datas['data']['titre_dev'] . '</a></div></div>';
 	    }
-	    if($datas['data']['id_fact'] != '') {
+	    if ($datas['data']['id_fact'] != '') {
 		$out .= '<div class="row"><div class="label">Facture : </div>';
-		$out .= '<div class="field"><a href="../facturier/Facture.php?id_fact='.$datas['data']['id_fact'].'"><img src="../img/actualite/facture.png" title="Facture", alt="facture"> '.$datas['data']['id_fact'].' - '.$datas['data']['titre_fact'].'</a></div></div>';
+		$out .= '<div class="field"><a href="../facturier/Facture.php?id_fact=' . $datas['data']['id_fact'] . '"><img src="../img/actualite/facture.png" title="Facture", alt="facture"> ' . $datas['data']['id_fact'] . ' - ' . $datas['data']['titre_fact'] . '</a></div></div>';
 	    }
 	}
 	$out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.infoDateCree);">Créé le : </div>
-                    <div class="field">'.DateUniv2Human($datas['data']['daterecord_cmd'], 'simpleLong').'</div>
+                    <div class="field">' . DateUniv2Human($datas['data']['daterecord_cmd'], 'simpleLong') . '</div>
 		</div>
 		<div class="row"> 
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.infoDateModif);">Modifié le : </div>
-                    <div class="field">'.DateUniv2Human($datas['data']['datemodif_cmd'], 'simpleLong').'</div>
+                    <div class="field">' . DateUniv2Human($datas['data']['datemodif_cmd'], 'simpleLong') . '</div>
 		</div>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.infoTitre);">Titre</div>';
-	$out .= '<div class="field">'.inputTag('text', 'titre_cmd', '', '', '', $datas['data']['titre_cmd']).'</div>';
+	$out .= '<div class="field">' . inputTag('text', 'titre_cmd', '', '', '', $datas['data']['titre_cmd']) . '</div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.infoBDCC);">BDC client</div>';
-	$out .= '<div class="field">'.inputTag('text', 'BDCclient_cmd', '', '', '', $datas['data']['BDCclient_cmd']).'</div>';
+	$out .= '<div class="field">' . inputTag('text', 'BDCclient_cmd', '', '', '', $datas['data']['BDCclient_cmd']) . '</div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.statut);">Statut</div>';
-	$out .= '<div class="field" style="color: #'.$datas['data']['color_stcmd'].'"><div class="square" style="background-color:#'.$datas['data']['color_stcmd'].';">&nbsp;</div> '.$datas['data']['nom_stcmd'].'</div>';
+	$out .= '<div class="field" style="color: #' . $datas['data']['color_stcmd'] . '"><div class="square" style="background-color:#' . $datas['data']['color_stcmd'] . ';">&nbsp;</div> ' . $datas['data']['nom_stcmd'] . '</div>';
 	$out .= '</div>';
 	$out .= '</fieldset></div>';
 
@@ -266,62 +271,63 @@ class commandeView extends generalView {
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryNom);">Nom</div>';
 	if ($datas['data']['type_ent'] != '')
-	    $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$datas['data']['type_ent'].'.png',$datas['data']['nom_tyent']).' '.$datas['data']['nom_ent'];
-	else $datas['data']['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').'<i>Particulier</i>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+	    $datas['data']['nom_ent'] = imageTag('../img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/' . $datas['data']['type_ent'] . '.png', $datas['data']['nom_tyent']) . ' ' . $datas['data']['nom_ent'];
+	else
+	    $datas['data']['nom_ent'] = imageTag('../img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/particulier.png', 'particulier') . '<i>Particulier</i>';
+	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent=' . $datas['data']['id_ent'] . '\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >' . $datas['data']['nom_ent'] . ' (' . $datas['data']['cp_ent'] . ')</a></div>';
 	$out .= '</div>';
 	$out .= '<div class="row oblig">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd);">Adresse</div>';
-	$out .= '<div class="field">'.inputTag('text', 'adressedelivery_cmd', '', '', '', $datas['data']['adressedelivery_cmd']).'</div>';
+	$out .= '<div class="field">' . inputTag('text', 'adressedelivery_cmd', '', '', '', $datas['data']['adressedelivery_cmd']) . '</div>';
 	$out .= '</div>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryAdd2);">Complément</div>';
-	$out .= '<div class="field">'.inputTag('text', 'adresse1delivery_cmd', '', '', '', $datas['data']['adresse1delivery_cmd']).'</div>';
+	$out .= '<div class="field">' . inputTag('text', 'adresse1delivery_cmd', '', '', '', $datas['data']['adresse1delivery_cmd']) . '</div>';
 	$out .= '</div>';
 	$out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryCpVille);">CP - Ville</div>
-                    <div class="field">'.inputTag('text', "cpdelivery_cmd", 'civ', '', '6', $datas['data']['cpdelivery_cmd'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'cmdVille\');"').'<select name=\'villedelivery_cmd\'  id="cmdVille"  onblur="finishEditing();" onclick="beginEditing(this);" class="nextciv"><option value=""> </option><option value="'.$datas['data']['villedelivery_cmd'].'" selected="selected">'.$datas['data']['villedelivery_cmd'].'</option></select></div>
+                    <div class="field">' . inputTag('text', "cpdelivery_cmd", 'civ', '', '6', $datas['data']['cpdelivery_cmd'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'cmdVille\');"') . '<select name=\'villedelivery_cmd\'  id="cmdVille"  onblur="finishEditing();" onclick="beginEditing(this);" class="nextciv"><option value=""> </option><option value="' . $datas['data']['villedelivery_cmd'] . '" selected="selected">' . $datas['data']['villedelivery_cmd'] . '</option></select></div>
 		</div>';
 	$out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryPays);">Pays</div>
-                    <div class="field">'.selectTag('paysdelivery_cmd',$datas['pays'],$datas['data']['paysdelivery_cmd']).'</div>
+                    <div class="field">' . selectTag('paysdelivery_cmd', $datas['pays'], $datas['data']['paysdelivery_cmd']) . '</div>
 		</div>
                 <div class="row">
                     <div class="label">Complément de livraison</div>
-                    <div class="field"><textarea name="complementdelivery_cmd" cols="55" rows="1">'.$datas['data']['complementdelivery_cmd'].'</textarea></div>
+                    <div class="field"><textarea name="complementdelivery_cmd" cols="55" rows="1">' . $datas['data']['complementdelivery_cmd'] . '</textarea></div>
                 </div>
 		<div class="row"> 
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryMail);">Mail</div>
-                    <div class="field">'.inputTag('text', "maildelivery_cmd", '', '', '30', $datas['data']['maildelivery_cmd']).'</div>
+                    <div class="field">' . inputTag('text', "maildelivery_cmd", '', '', '30', $datas['data']['maildelivery_cmd']) . '</div>
 		</div></fieldset></div>';
 	$out .= '<div class="block width50">';
 	$out .= '<fieldset class="form" style="height:100px"><legend>Informations sur les contacts</legend>';
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.entreprise);">Entreprise</div>';
-	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent='.$datas['data']['id_ent'].'\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >'.$datas['data']['nom_ent'].' ('.$datas['data']['cp_ent'].')</a></div>';
+	$out .= '<div class="field"><a href="#" id="entrepriseFiche" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\',\'id_ent=' . $datas['data']['id_ent'] . '\',950,200,\'\',\'\',\'resize\',\'Entreprise\');" title="#" >' . $datas['data']['nom_ent'] . ' (' . $datas['data']['cp_ent'] . ')</a></div>';
 	$out .= '</div>';
 	$out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactTech);">Contact Tech</div>
-                    <div class="field">'.inputTag('text', 'contact_cmd2','icon2', '', '16',$Ncont, ' id="ACcontact_cmd" onchange="verifAutocompleteur(this);" ').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
-                    <input type="hidden" name="contact_cmd" id="ACcontact_cmdhidden" value="'.$datas['data']['contact_cmd'].'" /><input type="hidden" name="contold" id="ACcontact_cmdold" value="'.$Ncont.'" />
+                    <div class="field">' . inputTag('text', 'contact_cmd2', 'icon2', '', '16', $Ncont, ' id="ACcontact_cmd" onchange="verifAutocompleteur(this);" ') . '<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise=' . $datas['data']['id_ent'] . '&idChamp=ACcontact_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+                    <input type="hidden" name="contact_cmd" id="ACcontact_cmdhidden" value="' . $datas['data']['contact_cmd'] . '" /><input type="hidden" name="contold" id="ACcontact_cmdold" value="' . $Ncont . '" />
                     <div id="ACcontact_cmd_choix" class="autocomplete" style="display:none;"></div>
 		</div>';
 	$out .= '<div class="row oblig">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.contactAchat);">Contact Achat</div>
-                    <div class="field">'.inputTag('text', 'contact_achat_cmd2','icon2', '', '16',$Nachat, ' id="ACcontact_achat_cmd" onchange="verifAutocompleteur(this);"').'<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise='.$datas['data']['id_ent'].'&idChamp=ACcontact_achat_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise='.$data['id_ent'].'&idChamp=ACcontact_achat_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
-                    <input type="hidden" name="contact_achat_cmd" id="ACcontact_achat_cmdhidden" value="'.$datas['data']['contact_achat_cmd'].'" /><input type="hidden" name="oldCont" id="ACcontact_achat_cmdold" value="'.$Nachat.'" />
+                    <div class="field">' . inputTag('text', 'contact_achat_cmd2', 'icon2', '', '16', $Nachat, ' id="ACcontact_achat_cmd" onchange="verifAutocompleteur(this);"') . '<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Commande.php\', \'action=addContCmd&entreprise=' . $datas['data']['id_ent'] . '&idChamp=ACcontact_achat_cmd\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_achat_cmd\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+                    <input type="hidden" name="contact_achat_cmd" id="ACcontact_achat_cmdhidden" value="' . $datas['data']['contact_achat_cmd'] . '" /><input type="hidden" name="oldCont" id="ACcontact_achat_cmdold" value="' . $Nachat . '" />
                     <div id="ACcontact_achat_cmd_choix" class="autocomplete" style="display:none;"></div>
 		</div>';
 	$out .= '<div class="row oblig">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.commercial);">Commercial</div>';
-	$out .= '<div class="field">'.selectTag('commercial_cmd',$datas['user'],$datas['data']['commercial_cmd'],'','',false).'</div>';
+	$out .= '<div class="field">' . selectTag('commercial_cmd', $datas['user'], $datas['data']['commercial_cmd'], '', '', false) . '</div>';
 	$out .= '</div>';
 	$out .= '</fieldset>';
 	$out .= '<fieldset class="form" style="height:60px"><legend>Commentaires de la commande</legend>';
 	$out .= '<div class="row">
                     <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.deliveryComplement);">Commentaires</div>
                     <div class="field">
-			<textarea name="commentaire_cmd" cols="55" rows="2">'.$datas['data']['commentaire_cmd'].'</textarea></div>
+			<textarea name="commentaire_cmd" cols="55" rows="2">' . $datas['data']['commentaire_cmd'] . '</textarea></div>
 		</div>';
 	$out .= '</fieldset></div>';
 	return $out;
@@ -333,16 +339,16 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     private function produits($datas) {
-	$titre = imageTag('../img/prospec/commande.png','commande').' Produits de la commande '.$datas['data']['id_cmd'];
+	$titre = imageTag('../img/prospec/commande.png', 'commande') . ' Produits de la commande ' . $datas['data']['id_cmd'];
 	$corps = '<form name="productCmd" action="#" method="post">';
-	$corps .= '<input type="hidden" name="id_cmd" value="'.$datas['data']['id_cmd'].'" />';
+	$corps .= '<input type="hidden" name="id_cmd" value="' . $datas['data']['id_cmd'] . '" />';
 	$corps .= '<input type="hidden" name="enmodif" value="0" id="suisJeEnModif" />';
 	$corps .= '<input type="hidden" name="action" value="modifProd" />';
 	$corps .= '<div class="blockTable" id="contenuProdCmd">';
 	$corps .= $this->interneProduits($datas);
 	$corps .= '</div></form>';
 
-	return generateZBox($titre,$titre,$corps,'','produitsCommande','');
+	return generateZBox($titre, $titre, $corps, '', 'produitsCommande', '');
     }
 
     /**
@@ -373,60 +379,58 @@ class commandeView extends generalView {
 			<th style="width: 110px">Total</th>
 		</tr>';
 	$alternance = $numero = $HT = $FHT = 0;
-	foreach($datas['produits'] as $v) {
-	    $totalC = $v['prix']*$v['quantite']*(1-$v['remise']/100);
+	foreach ($datas['produits'] as $v) {
+	    $totalC = $v['prix'] * $v['quantite'] * (1 - $v['remise'] / 100);
 	    $HT += $totalC;
-	    $totalF = $v['prixF2']*$v['quantite_cmd']*(1-$v['remiseF2']/100);
+	    $totalF = $v['prixF2'] * $v['quantite_cmd'] * (1 - $v['remiseF2'] / 100);
 	    $FHT += $totalF;
-	    $out .= '<tr class="altern'.$alternance.'" id="'.$v['id'].'">';
-	    $out2 = '<tr class="altern'.$alternance.'" id="'.$v['id'].'M" style="display:none;">';
-	    $out .= '<td id="ID'.$v['id'].'">'.$v['id_produit'].'</td>';
-	    $out2 .= '<td>'.$v['id_produit'].'</td>';
-	    $out .= '<td>'.$v['desc'].'</td>';
-	    $out2 .= '<td>'.$v['desc'].'</td>';
-	    if($v['fournisseur'] != '') {
-		$out .= '<td class="barre"><a name="fourn'.$v['fournisseur'].'" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'id_fourn='.$v['fournisseur'].'\', \'950\', \'220\',\'\',\'\', \'resize\', \'Fournisseur\')"><img alt="fourn" title="Fournisseur" src="../img/prospec/TypeEntreprise/5.png" /> '.$v['fournisseurs'][$v['fournisseur']].'</a></td>';
-		$out2 .= '<td class="barre">'.selectTag('fournisseur['.$v['id'].']', $v['fournisseurs'], $v['fournisseur'], '', 'onchange="changeFourn(\''.$v['id'].'\', this.value);"').'</td>';
-	    }
-	    else {
+	    $out .= '<tr class="altern' . $alternance . '" id="' . $v['id'] . '">';
+	    $out2 = '<tr class="altern' . $alternance . '" id="' . $v['id'] . 'M" style="display:none;">';
+	    $out .= '<td id="ID' . $v['id'] . '">' . $v['id_produit'] . '</td>';
+	    $out2 .= '<td>' . $v['id_produit'] . '</td>';
+	    $out .= '<td>' . $v['desc'] . '</td>';
+	    $out2 .= '<td>' . $v['desc'] . '</td>';
+	    if ($v['fournisseur'] != '') {
+		$out .= '<td class="barre"><a name="fourn' . $v['fournisseur'] . '" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'id_fourn=' . $v['fournisseur'] . '\', \'950\', \'220\',\'\',\'\', \'resize\', \'Fournisseur\')"><img alt="fourn" title="Fournisseur" src="../img/prospec/TypeEntreprise/5.png" /> ' . $v['fournisseurs'][$v['fournisseur']] . '</a></td>';
+		$out2 .= '<td class="barre">' . selectTag('fournisseur[' . $v['id'] . ']', $v['fournisseurs'], $v['fournisseur'], '', 'onchange="changeFourn(\'' . $v['id'] . '\', this.value);"') . '</td>';
+	    } else {
 		$out .= '<td class="barre"><i>Aucun fournisseur pour ce produit</i></td>';
 	    }
-	    $out .= '<td class="barre">'.$v['stock_prod'].'</td>';
-	    $out2 .= '<td class="barre">'.$v['stock_prod'].'</td>';
-	    $out .= '<td>'.$v['quantite'].'</td>';
-	    $out2 .= '<td>'.inputTag('text', 'quantite['.$v['id'].']', '', '', '', $v['quantite'], 'id="'.$v['id'].'QTTC" style="width:28px;" onchange="calculette();"').'</td>';
-	    $out .= '<td>'.prepareNombreAffichage($v['prix']).' &euro;</td>';
-	    $out2 .= '<td>'.inputTag('text', 'prix['.$v['id'].']', '', '', '', $v['prix'], 'id="'.$v['id'].'PC" style="width:60px;" onchange="calculette();"').' &euro;</td>';
-	    $out .= '<td>'.prepareNombreAffichage($v['remise']).' %</td>';
-	    $out2 .= '<td>'.inputTag('text', 'remise['.$v['id'].']', '', '', '', $v['remise'], 'id="'.$v['id'].'RC" style="width:30px;" onchange="calculette();"').' %</td>';
-	    $out .= '<td class="barre">'.prepareNombreAffichage($totalC).' &euro;</td>';
-	    $out2 .= '<td class="barre" nowrap="nowrap">'.inputTag('text', 'total', '', '', '', prepareNombreTraitement($totalC), 'id="'.$v['id'].'HT" readonly="readonly" style="width:80px"').' &euro;</td>';
-	    if($v['fournisseur'] != '') {
-		$out .= '<td>'.$v['quantite_cmd'].'</td>';
-		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'quantite_cmd['.$v['id'].']', '', '', '', $v['quantite_cmd'], 'id="'.$v['id'].'QTT" style="width:28px;" onchange="calculette();"').'</td>';
-		$out .= '<td>'.prepareNombreAffichage($v['prixF2']).' &euro;</td>';
-		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'prixF['.$v['id'].']', '', '', '', $v['prixF2'], 'id="'.$v['id'].'PF" style="width:60px;" onchange="calculette();"').' &euro;</td>';
-		$out .= '<td>'.prepareNombreAffichage($v['remiseF2']).' %</td>';
-		$out2 .= '<td nowrap="nowrap">'.inputTag('text', 'remiseF['.$v['id'].']', '', '', '', $v['remiseF2'], 'id="'.$v['id'].'RF" style="width:30px;" onchange="calculette();"').' %</td>';
-		$out .= '<td class="barre">'.prepareNombreAffichage($totalF).' &euro;</td>';
-		$out2 .= '<td class="barre" nowrap="nowrap">'.inputTag('text', 'totalF', '', '', '', $totalF, 'id="'.$v['id'].'FHT" readonly="readonly" style="width:80px"').' &euro;</td>';
-	    }
-	    else {
+	    $out .= '<td class="barre">' . $v['stock_prod'] . '</td>';
+	    $out2 .= '<td class="barre">' . $v['stock_prod'] . '</td>';
+	    $out .= '<td>' . $v['quantite'] . '</td>';
+	    $out2 .= '<td>' . inputTag('text', 'quantite[' . $v['id'] . ']', '', '', '', $v['quantite'], 'id="' . $v['id'] . 'QTTC" style="width:28px;" onchange="calculette();"') . '</td>';
+	    $out .= '<td>' . prepareNombreAffichage($v['prix']) . ' &euro;</td>';
+	    $out2 .= '<td>' . inputTag('text', 'prix[' . $v['id'] . ']', '', '', '', $v['prix'], 'id="' . $v['id'] . 'PC" style="width:60px;" onchange="calculette();"') . ' &euro;</td>';
+	    $out .= '<td>' . prepareNombreAffichage($v['remise']) . ' %</td>';
+	    $out2 .= '<td>' . inputTag('text', 'remise[' . $v['id'] . ']', '', '', '', $v['remise'], 'id="' . $v['id'] . 'RC" style="width:30px;" onchange="calculette();"') . ' %</td>';
+	    $out .= '<td class="barre">' . prepareNombreAffichage($totalC) . ' &euro;</td>';
+	    $out2 .= '<td class="barre" nowrap="nowrap">' . inputTag('text', 'total', '', '', '', prepareNombreTraitement($totalC), 'id="' . $v['id'] . 'HT" readonly="readonly" style="width:80px"') . ' &euro;</td>';
+	    if ($v['fournisseur'] != '') {
+		$out .= '<td>' . $v['quantite_cmd'] . '</td>';
+		$out2 .= '<td nowrap="nowrap">' . inputTag('text', 'quantite_cmd[' . $v['id'] . ']', '', '', '', $v['quantite_cmd'], 'id="' . $v['id'] . 'QTT" style="width:28px;" onchange="calculette();"') . '</td>';
+		$out .= '<td>' . prepareNombreAffichage($v['prixF2']) . ' &euro;</td>';
+		$out2 .= '<td nowrap="nowrap">' . inputTag('text', 'prixF[' . $v['id'] . ']', '', '', '', $v['prixF2'], 'id="' . $v['id'] . 'PF" style="width:60px;" onchange="calculette();"') . ' &euro;</td>';
+		$out .= '<td>' . prepareNombreAffichage($v['remiseF2']) . ' %</td>';
+		$out2 .= '<td nowrap="nowrap">' . inputTag('text', 'remiseF[' . $v['id'] . ']', '', '', '', $v['remiseF2'], 'id="' . $v['id'] . 'RF" style="width:30px;" onchange="calculette();"') . ' %</td>';
+		$out .= '<td class="barre">' . prepareNombreAffichage($totalF) . ' &euro;</td>';
+		$out2 .= '<td class="barre" nowrap="nowrap">' . inputTag('text', 'totalF', '', '', '', $totalF, 'id="' . $v['id'] . 'FHT" readonly="readonly" style="width:80px"') . ' &euro;</td>';
+	    } else {
 		$out .= '<td colspan="4" class="barre" style="text-align:center"><i>non applicable</i></td>';
 	    }
-	    $out .= '<td class="barre">'.prepareNombreAffichage(($totalC-$totalF)).' &euro;</td>';
-	    $out2 .= '<td class="barre" nowrap="nowrap" id="'.$v['id'].'MARGE">'.prepareNombreAffichage(($totalC-$totalF)).' &euro;</td>';
-	    if($datas['data']['status_cmd'] <= 2 and $v['fournisseur'] != '')
-		$out .= '<td class="center"><a name="modif" onclick="afficherFormModif(\''.$v['id'].'\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/commande.modif.png"/></a></td>';
+	    $out .= '<td class="barre">' . prepareNombreAffichage(($totalC - $totalF)) . ' &euro;</td>';
+	    $out2 .= '<td class="barre" nowrap="nowrap" id="' . $v['id'] . 'MARGE">' . prepareNombreAffichage(($totalC - $totalF)) . ' &euro;</td>';
+	    if ($datas['data']['status_cmd'] <= 2 and $v['fournisseur'] != '')
+		$out .= '<td class="center"><a name="modif" onclick="afficherFormModif(\'' . $v['id'] . '\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/commande.modif.png"/></a></td>';
 	    else
 		$out .= '<td class="center"> - </td>';
 	    $modif = (verifDroitsAuto('commande', 15, $datas['data']['commercial_cmd'])) ? '<a name="modif" onclick="zuno.business.formTools.sendFormAjah(\'productCmd\', \'pegase/Commande.php\',\'contenuProdCmd\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/commande.add.png"/></a>' : '';
-	    $out2 .= '<td class="center">'.$modif.'<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="../img/prospec/cancel.png" /></a></td>';
+	    $out2 .= '<td class="center">' . $modif . '<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="../img/prospec/cancel.png" /></a></td>';
 	    $out .= '</tr>';
 	    $out2 .= '</tr>';
 	    $out .= $out2;
 	    $numero++;
-	    $alternance = $numero%2;
+	    $alternance = $numero % 2;
 	}
 	$out .= '<tr>
 				<th colspan="5" rowspan="2"> </th>
@@ -434,12 +438,12 @@ class commandeView extends generalView {
 			</tr>
 			<tr class="titre noround roundbottom"> 
 				<th nowrap="nowrap" class="bordG">HT Client</th>
-				<th id="TotalHT" nowrap="nowrap">'.prepareNombreAffichage($HT).' &euro;</th>
+				<th id="TotalHT" nowrap="nowrap">' . prepareNombreAffichage($HT) . ' &euro;</th>
 				<th colspan="3" class="right">
 				HT Fournisseur</th>
-				<th id="TotalHTF" nowrap="nowrap">'.prepareNombreAffichage($FHT).' &euro;</th>
+				<th id="TotalHTF" nowrap="nowrap">' . prepareNombreAffichage($FHT) . ' &euro;</th>
 				<th>Marge</th>
-				<th id="TotalMarge" nowrap="nowrap" colspan="2" class="bordD">'.prepareNombreAffichage(($HT-$FHT)).' &euro;</th>
+				<th id="TotalMarge" nowrap="nowrap" colspan="2" class="bordD">' . prepareNombreAffichage(($HT - $FHT)) . ' &euro;</th>
 			</tr>';
 	$out .= '</tbody></table>';
 	return $out;
@@ -452,63 +456,61 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     private function traitement($datas, $mess = '') {
-	$i=0;
+	$i = 0;
 	$input = array();
-	$output= array();
-	$cleanFrom = array("\n","\t","\r");
-	$cleanTo  = array("\\n","\\t","\\r");
+	$output = array();
+	$cleanFrom = array("\n", "\t", "\r");
+	$cleanTo = array("\\n", "\\t", "\\r");
 	foreach ($datas['data'] as $in => $out) {
-	    $cleanFrom[] = "{".$in."}";
+	    $cleanFrom[] = "{" . $in . "}";
 	    $cleanTo[] = $out;
 	}
 	loadPlugin(array('docGenerator'));
 	foreach ($a = docGeneratorGetZunoConfInfo() as $in => $out) {
-	    $cleanFrom[] = "{".$in."}";
+	    $cleanFrom[] = "{" . $in . "}";
 	    $cleanTo[] = $out;
 	}
 	$outJS = '<script type="text/javascript">';
 	$outJS .='Cannevas = new Array(); ';
 	$outJS .='CannevasTitre = new Array(); ';
 	foreach ($GLOBALS['ZunoSendMail'] as $key => $val) {
-	    $k = explode('.',$key,2);
-	    if($k[0] == 'texte') {
-		$key = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoSendMail']['dir.texte'].$k[1];
-		$outJS .="\tCannevas[\"".$i."\"] = \"".str_replace($cleanFrom,$cleanTo,addslashes(trim(ProcessTemplating($key,$input,$output))))."\";\n";
-		$outJS .="\tCannevasTitre[\"".$i."\"] = \"".str_replace($cleanFrom,$cleanTo,addslashes(trim($val)))."\";\n";
+	    $k = explode('.', $key, 2);
+	    if ($k[0] == 'texte') {
+		$key = $GLOBALS['SVN_Pool1']['WorkCopy'] . $GLOBALS['SVN_Pool1']['WorkDir'] . $GLOBALS['ZunoSendMail']['dir.texte'] . $k[1];
+		$outJS .="\tCannevas[\"" . $i . "\"] = \"" . str_replace($cleanFrom, $cleanTo, addslashes(trim(ProcessTemplating($key, $input, $output)))) . "\";\n";
+		$outJS .="\tCannevasTitre[\"" . $i . "\"] = \"" . str_replace($cleanFrom, $cleanTo, addslashes(trim($val))) . "\";\n";
 		$i++;
 	    }
 	}
 	$outJS .= '</script>';
 
-	$corps = '<div id="ContenuTraitementCommande" >'.$mess.$this->interneTraitement($datas).'</div>';
+	$corps = '<div id="ContenuTraitementCommande" >' . $mess . $this->interneTraitement($datas) . '</div>';
 
-	if($datas['data']['status_cmd'] == "1" and verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd'])) {
+	if ($datas['data']['status_cmd'] == "1" and verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd'])) {
 	    $bouton = '<a name="valid" onclick="ChangeCommandeAction(\'Valid\');zuno.business.formTools.sendFormAjah(\'ActionCommande\', \'pegase/Commande.php\',\'traitementCommande\');" title="Valider"><img src="../img/prospec/commande.valid.png" alt="valid" title="Valider la commande" /> Valider le bon de commande client</a>';
-	}
-	elseif (verifDroitsAuto('commande', 60, $datas['data']['commercial_cmd'])) {
+	} elseif (verifDroitsAuto('commande', 60, $datas['data']['commercial_cmd'])) {
 	    $bouton .= '<a onclick="ChangeCommandeAction(\'GenererDocs\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="../img/prospec/commande.record.png"/> Enregistrer</a>';
-	    if(verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd'])) {
+	    if (verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd'])) {
 		$bouton .= '<a onclick="ChangeCommandeAction(\'RecordSend\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Enregistrer puis envoyer" name="enregistrerEnvoyer"><img align="middle" title="Enregistrer et envoyer" alt="enregEnvoy" name="img" src="../img/prospec/commande.recsend.png"/> Enregistrer & envoyer</a>';
-		if($datas['data']['status_cmd'] >= "3")
+		if ($datas['data']['status_cmd'] >= "3")
 		    $bouton .= '<a onclick="ChangeCommandeAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="../img/prospec/commande.send.png"/> Envoyer</a>';
-
 	    }
 	}
 	// Quand status Envoyé
-	if (($datas['data']['status_cmd'] >= "4")and(verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd']))) {
-	    if($datas['data']['status_cmd'] == "4")
+	if (($datas['data']['status_cmd'] >= "4") and (verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd']))) {
+	    if ($datas['data']['status_cmd'] == "4")
 		$bouton .= '<a title="Traitement" name="traitement" onclick="ChangeCommandeAction(\'traitement\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');"><img align="middle" title="Traitement" alt="Traitement" name="img" src="../img/prospec/commande.AR.png"/> Commande en traitement</a>';
-	    if($datas['data']['status_cmd'] == "6")
+	    if ($datas['data']['status_cmd'] == "6")
 		$bouton .= '<a title="Expédiée" name="expedie" onclick="ChangeCommandeAction(\'expedie\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');"><img align="middle" title="Expédiée" alt="expedie" name="img" src="../img/prospec/commande.exped.png"/> Commande expédiée</a>';
-	    if($datas['data']['status_cmd'] == "7")
+	    if ($datas['data']['status_cmd'] == "7")
 		$bouton .= '<a title="Reception" name="reception" onclick="ChangeCommandeAction(\'reception\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');"><img align="middle" title="Reception" alt="Reception" name="img" src="../img/prospec/commande.valid.png"/> Commande réceptionnée</a>';
-	    if(verifDroitsAuto('facture', 20, $datas['data']['commercial_cmd']))
-		$bouton   .= "<a name=\"facture\" onclick=\"return zuno.popup.open('Commande.php','id_commande=".$datas['data']['id_cmd']."&action=fact',500,150,'','','resize','FactureCreate');\">".imageTag('../img/prospec/facture.create.png','Facture')." Créer la facture</a> ";
+	    if (verifDroitsAuto('facture', 20, $datas['data']['commercial_cmd']))
+		$bouton .= "<a name=\"facture\" onclick=\"return zuno.popup.open('Commande.php','id_commande=" . $datas['data']['id_cmd'] . "&action=fact',500,150,'','','resize','FactureCreate');\">" . imageTag('../img/prospec/facture.create.png', 'Facture') . " Créer la facture</a> ";
 	}
 
-	$titre = imageTag('../img/prospec/commande.record.png','créer')." Traitement de la Commande ".$datas['data']['id_cmd'];
+	$titre = imageTag('../img/prospec/commande.record.png', 'créer') . " Traitement de la Commande " . $datas['data']['id_cmd'];
 
-	return generateZBox($titre,$titre,$corps.$outJS,$bouton,'iTraitementCommande','');
+	return generateZBox($titre, $titre, $corps . $outJS, $bouton, 'iTraitementCommande', '');
     }
 
     /**
@@ -521,34 +523,33 @@ class commandeView extends generalView {
 	$opt = "";
 	$gnose = new commandeGnose();
 	$tag['FormName'] = 'ActionCommande';
-	$tag['action'] = inputTag('hidden','action','','','',$tag['FormName'],' id="MakeCommandeAction"');
-	$tag['action'] .= inputTag('hidden','id_cmd','','','',$id_cmd,'');
+	$tag['action'] = inputTag('hidden', 'action', '', '', '', $tag['FormName'], ' id="MakeCommandeAction"');
+	$tag['action'] .= inputTag('hidden', 'id_cmd', '', '', '', $id_cmd, '');
 	$tag['action'] .= inputTag('hidden', 'dir_aff', '', '', '', $datas['data']['dir_aff']);
-	$AutoMessage = "Changement de la commande ".$id_cmd." par ".$_SESSION['user']['id'];
+	$AutoMessage = "Changement de la commande " . $id_cmd . " par " . $_SESSION['user']['id'];
 
 	if ($datas['data']['status_cmd'] == "1" and verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd'])) {
-	    $tag['BDCclient_cmd'] = inputTag('text','BDCclient_cmd','','','',$datas['data']['BDCclient_cmd'],'');
-	    $tag['modereglement_cmd']= HtmlForm::addAutoSelect('modereglement_cmd','ref_modereglement',$datas['data']['modereglement_cmd'],'','',' ORDER BY id_modereg ASC',$GLOBALS['PropsecConf']['DBPool']);
-	    $tag['condireglement_cmd']= HtmlForm::addAutoSelect('condireglement_cmd','ref_condireglement',$datas['data']['condireglement_cmd'],'','',' ORDER BY id_condreg ASC',$GLOBALS['PropsecConf']['DBPool']);
-	    $BarreCodeName = "BarreCode.".$id_cmd.".png";
-	    $gnose->generateCommandeBarreCode($id_cmd,$GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$BarreCodeName);
-	    $tag['CodeBarre'] = imageTag('../tmp/'.$BarreCodeName,'voir','center');
+	    $tag['BDCclient_cmd'] = inputTag('text', 'BDCclient_cmd', '', '', '', $datas['data']['BDCclient_cmd'], '');
+	    $tag['modereglement_cmd'] = HtmlForm::addAutoSelect('modereglement_cmd', 'ref_modereglement', $datas['data']['modereglement_cmd'], '', '', ' ORDER BY id_modereg ASC', $GLOBALS['PropsecConf']['DBPool']);
+	    $tag['condireglement_cmd'] = HtmlForm::addAutoSelect('condireglement_cmd', 'ref_condireglement', $datas['data']['condireglement_cmd'], '', '', ' ORDER BY id_condreg ASC', $GLOBALS['PropsecConf']['DBPool']);
+	    $BarreCodeName = "BarreCode." . $id_cmd . ".png";
+	    $gnose->generateCommandeBarreCode($id_cmd, $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'] . $BarreCodeName);
+	    $tag['CodeBarre'] = imageTag('../tmp/' . $BarreCodeName, 'voir', 'center');
 
-	    return templating('pegase/CommandeFiche.Action1',$tag);
-	}
-	else {
+	    return templating('pegase/CommandeFiche.Action1', $tag);
+	} else {
 	    foreach ($GLOBALS['ZunoCommande'] as $key => $val) {
-		$k = explode('.',$key,2);
+		$k = explode('.', $key, 2);
 		if ($k[0] == 'cannevas' and $k[1] != 'exportTableur')
-		    $toto[$key] = substr($key,strpos($key,".")+1,strlen($key));
+		    $toto[$key] = substr($key, strpos($key, ".") + 1, strlen($key));
 	    }
 	    $input = array();
-	    $output= array();
-	    $cleanFrom = array("\n","\t","\r");
-	    $cleanTo  = array("\\n","\\t","\\r");
+	    $output = array();
+	    $cleanFrom = array("\n", "\t", "\r");
+	    $cleanTo = array("\\n", "\\t", "\\r");
 	    foreach ($GLOBALS['ZunoSendMail'] as $key => $val) {
-		$k = explode('.',$key,2);
-		if($k[0] == 'texte') {
+		$k = explode('.', $key, 2);
+		if ($k[0] == 'texte') {
 		    $toto2[] = $val;
 		}
 	    }
@@ -557,71 +558,75 @@ class commandeView extends generalView {
 	    $availableConvFormat = OOConverterAvailable('document');
 	    $value['OutputExt'] = ($value['OutputExt'] != '') ? $value['OutputExt'] : 'pdf';
 	    $listeDoc = array();
-	    if(verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd']))
+	    if (verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd']))
 		$TypeSend['mail'] = "par e-mail";
-	    if(verifDroitsAuto('commande', 52, $datas['data']['commercial_cmd']))
+	    if (verifDroitsAuto('commande', 52, $datas['data']['commercial_cmd']))
 		$TypeSend['fax'] = "par fax";
-	    if(verifDroitsAuto('commande', 54, $datas['data']['commercial_cmd']))
+	    if (verifDroitsAuto('commande', 54, $datas['data']['commercial_cmd']))
 		$TypeSend['courrier'] = "par courrier";
 	    $ListeFournisseur = $datas['LF'];
-	    if(count($ListeFournisseur) > 0) {
+	    if (count($ListeFournisseur) > 0) {
 		$j = 0;
 		foreach ($ListeFournisseur as $idfourn => $val) {
-		    if(verifDroitsAuto('commande', 62, $datas['data']['commande_cmd'])) {
-			if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.pdf')) {
-			    $listeDoc['BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.pdf'] = 'BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.pdf';
-			    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF'.$val['id_fourn'].'\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field">BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.pdf</div></div>';
+		    if (verifDroitsAuto('commande', 62, $datas['data']['commande_cmd'])) {
+			$fileName = 'BCF.' . $datas['data']['id_dev'] . '-' . $val['id_fourn'];
+			if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.pdf')) {
+			    $listeDoc[$fileName . '.pdf'] = $fileName . '.pdf';
+			    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF' . $val['id_fourn'] . '\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF' . $val['id_fourn'] . '\');changeCommandeFormat(\'pdf\');">' . $fileName . '.pdf</a></div></div>';
 			}
-			if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.odt')) {
-			    $listeDoc['BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.odt'] = 'BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.odt';
-			    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF'.$val['id_fourn'].'\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field">BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.odt</div></div>';
+			if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.odt')) {
+			    $listeDoc[$fileName . '.odt'] = $fileName . '.odt';
+			    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF' . $val['id_fourn'] . '\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF' . $val['id_fourn'] . '\');changeCommandeFormat(\'odt\');">' . $fileName . '.odt</a></div></div>';
 			}
-			if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.doc')) {
-			    $listeDoc['BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.doc'] = 'BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.doc';
-			    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF'.$val['id_fourn'].'\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field">BCF.'.$datas['data']['id_dev'].'-'.$val['id_fourn'].'.doc</div></div>';
+			if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.doc')) {
+			    $listeDoc[$fileName . '.doc'] = $fileName . '.doc';
+			    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF' . $val['id_fourn'] . '\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBCF' . $val['id_fourn'] . '\');changeCommandeFormat(\'doc\');">' . $fileName . '.doc</a></div></div>';
 			}
 		    }
-		    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="BCF'.$val['id_fourn'].'" value="1"/></div><div class="field">Bon de commande fournisseur '.$val['id_fourn'].'</div></div>';
+		    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="BCF' . $val['id_fourn'] . '" value="1"/></div><div class="field">Bon de commande fournisseur ' . $val['id_fourn'] . '</div></div>';
 		}
 	    }
-	    if(verifDroitsAuto('commande', 62, $datas['data']['commercial_cmd'])) {
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BDL.'.$datas['data']['id_dev'].'.pdf')) {
-		    $listeDoc['BDL.'.$datas['data']['id_dev'].'.pdf'] = 'BDL.'.$datas['data']['id_dev'].'.pdf';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field">BDL.'.$datas['data']['id_dev'].'.pdf</div></div>';
+	    if (verifDroitsAuto('commande', 62, $datas['data']['commercial_cmd'])) {
+		$fileName = 'BDL.' . $datas['data']['id_dev'];
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.pdf')) {
+		    $listeDoc[$fileName . '.pdf'] = $fileName . '.pdf';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'pdf\');">' . $fileName . '.pdf</a></div></div>';
 		}
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BDL.'.$datas['data']['id_dev'].'.odt')) {
-		    $listeDoc['BDL.'.$datas['data']['id_dev'].'.odt'] = 'BDL.'.$datas['data']['id_dev'].'.odt';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field">BDL.'.$datas['data']['id_dev'].'.odt</div></div>';
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.odt')) {
+		    $listeDoc[$fileName . '.odt'] = $fileName . '.odt';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'odt\');">' . $fileName . '.odt</a></div></div>';
 		}
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BDL.'.$datas['data']['id_dev'].'.doc')) {
-		    $listeDoc['BDL.'.$datas['data']['id_dev'].'.doc'] = 'BDL.'.$datas['data']['id_dev'].'.doc';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field">BDL.'.$datas['data']['id_dev'].'.doc</div></div>';
-		}
-
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BC.'.$datas['data']['id_dev'].'.pdf')) {
-		    $listeDoc['BC.'.$datas['data']['id_dev'].'.pdf'] = 'BC.'.$datas['data']['id_dev'].'.pdf';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field">BC.'.$datas['data']['id_dev'].'.pdf</div></div>';
-		}
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BC.'.$datas['data']['id_dev'].'.odt')) {
-		    $listeDoc['BC.'.$datas['data']['id_dev'].'.odt'] = 'BC.'.$datas['data']['id_dev'].'.odt';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field">BC.'.$datas['data']['id_dev'].'.odt</div></div>';
-		}
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'BC.'.$datas['data']['id_dev'].'.doc')) {
-		    $listeDoc['BC.'.$datas['data']['id_dev'].'.doc'] = 'BC.'.$datas['data']['id_dev'].'.doc';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field">BC.'.$datas['data']['id_dev'].'.doc</div></div>';
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.doc')) {
+		    $listeDoc[$fileName . '.doc'] = $fileName . '.doc';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBDL\');changeCommandeFormat(\'doc\');">' . $fileName . '.doc</a></div></div>';
 		}
 
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'RapportIntervention.'.$datas['data']['id_dev'].'.pdf')) {
-		    $listeDoc['RapportIntervention.'.$datas['data']['id_dev'].'.pdf'] = 'RapportIntervention.'.$datas['data']['id_dev'].'.pdf';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field">RapportIntervention.'.$datas['data']['id_dev'].'.pdf</div></div>';
+		$fileName = 'BC.' . $datas['data']['id_dev'];
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.pdf')) {
+		    $listeDoc[$fileName . '.pdf'] = $fileName . '.pdf';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'pdf\');">' . $fileName . '.pdf</a></div></div>';
 		}
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'RapportIntervention.'.$datas['data']['id_dev'].'.odt')) {
-		    $listeDoc['RapportIntervention.'.$datas['data']['id_dev'].'.odt'] = 'RapportIntervention.'.$datas['data']['id_dev'].'.odt';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field">RapportIntervention.'.$datas['data']['id_dev'].'.odt</div></div>';
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.odt')) {
+		    $listeDoc[$fileName . '.odt'] = $fileName . '.odt';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'odt\');">' . $fileName . '.odt</a></div></div>';
 		}
-		if(is_file($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$datas['data']['dir_aff'].'RapportIntervention.'.$datas['data']['id_dev'].'.doc')) {
-		    $listeDoc['RapportIntervention.'.$datas['data']['id_dev'].'.doc'] = 'RapportIntervention.'.$datas['data']['id_dev'].'.doc';
-		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field">RapportIntervention.'.$datas['data']['id_dev'].'.doc</div></div>';
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.doc')) {
+		    $listeDoc[$fileName . '.doc'] = $fileName . '.doc';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirBC\');changeCommandeFormat(\'doc\');">' . $fileName . '.doc</a></div></div>';
+		}
+
+		$fileName = 'RapportIntervention.' . $datas['data']['id_dev'];
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.pdf')) {
+		    $listeDoc[$fileName . '.pdf'] = $fileName . '.pdf';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'pdf\');">' . $fileName . '.pdf</a></div></div>';
+		}
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.odt')) {
+		    $listeDoc[$fileName . '.odt'] = $fileName . '.odt';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'odt\');">' . $fileName . '.odt</a></div></div>';
+		}
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.doc')) {
+		    $listeDoc[$fileName . '.doc'] = $fileName . '.doc';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'doc\');">' . $fileName . '.doc</a></div></div>';
 		}
 	    }
 
@@ -631,41 +636,41 @@ class commandeView extends generalView {
 
 	    return '<form name="ActionCommandePDF" action="Commande.php" method="post">
 		<input type="hidden" id="MakeCommandeAction" value="ActionCommande" name="action"/>
-		<input type="hidden" value="'.$datas['data']['id_cmd'].'" name="id_cmd"/>
+		<input type="hidden" value="' . $datas['data']['id_cmd'] . '" name="id_cmd"/>
 		<input type="hidden" value="" name="format" id="formatCommandePDF"/>
-		'.inputTag('hidden', 'dir_aff', '', '', '', $datas['data']['dir_aff']).'
+		' . inputTag('hidden', 'dir_aff', '', '', '', $datas['data']['dir_aff']) . '
 			<div class="block width50">
 				<fieldset class="form"><legend>Génération des fichiers</legend>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.generateOutput);">Format</div>
-						<div class="field">'.selectTag("OutputExt", $availableConvFormat, $value['OutputExt'], '', '', false).'</div>
-					</div>'.$docs.'
+						<div class="field">' . selectTag("OutputExt", $availableConvFormat, $value['OutputExt'], '', '', false) . '</div>
+					</div>' . $docs . '
 				</fieldset>
 				<fieldset class="form"><legend>Visualisation des documents</legend>
-					'.$generes.'
+					' . $generes . '
 				</fieldset>
 			</div>
 			<div class="block width50">
 				<fieldset class="form"><legend>Envoyer</legend>
 					<div class="row oblig">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendType);">Type d\'envoi</div>
-						<div class="field">'.selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"',false).'</div>
+						<div class="field">' . selectTag('typeE', $TypeSend, '', '', 'onchange="montreForm(this.value);"', false) . '</div>
 					</div>
 					<div class="row oblig">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendSujet);">Sujet</div>
-						<div class="field">'.inputTag('text', 'sujet','','','','','id="MessageTitle"').'</div>
+						<div class="field">' . inputTag('text', 'sujet', '', '', '', '', 'id="MessageTitle"') . '</div>
 					</div>
 					<div class="row"> 
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCannevas);">Cannevas</div>
-						<div class="field">'.selectTag("cannevas", $toto2, '','',' id="CannevasListe" onchange="ChangeCannevas();"').'</div>
+						<div class="field">' . selectTag("cannevas", $toto2, '', '', ' id="CannevasListe" onchange="ChangeCannevas();"') . '</div>
 					</div>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendMessage);">Message</div>
-						<div class="field">'.textareaTag('message', '', '', '', '', 'id="MessageToSend"').'</div>
+						<div class="field">' . textareaTag('message', '', '', '', '', 'id="MessageToSend"') . '</div>
 					</div>
 					<div class="row">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendPJ);">Fichier joint</div>
-						<div class="field">'.selectTag('fichier', $listeDoc,"","","",false).'</div>
+						<div class="field">' . selectTag('fichier', $listeDoc, "", "", "", false) . '</div>
 					</div>
 						
 				</fieldset>
@@ -674,40 +679,40 @@ class commandeView extends generalView {
 				<fieldset class="form"><legend>Informations sur le destinataire</legend>
 					<div class="row oblig" id="champEmail">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendMail);">Courriel</div>
-						<div class="field">'.inputTag('text', 'mail', '', '', '', $_SESSION['user']['mail']).'</div>
+						<div class="field">' . inputTag('text', 'mail', '', '', '', $_SESSION['user']['mail']) . '</div>
 					</div>
                                         <div class="row" id="champCC">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCopyToMe);">Me mettre en copie</div>
-						<div class="field"><input type="checkbox" name="cc" value="'.$_SESSION['user']['mail'].'"  checked="checked"/></div>
+						<div class="field"><input type="checkbox" name="cc" value="' . $_SESSION['user']['mail'] . '"  checked="checked"/></div>
 					</div>
 					<div class="row oblig" style="display:none;" id="champFax">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendFax);">Fax</div>
-						<div class="field">'.inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']).'</div>
+						<div class="field">' . inputTag('text', 'fax', '', '', '', $datas['data']['fax_ent']) . '</div>
 					</div>
 					<div class="row oblig" style="display:none;" id="champDestinataire">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendDestinataire);">Destinataire</div>
-						<div class="field">'.inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont']).'</div>
+						<div class="field">' . inputTag('text', 'destinataire', '', '', '', $datas['data']['civ_cont'] . ' ' . $datas['data']['prenom_cont'] . ' ' . $datas['data']['nom_cont']) . '</div>
 					</div>
 					<div class="row oblig" style="display:none;" id="champAdd1">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendAdd);">Adresse</div>
-						<div class="field">'.inputTag('text', 'add1', '', '', '', $datas['data']['adressedelivery_dev']).'</div>
+						<div class="field">' . inputTag('text', 'add1', '', '', '', $datas['data']['adressedelivery_dev']) . '</div>
 					</div>
 					<div class="row" style="display:none;" id="champAdd2">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendComplement);">Complément</div>
-						<div class="field">'.inputTag('text', 'add2', '', '', '', $datas['data']['adresse1delivery_cmd']).'</div>
+						<div class="field">' . inputTag('text', 'add2', '', '', '', $datas['data']['adresse1delivery_cmd']) . '</div>
 					</div>
 					<div class="row oblig" style="display:none;" id="champAdd3">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendCpVille);">CP - Ville</div>
-						<div class="field">'.inputTag('text', "cp", '', '', '', $datas['data']['cpdelivery_dev'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'envoiVille\');"').
-		    '<select name=\'ville\'  id="envoiVille"  onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="'.$datas['data']['villedelivery_dev'].'" selected="selected">'.$datas['data']['villedelivery_dev'].'</option></select></div>
+						<div class="field">' . inputTag('text', "cp", '', '', '', $datas['data']['cpdelivery_dev'], 'onchange="zuno.ajax.get.html(\'../ajaxRef.php\',\'action=villeForCp&cp=\'+this.value,\'envoiVille\');"') .
+	    '<select name=\'ville\'  id="envoiVille"  onblur="finishEditing();" onclick="beginEditing(this);" ><option value=""> </option><option value="' . $datas['data']['villedelivery_dev'] . '" selected="selected">' . $datas['data']['villedelivery_dev'] . '</option></select></div>
 					</div>
 					<div class="row oblig" style="display:none;" id="champAdd4">
 						<div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.sendPays);">Pays</div>
-						<div class="field">'.selectTag('pays',$datas['pays'],$datas['data']['paysdelivery_dev']).'</div>
+						<div class="field">' . selectTag('pays', $datas['pays'], $datas['data']['paysdelivery_dev']) . '</div>
 					</div>
 				</fieldset>
 			</div>
-		</form>';			
+		</form>';
 	}
     }
 
@@ -718,10 +723,10 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     public function searchResult($datas, $light='') {
-	if($light == 'result')
+	if ($light == 'result')
 	    return $this->Result($datas);
 	else
-	    return $this->searchForm($datas).$this->listeResult($datas);
+	    return $this->searchForm($datas) . $this->listeResult($datas);
     }
 
     /**
@@ -730,12 +735,12 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     private function searchForm($datas) {
-	$script = '<script type="text/javascript">function autoCompletage() { new Ajax.Autocompleter("cpCmdSearch", "cpCmdSearch_choix", "../ajaxRef.php?action=listeCp", { paramName: "value", minChars: 2, indicator : "loadingCp" , afterUpdateElement : autoCompleteHidden } ); '."\n";
-	$script .= 'new Ajax.Autocompleter("affaireCmdSearch", "affaireCmdSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); '."\n";
-	$script .= 'new Ajax.Autocompleter("entrepriseCmdSearch", "entrepriseCmdSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); '."\n";
-	$script .= 'new Ajax.Autocompleter("userCmdSearch", "userCmdSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } );} '."\n";
-	$script .= 'function ChangeCmdID(value) { $(\'idCmdSearch\').value = value; } '."\n";
-	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } '."\n";
+	$script = '<script type="text/javascript">new Ajax.Autocompleter("cpCmdSearch", "cpCmdSearch_choix", "../ajaxRef.php?action=listeCp", { paramName: "value", minChars: 2, indicator : "loadingCp" , afterUpdateElement : autoCompleteHidden } ); ' . "\n";
+	$script .= 'new Ajax.Autocompleter("affaireCmdSearch", "affaireCmdSearch_choix", "../ajaxRef.php?action=listeAffaire", { paramName: "value", minChars: 2, indicator: "loadingAff" , afterUpdateElement : autoCompleteHidden } ); ' . "\n";
+	$script .= 'new Ajax.Autocompleter("entrepriseCmdSearch", "entrepriseCmdSearch_choix", "../ajaxRef.php?action=listeEntreprise", { paramName: "value", minChars: 2, indicator : "loadingEnt" , afterUpdateElement : autoCompleteHidden } ); ' . "\n";
+	$script .= 'new Ajax.Autocompleter("userCmdSearch", "userCmdSearch_choix", "../ajaxRef.php?action=listeUser", { paramName: "value", minChars: 2, indicator: "loadingUsr", afterUpdateElement : autoCompleteHidden } ); ' . "\n";
+	$script .= 'function ChangeCmdID(value) { $(\'idCmdSearch\').value = value; } ' . "\n";
+	$script .= 'function verifVide(objet) { if(objet.value == "") { $(objet.id+\'hidden\').value = ""; } } ' . "\n";
 	$script.= "function ChangeCmdResultPage(limit,from,order,sens) {
 			ChangeCmdAction('searchCmd');
 			if(limit != undefined) ChangeLimit(limit);
@@ -756,12 +761,12 @@ class commandeView extends generalView {
 		    }
 		    Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) ChangeSubmit(); return false;}, false);
 		    ";
-	$script .= 'function camenbertCmd(value, max) { $(\'cmdBudgetMini\').value = value; $(\'cmdBudgetMaxi\').value = max; ChangeCmdAction(\'searchCmd\');zuno.business.formTools.sendFormAjah(\'searchCmd\', \'pegase/CommandeListe.php\',\'listeResultCmd\'); } '."\n";
-	$script .= 'function resetForm() {var form = $(\'searchFormCmd\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } '."\n";
-	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }'."\n";
+	$script .= 'function camenbertCmd(value, max) { $(\'cmdBudgetMini\').value = value; $(\'cmdBudgetMaxi\').value = max; ChangeCmdAction(\'searchCmd\');zuno.business.formTools.sendFormAjah(\'searchCmd\', \'pegase/CommandeListe.php\',\'listeResultCmd\'); } ' . "\n";
+	$script .= 'function resetForm() {var form = $(\'searchFormCmd\'); form.reset(); form.select(\'input[type="hidden"]\').each(function(input) {input.clear();}); } ' . "\n";
+	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }' . "\n";
 	$script .= '</script>';
 
-	$titre = '<img title="recherche" alt="Rechercher" onload="autoCompletage();" name="img" src="../img/prospec/voir.png" /> Recherche de commandes';
+	$titre = '<img title="recherche" alt="Rechercher" name="img" src="../img/prospec/voir.png" /> Recherche de commandes';
 	$corps = '<form name="searchCmd" action="CommandeListe.php" method="post" id="searchFormCmd">';
 	$corps .= '<div id="PortletSearchCmd">';
 	$corps .= '<input type="hidden" name="action" value="searchCmd" id="listeCmdAction" />';
@@ -774,7 +779,7 @@ class commandeView extends generalView {
 	$corps .= '</div></form>';
 	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
 	$bouton .= '<a name="valider" onclick="ChangeCmdAction(\'searchCmd\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
-	return generateZBox($titre,$titre,$corps.$script,$bouton,"searchBox",'');
+	return generateZBox($titre, $titre, $corps, $bouton, "searchBox", '') . $script;
     }
 
     /**
@@ -785,28 +790,28 @@ class commandeView extends generalView {
     private function interneSearch($datas) {
 	$out = '<div class="block width50"><fieldset class="form" style="height:220px"><legend>Critères de recherche</legend>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchEnt);">Entreprise</div>';
-	$out .= '<div class="field">'.inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseCmdSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseCmdSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseCmdSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseCmdSearch_choix"></div>';
 	$out .= '<input type="hidden" name="entreprise_cmd" value="" id="entrepriseCmdSearch_hidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchTitre);">Titre</div>';
-	$out .= '<div class="field">'.inputTag('text', 'titre_cmd', '', '', '20').'</div></div>';
+	$out .= '<div class="field">' . inputTag('text', 'titre_cmd', '', '', '20') . '</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchAff);">Affaire</div>';
-	$out .= '<div class="field">'.inputTag('text', 'affaire', '', '', '20', '', ' id="affaireCmdSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingAff" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="affaireCmdSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'affaire', '', '', '20', '', ' id="affaireCmdSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingAff" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="affaireCmdSearch_choix"></div>';
 	$out .= '<input type="hidden" name="id_aff" value="" id="affaireCmdSearch_hidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchStatut);">Status</div>';
-	$out .= '<div class="field">'.selectTag('status_cmd',$datas['status'],'').'</div></div>';
+	$out .= '<div class="field">' . selectTag('status_cmd', $datas['status'], '') . '</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchComm);">Commercial</div>';
-	$out .= '<div class="field">'.inputTag('text', 'commercial', '', '', '20', '', ' id="userCmdSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingUsr" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="userCmdSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'commercial', '', '', '20', '', ' id="userCmdSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingUsr" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="userCmdSearch_choix"></div>';
 	$out .= '<input type="hidden" name="commercial_cmd" value="" id="userCmdSearch_hidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchCP);">Département</div>';
-	$out .= '<div class="field">'.inputTag('text', 'cp', '', '', '20', '', ' id="cpCmdSearch" onchange="verifVide(this);"').'<img style="display:none; margin-left:5px;" id="loadingCp" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="cpCmdSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'cp', '', '', '20', '', ' id="cpCmdSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingCp" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="cpCmdSearch_choix"></div>';
 	$out .= '<input type="hidden" name="cp_ent" value="" id="cpCmdSearch_hidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchBudgMin);">Budget min</div>';
-	$out .= '<div class="field">'.inputTag('text', 'sommeFHT_cmd', '', '', '20', '', ' id="cmdBudgetMini" ').'</div></div>';
+	$out .= '<div class="field">' . inputTag('text', 'sommeFHT_cmd', '', '', '20', '', ' id="cmdBudgetMini" ') . '</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.searchBudgMax);">Budget maxi</div>';
-	$out .= '<div class="field">'.inputTag('text', 'sommeFHT_cmd2', '', '', '20', '', ' id="cmdBudgetMaxi" ').'</div></div>';
+	$out .= '<div class="field">' . inputTag('text', 'sommeFHT_cmd2', '', '', '20', '', ' id="cmdBudgetMaxi" ') . '</div></div>';
 	$out .= '</fieldset></div>';
 	$out .= '<div class="block width50"><fieldset class="form" style="height:220px"><legend>Répartition des ventes</legend>';
-	$out .= '<div class="row">'.shell_exec('php ../Img.CommandeChart.php').'</div>';
+	$out .= '<div class="row">' . shell_exec('php ../Img.CommandeChart.php') . '</div>';
 	$out .= '</fieldset></div>';
 	return $out;
     }
@@ -817,7 +822,7 @@ class commandeView extends generalView {
      * @return string Le code HTML
      */
     public function listeResult($datas) {
-	return '<div id=listeResultCmd>'.$this->Result($datas).'</div>';
+	return '<div id=listeResultCmd>' . $this->Result($datas) . '</div>';
     }
 
     /**
@@ -829,7 +834,7 @@ class commandeView extends generalView {
 	$suffixeLink = '../';
 	$modHistorique = false;
 	$linkOrderFunction = 'tagLinkOrderSwitch';
-	if (array_key_exists('isHistoVisit',$datas) and $datas['isHistoVisit']) {
+	if (array_key_exists('isHistoVisit', $datas) and $datas['isHistoVisit']) {
 	    $suffixeLink = './';
 	    $linkOrderFunction = 'tagNoLinkOrderSwitch';
 	    $modHistorique = true;
@@ -848,187 +853,190 @@ class commandeView extends generalView {
 		    <input type="hidden" name="exportType" value="" id="resultCmdExportType" />
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
-	if(!$modHistorique)
+	if (!$modHistorique)
 	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormCmd\');"/></th>';
-	$out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="center barre">Entreprise '.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','c1.nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
-	$out .= '<th>'.$this->$linkOrderFunction('Titre','titre_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
-	$out .= '<th>'.$this->$linkOrderFunction('Montant Vente','sommeHT_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
-	$out .= '<th>'.$this->$linkOrderFunction('Montant Achat','sommeFHT_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('ID', 'id_cmd', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeCmdResultPage', $suffixeLink) . '</th>';
+	$out .= '<th class="center barre">Entreprise ' . $this->$linkOrderFunction('Entreprise', 'nom_ent', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeCmdResultPage', $suffixeLink) . '</th>';
+	$out .= '<th class="center barre">' . $this->$linkOrderFunction('Contact', 'c1.nom_cont', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeCmdResultPage', $suffixeLink) . '</th>';
+	$out .= '<th>' . $this->$linkOrderFunction('Titre', 'titre_cmd', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeCmdResultPage', $suffixeLink) . '</th>';
+	$out .= '<th>' . $this->$linkOrderFunction('Montant Vente', 'sommeHT_cmd', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeCmdResultPage', $suffixeLink) . '</th>';
+	$out .= '<th>' . $this->$linkOrderFunction('Montant Achat', 'sommeFHT_cmd', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeCmdResultPage', $suffixeLink) . '</th>';
 	$out .= '<th>Marge </th>';
-	$out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_cmd',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeCmdResultPage',$suffixeLink).'</th>';
-	if(!$modHistorique)
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('Status', 'status_cmd', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeCmdResultPage', $suffixeLink) . '</th>';
+	if (!$modHistorique)
 	    $out .= '<th class="last center">Actions</th>';
 	$out .= '</tr>';
-	$alternance =  0;
+	$alternance = 0;
 	$totalDisplayC = $totalDisplayF = $totalDisplayM = 0;
-	foreach($datas['data'] as $v) {
+	foreach ($datas['data'] as $v) {
 	    $action = '';
 	    //traitement des boutons de modification et d'action
 	    // recherche du fichier PDF
-	    if (file_exists($GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$v['dir_aff'].$GLOBALS['ZunoCommande']['file.suffixe'].$v['id_cmd'].'.pdf') and verifDroitsAuto('commande', 62, $v['commercial_cmd']))
-		$action   .= "<a href=\"${suffixeLink}pegase/Commande.php?id_commande=".$v['id_cmd']."&action=VoirBDCC\">".imageTag($suffixeLink.'img/prospec/commande.pdf.png','PDF')."</a> ";
+	    if ($this->modelAffaire->isAffaireDirectoryFileExist($v, $GLOBALS['ZunoCommande']['file.suffixe'] . $v['id_cmd'] . '.pdf') and verifDroitsAuto('commande', 62, $v['commercial_cmd']))
+		$action .= "<a href=\"${suffixeLink}pegase/Commande.php?id_commande=" . $v['id_cmd'] . "&action=VoirBDCC\">" . imageTag($suffixeLink . 'img/prospec/commande.pdf.png', 'PDF') . "</a> ";
 	    // Quand status créer
-	    if (($v['status_cmd'] == "1")and(verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd']))) {
-		$action   .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}pegase/Commande.php','id_commande=".$v['id_cmd']."&action=supp',600,290,'','','resize','devisDelete');\">".imageTag($suffixeLink.'img/prospec/commande.delete.png','Supprimer')."</a> ";
-		$action .= '<a href="'.$suffixeLink.'.pegase/Commande.php?id_cmd='.$v['id_cmd'].'" title="Enregistrer" name="enreg"><img align="middle" title="Valider" alt="enreg" name="img" src="'.$suffixeLink.'img/prospec/commande.valid.png"/></a>';
+	    if (($v['status_cmd'] == "1") and (verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd']))) {
+		$action .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}pegase/Commande.php','id_commande=" . $v['id_cmd'] . "&action=supp',600,290,'','','resize','devisDelete');\">" . imageTag($suffixeLink . 'img/prospec/commande.delete.png', 'Supprimer') . "</a> ";
+		$action .= '<a href="' . $suffixeLink . '.pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '" title="Enregistrer" name="enreg"><img align="middle" title="Valider" alt="enreg" name="img" src="' . $suffixeLink . 'img/prospec/commande.valid.png"/></a>';
 	    }
 	    // Quand status Validé
-	    elseif (($v['status_cmd'] == "2")and(verifDroitsAuto('commande', 60, $datas['data']['commercial_cmd'])))
-		$action .= '<a href="Commande.php?id_cmd='.$v['id_cmd'].'" title="Générer" name="générer"><img align="middle" title="Générer" alt="générer" name="img" src="'.$suffixeLink.'img/prospec/commande.generate.png"/></a>';
+	    elseif (($v['status_cmd'] == "2") and (verifDroitsAuto('commande', 60, $datas['data']['commercial_cmd'])))
+		$action .= '<a href="Commande.php?id_cmd=' . $v['id_cmd'] . '" title="Générer" name="générer"><img align="middle" title="Générer" alt="générer" name="img" src="' . $suffixeLink . 'img/prospec/commande.generate.png"/></a>';
 	    // Quand status Généré
-	    elseif (($v['status_cmd'] == "3")and(verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd'])))
-		$action .= '<a href="Commande.php?id_cmd='.$v['id_cmd'].'" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="'.$suffixeLink.'img/prospec/commande.send.png"/></a>';
+	    elseif (($v['status_cmd'] == "3") and (verifDroitsAuto('commande', 50, $datas['data']['commercial_cmd'])))
+		$action .= '<a href="Commande.php?id_cmd=' . $v['id_cmd'] . '" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="' . $suffixeLink . 'img/prospec/commande.send.png"/></a>';
 
 	    if ($v['nom_ent'] != '') {
 		if (strlen($v['nom_ent']) > 25)
-		    $v['nom_ent'] = substr($v['nom_ent'],0,25)."...";
+		    $v['nom_ent'] = substr($v['nom_ent'], 0, 25) . "...";
 		if ($v['type_ent'] != '')
-		    $v['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
+		    $v['nom_ent'] = imageTag($suffixeLink . 'img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/' . $v['type_ent'] . '.png', $v['nom_tyent']) . ' ' . $v['nom_ent'];
 		if (strlen($v['ville_ent']) > 18)
-		    $v['ville_ent'] = substr($v['ville_ent'],0,18)."...";
+		    $v['ville_ent'] = substr($v['ville_ent'], 0, 18) . "...";
 		if ($v['ville_ent'] != '')
-		    $v['ville_ent'] = ' ('.$v['ville_ent'].')';
-		$v['contact'] = $v['nom_ent'].$v['ville_ent'];
+		    $v['ville_ent'] = ' (' . $v['ville_ent'] . ')';
+		$v['contact'] = $v['nom_ent'] . $v['ville_ent'];
 	    }
 	    else {
 		$v['nom_ent'] = '<i>Particulier</i>';
-		$v['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$v['nom_ent'];
+		$v['nom_ent'] = imageTag($suffixeLink . 'img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/particulier.png', 'particulier') . ' ' . $v['nom_ent'];
 		if (strlen($v['ville_cont']) > 18)
-		    $v['ville_cont'] = substr($v['ville_cont'],0,18)."...";
+		    $v['ville_cont'] = substr($v['ville_cont'], 0, 18) . "...";
 		if ($v['ville_cont'] != '')
-		    $v['ville_cont'] = ' ('.$v['ville_cont'].')';
-		$v['contact'] = $v['nom_ent'].$v['ville_cont'];
+		    $v['ville_cont'] = ' (' . $v['ville_cont'] . ')';
+		$v['contact'] = $v['nom_ent'] . $v['ville_cont'];
 	    }
 
-	    $marge = $v['sommeHT_cmd']-$v['sommeFHT_cmd'];
-	    $score = commandeModel::ScoreCommande($v['id_cmd'], $modHistorique);
-	    $out .= '<tr class="altern'.$alternance.'">';
-	    if(!$modHistorique)
-		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$v['id_cmd'].'" checked="checked"/></td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'"><b>'.$score['img'].$v['id_cmd'].'</b></td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['contact'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.$v['titre_cmd'].'</td>';
-	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.prepareNombreAffichage($v['sommeHT_cmd']).' &euro;</td>';
-	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.prepareNombreAffichage($v['sommeFHT_cmd']).' &euro;</td>';
-	    $out .= '<td class="barre right" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'">'.prepareNombreAffichage($marge).' &euro;</td>';
-	    $out .= '<td class="barre" style="cursor : pointer; color : #'.$score['color'].' !important;" onclick="window.location=\''.$suffixeLink.'pegase/Commande.php?id_cmd='.$v['id_cmd'].'\'"><div class="square" style="background-color:#'.$score['color'].';">&nbsp;</div>'.$v['nom_stcmd'].'</td>';
-	    if(!$modHistorique)
-		$out .= '<td class="right">'.$action.'</td>';
+	    $marge = $v['sommeHT_cmd'] - $v['sommeFHT_cmd'];
+	    $score = $this->model->ScoreCommande($v['id_cmd'], $modHistorique);
+	    $out .= '<tr class="altern' . $alternance . '">';
+	    if (!$modHistorique)
+		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="' . $v['id_cmd'] . '" checked="checked"/></td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'"><b>' . $score['img'] . $v['id_cmd'] . '</b></td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'">' . $v['contact'] . '</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'">' . $v['civ_cont'] . ' ' . $v['prenom_cont'] . ' ' . $v['nom_cont'] . '</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'">' . $v['titre_cmd'] . '</td>';
+	    $out .= '<td class="barre right" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'">' . prepareNombreAffichage($v['sommeHT_cmd']) . ' &euro;</td>';
+	    $out .= '<td class="barre right" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'">' . prepareNombreAffichage($v['sommeFHT_cmd']) . ' &euro;</td>';
+	    $out .= '<td class="barre right" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'">' . prepareNombreAffichage($marge) . ' &euro;</td>';
+	    $out .= '<td class="barre" style="cursor : pointer; color : #' . $score['color'] . ' !important;" onclick="window.location=\'' . $suffixeLink . 'pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '\'"><div class="square" style="background-color:#' . $score['color'] . ';">&nbsp;</div>' . $v['nom_stcmd'] . '</td>';
+	    if (!$modHistorique)
+		$out .= '<td class="right">' . $action . '</td>';
 	    $out .= '</tr>';
-	    $alternance = (($alternance+1) % 2);
+	    $alternance = (($alternance + 1) % 2);
 	    $totalDisplayC += $v['sommeHT_cmd'];
 	    $totalDisplayF += $v['sommeFHT_cmd'];
 	    $totalDisplayM += $marge;
 	}
-	if(!$modHistorique) {
+	if (!$modHistorique) {
 	    $out .= '<tr class="titre noround roundbottom">';
 	    $out .= '<td colspan="5"></td>';
-	    $out .= '<th class="bordG right">'.prepareNombreAffichage($totalDisplayC).' &euro;</th>';
-	    $out .= '<th class="right">'.prepareNombreAffichage($totalDisplayF).' &euro;</th>';
-	    $out .= '<th class="bordD right">'.prepareNombreAffichage($totalDisplayM).' &euro;</th>';
+	    $out .= '<th class="bordG right">' . prepareNombreAffichage($totalDisplayC) . ' &euro;</th>';
+	    $out .= '<th class="right">' . prepareNombreAffichage($totalDisplayF) . ' &euro;</th>';
+	    $out .= '<th class="bordD right">' . prepareNombreAffichage($totalDisplayM) . ' &euro;</th>';
 	    $out .= '<td colspan="2"></td>';
 	    $out .= '</tr>';
 	}
 	$out .= '</tbody></table>';
-	if(!$modHistorique)
+	if (!$modHistorique)
 	    $out .= $this->ResultGroupActionForm();
 	$out .= '</form></div>';
-	if($modHistorique)
-	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commandeHisto');
-	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'commande');
-	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeCmdResultPage",$suffixeLink);
+	if ($modHistorique)
+	    $titre = $this->resultNavigationTitle($datas['from'], $datas['limit'], $datas['total'], 'commandeHisto');
+	else
+	    $titre = $this->resultNavigationTitle($datas['from'], $datas['limit'], $datas['total'], 'commande');
+	$bouton .= $this->resultNavigation($datas['from'], $datas['limit'], $datas['total'], "ChangeCmdResultPage", $suffixeLink);
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
-	$bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="cmdDoExportTableur(this.value);" ').'</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
+	$bouton .= '<div style="display:none;" id="divExportTableur">' . selectTag('format_export', $availableConvFormat, '', '', ' onchange="cmdDoExportTableur(this.value);" ') . '</div>';
+	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="' . $suffixeLink . 'img/prospec/export-csv.png"/> Export Tableur</a>';
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
-	if($modHistorique)
+	if ($modHistorique)
 	    $bouton = '';
-	return generateZBox($titre,$titre,$out,$bouton,"searchListeCommande",'');
+	return generateZBox($titre, $titre, $out, $bouton, "searchListeCommande", '');
     }
 
     private function ResultGroupActionForm() {
-	$sql = new commandeModel();
 	$out = '<div id="divGroupAction" style="display: none"><div class="block width50">';
-	$fieldset = new ZunoFieldset('Type d\'action','groupActionCommande','height: 230px');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'reinit', ' onclick="toggleSubGroupedAction(\'groupedSubActionReinit\')"'),'Re-initialiser ces commandes','ZTips.commande.groupActionReinit');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'recu', ' onclick="toggleSubGroupedAction(\'groupedSubActionRecu\')"'),'Commandes client reçues','ZTips.commande.groupActionRecu');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'bdcfenvoye', ' onclick="toggleSubGroupedAction(\'groupedSubActionBDCFEnvoye\')"'),'Commandes fournisseurs envoyées','ZTips.commande.groupActionBDCFEnvoye');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'bdcfrecu', ' onclick="toggleSubGroupedAction(\'groupedSubActionBDCFRecu\')"'),'Commandes fournisseurs reçu par vos partenaires','ZTips.commande.groupActionBDCFRecu');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'bdcfvalid', ' onclick="toggleSubGroupedAction(\'groupedSubActionBDCFValid\')"'),'Commandes fournisseurs validés par vos partenaires','ZTips.commande.groupActionBDCFValid');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'expedie', ' onclick="toggleSubGroupedAction(\'groupedSubActionExpedie\')"'),'Commandes expediées','ZTips.commande.groupActionExpedie');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'receptionne', ' onclick="toggleSubGroupedAction(\'groupedSubActionReceptionne\')"'),'Commandes réceptionnées par le client','ZTips.commande.groupActionReceptionne');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'termine', ' onclick="toggleSubGroupedAction(\'groupedSubActionTermine\')"'),'Commandes terminées','ZTips.commande.groupActionTermine');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'archivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionArchive\')"'),'Archivage des commandes','ZTips.commande.groupActionArchive');
-	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'),'Changer un attribut par lot','ZTips.commande.groupActionChangeAttribute');
+	$fieldset = new ZunoFieldset('Type d\'action', 'groupActionCommande', 'height: 230px');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'reinit', ' onclick="toggleSubGroupedAction(\'groupedSubActionReinit\')"'), 'Re-initialiser ces commandes', 'ZTips.commande.groupActionReinit');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'recu', ' onclick="toggleSubGroupedAction(\'groupedSubActionRecu\')"'), 'Commandes client reçues', 'ZTips.commande.groupActionRecu');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'bdcfenvoye', ' onclick="toggleSubGroupedAction(\'groupedSubActionBDCFEnvoye\')"'), 'Commandes fournisseurs envoyées', 'ZTips.commande.groupActionBDCFEnvoye');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'bdcfrecu', ' onclick="toggleSubGroupedAction(\'groupedSubActionBDCFRecu\')"'), 'Commandes fournisseurs reçu par vos partenaires', 'ZTips.commande.groupActionBDCFRecu');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'bdcfvalid', ' onclick="toggleSubGroupedAction(\'groupedSubActionBDCFValid\')"'), 'Commandes fournisseurs validés par vos partenaires', 'ZTips.commande.groupActionBDCFValid');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'expedie', ' onclick="toggleSubGroupedAction(\'groupedSubActionExpedie\')"'), 'Commandes expediées', 'ZTips.commande.groupActionExpedie');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'receptionne', ' onclick="toggleSubGroupedAction(\'groupedSubActionReceptionne\')"'), 'Commandes réceptionnées par le client', 'ZTips.commande.groupActionReceptionne');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'termine', ' onclick="toggleSubGroupedAction(\'groupedSubActionTermine\')"'), 'Commandes terminées', 'ZTips.commande.groupActionTermine');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'archivate', ' onclick="toggleSubGroupedAction(\'groupedSubActionArchive\')"'), 'Archivage des commandes', 'ZTips.commande.groupActionArchive');
+	$fieldset->ligneFree(inputTag('radio', 'groupedAction', '', '', '', 'changeAttribute', ' onclick="toggleSubGroupedAction(\'groupedSubActionChangeAttribute\')"'), 'Changer un attribut par lot', 'ZTips.commande.groupActionChangeAttribute');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div><div class="block width50"><div id="groupedSubAction">';
-	$fieldset = new ZunoFieldset('Re-initialiser ces commandes','groupedSubActionReinit','height: 172px');
+	$fieldset = new ZunoFieldset('Re-initialiser ces commandes', 'groupedSubActionReinit', 'height: 172px');
 	$fieldset->addOtherLigne('<div class="row"><i>Aucune action sécifique n\'est requise</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes client reçues','groupedSubActionRecu','height: 172px');
+	$fieldset = new ZunoFieldset('Commandes client reçues', 'groupedSubActionRecu', 'height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireRecu');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes fournisseurs envoyées','groupedSubActionBDCFEnvoye','height: 172px');
+	$fieldset = new ZunoFieldset('Commandes fournisseurs envoyées', 'groupedSubActionBDCFEnvoye', 'height: 172px');
 	$fieldset->ligneInput('Complément d\'envoi', 'complementdeliveryBDCFEnvoye');
 	$fieldset->ligneInput('Commentaire', 'commentaireBDCFEnvoye');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes fournisseurs reçu par vos partenaires','groupedSubActionBDCFRecu','height: 172px');
+	$fieldset = new ZunoFieldset('Commandes fournisseurs reçu par vos partenaires', 'groupedSubActionBDCFRecu', 'height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireBDCFRecu');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes fournisseurs validés par vos partenaires','groupedSubActionBDCFValid','height: 172px');
+	$fieldset = new ZunoFieldset('Commandes fournisseurs validés par vos partenaires', 'groupedSubActionBDCFValid', 'height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireBDCFValid');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes expediées','groupedSubActionExpedie','height: 172px');
+	$fieldset = new ZunoFieldset('Commandes expediées', 'groupedSubActionExpedie', 'height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireExpedie');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes réceptionnées par le client','groupedSubActionReceptionne','height: 172px');
+	$fieldset = new ZunoFieldset('Commandes réceptionnées par le client', 'groupedSubActionReceptionne', 'height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireReceptionne');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Commandes terminées','groupedSubActionTermine','height: 172px');
+	$fieldset = new ZunoFieldset('Commandes terminées', 'groupedSubActionTermine', 'height: 172px');
 	$fieldset->ligneInput('Commentaire', 'commentaireTermine');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Archivage des commandes','groupedSubActionArchive','height: 172px');
+	$fieldset = new ZunoFieldset('Archivage des commandes', 'groupedSubActionArchive', 'height: 172px');
 	$fieldset->addOtherLigne('<div class="row"><i>Seul les commandes n\'ayant plus de facture en cours de traitement seront archivées.</i></div>');
 	$out.= $fieldset->generateFieldset();
-	$fieldset = new ZunoFieldset('Changer un attribut par lot','groupedSubActionChangeAttribute','height: 172px');
+	$fieldset = new ZunoFieldset('Changer un attribut par lot', 'groupedSubActionChangeAttribute', 'height: 172px');
 	$fieldset->ligneInput('Titre de la commande', 'titre_cmd');
-	$fieldset->ligneFree('TVA',selectTVATag("tva_cmd", array(), '', '', '', true));
-	$fieldset->ligneSelect('Mode de règlement', 'modereglement_cmd','',$sql->getModeReglement());
-	$fieldset->ligneSelect('Cond. de règlement', 'condireglement_cmd','',$sql->getCondReglement());
-	$fieldset->ligneSelect('Commercial', 'commercial_cmd','',$sql->getUser());
+	$fieldset->ligneFree('TVA', selectTVATag("tva_cmd", array(), '', '', '', true));
+	$fieldset->ligneSelect('Mode de règlement', 'modereglement_cmd', '', $this->model->getModeReglement());
+	$fieldset->ligneSelect('Cond. de règlement', 'condireglement_cmd', '', $this->model->getCondReglement());
+	$fieldset->ligneSelect('Commercial', 'commercial_cmd', '', $this->model->getUser());
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div><div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
-	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormCmd\',\'resultCmdAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
+	$fieldset->ligneLinkTo('', 'javascript:submitGroupAction(\'resultFormCmd\',\'resultCmdAction\');" class="bouton', 'Effectuer les changements', '../img/prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div></div></div>';
 	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="' . $suffixeLink . 'img/prospec/work-multiple.png"/> Actions groupées</a>';
 	return $bouton;
     }
 
 }
+
 function BureauMyCommande() {
     $limit = 10;
     $req = new commandeModel();
-    $total = $req->getDataForHistoriqueVisit($limit,$type = 'COUNT');
-    $result= $req->getDataForHistoriqueVisit($limit);
+    $total = $req->getDataForHistoriqueVisit($limit, $type = 'COUNT');
+    $result = $req->getDataForHistoriqueVisit($limit);
     $datas['total'] = $total[1][0]['counter'];
     $datas['data'] = $result[1];
     $datas['from'] = 0;
     $datas['limit'] = $limit;
     $datas['isHistoVisit'] = true;
     $view = new commandeView();
-    if($datas['total'] > 0)
+    if ($datas['total'] > 0)
 	return $view->listeResult($datas);
-    else return "";
+    else
+	return "";
 }
+
 ?>

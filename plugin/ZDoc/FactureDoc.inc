@@ -191,8 +191,10 @@ class factureGnose {
 	    $message = "Changement de $typeDocLa $factureIdAffiche par ".$_SESSION['user']['fullnom'];
 	$message = escapeshellcmd($message);
 
-	$PathToAff = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$factData['dir_aff'];
-	$PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
+	loadPlugin(array('ZModels/AffaireModel'));
+        $bddAff = new affaireModel();
+	$PathToAff = $bddAff->getAffaireDirectoryPath($factData);
+	$PathTo  = $this->bddtmp->getFactureDirectory();
 	$PathFrom= $GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'];
 	$FileExist = file_exists($PathTo.$fileFrom);
 	$FileExistAff = file_exists($PathToAff.$fileFrom);

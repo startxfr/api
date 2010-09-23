@@ -14,7 +14,7 @@
 +------------------------------------------------------------------------*/
 include ('inc/conf.inc');		// Declare global variables from config files
 include ('inc/core.inc');		// Load core library
-loadPlugin(array('ZunoCore','ZView/CommandeView','ZView/FactureView'));
+loadPlugin(array('ZunoCore','ZView/CommandeView','ZView/FactureView', 'ZModels/AffaireModel'));
 /*------------------------------------------------------------------------+
 | INITIALIZE PAGE CONTEXT
 +------------------------------------------------------------------------*/
@@ -168,10 +168,8 @@ elseif ($action == 'VoirBDCC' or
 	$action == 'VoirBDCF' or
 	$action == 'VoirBDL' or
 	$action == 'VoirRI') {
-    $bddtmp->makeRequeteSelect('affaire','id_aff',substr($id_cmd,0,-5));
-    $aff = $bddtmp->process();
-    $aff = $aff[0];
-    $PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
+     $bddAff = new affaireModel();
+    $PathTo = $bddAff->getAffaireDirectoryPathById(substr($id_cmd, 0, 6));
     if ($action == 'VoirBDCC')		$Doc = $id_cmd.'C.pdf';
     elseif ($action == 'VoirBDCF')	$Doc = $id_cmd.'F-'.$id_fourn.'.pdf';
     elseif ($action == 'VoirBDL')		$Doc = substr($id_cmd,0,-1).'L.pdf';
@@ -187,10 +185,8 @@ elseif ($action == 'SendBDCF') {
 		(substr($key,0,4) == 'faxx'))
 	    $Type[substr($key,4)][substr($key,0,4)] = $val;
 
-    $bddtmp->makeRequeteSelect('affaire','id_aff',substr($id_cmd,0,-5));
-    $aff = $bddtmp->process();
-    $aff = $aff[0];
-    $PathTo  = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
+     $bddAff = new affaireModel();
+    $PathTo = $bddAff->getAffaireDirectoryPathById(substr($id_cmd, 0, 6));
 
     if(count($Type) > 1) $actuDesc = 'Envoi du bon de commande ';
     else			   $actuDesc = 'Envoi des bons de commandes ';
@@ -199,7 +195,7 @@ elseif ($action == 'SendBDCF') {
 	if($val['type'] == "mail") {
 	    // remplacer par un appel a la classe Sender
 	    MailAttach($val['mail'],
-		    $val['mess'],
+	    stripslashes($val['mess']),
 		    $PathTo.$id_cmd.'F-'.$fournisseur.'.pdf',
 		    '',
 		    '',

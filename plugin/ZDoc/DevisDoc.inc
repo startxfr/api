@@ -175,15 +175,13 @@ class devisGnose {
      * @return bool Indique si tout s'est bien déroulé
      */
     public function DevisSaveDocInGnose($fileFrom,$fileName,$affaire,$message = "") {
-	$bddtmp = new Bdd($GLOBALS['PropsecConf']['DBPool']);
-	$bddtmp->makeRequeteSelect('affaire','id_aff',$affaire);
-	$aff = $bddtmp->process();
-	$aff = $aff[0];
+	loadPlugin(array('ZModels/AffaireModel'));
+        $bddAff = new affaireModel();
 
 	if ($message == "") $message = "Changement du devis pour l'affaire ".$affaire." par ".$_SESSION['user']['id'];
 	$message = escapeshellcmd($message);
 
-	$PathTo = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoAffaire']['dir.affaire'].$aff['dir_aff'];
+	$PathTo  = $bddAff->getAffaireDirectoryPathById($affaire);
 	$FileExist = file_exists ($PathTo.$fileName);
 
 	if(copy($fileFrom,$PathTo.$fileName)) {

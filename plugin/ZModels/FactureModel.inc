@@ -506,6 +506,36 @@ class factureModel extends GeneralModel {
 	return $this->process2();
     }
 
+
+
+    public function getFactureDirectory($absPath=true) {
+	$factureDir= $GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoFacture']['dir.facture'];
+	if($absPath)
+	    $factureDir= $GLOBALS['SVN_Pool1']['WorkCopy'].$factureDir;
+	return $factureDir;
+    }
+
+    public function getFactureFileName($data,$ext = 'pdf') {
+	return $data['type_fact'].'.'.$this->getFormatedIdFromData($data).'.'.$ext;
+    }
+
+    public function getFactureRecordedFileName($data) {
+	return $data['file_fact'];
+    }
+
+    public function getFactureFilePath($data,$ext = 'pdf',$absPath=true) {
+	return $this->getFactureDirectory($absPath).$this->getFactureFileName($data,$ext);
+    }
+
+    public function getFactureFilePathById($id_fact,$ext = 'pdf',$absPath=true) {
+	$datas = $this->getDataFromID($id_fact);
+	return $this->getFactureFilePath($datas[1][0],$ext,$absPath);
+    }
+
+    public function isFactureFileExist($data,$ext) {
+	return is_file($this->getFactureFilePath($data,$ext));
+    }
+
     /**
      * Méthode qui gère l'ajout d'un produit dans la table produit
      * @param array $data Les données à insérer

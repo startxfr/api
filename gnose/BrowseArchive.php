@@ -36,7 +36,7 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 if(($_GET['action'] == 'naviguer') or (!array_key_exists('action', $_GET))) {
     if($_GET['rep'] == '') {
 	$rep = new documentViewRepertoire('', $GLOBALS['SVN_Pool1']['ArchivesDir']);
-	$sortie = generateZBox('titre','', $rep->afficher(), '', 'id_de_test');
+	$sortie = generateZBox('Navigateur','', $rep->afficher(), '', 'id_du_navigateur');
     }
     elseif($_GET['sortie'] == 'popup') {
 	$rep = new documentViewRepertoire($_GET['rep'], $GLOBALS['SVN_Pool1']['ArchivesDir']);
@@ -48,47 +48,54 @@ if(($_GET['action'] == 'naviguer') or (!array_key_exists('action', $_GET))) {
     }
 }
 elseif($_GET['action'] == 'download') {
-    $fichier = new Fichier($_GET['fich']);
+    $fichier = new documentViewFichier($_GET['fich'], $GLOBALS['SVN_Pool1']['ArchivesDir']);
     $fichier->download();
 }
+
 elseif($_GET['action'] == 'suppD') {
     $rep = new documentViewRepertoire($_GET['path'], $GLOBALS['SVN_Pool1']['ArchivesDir']);
-    $rep->effacerdocumentViewRepertoire();
-    $rep = new documentViewRepertoire('', $GLOBALS['SVN_Pool1']['ArchivesDir']);
-    $sortie = generateZBox('titre','', $rep->afficher(), '', 'id_de_test');
+    $rep->effacerRepertoire();
+    header('Location:BrowseWork.php');
 }
 elseif($_GET['action'] == 'suppF') {
-    $fichier = new documentViewFichier($_GET['path']);
+    $fichier = new documentViewFichier($_GET['path'], $GLOBALS['SVN_Pool1']['ArchivesDir']);
     $fichier->effacerFichier();
-    $rep = new documentViewRepertoire('', $GLOBALS['SVN_Pool1']['ArchivesDir']);
-    $sortie = generateZBox('titre','', $rep->afficher(), '', 'id_de_test');
+    header('Location:BrowseWork.php');
 }
-elseif($_GET['action'] == 'modifD') {
-    $sortie = '<div class="titre">Renomer</div>';
-    $sortie .= '<form method="POST" action="BrowseArchive.php?action=doModifD&path='.$_GET['path'].'">';
-    $sortie .= 'Nouveau nom : <input type="text" name="nom" />';
-    $sortie .= '<input type="submit" value="Valider" />';
-    $sortie .= '</form>';
-}
-elseif($_GET['action'] == 'doModifD') {
+elseif($_GET['action'] == 'detailsR') {
     $rep = new documentViewRepertoire($_GET['path'], $GLOBALS['SVN_Pool1']['ArchivesDir']);
-    $rep->renomer($_POST['nom']);
-    $sortie = "<script language=\"javascript\">window.location.reload();zuno.popup.close();</script>";
-}
-elseif($_GET['action'] == 'copierD') {
-    $temp = explode('/', $_GET['path']);
-    $sortie = '<div class="titre">Copier</div>';
-    $sortie .= '<form method="POST" action="BrowseArchive.php?action=doCopierD&path='.$_GET['path'].'">';
-    $sortie .= '<div>Nom du nouveau dossier : <input type="text" name="nom" /><div>';
-    $sortie .= 'Dans quel dossier : ';
-    $sortie .= '<input type="submit" value="Valider" />';
-    $sortie .= '</form>';
+    $detail = $rep->detailRepertoire();
+    $sortie .= '<div class="blockTable"><div style="display:table;" class="tableau">';
+    $sortie .= '<div class="titre" style="display:table-row;">';
+    $sortie .= '<div class="celluleH" style="display:table-cell;">Fichier</div>';
+    $sortie .= '<div class="celluleH" style="display:table-cell;">Dernière révision par</div>';
+    $sortie .= '<div class="celluleH" style="display:table-cell;">Date dernière révision</div></div>';
+    $sortie .= '<div style="display:table-row;">';
+    $sortie .= '<div class="cellule" style="display:table-cell;">'.$_GET['nom'].'</div>';
+    $sortie .= '<div class="cellule" style="display:table-cell;">'.$detail[0]['Last Changed Author'].'</div>';
+    $sortie .= '<div class="cellule" style="display:table-cell;">'.$detail[0]['Last Changed Date'].'</div></div>';
+    $sortie .= '</div>';
+    $titre = 'Détails sur le répertoire '.$_GET['nom'];
+}elseif($_GET['action'] == 'detailsF') {
+    $rep = new documentViewFichier($_GET['path']);
+    $detail = $rep->detailFichier();
+    $sortie .= '<div class="blockTable"><div style="display:table;" class="tableau">';
+    $sortie .= '<div class="titre" style="display:table-row;">';
+    $sortie .= '<div class="celluleH" style="display:table-cell;">Fichier</div>';
+    $sortie .= '<div class="celluleH" style="display:table-cell;">Dernière révision par</div>';
+    $sortie .= '<div class="celluleH" style="display:table-cell;">Date dernière révision</div></div>';
+    $sortie .= '<div style="display:table-row;">';
+    $sortie .= '<div class="cellule" style="display:table-cell;">'.$_GET['nom'].'</div>';
+    $sortie .= '<div class="cellule" style="display:table-cell;">'.$detail[0]['Last Changed Author'].'</div>';
+    $sortie .= '<div class="cellule" style="display:table-cell;">'.$detail[0]['Last Changed Date'].'</div></div>';
+    $sortie .= '</div>';
+    $titre = 'Détails sur le fichier '.$_GET['nom'];
 }
 /*------------------------------------------------------------------------+
 | DISPLAY PROCESSING
 +------------------------------------------------------------------------*/
 if ($PC->rcvG['format'] == 'popup')
-    echo $sortie;
+    echo generateZBox($titre, $titre, $sortie,'<div class="footer"></div>','popupWORK','');
 elseif($PC->rcvG['style'] == 'ajax')
     echo $sortie;
 else {

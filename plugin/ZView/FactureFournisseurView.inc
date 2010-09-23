@@ -25,10 +25,8 @@ class FactureFournisseurView extends generalView {
      */
     public function __construct() {
 	$this->script = '<script type="text/javascript">';
-	$this->script .= 'function autoCompletage() {';
 	$this->script .= "\n".'contact_completer = new Ajax.Autocompleter("ACcontact_factfourn", "ACcontact_factfourn_choix", "../ajaxRef.php?action=listeContact", { paramName: "value", minChars: 2, indicator : "loadingcontact_factfourn", afterUpdateElement : autoCompleteHidden } ); ';
 	$this->script .= "\n".'contact_completer.options.defaultParams=\'id_ent=\'+$F(\'ACentreprise_factfournhidden\'); ';
-	$this->script .= '} ';
 	$this->script .= "function ChangeFactureFournResultPage(limit,from,order,sens) {
 		    ChangeFactureFournAction('searchFactureFourn');
 		    if(limit != undefined) ChangeLimit(limit);
@@ -260,7 +258,7 @@ class FactureFournisseurView extends generalView {
 	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeFactureFournResultPage",'../');
 	    $rendu->generateZBox('<img src="../img/prospec/voir.png" alt="rech" title="Critères de recherche" /> Recherche', '<img src="../img/prospec/voir.png" alt="rech" title="Critères de recherche" /> Recherche', $this->formSearch->generateForm(), $this->formSearch->generateButtons('listeResultFournisseur', 'Annuler', 'Rechercher'), 'divSerachFourn', 'open');
 	    $rendu->generateZBox($titreR, $titreR, $this->resultat->generateTableau(), $bouton, 'searchListeFournisseur', 'open', true,'listeResultFournisseur');
-	    $rendu->insertJS('<script>function autoCompletage() { var ent = 1;} </script>');
+	    $rendu->insertJS('<script> ent = 1;</script>');
 	    return $rendu->generateRendu();
 	}
 

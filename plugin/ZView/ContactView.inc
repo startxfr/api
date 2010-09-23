@@ -950,7 +950,7 @@ class contactView extends generalView {
 	    return $this->ResultProspec($datas, $tableau);
 	else {
 	    $script = "<script type=\"text/javascript\">
-			function autoCompletage() { new Ajax.Autocompleter(\"ACarecherche\", \"ACarecherche_choix\", \"../ajaxRef.php?action=quickSearchPropsec\", {paramName: \"value\", minChars: 2, indicator: \"loadingarecherche\"}); }
+			new Ajax.Autocompleter(\"ACarecherche\", \"ACarecherche_choix\", \"../ajaxRef.php?action=quickSearchPropsec\", {paramName: \"value\", minChars: 2, indicator: \"loadingarecherche\"}); 
 			function ChangeContactResultPage(limit,from,order,sens) {
 			    ChangeAction('search');
 			    if(limit != undefined) ChangeLimit(limit);
@@ -1224,7 +1224,7 @@ class contactEntrepriseView extends contactView {
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Fiche entreprise '.$datas['data']['nom_ent'],'',true);
 	$messAdd = ($mess != '') ? '<span class="important" style="text-align:center;" >'.$mess.'</span>' : '';
-	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
+	$script = '<script type="text/javascript">';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
 	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
@@ -1277,7 +1277,7 @@ class contactEntrepriseView extends contactView {
 
 
     public function creerEntreprise($datas,$control = null) {
-	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;} function changeToDo(value) {$(\'toDO\').value = $(\'toDO2\').value = value;}';
+	$script = '<script type="text/javascript">function changeToDo(value) {$(\'toDO\').value = $(\'toDO2\').value = value;}';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjetE(idRetour) { var ent=\'action=addProjetEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
 	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise=\'+$(\'idEntrepriseLightInfo\').value+\'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
@@ -1615,7 +1615,7 @@ class contactParticulierView extends contactView {
 	$addEntInTitle = ($datas['data']['id_ent'] != '') ? ' ('.$datas['data']['nom_ent'].')' : '';
 	if(array_key_exists('out',$GLOBALS))
 	    $GLOBALS['out']->setTitle('Fiche contact '.$datas['data']['civ_cont'].' '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'].$addEntInTitle,'',true);
-	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
+	$script = '<script type="text/javascript">';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
 	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';
@@ -1657,7 +1657,7 @@ class contactParticulierView extends contactView {
     }
 
     public function creerContact($datas) {
-	$script = '<script type="text/javascript">function autoCompletage() {var toto = 1;}';
+	$script = '<script type="text/javascript">';
 	$script .= "\n".'function addContact(idRetour) { var ent=\'action=addContEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,420,440);} ';
 	$script .= "\n".'function addProjet(idRetour) { var ent=\'action=addProjetEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent,430,360);} ';
 	$script .= "\n".'function addAppel(idRetour) { var ent=\'action=addAppelEnt&entreprise='.$datas['data']['id_ent'].'&idRetour=\'+idRetour; zuno.popup.open(\'fiche.php\', ent, 800, 220);} ';

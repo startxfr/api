@@ -144,7 +144,7 @@ MenuContainer.prototype = {
 			});
 	    }
 		Element.setStyle(this.element,{
-	    	top: (this.parent.element.offsetTop - parentMenuBorders["top"] - this.menuItems[0].element.offsetTop) + "px"
+	    	top: (this.parent.element.offsetTop - parentMenuBorders["top"] - (this.menuItems[0] ?  this.menuItems[0].element.offsetTop : 0)) + "px"
 		});
 	  }
 	  Element.setStyle(this.element,{visibility: "visible"});
