@@ -18,12 +18,12 @@
 	<value id="LANG_TxtNoTrans">TRUE</value>
     </group>
     <group name="StaticContent" modifRight="0" title="Configuration des répertoires">
-	<value id="urlJss">http://localhost/zunodev/static/za/jss/</value>
-	<value id="UrlImg">http://localhost/zunodev/static/za/img/</value>
-	<value id="UrlImgPhone">http://localhost/zunodev/static/za/p/img/</value>
-	<value id="urlWebapp">http://localhost/zunodev/static/za/p/WebApp/</value>
+	<value id="urlJss">http://static.zuno.fr/za/jss/</value>
+	<value id="UrlImg">http://static.zuno.fr/za/img/</value>
+	<value id="UrlImgPhone">http://static.zuno.fr/za/p/img/</value>
+	<value id="urlWebapp">http://static.zuno.fr/za/p/WebApp/</value>
     </group>
     <group name="MutTools" modifRight="0" title="Configuration des répertoires">
-	<value id="pathJpgraph">/var/zuno-dev/manager/dev/muTools/jpgraph/</value>
+	<value id="pathJpgraph">/var/zuno/manager/muTools/jpgraph/</value>
     </group>
 </configuration>
