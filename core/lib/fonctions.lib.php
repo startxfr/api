@@ -1450,19 +1450,19 @@ function afficherMessages() {
        array_key_exists('titre_mess', $_SESSION['message'][0]) and 
        $_SESSION['message'][0]['titre_mess'] != '' and
        $_SESSION['message']['dejaVu'] != true) {
-	$mess = '<div class="ZBox"><div class="body"><div class="content"><div class="block width50">';
-	foreach($_SESSION['message'] as $v) {
-	    if($v['contenu_mess'] != '') {
-		$mess .= '<fieldset class="form">';
-		$mess .= '<legend>'.$v['titre_mess'].'</legend>';
-		$mess .= '<div class="row"><div class="label">Message : </div>';
-		$mess .= '<div class="field">'.$v['contenu_mess'].'</div></div></fieldset>';
-	    }
-	}
-	$mess .= '</div></div></div></div>';
-	$sortie = '<script> var msg = \''.$mess.'\'; </script>';
-	$sortie .= '<img alt="Image" style="display:none" src="img/zuno.png" onload="zuno.popup.doOpen(msg, \'Messages\',\'430\');" onerror="zuno.popup.doOpen(msg, \'Messages\',\'430\');" />';
-	$_SESSION['message']['dejaVu'] = true;
+        $mess = '<div class="ZBox"><div class="body"><div class="content"><div class="block width50">';
+        foreach($_SESSION['message'] as $v) {
+            if($v['contenu_mess'] != '') {
+                $mess .= '<fieldset class="form">';
+                $mess .= '<legend>'.$v['titre_mess'].'</legend>';
+                $mess .= '<div class="row"><div class="label">Message : </div>';
+                $mess .= '<div class="field">'.$v['contenu_mess'].'</div></div></fieldset>';
+            }
+        }
+        $mess .= '</div></div></div></div>';
+        $sortie = '<script> var msg = \''.$mess.'\'; </script>';
+        $sortie .= '<img alt="Image" style="display:none" src="../images/logo.png" onload="zuno.popup.doOpen(msg, \'Messages\',\'430\');" onerror="zuno.popup.doOpen(msg, \'Messages\',\'430\');" />';
+        $_SESSION['message']['dejaVu'] = true;
     }
     return $sortie;
 }

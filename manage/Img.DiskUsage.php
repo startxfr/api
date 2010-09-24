@@ -56,9 +56,9 @@ if(FileIsFileExist($GLOBALS['REP']['appli'].$lepath)) {
     }
     //print_r($lesdata);
 
-    include ("../plugin/jpgraph/src/jpgraph.php");
-    include ("../plugin/jpgraph/src/jpgraph_pie.php");
-    include ("../plugin/jpgraph/src/jpgraph_pie3d.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_pie.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_pie3d.php");
 
     // Some data
     foreach($lesdata as $key => $val) {

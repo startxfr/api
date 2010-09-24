@@ -100,6 +100,7 @@ if(isset($message) and $message != '')
 else $input['message'] = '';
 
 $input['to'] = ($PC->rcvG['from'] != "") ? $PC->rcvG['from'] : $PC->rcvP['to'];
+$input['imgPath'] = getStaticUrl('img');
 // We add content and Process display
 $out->AddBodyContent("");
 $out->AddBodyContent(templating('Login',$input));

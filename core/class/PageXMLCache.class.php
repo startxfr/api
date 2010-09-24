@@ -87,10 +87,10 @@ class PageXMLCache {
 	    }
 	    // Debut de l'analyse des variables
 	    if($lapage['img_menu'.$this->tableSuffix] != '') {
-		$lapage['img_menu'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_pagemenu'].$lapage['img_menu'.$this->tableSuffix];
+		$lapage['img_menu'.$this->tableSuffix] = getStaticUrl('img').'page.menu/'.$lapage['img_menu'.$this->tableSuffix];
 	    }
 	    if($lapage['img'.$this->tableSuffix] != '') {
-		$lapage['img'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_page'].$lapage['img'.$this->tableSuffix];
+		$lapage['img'.$this->tableSuffix] = getStaticUrl('img').'page/'.$lapage['img'.$this->tableSuffix];
 	    }
 	    //on traite les dates
 	    if(count($this->datable) > 0) {
@@ -142,7 +142,7 @@ class PageXMLCache {
 		}
 		// Debut de l'analyse des variables
 		if($resultparent['img_menu'.$this->tableSuffix] != '') {
-		    $resultparent['img_menu'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_pagemenu'].$resultparent['img_menu'.$this->tableSuffix];
+		    $resultparent['img_menu'.$this->tableSuffix] = getStaticUrl('img').'page.menu/'.$resultparent['img_menu'.$this->tableSuffix];
 		}
 		//On traite les champs traduisibles
 		if($this->Lang != $GLOBALS['LANGUE']['default']) {
@@ -180,7 +180,7 @@ class PageXMLCache {
 		    }
 		    // Debut de l'analyse des variables
 		    if($resultatchild['img_menu'.$this->tableSuffix] != '') {
-			$resultatchild['img_menu'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_pagemenu'].$resultatchild['img_menu'.$this->tableSuffix];
+			$resultatchild['img_menu'.$this->tableSuffix] = getStaticUrl('img').'page.menu/'.$resultatchild['img_menu'.$this->tableSuffix];
 		    }
 		    //On traite les champs traduisibles
 		    if($this->Lang != $GLOBALS['LANGUE']['default']) {

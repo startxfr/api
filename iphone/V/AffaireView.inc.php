@@ -25,7 +25,7 @@ class affaireView {
 	    }
 	    $list = substr($list,5).'</ul>';
 	    if ($from == 0) {//on affiche le haut de la page juste la première fois.
-		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>' ;
+		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>' ;
 	    }
 	    //l'affichage de la liste générée
 	    $out	.='<div class="iList">
@@ -60,7 +60,7 @@ class affaireView {
 	else {
 	    $devis = '<ul>';
 	    foreach($temp as $v) {
-		$devis .= '<li><a href="Devis.php?action=view&id_dev='.$v['id_dev'].'" class="Devis" rev="async"><img src="../img/actualite/devis.png"/> Devis : '.$v['id_dev'].' ['.$v['titre_dev'].']</a></li>';
+		$devis .= '<li><a href="Devis.php?action=view&id_dev='.$v['id_dev'].'" class="Devis" rev="async"><img src="'.getStaticUrl('img').'actualite/devis.png"/> Devis : '.$v['id_dev'].' ['.$v['titre_dev'].']</a></li>';
 	    }
 	    $devis .='</ul>';
 	}
@@ -74,7 +74,7 @@ class affaireView {
 	else {
 	    $commande = '<ul>';
 	    foreach($temp as $v) {
-		$commande .= '<li><a href="Commande.php?action=view&id_cmd='.$v['id_cmd'].'" class="Commande" rev="async"><img src="../img/actualite/commande.png"/> Commande : '.$v['id_cmd'].' ['.$v['titre_cmd'].']</a></li>';
+		$commande .= '<li><a href="Commande.php?action=view&id_cmd='.$v['id_cmd'].'" class="Commande" rev="async"><img src="'.getStaticUrl('img').'actualite/commande.png"/> Commande : '.$v['id_cmd'].' ['.$v['titre_cmd'].']</a></li>';
 	    }
 	    $commande .='</ul>';
 	}
@@ -88,7 +88,7 @@ class affaireView {
 	else {
 	    $facture = '<ul>';
 	    foreach($temp as $v) {
-		$facture .= '<li><a href="Facture.php?action=view&id_fact='.$v['id_fact'].'" class="Facture" rev="async"><img src="../img/actualite/facture.png"/> Facture : '.$v['id_fact'].' ['.$v['titre_fact'].']</a></li>';
+		$facture .= '<li><a href="Facture.php?action=view&id_fact='.$v['id_fact'].'" class="Facture" rev="async"><img src="'.getStaticUrl('img').'actualite/facture.png"/> Facture : '.$v['id_fact'].' ['.$v['titre_fact'].']</a></li>';
 	    }
 	    $facture .='</ul>';
 	}
@@ -112,10 +112,10 @@ class affaireView {
 	//On vient d'effectuer tout un tas de tests pour s'assurer  que l'on ne vas afficher que des blocks avec des choses dedans.
 
 	if($mode == 'afterModif') {
-	    $linkHead = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>';
+	    $linkHead = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>';
 	}
 	else {
-	    $linkHead = '<a href="Affaire.php?action=modifAffaire&id_aff='.$value["id_aff"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/edit.png" alt="Modifier" /></a>';
+	    $linkHead = '<a href="Affaire.php?action=modifAffaire&id_aff='.$value["id_aff"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'edit.png" alt="Modifier" /></a>';
 	}
 
 	//On génère maintenant le rendu visuel.
@@ -147,7 +147,7 @@ class affaireView {
 					</ul>
 				</fieldset>
 				<fieldset><legend>Actions</legend>' .
-		'<ul><li><a href="Devis.php?action=addDevisFromAffaire&id_aff='.$value['id_aff'].'" rev="async"><img src="../img/prospec/devis.add.png" /> Créer un devis lié</a></li></ul>
+		'<ul><li><a href="Devis.php?action=addDevisFromAffaire&id_aff='.$value['id_aff'].'" rev="async"><img src="'.getStaticUrl('img').'prospec/devis.add.png" /> Créer un devis lié</a></li></ul>
 				</fieldset>
 			</div>';
 	return $out;
@@ -159,7 +159,7 @@ class affaireView {
      */
     static function modif($value = array(),$onError = array(),$errorMess = '',$id_aff = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formModifAffaire" action="Affaire.php?action=doModifAffaire&id_aff='.$id_aff.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -177,11 +177,11 @@ class affaireView {
 	$out .= self::subBlockAutresInfos($value, $onError);
 	$out .= self::subBlockAction($value);
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formConnect\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formConnect\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	if($value['supprimable'] == '0')
-	    $out .='<br /><br /><a href="Affaire.php?action=suppAffaire&id_aff='.$value["id_aff"].'" rev="async" class="redButton"><img style="float: left;" src="Img/delete.png"/><span>Supprimer cette affaire</span></a>';
+	    $out .='<br /><br /><a href="Affaire.php?action=suppAffaire&id_aff='.$value["id_aff"].'" rev="async" class="redButton"><img style="float: left;" src="'.getStaticUrl('imgPhone').'delete.png"/><span>Supprimer cette affaire</span></a>';
 	$out .='<br /><br /><a href="Affaire.php?action=marqueSuppAffaire&id_aff='.$value["id_aff"].'" rev="async" class="redButton"><span>Marquer comme supprimée</span></a>';
 	return $out;
     }
@@ -317,7 +317,7 @@ class affaireView {
 	$out = '<fieldset>
 					<legend>Ressources Liées</legend>
 					<ul class="iArrow">
-						<li><a rev="async" href="Actualite.php?action=viewAffaire&amp;id_aff='.$value['id_aff'].'"><img src="Img/actualite.png"/> '.$totalActu.' Actualités</a></li>
+						<li><a rev="async" href="Actualite.php?action=viewAffaire&amp;id_aff='.$value['id_aff'].'"><img src="'.getStaticUrl('imgPhone').'actualite.png"/> '.$totalActu.' Actualités</a></li>
 					</ul>'.$devis.$commande.$facture.'
 				</fieldset>';
 	return $out;
@@ -328,8 +328,8 @@ class affaireView {
 	    $out = '<fieldset>
 					<legend>Actions</legend>
 					<ul class="iArrow">
-						<li><a rev="async" href="Affaire.php?action=archiver&amp;id_aff='.$value['id_aff'].'"><img src="Img/archiver.png"/> Archiver cette affaire</a></li>
-						<li><a rev="async" href="Affaire.php?action=cloner&amp;id_aff='.$value['id_aff'].'"><img src="Img/cloner.png"/> Cloner cette affaire</a></li>
+						<li><a rev="async" href="Affaire.php?action=archiver&amp;id_aff='.$value['id_aff'].'"><img src="'.getStaticUrl('imgPhone').'archiver.png"/> Archiver cette affaire</a></li>
+						<li><a rev="async" href="Affaire.php?action=cloner&amp;id_aff='.$value['id_aff'].'"><img src="'.getStaticUrl('imgPhone').'cloner.png"/> Cloner cette affaire</a></li>
 					</ul>
 				</fieldset>';
 	else $out='';
@@ -337,7 +337,7 @@ class affaireView {
     }
 
     static function affaireLinkSimple($value = array()) {
-	return '<a href="Affaire.php?action=view&id_aff='.$value['id_aff'].'" class="Affaire" rev="async"><img src="../img/actualite/affaire.png"/> Affaire : '.$value['id_aff'].' '.$value['titre_aff'].'</a>';
+	return '<a href="Affaire.php?action=view&id_aff='.$value['id_aff'].'" class="Affaire" rev="async"><img src="'.getStaticUrl('img').'actualite/affaire.png"/> Affaire : '.$value['id_aff'].' '.$value['titre_aff'].'</a>';
     }
 
 
@@ -352,7 +352,7 @@ class affaireView {
 		HtmlElementIphone::linkIconWeb($value["www_ent"],false).
 		HtmlElementIphone::linkIconAddress($value["add1_ent"],$value["add2_ent"],$value["cp_ent"],$value["ville_ent"],$value["nom_pays"],$value["nom_ent"],false);
 	HtmlElementIphone::linkIconAddressWithZSend($value["add1_ent"],$value["add2_ent"],$value["cp_ent"],$value["ville_ent"],$value["nom_pays"],$value["nom_ent"],false);
-	$i = ($value["type_ent"] != '') ? '<span><img src="../img/prospec/TypeEntreprise/'.$value["type_ent"].'.png"/></span>' : '';
+	$i = ($value["type_ent"] != '') ? '<span><img src="'.getStaticUrl('img').'prospec/TypeEntreprise/'.$value["type_ent"].'.png"/></span>' : '';
 	$b = ($b != '') ? '<br class="clear"/><div class="listIconLink">'.$b.'<br class="clear"/></div>' : '';
 	if($value["cp_ent"] != '' or $value["ville_ent"] != '') $add = $value["cp_ent"].' - '.$value["ville_ent"];
 	elseif($value["tel_ent"] != '') $add = $value["tel_ent"];
@@ -371,8 +371,8 @@ class affaireView {
 				<div class="msg"><br/>Merci de confirmer l\'archivage de cette affaire<br/></div>
 				<br/>
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="Affaire.php?action=doArchivage&id_aff='.$value["id_aff"].'" rev="async" class="BigButtonValidRight"><img src="Img/big.confirmer.png" alt="confirmer"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="Affaire.php?action=doArchivage&id_aff='.$value["id_aff"].'" rev="async" class="BigButtonValidRight"><img src="'.getStaticUrl('imgPhone').'big.confirmer.png" alt="confirmer"></a>
 				</fieldset>
 			</div>';
     }
@@ -381,7 +381,7 @@ class affaireView {
      */
     static function add($value = array(),$onError = array(),$errorMess = '',$id_aff = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddAffaire" action="Affaire.php?action=doAddAffaire&id_aff='.$id_aff.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -397,8 +397,8 @@ class affaireView {
 	$out .= self::subBlockResponsables($value, $onError);
 	$out .= self::subBlockAutresInfos($value, $onError);
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddAffaire\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddAffaire\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
@@ -407,7 +407,7 @@ class affaireView {
      */
     static function delete($value = array(), $onfekoi = '') {
 	if ($value["id_aff"] == 0 && $onfekoi == '') {
-	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="Img/home.png" alt="Accueil" /></a>
+	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 			  <div class="iPanel">
 			  <div class="err">
 			  		<strong> Affaire supprimé ! </strong>
@@ -434,12 +434,12 @@ class affaireView {
 	//On vient d'effectuer tout un tas de tests pour s'assurer  que l'on ne vas afficher que des blocks avec des choses dedans.
 	if($onfekoi == '') {
 	    $messageSupp = '<strong> Êtes vous sur de vouloir supprimer cette affaire ? </strong>';
-	    $linkHead = '<a href="Affaire.php?action=doDeleteAffaire&id_aff='.$value["id_aff"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/remove.png" alt="Supprimer" /></a>';
+	    $linkHead = '<a href="Affaire.php?action=doDeleteAffaire&id_aff='.$value["id_aff"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'remove.png" alt="Supprimer" /></a>';
 	}
-	if($onfekoi = 'marqueSupp') {
+	if($onfekoi == 'marqueSupp') {
 	    $messageSupp = '<strong> Êtes vous sur de vouloir marquer cette affaire comme supprimée ?</strong>';
 	    $messageSupp .= '<br /><strong> Rien ne serra supprimé, l\'affaire n\'apparaitra plus dans les recherches.</strong>';
-	    $linkHead = '<a href="Affaire.php?action=doMarqueSuppAffaire&id_aff='.$value["id_aff"].'&entreprise='.$value['entreprise_aff'].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/remove.png" alt="Supprimer" /></a>';
+	    $linkHead = '<a href="Affaire.php?action=doMarqueSuppAffaire&id_aff='.$value["id_aff"].'&entreprise='.$value['entreprise_aff'].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'remove.png" alt="Supprimer" /></a>';
 	}
 	//On génère maintenant le rendu visuel.
 	$out = $linkHead.'<div class="iPanel">' .
@@ -483,8 +483,8 @@ class affaireView {
 				<div class="msg"><br/>Merci de confirmer le clonage de cette affaire<br/></div>
 				<br/>
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="Affaire.php?action=doCloner&id_aff='.$value["id_aff"].'" rev="async" class="BigButtonValidRight"><img src="Img/big.confirmer.png" alt="confirmer"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="Affaire.php?action=doCloner&id_aff='.$value["id_aff"].'" rev="async" class="BigButtonValidRight"><img src="'.getStaticUrl('imgPhone').'big.confirmer.png" alt="confirmer"></a>
 				</fieldset>
 			</div>';
     }
@@ -493,7 +493,7 @@ class affaireView {
      */
 
 
-    static function tri_echeance($value = array(), $limit, $from, $total) {
+    static function tri_echeance($value, $limit, $from, $total) {
 	$mois = $_SESSION['user']['LastLetterSearch'];
 	$out = '<ul>';
 
@@ -537,7 +537,7 @@ class affaireView {
 	return $out;
     }
 
-    static function tri_creation($value = array(), $limit, $from, $total) {
+    static function tri_creation($value, $limit, $from, $total) {
 	$mois = $_SESSION['user']['LastLetterSearch'];
 	$out = '<ul>';
 
@@ -564,7 +564,7 @@ class affaireView {
 	return $out;
     }
 
-    static function tri_modification($value = array(), $limit, $from, $total) {
+    static function tri_modification($value, $limit, $from, $total) {
 	$mois = $_SESSION['user']['LastLetterSearch'];
 	$out = '<ul>';
 
@@ -591,7 +591,7 @@ class affaireView {
 	return $out;
     }
 
-    static function tri_entreprise($value = array(), $limit, $from, $total) {
+    static function tri_entreprise($value, $limit, $from, $total) {
 	$ent = $_SESSION['user']['LastLetterSearch'];
 	$out = '<ul>';
 
@@ -627,7 +627,7 @@ class affaireView {
 	return $out;
     }
 
-    static function tri_nomAffaire($value = array(), $limit, $from, $total) {
+    static function tri_nomAffaire($value, $limit, $from, $total) {
 	$ent = $_SESSION['user']['LastLetterSearch'];
 	$out = '<ul>';
 
@@ -663,7 +663,7 @@ class affaireView {
 	return $out;
     }
 
-    static function tri_contact($value = array(), $limit, $from, $total) {
+    static function tri_contact($value, $limit, $from, $total) {
 	$ent = $_SESSION['user']['LastLetterSearch'];
 	$out = '<ul>';
 
@@ -756,7 +756,7 @@ class affaireView {
 
 	$affichage = HtmlFormIphone::Radio('affichage', $affichageList, '', 'Préférences affichage', FALSE);
 
-	$out = '<a href="#"  onclick="return WA.Submit(\'formAvanceAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="Rechercher" /></a>'.
+	$out = '<a href="#"  onclick="return WA.Submit(\'formAvanceAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Rechercher" /></a>'.
 		'<form id="formAvanceAffaire" action="Affaire.php?action=doRechercheAvancee" onsubmit="return WA.Submit(this,null,event)">' .
 		'<div class="iPanel">' .
 		'<fieldset>' .
@@ -848,14 +848,14 @@ class affaireView {
 
     static function afficherStats($datas = array(), $type = 'global') {
 	if($type == 'global') {
-	    $out = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+	    $out = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 			<a href="#" rel="back" class="iButton iBBack" onclick="return WA.Back()">Retour</a>
 			<div class="iBlock">
 				<h1>Types d\'affaires actives</h1>
-					<p><img src="Img/Affaire.php?type=typeAffActives"/></p>
+					<p><img src="'.getStaticUrl('imgPhone').'Affaire.php?type=typeAffActives"/></p>
 					<br/>
 				<h1>Types d\'affaires</h1>
-					<p><img src="Img/Affaire.php?type=typeAffGlobal"/></p>
+					<p><img src="'.getStaticUrl('imgPhone').'Affaire.php?type=typeAffGlobal"/></p>
 			</div>';
 	    $out .= '<div class="iPanel">';
 	    $out .= '<fieldset><legend>Affaires</legend><ul><li>Nombre : '.$datas[0].'</li></ul></fieldset>';

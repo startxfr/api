@@ -71,6 +71,6 @@
 	</tr>
 </xsl:template>
 <xsl:template match="img">
-	<img src="{$root_path}{.}" name="{../nom}" alt="{../nom}"/>
+	<img src="{.}" name="{../nom}" alt="{../nom}"/>
 </xsl:template>
 </xsl:stylesheet>

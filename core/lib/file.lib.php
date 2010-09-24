@@ -136,7 +136,7 @@ function FileIsFileExist($filename) {
 
 function FileMoveUploaded($tmpfile, $newname, $repertoire='') {
     if ($repertoire == '') {
-	$repertoire = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['img'];
+	$repertoire = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
     }
     if (rename($tmpfile, $repertoire . $newname)) {
 	return true;
@@ -184,7 +184,7 @@ function FileConvertSize2Human($bytes) {
   | FileOutputType
   +------------------------------------------------------------------------ */
 
-function FileOutputType($filename, $output='name', $pathSuffix='') {
+function FileOutputType($filename, $output='name') {
     $types = fileGetListOfSupportedImages();
     $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
     $ext = FileGetExtention($filename);
@@ -192,11 +192,11 @@ function FileOutputType($filename, $output='name', $pathSuffix='') {
 	if ($output == 'image_right')
 	    $align = 'right';
 	if ($types[$ext] != "")
-	    $sortie = imageTag($pathSuffix . "img/files/" . $types[$ext] . ".png",
+	    $sortie = imageTag(getStaticUrl('img') . 'files/' . $types[$ext] . '.png',
 			    $ext,
 			    $align);
 	else
-	    $sortie = imageTag($pathSuffix . "img/files/unknown.png",
+	    $sortie = imageTag(getStaticUrl('img') . 'files/unknown.png',
 			    $ext,
 			    $align);
     }
@@ -211,90 +211,90 @@ function FileOutputType($filename, $output='name', $pathSuffix='') {
 
 function fileGetListOfSupportedImages() {
     return array(
-	"torrent" => "bt",
-	"iso" => "cdimage",
-	"mdf" => "cdimage",
-	"mds" => "cdimage",
-	"deb" => "deb",
-	"doc" => "document",
-	"docx" => "document",
-	"odt" => "document",
-	"swx" => "document",
-	"xls" => "calc",
-	"xlsx" => "calc",
-	"ods" => "calc",
-	"sws" => "calc",
-	"csv" => "calc",
-	"ppt" => "presentation",
-	"pptx" => "presentation",
-	"odp" => "presentation",
-	"swt" => "presentation",
-	"exe" => "exec_win",
-	"bat" => "exec_win",
-	"ttf" => "font",
-	"html" => "html",
-	"htm" => "html",
-	"xhtml" => "html",
-	"asp" => "html",
-	"aspx" => "html",
-	"php" => "html",
-	"php3" => "html",
-	"php4" => "html",
-	"php5" => "html",
-	"xml" => "html",
-	"png" => "image",
-	"gif" => "image",
-	"jpg" => "image",
-	"jpeg" => "images",
-	"bmp" => "image",
-	"wbmp" => "image",
-	"log" => "log",
-	"mid" => "midi",
-	"mod" => "midi",
-	"sid" => "midi",
-	"xm" => "midi",
-	"pdf" => "pdf",
-	"ps" => "postscript",
-	"mov" => "quicktime",
-	"readme" => "readme",
-	"nfo" => "readme",
-	"rpm" => "rpm",
-	"sh" => "shellscript",
-	"mp3" => "sound",
-	"ogg" => "sound",
-	"wav" => "sound",
-	"au" => "sound",
-	"c" => "source",
-	"cpp" => "source",
-	"f" => "source",
-	"h" => "source",
-	"j" => "source",
-	"jar" => "source",
-	"java" => "source",
-	"l" => "source",
-	"moc" => "source",
-	"o" => "source",
-	"o" => "souce",
-	"p" => "source",
-	"pl" => "source",
-	"py" => "source",
-	"s" => "source",
-	"y" => "source",
-	"tar" => "tar",
-	"gz" => "tar",
-	"rar" => "tar",
-	"bz" => "tar",
-	"bz2" => "tar",
-	"zip" => "tar",
-	"ace" => "tar",
-	"tex" => "tex",
-	"txt" => "txt",
-	"svg" => "vector",
-	"svgx" => "vector",
-	"avi" => "video",
-	"mkv" => "video",
-	"flv" => "video",
-	"wmv" => "video");
+	'torrent' => 'bt',
+	'iso' => 'cdimage',
+	'mdf' => 'cdimage',
+	'mds' => 'cdimage',
+	'deb' => 'deb',
+	'doc' => 'document',
+	'docx' => 'document',
+	'odt' => 'document',
+	'swx' => 'document',
+	'xls' => 'calc',
+	'xlsx' => 'calc',
+	'ods' => 'calc',
+	'sws' => 'calc',
+	'csv' => 'calc',
+	'ppt' => 'presentation',
+	'pptx' => 'presentation',
+	'odp' => 'presentation',
+	'swt' => 'presentation',
+	'exe' => 'exec_win',
+	'bat' => 'exec_win',
+	'ttf' => 'font',
+	'html' => 'html',
+	'htm' => 'html',
+	'xhtml' => 'html',
+	'asp' => 'html',
+	'aspx' => 'html',
+	'php' => 'html',
+	'php3' => 'html',
+	'php4' => 'html',
+	'php5' => 'html',
+	'xml' => 'html',
+	'png' => 'image',
+	'gif' => 'image',
+	'jpg' => 'image',
+	'jpeg' => 'images',
+	'bmp' => 'image',
+	'wbmp' => 'image',
+	'log' => 'log',
+	'mid' => 'midi',
+	'mod' => 'midi',
+	'sid' => 'midi',
+	'xm' => 'midi',
+	'pdf' => 'pdf',
+	'ps' => 'postscript',
+	'mov' => 'quicktime',
+	'readme' => 'readme',
+	'nfo' => 'readme',
+	'rpm' => 'rpm',
+	'sh' => 'shellscript',
+	'mp3' => 'sound',
+	'ogg' => 'sound',
+	'wav' => 'sound',
+	'au' => 'sound',
+	'c' => 'source',
+	'cpp' => 'source',
+	'f' => 'source',
+	'h' => 'source',
+	'j' => 'source',
+	'jar' => 'source',
+	'java' => 'source',
+	'l' => 'source',
+	'moc' => 'source',
+	'o' => 'source',
+	'o' => 'souce',
+	'p' => 'source',
+	'pl' => 'source',
+	'py' => 'source',
+	's' => 'source',
+	'y' => 'source',
+	'tar' => 'tar',
+	'gz' => 'tar',
+	'rar' => 'tar',
+	'bz' => 'tar',
+	'bz2' => 'tar',
+	'zip' => 'tar',
+	'ace' => 'tar',
+	'tex' => 'tex',
+	'txt' => 'txt',
+	'svg' => 'vector',
+	'svgx' => 'vector',
+	'avi' => 'video',
+	'mkv' => 'video',
+	'flv' => 'video',
+	'wmv' => 'video');
 }
 
 /* ------------------------------------------------------------------------+
@@ -334,7 +334,7 @@ function FileDirectoryDetail($rep, $ext='', $profondeur = '') {
 		// si c'est la profondeur max on r�cupere les infos
 		else {
 		    $output[$contenu]['nom'] = $contenu;
-		    $output[$contenu]['type'] = "repertoire";
+		    $output[$contenu]['type'] = 'repertoire';
 		    $size = FileGetDirectorySize($chemin);
 		    $output[$contenu]['size'] = FileConvertSize2Human($size);
 		    $output[$contenu]['Osize'] = $size;
@@ -346,9 +346,9 @@ function FileDirectoryDetail($rep, $ext='', $profondeur = '') {
 		$detfile = pathinfo($chemin);
 		if ($testext) {
 		    foreach ($ext as $idsf => $extention) {
-			if ($extention == $detfile["extension"]) {
+			if ($extention == $detfile['extension']) {
 			    $output[$i]['nom'] = $contenu;
-			    $output[$i]['type'] = $detfile["extension"];
+			    $output[$i]['type'] = $detfile['extension'];
 			    $output[$i]['size'] = FileConvertSize2Human(filesize($chemin));
 			    $output[$i]['Osize'] = FileConvertSize2Human(filesize($chemin));
 			    //	$output[$i]['Osize']= FileGetDirectorySize($chemin);
@@ -358,7 +358,7 @@ function FileDirectoryDetail($rep, $ext='', $profondeur = '') {
 		    }
 		} else {
 		    $output[$i]['nom'] = $contenu;
-		    $output[$i]['type'] = $detfile["extension"];
+		    $output[$i]['type'] = $detfile['extension'];
 		    $output[$i]['size'] = FileConvertSize2Human(filesize($chemin));
 		    $output[$i]['Osize'] = filesize($chemin);
 		    $output[$i]['date'] = DateTimestamp2Univ(filemtime($chemin));
@@ -376,13 +376,13 @@ function FileGetDirectorySize($target, $output=false) {
 	$sourcedir = opendir($target);
 	while (false !== ($filename = readdir($sourcedir))) {
 	    if ($output)
-		echo "Processing: " . $target . "/" . $filename . "<br>";
-	    if ($filename != "." && $filename != ".." && $filename != '.svn') {
-		if (is_dir($target . "/" . $filename))
+		echo 'Processing: ' . $target . '/' . $filename . '<br>';
+	    if ($filename != '.' && $filename != '..' && $filename != '.svn') {
+		if (is_dir($target . '/' . $filename))
 		// recurse subdirectory; call of function recursive
-		    $totalsize += FileGetDirectorySize($target . "/" . $filename, $output);
-		elseif (is_file($target . "/" . $filename))
-		    $totalsize += filesize($target . "/" . $filename);
+		    $totalsize += FileGetDirectorySize($target . '/' . $filename, $output);
+		elseif (is_file($target . '/' . $filename))
+		    $totalsize += filesize($target . '/' . $filename);
 	    }
 	}
 	closedir($sourcedir);
@@ -484,17 +484,17 @@ function PushFileToBrowser($file, $fileName = '', $type = '') {
 	    if ($fileNameTmp[$last] != '')
 		$fileName = $fileNameTmp[$last];
 	    else
-		$fileName = "fichier." . $ext;
+		$fileName = 'fichier.' . $ext;
 	}
 
 	$download_size = filesize($file);
-	header("Content-Type: " . $type);
+	header('Content-Type: ' . $type);
 	header("Content-Disposition: inline; filename=$fileName");
-	header("Expires: 0");
-	header("Cache-Control: private");
-	header("Accept-Ranges: bytes");
+	header('Expires: 0');
+	header('Cache-Control: private');
+	header('Accept-Ranges: bytes');
 	header("Content-Length: $download_size");
-	header("Pragma: public");
+	header('Pragma: public');
 	@readfile($file);
 	exit;
     }

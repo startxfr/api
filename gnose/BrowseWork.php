@@ -178,7 +178,7 @@ elseif($_GET['action'] == 'archiverD') {
     $sortie .= '<div class="celluleH" style="display:table-cell;"></div>';
     $sortie .= '</div>';
     $sortie .= '<div style="display:table-row;"><div class="celluleH" style="display:table-cell;"></div>';
-    $sortie .= '<div class="celluleH" style="display:table-cell;"><b><a onclick="placerLiens(\'a'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\', \''.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\');" ><img src="../img/files/dir.png" style="margin-left:-18px;"/>'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'</a></b></div>';
+    $sortie .= '<div class="celluleH" style="display:table-cell;"><b><a onclick="placerLiens(\'a'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\', \''.$GLOBALS['SVN_Pool1']['ArchivesDir'].'\');" ><img src="'.getStaticUrl('img').'files/dir.png" style="margin-left:-18px;"/>'.$GLOBALS['SVN_Pool1']['ArchivesDir'].'</a></b></div>';
     $sortie .= '<div class="celluleH" style="display:table-cell;"></div></div>';
     $sortie .= '<div style="display:table-row;"><div style="display:table-cell;"><input type="text" name="nom" value="'.$_GET['nom'].'" readonly="readonly" style="float:left;"/></div>';
     $sortie .= '<div class="cellule" style="display:table-cell;">'.$rep->afficher('', false, 'dossierlight').'</div>';

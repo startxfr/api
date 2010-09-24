@@ -115,7 +115,7 @@ foreach ($listesupported as $val) {
     $RowContent['langID'] = $val;
     $RowContent['langTitre'] = $GLOBALS['LANGUE_' . $_SESSION["language"]][$val];
     if ($val == $GLOBALS['LANGUE']['default']) {
-	$RowContent['langTitre'] .= imageTag("../img/exclam.png", 'important');
+	$RowContent['langTitre'] .= imageTag(getStaticUrl('img')."exclam.png", 'important');
     }
     $LangList .= templating('manage/AppliConfiguration.LangRow', $RowContent);
 }

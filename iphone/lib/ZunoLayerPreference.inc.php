@@ -32,14 +32,14 @@ class ZunoLayerPreference {
     static function iMenuGeneral() {
         if($_SESSION['user']['right']<2)
             $mess = '<ul class="iArrow">
-				<li><a href="Preference.php?action=session" rev="async"><img src="Img/iconMenu/pref.session.png" />Session</a></li>
-				<li><a href="Preference.php?action=debug" rev="async"><img src="Img/iconMenu/pref.debug.png" />Debug</a></li>
+				<li><a href="Preference.php?action=session" rev="async"><img src="'.getStaticUrl('imgPhone').'iconMenu/pref.session.png" />Session</a></li>
+				<li><a href="Preference.php?action=debug" rev="async"><img src="'.getStaticUrl('imgPhone').'iconMenu/pref.debug.png" />Debug</a></li>
 			</ul>';
         else $mess = '';
         return '<div class="iMenu">
 			<ul class="iArrow">
-				<li><a href="Preference.php?action=profil" rev="async"><img src="Img/iconMenu/pref.profil.png" />Profil</a></li>
-                                <li><a href="Preference.php?action=serveur" rev="async"><img src="Img/iconMenu/pref.serveur.png" />Serveur</a></li>
+				<li><a href="Preference.php?action=profil" rev="async"><img src="'.getStaticUrl('imgPhone').'iconMenu/pref.profil.png" />Profil</a></li>
+                                <li><a href="Preference.php?action=serveur" rev="async"><img src="'.getStaticUrl('imgPhone').'iconMenu/pref.serveur.png" />Serveur</a></li>
 			</ul>
 			'.$mess.'
 			<ul class="iArrow">
@@ -47,7 +47,7 @@ class ZunoLayerPreference {
 			</ul>
 			<br/>
 			<ul class="iArrow">
-				<li><a href="#_MenuPrefsAssist"><img src="Img/iconMenu/pref.assist.png" /><i style="color:#900">Assistance</i></a></li>
+				<li><a href="#_MenuPrefsAssist"><img src="'.getStaticUrl('imgPhone').'iconMenu/pref.assist.png" /><i style="color:#900">Assistance</i></a></li>
 			</ul>
 		</div>';
     }
@@ -58,7 +58,7 @@ class ZunoLayerPreference {
      */
     static function partProfil() {
         $listeChoix = array(5=>'5',10=>'10',15=>'15',20=>'20');
-        return '<a href="#"  onclick="return WA.Submit(\'formModifProfil\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+        return '<a href="#"  onclick="return WA.Submit(\'formModifProfil\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<div class="iPanel">
 					<div id="formProfilResult"></div>
 					<fieldset>
@@ -131,7 +131,7 @@ class ZunoLayerPreference {
 						<li><label>Moteur : </label><small>'.$_SERVER['SERVER_SOFTWARE'].'</small></li>
 						<li><label>Nom : </label><small>'.$_SERVER['SERVER_NAME'].'</small></li>
 						<li><label>IP : </label><small>'.$_SERVER['SERVER_ADDR'].' on '.$_SERVER['SERVER_PORT'].'</small></li>
-						<li><a href="mailto:'.$_SERVER['SERVER_ADMIN'].'"><label>Admin : </label><span><img src="Img/iconMenu/mail.png" /></span>'.$_SERVER['SERVER_ADMIN'].'</a></li>
+						<li><a href="mailto:'.$_SERVER['SERVER_ADMIN'].'"><label>Admin : </label><span><img src="'.getStaticUrl('imgPhone').'iconMenu/mail.png" /></span>'.$_SERVER['SERVER_ADMIN'].'</a></li>
 					</ul>
 				</fieldset>
 				</div>'.$GLOBALS['DGV'].'

@@ -95,7 +95,7 @@ class factureView extends generalView {
 	$data = $datas['data'];
 	if (array_key_exists('out', $GLOBALS))
 	    $GLOBALS['out']->setTitle('Fiche facture "' . $this->prepareAffichageID($data) . '" - ' . $data['nom_ent'], '', true);
-	$titre = '<img src="../img/prospec/facture.png" alt="facture" title="Facture" /> Informations sur ' . $datas['nom'] . ' ' . $this->prepareAffichageID($data);
+	$titre = '<img src="'.getStaticUrl('img').'prospec/facture.png" alt="facture" title="Facture" /> Informations sur ' . $datas['nom'] . ' ' . $this->prepareAffichageID($data);
 
 	$corps = '<form name="ModifInfosFacture" action="#" method="post">';
 	$corps .= '<input type="hidden" name="action" value="modifFacture" />';
@@ -105,13 +105,13 @@ class factureView extends generalView {
 	$corps .= '<div id="ContenuFormInfosFacture">';
 	$corps .= $this->interneInfos($datas);
 	$corps .= '</div></form>';
-	$pied = '<a title="Reset" href="javascript:document.ModifInfosFacture.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'ModifInfosFacture\', \'facturier/Facture.php\',\'ContenuFormInfosFacture\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette facture</a>';
+	$pied = '<a title="Reset" href="javascript:document.ModifInfosFacture.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'ModifInfosFacture\', \'facturier/Facture.php\',\'ContenuFormInfosFacture\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Modifier cette facture</a>';
 	if ($datas['last'] == $data['id_fact'] and $data['status_fact'] < 3)
-	    $pied .= '<a name="supprimer" onclick="zuno.popup.open(\'Facture.php\',\'action=popupSupp&facture=' . $data['id_fact'] . '\',200,150);"><img alt="Supp" title="Supprimer cette facture" src="../img/prospec/facture.delete.png"  /> Supprimer cette facture</a>';
-	$pied .= '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture=' . $data['id_fact'] . '\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img align="middle" title="Actualités" alt="Actualités" src="../img/prospec/actu.png"/> Historique de cette facture</a>';
+	    $pied .= '<a name="supprimer" onclick="zuno.popup.open(\'Facture.php\',\'action=popupSupp&facture=' . $data['id_fact'] . '\',200,150);"><img alt="Supp" title="Supprimer cette facture" src="'.getStaticUrl('img').'prospec/facture.delete.png"  /> Supprimer cette facture</a>';
+	$pied .= '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture=' . $data['id_fact'] . '\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img align="middle" title="Actualités" alt="Actualités" src="'.getStaticUrl('img').'prospec/actu.png"/> Historique de cette facture</a>';
 	if ($data['status_fact'] == '6') {
-	    $pied = '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture=' . $data['id_fact'] . '\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img align="middle" title="Actualités" alt="Actualités" src="../img/prospec/actu.png"/> Historique de cette facture</a>';
+	    $pied = '<a title="Actualités" onclick="return zuno.popup.open(\'Facture.php\', \'action=actuFacture&id_facture=' . $data['id_fact'] . '\', \'800\', \'450\', \'\', \'\', \'resize\', \'Actualités\');" ><img align="middle" title="Actualités" alt="Actualités" src="'.getStaticUrl('img').'prospec/actu.png"/> Historique de cette facture</a>';
 	}
 	return generateZBox($titre, $titre, $corps, $pied, 'infosFacture', '');
     }
@@ -121,9 +121,9 @@ class factureView extends generalView {
 	if ($data['nom_ent'] == '')
 	    $data['nom_ent'] = '<i>Particulier</i>';
 	if ($data['type_ent'] != '')
-	    $data['nom_ent'] = imageTag('../img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/' . $data['type_ent'] . '.png', $data['nom_tyent']) . ' ' . $data['nom_ent'];
+	    $data['nom_ent'] = imageTag(getStaticUrl('img'). $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/' . $data['type_ent'] . '.png', $data['nom_tyent']) . ' ' . $data['nom_ent'];
 	else
-	    $data['nom_ent'] = imageTag('../img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/particulier.png', 'particulier') . ' <i>Particulier</i>';
+	    $data['nom_ent'] = imageTag(getStaticUrl('img'). $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/particulier.png', 'particulier') . ' <i>Particulier</i>';
 	$tva = ($data['tauxTVA_fact'] != "") ? $data['tauxTVA_fact'] : $GLOBALS['zunoClientStatut']['tauxTVA'];
 
 	$out = '';
@@ -165,13 +165,13 @@ class factureView extends generalView {
 		</div>
 		<div class="row oblig">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact Tech</div>
-			<div class="field">' . inputTag('text', 'contact_fact2', 'icon2', '', '16', $data['civ_cont'] . ' ' . $data['prenom_cont'] . ' ' . $data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ') . '<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_fact\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+			<div class="field">' . inputTag('text', 'contact_fact2', 'icon2', '', '16', $data['civ_cont'] . ' ' . $data['prenom_cont'] . ' ' . $data['nom_cont'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);" ') . '<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="'.getStaticUrl('img').'prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_fact\',850,300);"><img alt="recherche" src="'.getStaticUrl('img').'ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>
 			<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="' . $data['contact_fact'] . '" /><input type="hidden" name="contold" id="ACcontact_factold" value="' . $data['civ_cont'] . ' ' . $data['prenom_cont'] . ' ' . $data['nom_cont'] . '" />
 			<div id="ACcontact_fact_choix" class="autocomplete"></div>
 		</div>
 		<div class="row oblig">
 			<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact Achat</div>
-			<div class="field">' . inputTag('text', 'contact_achat_fact2', 'icon2', '', '16', $data['civ_achat'] . ' ' . $data['prenom_achat'] . ' ' . $data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"') . '<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_achat_fact\',850,300);"><img alt="recherche" src="../img/ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+			<div class="field">' . inputTag('text', 'contact_achat_fact2', 'icon2', '', '16', $data['civ_achat'] . ' ' . $data['prenom_achat'] . ' ' . $data['nom_achat'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"') . '<a name="addCont" title="Ajouter un contact" onclick="return zuno.popup.open(\'Facture.php\', \'action=addContFact&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_achat_fact\',800,300);"><img alt="cont" title="Ajouter un contact" src="'.getStaticUrl('img').'prospec/add.png" /></a><a name="search" onclick="return zuno.popup.open(\'../prospec/PopupEntreprise.php\', \'action=searchContDev&entreprise=' . $data['id_ent'] . '&idChamp=ACcontact_achat_fact\',850,300);"><img alt="recherche" src="'.getStaticUrl('img').'ajaxField.png" /></a><img style="display:none; margin-left:5px;" id="loadingCont2" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>
 			<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="' . $data['contact_achat_fact'] . '" /><input type="hidden" name="oldCont" id="ACcontact_achat_factold" value="' . $data['civ_achat'] . ' ' . $data['prenom_achat'] . ' ' . $data['nom_achat'] . '" />
 			<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>
 		</div>
@@ -185,15 +185,15 @@ class factureView extends generalView {
 				<legend>Documents liées </legend>';
 	    if ($data['id_aff'] != '') {
 		$out .= '<div class="row"><div class="label">Affaire : </div>';
-		$out .= '<div class="field"><a href="../draco/Affaire.php?id_aff=' . $data['id_aff'] . '"><img src="../img/actualite/affaire.png" title="Affaire", alt="affaire" /> ' . $data['id_aff'] . ' - ' . $data['titre_aff'] . ' </a></div></div>';
+		$out .= '<div class="field"><a href="../draco/Affaire.php?id_aff=' . $data['id_aff'] . '"><img src="'.getStaticUrl('img').'actualite/affaire.png" title="Affaire", alt="affaire" /> ' . $data['id_aff'] . ' - ' . $data['titre_aff'] . ' </a></div></div>';
 	    }
 	    if ($data['id_dev'] != '') {
 		$out .= '<div class="row"><div class="label">Devis : </div>';
-		$out .= '<div class="field"><a href="../draco/Devis.php?id_dev=' . $data['id_dev'] . '"><img src="../img/actualite/devis.png" title="Devis", alt="devis" /> ' . $data['id_dev'] . ' - ' . $data['titre_dev'] . '</a></div></div>';
+		$out .= '<div class="field"><a href="../draco/Devis.php?id_dev=' . $data['id_dev'] . '"><img src="'.getStaticUrl('img').'actualite/devis.png" title="Devis", alt="devis" /> ' . $data['id_dev'] . ' - ' . $data['titre_dev'] . '</a></div></div>';
 	    }
 	    if ($data['id_cmd'] != '') {
 		$out .= '<div class="row"><div class="label">Commande : </div>';
-		$out .= '<div class="field"><a href="../pegase/Commande.php?id_cmd=' . $data['id_cmd'] . '"><img src="../img/actualite/commande.png" title="Commande", alt="commande"> ' . $data['id_cmd'] . ' - ' . $data['titre_cmd'] . '</a></div></div>';
+		$out .= '<div class="field"><a href="../pegase/Commande.php?id_cmd=' . $data['id_cmd'] . '"><img src="'.getStaticUrl('img').'actualite/commande.png" title="Commande", alt="commande"> ' . $data['id_cmd'] . ' - ' . $data['titre_cmd'] . '</a></div></div>';
 	    }
 	    $out.= '</fieldset>';
 	}
@@ -310,7 +310,7 @@ class factureView extends generalView {
     }
 
     private function produits($datas) {
-	$titre = imageTag('../img/prospec/facture.png', 'facture') . ' Produits de ' . $datas['nom'] . ' ' . $this->prepareAffichageID($datas['data']);
+	$titre = imageTag(getStaticUrl('img').'prospec/facture.png', 'facture') . ' Produits de ' . $datas['nom'] . ' ' . $this->prepareAffichageID($datas['data']);
 	$corps = '<form name="productFacture" action="#" method="post">';
 	$corps .= '<input type="hidden" name="id_facture" value="' . $datas['data']['id_fact'] . '" />';
 	$corps .= '<input type="hidden" name="produitAModifier" value="" id="produitFactureProd"/>';
@@ -348,8 +348,8 @@ class factureView extends generalView {
 			<td class="barre">' . prepareNombreAffichage($v['prix']) . ' €</td>
 			<td class="barre">' . prepareNombreAffichage($v['remise']) . ' %</td>
 			<td class="barre">' . prepareNombreAffichage($total) . ' €</td>
-			<td nowrap="nowrap" class="center"><a name="modif" onclick="afficherFormModif(\'' . $v['id'] . '\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/facture.modif.png"/></a>
-					    <a name="supp" onclick="chargerAction(\'suppProduit\');chargerProduit(\'' . $v['id'] . '\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\', \'contenuProdFacture\');"><img title="Supprimer" alt="Supprimer" name="img" src="../img/prospec/facture.delete.png"/></a></td>
+			<td nowrap="nowrap" class="center"><a name="modif" onclick="afficherFormModif(\'' . $v['id'] . '\');"><img title="Modifier" alt="Modifier" name="img" src="'.getStaticUrl('img').'prospec/facture.modif.png"/></a>
+					    <a name="supp" onclick="chargerAction(\'suppProduit\');chargerProduit(\'' . $v['id'] . '\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\', \'contenuProdFacture\');"><img title="Supprimer" alt="Supprimer" name="img" src="'.getStaticUrl('img').'prospec/facture.delete.png"/></a></td>
 			</tr>';
 	    $out .= '<tr class="altern' . $alternance . '" id="' . $v['id'] . 'td1" style="display:none;">
 			<td class="barre" title="' . $v['nom_prod'] . '">' . $v['id_prod'] . '</td>
@@ -358,15 +358,15 @@ class factureView extends generalView {
 			<td class="barre">' . inputTag('text', 'prix2', '', '', '16', $v['prix'], ' id="prix_Ajout_prod_fact' . $v['id'] . '" onchange="calculetteTotal(\'' . $v['id'] . '\');" style="width:60px" ') . ' €</td>
 			<td class="barre">' . inputTag('text', 'remise2', '', '', '16', $v['remise'], ' id="remise_Ajout_prod_fact' . $v['id'] . '" onchange="calculetteTotal(\'' . $v['id'] . '\');" style="width:30px" ') . ' %</td>
 			<td class="barre">' . inputTag('text', 'prix_total2', '', '', '16', $total, ' id="total_Ajout_prod_fact' . $v['id'] . '"  readonly="readonly" style="width:80px" ') . ' €</td>
-			<td nowrap="nowrap" class="center"><a name="modif" onclick="autoCopieChamps(\'' . $v['id'] . '\');chargerAction(\'modifProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Modifier" alt="Modifier" name="img" src="../img/prospec/facture.add.png"/></a>
-			<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="../img/prospec/cancel.png" /></a></td>
+			<td nowrap="nowrap" class="center"><a name="modif" onclick="autoCopieChamps(\'' . $v['id'] . '\');chargerAction(\'modifProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Modifier" alt="Modifier" name="img" src="'.getStaticUrl('img').'prospec/facture.add.png"/></a>
+			<a name="anule" onclick="annulerModif();"><img title="annuler" alt="annuler" src="'.getStaticUrl('img').'prospec/cancel.png" /></a></td>
 			</tr>';
 	    $alternance = ($alternance == '0') ? '1' : '0';
 	}
 	$out .= '<tr class="altern' . $alternance . '" id="tdAjoutProdFacture">
 			<td class="barre">' . inputTag('text', 'produit', '', '', '16', '', ' id="ACproduit_ajout_fact" style="width:80px" onchange="verifAutocompleteur(this);"') . '
-				<img src="../img/ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="../img/prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\',800,330);" style="cursor:pointer; margin-right:0px"/>
-				<img style="display:none; margin-left:5px;" id="loadingProd" src="../img/ajax-loader.gif" alt="loader"/>
+				<img src="'.getStaticUrl('img').'ajaxField.png" alt="rechercher" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupSearchProd\',950,500);" style="cursor:pointer; margin-right:0px"/><img src="'.getStaticUrl('img').'prospec/add.png" alt="ajouter" onclick="zuno.popup.open(\'../produit/Produit.php\', \'action=popupAddProd\',800,330);" style="cursor:pointer; margin-right:0px"/>
+				<img style="display:none; margin-left:5px;" id="loadingProd" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/>
 				<input type="hidden" name="id_produit" id="ACproduit_ajout_facthidden" value="" /><input type="hidden" name="idold" id="ACproduit_ajout_factold" value="" />
 				<div id="ACproduit_ajout_fact_choix" class="autocomplete"></div></td>
 			<td class="barre">' . textareaTag('desc', '', '', '', '', ' id="desc_Ajout_prod_fact" style="width:98%; height:30px;" ') . '</td>
@@ -374,7 +374,7 @@ class factureView extends generalView {
 			<td class="barre">' . inputTag('text', 'prix', '', '', '16', '', ' id="prix_Ajout_prod_fact" onchange="calculetteTotal();" style="width:60px" ') . ' €</td>
 			<td class="barre">' . inputTag('text', 'remise', '', '', '16', '0', ' id="remise_Ajout_prod_fact" onchange="calculetteTotal();" style="width:30px" ') . ' %</td>
 			<td class="barre">' . inputTag('text', 'prix_total', '', '', '16', '', ' id="total_Ajout_prod_fact"  readonly="readonly" style="width:80px" ') . ' €</td>
-			<td nowrap="nowrap" class="center"><a name="add" onclick="chargerAction(\'addProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Ajouter" alt="Ajouter" name="img" src="../img/prospec/facture.addProduct.png"/></a>
+			<td nowrap="nowrap" class="center"><a name="add" onclick="chargerAction(\'addProduit\'); zuno.business.formTools.sendFormAjah(\'productFacture\', \'facturier/Facture.php\',\'contenuProdFacture\');"><img title="Ajouter" alt="Ajouter" name="img" src="'.getStaticUrl('img').'prospec/facture.addProduct.png"/></a>
 			</td>
 			</tr>';
 	$out .= '<input type="hidden" name="action" value="" id="actionFactureProd" />';
@@ -434,36 +434,36 @@ class factureView extends generalView {
 
 	$corps = '<div id="ContenuTraitementFacture" >' . $mess . $this->interneTraitement($datas) . '</div>';
 
-	$bouton = linkTag('javascript:document.ActionFacturePDF.submit()', imageTag('../img/prospec/facture.pdf.png', 'créer', 'middle') . ' Générer', '', '', 'onclick="ChangeFactureAction(\'Voir\')"');
+	$bouton = linkTag('javascript:document.ActionFacturePDF.submit()', imageTag(getStaticUrl('img').'prospec/facture.pdf.png', 'créer', 'middle') . ' Générer', '', '', 'onclick="ChangeFactureAction(\'Voir\')"');
 
 	if (verifDroitsAuto('facture', 60, $datas['data']['commercial_fact'])) {
-	    $bouton .= '<a onclick="ChangeFactureAction(\'Record\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'ContenuTraitementFacture\');" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="../img/prospec/facture.record.png"/> Enregistrer</a>';
+	    $bouton .= '<a onclick="ChangeFactureAction(\'Record\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'ContenuTraitementFacture\');" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="'.getStaticUrl('img').'prospec/facture.record.png"/> Enregistrer</a>';
 	    if (verifDroitsAuto('facture', 50, $datas['data']['commercial_fact'])) {
-		$bouton .= '<a onclick="ChangeFactureAction(\'RecordSend\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');" title="Enregistrer puis envoyer" name="enregistrerEnvoyer"><img align="middle" title="Enregistrer et envoyer" alt="enregEnvoy" name="img" src="../img/prospec/facture.recsend.png"/> Enregistrer & envoyer</a>';
+		$bouton .= '<a onclick="ChangeFactureAction(\'RecordSend\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');" title="Enregistrer puis envoyer" name="enregistrerEnvoyer"><img align="middle" title="Enregistrer et envoyer" alt="enregEnvoy" name="img" src="'.getStaticUrl('img').'prospec/facture.recsend.png"/> Enregistrer & envoyer</a>';
 	    }
 	}
 	if (verifDroitsAuto('facture', 50, $datas['data']['commercial_fact']))
-	    $bouton .= '<a onclick="ChangeFactureAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="../img/prospec/facture.send.png"/> Envoyer</a>';
+	    $bouton .= '<a onclick="ChangeFactureAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="'.getStaticUrl('img').'prospec/facture.send.png"/> Envoyer</a>';
 
 	if (($datas['data']['status_fact'] < 5) and (verifDroitsAuto('facture', 13, $datas['data']['commercial_fact'])))
-	    $bouton .= '<a title="En attente de règlement" name="attenteRglmt" onclick="ChangeFactureAction(\'AttenteRglmt\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');"><img align="middle" title="En attente de règlement" alt="En attente de règlement" name="img" src="../img/prospec/facture.attente.png"/> En attente du règlement</a>';
+	    $bouton .= '<a title="En attente de règlement" name="attenteRglmt" onclick="ChangeFactureAction(\'AttenteRglmt\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');"><img align="middle" title="En attente de règlement" alt="En attente de règlement" name="img" src="'.getStaticUrl('img').'prospec/facture.attente.png"/> En attente du règlement</a>';
 
 	// Quand status Envoyé
 	if (($datas['data']['status_fact'] == "5") and (verifDroitsAuto('facture', 13, $datas['data']['commercial_fact']))) {
-	    $bouton .= '<a title="Réglée" name="regle" onclick="return zuno.popup.open(\'Facture.php\', \'facture=' . $datas['data']['id_fact'] . '&action=confirmClore\', 520, 250, \'\', \'\', \'resize\', \'PopupConfirmCloreFact\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="../img/prospec/facture.paye.png"/> Facture réglée</a>';
+	    $bouton .= '<a title="Réglée" name="regle" onclick="return zuno.popup.open(\'Facture.php\', \'facture=' . $datas['data']['id_fact'] . '&action=confirmClore\', 520, 250, \'\', \'\', \'resize\', \'PopupConfirmCloreFact\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="'.getStaticUrl('img').'prospec/facture.paye.png"/> Facture réglée</a>';
 	    if (array_key_exists('zunoPayline', $GLOBALS) and $GLOBALS['zunoPayline']['MERCHANT_ID'] != "")
-		$bouton .= '<a title="Payer par carte bancaire" name="CB" onclick="zuno.popup.open(\'Facture.php\', \'action=popupCB&facture=' . $datas['data']['id_fact'] . '\',800,230);"><img align="middle" title="Payer par carte bancaire" alt="payer par carte" name="img" src="../img/prospec/facture.paye.png"/> Payer par carte bancaire</a>';
+		$bouton .= '<a title="Payer par carte bancaire" name="CB" onclick="zuno.popup.open(\'Facture.php\', \'action=popupCB&facture=' . $datas['data']['id_fact'] . '\',800,230);"><img align="middle" title="Payer par carte bancaire" alt="payer par carte" name="img" src="'.getStaticUrl('img').'prospec/facture.paye.png"/> Payer par carte bancaire</a>';
 
 	    if (verifDroitsAuto('avoir', 20, '') and $datas['data']['type_fact'] != 'Avoir') {
-		$bouton .= '<a title="Faire un avoir" name="avoir" onclick="ChangeFactureAction(\'avoirFromFact\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\', \'ficheComplete\');"><img align="middle" title="Faire un avoir" name="avoir" src="../img/prospec/facture.png" /> Faire un avoir</a>';
+		$bouton .= '<a title="Faire un avoir" name="avoir" onclick="ChangeFactureAction(\'avoirFromFact\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\', \'ficheComplete\');"><img align="middle" title="Faire un avoir" name="avoir" src="'.getStaticUrl('img').'prospec/facture.png" /> Faire un avoir</a>';
 	    }
 	}
 	// Clonage
 	if (verifDroitsAuto('facture', 25, $datas['data']['commercial_fact']))
-	    $bouton .= '<a title="Cloner" href="Facture.php?action=cloner&fact=' . $datas['data']['id_fact'] . '"><img align="middle" title="Cloner" alt="cloner" name="img" src="../img/prospec/facture.clone.png" /> Cloner</a>';
+	    $bouton .= '<a title="Cloner" href="Facture.php?action=cloner&fact=' . $datas['data']['id_fact'] . '"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.getStaticUrl('img').'prospec/facture.clone.png" /> Cloner</a>';
 
 
-	$titre = imageTag('../img/prospec/facture.record.png', 'créer') . " Traitement de " . $datas['nom'] . " " . $this->prepareAffichageID($datas['data']);
+	$titre = imageTag(getStaticUrl('img').'prospec/facture.record.png', 'créer') . " Traitement de " . $datas['nom'] . " " . $this->prepareAffichageID($datas['data']);
 
 	return generateZBox($titre, $titre, $corps . $outJS, $bouton, 'traitementFacture', '');
     }
@@ -501,19 +501,19 @@ class factureView extends generalView {
 	    $fileName = $this->model->getFactureFileName($datas['data'], 'pdf');
 	    if (is_file($this->model->getFactureDirectory() . $fileName)) {
 		$listeDoc[$fileName] = $fileName;
-		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'pdf\');"><img src="../img/files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'pdf\');">' . $fileName . '</a></div></div>';
+		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'pdf\');"><img src="'.getStaticUrl('img').'files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'pdf\');">' . $fileName . '</a></div></div>';
 		$selected = $fileName;
 	    }
 	    $fileName = $this->model->getFactureFileName($datas['data'], 'odt');
 	    if (is_file($this->model->getFactureDirectory() . $fileName)) {
 		$listeDoc[$fileName] = $fileName;
-		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'odt\');"><img src="../img/files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'odt\');">' . $fileName . '</a></div></div>';
+		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'odt\');"><img src="'.getStaticUrl('img').'files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'odt\');">' . $fileName . '</a></div></div>';
 		$selected = ($selected == "") ? $fileName : $selected;
 	    }
 	    $fileName = $this->model->getFactureFileName($datas['data'], 'doc');
 	    if (is_file($this->model->getFactureDirectory() . $fileName)) {
 		$listeDoc[$fileName] = $fileName;
-		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'doc\');"><img src="../img/files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'doc\');">' . $fileName . '</a></div></div>';
+		$docs .= '<div class="row"><div class="label"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'doc\');"><img src="'.getStaticUrl('img').'files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionFacturePDF.submit();" onclick="ChangeFactureAction(\'Zieuter\');changeFactureFormat(\'doc\');">' . $fileName . '</a></div></div>';
 		$selected = ($selected == "") ? $fileName : $selected;
 	    }
 	}
@@ -648,7 +648,7 @@ class factureView extends generalView {
 	$script .= 'function exportTab() { if ($(\'divExportTableur\').style.display == \'inline\') {$(\'divExportTableur\').style.display = \'none\';} else {$(\'divExportTableur\').style.display = \'inline\';} }';
 	$script .= '</script>';
 
-	$titre = '<img title="recherche" alt="Rechercher" name="img" src="../img/prospec/voir.png" /> Recherche de factures';
+	$titre = '<img title="recherche" alt="Rechercher" name="img" src="'.getStaticUrl('img').'prospec/voir.png" /> Recherche de factures';
 	$corps = '<form name="searchFacture" action="FactureListe.php" method="post" id="searchFormFacture">';
 	$corps .= '<div id="PortletSearchFacture">';
 	$corps .= '<input type="hidden" name="action" value="searchFacture" id="listeFactureAction" />';
@@ -659,8 +659,8 @@ class factureView extends generalView {
 	$corps .= '<input type="hidden" name="orderSens" value="DESC" id="orderSensFactureSearch" />';
 	$corps .= $this->interneSearch($datas);
 	$corps .= '</div></form>';
-	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$bouton .= '<a name="valider" onclick="ChangeFactureAction(\'searchFacture\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
+	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$bouton .= '<a name="valider" onclick="ChangeFactureAction(\'searchFacture\');ChangeSubmit();"><img title="Valider" alt="valid" src="'.getStaticUrl('img').'prospec/voir.png" />Rechercher</a>';
 	return generateZBox($titre, $titre, $corps, $bouton, "searchBox", '') . $script;
     }
 
@@ -670,20 +670,20 @@ class factureView extends generalView {
 
 	$out = '<div class="block width50"><fieldset class="form" style="height: 250px">';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchEnt);">Entreprise</div>';
-	$out .= '<div class="field">' . inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseFactureSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'entreprise', '', '', '20', '', ' id="entrepriseFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingEnt" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="entrepriseFactureSearch_choix"></div>';
 	$out .= '<input type="hidden" name="entreprise_fact" value="" id="entrepriseFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchTitre);">Titre</div>';
 	$out .= '<div class="field">' . inputTag('text', 'titre_fact', '', '', '20') . '</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchAff);">Affaire</div>';
-	$out .= '<div class="field">' . inputTag('text', 'affaire', '', '', '20', '', ' id="affaireFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingAff" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="affaireFactureSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'affaire', '', '', '20', '', ' id="affaireFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingAff" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="affaireFactureSearch_choix"></div>';
 	$out .= '<input type="hidden" name="affaire_fact" value="" id="affaireFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchStatut);">Status</div>';
 	$out .= '<div class="field">' . selectTag('status_fact', $datas['status'], '') . '</div></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchComm);">Commercial</div>';
-	$out .= '<div class="field">' . inputTag('text', 'commercial', '', '', '20', '', ' id="userFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingUsr" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="userFactureSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'commercial', '', '', '20', '', ' id="userFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingUsr" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="userFactureSearch_choix"></div>';
 	$out .= '<input type="hidden" name="commercial_fact" value="" id="userFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchCP);">Département</div>';
-	$out .= '<div class="field">' . inputTag('text', 'cp', '', '', '20', '', ' id="cpFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingCp" src="../img/ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="cpFactureSearch_choix"></div>';
+	$out .= '<div class="field">' . inputTag('text', 'cp', '', '', '20', '', ' id="cpFactureSearch" onchange="verifVide(this);"') . '<img style="display:none; margin-left:5px;" id="loadingCp" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div><div class="autocomplete" id="cpFactureSearch_choix"></div>';
 	$out .= '<input type="hidden" name="cp_ent" value="" id="cpFactureSearchhidden"/></div>';
 	$out .= '<div class="row"><div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.searchBudgMin);">Montant min</div>';
 	$out .= '<div class="field">' . inputTag('text', 'sommeHT_fact', '', '', '20', '', ' id="devisBudgetMini" ') . '</div></div>';
@@ -726,16 +726,16 @@ class factureView extends generalView {
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
 	if (!$modHistorique)
-	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormFacture\');"/></th>';
-	$out .= '<th class="barre">' . $this->$linkOrderFunction('ID', 'id_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage', $suffixeLink) . '</th>';
-	$out .= '<th class="barre">' . $this->$linkOrderFunction('Entreprise', 'nom_ent', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage', $suffixeLink) . '</th>';
-	$out .= '<th class="barre">' . $this->$linkOrderFunction('Contact', 'c1.nom_cont', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage', $suffixeLink) . '</th>';
-	$out .= '<th>' . $this->$linkOrderFunction('Titre', 'titre_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage', $suffixeLink) . '</th>';
-	$out .= '<th class="barre">' . $this->$linkOrderFunction('Création', 'daterecord_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage', $suffixeLink) . '</th>';
-	$out .= '<th class="barre">' . $this->$linkOrderFunction('Règlement', 'datereglement_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage', $suffixeLink) . '</th>';
-	//$out .= '<th>'.$this->$linkOrderFunction('Montant HT','sommeHT_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage',$suffixeLink).'</th>';
+	    $out .= '<th class="barre"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormFacture\');"/></th>';
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('ID', 'id_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage') . '</th>';
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('Entreprise', 'nom_ent', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage') . '</th>';
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('Contact', 'c1.nom_cont', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage') . '</th>';
+	$out .= '<th>' . $this->$linkOrderFunction('Titre', 'titre_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage') . '</th>';
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('Création', 'daterecord_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage') . '</th>';
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('Règlement', 'datereglement_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage') . '</th>';
+	//$out .= '<th>'.$this->$linkOrderFunction('Montant HT','sommeHT_fact',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeFactureResultPage').'</th>';
 	$out .= '<th>Montant TTC</th>';
-	$out .= '<th class="barre">' . $this->$linkOrderFunction('Status', 'status_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage', $suffixeLink) . '</th>';
+	$out .= '<th class="barre">' . $this->$linkOrderFunction('Status', 'status_fact', $datas['order'], $datas['orderSens'], $datas['limit'], 'ChangeFactureResultPage') . '</th>';
 	if (!$modHistorique)
 	    $out .= '<th class="last center">Actions</th>';
 	$out .= '</tr>';
@@ -749,26 +749,26 @@ class factureView extends generalView {
 	    //traitement des boutons de modification et d'action
 	    // recherche du fichier PDF
 	    if (is_file($this->model->getFactureDirectory() . $this->model->getFactureRecordedFileName($v)) and verifDroitsAuto('facture', 62, $v['commercial_fact']))
-		$action .= "<a href=\"$suffixeLink/facturier/Facture.php?id_fact=" . $v['id_fact'] . "&action=Zieuter\">" . imageTag($suffixeLink . 'img/prospec/facture.pdf.png', 'PDF') . "</a> ";
+		$action .= "<a href=\"$suffixeLink/facturier/Facture.php?id_fact=" . $v['id_fact'] . "&action=Zieuter\">" . imageTag(getStaticUrl('img').'prospec/facture.pdf.png', 'PDF') . "</a> ";
 	    // Clonage
 	    if (verifDroitsAuto('facture', 25, $v['commercial_fact']))
-		$action .= '<a title="Cloner" href="' . $suffixeLink . 'facturier/Facture.php?action=cloner&fact=' . $v['id_fact'] . '"><img align="middle" title="Cloner" alt="cloner" name="img" src="' . $suffixeLink . 'img/prospec/facture.clone.png" style="margin-right: 12px"/></a>';
+		$action .= '<a title="Cloner" href="' . $suffixeLink . 'facturier/Facture.php?action=cloner&fact=' . $v['id_fact'] . '"><img align="middle" title="Cloner" alt="cloner" name="img" src="' . getStaticUrl('img').'prospec/facture.clone.png" style="margin-right: 12px"/></a>';
 	    // Quand status créer
 	    if (($v['status_fact'] == "1") and (verifDroitsAuto('facture', 60, $v['commercial_fact']))) {
-		$action .= '<a href="' . $suffixeLink . 'facturier/Facture.php?id_fact=' . $v['id_fact'] . '" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="' . $suffixeLink . 'img/prospec/facture.record.png"/></a>';
+		$action .= '<a href="' . $suffixeLink . 'facturier/Facture.php?id_fact=' . $v['id_fact'] . '" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="' . getStaticUrl('img').'prospec/facture.record.png"/></a>';
 	    }
 	    // Quand status Enregistré
 	    elseif (($v['status_fact'] == "3") and (verifDroitsAuto('facture', 50, $v['commercial_fact'])))
-		$action .= '<a href="' . $suffixeLink . 'facturier/Facture.php?id_fact=' . $v['id_fact'] . '" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="' . $suffixeLink . 'img/prospec/facture.send.png"/></a>';
+		$action .= '<a href="' . $suffixeLink . 'facturier/Facture.php?id_fact=' . $v['id_fact'] . '" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="' . getStaticUrl('img').'prospec/facture.send.png"/></a>';
 	    // Quand status Envoyé
 	    elseif (($v['status_fact'] == "4") and (verifDroitsAuto('facture', 13, $v['commercial_fact'])))
-		$action .= '<a title="Réglée" name="reglee" onclick="ChangeFactureAction(\'Clore\');ChangeFactureID(\'' . $v['id_fact'] . '\');zuno.business.formTools.sendFormAjah(\'searchFacture\', \'' . $suffixeLink . 'facturier/FactureListe.php\',\'listeResultFacture\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="' . $suffixeLink . 'img/prospec/facture.paye.png"/></a>';
+		$action .= '<a title="Réglée" name="reglee" onclick="ChangeFactureAction(\'Clore\');ChangeFactureID(\'' . $v['id_fact'] . '\');zuno.business.formTools.sendFormAjah(\'searchFacture\', \'' . $suffixeLink . 'facturier/FactureListe.php\',\'listeResultFacture\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="' . getStaticUrl('img').'prospec/facture.paye.png"/></a>';
 
 	    if ($v['nom_ent'] != '') {
 		if (strlen($v['nom_ent']) > 25)
 		    $v['nom_ent'] = substr($v['nom_ent'], 0, 25) . "...";
 		if ($v['type_ent'] != '')
-		    $v['nom_ent'] = imageTag($suffixeLink . 'img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/' . $v['type_ent'] . '.png', $v['nom_tyent']) . ' ' . $v['nom_ent'];
+		    $v['nom_ent'] = imageTag(getStaticUrl('img'). $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/' . $v['type_ent'] . '.png', $v['nom_tyent']) . ' ' . $v['nom_ent'];
 		if (strlen($v['ville_ent']) > 18)
 		    $v['ville_ent'] = substr($v['ville_ent'], 0, 18) . "...";
 		if ($v['ville_ent'] != '')
@@ -777,7 +777,7 @@ class factureView extends generalView {
 	    }
 	    else {
 		$v['nom_ent'] = '<i>Particulier</i>';
-		$v['nom_ent'] = imageTag($suffixeLink . 'img/' . $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/particulier.png', 'particulier') . ' ' . $v['nom_ent'];
+		$v['nom_ent'] = imageTag(getStaticUrl('img'). $GLOBALS['PropsecConf']['dir.img'] . 'TypeEntreprise/particulier.png', 'particulier') . ' ' . $v['nom_ent'];
 		if (strlen($v['ville_cont']) > 18)
 		    $v['ville_cont'] = substr($v['ville_cont'], 0, 18) . "...";
 		if ($v['ville_cont'] != '')
@@ -823,11 +823,11 @@ class factureView extends generalView {
 	    $titre = $this->resultNavigationTitle($datas['from'], $datas['limit'], $datas['total'], 'factureHisto');
 	else
 	    $titre = $this->resultNavigationTitle($datas['from'], $datas['limit'], $datas['total'], 'facture');
-	$bouton .= $this->resultNavigation($datas['from'], $datas['limit'], $datas['total'], "ChangeFactureResultPage", $suffixeLink);
+	$bouton .= $this->resultNavigation($datas['from'], $datas['limit'], $datas['total'], "ChangeFactureResultPage");
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
 	$bouton .= '<div style="display:none;" id="divExportTableur">' . selectTag('format_export', $availableConvFormat, '', '', ' onchange="factureDoExportTableur(this.value);" ') . '</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="' . $suffixeLink . 'img/prospec/export-csv.png"/> Export Tableur</a>';
+	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="' . getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
 	if ($modHistorique)
@@ -872,14 +872,14 @@ class factureView extends generalView {
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
-	$fieldset->ligneLinkTo('', 'javascript:submitGroupAction(\'resultFormFacture\',\'resultFactureAction\');" class="bouton', 'Effectuer les changements', '../img/prospec/voir.png');
+	$fieldset->ligneLinkTo('', 'javascript:submitGroupAction(\'resultFormFacture\',\'resultFactureAction\');" class="bouton', 'Effectuer les changements', getStaticUrl('img').'prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div></div></div>';
 	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="' . $suffixeLink . 'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="' . getStaticUrl('img').'prospec/work-multiple.png"/> Actions groupées</a>';
 	return $bouton;
     }
 
@@ -914,8 +914,8 @@ class factureView extends generalView {
 	    $corps .= '<div id="contactsFacture">';
 	    $corps .= $this->contactsFacture();
 	    $corps .= '</div>';
-	    $bouton = '<a name="reset" style="cursor:pointer;" title="Reset" onclick="resetForm();"><img src="../img/prospec/cancel.png" alt="reset"/> Recommencer</a>';
-	    $bouton .= '<a id="boutonSubmitForm" href="javascript:document.addFacture.submit();" onclick="ChangeFactureAction(\'addFacture\');"><img alt="confirmer" title="Enregistrer" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	    $bouton = '<a name="reset" style="cursor:pointer;" title="Reset" onclick="resetForm();"><img src="'.getStaticUrl('img').'prospec/cancel.png" alt="reset"/> Recommencer</a>';
+	    $bouton .= '<a id="boutonSubmitForm" href="javascript:document.addFacture.submit();" onclick="ChangeFactureAction(\'addFacture\');"><img alt="confirmer" title="Enregistrer" src="'.getStaticUrl('img').'prospec/confirm.png" /> Enregistrer</a>';
 	    return generateZBox($titre, $titre, $corps, $bouton, "createFactureForm", '').$script;
 	}
     }
@@ -927,24 +927,24 @@ class factureView extends generalView {
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.cmdOuEnt);">Commande / Entreprise</div>';
 	$out .= '<div class="field">' . inputTag('text', 'entreprise', 'icon', '', '16', $data['entreprise'], ' id="ACentreprise_fact" onchange="verifAutocompleteurBis(this);"');
-	$out .= '<a id="addEnt" name="addEnt" title="Ajouter une entreprise" onclick="addEntreprise();"><img alt="ent" title="Ajouter une entreprise" src="../img/prospec/entreprise.png" /></a>';
-	$out .= '<img style="display:none; margin-left:5px;" id="loadingEnt" src="../img/ajax-loader.gif" alt="loader"/></div>';
+	$out .= '<a id="addEnt" name="addEnt" title="Ajouter une entreprise" onclick="addEntreprise();"><img alt="ent" title="Ajouter une entreprise" src="'.getStaticUrl('img').'prospec/entreprise.png" /></a>';
+	$out .= '<img style="display:none; margin-left:5px;" id="loadingEnt" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>';
 	$out .= '<input type="hidden" name="entreprise_fact" id="ACentreprise_facthidden" value="' . $data['entreprise_fact'] . '" /><input type="hidden" name="commande_fact" id="ACaffaire_facthidden" value="' . $data['commande_fact'] . '" />
 					<div id="ACentreprise_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
 	$out .= '<div class="row oblig">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactTech);">Contact technique</div>';
 	$out .= '<div class="field">' . inputTag('text', 'contact', '', '', '16', $data['contact'], ' id="ACcontact_fact" onchange="verifAutocompleteur(this);"');
-	$out .= '<a id="addContTech" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a>';
-	$out .= '<img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>';
+	$out .= '<a id="addContTech" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_fact\');"><img alt="cont" title="Ajouter un contact" src="'.getStaticUrl('img').'prospec/add.png" /></a>';
+	$out .= '<img style="display:none; margin-left:5px;" id="loadingCont" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>';
 	$out .= '<input type="hidden" name="contact_fact" id="ACcontact_facthidden" value="' . $data['contact_fact'] . '" />
 					<div id="ACcontact_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
 	$out .= '<div class="row oblig">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.contactAchat);">Contact facturation</div>';
 	$out .= '<div class="field">' . inputTag('text', 'contact2', '', '', '16', $data['contact2'], ' id="ACcontact_achat_fact" onchange="verifAutocompleteur(this);"');
-	$out .= '<a id="addContFact" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_achat_fact\');"><img alt="cont" title="Ajouter un contact" src="../img/prospec/add.png" /></a>';
-	$out .= '<img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>';
+	$out .= '<a id="addContFact" style="display:none;" name="addCont" title="Ajouter un contact" onclick="addContact(\'ACcontact_achat_fact\');"><img alt="cont" title="Ajouter un contact" src="'.getStaticUrl('img').'prospec/add.png" /></a>';
+	$out .= '<img style="display:none; margin-left:5px;" id="loadingCont2" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>';
 	$out .= '<input type="hidden" name="contact_achat_fact" id="ACcontact_achat_facthidden" value="' . $data['contact_achat_fact'] . '" />
 					<div id="ACcontact_achat_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
@@ -972,7 +972,7 @@ class factureView extends generalView {
 	$out .= '<div class="row">';
 	$out .= '<div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.deliveryPays);">Pays</div>';
 	$out .= '<div class="field">' . inputTag('text', 'pays', '', '', '16', $data['pays'], ' id="ACpays_fact" onchange="verifVide(this);" ');
-	$out .= '<img style="display:none; margin-left:5px;" id="loadingPays" src="../img/ajax-loader.gif" alt="loader"/></div>';
+	$out .= '<img style="display:none; margin-left:5px;" id="loadingPays" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>';
 	$out .= '<input type="hidden" name="pays_fact" id="ACpays_facthidden" value="' . $data['pays_fact'] . '" />
 					<div id="ACpays_fact_choix" class="autocomplete"></div>';
 	$out .= '</div>';
@@ -993,7 +993,7 @@ class factureView extends generalView {
 
 	foreach ($datas as $v) {
 	    $corps .= '<tr class="altern' . ($alternance % 2) . '">
-			    <td class="nowrap"><img src=\'../img/actualite/' . $v['type'] . '.png\' alt=\'' . $v['type'] . '\'/>' . $v['type'] . '</td>
+			    <td class="nowrap"><img src="'.getStaticUrl('img').'actualite/' . $v['type'] . '.png" alt="' . $v['type'] . '"/>' . $v['type'] . '</td>
 			    <td class="barre nowrap">' . DateUniv2Human($v['date'], 'shortdetail') . '</td>
 			    <td class="barre"><b>' . $v['titre'] . '</b><br/><span style="font-size:.8em;font-style:italic;">' . $v['desc'] . '</span></td>
 			    <td class="barre nowrap">' . $v['user'] . '</td></tr>';
@@ -1077,7 +1077,7 @@ class factureView extends generalView {
 	$tag['FactureParFamilleProd'] = '<img border="0" alt="TopTen" src="Img.FactureParFamilleProd.php"/>';
 	$tag['FactureAnneeParFamilleProd'] = '<img border="0" alt="TopTen" src="Img.FactureAnneeParFamilleProd.php"/>';
 	$output = templating('facturier/PortletStatistiques', $tag);
-	$titre = imageTag('../img/prospec/result.png', 'recherche') . ' Statistiques des factures';
+	$titre = imageTag(getStaticUrl('img').'prospec/result.png', 'recherche') . ' Statistiques des factures';
 	$pied = '';
 	return generateZBox($titre, $titre, $output, '', 'StatFactures', '');
     }

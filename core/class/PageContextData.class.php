@@ -157,10 +157,10 @@ class PageContextData {
 
 	// Debut de l'analyse des variables
 	if($childpage['img_menu_pg'] != '') {
-	    $childpage['img_menu_pg'] = $GLOBALS['PAGE']['REP_pagemenu'].$childpage['img_menu_pg'];
+	    $childpage['img_menu_pg'] = getStaticUrl('img').'page.menu/'.$childpage['img_menu_pg'];
 	}
 	if($childpage['img_pg'] != '') {
-	    $childpage['img_pg'] = $GLOBALS['PAGE']['REP_page'].$childpage['img_pg'];
+	    $childpage['img_pg'] = getStaticUrl('img').'page/'.$childpage['img_pg'];
 	}
 	//on traite les dates
 	if(count($datable) > 0) {

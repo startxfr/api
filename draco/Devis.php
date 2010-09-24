@@ -313,8 +313,8 @@ if ($PC->rcvG['action'] == "ZieuterPDF") {
     aiJeLeDroit('devis', 30, 'web');
     $titre = "Suppression du devis " . $PC->rcvG['id_devis'];
     $corps = '<span class="importantblue">Confirmer la suppression</span>';
-    $pied = '<a href="javascript:zuno.popup.close();">' . imageTag('../img/prospec/cancel.png', 'Effacer', 'middle') . ' Annuler</a>
-		   <a href="../draco/Devis.php?action=suppconfirm&id_devis=' . $PC->rcvG['id_devis'] . '">' . imageTag('../img/prospec/confirm.png', 'Effacer', 'middle') . 'Confirmer</a>';
+    $pied = '<a href="javascript:zuno.popup.close();">' . imageTag(getStaticUrl('img').'prospec/cancel.png', 'Effacer', 'middle') . ' Annuler</a>
+		   <a href="../draco/Devis.php?action=suppconfirm&id_devis=' . $PC->rcvG['id_devis'] . '">' . imageTag(getStaticUrl('img').'prospec/confirm.png', 'Effacer', 'middle') . 'Confirmer</a>';
     echo generateZBox($titre, $titre, $corps, $pied, 'DevisBox', '');
     exit;
 } elseif ($PC->rcvG['action'] == 'suppconfirm' and $PC->rcvG['id_devis'] != '') {

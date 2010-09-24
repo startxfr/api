@@ -46,7 +46,7 @@ if ($PC->rcvP['action'] == 'modif') {
 	$newname 	= FileCleanFileName($PC->rcvF['img_pg']['name']);
 	if(FileMoveUploaded($PC->rcvF['img_pg']['tmp_name'],
 	$newname,
-	$GLOBALS['REP']['appli'].$GLOBALS['PAGE']['REP_page']))
+	$GLOBALS['REP']['appli']))
 	    $PC->rcvP['img_pg'] = $newname;
 	else $PC->rcvP['img_pg'] = '';
     }
@@ -54,7 +54,7 @@ if ($PC->rcvP['action'] == 'modif') {
 	$newname 	= FileCleanFileName($PC->rcvF['img_menu_pg']['name']);
 	if(FileMoveUploaded($PC->rcvF['img_menu_pg']['tmp_name'],
 	$newname,
-	$GLOBALS['REP']['appli'].$GLOBALS['PAGE']['REP_pagemenu']))
+	$GLOBALS['REP']['appli']))
 	    $PC->rcvP['img_menu_pg'] = $newname;
 	else $PC->rcvP['img_menu_pg'] = '';
     }

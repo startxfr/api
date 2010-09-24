@@ -82,4 +82,24 @@ function GetClientBrowserInfo() {
 
     return array ($uos,$bos,$uip,$uht);
 }
+
+function getStaticUrl($type) {
+    if($type == 'img')
+    return $GLOBALS['StaticContent']['UrlImg'];
+    elseif($type == 'Jss')
+    return $GLOBALS['StaticContent']['urlJss'];
+    elseif($type == 'imgPhone')
+    return $GLOBALS['StaticContent']['UrlImgPhone'];
+    elseif($type == 'Webapp')
+    return $GLOBALS['StaticContent']['urlWebapp'];
+    else
+    return '';
+}
+
+function getMutoolsPath($type) {
+    if($type == 'jpgraph')
+    return $GLOBALS['MutTools']['pathJpgraph'];
+    else
+    return '';
+}
 ?>

@@ -6,7 +6,7 @@ class sendView {
      */
     static function formSendEmail($value = array(), $onError = array(),$errorMess = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendEmail\',null,event)" rel="action" class="iButton iBAction"><img src="Img/send.png" alt="Envoyer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendEmail\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'send.png" alt="Envoyer" /></a>
 				<form id="formZSendEmail" action="Send.php?type=mail&action=confirmSend" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 					<div class="iPanel">
@@ -43,7 +43,7 @@ class sendView {
 	    $fileNameA = explode('/',$value['file']);
 	    $fileName = ' '.$fileNameA[count($fileNameA)-1];
 	    $fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');
-	    $fileIcon = FileOutputType($value['file'],'image','../');
+	    $fileIcon = FileOutputType($value['file'],'image');
 	    $fileAdd = '<fieldset>
 						<legend>Fichier Joint</legend>
 						<ul><li>'.$fileIcon.$fileName.' ('.$fileSize.')</li></ul>
@@ -91,7 +91,7 @@ class sendView {
 	    $fileNameA = explode('/',$value['file']);
 	    $fileName = ' '.$fileNameA[count($fileNameA)-1];
 	    $fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');
-	    $fileIcon = FileOutputType($value['file'],'image','../');
+	    $fileIcon = FileOutputType($value['file'],'image');
 	    $fileAdd = '<fieldset>
 						<legend>Fichier Joint</legend>
 						<ul><li>'.$fileIcon.$fileName.' ('.$fileSize.')</li></ul>
@@ -99,7 +99,7 @@ class sendView {
 
 	}
 
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendEmailConfirm\',null,event)" rel="action" class="iButton iBAction"><img src="Img/valid.png" alt="Envoyer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendEmailConfirm\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'valid.png" alt="Envoyer" /></a>
 				<form id="formZSendEmailConfirm" action="Send.php?type=mail&action=doConfirmSend" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 					<fieldset>
@@ -118,8 +118,8 @@ class sendView {
 					</fieldset>
 					'.$fileAdd.'
 					<fieldset>
-							<a href="#" class="BigButtonValidLeft"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-							<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formZSendEmailConfirm\', null, event)"><img src="Img/big.confirmer.png" alt="confirmer" /></a>
+							<a href="#" class="BigButtonValidLeft"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+							<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formZSendEmailConfirm\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.confirmer.png" alt="confirmer" /></a>
 					</fieldset>
 				</div>
 				</form>';
@@ -130,7 +130,7 @@ class sendView {
     */
     static function formSendCourrier($value = array(), $onError = array(),$errorMess = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendCourrier\',null,event)" rel="action" class="iButton iBAction"><img src="Img/send.png" alt="Envoyer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendCourrier\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'send.png" alt="Envoyer" /></a>
 				<form id="formZSendCourrier" action="Send.php?type=courrier&action=confirmSend" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 					<div class="iPanel">
@@ -168,7 +168,7 @@ class sendView {
 	    $fileNameA = explode('/',$value['file']);
 	    $fileName = ' '.$fileNameA[count($fileNameA)-1];
 	    $fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');
-	    $fileIcon = FileOutputType($value['file'],'image','../');
+	    $fileIcon = FileOutputType($value['file'],'image');
 	    $fileAdd = '<li>'.$fileIcon.$fileName.' ('.$fileSize.')</li>';
 	}
 	else {
@@ -225,12 +225,12 @@ class sendView {
 	    $fileNameA = explode('/',$value['file']);
 	    $fileName = ' '.$fileNameA[count($fileNameA)-1];
 	    $fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');
-	    $fileIcon = FileOutputType($value['file'],'image','../');
+	    $fileIcon = FileOutputType($value['file'],'image');
 	    $fileAdd = '<li>'.$fileIcon.$fileName.' ('.$fileSize.')</li>';
 	}
 	else  $fileAdd = '<li><i>Erreur dans l\'envoi de ce fichier</i></li>';
 
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendCourrierConfirm\',null,event)" rel="action" class="iButton iBAction"><img src="Img/send.png" alt="Envoyer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendCourrierConfirm\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'send.png" alt="Envoyer" /></a>
 				<form id="formZSendCourrierConfirm" action="Send.php?type=courrier&action=doConfirmSend" onsubmit="return WA.Submit(this,null,event)">
 					<div class="iPanel">
 						<fieldset>
@@ -250,8 +250,8 @@ class sendView {
 							<ul>'.$fileAdd.'</ul>
 						</fieldset>
 						<fieldset>
-								<a href="#" class="BigButtonValidLeft"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-								<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formZSendCourrierConfirm\', null, event)"><img src="Img/big.confirmer.png" alt="confirmer" /></a>
+								<a href="#" class="BigButtonValidLeft"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+								<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formZSendCourrierConfirm\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.confirmer.png" alt="confirmer" /></a>
 						</fieldset>
 					</div>
 				</form>
@@ -266,7 +266,7 @@ class sendView {
     */
     static function formSendFax($value = array(), $onError = array(),$errorMess = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendFax\',null,event)" rel="action" class="iButton iBAction"><img src="Img/send.png" alt="Envoyer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendFax\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'send.png" alt="Envoyer" /></a>
 				<form id="formZSendFax" action="Send.php?type=fax&action=confirmSend" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 					<div class="iPanel">
@@ -292,7 +292,7 @@ class sendView {
 	    $fileNameA = explode('/',$value['file']);
 	    $fileName = ' '.$fileNameA[count($fileNameA)-1];
 	    $fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');
-	    $fileIcon = FileOutputType($value['file'],'image','../');
+	    $fileIcon = FileOutputType($value['file'],'image');
 	    $fileAdd = '<li>'.$fileIcon.$fileName.' ('.$fileSize.')</li>';
 	}
 	else {
@@ -333,12 +333,12 @@ class sendView {
 	    $fileNameA = explode('/',$value['file']);
 	    $fileName = ' '.$fileNameA[count($fileNameA)-1];
 	    $fileName.= HtmlFormIphone::Input('file',$value['file'],'','','hidden');
-	    $fileIcon = FileOutputType($value['file'],'image','../');
+	    $fileIcon = FileOutputType($value['file'],'image');
 	    $fileAdd = '<li>'.$fileIcon.$fileName.' ('.$fileSize.')</li>';
 	}
 	else  $fileAdd = '<li><i>Erreur dans l\'envoi de ce fichier</i></li>';
 
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendFaxConfirm\',null,event)" rel="action" class="iButton iBAction"><img src="Img/send.png" alt="Envoyer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formZSendFaxConfirm\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'send.png" alt="Envoyer" /></a>
 				<form id="formZSendFaxConfirm" action="Send.php?type=fax&action=doConfirmSend" onsubmit="return WA.Submit(this,null,event)">
 					<div class="iPanel">
 						<fieldset>
@@ -354,8 +354,8 @@ class sendView {
 							<ul>'.$fileAdd.'</ul>
 						</fieldset>
 						<fieldset>
-								<a href="#" class="BigButtonValidLeft"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-								<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formZSendFaxConfirm\', null, event)"><img src="Img/big.confirmer.png" alt="confirmer" /></a>
+								<a href="#" class="BigButtonValidLeft"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+								<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formZSendFaxConfirm\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.confirmer.png" alt="confirmer" /></a>
 						</fieldset>
 					</div>
 				</form>

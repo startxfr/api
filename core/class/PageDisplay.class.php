@@ -180,8 +180,7 @@ class PageDisplay {
 	if($changeDocTitle)
 	    $this->headerHTML->SetTitle($text);
 
-	$imgPath = ($this->Channel == 'normal') ? '' : '../';
-	$imgTag = (array_key_exists('img', $this->title) and $this->title['img'] != '') ? '<img alt="'.$this->title['text'].'" name="'.$this->title['text'].'" src="'.$imgPath.$this->title['img'].'"/>' : '';
+	$imgTag = (array_key_exists('img', $this->title) and $this->title['img'] != '') ? '<img alt="'.$this->title['text'].'" name="'.$this->title['text'].'" src="'.$this->title['img'].'"/>' : '';
 	$this->title['tag'] = '<h1>'.$imgTag.$this->title['text'].'</h1>';
     }
 
@@ -257,12 +256,8 @@ class PageDisplay {
 	    $bddtmp->makeRequeteFree($req);
 	    $result = $bddtmp->process2();
 	    if($result[0]) {
-		if($this->Channel == 'normal')
-		    $suffixe = '';
-		else
-		    $suffixe = '../';
 		foreach($result[1] as $v)
-		    $actu[] = '<a  href="#" onclick="return zuno.filActu.popupActu('.$v['id'].')"><img src=\''.$suffixe.'img/actualite/'.strtolower($v['type']).'.png\' alt=\''.$v['type'].'\'/> '.str_replace("\n", ' ',$v['titre']).'</a>';
+		    $actu[] = '<a  href="#" onclick="return zuno.filActu.popupActu('.$v['id'].')"><img src=\''.getStaticUrl('img').'actualite/'.strtolower($v['type']).'.png\' alt=\''.$v['type'].'\'/> '.str_replace("\n", ' ',$v['titre']).'</a>';
 	    }
 	    else
 		$actu[] = '';

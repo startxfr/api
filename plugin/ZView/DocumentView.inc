@@ -46,10 +46,10 @@ class documentViewFichier extends generalView {
     private function actualiserImage() {
 	$types = fileGetListOfSupportedImages();
 	$ext = strtolower(substr($this->m_nom, strrpos($this->m_nom, '.') + 1));
-	if ($types[$ext] != "")
-	    $this->m_image =  "../img/files/".$types[$ext].".png";
+	if ($types[$ext] != '')
+	    $this->m_image =  getStaticUrl('img').'files/'.$types[$ext].'.png';
 	else
-	    $this->m_image =  "../img/files/unknown.png";
+	    $this->m_image =  getStaticUrl('img').'files/unknown.png';
     }
 
     /**
@@ -59,16 +59,16 @@ class documentViewFichier extends generalView {
      */
     private function nicesize($size) {
 	if ($size >= 1024*1024*1024)
-	    return round($size/(1024*1024*1024), 2)." Go";
+	    return round($size/(1024*1024*1024), 2).' Go';
 	else if ($size >= 1024*1024)
-	    return round($size/(1024*1024), 2)." Mo";
+	    return round($size/(1024*1024), 2).' Mo';
 	else if ($size >= 1024)
-	    return round($size/1024, 2)." Ko";
+	    return round($size/1024, 2).' Ko';
 	else {
 	    if ($size>1)
-		return $size." octets";
+		return $size.' octets';
 	    else
-		return $size." octet";
+		return $size.' octet';
 	}
     }
 
@@ -87,7 +87,7 @@ class documentViewFichier extends generalView {
      * @return string Le path complet du fichier
      */
     public function path() {
-	return $this->m_chemin."/".$this->m_nom;
+	return $this->m_chemin.'/'.$this->m_nom;
     }
 
     /**
@@ -151,8 +151,8 @@ class documentViewFichier extends generalView {
      * Permet de downloader le fichier
      */
     public function download() {
-	$file = $this->m_chemin."/".$this->m_nom;
-	$filetype = trim(shell_exec("file -bi ".$file));
+	$file = $this->m_chemin.'/'.$this->m_nom;
+	$filetype = trim(shell_exec('file -bi '.$file));
 	header('Content-disposition: attachment; filename='.$this->m_nom);/*Indique le nom*/
 	header('Content-Type: '.$filetype);/*Indique le type*/
 	header('Content-Length: '.filesize($file));/*Indique la taille pour permet au client de savoir le % de telechargement Ceci n'est pas obligatoire .*/
@@ -481,26 +481,26 @@ class documentViewRepertoire extends generalView {
 
 		if($mode == 'complet') {
 		    $sortie .= '<div ouvert="false" class="altern'.$alternance.'" id="'.$v->sousPath().'" style="display:table-row;">';
-		    $ligne = '<div class="cellule bg" style="display:table-cell;"><a title="Informations sur ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=detailsR&format=popup&nom='.$v->nom().'\',\'500\',\'300\',\'\',\'\',\'\',\'Informations\');"><img title="Info sur le dossier '.$k.'" alt="Info sur le dossier '.$k.'" src="../img/files/dir.png" style="margin-left:'.$marge.'px"/></a>';
+		    $ligne = '<div class="cellule bg" style="display:table-cell;"><a title="Informations sur ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=detailsR&format=popup&nom='.$v->nom().'\',\'500\',\'300\',\'\',\'\',\'\',\'Informations\');"><img title="Info sur le dossier '.$k.'" alt="Info sur le dossier '.$k.'" src="'.getStaticUrl('img').'files/dir.png" style="margin-left:'.$marge.'px"/></a>';
 		    $ligne .= ' <b><a title="'.$k.'" onclick="afficherContenu(\''.$this->m_page.'\', \'action=naviguer&style=ajax&rep='.$v->sousPath().'\', \''.$v->sousPath().'\');">'.$k.'</a></b></div>';
 		    $ligne .= '<div class="cellule center bg" style="display:table-cell;width:30px;white-space:nowrap;padding-left:7px;padding-right:7px;"></div>';
 		    $ligne .= '<div class="cellule center bg" style="display:table-cell;width:30px;white-space:nowrap;padding-left:7px;padding-right:7px;">'.$v->dateM().'</div><div class="cellule right bg" style="display:table-cell;white-space:nowrap;width:30px;padding-left:7px;padding-right:7px;"><a title="Détail sur l\'utilisateur '.$v->proprio().'" href="#" onclick="zuno.popup.open(\'../User.php\',\'type=popup&id='.$v->proprio().'\',\'300\',\'300\',\'\',\'\',\'\',\'User\');"><b>'.$v->proprio().'</b></a></div>';
 		    if($this->m_lieu == $GLOBALS['SVN_Pool1']['WorkDir']) {
 			if($v->afficherOptions())
 			    $plus = '<a title="Modifier ce dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'path='.$v->sousPath().'&action=modifD&format=popup\',\'400\',\'150\',\'\',\'\',\'\',\'Modifier\');">
-								<img alt="Modifier ce dossier" src="../img/gnose/modify.png"/>
+								<img alt="Modifier ce dossier" src="'.getStaticUrl('img').'gnose/modify.png"/>
 								</a>
 								<a title="Supprimer le dossier" href="'.$this->m_page.'?action=suppD&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce dossier ?\'));">
-								<img alt="Supprimer le dossier" src="../img/gnose/delete.png"/>
+								<img alt="Supprimer le dossier" src="'.getStaticUrl('img').'gnose/delete.png"/>
 								</a>
 								<a title="Copier le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=copierD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Copier\');">
-								<img alt="Copier le dossier" src="../img/gnose/copy.png"/>
+								<img alt="Copier le dossier" src="'.getStaticUrl('img').'gnose/copy.png"/>
 								</a>
 								<a title="Déplacer le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Déplacer\');">
-								<img alt="Déplacer le dossier" src="../img/gnose/move.png"/>
+								<img alt="Déplacer le dossier" src="'.getStaticUrl('img').'gnose/move.png"/>
 								</a>
 								<a title="Archiver le dossier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=archiverD&format=popup&nom='.$v->nom().'\',\'700\',\'350\',\'\',\'\',\'\',\'Archiver\');">
-								<img alt="Archiver le dossier" src="../img/gnose/archive.png"/>
+								<img alt="Archiver le dossier" src="'.getStaticUrl('img').'gnose/archive.png"/>
 								</a>';
 
 			$ligne .= '<div class="cellule right bg" style="display:table-cell;white-space:nowrap;width:30px;padding-left:7px;padding-right:7px;">
@@ -509,14 +509,14 @@ class documentViewRepertoire extends generalView {
 		    else
 			$ligne .= '<div class="cellule right bg" style="display:table-cell;white-space:nowrap;width:30px;padding-left:7px;padding-right:7px;">
 								<a title="Supprimer le dossier" href="'.$this->m_page.'?action=suppD&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce dossier ?\'));">
-								<img alt="Supprimer le dossier" src="../img/gnose/delete.png"/>
+								<img alt="Supprimer le dossier" src="'.getStaticUrl('img').'gnose/delete.png"/>
 								</a>
 								</div>';
 		    $sortie .= $ligne.'</div>';
 		}
 		elseif($mode == 'light') {
 		    $sortie .= '<div ouvert="false" class="altern'.$alternance.'" id="a'.$v->sousPath().'" style="display:table-row;">';
-		    $ligne = '<div class="cellule bg" style="display:table-cell;"><a title="'.$k.'" onclick="afficherContenu2(\''.$this->m_page.'\', \'action=naviguer&style=ajax&sortie=popup&rep='.$v->sousPath().'\', \'a'.$v->sousPath().'\', \''.$k.'\');"><img title="Info sur le dossier '.$k.'" alt="Info sur le dossier '.$k.'" src="../img/files/dir.png" style="margin-left:'.$marge.'px"/>';
+		    $ligne = '<div class="cellule bg" style="display:table-cell;"><a title="'.$k.'" onclick="afficherContenu2(\''.$this->m_page.'\', \'action=naviguer&style=ajax&sortie=popup&rep='.$v->sousPath().'\', \'a'.$v->sousPath().'\', \''.$k.'\');"><img title="Info sur le dossier '.$k.'" alt="Info sur le dossier '.$k.'" src="'.getStaticUrl('img').'files/dir.png" style="margin-left:'.$marge.'px"/>';
 		    $ligne .= '<b>'.$k.'</a></b></div>';
 		    $sortie .= $ligne.'</div>';
 		}
@@ -558,28 +558,28 @@ class documentViewRepertoire extends generalView {
 		if($this->m_lieu == $GLOBALS['SVN_Pool1']['WorkDir'])
 		    $ligne .= '<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;">
 							<a title="Modifier ce fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?action=modifF&path='.$v->sousPath().'&format=popup\',\'400\',\'150\',\'\',\'\',\'\',\'Uploader\');">
-							<img alt="Modifier ce fichier" src="../img/gnose/modify.png"/>
+							<img alt="Modifier ce fichier" src="'.getStaticUrl('img').'gnose/modify.png"/>
 							</a>
 							<a title="Supprimer le fichier" href="'.$this->m_page.'?action=suppF&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce fichier ?\'));">
-							<img alt="Supprimer le fichier" src="../img/gnose/delete.png"/>
+							<img alt="Supprimer le fichier" src="'.getStaticUrl('img').'gnose/delete.png"/>
 							</a>
 							<a title="Copier le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=copierF&format=popup&nom='.$k.'\',\'700\',\'350\',\'\',\'\',\'\',\'Copier\');">
-							<img alt="Copier le fichier" src="../img/gnose/copy.png"/>
+							<img alt="Copier le fichier" src="'.getStaticUrl('img').'gnose/copy.png"/>
 							</a>
 							<a title="Déplacer le fichier" onclick="zuno.popup.open(\''.$this->m_page.'\',\'?path='.$v->sousPath().'&action=deplacerF&format=popup&nom='.$k.'\',\'700\',\'350\',\'\',\'\',\'\',\'Déplacer\');">
-							<img alt="Déplacer le fichier" src="../img/gnose/move.png"/>
+							<img alt="Déplacer le fichier" src="'.getStaticUrl('img').'gnose/move.png"/>
 							</a>
 							<a title="Envoyer le fichier" onclick="zuno.popup.open(\'../gnose/Send.php\',\'?file='.$v->sousPath().'\',\'500\',\'400\',\'\',\'\',\'resize\',\'Envoyer\');">
-							<img alt="Envoyer le fichier" src="../img/gnose/send.png"/>
+							<img alt="Envoyer le fichier" src="'.getStaticUrl('img').'gnose/send.png"/>
 							</a>
 							</div>';
 		else
 		    $ligne .= '<div class="cellule right bg" style="display:table-cell;padding-left:7px;padding-right:7px;white-space:nowrap;">
 							<a title="Supprimer le fichier" href="'.$this->m_page.'?action=suppF&path='.$v->sousPath().'" onclick="return(confirmation(\'Êtes vous sur de vouloir supprimer ce fichier ?\'));">
-							<img alt="Supprimer le fichier" src="../img/gnose/delete.png"/>
+							<img alt="Supprimer le fichier" src="'.getStaticUrl('img').'gnose/delete.png"/>
 							</a>
 							<a title="Envoyer le fichier" onclick="zuno.popup.open(\'../gnose/Send.php\',\'?file='.$v->sousPath().'\',\'500\',\'400\',\'\',\'\',\'resize\',\'Envoyer\');">
-							<img alt="Envoyer le fichier" src="../img/gnose/send.png"/>
+							<img alt="Envoyer le fichier" src="'.getStaticUrl('img').'gnose/send.png"/>
 							</a></div>';
 		$sortie .= $ligne.'</div>';
 		$alternance = ($alternance+1)%2;

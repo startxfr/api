@@ -28,9 +28,9 @@
 		    <div class="blockTable" id="History">
 			<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border: 0px !important">
 			    <tr class="titre">
-				<td width="200"><a href="History.php?rev={$previous}"><img alt="précédent" src="../img/back.png"/> Modification précédente</a></td>
+				<td width="200"><a href="History.php?rev={$previous}"><img alt="précédent" src="'.getStaticUrl('img').'back.png"/> Modification précédente</a></td>
 				<td> </td>
-				<td width="200" align="right" class="right"><a href="History.php?rev={$next}">Modification suivante <img alt="suivant" src="../img/next.png"/></a></td>
+				<td width="200" align="right" class="right"><a href="History.php?rev={$next}">Modification suivante <img alt="suivant" src="'.getStaticUrl('img').'next.png"/></a></td>
 			    </tr>
 			</table>
 			<table width="100%" cellspacing="0">
@@ -150,7 +150,7 @@
 		<xsl:attribute name="nowrap"/>
 		<xsl:if test="$IsDir = 'true'">
 		    <a href="{$BrowseURI}?rep=WORK{$IDFile}&amp;sortie=popup" title="voir le répertoire {$NameFile}">
-			<img src="../img/files/dir.png" alt="voir le répertoire {$NameFile}" title="voir le répertoire {$NameFile}"/>
+			<img src="'.getStaticUrl('img').'files/dir.png" alt="voir le répertoire {$NameFile}" title="voir le répertoire {$NameFile}"/>
 			<b><xsl:value-of select="$NameFile"/></b>
 		    </a>
 		</xsl:if>
@@ -168,10 +168,10 @@
 		<xsl:if test="count(@copyfrom-path) &gt; 0">
 		    copié depuis le fichier
 		    <a href="#" onclick="return zuno.popup.open('../gnose/FileInfo.php','wpath={$WPCopied}&amp;id={$URICopied}','730','600','','','','Info2');" title="Info sur ce sujet">
-		    <b><xsl:value-of select="$NameCopied"/></b><img src="../img/go.info.png" hspace="4" alt="Info sur ce sujet"/></a>
+		    <b><xsl:value-of select="$NameCopied"/></b><img src="'.getStaticUrl('img').'go.info.png" hspace="4" alt="Info sur ce sujet"/></a>
 		    ( répertoire <xsl:value-of select="$WPCopied"/>:
 		    <a href="#" onclick="window.location.href='../gnose/{$BrowseURICopied}?dir={$ParentURICopied}';" title="Voir le repertoire parent">
-		    <xsl:value-of select="$ParentURICopied"/><img src="../img/go.dir.png" hspace="4" title="Voir le repertoire parent"/></a>)
+		    <xsl:value-of select="$ParentURICopied"/><img src="'.getStaticUrl('img').'go.dir.png" hspace="4" title="Voir le repertoire parent"/></a>)
 		    <br/>
 		</xsl:if>
 	    </td>
@@ -179,7 +179,7 @@
 		<xsl:if test="$IsDir = 'false'">
 		    <xsl:choose>
 			<xsl:when test="./@action = 'D'"></xsl:when>
-			<xsl:otherwise><a href="../gnose/BrowseWork.php?action=download&amp;fich={$WP}{$IDFile}&amp;rev={../../@revision}" title="Télécharger ce fichier"><img src="../img/gnose/download.png" alt="Télécharger ce fichier"/></a></xsl:otherwise>
+			<xsl:otherwise><a href="../gnose/BrowseWork.php?action=download&amp;fich={$WP}{$IDFile}&amp;rev={../../@revision}" title="Télécharger ce fichier"><img src="'.getStaticUrl('img').'gnose/download.png" alt="Télécharger ce fichier"/></a></xsl:otherwise>
 		    </xsl:choose>
 		</xsl:if>
 	    </td>

@@ -3,7 +3,7 @@
 
 class generalView {
 
-    public function resultNavigation($from,$limit,$total,$jsFunction = '',$suffixeLink = './') {
+    public function resultNavigation($from,$limit,$total,$jsFunction = '') {
 
 	$bouton = '';
 	if($total == 0)
@@ -32,26 +32,26 @@ class generalView {
 	    }
 
 	    $bouton .= selectTag('nomselect', array('5' => '5', '15' => '15', '30' => '30', '50' => '50', '75' => '75', '100' => '100'), $limit, '', ' onChange="'.$jsFunction.'(this.value,\'0\');;" ');
-	    $bouton .= '<a name="allpage" onclick="'.$jsFunction.'(\'ALL\');"><img title="Vue complète" alt="vuetotale" src="'.$suffixeLink.'img/prospec/viewmode-gofull.png"/> Passer en vue complète</a>';
+	    $bouton .= '<a name="allpage" onclick="'.$jsFunction.'(\'ALL\');"><img title="Vue complète" alt="vuetotale" src="'.getStaticUrl('img').'prospec/viewmode-gofull.png"/> Passer en vue complète</a>';
 	}
 	else {
-	    $bouton .= '<a name="parpage" onclick="'.$jsFunction.'(\'30\',\'0\');"><img title="Vue complète" alt="vuetotale" src="'.$suffixeLink.'img/prospec/viewmode-gofull.png"/> Passer en vue par page</a>';
+	    $bouton .= '<a name="parpage" onclick="'.$jsFunction.'(\'30\',\'0\');"><img title="Vue complète" alt="vuetotale" src="'.getStaticUrl('img').'prospec/viewmode-gofull.png"/> Passer en vue par page</a>';
 	}
 	return $bouton;
     }
 
 
 
-    public function tagLinkOrderSwitch($title,$fieldName,$selectedOrderField,$selectedOrderSens,$limit,$jsFunction,$suffixeLink = './') {
+    public function tagLinkOrderSwitch($title,$fieldName,$selectedOrderField,$selectedOrderSens,$limit,$jsFunction) {
 	if($selectedOrderField == $fieldName)
 	    if(strtoupper($selectedOrderSens) == 'ASC')
-		$orderTag = '<a href="javascript:'.$jsFunction.'(\''.$limit.'\',0,\''.$fieldName.'\',\'DESC\');">'.$title.' <img style="vertical-align: middle" src="'.$suffixeLink.'img/orderASC.png" title="trier selon ce critère" alt="trier selon ce critère"/></a>';
-	    else $orderTag = '<a href="javascript:'.$jsFunction.'(\''.$limit.'\',0,\''.$fieldName.'\');">'.$title.' <img style="vertical-align: middle" src="'.$suffixeLink.'img/orderDESC.png" title="trier selon ce critère" alt="trier selon ce critère"/></a>';
-	else $orderTag = '<a href="javascript:'.$jsFunction.'(\''.$limit.'\',0,\''.$fieldName.'\');">'.$title.' <img style="vertical-align: middle" src="'.$suffixeLink.'img/orderNo.png" title="trier selon ce critère" alt="trier selon ce critère"/></a>';
+		$orderTag = '<a href="javascript:'.$jsFunction.'(\''.$limit.'\',0,\''.$fieldName.'\',\'DESC\');">'.$title.' <img style="vertical-align: middle" src="'.getStaticUrl('img').'orderASC.png" title="trier selon ce critère" alt="trier selon ce critère"/></a>';
+	    else $orderTag = '<a href="javascript:'.$jsFunction.'(\''.$limit.'\',0,\''.$fieldName.'\');">'.$title.' <img style="vertical-align: middle" src="'.getStaticUrl('img').'orderDESC.png" title="trier selon ce critère" alt="trier selon ce critère"/></a>';
+	else $orderTag = '<a href="javascript:'.$jsFunction.'(\''.$limit.'\',0,\''.$fieldName.'\');">'.$title.' <img style="vertical-align: middle" src="'.getStaticUrl('img').'orderNo.png" title="trier selon ce critère" alt="trier selon ce critère"/></a>';
 
 	return $orderTag;
     }
-    public function tagNoLinkOrderSwitch($title,$fieldName,$selectedOrderField,$selectedOrderSens,$limit,$jsFunction,$suffixeLink = './') {
+    public function tagNoLinkOrderSwitch($title,$fieldName,$selectedOrderField,$selectedOrderSens,$limit,$jsFunction) {
 	return $title;
     }
 
@@ -60,10 +60,6 @@ class generalView {
 	$from++;
 	if($to > $total) $to = $total;
 	$tt = '';
-	if(substr($titre, strlen($titre)-5) == "Histo")
-	    $point = "./";
-	else
-	    $point = "../";
 	if($total == 0) {
 	    if($titre == 'commande')  $tt = 'Aucune commande trouvée';
 	    elseif($titre == 'commandeHisto')  $tt = 'Aucune commande récemment consultée';
@@ -85,7 +81,7 @@ class generalView {
 	    elseif($titre == 'factureFournHisto') $tt = 'Aucune facture fournisseur récemment consultée';
 	    elseif($titre == 'pontComptable') $tt = 'Aucun fichier d\'export comptable trouvé';
 	    elseif($titre == 'pontComptableHisto') $tt = 'Aucun fichier d\'export comptable récemment consulté';
-	    $titre = imageTag($point.'img/prospec/result.png','recherche')." $tt";
+	    $titre = imageTag(getStaticUrl('img').'prospec/result.png','recherche')." $tt";
 	}
 	elseif($total == 1) {
 	    if($titre == 'commande') $tt = 'Affichage de la commande trouvée';
@@ -108,7 +104,7 @@ class generalView {
 	    elseif($titre == 'fournisseurHisto') $tt = 'Affichage du dernier fournisseur consulté';
 	    elseif($titre == 'factureFournHisto') $tt = 'Affichage de la dernière facture fournisseur consultée';
 	    elseif($titre == 'pontComptableHisto') $tt = 'Affichage du dernier fichier d\'export comptable consulté';
-	    $titre = imageTag($point.'img/prospec/result.png','recherche')." $tt";
+	    $titre = imageTag(getStaticUrl('img').'prospec/result.png','recherche')." $tt";
 	}
 	else {
 	    if($titre == 'commande') $tt = ' Affichage des commandes';
@@ -136,8 +132,8 @@ class generalView {
 	    }
 	    else {
 		if($limit >= $total)
-		    $titre = imageTag($point.'img/prospec/result.png','recherche')." $tt ($total au total)";
-		else $titre = imageTag($point.'img/prospec/result.png','recherche')." $tt $from - $to ($total au total)";
+		    $titre = imageTag(getStaticUrl('img').'prospec/result.png','recherche')." $tt ($total au total)";
+		else $titre = imageTag(getStaticUrl('img').'prospec/result.png','recherche')." $tt $from - $to ($total au total)";
 	    }
 	}
 	return $titre;

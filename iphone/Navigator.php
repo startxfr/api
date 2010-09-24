@@ -55,9 +55,9 @@ function getImg($file) {
     $types = array ("torrent"=>"bt", "iso"=>"cdimage", "mdf"=>"cdimage", "mds"=>"cdimage", "deb"=>"deb", "doc"=>"document", "odt"=>"document", "swx"=>"document", "exe"=>"exec_win", "temp"=>"file_temporary", "ttf"=>"font", "html"=>"html", "htm"=>"html", "xhtml"=>"html", "asp"=>"html", "aspx"=>"html", "php"=>"html", "php3"=>"html", "php4"=>"html", "php5"=>"html", "xml"=>"html", "png"=>"image", "gif"=>"image", "jpg"=>"image", "jpeg"=>"images", "bmp"=>"image", "wbmp"=>"image", "log"=>"log", "mid"=>"midi", "mod"=>"midi", "sid"=>"midi", "xm"=>"midi", "pdf"=>"pdf", "ps"=>"postscript", "mov"=>"quicktime", "readme"=>"readme", "nfo"=>"readme", "rpm"=>"rpm", "sh"=>"shellscript", "mp3"=>"sound", "ogg"=>"sound", "wav"=>"sound", "au"=>"sound", "c"=>"source_c", "cpp"=>"source_cpp", "f"=>"source_f", "h"=>"source_h", "j"=>"source_j", "jar"=>"source_java", "java"=>"source_java", "l"=>"source_l", "moc"=>"source_moc", "o"=>"source_moc", "o"=>"souce_o", "p"=>"source_p", "pl"=>"source_pl", "py"=>"source_py", "s"=>"source_s", "y"=>"source_y", "tar"=>"tar", "gz"=>"tar", "rar"=>"tar", "bz"=>"tar", "bz2"=>"tar", "zip"=>"tar", "ace"=>"tar", "tex"=>"tex", "txt"=>"txt", "svg"=>"vector", "svgx"=>"vector", "avi"=>"video", "wmv"=>"video");
     $ext = strtolower(substr($file, strrpos($file, '.') + 1));
     if ($types[$ext] != "")
-	return "../img/files/".$types[$ext].".png";
+	return getStaticUrl('img').'files/'.$types[$ext].".png";
     else
-	return "../img/files/unknown.png";
+	return getStaticUrl('img').'files/unknown.png';
 }
 
 function Naviguer($dirname = '', $nombre = 0) {
@@ -95,7 +95,7 @@ function Naviguer($dirname = '', $nombre = 0) {
 		//			$tailleDossier = nicesize(DirSize($relname));
 		$out .= '<li>';
 		$out .= '<a href="Navigator.php?file='.urlencode($relname).'&nombre='.$nombre.'" rev="async" '.$taille.' >';
-		$out .= '<img src="../img/files/folder.gif" alt="folder"/>  '.$item.'</a>';
+		$out .= '<img src="'.getStaticUrl('img').'files/folder.gif" alt="folder"/>  '.$item.'</a>';
 		$out .= '<span title="'.str_replace('"', '\"', $absname).'"></span></li>';
 		$folder_nb++;
 	    }

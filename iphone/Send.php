@@ -53,7 +53,7 @@ if($_SESSION['user']['config']['send'] != 'oui') {
 //	  titre=titre+de+mon+message
 //	  emailcc=toto@startx.fr
 //	  file=../tmp/todo.ods
-// ex: <a href="Send.php?type=mail&email=clarue@startx.fr&message=essai+de+message&titre=titre+de+mon+message&emailcc=toto@startx.fr&file=../tmp/todo.ods" rev="async"><img src="Img/iconMenu/zsendMail.png" />Envoi de Mail </a>
+// ex: <a href="Send.php?type=mail&email=clarue@startx.fr&message=essai+de+message&titre=titre+de+mon+message&emailcc=toto@startx.fr&file=../tmp/todo.ods" rev="async"><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendMail.png" />Envoi de Mail </a>
 //
 // Envoi d'un courrier
 // ---------------------------
@@ -66,7 +66,7 @@ if($_SESSION['user']['config']['send'] != 'oui') {
 //	  cpays=fr
 //	  emailcc=toto@startx.fr
 //	* file=../tmp/todo.ods
-// ex: <a href="Send.php?type=courrier&nom=Mr+Christophe+LARUE&add1=16+rue+camille+Desmoulins&cp=75011&ville=PARIS&pays=FRANCE&cpays=fr&file=../tmp/todo.ods" rev="async"><img src="Img/iconMenu/zsendCourrier.png" />Envoi de Courrier </a>
+// ex: <a href="Send.php?type=courrier&nom=Mr+Christophe+LARUE&add1=16+rue+camille+Desmoulins&cp=75011&ville=PARIS&pays=FRANCE&cpays=fr&file=../tmp/todo.ods" rev="async"><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendCourrier.png" />Envoi de Courrier </a>
 if($PC->rcvG['type'] == 'mail') {
     if($PC->rcvG['action'] == 'doConfirmSend') {
 	$_SESSION['ZSend']['data']['typeE'] = 'email';

@@ -156,7 +156,7 @@ if(array_key_exists('action', $PC->rcvG)) {
 	if(is_array($resultat[1])) {
 	    foreach($resultat[1] as $v) {
 		if ($v['type_ent'] != '')
-		    $v['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
+		    $v['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
 		$out .= '<li title="'.$v['id_ent'].'">'.$v['nom_ent'].' ('.$v['ville_ent'].')</li>';
 	    }
 	}
@@ -183,13 +183,13 @@ if(array_key_exists('action', $PC->rcvG)) {
 	$result = $sql->process2();
 	if(is_array($result[1]))
 	    foreach($result[1] as $v)
-		$out .= '<li title="'.$v['id_aff'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'-_-'.$v['id_cont'].'-_-'.$v['civ_cont'].'-_-'.$v['prenom_cont'].'-_-'.$v['nom_cont'].'">'.imageTag('../img/actualite/affaire.png','affaire').' '.$v['id_aff'].' - '.$v['titre_aff'].' ('.$v['nom_ent'].')</li>';
+		$out .= '<li title="'.$v['id_aff'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'-_-'.$v['id_cont'].'-_-'.$v['civ_cont'].'-_-'.$v['prenom_cont'].'-_-'.$v['nom_cont'].'">'.imageTag(getStaticUrl('img').'actualite/affaire.png','affaire').' '.$v['id_aff'].' - '.$v['titre_aff'].' ('.$v['nom_ent'].')</li>';
 	$sql->makeRequeteFree("SELECT * from entreprise LEFT JOIN ref_pays ON ref_pays.id_pays = entreprise.pays_ent, contact where (nom_ent $qTag or cp_ent $qTag or ville_ent $qTag) AND id_ent = entreprise_cont GROUP BY id_ent ORDER BY nom_ent ASC LIMIT 0,10 ");
 	$result = $sql->process2();
 	if(is_array($result[1])) {
 	    foreach($result[1] as $v) {
 		if ($v['type_ent'] != '')
-		    $v['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
+		    $v['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
 		$out .= '<li title="null-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'-_-'.$v['id_cont'].'-_-'.$v['civ_cont'].'-_-'.$v['prenom_cont'].'-_-'.$v['nom_cont'].'">'.$v['nom_ent'].' ('.$v['ville_ent'].')</li>';
 	    }
 	}
@@ -206,7 +206,7 @@ if(array_key_exists('action', $PC->rcvG)) {
 	if(is_array($result[1])) {
 	    foreach($result[1] as $v) {
 		if ($v['type_ent'] != '')
-		    $v['nom_ent']	= imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
+		    $v['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$v['type_ent'].'.png',$v['nom_tyent']).' '.$v['nom_ent'];
 		$out .= '<li title="null-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'-_-'.$v['id_cont'].'-_-'.$v['civ_cont'].'-_-'.$v['prenom_cont'].'-_-'.$v['nom_cont'].'">'.$v['nom_ent'].' ('.$v['ville_ent'].')</li>';
 	    }
 	}
@@ -214,7 +214,7 @@ if(array_key_exists('action', $PC->rcvG)) {
 	$result = $sql->process2();
 	if(is_array($result[1])) {
 	    foreach($result[1] as $v)
-		$out .= '<li title="'.$v['id_cmd'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'-_-'.$v['id_cont'].'-_-'.$v['civ_cont'].'-_-'.$v['prenom_cont'].'-_-'.$v['nom_cont'].'">'.imageTag('../img/actualite/commande.png','commande').' '.$v['id_cmd'].' - '.$v['titre_cmd'].' ('.$v['nom_ent'].')</li>';
+		$out .= '<li title="'.$v['id_cmd'].'-_-'.$v['id_ent'].'-_-'.$v['add1_ent'].'-_-'.$v['add2_ent'].'-_-'.$v['cp_ent'].'-_-'.$v['ville_ent'].'-_-'.$v['pays_ent'].'-_-'.$v['nom_pays'].'-_-'.$v['id_cont'].'-_-'.$v['civ_cont'].'-_-'.$v['prenom_cont'].'-_-'.$v['nom_cont'].'">'.imageTag(getStaticUrl('img').'actualite/commande.png','commande').' '.$v['id_cmd'].' - '.$v['titre_cmd'].' ('.$v['nom_ent'].')</li>';
 	}
     }
     elseif($PC->rcvG['action'] == 'listeFamille') {

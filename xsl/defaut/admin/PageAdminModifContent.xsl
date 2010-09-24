@@ -22,11 +22,11 @@
 				<div class="leftRow">
 				<label for="nom" title="Nom de la page. S'affiche dans les menus du site.">Nom :</label>
 					<input type="text" name="nom_pg" size="20" value="{nom}"/>
-					<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
+					<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
 				<br class="clear"/>
 				<label for="titre" title="Titre de la page. S'affiche comme titre de la page.">Titre :</label>
 					<input type="text" name="header_pg" size="20" value="{header}"/>
-					<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
+					<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
 				<br class="clear"/>
 				</div>
 				<div class="rightRow">

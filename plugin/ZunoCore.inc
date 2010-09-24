@@ -176,9 +176,9 @@ function  BlockSendmail($id_cont,$data,$opt = "new") {
 
     $corps = templating('prospec/SendMail',$tag);
 
-    $titre 	= imageTag('../img/prospec/contact.png','resultat')." Envoi d'un mail à ".$cont['civ_cont']." ".$cont['prenom_cont']." ".$cont['nom_cont'];
-    $pied 	= '<a name="annuler" onclick="zuno.popup.close();">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
-		   <a name="valider" onclick="zuno.business.formTools.sendFormAjah(\'SendMail\', \'prospec/PopupSendMail.php\', \'ficheInterne\');zuno.popup.close();">'.imageTag('../img/prospec/record.png','','middle').' Envoyer</a>';
+    $titre 	= imageTag(getStaticUrl('img').'prospec/contact.png','resultat')." Envoi d'un mail à ".$cont['civ_cont']." ".$cont['prenom_cont']." ".$cont['nom_cont'];
+    $pied 	= '<a name="annuler" onclick="zuno.popup.close();">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>
+		   <a name="valider" onclick="zuno.business.formTools.sendFormAjah(\'SendMail\', \'prospec/PopupSendMail.php\', \'ficheInterne\');zuno.popup.close();">'.imageTag(getStaticUrl('img').'prospec/record.png','','middle').' Envoyer</a>';
 
     return generateZBox($titre,$titre,$corps,$pied,'sendMail','');
 }

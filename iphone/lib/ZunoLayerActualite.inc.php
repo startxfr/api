@@ -18,7 +18,7 @@ class ZunoLayerActualite
 		elseif($tri == 'facture') $sc['f'] = ' class="select"';
 		else  $sc['all'] = ' class="select"';
 	return '<div  class="iFormI">
-			<a href="Actualite.php?action=add" rel="action" rev="async" class="iButton iBAction"><img src="Img/add.png" alt="Ajouter" /></a>
+			<a href="Actualite.php?action=add" rel="action" rev="async" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'add.png" alt="Ajouter" /></a>
 			<ul>
 				<li'.$sc['g'].' id="AFTgeneral"><a href="Actualite.php?tri=general" rev="async" onclick="switchActualiteTri(\'AFTgeneral\')">Général</a></li>
 				<li'.$sc['a'].' id="AFTaffaire"><a href="Actualite.php?tri=affaire" rev="async" onclick="switchActualiteTri(\'AFTaffaire\')">Affaire</a></li>

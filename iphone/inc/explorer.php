@@ -16,13 +16,13 @@ Navigateur de fichier permet de crée , supprimmer , lister les fichier présent
 */
 
 $DEFAULT=$_SERVER['DOCUMENT_ROOT']; /*Default redirection quand le script commence*/
-$IMGFOLDER='img/file.png'; /*L'icon pour le dossier*/
-$IMGFILE='img/fichier.gif'; /*Icon pour le fichier*/
-$IMGCREATEFILE='img/filenew.png'; /*Fichier pour crée un fichier*/
-$IMGUPLOAD='img/upload.gif'; /*Fichier pour upload des fichier*/
-$IMGCREATEFOLDER='img/folder-new.png';
-$IMGSEARCH='img/search.png';
-$IMGRENAME='img/edit.png';
+$IMGFOLDER=getStaticUrl('imgPhone').'file.png'; /*L'icon pour le dossier*/
+$IMGFILE=getStaticUrl('imgPhone').'fichier.gif'; /*Icon pour le fichier*/
+$IMGCREATEFILE=getStaticUrl('imgPhone').'filenew.png'; /*Fichier pour crée un fichier*/
+$IMGUPLOAD=getStaticUrl('imgPhone').'upload.gif'; /*Fichier pour upload des fichier*/
+$IMGCREATEFOLDER=getStaticUrl('imgPhone').'folder-new.png';
+$IMGSEARCH=getStaticUrl('imgPhone').'search.png';
+$IMGRENAME=getStaticUrl('imgPhone').'edit.png';
 
 if(!isset($_GET['rename'])&&!isset($_GET['pathren'])&&!isset($_GET['en'])&&!isset($_GET['upload'])&&!isset($_POST['pathupload'])&&!isset($_GET['touch'])&&!isset($_GET['download'])&&/*Verifie si rien n'est appellé*/
 !isset($_GET['delete'])&&!isset($_GET['path'])&&!isset($_GET['dir'])&&!isset($_FILES['fichier'])&&!isset($_GET['mkdir'])&&!isset
@@ -181,7 +181,7 @@ while ($f = readdir($handle)) { //Boucle qui enumere tout les fichier d'un reper
    
    }elseif(@is_file($rep.'/'.$f)){/*Verifie si c'est bien un fichier*/
    
-	  echo '<img src="'.$IMGFILE.'" alt="Fichier"/>'.$f.'<a href="?delete='.$replien.'/'.$lien.'" onclick="return confirm(\'Supprimer '.$f.' ?\');"><img alt="Supprimmer" title="/!\Supprimer/!\ " src="img/delete.gif" /></a><a href="?download='.$replien.'/'.$lien.'" ><img alt="Telecharger" title="Telecharger " src="img/download.png" /></a><br />';
+	  echo '<img src="'.$IMGFILE.'" alt="Fichier"/>'.$f.'<a href="?delete='.$replien.'/'.$lien.'" onclick="return confirm(\'Supprimer '.$f.' ?\');"><img alt="Supprimer" title="/!\Supprimer/!\ " src="'.getStaticUrl('imgPhone').'delete.gif" /></a><a href="?download='.$replien.'/'.$lien.'" ><img alt="Telecharger" title="Telecharger " src="'.getStaticUrl('imgPhone').'download.png" /></a><br />';
 }
 echo '</div>'."\n"; /*ferme la div pour la couleur.*/
 /*Crée le formulaire pour crée un fichier par default display:none affiche en cliquant en  haut*/

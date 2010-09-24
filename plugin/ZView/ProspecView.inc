@@ -31,16 +31,16 @@ class projetView extends generalView {
 	    $action = '';
 
 	    if ($proj['affaire_proj'] != '')
-		$action   = "<a href=\"${suffixeLink}draco/Affaire.php?id_aff=".$proj['affaire_proj']."\">".imageTag($suffixeLink.'img/prospec/projet.affaire.png','Affaire '.$proj['affaire_proj'].' Liée')."</a> ";
+		$action   = "<a href=\"${suffixeLink}draco/Affaire.php?id_aff=".$proj['affaire_proj']."\">".imageTag(getStaticUrl('img').'prospec/projet.affaire.png','Affaire '.$proj['affaire_proj'].' Liée')."</a> ";
 	    if ($_SESSION['user']['id'] == $proj['utilisateur_proj'])
-		$action   .= "<a href=\"${suffixeLink}prospec/Projet.php?id_proj=".$proj['id_proj']."\">".imageTag($suffixeLink.'img/prospec/projet.modif.png','Modifier')."</a>
-			      <a href=\"${suffixeLink}prospec/Projet.php?action=supp&id_proj=".$proj['id_proj']."\">".imageTag($suffixeLink.'img/prospec/projet.delete.png','Supprimer')."</a>";
+		$action   .= "<a href=\"${suffixeLink}prospec/Projet.php?id_proj=".$proj['id_proj']."\">".imageTag(getStaticUrl('img').'prospec/projet.modif.png','Modifier')."</a>
+			      <a href=\"${suffixeLink}prospec/Projet.php?action=supp&id_proj=".$proj['id_proj']."\">".imageTag(getStaticUrl('img').'prospec/projet.delete.png','Supprimer')."</a>";
 
 	    if ($proj['nom_ent'] != '') {
 		if (strlen($proj['nom_ent']) > 25)
 		    $proj['nom_ent'] = substr($proj['nom_ent'],0,25)."...";
 		if ($proj['type_ent'] != '')
-		    $proj['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$proj['type_ent'].'.png',$proj['nom_tyent']).' '.$proj['nom_ent'];
+		    $proj['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$proj['type_ent'].'.png',$proj['nom_tyent']).' '.$proj['nom_ent'];
 		if (strlen($proj['ville_ent']) > 18)
 		    $proj['ville_ent'] = substr($proj['ville_ent'],0,18)."...";
 		if ($proj['ville_ent'] != '')
@@ -50,7 +50,7 @@ class projetView extends generalView {
 	    }
 	    else {
 		$proj['nom_ent'] = '<i>Particulier</i>';
-		$proj['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$proj['nom_ent'];
+		$proj['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$proj['nom_ent'];
 		if (strlen($proj['ville_cont']) > 18)
 		    $proj['ville_cont'] = substr($proj['ville_cont'],0,18)."...";
 		if ($proj['ville_cont'] != '')
@@ -85,7 +85,7 @@ class projetView extends generalView {
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
 	$bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="ChangeProjetAction(\'exportTableur\');ChangeFrom(this.value);ChangeLimit(\'ALL\'); document.searchProjet.submit();" ').'</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
+	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
 
 	if($modHistorique)
 	    $bouton = '';
@@ -157,9 +157,9 @@ class projetView extends generalView {
 	    }
 	    $tag['contact'] = ZunoSelectContact('contact_proj',$con['entreprise_cont'],$projet['contact_proj'],'','');
 	    if ($projet['affaire_proj'] != '')
-		$tag['affaire']   = "<a href=\"javascript:window.location = '../draco/Affaire.php?id_aff=".$projet['affaire_proj']."';zuno.popup.close();\">".imageTag('../img/prospec/projet.affaire.png','Affaire Liée')."Voir l'affaire ".$projet['affaire_proj']."</a>";
+		$tag['affaire']   = "<a href=\"javascript:window.location = '../draco/Affaire.php?id_aff=".$projet['affaire_proj']."';zuno.popup.close();\">".imageTag(getStaticUrl('img').'prospec/projet.affaire.png','Affaire Liée')."Voir l'affaire ".$projet['affaire_proj']."</a>";
 	    elseif(($projet['affaire_proj'] == '')and($opt != 'new'))
-		$tag['affaire']   = "<a href=\"#\" onclick=\"return zuno.popup.open('../draco/PopupAffaire.php','id_proj=".$projet['id_proj']."',800,400,'','','resize','affaire');\">".imageTag('../img/prospec/projet.affaire.png','Affaire Liée')."Créer une affaire à partir de ce projet"."</a>";
+		$tag['affaire']   = "<a href=\"#\" onclick=\"return zuno.popup.open('../draco/PopupAffaire.php','id_proj=".$projet['id_proj']."',800,400,'','','resize','affaire');\">".imageTag(getStaticUrl('img').'prospec/projet.affaire.png','Affaire Liée')."Créer une affaire à partir de ce projet"."</a>";
 	    else $tag['affaire']   = "";
 
 	    if ($projet['rdv_proj'] != '')
@@ -190,18 +190,18 @@ class projetView extends generalView {
 	// On Prépare la grosse boite qui englobe tout ca
 	if($opt == 'supp') {
 	    $titre = " Suppression du projet ".$projet['id_proj']." d&eacute;t&eacute;ct&eacute; par ".$projet['utilisateur_proj']." le ".DateUniv2Human($projet['detect_proj'],'simpleLong');
-	    $pied 	= '<a href="Projet.php?action=suppconfirm&id_proj='.$projet['id_proj'].'">'.imageTag('../img/prospec/confirm.png','','middle').' Confirmer</a>
-				   <a href="javascript:zuno.popup.close();">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>';
+	    $pied 	= '<a href="Projet.php?action=suppconfirm&id_proj='.$projet['id_proj'].'">'.imageTag(getStaticUrl('img').'prospec/confirm.png','','middle').' Confirmer</a>
+				   <a href="javascript:zuno.popup.close();">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>';
 	}
 	elseif($opt == 'modif') {
 	    $titre = " Projet d&eacute;t&eacute;ct&eacute; le ".DateUniv2Human($projet['detect_proj'],'simpleLong')." d&eacute;t&eacute;ct&eacute; par ".$projet['utilisateur_proj']." chez ".$con['nom_ent'];
-	    $pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
-				   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/record.png','','middle').' Modifier ce projet</a>';
+	    $pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>
+				   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/record.png','','middle').' Modifier ce projet</a>';
 	}
 	else {
 	    $titre = "Creation d'une fiche projet pour l'entreprise ".$ent['nom_ent'];
 	    $pied  = '<a href="javascript:document.'.$tag['FormName'].'.reset()">Annuler</a>
-				  <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/record.png','','middle').' Enregistrer ce projet</a>';
+				  <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/record.png','','middle').' Enregistrer ce projet</a>';
 	}
 
 	// On traite la boite et on retourne le tout
@@ -284,9 +284,9 @@ class projetView extends generalView {
 
 	$titre = 'Recherche des projets';
 	$corps = $script.templating('prospec/Leads.BoxSearch',$tag);
-	$pied  = '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
-			    <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/voir.png','','middle').' Rechercher</a>';
-	$pied .= "<a href=\"#\" onclick=\"return zuno.popup.open('Projet.php','&action=new&format=popup',800,535,'','','resize','projet');\">".imageTag('../img/prospec/add.png','','middle')." Ouvrir une nouvelle fiche projet</a>";
+	$pied  = '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>
+			    <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/voir.png','','middle').' Rechercher</a>';
+	$pied .= "<a href=\"#\" onclick=\"return zuno.popup.open('Projet.php','&action=new&format=popup',800,535,'','','resize','projet');\">".imageTag(getStaticUrl('img').'prospec/add.png','','middle')." Ouvrir une nouvelle fiche projet</a>";
 	return generateZBox($titre,$titre,$corps,$pied,'relanceSearch','none');
     }
 
@@ -342,10 +342,10 @@ class projetView extends generalView {
 	    $j=1;
 	    foreach ($res as $key => $proj) {
 		if ($proj['affaire_proj'] != '')
-		    $proj['Bouton']   = "<a href=\"../draco/Affaire.php?id_aff=".$proj['affaire_proj']."\">".imageTag('../img/prospec/projet.affaire.png','Affaire '.$proj['affaire_proj'].' Liée')."</a> ";
+		    $proj['Bouton']   = "<a href=\"../draco/Affaire.php?id_aff=".$proj['affaire_proj']."\">".imageTag(getStaticUrl('img').'prospec/projet.affaire.png','Affaire '.$proj['affaire_proj'].' Liée')."</a> ";
 		if ($_SESSION['user']['id'] == $proj['utilisateur_proj'])
-		    $proj['Bouton']   .= "<a href=\"../prospec/Projet.php?id_proj=".$proj['id_proj']."\">".imageTag('../img/prospec/projet.modif.png','Modifier')."</a>
-			      <a href=\"../prospec/Projet.php?action=supp&id_proj=".$proj['id_proj']."\">".imageTag('../img/prospec/projet.delete.png','Supprimer')."</a>";
+		    $proj['Bouton']   .= "<a href=\"../prospec/Projet.php?id_proj=".$proj['id_proj']."\">".imageTag(getStaticUrl('img').'prospec/projet.modif.png','Modifier')."</a>
+			      <a href=\"../prospec/Projet.php?action=supp&id_proj=".$proj['id_proj']."\">".imageTag(getStaticUrl('img').'prospec/projet.delete.png','Supprimer')."</a>";
 		else  $proj['Bouton']   .= "";
 		$proj['TDAction'] = "onclick=\"window.location='Projet.php?id_proj=".$proj['id_proj']."';\"";
 
@@ -379,7 +379,7 @@ class projetView extends generalView {
 	    $result = 'none';
 	}
 
-	$titre = imageTag('../img/prospec/projet.liste.png','resultat').' '.(int)$j.' Projets corespondent à votre recherche';
+	$titre = imageTag(getStaticUrl('img').'prospec/projet.liste.png','resultat').' '.(int)$j.' Projets corespondent à votre recherche';
 	return generateZBox($titre,$titre,$corps,$bouton,'relance'.$opt,$result);
     }
 

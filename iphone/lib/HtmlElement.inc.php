@@ -48,7 +48,7 @@ class HtmlElementIphone
 	{
 		$txt = ($displayText) ? $value : '';
 		if($value != '')
-		return '<a href="mailto:'.$value.'" title="envoyer un email (via IPhone Mail)"><span><img src="Img/iconMenu/mail.png" /></span>'.$txt.'</a>';
+		return '<a href="mailto:'.$value.'" title="envoyer un email (via IPhone Mail)"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/mail.png" /></span>'.$txt.'</a>';
 	}
 
 
@@ -60,9 +60,9 @@ class HtmlElementIphone
 		$txt = ($displayText) ? $value : '';
 		if($value != '')
 		if($fiche)
-		return '<a class="linkCont" href="Send.php?type=mail&email='.urlencode($value).'" rev="async" title="Envoyer un e-mail"><span><img src="Img/iconMenu/zsendMail.png" /></span>'.$txt.'</a>';
+		return '<a class="linkCont" href="Send.php?type=mail&email='.urlencode($value).'" rev="async" title="Envoyer un e-mail"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendMail.png" /></span>'.$txt.'</a>';
 		else
-		return '<a href="Send.php?type=mail&email='.urlencode($value).'" rev="async" title="Envoyer un e-mail"><span><img src="Img/iconMenu/zsendMail.png" /></span>'.$txt.'</a>';
+		return '<a href="Send.php?type=mail&email='.urlencode($value).'" rev="async" title="Envoyer un e-mail"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendMail.png" /></span>'.$txt.'</a>';
 	}
 
 
@@ -73,7 +73,7 @@ class HtmlElementIphone
 	{
 		$txt = ($displayText) ? $value : '';
 		if($value != '')
-		return '<a href="tel:'.$value.'" title="Appeler le numéro de téléphone"><span><img src="Img/iconMenu/tel.png" /></span>'.$txt.'</a>';
+		return '<a href="tel:'.$value.'" title="Appeler le numéro de téléphone"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/tel.png" /></span>'.$txt.'</a>';
 	}
 
 
@@ -84,7 +84,7 @@ class HtmlElementIphone
 	{
 		$txt = ($displayText) ? $value : '';
 		if($value != '')
-		return '<a href="tel:'.$value.'" title="Appler le numéro de fax"><span><img src="Img/iconMenu/fax.png" /></span>'.$txt.'</a>';
+		return '<a href="tel:'.$value.'" title="Appler le numéro de fax"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/fax.png" /></span>'.$txt.'</a>';
 	}
 
 	/**
@@ -96,9 +96,9 @@ class HtmlElementIphone
 		$q = ($contactName != '') ? '&nom='.$contactName : '';
 		if($value != '')
 		if($fiche)
-		return '<a class="linkCont" href="Send.php?type=fax&fax='.urlencode($value).$q.'" rev="async" title="Envoyer un fax à ce contact"><span><img src="Img/iconMenu/zsendFax.png" /></span>'.$txt.'</a>';
+		return '<a class="linkCont" href="Send.php?type=fax&fax='.urlencode($value).$q.'" rev="async" title="Envoyer un fax à ce contact"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendFax.png" /></span>'.$txt.'</a>';
 		else
-		return '<a href="Send.php?type=fax&fax='.urlencode($value).$q.'" rev="async" title="Envoyer un fax à ce contact"><span><img src="Img/iconMenu/zsendFax.png" /></span>'.$txt.'</a>';
+		return '<a href="Send.php?type=fax&fax='.urlencode($value).$q.'" rev="async" title="Envoyer un fax à ce contact"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendFax.png" /></span>'.$txt.'</a>';
 	}
 
 
@@ -109,7 +109,7 @@ class HtmlElementIphone
 	{
 		$txt = ($displayText) ? $value : '';
 		if($value != '')
-		return '<a href="http://'.$value.'" target="_blank" title="Consulter le site internet"><span><img src="Img/iconMenu/web.png" /></span>'.$txt.'</a>';
+		return '<a href="http://'.$value.'" target="_blank" title="Consulter le site internet"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/web.png" /></span>'.$txt.'</a>';
 	}
 
 
@@ -137,7 +137,7 @@ class HtmlElementIphone
 			$q .= ( $title != '')  ?  ' ('.$title.')'	: '';
 			$q  = urlencode($q);
 			$txt= ($displayText) ? $t : '';
-			return '<a href="http://maps.google.com/maps?q='.$q.'" title="localiser cet emplacement sur GoogleMap"><span><img src="Img/iconMenu/gmap.png" /></span>'.$txt.'</a>';
+			return '<a href="http://maps.google.com/maps?q='.$q.'" title="localiser cet emplacement sur GoogleMap"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/gmap.png" /></span>'.$txt.'</a>';
 		}
 	}
 
@@ -158,9 +158,9 @@ class HtmlElementIphone
 			$q .= ( $pays != '')  ? '&cpays='.urlencode($pays) : '&cpays=fr';
 			$txt= ($displayText) ? $t : '';
 			if($fiche)
-			return '<a class="linkCont2" href="Send.php?type=courrier'.$q.'" rev="async" title="envoyer un courrier postal"><span><img src="Img/iconMenu/zsendCourrier.png" /></span>'.$txt.'</a>';
+			return '<a class="linkCont2" href="Send.php?type=courrier'.$q.'" rev="async" title="envoyer un courrier postal"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendCourrier.png" /></span>'.$txt.'</a>';
 			else
-			return '<a href="Send.php?type=courrier'.$q.'" rev="async" title="envoyer un courrier postal"><span><img src="Img/iconMenu/zsendCourrier.png" /></span>'.$txt.'</a>';
+			return '<a href="Send.php?type=courrier'.$q.'" rev="async" title="envoyer un courrier postal"><span><img src="'.getStaticUrl('imgPhone').'iconMenu/zsendCourrier.png" /></span>'.$txt.'</a>';
 		}
 	}
 

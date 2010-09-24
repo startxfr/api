@@ -65,7 +65,7 @@ $tag['action'] .= inputTag('hidden','table','','','',$table,'');
 
 if (count($res) > 0) {
     foreach ($res as $key => $dev1) {
-	$tag['link'] = linkTag('javascript:document.'.$tag['FormName'].'.submit()',imageTag('../img/valid.png','valider','middle'),'','','onclick="ChangeRefAction(\'Change'.$dev1[$structure['key']].'\')"');
+	$tag['link'] = linkTag('javascript:document.'.$tag['FormName'].'.submit()',imageTag(getStaticUrl('img').'valid.png','valider','middle'),'','','onclick="ChangeRefAction(\'Change'.$dev1[$structure['key']].'\')"');
 	$tag['nom'] = inputTag('text',$structure['titre'].$dev1[$structure['key']],'','','',$dev1[$structure['titre']],'');
 	$tag['id'] = $dev1[$structure['key']];
 

@@ -78,7 +78,7 @@ if($PC->rcvP['action'] == 'addContPopup' or $PC->rcvP['action'] == 'modifContPop
 		$js = '$(\''.$PC->rcvP['idChamp'].'\').value = \''.$PC->rcvP['civ_cont'].' '.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\';
                 $(\''.$PC->rcvP['idChamp'].'hidden\').value = \''.$sql->getLastId().'\';';
 	    $js .='zuno.popup.close();';
-	    echo '<img src="../img/ajax-loader.gif" onload="'.$js.'" alt="loader" />';
+	    echo '<img src="'.getStaticUrl('img').'ajax-loader.gif" onload="'.$js.'" alt="loader" />';
 	}
 
 	exit;
@@ -123,8 +123,8 @@ elseif($PC->rcvP['action'] == 'addEntPopup') {
     else {
 	$id = $sql->getLastId();
 	//echo '<script type="text/javascript">$(\''.$PC->rcvP['retour'].'\').value = \''.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\'; $(\''.$PC->rcvP['retour'].'hidden\').value=\''.$id.'\'; zuno.popup.close();</script>';
-	//echo $view->popupCont($PC->rcvP, 'erreurCont', '<img src="../img/ajax-loader.gif" onload="return function() { $(\''.$PC->rcvP['retour'].'\').value = \''.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\'; $(\''.$PC->rcvP['retour'].'hidden\').value=\''.$id.'\'; return zuno.popup.close(); } " alt="loader" />');
-	echo $view->popupEnt($PC->rcvP, 'erreurEnt', '<img src="../img/ajax-loader.gif" onload="zuno.popup.close(); " alt="loader" />');
+	//echo $view->popupCont($PC->rcvP, 'erreurCont', '<img src="'.getStaticUrl('img').'ajax-loader.gif" onload="return function() { $(\''.$PC->rcvP['retour'].'\').value = \''.$PC->rcvP['prenom_cont'].' '.$PC->rcvP['nom_cont'].'\'; $(\''.$PC->rcvP['retour'].'hidden\').value=\''.$id.'\'; return zuno.popup.close(); } " alt="loader" />');
+	echo $view->popupEnt($PC->rcvP, 'erreurEnt', '<img src="'.getStaticUrl('img').'ajax-loader.gif" onload="zuno.popup.close(); " alt="loader" />');
 	exit;
     }
 }

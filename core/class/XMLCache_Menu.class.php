@@ -95,10 +95,10 @@ class XMLCache_Menu {
 			$HierarchyData[$id]["page".$this->tableSuffix] = "page.php?id=".$HierarchyData[$id]["id".$this->tableSuffix];
 		    }
 		    if($HierarchyData[$id]['img_menu'.$this->tableSuffix] != '') {
-			$HierarchyData[$id]['img_menu'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_pagemenu'].$HierarchyData[$id]['img_menu'.$this->tableSuffix];
+			$HierarchyData[$id]['img_menu'.$this->tableSuffix] = getStaticUrl('img').'page.menu/'.$HierarchyData[$id]['img_menu'.$this->tableSuffix];
 		    }
 		    if($HierarchyData[$id]['img'.$this->tableSuffix] != '') {
-			$HierarchyData[$id]['img'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_page'].$HierarchyData[$id]['img'.$this->tableSuffix];
+			$HierarchyData[$id]['img'.$this->tableSuffix] = getStaticUrl('img').'page/'.$HierarchyData[$id]['img'.$this->tableSuffix];
 		    }
 		    //on traite les dates
 		    if(count($this->datable) > 0) {
@@ -127,8 +127,8 @@ class XMLCache_Menu {
 		    $out .= $newCacheContent->Process();
 		}
 	    }
-	    $out = "\n<menutree lang=\"".$this->Lang."\">\n".$out."\n</menutree>";
 	}
+	$out = "\n<menutree lang=\"".$this->Lang."\">\n".$out."\n</menutree>";
 	$this->XmlCache->flushMe();
 	$out = "<?xml version='".$GLOBALS['CACHEXML']['version']."' encoding='".$GLOBALS['CACHEXML']['encoding']."'?>".$out;
 	File_Add2File($GLOBALS['REP']['appli'].$this->fileURI,$out);//,TRUE); pour eviter les ajout recursifs dans le fichier XML
@@ -160,10 +160,10 @@ class XMLCache_Menu {
 			$HierarchyData[$id]["page".$this->tableSuffix] = "page.php?id=".$HierarchyData[$id]["id".$this->tableSuffix];
 		    }
 		    if($HierarchyData[$id]['img_menu'.$this->tableSuffix] != '') {
-			$HierarchyData[$id]['img_menu'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_pagemenu'].$HierarchyData[$id]['img_menu'.$this->tableSuffix];
+			$HierarchyData[$id]['img_menu'.$this->tableSuffix] = getStaticUrl('img').'page.menu/'.$HierarchyData[$id]['img_menu'.$this->tableSuffix];
 		    }
 		    if($HierarchyData[$id]['img'.$this->tableSuffix] != '') {
-			$HierarchyData[$id]['img'.$this->tableSuffix] = $GLOBALS['PAGE']['REP_page'].$HierarchyData[$id]['img'.$this->tableSuffix];
+			$HierarchyData[$id]['img'.$this->tableSuffix] = getStaticUrl('img').'page/'.$HierarchyData[$id]['img'.$this->tableSuffix];
 		    }
 		    //on traite les dates
 		    if(count($this->datable) > 0) {

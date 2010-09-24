@@ -39,9 +39,9 @@ foreach ($result as $key => $droit) {
     $lalegend[]	= $droit['nom_dt'];
 }
 
-include ("../plugin/jpgraph/src/jpgraph.php");
-include ("../plugin/jpgraph/src/jpgraph_pie.php");
-include ("../plugin/jpgraph/src/jpgraph_pie3d.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_pie.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_pie3d.php");
 
 //print_r($data);
 //print_r($lalegend);

@@ -121,13 +121,10 @@ class PageDisplayHeader {
     function generateCssTags() {
 	$tmp = "";
 	foreach( $this->css as $media => $css) {
-	    if ($this->channel == 'normal')
-		$proto = "";
-	    else  $proto = "../";
 	    $addMedia = ($media != 'all') ? " media=\"$media\"" : '';
 	    $tmp  .= "\n\t\t\t<style type=\"text/css\"$addMedia>";
 	    foreach ( $css as $cssFile )
-		$tmp .= "\n\t\t\t\t@import url(\"".$proto.$GLOBALS['REP']['css'].$cssFile."\");";
+		$tmp .= "\n\t\t\t\t@import url(\"".getStaticUrl('Jss').$cssFile."\");";
 	    $tmp .= "\n\t\t\t</style>";
 	}
 	$tmp .= $this->generateUserCss();
@@ -157,13 +154,10 @@ class PageDisplayHeader {
      * Process the list of JavaScript page to load and return result
      */
     function generateJsTags() {
-	if ($this->channel == 'normal')
-	    $proto = "";
-	else  $proto = "../";
 	$tmp = "";
 	foreach( $this->js as $javas ) {
 	    $tmp .= "\n\t\t\t<script language=\"JavaScript\" type=\"text/javascript\" src=\"";
-	    $tmp .= $proto.$GLOBALS['REP']['js'].$javas."\"></script>";
+	    $tmp .= getStaticUrl('Jss').$javas."\"></script>";
 	}
 	return $tmp;
     }

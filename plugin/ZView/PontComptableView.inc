@@ -66,7 +66,7 @@ class PontComptableView extends generalView {
 
 	$this->html = new ZunoRenduHtml('ficheCompletePontComptaHisto');
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/pontComptable.png','PontComptables').' PontComptable '.$datas['data']['id_pcth'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce fichier d\'export','','',true),'formPontComptableModif', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/pontComptable.png','PontComptables').' PontComptable '.$datas['data']['id_pcth'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce fichier d\'export','','',true),'formPontComptableModif', 'open');
 
 	return $this->html->generateRendu();
     }
@@ -82,7 +82,7 @@ class PontComptableView extends generalView {
 	$this->fieldset1->ligneInputObligatoire('Nom', 'nom_pcth', $datas['data']['nom_pcth'],'','ZTips.pontComptable.nom');
 	$this->fieldset1->ligneInputDateObligatoire('Début', 'config_dateDebut_pcth', DateUniv2Human($datas['data']['config_dateDebut_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateDebut');
 	$this->fieldset1->ligneInputDateObligatoire('Fin', 'config_dateFin_pcth', DateUniv2Human($datas['data']['config_dateFin_pcth'],'simpleLong'), '', '', '', 'ZTips.pontComptable.config_dateFin');
-	$this->fieldset1->ligneLinkTo('Fichier', '../facturier/PontComptable.php?action=get&id_pcth='.$datas['data']['id_pcth'], $datas['data']['fichier_pcth'], '../img/download.png');
+	$this->fieldset1->ligneLinkTo('Fichier', '../facturier/PontComptable.php?action=get&id_pcth='.$datas['data']['id_pcth'], $datas['data']['fichier_pcth'], getStaticUrl('img').'download.png');
 
 	$this->fieldset2 = new ZunoFieldset('Facture Client','','height: 150px');
 	$this->fieldset2->ligneCheckBoxObligatoire('inclure', 'config_hasFactureClient_pcth', $datas['data']['config_dateDebut_pcth'], '', 'ZTips.pontComptable.hasFactureClient');
@@ -176,13 +176,13 @@ class PontComptableView extends generalView {
 	$this->form->newBlock($this->fieldset2->generateFieldset());
 	$this->form->newBlock($this->fieldset3->generateFieldset());
 	$this->form->newInputHidden('action', 'addPontComptableHisto', 'addPontComptableID');
-	$this->form->addButton('Enregistrer le fichier', '$(\'addPontComptableID\').value = \'addPontComptableHisto\';zuno.business.formTools.sendFormAjah(\'formPontComptable\', \'facturier/PontComptable.php\',\'ficheCompletePontComptaHisto\');', '../img/prospec/record.png');
-	$this->form->addButton('Générer le fichier d\'export', '$(\'addPontComptableID\').value = \'generer\';document.formPontComptable.action = \'../facturier/PontComptable.php\';document.formPontComptable.submit();', '../img/download.png');
+	$this->form->addButton('Enregistrer le fichier', '$(\'addPontComptableID\').value = \'addPontComptableHisto\';zuno.business.formTools.sendFormAjah(\'formPontComptable\', \'facturier/PontComptable.php\',\'ficheCompletePontComptaHisto\');', getStaticUrl('img').'prospec/record.png');
+	$this->form->addButton('Générer le fichier d\'export', '$(\'addPontComptableID\').value = \'generer\';document.formPontComptable.action = \'../facturier/PontComptable.php\';document.formPontComptable.submit();', getStaticUrl('img').'download.png');
 	$pied = $this->form->generateButtons('ficheCompletePontComptaHisto', 'Annuler', '');
 
 	$this->html = new ZunoRenduHtml('ficheCompletePontComptaHisto');
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/pontComptable.png','PontComptables').' Nouveau fichier d\'export comptable', '', $this->form->generateForm(), $pied,'creationPontComptaHisto' , 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/pontComptable.png','PontComptables').' Nouveau fichier d\'export comptable', '', $this->form->generateForm(), $pied,'creationPontComptaHisto' , 'open');
 
 	return $this->html->generateRendu();
     }
@@ -216,7 +216,7 @@ class PontComptableView extends generalView {
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
 	if(!$modHistorique)
-	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormPontComptable\');"/></th>';
+	    $out .= '<th class="barre"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormPontComptable\');"/></th>';
 	$out .= '<th class="center barre">Nom</th>
 			<th class="center barre">Date</th>
 			<th class="last center">Client</th>
@@ -230,11 +230,11 @@ class PontComptableView extends generalView {
 		$link = $suffixeLink."facturier/PontComptable.php?id_pcth=".$result['id_pcth'];
 		$onclick = 'window.location=\''.$link.'\'';
 		if($result['config_hasFactureClient_pcth'] == '1')
-		    $imgFCActif = imageTag($suffixeLink.'img/valid.png','avec facture client');
-		else $imgFCActif = imageTag($suffixeLink.'img/unvalid.png','sans facture client');
+		    $imgFCActif = imageTag(getStaticUrl('img').'valid.png','avec facture client');
+		else $imgFCActif = imageTag(getStaticUrl('img').'unvalid.png','sans facture client');
 		if($result['config_hasFactureFourn_pcth'] == '1')
-		    $imgFFActif = imageTag($suffixeLink.'img/valid.png','avec facture fournisseur');
-		else $imgFFActif = imageTag($suffixeLink.'img/unvalid.png','sans facture fournisseur');
+		    $imgFFActif = imageTag(getStaticUrl('img').'valid.png','avec facture fournisseur');
+		else $imgFFActif = imageTag(getStaticUrl('img').'unvalid.png','sans facture fournisseur');
 		$out .= '<tr class="altern'.($alternance % 2).'">';
 		if(!$modHistorique)
 		    $out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$result['id_pcth'].'" checked="checked"/></td>';
@@ -281,14 +281,14 @@ class PontComptableView extends generalView {
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
-	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormPontComptable\',\'resultPontComptableAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
+	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormPontComptable\',\'resultPontComptableAction\');" class="bouton','Effectuer les changements',getStaticUrl('img').'prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div></div></div>';
 	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.getStaticUrl('img').'prospec/work-multiple.png"/> Actions groupées</a>';
 	return $bouton;
     }
 
@@ -313,7 +313,7 @@ class PontComptableView extends generalView {
 	    elseif($light == '') $light = 'result';
 	    $form = $this->searchForm($datas,$light);
 	    $rendu = new ZunoRenduHtml('recherchePontComptaHisto');
-	    $form->addButton('Créer un nouveau fichier d\'export', 'window.location = \'../facturier/PontComptable.php?action=creer\';', '../img/prospec/pontComptable.png');
+	    $form->addButton('Créer un nouveau fichier d\'export', 'window.location = \'../facturier/PontComptable.php?action=creer\';', getStaticUrl('img').'prospec/pontComptable.png');
 	    $rendu->generateZBox('Recherche', 'Recherche', $form->generateForm(), $form->generateButtons('listeResultPontComptable', 'Annuler', 'Rechercher',$popup), 'divSearchPontComptaHisto', 'open');
 	    $rendu->addBox($this->listeResult($datas,$light));
 	    $rendu->insertJS("<script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchPontComptaHisto', 'facturier/PontComptableHisto.php','listeResultPontComptable'); return false;}, false);</script>".$this->script);

@@ -96,8 +96,8 @@ $temp['select_heure_to'] = HtmlForm::addSelectHeure("heure_to",$PC->rcvP['heure_
 
 $titre = 'Recherche de log';
 $corps = templating('manage/Log', $temp);
-$pied  = '<a  href="javascript:document.SearchLog.reset()"><img align="middle" title="Effacer" alt="Effacer" name="img" src="../img/prospec/cancel.png"> Recommencer</a>
-	  <a  href="javascript:document.SearchLog.submit()"><img align="middle" title="../img/prospec/record.png" alt="../img/prospec/record.png" name="img" src="../img/prospec/record.png"> Rechercher</a>';
+$pied  = '<a  href="javascript:document.SearchLog.reset()"><img align="middle" title="Effacer" alt="Effacer" name="img" src="'.getStaticUrl('img').'prospec/cancel.png"> Recommencer</a>
+	  <a  href="javascript:document.SearchLog.submit()"><img align="middle" title="'.getStaticUrl('img').'prospec/record.png" alt="'.getStaticUrl('img').'prospec/record.png" name="img" src="'.getStaticUrl('img').'prospec/record.png"> Rechercher</a>';
 $content = generateZBox($titre, $titre, $corps, $pied,'searchLog').$content;
 
 

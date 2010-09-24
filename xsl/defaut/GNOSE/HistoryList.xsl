@@ -56,7 +56,7 @@
 	    <td class="barre right"><b><xsl:value-of select="$FileTotal"/></b><xsl:text> </xsl:text><small>fichiers</small></td>
 	    <td class="bg right" width="20"><xsl:attribute name="nowrap"/>
 		<a href="History.php?rev={@revision}" title="Détail de cet enregistrement">
-		<img src="../img/gnose/history.png" alt="Détail de cet enregistrement"/></a>
+		<img src="'.getStaticUrl('img').'gnose/history.png" alt="Détail de cet enregistrement"/></a>
 	    </td>
 	</tr>
     </xsl:template>

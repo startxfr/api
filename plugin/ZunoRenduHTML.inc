@@ -401,7 +401,7 @@ class ZunoFieldset {
 	$ob = ($obligatoire) ? ' oblig' : '';
 	$out = '<div class="row'.$ob.'" '.$attRow.'>'
 		.'<div class="label" '.$tips.' >'.$label.'</div>'
-		.'<div class="field">'.$this->inputDateTag('text', $nom, $value, $format, '', '../', $autre).'</div>'
+		.'<div class="field">'.$this->inputDateTag('text', $nom, $value, $format, '',$autre).'</div>'
 		.'</div>';
 	$this->lastLigne = $out;
 	$this->listeLignes[] = $out;
@@ -495,9 +495,9 @@ class ZunoFieldset {
 	$ob = ($obligatoire) ? ' oblig' : '';
 	$out = '<div class="row'.$ob.'" '.$attRow.'>'
 		.'<div class="label" '.$tips.' >'.$label.'</div>'
-		.'<div class="field">'.$this->inputTag('text', $nom.'aff','', '', '16',$value, ' id="AC'.$nom.'" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loading'.$nom.'" src="../img/ajax-loader.gif" alt="loader"/></div>';
+		.'<div class="field">'.$this->inputTag('text', $nom.'aff','', '', '16',$value, ' id="AC'.$nom.'" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loading'.$nom.'" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>';
 	if($plus)
-	    $out .= '<a id="AC'.$nom.'AddImg" style="display:none;" name="AC'.$nom.'AddImg" title="Créer" onclick="'.$actionPlus.'(\'AC'.$nom.'\');"><img alt="cont" title="Créer" src="../img/prospec/add.png" /></a>';
+	    $out .= '<a id="AC'.$nom.'AddImg" style="display:none;" name="AC'.$nom.'AddImg" title="Créer" onclick="'.$actionPlus.'(\'AC'.$nom.'\');"><img alt="cont" title="Créer" src="'.getStaticUrl('img').'prospec/add.png" /></a>';
 
 	$out .= '<input type="hidden" name="'.$nom.'" id="AC'.$nom.'hidden" value="'.$valueBis.'" />
 						<input type="hidden" name="'.$nom.'old" id="AC'.$nom.'old" value="'.$value.'" />
@@ -560,7 +560,7 @@ class ZunoFieldset {
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	if($plus) {
 	    $class = "icon";
-	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
+	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="'.getStaticUrl('img').'prospec/add.png" /></a>';
 	}
 	else $class = $img = "";
 	$ob = ($obligatoire) ? ' oblig' : '';
@@ -595,7 +595,7 @@ class ZunoFieldset {
 	    $tips = ' onmouseover="zuno.tooltip(this,'.$tips.');" ';
 	if($plus) {
 	    $class = "icon";
-	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
+	    $img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="'.getStaticUrl('img').'prospec/add.png" /></a>';
 	}
 	else $class = $img = "";
 	$ob = ($obligatoire) ? ' oblig' : '';
@@ -802,14 +802,14 @@ class ZunoFieldset {
      * @param string $autre Free information
      * @return string Filled html input tag
      */
-    private function inputDateTag($type, $name, $value = '', $dateFormat = '', $class = '', $imgPath = "../", $autre = "") {
+    private function inputDateTag($type, $name, $value = '', $dateFormat = '', $class = '', $autre = "") {
 	if ($name != '') {
 	    $type = (in_array($type,array('text','hidden'))) ? $type : 'text';
 	    $dateFormat = ($dateFormat != '') ? $dateFormat : '%d/%m/%Y';
 	    $button_id = substr(md5(time().rand(0,10000)),0,12);
 
 	    $chaine = '<input type="'.$type.'" name="'.$name.'" id="'.$name.'ID" class="'.$class.' icon" value="'.$value.'" readonly="readonly" '.$autre.'/>
-				<a href="#" title="Calendrier" id="'.$button_id.'"><img src="'.$imgPath.'img/calendar.png" alt="calendrier" /></a>
+				<a href="#" title="Calendrier" id="'.$button_id.'"><img src="'.getStaticUrl('img').'calendar.png" alt="calendrier" /></a>
 				<script type="text/javascript">
 					Calendar.setup({
 						inputField	:	"'.$name.'ID",
@@ -1097,10 +1097,10 @@ class ZunoForm {
 	else
 	    $popup = '';
 	if($previous)
-	    $pied .= '<a name="submit" onclick="window.history.back();" style="cursor: pointer;"><img '.$plus.' align="middle" title="Arrière" alt="Arrière" src="../img/prospec/cancel.png"/> Ecran précédent</a>';
-	$pied.= '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();" '.$close.' ><img '.$plus.' align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> '.$annuler.'</a>';
+	    $pied .= '<a name="submit" onclick="window.history.back();" style="cursor: pointer;"><img '.$plus.' align="middle" title="Arrière" alt="Arrière" src="'.getStaticUrl('img').'prospec/cancel.png"/> Ecran précédent</a>';
+	$pied.= '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();" '.$close.' ><img '.$plus.' align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> '.$annuler.'</a>';
 	if($this->droit and $valider != '')
-	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\''.$this->nom.'\', \''.$this->action.'\',\''.$retour.'\''.$popup.');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> '.$valider.'</a>';
+	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\''.$this->nom.'\', \''.$this->action.'\',\''.$retour.'\''.$popup.');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> '.$valider.'</a>';
 	$this->pied = $pied.$this->pied;
 	return $this->pied;
     }
@@ -1126,8 +1126,8 @@ class ZunoForm {
      * @return string Le code HTML du pied de formulaire
      */
     public function generateButtonsNoAjax($annuler = 'Annuler', $valider = 'Valider') {
-	$pied = '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();"  ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> '.$annuler.'</a>';
-	$pied .= '<a name="submit" href="javascript:document.'.$this->nom.'.submit();" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> '.$valider.'</a>';
+	$pied = '<a title="Reset" href="javascript:document.'.$this->nom.'.reset();"  ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> '.$annuler.'</a>';
+	$pied .= '<a name="submit" href="javascript:document.'.$this->nom.'.submit();" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> '.$valider.'</a>';
 	$this->pied = $pied.$this->pied;
 	return $this->pied;
     }
@@ -1184,7 +1184,7 @@ class ZunoTableau {
 	    else $width = ' ';
 
 	    if($orderJsFunction != '' and array_key_exists($k, $champsId))
-		$k = $generalView->tagLinkOrderSwitch($k,$champsId[$k],$order,$orderSens,$limit,$orderJsFunction,$suffixLink);
+		$k = $generalView->tagLinkOrderSwitch($k,$champsId[$k],$order,$orderSens,$limit,$orderJsFunction);
 
 	    if(is_numeric($v) && $sousTitre) {
 		$ligne = '<th '.$width.' colspan="'.$v.'">'.$k.'</th>';

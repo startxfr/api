@@ -177,7 +177,7 @@ class FactureFournisseurView extends generalView {
 
 	}
 	else {
-	    $fieldset->ligneLinkTo("Fichier joint", "FactureFournisseur.php?action=voir&id=".$datas['data']['id_factfourn'], $datas['data']['fichier_factfourn'], "../img/files/pdf.png");
+	    $fieldset->ligneLinkTo("Fichier joint", "FactureFournisseur.php?action=voir&id=".$datas['data']['id_factfourn'], $datas['data']['fichier_factfourn'], getStaticUrl('img').'files/pdf.png');
 	    $this->optionnel = "";
 	}
 	$this->form = new ZunoForm("modifFactFourn", "facturier/FactureFournisseur.php", "POST");
@@ -212,7 +212,7 @@ class FactureFournisseurView extends generalView {
 	}
 	else {
 	    $this->ficheFact = new ZunoRenduHtml("ficheFactureFournisseur");
-	    $this->ficheFact->generateZBox('<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur','<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur', $this->form->generateForm().$this->optionnel, $this->form->generateButtons().'<a name="journal" onclick="function(){$(\'idaction\').value = \'journalise\';};zuno.business.formTools.sendFormAjah(\'modifFactFourn\', \'facturier/FactureFournisseur.php\',\'idmodifFactFournformAutoRetour\');"><img alt="journal" src="../img/page.menu/JournalBanque.png"/> Inscrire dans le journal de banque</a>', 'divFicheFact', 'open', true);
+	    $this->ficheFact->generateZBox('<img src="'.getStaticUrl('img').'prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur','<img src="'.getStaticUrl('img').'prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Détail de la facture fournisseur', $this->form->generateForm().$this->optionnel, $this->form->generateButtons().'<a name="journal" onclick="function(){$(\'idaction\').value = \'journalise\';};zuno.business.formTools.sendFormAjah(\'modifFactFourn\', \'facturier/FactureFournisseur.php\',\'idmodifFactFournformAutoRetour\');"><img alt="journal" src="'.getStaticUrl('img').'page.menu/JournalBanque.png"/> Inscrire dans le journal de banque</a>', 'divFicheFact', 'open', true);
 	    $this->ficheFact->insertJS($this->script);
 
 	    return $this->ficheFact->generateRendu();
@@ -232,7 +232,7 @@ class FactureFournisseurView extends generalView {
 
 	$rendu = new ZunoRenduHtml("CreerFactureFournisseur");
 	$rendu->insertJS($this->script);
-	$rendu->generateZBox('<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Nouvelle facture fournisseur', '<img src="../img/prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Nouvelle facture fournisseur', $mess.$this->formAdd->generateForm(), $this->formAdd->generateButtonsNoAjax(), 'addFactFournBlock', 'open', true);
+	$rendu->generateZBox('<img src="'.getStaticUrl('img').'prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Nouvelle facture fournisseur', '<img src="'.getStaticUrl('img').'prospec/factureFourn.png" alt="Facture fournisseur" title="Facture fournisseur" /> Nouvelle facture fournisseur', $mess.$this->formAdd->generateForm(), $this->formAdd->generateButtonsNoAjax(), 'addFactFournBlock', 'open', true);
 	return $rendu->generateRendu();
     }
 
@@ -256,7 +256,7 @@ class FactureFournisseurView extends generalView {
 	    $rendu = new ZunoRenduHtml('rechercheFourn');
 	    $rendu->insertJS($this->script);
 	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeFactureFournResultPage",'../');
-	    $rendu->generateZBox('<img src="../img/prospec/voir.png" alt="rech" title="Critères de recherche" /> Recherche', '<img src="../img/prospec/voir.png" alt="rech" title="Critères de recherche" /> Recherche', $this->formSearch->generateForm(), $this->formSearch->generateButtons('listeResultFournisseur', 'Annuler', 'Rechercher'), 'divSerachFourn', 'open');
+	    $rendu->generateZBox('<img src="'.getStaticUrl('img').'prospec/voir.png" alt="rech" title="Critères de recherche" /> Recherche', '<img src="'.getStaticUrl('img').'prospec/voir.png" alt="rech" title="Critères de recherche" /> Recherche', $this->formSearch->generateForm(), $this->formSearch->generateButtons('listeResultFournisseur', 'Annuler', 'Rechercher'), 'divSerachFourn', 'open');
 	    $rendu->generateZBox($titreR, $titreR, $this->resultat->generateTableau(), $bouton, 'searchListeFournisseur', 'open', true,'listeResultFournisseur');
 	    $rendu->insertJS('<script> ent = 1;</script>');
 	    return $rendu->generateRendu();
@@ -297,7 +297,7 @@ class FactureFournisseurView extends generalView {
 	    $ligne[$date]='';
 	    $ligne[$v['nom_stfactfourn']] = '';
 	    if($datas['ren'][$k]['idChamp_ren'] == $v['id_factfourn'] and $datas['ren'][$k]['actif_ren'] == 1)
-		$ligne[imageTag('../img/prospec/relance.png', "Renouvellée")]="right";
+		$ligne[imageTag(getStaticUrl('img').'prospec/relance.png', "Renouvellée")]="right";
 	    else
 		$ligne["&nbsp;"] ="";
 	    $this->resultat->ligneTableau($ligne, $v['id_factfourn']);

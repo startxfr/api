@@ -13,10 +13,17 @@
 	<value id="REP_doc">download/doc/</value>
 	<value id="REP_newsletter">download/newsletter/</value>
 	<value id="REP_phototeque">img/imgbank/</value>
-	<value id="REP_page">img/page/</value>
-	<value id="REP_pagemenu">img/page.menu/</value>
 	<!-- Display a message if no translated content -->
 		<!-- is found for the requested language 	-->
 	<value id="LANG_TxtNoTrans">TRUE</value>
+    </group>
+    <group name="StaticContent" modifRight="0" title="Configuration des répertoires">
+	<value id="urlJss">http://localhost/zunodev/static/za/jss/</value>
+	<value id="UrlImg">http://localhost/zunodev/static/za/img/</value>
+	<value id="UrlImgPhone">http://localhost/zunodev/static/za/p/img/</value>
+	<value id="urlWebapp">http://localhost/zunodev/static/za/p/WebApp/</value>
+    </group>
+    <group name="MutTools" modifRight="0" title="Configuration des répertoires">
+	<value id="pathJpgraph">/var/zuno-dev/manager/dev/muTools/jpgraph/</value>
     </group>
 </configuration>

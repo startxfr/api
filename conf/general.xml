@@ -23,7 +23,6 @@
 	<value id="lib">.lib.php</value>
 	<value id="class">.class.php</value>
 	<value id="conf">.xml</value>
-	<value id="init">.ini</value>
 	<value id="cache">.cache.xml</value>
     </group>
     <group name="REP">
@@ -33,18 +32,12 @@
 	<value id="class">core/class/</value>
 	<value id="template">tpt/</value>
 	<value id="cache_template">tpt/xml/</value>
-	<value id="img">img/</value>
 	<value id="tmp">tmp/</value>
-	<value id="js">jss/</value>
-	<value id="css">jss/</value>
 	<value id="xsl">xsl/</value>
 	<value id="MimeTypeFile">/etc/mime.types</value>
     </group>
     <group name="URL">
-	<value id="Dir">/</value>
-	<value id="Domain">sxa.startx.fr</value>
 	<value id="appli">sxa.startx.fr/</value>
-	<value id="login">Login.php</value>
     </group>
     <group name="CACHEXML">
 	<value id="version">1.0</value>

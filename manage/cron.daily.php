@@ -135,7 +135,7 @@ if(date('w') != 0 and date('w') != 6) {
 				"<br />Description de la facture : `".$v['desc_factfourn']."`";
 		    }
 		    $mess .= '<br /><br />Pour consulter cette facture :
-                            <a href="https://'.$GLOBALS['URL']['appli'].$GLOBALS['URL']['login'].'?token='.$resultat[1].'" title="Zuno Facture Fournisseur" >https://'.$GLOBALS['URL']['appli'].$GLOBALS['URL']['login'].'?token='.$resultat[1].'</a>';
+                            <a href="https://'.$GLOBALS['URL']['appli'].'Login.php?token='.$resultat[1].'" title="Zuno Facture Fournisseur" >https://'.$GLOBALS['URL']['appli'].'Login.php?token='.$resultat[1].'</a>';
 		    $mail->setMessage($mess);
 		    $resMail = $mail->send();
 		    if($resMail[0])

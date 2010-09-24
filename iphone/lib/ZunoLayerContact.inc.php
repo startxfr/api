@@ -16,7 +16,7 @@ return '<!------------------------------------ -->
 		<!-- CONTACT : Menu général            -->
 		<!------------------------------------ -->
 		<div class="iLayer" id="waMenuContact" title="Contacts">
-			<a href="#_NewContact" rel="action" class="iButton iBClassic"><img src="Img/add.png" alt="Ajouter un contact" /></a>
+			<a href="#_NewContact" rel="action" class="iButton iBClassic"><img src="'.getStaticUrl('imgPhone').'add.png" alt="Ajouter un contact" /></a>
 			<a href="#" rel="back" class="iButton iBBack" onclick="return WA.Back()">Retour</a>
 			'.self::iMenuGeneral().$footer.'
 		</div>
@@ -32,11 +32,11 @@ return '<!------------------------------------ -->
 		<!-- CONTACT : Menu Recherche          -->
 		<!------------------------------------ -->
 		<div class="iLayer" id="waSearchContactEnt" title="Recherche">
-			<a href="#"  onclick="return WA.Submit(\'formSearchContactEnt\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="recherche" /></a>
+			<a href="#"  onclick="return WA.Submit(\'formSearchContactEnt\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="recherche" /></a>
 			'.self::iLayerSearchEnt().$footer.'
 		</div>
 		<div class="iLayer" id="waSearchContactPers" title="Recherche">
-			<a href="#"  onclick="return WA.Submit(\'formSearchContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="recherche" /></a>
+			<a href="#"  onclick="return WA.Submit(\'formSearchContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="recherche" /></a>
 			'.self::iLayerSearchPers().$footer.'
 		</div>
 		<!------------------------------------ -->
@@ -57,8 +57,8 @@ return '<!------------------------------------ -->
 	{
 return '<div class="iMenu">
 		<ul class="iArrow">
-			<li><a href="Contact.php?action=addEnt" rev="async" rel="action" class="Contact"><img src="Img/iconMenu/contact.Entadd.png" alt="Ajouter" />Entreprise</a></li>
-			<li><a href="Contact.php?action=addPart" rev="async" rel="action" class="Contact"><img src="Img/iconMenu/contact.Partadd.png" alt="Ajouter" />Particulier</a></li>
+			<li><a href="Contact.php?action=addEnt" rev="async" rel="action" class="Contact"><img src="'.getStaticUrl('imgPhone').'iconMenu/contact.Entadd.png" alt="Ajouter" />Entreprise</a></li>
+			<li><a href="Contact.php?action=addPart" rev="async" rel="action" class="Contact"><img src="'.getStaticUrl('imgPhone').'iconMenu/contact.Partadd.png" alt="Ajouter" />Particulier</a></li>
 		</ul>
 	</div>';
 	}
@@ -71,13 +71,13 @@ return '<div class="iMenu">
 return '<div class="iMenu">
 		<h3 class="Contact">Entreprise</h3>
 		<ul class="iArrow">
-			<li><a href="#_SearchContactEnt" class="Contact"><img src="Img/iconMenu/contact.Entsearch.png" alt="Recherche" /> Rechercher </a></li>
-			<li><a href="Contact.php?action=addEnt" rev="async" rel="action" class="Contact"><img src="Img/iconMenu/contact.Entadd.png" alt="Ajouter" /> Ajouter</a></li>
+			<li><a href="#_SearchContactEnt" class="Contact"><img src="'.getStaticUrl('imgPhone').'iconMenu/contact.Entsearch.png" alt="Recherche" /> Rechercher </a></li>
+			<li><a href="Contact.php?action=addEnt" rev="async" rel="action" class="Contact"><img src="'.getStaticUrl('imgPhone').'iconMenu/contact.Entadd.png" alt="Ajouter" /> Ajouter</a></li>
 		</ul>
 		<h3 class="Contact">Particulier</h3>
 		<ul class="iArrow">
-			<li><a href="#_SearchContactPers" class="Contact"><img src="Img/iconMenu/contact.Partsearch.png" alt="Recherche" />Rechercher</a></li>
-			<li><a href="Contact.php?action=addPart" rev="async" rel="action" class="Contact"><img src="Img/iconMenu/contact.Partadd.png" alt="Ajouter" />Ajouter</a></li>
+			<li><a href="#_SearchContactPers" class="Contact"><img src="'.getStaticUrl('imgPhone').'iconMenu/contact.Partsearch.png" alt="Recherche" />Rechercher</a></li>
+			<li><a href="Contact.php?action=addPart" rev="async" rel="action" class="Contact"><img src="'.getStaticUrl('imgPhone').'iconMenu/contact.Partadd.png" alt="Ajouter" />Ajouter</a></li>
 		</ul>
 		</div>';
 	}
@@ -95,7 +95,7 @@ return '<form id="formSearchContactEnt" action="Contact.php?action=searchEnt" on
 					<li><input type="text" name="query" placeholder="recherche" /></li>
 				</ul>
 				<br/>
-				<a href="#" onclick="return WA.Submit(\'formSearchContactEnt\',null,event)" class="whiteButton"><img src="Img/search.png" style="float: left"/><span>Lancer la recherche</span></a>
+				<a href="#" onclick="return WA.Submit(\'formSearchContactEnt\',null,event)" class="whiteButton"><img src="'.getStaticUrl('imgPhone').'search.png" style="float: left"/><span>Lancer la recherche</span></a>
 			</fieldset>
 		</div>
 	</form>';
@@ -114,7 +114,7 @@ return '<form id="formSearchContactPers" action="Contact.php?action=searchPart" 
 					<li><input type="text" name="query" placeholder="recherche" /></li>
 				</ul>
 				<br/>
-				<a href="#" onclick="return WA.Submit(\'formSearchContactPers\',null,event)" class="whiteButton"><img src="Img/search.png" style="float: left"/><span>Lancer la recherche</span></a>
+				<a href="#" onclick="return WA.Submit(\'formSearchContactPers\',null,event)" class="whiteButton"><img src="'.getStaticUrl('imgPhone').'search.png" style="float: left"/><span>Lancer la recherche</span></a>
 			</fieldset>
 		</div>
 	</form>';
@@ -127,7 +127,7 @@ return '<form id="formSearchContactPers" action="Contact.php?action=searchPart" 
 	{
 		if($_SESSION['searchContactQuery'] != '') $iTag = ' value="'.$_SESSION['searchContactQuery'].'"';
 return '<form action="Contact.php?action=inputContactResult" id="formSearchContact" onsubmit="return WA.Submit(this,null,event)"><div  class="iFormI">
-			<a href="#_SearchContactResult" rel="action" onclick="return WA.Submit(\'formSearchContact\',null,event)" class="iButton iBAction"><img src="Img/search.png" alt="Recherche" /></a>
+			<a href="#_SearchContactResult" rel="action" onclick="return WA.Submit(\'formSearchContact\',null,event)" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Recherche" /></a>
 
 			<fieldset class="attach">
 				<legend>Recherche</legend>

@@ -16,7 +16,7 @@
 //	}
 //	static function CPToolbox()
 //	{
-//		$out 	 = '<a href="#"  onclick="return WA.Submit(\'formCPToolbox\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="Rechercher" /></a>
+//		$out 	 = '<a href="#"  onclick="return WA.Submit(\'formCPToolbox\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Rechercher" /></a>
 //				<form id="formCPToolbox" action="Preference.php?action=validFormCP" onsubmit="return WA.Submit(this,null,event)">
 //				<div class="iPanel">
 //					<fieldset><ul>
@@ -42,7 +42,7 @@
 //		$list[0] = '0%';
 //		$list['0.055'] = '5.5%';
 //		$list['0.196'] = '19.6%';
-//		$out 	 = '<a href="#"  onclick="return WA.Submit(\'formTVAToolbox\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="Rechercher" /></a>
+//		$out 	 = '<a href="#"  onclick="return WA.Submit(\'formTVAToolbox\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Rechercher" /></a>
 //				<form id="formTVAToolbox" action="Preference.php?action=validFormTVA" onsubmit="return WA.Submit(this,null,event)">
 //				<div class="iPanel">
 //					<fieldset><ul>

@@ -24,8 +24,8 @@ ini_set('display_errors','off');
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
-include "plugin/jpgraph/src/jpgraph.php";
-include "plugin/jpgraph/src/jpgraph_canvas.php";
+include (getMutoolsPath('jpgraph')."src/jpgraph.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_canvas.php");
 
 $tab[0] = "#eeeeee";
 $tab[1] = "#dddddd";

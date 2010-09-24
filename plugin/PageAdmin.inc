@@ -287,7 +287,7 @@ class PageAdminPortlet {
 	    foreach ($listesupported as $val) {
 		if ($val != $GLOBALS['LANGUE']["default"]) {
 		    $out2Lang.= linkTag("#\" onclick=\"return zuno.popup.open('../manage/PageModif4Lang.php','language=".$val."&amp;id=".$this->selectID."','750','600','','','','PageModif');",
-			    imageTag("../".$GLOBALS['REP']['img']."lang/".$val.".png",$val))." - ";
+			    imageTag(getStaticUrl('img')."lang/".$val.".png",$val))." - ";
 		}
 	    }
 	    $out2Lang   = substr($out2Lang, 0, -2);

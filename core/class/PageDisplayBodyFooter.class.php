@@ -25,7 +25,7 @@ class PageDisplayBodyFooter {
     function Process($content) {
 	loadPlugin('docGenerator');
 	docGeneratorAddZunoConfInfoBeforeTemplating($content);
-	$content = array_merge($GLOBALS['PROJET'],$GLOBALS['zunoWebService'],$content);
+	$content = array_merge($GLOBALS['PROJET'],$GLOBALS['zunoWebService'],$content,array('imgPath'=>getStaticUrl('img')));
 	return templating($this->Template,$content);
     }
 

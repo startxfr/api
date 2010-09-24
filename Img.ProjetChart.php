@@ -24,9 +24,9 @@ ini_set('display_errors','off');
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
-include ("plugin/jpgraph/src/jpgraph.php");
-include ("plugin/jpgraph/src/jpgraph_pie.php");
-include ("plugin/jpgraph/src/jpgraph_pie3d.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_pie.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_pie3d.php");
 
 
 $req = "SELECT A1.id_typro id,A1.nom_typro ref_typeproj, COUNT(A2.id_proj) projet

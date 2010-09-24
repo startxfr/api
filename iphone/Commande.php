@@ -757,7 +757,7 @@ elseif (($PC->rcvG['action'] == 'doVoir') or
 	$dir = $GLOBALS['REP']['appli'] . $GLOBALS['REP']['tmp'];
 	if ($Doc != '' and file_exists($dir . $Doc)) {
 	    $fileSize = FileConvertSize2Human(filesize($dir . $Doc));
-	    $fileIcon = FileOutputType($Doc, 'image', '../');
+	    $fileIcon = FileOutputType($Doc, 'image');
 	    $fileAdd = '<fieldset>
 						<ul><li><a target="_blank" href="File.php?type=view&amp;file=' . $GLOBALS['REP']['tmp'] . $Doc . '">' . $fileIcon . $Doc . ' (' . $fileSize . ')</a></li></ul>
 					</fieldset>';

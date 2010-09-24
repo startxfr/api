@@ -9,20 +9,20 @@ class contactView extends generalView {
     protected function interneInfos($datas, $statut = 'open1',$control = null, $message = '') {
 	if(array_key_exists('data', $datas)) {
 	    $data = $datas['data'];
-	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
-	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
-	    $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="../img/prospec/rss.png"/> Consulter le fil RSS</a>';
-	    $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	    $pied1 .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
+	    $titre = '<img src="'.getStaticUrl('img').'prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Modifier cette entreprise</a>';
+	    $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="'.getStaticUrl('img').'prospec/rss.png"/> Consulter le fil RSS</a>';
+	    $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	    $pied1 .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Modifier cette entreprise</a>';
 	}
 	else {
 	    $datas['data'] = array();
-	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
-	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	    $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
-	    $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	    $pied1 .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
+	    $titre = '<img src="'.getStaticUrl('img').'prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Créer</a>';
+	    $pied1 = '<a title="Reset" href="javascript:document.BigInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	    $pied1 .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'BigInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Créer</a>';
 	}
 
 	if($control != null and is_array($control) and $control[0] == false)
@@ -50,21 +50,21 @@ class contactView extends generalView {
     protected function interneInfosSimple($datas, $statut = 'close',$control = null, $popup = false, $message = '') {
 	if(array_key_exists('data', $datas)) {
 	    $data = $datas['data'];
-	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
-	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
+	    $titre = '<img src="'.getStaticUrl('img').'prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Informations sur l\'entreprise '.$data['nom_ent'];
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
 	    if($popup) {
-		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'entrepriseFiche\', \'popup2\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
-		$pied .= '<a name="fiche" href="../prospec/fiche.php?id_ent='.$data['id_ent'].'"><img align="middle" title="Fiche" alt="ficher" src="../img/prospec/entreprise.png"/> Voir la fiche</a>';
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'entrepriseFiche\', \'popup2\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Modifier cette entreprise</a>';
+		$pied .= '<a name="fiche" href="../prospec/fiche.php?id_ent='.$data['id_ent'].'"><img align="middle" title="Fiche" alt="ficher" src="'.getStaticUrl('img').'prospec/entreprise.png"/> Voir la fiche</a>';
 	    }
 	    else
-		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier cette entreprise</a>';
-	    $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="../img/prospec/rss.png"/> Consulter le fil RSS</a>';
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Modifier cette entreprise</a>';
+	    $pied .= '<a title="fil RSS" href="../rss.php?type=client&token='.$data['tokenRss'].'" style="cursor: pointer;"><img align="middle" title="fil RSS" alt="fil RSS" src="'.getStaticUrl('img').'prospec/rss.png"/> Consulter le fil RSS</a>';
 	}
 	else {
 	    $datas['data'] = array();
-	    $titre = '<img src="../img/prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
-	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	    $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
+	    $titre = '<img src="'.getStaticUrl('img').'prospec/entreprise.png" alt="entreprise" title="Entreprise" /> Nouvelle entreprise';
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="changeToDo(\'creerEnt\');zuno.business.formTools.sendFormAjah(\'LightInfos\', \'prospec/fiche.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Créer</a>';
 	}
 
 	if($control != null and is_array($control) and $control[0] == false)
@@ -240,8 +240,8 @@ class contactView extends generalView {
 	    $corps = '<div id="ContenuContactsEntreprise" >'.$this->interneContacts($datas).'</div>';
 	else
 	    $corps = '<div id="ContenuContactsEntreprise" ><span class="important" style="text-align:center;">Aucun contact pour cette entreprise</span></div>';
-	$titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Contacts de l\'entreprise '.$datas['data']['nom_ent'];
-	$pied = '<a name="addcont" onclick="addContact(\'\');" ><img alt="add" title="Ajouter un contact" src="../img/prospec/add.png" /> Ajouter un contact </a>';
+	$titre = '<img src="'.getStaticUrl('img').'prospec/result.png" alt="liste" title="Liste" /> Contacts de l\'entreprise '.$datas['data']['nom_ent'];
+	$pied = '<a name="addcont" onclick="addContact(\'\');" ><img alt="add" title="Ajouter un contact" src="'.getStaticUrl('img').'prospec/add.png" /> Ajouter un contact </a>';
 	return generateZBox($titre,$titre,$corps,$pied,'contactsEntreprise','');
 
     }
@@ -275,10 +275,10 @@ class contactView extends generalView {
 		$out .= '<td nowrap="nowrap" class="center" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['mail_cont'].'</a></td>';
 		$out .= '<td nowrap="nowrap" class="barre" ><a href="Contact.php?id_cont='.$v['id_cont'].'">'.$v['comm_cont'].'</a></td>';
 		$out .= '<td nowrap="nowrap" class="center">';
-		$out .= '<a name="appel" title="Nouvel appel à ce contact" onclick="appelContact(\''.$v['id_cont'].'\')"><img alt="appel" title="Enregistrer un nouvel appel" src="../img/prospec/appel.png" /></a>';
-		$out .= '<a name="modif" title="Modifier le contact" onclick="modifContact(\''.$v['id_cont'].'\')"><img alt="modif" title="Modifier le Contact" src="../img/prospec/contact.modif.png" /></a>';
-		$out .= '<a name="move" title="Déplacer ce contact" onclick="moveContact(\''.$v['id_cont'].'\')"><img alt="deplacer" title="Déplacer ce contact" src="../img/prospec/contact.move.png" /></a>';
-		$out .= '<a name="supp" title="Supprimer ce contact" onclick="suppContact(\''.$v['id_cont'].'\')"><img alt="supprimer" title="Supprimer ce contact" src="../img/prospec/contact.delete.png" /></a>';
+		$out .= '<a name="appel" title="Nouvel appel à ce contact" onclick="appelContact(\''.$v['id_cont'].'\')"><img alt="appel" title="Enregistrer un nouvel appel" src="'.getStaticUrl('img').'prospec/appel.png" /></a>';
+		$out .= '<a name="modif" title="Modifier le contact" onclick="modifContact(\''.$v['id_cont'].'\')"><img alt="modif" title="Modifier le Contact" src="'.getStaticUrl('img').'prospec/contact.modif.png" /></a>';
+		$out .= '<a name="move" title="Déplacer ce contact" onclick="moveContact(\''.$v['id_cont'].'\')"><img alt="deplacer" title="Déplacer ce contact" src="'.getStaticUrl('img').'prospec/contact.move.png" /></a>';
+		$out .= '<a name="supp" title="Supprimer ce contact" onclick="suppContact(\''.$v['id_cont'].'\')"><img alt="supprimer" title="Supprimer ce contact" src="'.getStaticUrl('img').'prospec/contact.delete.png" /></a>';
 		$out .= '</td>';
 		$out .= '</tr>';
 		$compteur++;
@@ -292,8 +292,8 @@ class contactView extends generalView {
 	    $corps = '<div id="ContenuProjetsEntreprise" >'.$this->interneProjets($datas).'</div>';
 	else
 	    $corps = '<div id="ContenuProjetsEntreprise" ><span class="important" style="text-align:center;">Aucun projet pour cette entreprise</span></div>';
-	$titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Projets de l\'entreprise '.$datas['data']['nom_ent'];
-	$pied = '<a name="bouttonAddproj" onclick="addProjetE(\'\');" ><img alt="add" title="Ajouter un projet" src="../img/prospec/add.png" /> Ajouter un projet </a>';
+	$titre = '<img src="'.getStaticUrl('img').'prospec/result.png" alt="liste" title="Liste" /> Projets de l\'entreprise '.$datas['data']['nom_ent'];
+	$pied = '<a name="bouttonAddproj" onclick="addProjetE(\'\');" ><img alt="add" title="Ajouter un projet" src="'.getStaticUrl('img').'prospec/add.png" /> Ajouter un projet </a>';
 	return generateZBox($titre,$titre,$corps,$pied,'projetEntreprise','');
     }
 
@@ -322,7 +322,7 @@ class contactView extends generalView {
 				<td class="barre nowrap">'.$v['nom_typro'].'</td>
 				<td class="barre nowrap">'.$v['detect_proj'].'</td>
 				<td class="barre nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
-				<td class="right nowrap"><a name="modifProj"'.$jsurl.'><img alt="modif" title="Modifier ce projet" src="../img/prospec/projet.modif.png" /></a><a name="suppProj" onclick="suppProj(\''.$v['id_proj'].'\');"><img alt="supp" title="Supprimer ce projet" src="../img/prospec/projet.delete.png" /></a></td>
+				<td class="right nowrap"><a name="modifProj"'.$jsurl.'><img alt="modif" title="Modifier ce projet" src="'.getStaticUrl('img').'prospec/projet.modif.png" /></a><a name="suppProj" onclick="suppProj(\''.$v['id_proj'].'\');"><img alt="supp" title="Supprimer ce projet" src="'.getStaticUrl('img').'prospec/projet.delete.png" /></a></td>
 			</tr>';
 		$compteur++;
 	    }
@@ -339,7 +339,7 @@ class contactView extends generalView {
 				<td class="barre nowrap" style="color:#'.$v['color_staff'].'"><div class="square" style="background-color:#'.$v['color_staff'].';">&nbsp;</div> '.$v['nom_staff'].'</td>
 				<td class="barre nowrap">'.$v['detect_aff'].'</td>
 				<td class="barre nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
-				<td class="right nowrap"><a href="'.$url.'"><img alt="affaire" title="Voir l\'affaire" src="../img/prospec/affaire.png"</a></td>
+				<td class="right nowrap"><a href="'.$url.'"><img alt="affaire" title="Voir l\'affaire" src="'.getStaticUrl('img').'prospec/affaire.png"</a></td>
 			</tr>';
 		$compteur++;
 	    }
@@ -354,8 +354,8 @@ class contactView extends generalView {
 	    $corps = '<div id="ContenuAppelsEntreprise" >'.$this->interneAppels($datas).'</div>';
 	else
 	    $corps = '<div id="ContenuAppelsEntreprise" ><span class="important" style="text-align:center;">Aucun appel passé à cette entreprise</span></div>';
-	$titre = '<img src="../img/prospec/result.png" alt="liste" title="Liste" /> Appels passés à l\'entreprise '.$datas['data']['nom_ent'];
-	$pied = '<a name="addapp" onclick="addAppel(\'\');" ><img alt="add" title="Ajouter un appel" src="../img/prospec/add.png" /> Ajouter un appel </a>';
+	$titre = '<img src="'.getStaticUrl('img').'prospec/result.png" alt="liste" title="Liste" /> Appels passés à l\'entreprise '.$datas['data']['nom_ent'];
+	$pied = '<a name="addapp" onclick="addAppel(\'\');" ><img alt="add" title="Ajouter un appel" src="'.getStaticUrl('img').'prospec/add.png" /> Ajouter un appel </a>';
 	return generateZBox($titre,$titre,$corps,$pied,'appelsEntreprise','');
     }
 
@@ -382,8 +382,8 @@ class contactView extends generalView {
 				<td class="barre" nowrap="nowrap">'.$v['civ_cont'].' '.$v['prenom_cont'].' '.$v['nom_cont'].'</td>
 				<td class="barre">'.$v['comm_app'].'</td>
 				<td class="center" nowrap="nowrap">
-				<a name="modifApp" title="Modifier" onclick="modifAppel(\''.$v['id_app'].'\');"><img alt="modif" title="Modifier l\'appel" src="../img/prospec/appel.modif.png" /></a>
-				<a name="suppApp" title="Supprimer" onclick="suppAppel(\''.$v['id_app'].'\');"><img alt="supp" title="Supprimer l\'appel" src="../img/prospec/appel.delete.png" /></a>
+				<a name="modifApp" title="Modifier" onclick="modifAppel(\''.$v['id_app'].'\');"><img alt="modif" title="Modifier l\'appel" src="'.getStaticUrl('img').'prospec/appel.modif.png" /></a>
+				<a name="suppApp" title="Supprimer" onclick="suppAppel(\''.$v['id_app'].'\');"><img alt="supp" title="Supprimer l\'appel" src="'.getStaticUrl('img').'prospec/appel.delete.png" /></a>
 				</td>
 			</tr>';
 		$compteur++;
@@ -395,16 +395,16 @@ class contactView extends generalView {
 
     protected function contactsInfos($datas) {
 	if(is_array($datas['data'])) {
-	    $titre = '<img src="../img/prospec/contact.png" alt="contact" title="Contact" /> Informations sur le contact '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'];
-	    $pied = '<a title="Reset" href="javascript:document.infosContact.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Modifier ce contact</a>';
-	    $pied .= '<a name="Vcard" href="vcard.php?id_cont='.$datas['data']['id_cont'].'"><img alt="export" src="../img/prospec/contact.png"/> Exporter en VCard</a>';
+	    $titre = '<img src="'.getStaticUrl('img').'prospec/contact.png" alt="contact" title="Contact" /> Informations sur le contact '.$datas['data']['prenom_cont'].' '.$datas['data']['nom_cont'];
+	    $pied = '<a title="Reset" href="javascript:document.infosContact.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'interneInfos\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Modifier ce contact</a>';
+	    $pied .= '<a name="Vcard" href="vcard.php?id_cont='.$datas['data']['id_cont'].'"><img alt="export" src="'.getStaticUrl('img').'prospec/contact.png"/> Exporter en VCard</a>';
 	}
 	else {
 	    $datas['data'] = array();
-	    $titre = '<img src="../img/prospec/contact.png" alt="contact" title="Contact" /> Nouveau contact';
-	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Recommencer</a>';
-	    $pied .= '<a name="submit" onclick="changeToDo(\'creerCont\');zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Créer</a>';
+	    $titre = '<img src="'.getStaticUrl('img').'prospec/contact.png" alt="contact" title="Contact" /> Nouveau contact';
+	    $pied = '<a title="Reset" href="javascript:document.LightInfos.reset();" ><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Recommencer</a>';
+	    $pied .= '<a name="submit" onclick="changeToDo(\'creerCont\');zuno.business.formTools.sendFormAjah(\'infosContact\', \'prospec/Contact.php\',\'ficheComplete\');" style="cursor: pointer;"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Créer</a>';
 	}
 	$corps = '<form name="infosContact" action="#" method="post">';
 	$corps .= '<input type="hidden" id="toDO" name="action" value="modifCont" />';
@@ -417,7 +417,7 @@ class contactView extends generalView {
 
     protected function interneInfosContact($datas) {
 	$data = $datas['data'];
-	$mail = ($data['mail_cont'] != '') ? '<img alt="mail" title="Envoyer un mail" src="../img/prospec/SendMail.png" onclick="zuno.popup.open(\'PopupSendMail.php\',\'id_cont='.$data['id_cont'].'\',480,500);" />' : '';
+	$mail = ($data['mail_cont'] != '') ? '<img alt="mail" title="Envoyer un mail" src="'.getStaticUrl('img').'prospec/SendMail.png" onclick="zuno.popup.open(\'PopupSendMail.php\',\'id_cont='.$data['id_cont'].'\',480,500);" />' : '';
 	$ifcl = ($data['mail_cont'] != '') ? 'icon' : '';
 	$out .= '<div class="block width33">
 		<fieldset class="form" style="height:120px">
@@ -528,11 +528,11 @@ class contactView extends generalView {
 	    $corps = '<div id="popupAddCont" >';
 	    $corps .= $this->formPopupCont($data, $action);
 	    $corps .= '</div>';
-	    $pied = '<a href="javascript:document.addContDevis.reset();" onclick="zuno.popup.close();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
+	    $pied = '<a href="javascript:document.addContDevis.reset();" onclick="zuno.popup.close();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="'.getStaticUrl('img').'prospec/cancel.png"/>Annuler</a>';
 	    if($data['from'] == 'contactEntreprise')
-		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="'.getStaticUrl('img').'prospec/record.png"/>Enregistrer</a>';
 	    else
-		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'popupAddCont\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+		$pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addContDevis\', \'prospec/Contact.php\',\'popupAddCont\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="'.getStaticUrl('img').'prospec/record.png"/>Enregistrer</a>';
 	    return generateZBox($titre, $titre, $corps, $pied, 'popupAddContDevis');
 	}
     }
@@ -597,8 +597,8 @@ class contactView extends generalView {
 	    $corps = '<div id="popupAddEnt" >';
 	    $corps .= $this->formPopupEnt($data);
 	    $corps .= '</div>';
-	    $pied = '<a href="javascript:document.addEntDevis.reset();" onclick="zuno.popup.close();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="../img/prospec/cancel.png"/>Annuler</a>';
-	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addEntDevis\', \'prospec/Contact.php\',\'popupAddEnt\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="../img/prospec/record.png"/>Enregistrer</a>';
+	    $pied = '<a href="javascript:document.addEntDevis.reset();" onclick="zuno.popup.close();" ><img align="middle" title="Annuler" alt="cancel.png" name="img" src="'.getStaticUrl('img').'prospec/cancel.png"/>Annuler</a>';
+	    $pied .= '<a name="submit" onclick="zuno.business.formTools.sendFormAjah(\'addEntDevis\', \'prospec/Contact.php\',\'popupAddEnt\', \'popup\');"><img align="middle" title="Enregistrer" alt="record.png" name="img" src="'.getStaticUrl('img').'prospec/record.png"/>Enregistrer</a>';
 	    return generateZBox($titre, $titre, $corps, $pied, 'popupAddEntDevis');
 	}
     }
@@ -691,12 +691,12 @@ class contactView extends generalView {
 		    <input type="hidden" name="exportType" value="" id="resultContactExportType" />
 		    <table cellspacing="0"><tbody>';
 	    $out .= '<tr class="titre">';
-	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
-	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th>'.$this->$linkOrderFunction('Type','nom_tyent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th>'.$this->$linkOrderFunction('Site&nbsp;web','www_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th class="barre"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
+	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Type','nom_tyent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Site&nbsp;web','www_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
 	    $out .= '</tr>';
 
 
@@ -709,7 +709,7 @@ class contactView extends generalView {
 		if (strlen($result['nom_ent']) > 25)
 		    $result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
 		if ($result['type_ent'] != '')
-		    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
+		    $result['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
 		$result['contact'] = $result['nom_ent'];
 
 		$out .= '<tr class="altern'.$alternance.'">';
@@ -729,11 +729,11 @@ class contactView extends generalView {
 		$titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
 	    else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
 
-	    $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage",$suffixeLink);
+	    $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage");
 	    loadPlugin(array('OOConverter'));
 	    $availableConvFormat = OOConverterAvailable('spreadsheet');
 	    $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="contactDoExportTableur(this.value);" ').'</div>';
-	    $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
+	    $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
 	    $bouton .= $this->ResultGroupActionBouton($suffixeLink);
 	    return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
 
@@ -760,13 +760,13 @@ class contactView extends generalView {
 		    <input type="hidden" name="exportType" value="" id="resultContactExportType" />
 		    <table cellspacing="0"><tbody>';
 	    $out .= '<tr class="titre">';
-	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
-	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
-	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
-	    $out .= '<th>'.$this->$linkOrderFunction('e-mail','mail_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage',$suffixeLink).'</th>';
+	    $out .= '<th class="barre"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
+	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th class="barre"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormContact\');"/></th>';
+	    $out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Ville','ville_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('Tel','tel_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
+	    $out .= '<th>'.$this->$linkOrderFunction('e-mail','mail_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeContactResultPage').'</th>';
 	    $out .= '</tr>';
 	    $alternance =  0;
 	    foreach($datas['data'] as $result) {
@@ -779,7 +779,7 @@ class contactView extends generalView {
 		    if (strlen($result['nom_ent']) > 25)
 			$result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
 		    if ($result['type_ent'] != '')
-			$result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
+			$result['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
 		    $result['contact'] = $result['nom_ent'];
 		    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
 		    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
@@ -787,7 +787,7 @@ class contactView extends generalView {
 		}
 		else {
 		    $result['nom_ent'] = '<i>Particulier</i>';
-		    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
+		    $result['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
 		    $result['contact'] = $result['nom_ent'];
 		    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
 		    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
@@ -813,11 +813,11 @@ class contactView extends generalView {
 		$titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contactHisto');
 	    else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'contact');
 
-	    $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage",$suffixeLink);
+	    $bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeContactResultPage");
 	    loadPlugin(array('OOConverter'));
 	    $availableConvFormat = OOConverterAvailable('spreadsheet');
 	    $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="contactDoExportTableur(this.value);" ').'</div>';
-	    $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
+	    $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
 	    $bouton .= $this->ResultGroupActionBouton($suffixeLink);
 	    return generateZBox($titre,$titre,$out,$bouton,"searchListeContact",'');
 	}
@@ -862,14 +862,14 @@ class contactView extends generalView {
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
-	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormContact\',\'resultContactAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
+	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormContact\',\'resultContactAction\');" class="bouton','Effectuer les changements',getStaticUrl('img').'prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div></div></div>';
 	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.getStaticUrl('img').'prospec/work-multiple.png"/> Actions groupées</a>';
 	return $bouton;
     }
 
@@ -907,7 +907,7 @@ class contactView extends generalView {
 		    if (strlen($result['nom_ent']) > 25)
 			$result['nom_ent'] = substr($result['nom_ent'],0,25)."...";
 		    if ($result['type_ent'] != '')
-			$result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
+			$result['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$result['type_ent'].'.png',$result['nom_tyent']).' '.$result['nom_ent'];
 		    $result['contact'] = $result['nom_ent'];
 		    if($result['ville_cont'] == '') $result['ville_cont'] = $result['ville_ent'];
 		    if($result['tel_cont'] == '')   $result['tel_cont']   = $result['tel_ent'];
@@ -915,7 +915,7 @@ class contactView extends generalView {
 		}
 		else {
 		    $result['nom_ent'] = '<i>Particulier</i>';
-		    $result['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
+		    $result['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$result['nom_ent'];
 		    $result['contact'] = $result['nom_ent'];
 		}
 		$out .= '<tr class="altern'.$alternance.'">';
@@ -973,7 +973,7 @@ class contactView extends generalView {
 			</script>";
 	    $form = $this->searchForm($datas);
 	    $rendu = new ZunoRenduHtml('rechercheProspec');
-	    $titreF = imageTag('../img/prospec/contact.png','recherche').' Recherche de contacts';
+	    $titreF = imageTag(getStaticUrl('img').'prospec/contact.png','recherche').' Recherche de contacts';
 	    $rendu->generateZBox($titreF,$titreF, $form->generateForm(), $form->generateButtons('listeResultProspec', 'Annuler', 'Rechercher'), 'divSearchProspec', 'open');
 	    $rendu->addBox($this->listeResult($datas, $tableau));
 	    $rendu->insertJS($script);
@@ -1108,9 +1108,9 @@ class contactView extends generalView {
 		    </fieldset>
 	    </div>
 	    </form>' ;
-	$titre = imageTag('../img/prospec/voir.png','recherche').' Recherche des relances';
-	$pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
-			   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/voir.png','','middle').' Rechercher</a>';
+	$titre = imageTag(getStaticUrl('img').'prospec/voir.png','recherche').' Recherche des relances';
+	$pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>
+			   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/voir.png','','middle').' Rechercher</a>';
 	return generateZBox($titre,$titre,$corps,$pied,'relanceSearch','none');
     }
 
@@ -1175,7 +1175,7 @@ class contactView extends generalView {
 	if (count($res) > 0) {
 	    $j=0;
 	    foreach ($res as $key => $relance) {
-		$relance['pictoType'] = imageTag('../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$relance['type_ent'].'.png',$relance['nom_tyent']);
+		$relance['pictoType'] = imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$relance['type_ent'].'.png',$relance['nom_tyent']);
 		$relance['rappel_app'] = DateUniv2Human($relance['rappel_app'], 'simpleLong');
 		$relance['altern'] = ($j % 2);
 		$tmptab .= templating('prospec/listeRelance.row',$relance);
@@ -1190,7 +1190,7 @@ class contactView extends generalView {
 	    $result = 'none';
 	}
 
-	$titre = imageTag('../img/prospec/relance.png','resultat').' '.$j.' contacts &agrave; relancer';
+	$titre = imageTag(getStaticUrl('img').'prospec/relance.png','resultat').' '.$j.' contacts &agrave; relancer';
 	return generateZBox($titre,$titre,$corps,'','relance'.$opt,$result);
     }
 
@@ -1312,36 +1312,36 @@ class contactEntrepriseView extends contactView {
     }
 
     public function confirmSupp($data) {
-	$titre = '<img alt="supp" title="Supprimer Contact" src="../img/prospec/contact.delete.png" /> Supprimer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+	$titre = '<img alt="supp" title="Supprimer Contact" src="'.getStaticUrl('img').'prospec/contact.delete.png" /> Supprimer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
 	$corps = '<h4>Confirmez vous la suppression définitive de ce contact ?</h4>';
 	$corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppCont" /><input type="hidden" name="id_cont" value="'.$data['id_cont'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
-	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer le contact" src="../img/prospec/confirm.png" /> Valider</a>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer le contact" src="'.getStaticUrl('img').'prospec/confirm.png" /> Valider</a>';
 	return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
     }
     public function confirmSuppAppel($data) {
-	$titre = '<img alt="supp" title="Supprimer Appel" src="../img/prospec/appel.delete.png" /> Supprimer l\'appel ';
+	$titre = '<img alt="supp" title="Supprimer Appel" src="'.getStaticUrl('img').'prospec/appel.delete.png" /> Supprimer l\'appel ';
 	$corps = '<h4>Confirmez vous la suppression définitive de cet appel ?</h4>';
 	$corps .= '<br />Contact : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'<br />';
 	$corps .= 'Date de l\'appel : '.strftime('%A %d %B %Y', strtotime($data['appel_app']));
 	$corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppApp" /><input type="hidden" name="id_app" value="'.$data['id_app'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
-	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuAppelsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer appel" src="../img/prospec/confirm.png" /> Valider</a>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuAppelsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer appel" src="'.getStaticUrl('img').'prospec/confirm.png" /> Valider</a>';
 	return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
     }
     public function confirmSuppProjet($data) {
-	$titre = '<img alt="supp" title="Supprimer Projet" src="../img/prospec/projet.delete.png" /> Supprimer le projet ';
+	$titre = '<img alt="supp" title="Supprimer Projet" src="'.getStaticUrl('img').'prospec/projet.delete.png" /> Supprimer le projet ';
 	$corps = '<h4>Confirmez vous la suppression définitive de ce projet ?</h4>';
 	$corps .= '<br />Contact : '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'].'<br />';
 	$corps .= 'Date du projet : '.strftime('%A %d %B %Y', strtotime($data['detect_proj']));
 	$corps .= '<form name="supp" action="fiche.php"><input type="hidden" name="action" value="suppProj" /><input type="hidden" name="id_proj" value="'.$data['id_proj'].'" /><input type="hidden" name="entreprise_cont" value="'.$data['entreprise_cont'].'" /></form>';
-	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer projet" src="../img/prospec/confirm.png" /> Valider</a>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'supp\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Supprimer projet" src="'.getStaticUrl('img').'prospec/confirm.png" /> Valider</a>';
 	return generateZBox($titre,$titre,$corps,$pied,'popupSupp','');
     }
 
     public function moveContact($data) {
-	$titre = '<img alt="move" title="Déplacer Contact" src="../img/prospec/contact.move.png" onload="autoComplete();" /> Déplacer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+	$titre = '<img alt="move" title="Déplacer Contact" src="'.getStaticUrl('img').'prospec/contact.move.png" onload="autoComplete();" /> Déplacer le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
 	$corps = '<form name="move" action="fiche.php">';
 	$corps .= '<input type="hidden" name="action" value="moveCont" />';
 	$corps .= '<input type="hidden" name="entrepriseC" value="'.$data['entreprise_cont'].'" />';
@@ -1350,13 +1350,13 @@ class contactEntrepriseView extends contactView {
 	$corps .= '<fieldset class="form">';
 	$corps .= '<div class="row oblig">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contactEnt.ajaxField);">Entreprise</div>
-					<div class="field">'.inputTag('text', 'entreprise','icon', '', '16',$data['nom_ent'], ' id="ACentreprise_cont" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont" src="../img/ajax-loader.gif" alt="loader"/></div>
+					<div class="field">'.inputTag('text', 'entreprise','icon', '', '16',$data['nom_ent'], ' id="ACentreprise_cont" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="entreprise_cont" id="ACentreprise_conthidden" value="'.$data['entreprise_cont'].'" /><input type="hidden" name="contold" id="ACentreprise_contold" value="'.$data['entreprise_cont'].'" />
 					<div id="ACentreprise_cont_choix" class="autocomplete"></div>
 				</div>';
 	$corps .= '</fieldset></div></form>';
-	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'move\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Déplacer le contact" src="../img/prospec/confirm.png" /> Valider</a>';
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'move\', \'prospec/fiche.php\',\'ContenuContactsEntreprise\', \'popup2\');"><img alt="valider" title="Déplacer le contact" src="'.getStaticUrl('img').'prospec/confirm.png" /> Valider</a>';
 	return generateZBox($titre,$titre,$corps,$pied,'popupMove','');
 
     }
@@ -1381,16 +1381,16 @@ class contactEntrepriseView extends contactView {
 	    $data['cont'] = true;
 	}
 
-	$titre = '<img alt="move" title="Appeler Contact" src="../img/prospec/appel.png" '.$onload.' /> Appeler le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
-	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'appel\', \'prospec/fiche.php\',\'ficheInterne\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	$titre = '<img alt="move" title="Appeler Contact" src="'.getStaticUrl('img').'prospec/appel.png" '.$onload.' /> Appeler le contact '.$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'];
+	$pied = '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'appel\', \'prospec/fiche.php\',\'ficheInterne\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="'.getStaticUrl('img').'prospec/confirm.png" /> Enregistrer</a>';
 	$corps = '<div id="formAppel">';
 	$corps .= '<div id="titrePopupAppel1" style="display:none;">'.$titre.'</div>';
-	$corps .= '<div id="titrePopupAppel2" style="display:none;"><img alt="projet" title="Nouveau Projet" src="../img/prospec/projet.png" /> Nouveau projet pour le nouvel appel</div>';
+	$corps .= '<div id="titrePopupAppel2" style="display:none;"><img alt="projet" title="Nouveau Projet" src="'.getStaticUrl('img').'prospec/projet.png" /> Nouveau projet pour le nouvel appel</div>';
 	$corps .= '<div id="piedPopupAppel1" style="display:none;">'.$pied.'</div>';
 	$corps .= '<div id="piedPopupAppel2" style="display:none;">';
-	$corps .= '<a name="annuler" onclick="retourFormAppel();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$corps .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel();"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	$corps .= '<a name="annuler" onclick="retourFormAppel();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$corps .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel();"><img alt="valider" title="Enregistrer l\'appel" src="'.getStaticUrl('img').'prospec/confirm.png" /> Enregistrer</a>';
 	$corps .= '</div>';
 	$corps .= '<form name="appel" method="POST" action="fiche.php">';
 	$corps .= '<input type="hidden" name="contact_app" value="'.$data['id_cont'].'" id="ACcontact_apphidden"/>';
@@ -1413,7 +1413,7 @@ class contactEntrepriseView extends contactView {
 	else
 	    $corps .= '<div class="row">
 					<div class="label">Contact</div>
-					<div class="field" onmouseover="zuno.tooltip(this,ZTips.contactPers.ajaxField);">'.inputTag('text', 'contact','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_app" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont2" src="../img/ajax-loader.gif" alt="loader"/></div>
+					<div class="field" onmouseover="zuno.tooltip(this,ZTips.contactPers.ajaxField);">'.inputTag('text', 'contact','icon', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_app" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont2" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>
 					<div id="ACcontact_app_choix" class="autocomplete"></div>
 				</div>';
 	if($data['appel_app'] != '')
@@ -1451,13 +1451,13 @@ class contactEntrepriseView extends contactView {
 	$corps .= '<div class="block width33"><fieldset class="form" style="height: 120px"><legend>Complément d\'information</legend>';
 	$corps .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelProjet);">Projet</div>
-					<div class="field">'.inputTag('text', 'projet','icon', '', '16',$data['titre_proj'], ' id="ACprojet_app" onchange="verifAutocompleteur(this);" ').'<a name="proj" onclick="changePopupProjet();"><img alt="addProjet" title="Créer un projet" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingProj" src="../img/ajax-loader.gif" alt="loader"/></div>
+					<div class="field">'.inputTag('text', 'projet','icon', '', '16',$data['titre_proj'], ' id="ACprojet_app" onchange="verifAutocompleteur(this);" ').'<a name="proj" onclick="changePopupProjet();"><img alt="addProjet" title="Créer un projet" src="'.getStaticUrl('img').'prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingProj" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="projet_app" id="ACprojet_apphidden" value="'.$data['projet_app'].'" /><input type="hidden" name="contold" id="ACprojet_appold" value="'.$data['projet_app'].'" />
 					<div id="ACprojet_app_choix" class="autocomplete"></div>
 				</div>';
 	$corps .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.contacts.appelAffaire);">Affaire</div>
-					<div class="field">'.inputTag('text', 'affaire','icon', '', '16',$data['affaire_app'], ' id="ACaffaire_app" onchange="verifAutocompleteur(this);" ').'<a name="aff" onclick="changePopupAffaire();"><img alt="addAffaire" title="Créer une affaire" src="../img/prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingAff" src="../img/ajax-loader.gif" alt="loader"/></div>
+					<div class="field">'.inputTag('text', 'affaire','icon', '', '16',$data['affaire_app'], ' id="ACaffaire_app" onchange="verifAutocompleteur(this);" ').'<a name="aff" onclick="changePopupAffaire();"><img alt="addAffaire" title="Créer une affaire" src="'.getStaticUrl('img').'prospec/add.png" /></a><img style="display:none; margin-left:5px;" id="loadingAff" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="affaire_app" id="ACaffaire_apphidden" value="'.$data['affaire_app'].'" /><input type="hidden" name="contold" id="ACaffaire_appold" value="'.$data['affaire_app'].'" />
 					<div id="ACaffaire_app_choix" class="autocomplete"></div>
 				</div>';
@@ -1478,10 +1478,10 @@ class contactEntrepriseView extends contactView {
 	$aff = new affaireView();
 	$block = $aff->popupCreation($data);
 
-	$titre = '<img alt="move" title="Nouvelle affaire" src="../img/prospec/affaire.png"  /> Nouvelle affaire ';
+	$titre = '<img alt="move" title="Nouvelle affaire" src="'.getStaticUrl('img').'prospec/affaire.png"  /> Nouvelle affaire ';
 
-	$pied = '<a name="annuler" onclick="retourFormAppel2();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'AffaireCreate\', \'draco/AffaireCreate.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel2();"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	$pied = '<a name="annuler" onclick="retourFormAppel2();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'AffaireCreate\', \'draco/AffaireCreate.php\',\'ContenuProjetsEntreprise\', \'popup\');retourFormAppel2();"><img alt="valider" title="Enregistrer l\'appel" src="'.getStaticUrl('img').'prospec/confirm.png" /> Enregistrer</a>';
 
 	$out = '<div id="formAffaire" style="display:none;">';
 	$out .= $block;
@@ -1526,7 +1526,7 @@ class contactEntrepriseView extends contactView {
 		'</div>';
 	$out .= '<div class="row">
 					<div class="label" onmouseover="zuno.tooltip(this,ZTips.projets.contact);">Contact</div>
-					<div class="field">'.inputTag('text', 'contact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_projApp" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont3" src="../img/ajax-loader.gif" alt="loader"/></div>
+					<div class="field">'.inputTag('text', 'contact2','', '', '16',$data['civ_cont'].' '.$data['prenom_cont'].' '.$data['nom_cont'], ' id="ACcontact_projApp" onchange="verifAutocompleteur(this);" ').'<img style="display:none; margin-left:5px;" id="loadingCont3" src="'.getStaticUrl('img').'ajax-loader.gif" alt="loader"/></div>
 					<input type="hidden" name="contold" id="ACcontact_projAppold" value="'.$data['contact_proj'].'" />
 					<div id="ACcontact_projApp_choix" class="autocomplete"></div>
 				</div>';
@@ -1561,12 +1561,12 @@ class contactEntrepriseView extends contactView {
     }
 
     public function popupProjet($data) {
-	$pied .= '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="../img/prospec/cancel.png" onload="autoComplete3();"/> Annuler</a>';
-	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="../img/prospec/confirm.png" /> Enregistrer</a>';
+	$pied .= '<a name="annuler" onclick="zuno.popup.close();"><img alt="annuler" title="Annuler" src="'.getStaticUrl('img').'prospec/cancel.png" onload="autoComplete3();"/> Annuler</a>';
+	$pied .= '<a name="valid" onclick="zuno.business.formTools.sendFormAjah(\'addProjet\', \'prospec/fiche.php\',\'ContenuProjetsEntreprise\', \'popup2\');"><img alt="valider" title="Enregistrer l\'appel" src="'.getStaticUrl('img').'prospec/confirm.png" /> Enregistrer</a>';
 	if($data['action'] == 'modifProj')
-	    $titre = '<img alt="projet" title="Modifier Projet" src="../img/prospec/projet.modif.png" /> Modifier projet';
+	    $titre = '<img alt="projet" title="Modifier Projet" src="'.getStaticUrl('img').'prospec/projet.modif.png" /> Modifier projet';
 	else
-	    $titre = '<img alt="projet" title="Nouveau Projet" src="../img/prospec/projet.png" /> Nouveau projet';
+	    $titre = '<img alt="projet" title="Nouveau Projet" src="'.getStaticUrl('img').'prospec/projet.png" /> Nouveau projet';
 	$corps = $this->internePopupProjet($data);
 	return '<div id="erreurPopupProj"></div>'.generateZBox($titre, $titre, $corps, $pied, 'popupAddProjet');
     }

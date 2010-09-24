@@ -41,9 +41,9 @@
 </xsl:template>
 
 <xsl:template match="img">
-	<img src="{$root_path}{.}" name="{../nom}" alt="{../nom}"/>
+	<img src="{.}" name="{../nom}" alt="{../nom}"/>
 </xsl:template>
 <xsl:template match="icone" mode="submenu">
-	<img src="{$root_path}{.}" name="{../nom}" alt="{../nom}" align="left"/>
+	<img src="{.}" name="{../nom}" alt="{../nom}" align="left"/>
 </xsl:template>
 </xsl:stylesheet>

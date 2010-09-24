@@ -203,7 +203,7 @@ elseif($PC->rcvP['action'] == 'addFamille') {
 	$model = new produitModel();
 	$model->insertFamille($PC->rcvP['nom_prodfam']);
 	if($PC->rcvP['popup'] != 'popup')
-	    echo '<img alt="loader" src="../img/ajax-loader.gif" onload="$(\'selectFamilleProd\').options['.$model->getLastFamille().'] = new Option(\''.$PC->rcvP['nom_prodfam'].'\', \''.$model->getLastFamille().'\');$(\'selectFamilleProd\').selectedIndex = '.$model->getLastFamille().'; zuno.popup.close();" />';
+	    echo '<img alt="loader" src="'.getStaticUrl('img').'ajax-loader.gif" onload="$(\'selectFamilleProd\').options['.$model->getLastFamille().'] = new Option(\''.$PC->rcvP['nom_prodfam'].'\', \''.$model->getLastFamille().'\');$(\'selectFamilleProd\').selectedIndex = '.$model->getLastFamille().'; zuno.popup.close();" />';
 	else {
 	    $view = new ProduitView();
 	    $datas['dureeR'] = $model->getRenews();

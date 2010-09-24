@@ -26,8 +26,9 @@ ini_set('display_errors','off');
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
-include ("plugin/jpgraph/src/jpgraph.php");
-include ("plugin/jpgraph/src/jpgraph_gantt.php");
+
+include (getMutoolsPath('jpgraph')."src/jpgraph.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_gantt.php");
 
 $id_aff = $PC->rcvG['id_aff'];
 $req = "SELECT *

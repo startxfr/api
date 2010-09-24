@@ -13,16 +13,16 @@
 				<!--   Affaires : Menu général         -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waMenuAffaire" title="Affaires">
-				<a href="Affaire.php?action=addAffaire" rev="async" rel="action" class="iButton iBClassic"><img src="Img/add.png" alt="Créer une affaire" /></a>
+				<a href="Affaire.php?action=addAffaire" rev="async" rel="action" class="iButton iBClassic"><img src="'.getStaticUrl('imgPhone').'add.png" alt="Créer une affaire" /></a>
 				<a href="#" rel="back" class="iButton iBBack" onclick="return WA.Back()">Retour</a>
 				<div class="iMenu">
 
  				<ul class="iArrow">
- 					<li><a href="#_SearchAffaire" class="Affaire"><img src="Img/iconMenu/affaire.search.png" alt="Recherche" /> Rechercher</a></li>
-					<li><a href="Affaire.php?action=addAffaire" rev="async" rel="action" class="Affaire"><img src="Img/iconMenu/affaire.add.png" alt="Ajouter" /> Créer</a></li>
+ 					<li><a href="#_SearchAffaire" class="Affaire"><img src="'.getStaticUrl('imgPhone').'iconMenu/affaire.search.png" alt="Recherche" /> Rechercher</a></li>
+					<li><a href="Affaire.php?action=addAffaire" rev="async" rel="action" class="Affaire"><img src="'.getStaticUrl('imgPhone').'iconMenu/affaire.add.png" alt="Ajouter" /> Créer</a></li>
  				</ul><ul class="iArrow">
- 					<li><a href="Affaire.php?action=rechercheavancee" rev="async" rel="action" class="Affaire"><img src="Img/iconMenu/affaire.search.png" alt="Recherche avancée" /> Recherche avancée</a></li>
- 					<li><a href="Affaire.php?action=statistiques" rev="async" rel="action" class="Affaire"><img src="Img/iconMenu/affaire.stat.png" alt="Statistiques" /> Statistiques</a></li>
+ 					<li><a href="Affaire.php?action=rechercheavancee" rev="async" rel="action" class="Affaire"><img src="'.getStaticUrl('imgPhone').'iconMenu/affaire.search.png" alt="Recherche avancée" /> Recherche avancée</a></li>
+ 					<li><a href="Affaire.php?action=statistiques" rev="async" rel="action" class="Affaire"><img src="'.getStaticUrl('imgPhone').'iconMenu/affaire.stat.png" alt="Statistiques" /> Statistiques</a></li>
  				</ul>
 				</div>
 				'.self::affaireForm().'<br class="clear"/>'.$footer.'
@@ -31,7 +31,7 @@
 				<!--   Affaires : Menu recherche         -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waSearchAffaire" title="Recherche">
-				<a href="#"  onclick="return WA.Submit(\'formSearchAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="recherche" /></a>
+				<a href="#"  onclick="return WA.Submit(\'formSearchAffaire\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="recherche" /></a>
 				<form id="formSearchAffaire" action="Affaire.php?action=searchAffaire" onsubmit="return WA.Submit(this,null,event)">
 					<div class="iPanel">
 						<div id="form-searchAffaire"></div>
@@ -41,7 +41,7 @@
 
 								</ul>
 								<br/>
-								<a href="#" onclick="return WA.Submit(\'formSearchAffaire\',null,event)" class="whiteButton"><img src="Img/search.png" style="float: left"/><span>Lancer la recherche</span></a>
+								<a href="#" onclick="return WA.Submit(\'formSearchAffaire\',null,event)" class="whiteButton"><img src="'.getStaticUrl('imgPhone').'search.png" style="float: left"/><span>Lancer la recherche</span></a>
 							</fieldset>
 						</div>
 				</form>'.$footer.'
@@ -70,7 +70,7 @@
 	{
 		if($_SESSION['searchAffaireQuery'] != '') $iTag = ' value="'.$_SESSION['searchAffaireQuery'].'"';
 	return '<form action="Affaire.php?action=inputAffaireResult" id="formSearchAffaireajax" onsubmit="return WA.Submit(this,null,event)"><div  class="iFormI">
-			<a href="#_SearchAffaireResult" rel="action" onclick="return WA.Submit(\'formSearchAffaireajax\',null,event)" class="iButton iBAction"><img src="Img/search.png" alt="Recherche" /></a>
+			<a href="#_SearchAffaireResult" rel="action" onclick="return WA.Submit(\'formSearchAffaireajax\',null,event)" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Recherche" /></a>
 
 			<fieldset class="attach">
 				<legend>Recherche</legend>

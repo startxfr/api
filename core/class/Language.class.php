@@ -60,12 +60,6 @@ class Language {
      * Dockable elements to use for language switch link, image, bouton or indicator
      */
     static function LanguageLink4Switch($output = 'a', $admin = FALSE) {
-	if ($admin) {
-	    $addadmin = "../";
-	}
-	else {
-	    $addadmin = "";
-	}
 	$listesupported = explode(",",$GLOBALS['LANGUE']['supported']);
 	$out = $out1 = $out2 = $out3 = $out4 = "";
 	foreach ($listesupported as $val) {
@@ -73,14 +67,14 @@ class Language {
 		$out .= $val." - ";
 		$out1.= $GLOBALS['LANGUE_'.$_SESSION["language"]][$val]." - ";
 		$out3 = $GLOBALS['LANGUE_'.$_SESSION["language"]][$val];
-		$out2.= imageTag($addadmin.$GLOBALS['REP']['img']."lang/".$val.".png",$val)." ".$GLOBALS['LANGUE_'.$_SESSION["language"]][$val]." - ";
-		$out4.= "<li id=\"".$_SESSION["language"]."\">".imageTag($addadmin.$GLOBALS['REP']['img']."lang/".$val.".on.png",$val,'','on')."</li>\n\t\t\t\t\t";
+		$out2.= imageTag(getStaticUrl('img')."lang/".$val.".png",$val)." ".$GLOBALS['LANGUE_'.$_SESSION["language"]][$val]." - ";
+		$out4.= "<li id=\"".$_SESSION["language"]."\">".imageTag(getStaticUrl('img')."lang/".$val.".on.png",$val,'','on')."</li>\n\t\t\t\t\t";
 	    }
 	    else {
 		$out .= linkTag("?lang=".$val,$GLOBALS['LANGUE_'.$_SESSION["language"]][$val])." - ";
 		$out1.= $GLOBALS['LANGUE_'.$_SESSION["language"]][$val]." - ";
-		$out2.= linkTag("?lang=".$val,imageTag($addadmin.$GLOBALS['REP']['img']."lang/".$val.".png",$val)." ".$GLOBALS['LANGUE_'.$_SESSION["language"]][$val])." - ";
-		$out4.= "<li id=\"".$val."\">".linkTag("?lang=".$val,imageTag($addadmin.$GLOBALS['REP']['img']."lang/".$val.".png",$val,'','','BoutonLang'.$val),'',$val," onmouseover=\"SX_RollIMG('BoutonLang".$val."','".$addadmin.$GLOBALS['REP']['img']."lang/".$val.".on.png');\" onmouseout=\"SX_RollIMG('BoutonLang".$val."','".$addadmin.$GLOBALS['REP']['img']."lang/".$val.".png')\"")."</li>\n\t\t\t\t\t";
+		$out2.= linkTag("?lang=".$val,imageTag(getStaticUrl('img')."lang/".$val.".png",$val)." ".$GLOBALS['LANGUE_'.$_SESSION["language"]][$val])." - ";
+		$out4.= "<li id=\"".$val."\">".linkTag("?lang=".$val,imageTag(getStaticUrl('img')."lang/".$val.".png",$val,'','','BoutonLang'.$val),'',$val," onmouseover=\"SX_RollIMG('BoutonLang".$val."','".getStaticUrl('img')."lang/".$val.".on.png');\" onmouseout=\"SX_RollIMG('BoutonLang".$val."','".getStaticUrl('img')."lang/".$val.".png')\"")."</li>\n\t\t\t\t\t";
 	    }
 	}
 	$out   = substr($out, 0, -2);

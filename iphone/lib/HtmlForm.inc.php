@@ -64,7 +64,7 @@ class HtmlFormIphone
 		$title 	 = ($title != '') ? $title : $name;
 		$otherAtr .= ' onkeyup="montrerCroix(this, \'sans\');" ';
 		$out = '<input class="InputCroix" type="'.$type.'" name="'.$name.'" placeholder="'.$title.'"'.$otherAtr.$autocorrect.$majauto.' />';
-		$out .= '<img class="croix" src="../img/croix.png" alt="croix" onclick="croixEfface(this, \'sans\');" />';
+		$out .= '<img class="croix" src="'.getStaticUrl('img').'croix.png" alt="croix" onclick="croixEfface(this, \'sans\');" />';
 		return $out;
 	}
 
@@ -80,7 +80,7 @@ class HtmlFormIphone
 		$title 	 = ($title != '') ? $title : $name;
 		$otherAtr .= ' onkeyup="montrerCroix(this, \'label\');" ';
 		$out = '<label>'.$title.'</label><input class="InputCroix" type="'.$type.'" name="'.$name.'"'.$otherAtr.$autocorrect.$majauto.' />';
-		$out .= '<img class="croixLabel" src="../img/croix.png" alt="croix" onclick="croixEfface(this, \'label\');"/>';
+		$out .= '<img class="croixLabel" src="'.getStaticUrl('img').'croix.png" alt="croix" onclick="croixEfface(this, \'label\');"/>';
 		return $out;
 	}
 	static function InputLabelWnoku($name, $value = '', $title = '',$otherAtr = '', $type = 'text')
@@ -88,7 +88,7 @@ class HtmlFormIphone
 		$otherAtr	.= ($value != '') ? ' value="'.$value.'"' : '';
 		$title 	 = ($title != '') ? $title : $name;
 		$out = '<label>'.$title.'</label><input type="'.$type.'" name="'.$name.'"'.$otherAtr.' autocorrect = "off" />';
-		$out .= '<img class="croixLabel" src="../img/croix.png" alt="croix" onclick="croixEfface(this, \'label\');"/>';
+		$out .= '<img class="croixLabel" src="'.getStaticUrl('img').'croix.png" alt="croix" onclick="croixEfface(this, \'label\');"/>';
 		return $out;
 	}
 		static function InputWnoku($name, $value = '', $title = '',$otherAtr = '', $type = 'text')
@@ -96,7 +96,7 @@ class HtmlFormIphone
 		$otherAtr	.= ($value != '') ? ' value="'.$value.'"' : '';
 		$title 	 = ($title != '') ? $title : $name;
 		$out = '<input type="'.$type.'" name="'.$name.'" placeholder="'.$title.'" '.$otherAtr.' autocorrect = "off" />';
-		$out .= '<img class="croixLabel" src="../img/croix.png" alt="croix" onclick="croixEfface(this, \'label\');"/>';
+		$out .= '<img class="croixLabel" src="'.getStaticUrl('img').'croix.png" alt="croix" onclick="croixEfface(this, \'label\');"/>';
 		return $out;
 	}
 
@@ -115,7 +115,7 @@ class HtmlFormIphone
 			<div class="inputDate">
 			<input type="'.$type.'" value="'.$value.'" id="'.$name.'ID" name="'.$name.'" class="inputDate"'.$otherAtr.'/>
 			<a id="'.$button_id.'" title="Calendar" href="javascript:void" class="inputDate">
-						<img alt="calendar" src="../img/calendar.png"/>
+						<img alt="calendar" src="'.getStaticUrl('img').'calendar.png"/>
 						</a>
 						</div><br class="clear"/>
 			<script> Calendar.setup({inputField     :    "'.$name.'ID",

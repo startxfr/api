@@ -40,12 +40,12 @@ class ModuleHFUser {
 	$out = '';
 	if($this->channel == 'normal') {
 	    if(isset($_SESSION) and array_key_exists('user',$_SESSION) and $_SESSION['user']['fullnom'] != '')
-		$out .= '<li class="moduleUser-right'.$_SESSION['user']['right'].'"><a href="#" onclick="zuno.popup.open(\'User.php\',\'type=popup\',\'480\',\'220\');" title="'.$_SESSION['user']['fullnom'].'">'.imageTag($GLOBALS['REP']['img'].'admin/droit/'.$_SESSION['user']['right'].".".'png',$_SESSION['user']['rightDesc'],'','','BoutonConnect').$_SESSION['user']['fullnom'].'</a></li>';
+		$out .= '<li class="moduleUser-right'.$_SESSION['user']['right'].'"><a href="#" onclick="zuno.popup.open(\'User.php\',\'type=popup\',\'480\',\'220\');" title="'.$_SESSION['user']['fullnom'].'">'.imageTag(getStaticUrl('img').'admin/droit/'.$_SESSION['user']['right'].".".'png',$_SESSION['user']['rightDesc'],'','','BoutonConnect').$_SESSION['user']['fullnom'].'</a></li>';
 	}
 	else {
 	    $addadmin = "../";
 	    if(isset($_SESSION) and array_key_exists('user',$_SESSION) and $_SESSION['user']['fullnom'] != '')
-		$out .= '<li class="moduleUser-right'.$_SESSION['user']['right'].'"><a href="#" onclick="zuno.popup.open(\''.$addadmin.'User.php\',\'type=popup\',\'480\',\'220\');" title="'.$_SESSION['user']['fullnom'].'">'.imageTag($addadmin.$GLOBALS['REP']['img'].'admin/droit/'.$_SESSION['user']['right'].".".'png',$_SESSION['user']['rightDesc'],'','','BoutonConnect').$_SESSION['user']['fullnom'].'</a></li>';
+		$out .= '<li class="moduleUser-right'.$_SESSION['user']['right'].'"><a href="#" onclick="zuno.popup.open(\''.$addadmin.'User.php\',\'type=popup\',\'480\',\'220\');" title="'.$_SESSION['user']['fullnom'].'">'.imageTag(getStaticUrl('img').'admin/droit/'.$_SESSION['user']['right'].".".'png',$_SESSION['user']['rightDesc'],'','','BoutonConnect').$_SESSION['user']['fullnom'].'</a></li>';
 	}
 	return $out;
     }

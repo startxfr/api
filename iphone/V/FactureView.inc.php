@@ -16,7 +16,7 @@ class factureView {
 		$list .= '<li><a href="Facture.php?action=view&id_fact='.$v['id_fact'].'&type='.$v['type_fact'].'" rev="async"><em>'.$v['id_fact'].' - '.$v['titre_fact'].' </em><small><b>'.$v['nom_ent'].'</b>'.$brc.$v['civ_cont'].' '.$v['nom_cont'].' '.$v['prenom_cont'].'</small></a></li>';
 	    }
 	    if ($from == 0) {//on affiche le haut de la page juste la première fois.
-		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>' ;
+		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>' ;
 	    }
 	    //l'affichage de la liste générée
 	    $out	.='<div class="iList"><ul class="iArrow">
@@ -69,10 +69,10 @@ class factureView {
 	//On vient d'effectuer tout un tas de tests pour s'assurer  que l'on ne vas afficher que des blocks avec des choses dedans.
 
 	if($mode == 'afterModif' || $value['status_fact'] > 3) {
-	    $linkHead = '<a href="Facture.php?action=view&id_fact='.$value['id_fact'].'"  rel="action" class="iButton iBAction"><img src="Img/config.png" alt="Recharger" /></a>';
+	    $linkHead = '<a href="Facture.php?action=view&id_fact='.$value['id_fact'].'"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'config.png" alt="Recharger" /></a>';
 	}
 	else {
-	    $linkHead = '<a href="Facture.php?action=modifFacture&id_fact='.$value["id_fact"].'&type='.$type.'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/edit.png" alt="Modifier" /></a>';
+	    $linkHead = '<a href="Facture.php?action=modifFacture&id_fact='.$value["id_fact"].'&type='.$type.'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'edit.png" alt="Modifier" /></a>';
 	}
 
 	//On génère maintenant le rendu visuel.
@@ -131,10 +131,10 @@ class factureView {
     static function produits($value = array(), $id_fact, $tva, $valide = '', $type = 'Facture') {
 
 	if($valide != 'valide') {
-	    $produits = '<a href="Facture.php?action=addProduit&id_fact='.$id_fact.'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/add.png" alt="Ajouter" /></a><div class="iPanel">';
+	    $produits = '<a href="Facture.php?action=addProduit&id_fact='.$id_fact.'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'add.png" alt="Ajouter" /></a><div class="iPanel">';
 	}
 	else {
-	    $produits = '<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="Img/home.png" alt="Accueil" /></a><div class="iPanel">';
+	    $produits = '<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a><div class="iPanel">';
 	    $modif = '';
 	}
 	if($value == NULL) {
@@ -160,7 +160,7 @@ class factureView {
 		    $total = formatCurencyDisplay($total);
 		else  $total = formatCurencyDisplay($total,0);
 		if($valide != 'valide') {
-		    $modif = '<span style="float: right"><a style="margin: 0px; margin-top: -8px" href="Facture.php?action=modifProduit&id_fact='.$id_fact.'&id_prod='.urlencode($v['id_produit']).'&type='.$type.'" rev="async" ><img src="Img/edit.png" title="Modifier"/></a></span>';
+		    $modif = '<span style="float: right"><a style="margin: 0px; margin-top: -8px" href="Facture.php?action=modifProduit&id_fact='.$id_fact.'&id_prod='.urlencode($v['id_produit']).'&type='.$type.'" rev="async" ><img src="'.getStaticUrl('imgPhone').'edit.png" title="Modifier"/></a></span>';
 		}
 		$out.='<fieldset>'.$modif.'<legend>Produit '.$v['id_produit'].'</legend><ul>';
 		$out .='<li><label>Référence : </label>'.$v['id_produit'].'</li>';
@@ -192,13 +192,13 @@ class factureView {
      * @return le code HTML
      */
     static function modifProduits($value = array(), $id_fact, $tva = 0, $type = 'Facture') {
-	$out = '<a href="#"  onclick="return WA.Submit(\'formModifProduitFacture\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out = '<a href="#"  onclick="return WA.Submit(\'formModifProduitFacture\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formModifProduitFacture" action="Facture.php?action=doModifProduit&tva='.$tva.'&id_fact='.$id_fact.'&type='.$type.'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 					'.self::blockProduitsModif($value, $id_fact, 'rien', $type).'
 					<fieldset>
-						<a class="BigButtonValidLeft" href="#" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-						<a class="BigButtonValidRight" href="#" onclick="return WA.Submit(\'formModifProduitFacture\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+						<a class="BigButtonValidLeft" href="#" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+						<a class="BigButtonValidRight" href="#" onclick="return WA.Submit(\'formModifProduitFacture\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 					</fieldset>
 				</div>
 				</form>';
@@ -218,13 +218,13 @@ class factureView {
      * @return Le code HTML
      */
     static function addProduits($value = array(), $id_fact, $tva = 0, $type = 'Facture') {
-	$out = '<a href="#"  onclick="return WA.Submit(\'formAddProduitFacture\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out = '<a href="#"  onclick="return WA.Submit(\'formAddProduitFacture\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddProduitFacture" action="Facture.php?action=doAddProduit&tva='.$tva.'&id_fact='.$id_fact.'&type='.$type.'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 					'.self::blockProduitsModif(array(), $id_fact, "on_ajoute", $type).'
 					<fieldset>
-						<a class="BigButtonValidLeft" href="#" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-						<a class="BigButtonValidRight" href="#" onclick="return WA.Submit(\'formAddProduitFacture\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+						<a class="BigButtonValidLeft" href="#" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+						<a class="BigButtonValidRight" href="#" onclick="return WA.Submit(\'formAddProduitFacture\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 					</fieldset>
 				</div>
 				</form>';
@@ -251,7 +251,7 @@ class factureView {
 	$prixtotal = abs($value[0]['prix'])*(1-$value[0]['remise']/100)*$value[0]['quantite'];
 	$totalV = '<li id="id_produitFtotalV">TT V : '.$prixtotal.' &euro;</li>';
 	if($onfekoi == 'rien') {
-	    $out.='<fieldset><span class="smallActionButton"><a id="supprimer_produitfacture" onclick="confirmBeforeClick(\'valid_suppProduit\', \''.$value[0]['id_produit'].'\', \'facture\')"><img src="Img/delete.png" title="Supprimer"/></a></span><legend  class="smallActionLegend"> Produit : '.$value[0]['id_produit'].'</legend>';
+	    $out.='<fieldset><span class="smallActionButton"><a id="supprimer_produitfacture" onclick="confirmBeforeClick(\'valid_suppProduit\', \''.$value[0]['id_produit'].'\', \'facture\')"><img src="'.getStaticUrl('imgPhone').'delete.png" title="Supprimer"/></a></span><legend  class="smallActionLegend"> Produit : '.$value[0]['id_produit'].'</legend>';
 	}
 	else {
 	    $out .='<fieldset><legend>Produit : </legend>';
@@ -269,7 +269,7 @@ class factureView {
      * @return string Le code html
      */
     static function factureLinkSimple($value = array()) {
-	return '<a href="Facture.php?action=view&id_fact='.$value['id_fact'].'" class="Facture" rev="async"><img src="../img/actualite/facture.png"/> Facture '.$value['id_fact'].' '.$value['titre_fact'].'</a>';
+	return '<a href="Facture.php?action=view&id_fact='.$value['id_fact'].'" class="Facture" rev="async"><img src="'.getStaticUrl('img').'actualite/facture.png"/> Facture '.$value['id_fact'].' '.$value['titre_fact'].'</a>';
     }
 
     /**
@@ -282,7 +282,7 @@ class factureView {
      */
     static function modif($value = array(),$onError = array(),$errorMess = '',$id_fact = '', $type = 'Facture') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifFacture\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifFacture\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formModifFacture" action="Facture.php?action=doModifFacture&id_fact='.$id_fact.'&type='.$type.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -309,8 +309,8 @@ class factureView {
 	if($value['supprimable'] == '0')
 	    $out .='<a href="Facture.php?action=suppFacture&id_fact='.$value["id_fact"].'&type='.$type.'" rev="async" class="redButton"><span>Supprimer cette Facture</span></a>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifFacture\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifFacture\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
@@ -344,16 +344,16 @@ class factureView {
 	$info = new factureModel();
 	$fileName = $info->getFactureFileName($value,'pdf');
 	if (file_exists($info->getFactureDirectory().$fileName) )
-	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag('../img/files/pdf.png', 'version PDF') . ' ' . $fileName . "</a></li>";
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag(getStaticUrl('img').'files/pdf.png', 'version PDF') . ' ' . $fileName . "</a></li>";
 	$fileName = $info->getFactureFileName($value,'odt');
 	if (file_exists($info->getFactureDirectory().$fileName) )
-	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version ODT') . ' ' . $fileName . "</a></li>";
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag(getStaticUrl('img').'files/document.png', 'version ODT') . ' ' . $fileName . "</a></li>";
 	$fileName = $info->getFactureFileName($value,'doc');
 	if (file_exists($info->getFactureDirectory().$fileName) )
-	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag('../img/files/document.png', 'version DOC') . ' ' . $fileName . "</a></li>";
+	    $outLi .= "<li><a href=\"inc/explorer.php?download=" .$info->getFactureDirectory(false) . $fileName . "\" target=\"_blank\">" . imageTag(getStaticUrl('img').'files/document.png', 'version DOC') . ' ' . $fileName . "</a></li>";
 
 	//Récupération des données
-	$out = '<li><a rev="async" href="Actualite.php?action=viewFacture&amp;id_fact='.$value['id_fact'].'"><img src="Img/actualite.png"/> '.$totalActu.' Actualités</a></li>'.$outLi;
+	$out = '<li><a rev="async" href="Actualite.php?action=viewFacture&amp;id_fact='.$value['id_fact'].'"><img src="'.getStaticUrl('imgPhone').'actualite.png"/> '.$totalActu.' Actualités</a></li>'.$outLi;
 	return $out;//Génération de l'affichage.
     }
 
@@ -526,28 +526,28 @@ class factureView {
 				<legend>Actions</legend>
 				<ul class="iArrow">';
 	if ($value['status_fact'] <= 3)
-	    $out.= '<li><a rev="async" href="Facture.php?action=addProduit&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/devis.addProduct.png"/> Ajouter un Produit</a></li>';
+	    $out.= '<li><a rev="async" href="Facture.php?action=addProduit&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/devis.addProduct.png"/> Ajouter un Produit</a></li>';
 	if ($value['sommeHT_fact'] > 0) {
-	    $out.= '<li><a rev="async" href="Facture.php?action=voir&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/facture.pdf.png"/> Voir le PDF</a></li>';
+	    $out.= '<li><a rev="async" href="Facture.php?action=voir&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/facture.pdf.png"/> Voir le PDF</a></li>';
 	    if ($value['status_fact'] < 4) {
 		$preFixRec = ($value['status_fact'] >= 3) ? 'Re-e' : 'E';
 		$preFixSend = ($value['status_fact'] >= 4) ? 'Re-e' : 'E';
-		$out.= '<li><a rev="async" href="Facture.php?action=rec&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/devis.record.png"/> '.$preFixRec.'nregistrer</a></li>';
-		$out.= '<li><a rev="async" href="Facture.php?action=recsend&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/devis.recsend.png"/> '.$preFixRec.'nregistrer & '.$preFixSend.'nvoyer</a></li>';
+		$out.= '<li><a rev="async" href="Facture.php?action=rec&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/devis.record.png"/> '.$preFixRec.'nregistrer</a></li>';
+		$out.= '<li><a rev="async" href="Facture.php?action=recsend&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/devis.recsend.png"/> '.$preFixRec.'nregistrer & '.$preFixSend.'nvoyer</a></li>';
 		if ($value['status_fact'] >= 3)
-		    $out.= '<li><a rev="async" href="Facture.php?action=send&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/devis.send.png"/> '.$preFixSend.'nvoyer</a></li>';
+		    $out.= '<li><a rev="async" href="Facture.php?action=send&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/devis.send.png"/> '.$preFixSend.'nvoyer</a></li>';
 	    }
 	    if ( ($value['status_fact'] == 4)and $_SESSION['user']['id'] == $value['commercial_fact'] ) {
-		$out.= '<li><a rev="async" href="Facture.php?action=nonregle&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/devis.perdu.png"/> Règlement attendu</a></li>';
-		$out.= '<li><a rev="async" href="Facture.php?action=regle&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/facture.valid.png"/> Règlement effectué</a></li>';
+		$out.= '<li><a rev="async" href="Facture.php?action=nonregle&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/devis.perdu.png"/> Règlement attendu</a></li>';
+		$out.= '<li><a rev="async" href="Facture.php?action=regle&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/facture.valid.png"/> Règlement effectué</a></li>';
 	    }
 	    if ( ($value['status_fact'] == 5)and $_SESSION['user']['id'] == $value['commercial_fact'] ) {
-		$out.= '<li><a rev="async" href="Facture.php?action=regle&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/facture.valid.png"/> Règlement effectué</a></li>';
+		$out.= '<li><a rev="async" href="Facture.php?action=regle&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/facture.valid.png"/> Règlement effectué</a></li>';
 	    }
 	}
-	$out.= '<li><a rev="async" href="Facture.php?action=cloner&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/devis.clone.png"/> Cloner cette facture</a></li>';
+	$out.= '<li><a rev="async" href="Facture.php?action=cloner&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/devis.clone.png"/> Cloner cette facture</a></li>';
 	if($type == 'Facture')
-	    $out.='<li><a rev="async" href="Facture.php?action=avoir&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="../img/prospec/devis.clone.png"/> Créer un avoir</a></li>';
+	    $out.='<li><a rev="async" href="Facture.php?action=avoir&amp;id_fact='.$value['id_fact'].'&type='.$type.'"><img src="'.getStaticUrl('img').'prospec/devis.clone.png"/> Créer un avoir</a></li>';
 	$out.= '	</ul>
 			</fieldset>';
 	return $out;
@@ -562,7 +562,7 @@ class factureView {
      */
     static function delete($value = array(), $type = 'Facture') {
 	if ($value["id_fact"] == 0) {
-	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="Img/home.png" alt="Accueil" /></a>
+	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 			  <div class="iPanel">
 			  <div class="err">
 			  		<strong> Facture supprimé ! </strong>
@@ -581,7 +581,7 @@ class factureView {
 	$commande = ($value['commande_fact'] != NULL) ? '<li>Commande liée : '.commandeView::commandeLinkSimple($value).'</li>' : '';
 	//On vient d'effectuer tout un tas de tests pour s'assurer  que l'on ne vas afficher que des blocks avec des choses dedans.
 
-	$linkHead = '<a href="Facture.php?action=doDeleteFacture&id_fact='.$value["id_fact"].'&type='.$type.'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/remove.png" alt="Supprimer" /></a>';
+	$linkHead = '<a href="Facture.php?action=doDeleteFacture&id_fact='.$value["id_fact"].'&type='.$type.'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'remove.png" alt="Supprimer" /></a>';
 	//On génère maintenant le rendu visuel.
 	$out = $linkHead.'<div class="iPanel">' .
 		'<div class="err">
@@ -629,7 +629,7 @@ class factureView {
      */
     static function addPre($value = array(),$onError = array(),$errorMess = '', $type = 'Facture') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddPreFacture\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddPreFacture\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddPreFacture" action="Facture.php?action=addFacture&type='.$type.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -649,7 +649,7 @@ class factureView {
      */
     static function add($value = array(), $onError = array(), $errorMess = '', $type = 'Facture') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddFacture\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddFacture\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddFacture" action="Facture.php?action=doAddFacture&type='.$type.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -671,8 +671,8 @@ class factureView {
 
 	$out = self::subBlockCommande($value, $onError, $type);
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddPreFacture\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddPreFacture\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
@@ -713,8 +713,8 @@ class factureView {
 	$out .= self::subBlockReglement($default, array(), $type);
 	$out .= '<fieldset><ul><li>'.HtmlFormIphone::InputLabel('BDCclient', '', 'BDC : ').'</li></ul></fieldset>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddFacture\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddFacture\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
@@ -733,8 +733,8 @@ class factureView {
 				<div class="msg"><br/>Merci de confirmer le clonage de '.$ckoi.'<br/></div>
 				<br/>
 				<fieldset>
-					<a href="#" style="float: left; margin-left: 8px;"onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="Facture.php?action=doCloner&id_fact='.$value["id_fact"].'&type='.$type.'" rev="async" style="float: right; margin-right: 8px;"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" style="float: left; margin-left: 8px;"onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="Facture.php?action=doCloner&id_fact='.$value["id_fact"].'&type='.$type.'" rev="async" style="float: right; margin-right: 8px;"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
 	elseif($creationavoir == 'oui')
@@ -742,8 +742,8 @@ class factureView {
 				<div class="msg"><br/>Merci de confirmer la création d\'un avoir<br/></div>
 				<br/>
 				<fieldset>
-					<a href="#" style="float: left; margin-left: 8px;"onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="Facture.php?action=doAvoir&id_fact='.$value["id_fact"].'&type='.$type.'" rev="async" style="float: right; margin-right: 8px;"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" style="float: left; margin-left: 8px;"onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="Facture.php?action=doAvoir&id_fact='.$value["id_fact"].'&type='.$type.'" rev="async" style="float: right; margin-right: 8px;"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
     }
@@ -759,7 +759,7 @@ class factureView {
     static function addExpress($val = array(), $onError = array(),$errorMess = '', $type = 'Facture') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
 
-	$out 	 .= '<a href="#"  onclick="return WA.Submit(\'formAddFactureExpress\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 .= '<a href="#"  onclick="return WA.Submit(\'formAddFactureExpress\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form name="formAddFactureExpress" id="formAddFactureExpress" action="Facture.php?action=addFactureExpressSuite" onsubmit="return WA.Submit(this,null,event)">
 				' .$error.'<div class="iPanel">
 					'.self::blockAddExpress1($val, $onError, $type).'
@@ -841,8 +841,8 @@ class factureView {
 	$out .= '<ul><li>'.$tva.'</li></ul>';
 	$out .= '</fieldset>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddFactureExpress\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddFactureExpress\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
@@ -858,7 +858,7 @@ class factureView {
     static function addExpressSuite($val = array(), $onError = array(),$errorMess = '', $type = 'Facture') {
 	$nombre = 1;
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out = '<a href="#"  onclick="return WA.Submit(\'formFactureExpressProduit\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out = '<a href="#"  onclick="return WA.Submit(\'formFactureExpressProduit\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formFactureExpressProduit" action="Facture.php?action=doAddFactureExpress" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'<div class="iPanel" id="FactureExpressForm">';
 	$out .= '<div id="DEProdFacture">';
@@ -888,8 +888,8 @@ class factureView {
 	$out .='<li id="ttcFactureExpress">Total TTC : </li>';
 	$out .='</ul></fieldset>';
 	$out .='<fieldset>
-						<a class="BigButtonValidLeft" href="#" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-						<a class="BigButtonValidRight" href="#" onclick="return WA.Submit(\'formFactureExpressProduit\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+						<a class="BigButtonValidLeft" href="#" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+						<a class="BigButtonValidRight" href="#" onclick="return WA.Submit(\'formFactureExpressProduit\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 					</fieldset>
 				</div>
 				</form>';
@@ -915,7 +915,7 @@ class factureView {
 	$cannevas  = HtmlFormIphone::SelectLabel('Cannevas',$toto,$value['Cannevas'],'Cannevas : ',false);
 	$extention = HtmlFormIphone::SelectLabel('OutputExt',$availableConvFormat,$value['OutputExt'],'Format : ',false);
 
-	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 				<form id="formFactureDoVoir" action="Facture.php?action=doVoir&id_fact='.$value["id_fact"].'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 				<fieldset>
@@ -928,8 +928,8 @@ class factureView {
 				</fieldset>
 				<div id="formFactureDoVoirResponse"></div>
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoVoir\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoVoir\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
     }
@@ -955,7 +955,7 @@ class factureView {
 	$value['message'] = ($value['message'] != '') ? $value['message'] : 'Ajout du document '.$value["doc_fact"];
 	$mess = HtmlFormIphone::TextareaLabel('message',$value['message'],'','Message :');
 
-	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 				<form id="formFactureDoRec" action="Facture.php?action=doRec&id_fact='.$value["id_fact"].'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 				<fieldset>
@@ -968,8 +968,8 @@ class factureView {
 					</ul><input type="hidden" name="type" value="'.$type.'" />
 				</fieldset>
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoRec\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoRec\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
     }
@@ -993,7 +993,7 @@ class factureView {
 	$extention = HtmlFormIphone::SelectLabel('OutputExt',$availableConvFormat,$value['OutputExt'],'Format :',false);
 	$typeEnvoi		= HtmlFormIphone::SelectLabel('typeEnvoi',array('email'=>'E-mail','courrier'=>'Courrier','fax'=>'Fax'),$value['type'],'Type :',false);
 
-	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 				<form id="formFactureDoSend" action="Facture.php?action=send1&id_fact='.$value["id_fact"].'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 				<fieldset>
@@ -1010,8 +1010,8 @@ class factureView {
 					</ul>
 				</fieldset>
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoSend\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoSend\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
     }
@@ -1032,13 +1032,13 @@ class factureView {
 	else  $form = sendView::innerFormSendEmail($value,$onError,$errorMess);
 	$form.= HtmlFormIphone::Input('type',$value['type'],'','','hidden');
 
-	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 				<form id="formFactureDoSend1" action="Facture.php?action=doSend&id_fact='.$value["id_fact"].'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 				'.$form.'<input type="hidden" name="type" value="'.$type.'" />
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoSend1\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoSend1\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
     }
@@ -1065,7 +1065,7 @@ class factureView {
 	$value['message'] = ($value['message'] != '') ? $value['message'] : 'Ajout du document '.$value["doc_fact"];
 	$mess = HtmlFormIphone::TextareaLabel('message',$value['message'],'','Message :');
 
-	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 				<form id="formFactureDoRec" action="Facture.php?action=recsend1&id_fact='.$value["id_fact"].'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 				<fieldset>
@@ -1084,8 +1084,8 @@ class factureView {
 					</ul>
 				</fieldset>
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoRec\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoRec\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
     }
@@ -1106,13 +1106,13 @@ class factureView {
 	else  $form = sendView::innerFormSendEmail($value,$onError,$errorMess);
 	$form.= HtmlFormIphone::Input('type',$value['type'],'','','hidden');
 
-	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+	return '<a href="#_MainMenu" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 				<form id="formFactureDoRec1" action="Facture.php?action=doRecsend&id_fact='.$value["id_fact"].'" onsubmit="return WA.Submit(this,null,event)">
 				<div class="iPanel">
 				'.$form.'<input type="hidden" name="type" value="'.$type.'" />
 				<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler"></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoRec1\',null,event)"><img src="Img/big.valider.png" alt="Valider"></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler"></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formFactureDoRec1\',null,event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider"></a>
 				</fieldset>
 			</div>';
     }

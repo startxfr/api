@@ -76,12 +76,12 @@ class ProduitViewOriginal extends generalView {
 	    $this->formF->newBlock('');
 	$this->formF->newInputHidden('action', 'modifPF', 'ToDo');
 	$this->formF->newInputHidden('idProduit', $datas['data']['id_prod']);
-	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',450,230);", "../img/prospec/add.png");
+	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',450,230);", getStaticUrl('img').'prospec/add.png');
 
 	$this->html = new ZunoRenduHtml('ficheCompleteProd');
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Produits').' Produit '.$datas['data']['id_prod'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce produit'),'formProduitModif', 'open');
-	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Fournisseurs').' Fournisseurs de '.$datas['data']['id_prod'],'', $this->formF->generateForm(), $this->formF->generateButtons('', 'Annuler', 'Modifier'),'formFournProduit', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/produit.png','Produits').' Produit '.$datas['data']['id_prod'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce produit'),'formProduitModif', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/produit.png','Fournisseurs').' Fournisseurs de '.$datas['data']['id_prod'],'', $this->formF->generateForm(), $this->formF->generateButtons('', 'Annuler', 'Modifier'),'formFournProduit', 'open');
 
 	return $this->html->generateRendu();
     }
@@ -164,15 +164,15 @@ class ProduitViewOriginal extends generalView {
 	}
 	else {
 	    $this->form->newInputHidden('action', 'addProdPopup');
-	    $pied = '<a name="closePopup" onclick="zuno.popup.close()" title="Reset"><img align="middle" src="../img/prospec/cancel.png" alt="Effacer" title="Effacer"/> Annuler</a>';
-	    $pied .= '<a style="cursor: pointer;" onclick="saveProd();" name="submit"><img align="middle" src="../img/prospec/record.png" alt="Enregistrer" title="Enregistrer"/> Créer le produit</a>';
+	    $pied = '<a name="closePopup" onclick="zuno.popup.close()" title="Reset"><img align="middle" src="'.getStaticUrl('img').'prospec/cancel.png" alt="Effacer" title="Effacer"/> Annuler</a>';
+	    $pied .= '<a style="cursor: pointer;" onclick="saveProd();" name="submit"><img align="middle" src="'.getStaticUrl('img').'prospec/record.png" alt="Enregistrer" title="Enregistrer"/> Créer le produit</a>';
 	}
 
 	$this->form->newInputHidden('idProduit', $datas['data']['id_prod']);
 
 	$this->html = new ZunoRenduHtml('ficheCompleteProd');
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Produits').' Nouveau Produit', '', $this->form->generateForm(), $pied,'creationProdPopup' , 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/produit.png','Produits').' Nouveau Produit', '', $this->form->generateForm(), $pied,'creationProdPopup' , 'open');
 
 	return $this->html->generateRendu();
     }
@@ -202,11 +202,11 @@ class ProduitViewOriginal extends generalView {
 	    $this->formF->newBlock('');
 	$this->formF->newInputHidden('action', 'modifPF', 'ToDo');
 	$this->formF->newInputHidden('idProduit', $datas['data']['id_prod']);
-	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',450,230);", "../img/prospec/add.png");
+	$this->formF->addButton("Ajouter un fournisseur", "return zuno.popup.open('../produit/Produit.php', 'action=addFournProd&idProd=".$datas['data']['id_prod']."',450,230);",getStaticUrl('img').'prospec/add.png');
 
 	$this->html = new ZunoRenduHtml();
-	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Produits').' Produit '.$datas['data']['id_prod'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce produit'),'formModifProd', 'open');
-	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Fournisseurs').' Fournisseurs du produit','', $this->formF->generateForm(), $this->formF->generateButtons('', 'Annuler', 'Modifier'),'formFournProduit', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/produit.png','Produits').' Produit '.$datas['data']['id_prod'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce produit'),'formModifProd', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/produit.png','Fournisseurs').' Fournisseurs du produit','', $this->formF->generateForm(), $this->formF->generateButtons('', 'Annuler', 'Modifier'),'formFournProduit', 'open');
 
 	return $this->html->generateInterneRendu();
     }
@@ -294,7 +294,7 @@ class ProduitViewOriginal extends generalView {
 	$this->form->newInputHidden('idProduit', $datas['data']['id_prod']);
 
 	$this->html = new ZunoRenduHtml('popupFournProd');
-	$this->html->generateZBox(imageTag('../img/prospec/TypeEntreprise/5.png','Forunisseurs').' Ajouter Fournisseur','', $this->form->generateForm(), $this->form->generateButtons('idformProduitFournisseurformAutoRetour', 'Annuler', 'Enregistrer', 'popup2'),'popupProdFourn', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/TypeEntreprise/5.png','Forunisseurs').' Ajouter Fournisseur','', $this->form->generateForm(), $this->form->generateButtons('idformProduitFournisseurformAutoRetour', 'Annuler', 'Enregistrer', 'popup2'),'popupProdFourn', 'open');
 
 	if(is_array($datas['remise'])) {
 	    $script = '';
@@ -334,7 +334,7 @@ class ProduitViewOriginal extends generalView {
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
 	if(!$modHistorique)
-	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormProduit\');"/></th>';
+	    $out .= '<th class="barre"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormProduit\');"/></th>';
 	$out .= '<th class="bg barre">Ref</th>
 			<th class="center barre">Nom</th>
 			<th class="center barre">Famille</th>
@@ -352,11 +352,11 @@ class ProduitViewOriginal extends generalView {
 		$onclick = 'return searchProdReturn(\''.str_replace("\n", ' ',$result['id_prod']).'\',\''.str_replace("\n", ' ',$result['nom_prod'].' - '.$result['description_prod']).'\',\''.$result['prix_prod'].'\')';
 	    else $onclick = 'window.location=\''.$link.'\'';
 	    if($result['bestsell_prod'] == '1')
-		$imgBest = imageTag($suffixeLink.'img/best.png','Meilleur ventes');
+		$imgBest = imageTag(getStaticUrl('img').'best.png','Meilleur ventes');
 	    else $imgBest = '';
 	    if($result['stillAvailable_prod'] == '1')
-		$imgActif = imageTag($suffixeLink.'img/valid.png','Produit en vente');
-	    else $imgActif = imageTag($suffixeLink.'img/unvalid.png','Produit désactivé');
+		$imgActif = imageTag(getStaticUrl('img').'valid.png','Produit en vente');
+	    else $imgActif = imageTag(getStaticUrl('img').'unvalid.png','Produit désactivé');
 	    $out .= '<tr class="altern'.($alternance % 2).'">';
 	    if(!$modHistorique)
 		$out .= '<td class="barre" style="width:10px"><input type="checkbox" name="select[]" value="'.$result['id_prod'].'" checked="checked"/></td>';
@@ -429,14 +429,14 @@ class ProduitViewOriginal extends generalView {
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
-	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormProduit\',\'resultProduitAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
+	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormProduit\',\'resultProduitAction\');" class="bouton','Effectuer les changements',getStaticUrl('img').'prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div></div></div>';
 	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.getStaticUrl('img').'prospec/work-multiple.png"/> Actions groupées</a>';
 	return $bouton;
     }
 
@@ -549,7 +549,7 @@ class ProduitViewOriginal extends generalView {
 	    $chaine_class =  '';
 	    if($plus) {
 		$class .= "icon ";
-		$img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="../img/prospec/add.png" /></a>';
+		$img = '<a id="Se'.$nom.'AddImg" name="Se'.$nom.'AddImg" title="Créer" onclick="'.$actionplus.'"><img alt="famille" title="Créer" src="'.getStaticUrl('img').'prospec/add.png" /></a>';
 	    }
 	    else $class = $img = "";
 	    $chaine = "<select ";

@@ -84,7 +84,7 @@ if ($PC->rcvP['action'] != '') {
 	if($PC->rcvF['img_pg']['tmp_name'] != '') {
 	    if(FileMoveUploaded($PC->rcvF['img_pg']['tmp_name'],
 	    $PC->rcvF['img_pg']['name'],
-	    $GLOBALS['REP']['appli'].$GLOBALS['PAGE']['REP_page'])) {
+	    $GLOBALS['REP']['appli'])) {
 		$PC->rcvP['img_pg'] = $PC->rcvF['img_pg']['name'];
 	    }
 	    else {
@@ -97,7 +97,7 @@ if ($PC->rcvP['action'] != '') {
 	if($PC->rcvF['img_menu_pg']['tmp_name'] != '' && $PC->rcvF['img_menu_pg']['tmp_name'] != $PC->rcvF['img_pg']['tmp_name']) {
 	    if(FileMoveUploaded($PC->rcvF['img_menu_pg']['tmp_name'],
 	    $PC->rcvF['img_menu_pg']['name'],
-	    $GLOBALS['REP']['appli'].$GLOBALS['PAGE']['REP_pagemenu'])) {
+	    $GLOBALS['REP']['appli'])) {
 		$PC->rcvP['img_menu_pg'] = $PC->rcvF['img_menu_pg']['name'];
 	    }
 	    else {
@@ -105,7 +105,7 @@ if ($PC->rcvP['action'] != '') {
 	    }
 	}
 	elseif ($PC->rcvF['img_menu_pg']['tmp_name'] != '' && $PC->rcvF['img_menu_pg']['tmp_name'] == $PC->rcvF['img_pg']['tmp_name']) {
-	    copy($GLOBALS['REP']['appli'].$GLOBALS['PAGE']['REP_page'].$PC->rcvF['img_pg']['name'], $GLOBALS['REP']['appli'].$GLOBALS['PAGE']['REP_pagemenu'].$PC->rcvF['img_menu_pg']['name']);
+	    copy($GLOBALS['REP']['appli'].$PC->rcvF['img_pg']['name'], $GLOBALS['REP']['appli'].$PC->rcvF['img_menu_pg']['name']);
 	    $PC->rcvP['img_menu_pg'] = $PC->rcvF['img_menu_pg']['name'];
 	}
 	else {

@@ -131,6 +131,6 @@
 		<xsl:apply-templates select="submenu"/>
 	</xsl:template>
 	<xsl:template match="@droit">
-		<img src="../img/deconnect.mini.png" title="Page privee" hspace="4"/>
+		<img src="'.getStaticUrl('img').'deconnect.mini.png" title="Page privee" hspace="4"/>
 	</xsl:template>
 </xsl:stylesheet>

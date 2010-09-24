@@ -43,8 +43,8 @@ elseif($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'supp') {
     aiJeLeDroit('commande', 30, 'web');
     $titre = "Suppression de la commande ".$PC->rcvG['id_commande'];
     $corps 	= '<span class="importantblue">Confirmer la suppression</span>';
-    $pied 	= '<a href="javascript:zuno.popup.close();">'.imageTag('../img/prospec/cancel.png','Effacer','middle').' Annuler</a>
-		   <a href="../pegase/Commande.php?action=suppconfirm&id_commande='.$PC->rcvG['id_commande'].'">'.imageTag('../img/prospec/confirm.png','Effacer','middle').'Confirmer</a>';
+    $pied 	= '<a href="javascript:zuno.popup.close();">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Annuler</a>
+		   <a href="../pegase/Commande.php?action=suppconfirm&id_commande='.$PC->rcvG['id_commande'].'">'.imageTag(getStaticUrl('img').'prospec/confirm.png','Effacer','middle').'Confirmer</a>';
     echo generateZBox($titre, $titre, $corps,$pied,'CommandeBox','');
 }
 elseif ($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'suppconfirm') {
@@ -114,7 +114,7 @@ elseif($PC->rcvP['action'] == 'addCmd') {
     if($result[0]) {
 	$bddtmp->makeRequeteUpdate('devis', 'id_dev', $data['devis_cmd'], array('status_dev' => '6'));
 	$bddtmp->process();
-	echo $view->popupCommande($PC->rcvP, 'ok', '<img src="../img/ajax-loader.gif" alt="loading" onload="redirectCommande(\''.$data['id_cmd'].'\');"');
+	echo $view->popupCommande($PC->rcvP, 'ok', '<img src="'.getStaticUrl('img').'ajax-loader.gif" alt="loading" onload="redirectCommande(\''.$data['id_cmd'].'\');"');
 	exit;
     }
     echo $view->popupCommande($PC->rcvP, 'erreurCmd', 'Erreur insertion '.$result[1]);

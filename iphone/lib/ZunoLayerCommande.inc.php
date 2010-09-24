@@ -12,7 +12,7 @@
 				<!--   Commande : Menu général         -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waMenuCommande" title="Commande">
-				<a href="Commande.php?action=addCommandePre" rev="async" rel="action" class="iButton iBClassic"><img src="Img/add.png" alt="Créer une commande" /></a>
+				<a href="Commande.php?action=addCommandePre" rev="async" rel="action" class="iButton iBClassic"><img src="'.getStaticUrl('imgPhone').'add.png" alt="Créer une commande" /></a>
 				<a href="#" rel="back" class="iButton iBBack" onclick="return WA.Back()">Retour</a>
 				'.self::iMenuGeneral().$footer.'
 				</div>
@@ -28,14 +28,14 @@
 				<!--   Commande : Menu Recherche       -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waSearchCommande" title="Recherche">
-				<a href="#"  onclick="return WA.Submit(\'formSearchCommande\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="recherche" /></a>
+				<a href="#"  onclick="return WA.Submit(\'formSearchCommande\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="recherche" /></a>
 				'.self::iLayerSearch().$footer.'
 				</div>
 				<!------------------------------------ -->
 				<!-- Commande : Menu statistique       -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waStatsCommande" title="Statistiques">
-				<a href="#"  onclick="return WA.Submit(\'formStatsCommande\',null,event)" rel="action" class="iButton iBAction"><img src="Img/stats.png" alt="Statistiques" /></a>
+				<a href="#"  onclick="return WA.Submit(\'formStatsCommande\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'stats.png" alt="Statistiques" /></a>
 				'.$footer.'
 				</div>
 		';
@@ -45,9 +45,9 @@
  	{
  		return '<div class="iMenu">
 				<ul class="iArrow">
- 					<li><a href="#_SearchCommande" class="Commande"><img src="Img/iconMenu/commande.search.png" alt="Recherche" /> Rechercher</a></li>
- 					<li><a href="Commande.php?action=addCommandePre" rev="async" rel="action" class="Commande"><img src="Img/iconMenu/commande.add.png" alt="Ajouter" /> Créer</a></li>
- 					<li><a href="Commande.php?action=voirStats" rev="async" class="Commande"><img src="Img/iconMenu/commande.stat.png" alt="Statistiques" />Statistiques</a></li>
+ 					<li><a href="#_SearchCommande" class="Commande"><img src="'.getStaticUrl('imgPhone').'iconMenu/commande.search.png" alt="Recherche" /> Rechercher</a></li>
+ 					<li><a href="Commande.php?action=addCommandePre" rev="async" rel="action" class="Commande"><img src="'.getStaticUrl('imgPhone').'iconMenu/commande.add.png" alt="Ajouter" /> Créer</a></li>
+ 					<li><a href="Commande.php?action=voirStats" rev="async" class="Commande"><img src="'.getStaticUrl('imgPhone').'iconMenu/commande.stat.png" alt="Statistiques" />Statistiques</a></li>
  				</ul>
  				</div>'.self::commandeForm().'<br class="clear"/>';
  	}
@@ -73,7 +73,7 @@
  	{
  		return '<div class="iMenu">
 		<ul class="iArrow">
-			<li><a href="Commande.php?action=addCommande" rev="async" rel="action"><img src="Img/iconMenu/commande.add.png" alt="Ajouter" />Ajouter une nouvelle commande</a></li>
+			<li><a href="Commande.php?action=addCommande" rev="async" rel="action"><img src="'.getStaticUrl('imgPhone').'iconMenu/commande.add.png" alt="Ajouter" />Ajouter une nouvelle commande</a></li>
 		</ul>
 		</div>';
  	}
@@ -91,7 +91,7 @@
 
 								</ul>
 								<br/>
-								<a href="#" onclick="return WA.Submit(\'formSearchCommande\',null,event)" class="whiteButton"><img src="Img/search.png" style="float: left"/><span>Lancer la recherche</span></a>
+								<a href="#" onclick="return WA.Submit(\'formSearchCommande\',null,event)" class="whiteButton"><img src="'.getStaticUrl('imgPhone').'search.png" style="float: left"/><span>Lancer la recherche</span></a>
 							</fieldset>
 						</div>
 				</form>';
@@ -102,7 +102,7 @@
 	{
 		if($_SESSION['searchProduitQuery'] != '') $iTag = ' value="'.$_SESSION['searchProduitQuery'].'"';
 	return '<form action="Commande.php?action=inputProduitResult" id="formSearchProduitajax" onsubmit="return WA.Submit(this,null,event)"><div  class="iFormI">
-			<a href="#_SearchProduitResult" rel="action" onclick="return WA.Submit(\'formSearchProduitajax\',null,event)" class="iButton iBAction"><img src="Img/search.png" alt="Recherche" /></a>
+			<a href="#_SearchProduitResult" rel="action" onclick="return WA.Submit(\'formSearchProduitajax\',null,event)" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Recherche" /></a>
 
 			<fieldset class="attach">
 				<legend>Recherche</legend>
@@ -115,7 +115,7 @@
 	{
 		if($_SESSION['searchCommandeQuery'] != '') $iTag = ' value="'.$_SESSION['searchCommandeQuery'].'"';
 	return '<form action="Commande.php?action=inputCommandeResult" id="formSearchCommandeajax" onsubmit="return WA.Submit(this,null,event)"><div  class="iFormI">
-			<a href="#_SearchCommandeResult" rel="action" onclick="return WA.Submit(\'formSearchCommandeajax\',null,event)" class="iButton iBAction"><img src="Img/search.png" alt="Recherche" /></a>
+			<a href="#_SearchCommandeResult" rel="action" onclick="return WA.Submit(\'formSearchCommandeajax\',null,event)" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Recherche" /></a>
 
 			<fieldset class="attach">
 				<legend>Recherche</legend>

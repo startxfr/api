@@ -112,7 +112,7 @@ class FournisseurView extends generalView {
 	}
 	else {
 	    $form = $this->searchForm($datas);
-	    $titreF = imageTag('../img/page.menu/fournisseur.png','recherche').' Recherche de fournisseur';
+	    $titreF = imageTag(getStaticUrl('img').'page.menu/fournisseur.png','recherche').' Recherche de fournisseur';
 	    $titreR = $this->result($datas);
 	    $rendu = new ZunoRenduHtml('rechercheFourn');
 	    $bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeFournisseurResultPage",'../');
@@ -161,11 +161,11 @@ class FournisseurView extends generalView {
 	$this->form2->newInputHidden('newPF', "", "InputHiddenPF");
 	$this->form2->newInputHidden('newRF', "", "InputHiddenRF");
 
-	$pied2 = '<a name="submit" onclick="zuno.popup.open(\'Fournisseur.php\', \'action=changeDatas\',480,150);" style="cursor: pointer;"><img alt="modifProduits" title="Modifier les produits sélectionnés" src="../img/prospec/produit.png" /> Modifier les produits sélectionnés</a>';
+	$pied2 = '<a name="submit" onclick="zuno.popup.open(\'Fournisseur.php\', \'action=changeDatas\',480,150);" style="cursor: pointer;"><img alt="modifProduits" title="Modifier les produits sélectionnés" src="'.getStaticUrl('img').'prospec/produit.png" /> Modifier les produits sélectionnés</a>';
 
 	$this->html = new ZunoRenduHtml('ficheCompleteFourn');
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Fournisseur').' Fournisseur '.$datas['data']['id_fourn'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce fournisseur'),'formFournisseurModif', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/produit.png','Fournisseur').' Fournisseur '.$datas['data']['id_fourn'], '', $this->form->generateForm(), $this->form->generateButtons('', 'Recommencer', 'Modifier ce fournisseur'),'formFournisseurModif', 'open');
 	$this->form2->newTableauBlock($this->listeProd->generateTableau());
 	$this->html->generateZBox('Liste des produits', 'Liste des produits', $this->form2->generateForm(), $pied2, 'ListeFournisseurProduit', 'open', true);
 
@@ -272,7 +272,7 @@ class FournisseurView extends generalView {
 
 	$this->html = new ZunoRenduHtml('ficheFormAddFourn');
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/produit.png','Fournisseur').' Nouveau Fournisseur ', '', $this->form->generateForm(), $this->form->generateButtons('ficheFormAddFourn', 'Recommencer', 'Créer ce fournisseur'),'formFournisseurAdd', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/produit.png','Fournisseur').' Nouveau Fournisseur ', '', $this->form->generateForm(), $this->form->generateButtons('ficheFormAddFourn', 'Recommencer', 'Créer ce fournisseur'),'formFournisseurAdd', 'open');
 	return $this->html->generateRendu();
     }
 
@@ -285,7 +285,7 @@ class FournisseurView extends generalView {
 	$titre['Remise (%)'] = '';
 	$titre['Prix d\'achat (€)'] = '';
 	$titre['Stock'] = '';
-	$titre['<img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormProduit\');"/>']='small';
+	$titre['<img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormProduit\');"/>']='small';
 	$this->listeProd->ligneTitre($titre);
 	$compteur = 0;
 	foreach($datas['prod'] as $v) {
@@ -311,8 +311,8 @@ class FournisseurView extends generalView {
 	$fieldset->ligneInput("Nouveau prix", "prixF", "", ' id="InputPF" ','ZTips.fournisseur.produitNewPrix');
 	$fieldset->ligneInput("Nouvelle remise", "remiseF","", ' id="InputRF" ','ZTips.fournisseur.produitNewRemise');
 	$form = new ZunoForm("formPopupProdFourn", "produit/Fournisseur.php", "POST");
-	$pied = '<a name="reset" onclick="zuno.popup.close"><img align="middle" title="Effacer" alt="Effacer" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$pied .= '<a name="submit" onclick="submitPopupFournProd();"><img align="middle" title="Enregistrer" alt="Enregistrer" src="../img/prospec/record.png"/> Enregistrer</a>';
+	$pied = '<a name="reset" onclick="zuno.popup.close"><img align="middle" title="Effacer" alt="Effacer" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$pied .= '<a name="submit" onclick="submitPopupFournProd();"><img align="middle" title="Enregistrer" alt="Enregistrer" src="'.getStaticUrl('img').'prospec/record.png"/> Enregistrer</a>';
 
 	$form->newBlock($fieldset->generateFieldset(), '50');
 	$rendu = new ZunoRenduHtml("popupProdFourn");

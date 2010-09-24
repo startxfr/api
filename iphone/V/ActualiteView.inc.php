@@ -20,7 +20,7 @@ class actualiteView {
 		    $out .= '</ul><h2>'.strftime("%A %d %B %Y",$dateInt).'</h2><ul class="iArrow">';
 		}
 		$out .= '<li><a href="Actualite.php?action=view&id='.$v['id'].'" rev="async" class="'.$class.'">' .
-			'<span><img src="../img/actualite/'.$v['type'].'.png"/></span>' .
+			'<span><img src="'.getStaticUrl('img').'actualite/'.$v['type'].'.png"/></span>' .
 			'<em><span class="actualiteHeure">'.strftime("%H:%M",$dateInt).'</span> '.$v['titre'].'</em>' .
 			'</a></li>';
 	    }
@@ -41,7 +41,7 @@ class actualiteView {
 	$out .= '<li>'.ucfirst($v['titre']).'</li>';
 	$out .= '<li><small style="color: #888">'.$v['desc'].'</small></li>';
 	$out .= '<li> effectué le '.strftime("%d/%m/%Y %H:%M",strtotime($v['date'])).' par '.$utilisateur.'</li>';
-	$out .= '<li><em><i class="'.$class.'"><img src="../img/actualite/'.$v['type'].'.png"/> '.ucfirst($v['type']).'</i></em></li>';
+	$out .= '<li><em><i class="'.$class.'"><img src="'.getStaticUrl('img').'actualite/'.$v['type'].'.png"/> '.ucfirst($v['type']).'</i></em></li>';
 	$out .= '</ul></fieldset>';
 	if($v['id_ent'] != '' or
 		$v['id_cont'] != '' or
@@ -55,16 +55,16 @@ class actualiteView {
 	    if($v['id_cont'] != '') $out .= '<li>'.contactParticulierView::contactLinkSimple($v).'</li>';
 	    if($v['id_aff'] != '')  $out .= '<li>'.affaireView::affaireLinkSimple($v).'</li>';
 	    if($v['id_dev'] != '')
-		$out .= '<li><a href="Devis.php?action=view&id_dev='.$v['id_dev'].'" class="Devis" rev="async"><img src="../img/actualite/devis.png"/> Devis : '.$v['id_dev'].' '.$v['titre_dev'].'</a></li>';
+		$out .= '<li><a href="Devis.php?action=view&id_dev='.$v['id_dev'].'" class="Devis" rev="async"><img src="'.getStaticUrl('img').'actualite/devis.png"/> Devis : '.$v['id_dev'].' '.$v['titre_dev'].'</a></li>';
 	    if($v['id_cmd'] != '')
-		$out .= '<li><a href="Commande.php?action=view&id_cmd='.$v['id_cmd'].'" class="Commande" rev="async"><img src="../img/actualite/commande.png"/> Commande : '.$v['id_cmd'].' '.$v['titre_cmd'].'</a></li>';
+		$out .= '<li><a href="Commande.php?action=view&id_cmd='.$v['id_cmd'].'" class="Commande" rev="async"><img src="'.getStaticUrl('img').'actualite/commande.png"/> Commande : '.$v['id_cmd'].' '.$v['titre_cmd'].'</a></li>';
 	    if($v['id_fact'] != '')
-		$out .= '<li><a href="Facture.php?action=view&id_fact='.$v['id_fact'].'&type='.$v['type_fact'].'" class="Facture" rev="async"><img src="../img/actualite/facture.png"/> '.$v['type_fact'].' : '.$v['id_fact'].' '.$v['titre_fact'].'</a></li>';
+		$out .= '<li><a href="Facture.php?action=view&id_fact='.$v['id_fact'].'&type='.$v['type_fact'].'" class="Facture" rev="async"><img src="'.getStaticUrl('img').'actualite/facture.png"/> '.$v['type_fact'].' : '.$v['id_fact'].' '.$v['titre_fact'].'</a></li>';
 	    $out  .= '</ul>';
 	    $out  .= '</fieldset>';
 	}
 	if(($v['type'] == "general") && ($from != 'afterModif'))
-	    $output = '<a href="Actualite.php?action=modif&id='.$v["id"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/edit.png" alt="Modifier" /></a>
+	    $output = '<a href="Actualite.php?action=modif&id='.$v["id"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'edit.png" alt="Modifier" /></a>
 				<div class="iPanel">
 				'.$out.'
 			</div>';
@@ -87,10 +87,10 @@ class actualiteView {
 	$form .= (in_array('desc',$onError)) ? '<span class="iFormErr"/>' : '';
 	$form .= '</ul></li></fieldset>';
 	$form .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddActualite\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddActualite\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
-	$out = '<a href="#"  onclick="return WA.Submit(\'formAddActualite\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out = '<a href="#"  onclick="return WA.Submit(\'formAddActualite\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddActualite" action="Actualite.php?action=doAdd" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'<div class="iPanel">
 					'.$form.'
@@ -113,10 +113,10 @@ class actualiteView {
 	$form .= '<input type="hidden" name="id" value="'.$value['id'].'" />';
 	$form .= '</ul></li></fieldset>';
 	$form .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifActualite\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifActualite\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
-	$out = '<a href="#"  onclick="return WA.Submit(\'formModifActualite\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out = '<a href="#"  onclick="return WA.Submit(\'formModifActualite\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formModifActualite" action="Actualite.php?action=doModif" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'<div class="iPanel">
 					'.$form.'

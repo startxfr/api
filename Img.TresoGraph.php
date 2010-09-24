@@ -24,9 +24,9 @@ ini_set('display_errors','off');
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
-include ("plugin/jpgraph/src/jpgraph.php");
-include ("plugin/jpgraph/src/jpgraph_line.php");
-include ("plugin/jpgraph/src/jpgraph_iconplot.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_line.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_iconplot.php");
 
 $annee = date("Y");
 $ActualMonth = date("n");

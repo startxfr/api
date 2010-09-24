@@ -24,8 +24,8 @@ ini_set('display_errors','off');
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
-include ("../plugin/jpgraph/src/jpgraph.php");
-include ("../plugin/jpgraph/src/jpgraph_bar.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph.php");
+include (getMutoolsPath('jpgraph')."src/jpgraph_bar.php");
 
 $maxLigne = '10';
 $year = date('Y');

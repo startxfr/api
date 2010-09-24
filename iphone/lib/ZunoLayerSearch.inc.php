@@ -13,7 +13,7 @@ class ZunoLayerSearch
 	{
 		if($_SESSION['searchQuery'] != '') $iTag = ' value="'.$_SESSION['searchQuery'].'"';
 return '<form action="Search.php" id="formSearch" onsubmit="return WA.Submit(this,null,event)"><div  class="iFormI">
-			<a href="#_SearchResult" rel="action" onclick="return WA.Submit(\'formSearch\',null,event)" class="iButton iBAction"><img src="Img/search.png" alt="Recherche" /></a>
+			<a href="#_SearchResult" rel="action" onclick="return WA.Submit(\'formSearch\',null,event)" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="Recherche" /></a>
 
 			<fieldset class="attach">
 				<legend>Recherche</legend>

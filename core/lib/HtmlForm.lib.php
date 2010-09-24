@@ -80,7 +80,7 @@ function generateZBox($titre, $titre_off = '', $corps = '', $pied = '', $id_div 
  * @param $linkText String: text to link this contextBox
  * @param $body String: body of the context box
  * @param $title String: Title for this context box
- * @return HTML Span Link ready to be used with JS BoxOver.js
+ * @return HTML Span Link ready to be used with JS BoxOver
  */
 function ContextBox($linkText,$body,$title="") {
     $BoxOverCmd = '';

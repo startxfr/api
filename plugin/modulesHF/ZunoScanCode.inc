@@ -43,7 +43,7 @@ class ModuleHFZunoScanCode {
 	    $out .= '<li id="ScanLeCode">
 				    <form name="ScanSearch" method="post" action="'.$prefix.'FormProcess.ScanSearch.php">
 					<input type="text" name="Code" id="ScanSearchCode" value="" size="6"/>
-					<img src="../img/searchGo.png" id="ScanSearchCodeGo" title="lancer la recherche"/>
+					<img src="'.getStaticUrl('img').'searchGo.png" id="ScanSearchCodeGo" title="lancer la recherche"/>
 				    </form>
 				</li>
 				<script type="text/javascript">

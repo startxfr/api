@@ -147,9 +147,9 @@ class affaireView extends generalView {
 	$this->initioBlockForm($datas, 'modif');
 
 	$rendu = new ZunoRenduHtml('ficheAffaire');
-	$rendu->generateZBox(imageTag('../img/prospec/affaire.png','Affaire').' Informations sur l\'affaire '.$datas['data']['id_aff'], 'Informations', $this->blockForm->generateForm(), $this->blockForm->generateButtons(), 'idFormAffModif', 'open', true, 'blockAffaireModif');
-	$rendu->generateZBox(imageTag('../img/prospec/affaire.png','Affaire-Evo').' Évolution de cette affaire', 'Évolution', $this->blockEvo, '', 'idAffaireEvolution', 'open');
-	$rendu->generateZBox(imageTag('../img/page.menu/DirInfo.png','Affaire-Files').' Fichiers de cette affaire', 'Fichiers', $this->blockFiles, '', 'idAffaireFiles', 'open');
+	$rendu->generateZBox(imageTag(getStaticUrl('img').'prospec/affaire.png','Affaire').' Informations sur l\'affaire '.$datas['data']['id_aff'], 'Informations', $this->blockForm->generateForm(), $this->blockForm->generateButtons(), 'idFormAffModif', 'open', true, 'blockAffaireModif');
+	$rendu->generateZBox(imageTag(getStaticUrl('img').'prospec/affaire.png','Affaire-Evo').' Évolution de cette affaire', 'Évolution', $this->blockEvo, '', 'idAffaireEvolution', 'open');
+	$rendu->generateZBox(imageTag(getStaticUrl('img').'page.menu/DirInfo.png','Affaire-Files').' Fichiers de cette affaire', 'Fichiers', $this->blockFiles, '', 'idAffaireFiles', 'open');
 	$rendu->insertJS($this->script);
 	return $rendu->generateRendu();
     }
@@ -168,9 +168,9 @@ class affaireView extends generalView {
 	$fieldset = new ZunoFieldset('Informations','','height: 140px');
 	$fieldset->ligneInput('Titre', 'titre_aff', $data['titre_aff']);
 	if ($data['type_ent'] != '')
-	    $img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png';
+	    $img	= getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$data['type_ent'].'.png';
 	else {
-	    $img	= '../img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png';
+	    $img	= getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png';
 	    $data['nom_ent'] = '<i>particulier</i>';
 	}
 	$fieldset->ligneLinkTo('Entreprise', '../prospec/fiche.php?id_ent='.$data['entreprise_aff'], $data['nom_ent'],$img);
@@ -200,21 +200,21 @@ class affaireView extends generalView {
 	    $fieldset = new ZunoFieldset('Documents liées à cette affaire');
 	    if(count($datas['related']['devis']) > 0) {
 		foreach($datas['related']['devis'] as $v)
-		    $fieldset->ligneLinkTo('Devis', '../draco/Devis.php?id_dev='.$v['id_dev'], $v['id_dev'].' '.$v['titre_dev'],'../img/actualite/devis.png');
+		    $fieldset->ligneLinkTo('Devis', '../draco/Devis.php?id_dev='.$v['id_dev'], $v['id_dev'].' '.$v['titre_dev'],getStaticUrl('img').'actualite/devis.png');
 	    }
 	    if(count($datas['related']['commandes']) > 0) {
 		foreach($datas['related']['commandes'] as $v)
-		    $fieldset->ligneLinkTo('Commande', '../pegase/Commande.php?id_cmd='.$v['id_cmd'], $v['id_cmd'].' '.$v['titre_cmd'],'../img/actualite/commande.png');
+		    $fieldset->ligneLinkTo('Commande', '../pegase/Commande.php?id_cmd='.$v['id_cmd'], $v['id_cmd'].' '.$v['titre_cmd'],getStaticUrl('img').'actualite/commande.png');
 	    }
 	    if(count($datas['related']['factures']) > 0) {
 		foreach($datas['related']['factures'] as $v)
-		    $fieldset->ligneLinkTo('Facture', '../facturier/Facture.php?id_fact='.$v['id_fact'], $v['id_fact'].' '.$v['titre_fact'],'../img/actualite/facture.png');
+		    $fieldset->ligneLinkTo('Facture', '../facturier/Facture.php?id_fact='.$v['id_fact'], $v['id_fact'].' '.$v['titre_fact'],getStaticUrl('img').'actualite/facture.png');
 	    }
 	    $this->blockForm->newBlock($fieldset->generateFieldset());
 	}
-	$this->blockForm->addButton('Historique de cette affaire','return zuno.popup.open(\'../draco/Affaire.php\', \'action=actuAffaire&id_aff='.$data['id_aff'].'\', \'850\', \'450\', \'\', \'\', \'resize\', \'Actualités\');','../img/prospec/actu.png');
+	$this->blockForm->addButton('Historique de cette affaire','return zuno.popup.open(\'../draco/Affaire.php\', \'action=actuAffaire&id_aff='.$data['id_aff'].'\', \'850\', \'450\', \'\', \'\', \'resize\', \'Actualités\');',getStaticUrl('img').'prospec/actu.png');
 	if($data['archived_aff'] == 0)
-	    $this->blockForm->addButton('Archiver cette affaire', 'return zuno.popup.open(\'../draco/Affaire.php\', \'action=archiver&aff='.$data['id_aff'].'\', \'300\', \'150\', \'\', \'\', \'resize\', \'Archiver\')', '../img/prospec/affaire.png');
+	    $this->blockForm->addButton('Archiver cette affaire', 'return zuno.popup.open(\'../draco/Affaire.php\', \'action=archiver&aff='.$data['id_aff'].'\', \'300\', \'150\', \'\', \'\', \'resize\', \'Archiver\')', getStaticUrl('img').'prospec/affaire.png');
     }
 
     /**
@@ -279,7 +279,7 @@ class affaireView extends generalView {
 	$script .= '</script>';
 
 	$tag['FormName'] = "SearchAffaire";
-	$titre = imageTag('../img/prospec/voir.png','recherche').' Recherche des affaires';
+	$titre = imageTag(getStaticUrl('img').'prospec/voir.png','recherche').' Recherche des affaires';
 	$corps = '<form name="'.$tag['FormName'].'" action="ListeAffaires.php" method="post" id="searchFormAffaire">';
 	$corps .= '<div id="PortletSearchAffaire">';
 	$corps .= '<input type="hidden" name="action" value="searchAffaire" id="listeAffaireAction" />';
@@ -290,8 +290,8 @@ class affaireView extends generalView {
 	$corps .= '<input type="hidden" name="orderSens" value="DESC" id="orderSensAffaireSearch" />';
 	$corps .= $this->interneSearch($datas);
 	$corps .= '</div></form>';
-	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="../img/prospec/cancel.png"/> Annuler</a>';
-	$bouton.= '<a name="valider" onclick="ChangeAffaireAction(\'searchAffaire\');ChangeSubmit();"><img title="Valider" alt="valid" src="../img/prospec/voir.png" />Rechercher</a>';
+	$bouton = '<a name="reset" onclick="resetForm();" style="cursor:pointer;"><img title="Reset" alt="reset" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>';
+	$bouton.= '<a name="valider" onclick="ChangeAffaireAction(\'searchAffaire\');ChangeSubmit();"><img title="Valider" alt="valid" src="'.getStaticUrl('img').'prospec/voir.png" />Rechercher</a>';
 	return generateZBox($titre,$titre,$corps,$bouton,'searchBox').$script;
     }
 
@@ -415,15 +415,15 @@ class affaireView extends generalView {
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">';
 	if(!$modHistorique)
-	    $out .= '<th class="barre"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormAffaire\');"/></th>';
-	$out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th>'.$this->$linkOrderFunction('Titre','titre_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th>'.$this->$linkOrderFunction('Montant HT','budget_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="barre" style="width:1%; white-space: nowrap">'.$this->$linkOrderFunction('Actif','actif_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
-	$out .= '<th class="barre" style="width:1%; white-space: nowrap">'.$this->$linkOrderFunction('Archivé','archived_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage',$suffixeLink).'</th>';
+	    $out .= '<th class="barre"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormAffaire\');"/></th>';
+	$out .= '<th class="barre">'.$this->$linkOrderFunction('ID','id_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
+	$out .= '<th>'.$this->$linkOrderFunction('Titre','titre_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
+	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Entreprise','nom_ent',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
+	$out .= '<th class="center barre">'.$this->$linkOrderFunction('Contact','nom_cont',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
+	$out .= '<th>'.$this->$linkOrderFunction('Montant HT','budget_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
+	$out .= '<th class="barre">'.$this->$linkOrderFunction('Status','status_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
+	$out .= '<th class="barre" style="width:1%; white-space: nowrap">'.$this->$linkOrderFunction('Actif','actif_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
+	$out .= '<th class="barre" style="width:1%; white-space: nowrap">'.$this->$linkOrderFunction('Archivé','archived_aff',$datas['order'],$datas['orderSens'],$datas['limit'],'ChangeAffaireResultPage').'</th>';
 	if(!$modHistorique)
 	    $out .= '<th class="last center">Actions</th>';
 	$out .= '</tr>';
@@ -432,15 +432,15 @@ class affaireView extends generalView {
 	    $action = '';
 
 	    if ($_SESSION['user']['id'] == $proj['commercial_aff'])
-		$action   .= "<a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=modif',450,450,'','','resize','affaire');\">".imageTag($suffixeLink.'img/prospec/affaire.modif.png','Modifier')."</a>
-			      <a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=supp',450,200,'','','resize','affairerem');\">".imageTag($suffixeLink.'img/prospec/affaire.delete.png','Supprimer')."</a>";
+		$action   .= "<a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=modif',450,450,'','','resize','affaire');\">".imageTag(getStaticUrl('img').'prospec/affaire.modif.png','Modifier')."</a>
+			      <a onclick=\"zuno.popup.open('PopupAffaire.php','id_aff=".$proj['id_aff']."&action=supp',450,200,'','','resize','affairerem');\">".imageTag(getStaticUrl('img').'prospec/affaire.delete.png','Supprimer')."</a>";
 	    $actionJSLigne = "onclick=\"window.location='$suffixeLink/draco/Affaire.php?id_aff=".$proj['id_aff']."';\"";
 
 	    if ($proj['nom_ent'] != '') {
 		if (strlen($proj['nom_ent']) > 25)
 		    $proj['nom_ent'] = substr($proj['nom_ent'],0,25)."...";
 		if ($proj['type_ent'] != '')
-		    $proj['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$proj['type_ent'].'.png',$proj['nom_tyent']).' '.$proj['nom_ent'];
+		    $proj['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/'.$proj['type_ent'].'.png',$proj['nom_tyent']).' '.$proj['nom_ent'];
 		if (strlen($proj['ville_ent']) > 18)
 		    $proj['ville_ent'] = substr($proj['ville_ent'],0,18)."...";
 		if ($proj['ville_ent'] != '')
@@ -449,7 +449,7 @@ class affaireView extends generalView {
 	    }
 	    else {
 		$proj['nom_ent'] = '<i>Particulier</i>';
-		$proj['nom_ent']	= imageTag($suffixeLink.'img/'.$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$proj['nom_ent'];
+		$proj['nom_ent']	= imageTag(getStaticUrl('img').$GLOBALS['PropsecConf']['dir.img'].'TypeEntreprise/particulier.png','particulier').' '.$proj['nom_ent'];
 		if (strlen($proj['ville_cont']) > 18)
 		    $proj['ville_cont'] = substr($proj['ville_cont'],0,18)."...";
 		if ($proj['ville_cont'] != '')
@@ -458,11 +458,11 @@ class affaireView extends generalView {
 	    }
 	    $proj['detect_aff'] = DateUniv2Human($proj['detect_aff'],'simpleLong');
 	    if($proj['actif_aff'] == '1')
-		$imgActif = imageTag($suffixeLink.'img/valid.png','Affaire active');
-	    else $imgActif = imageTag($suffixeLink.'img/unvalid.png','Affaire non-active');
+		$imgActif = imageTag(getStaticUrl('img').'valid.png','Affaire active');
+	    else $imgActif = imageTag(getStaticUrl('img').'unvalid.png','Affaire non-active');
 	    if($proj['archived_aff'] == '1')
-		$imgArchive = imageTag($suffixeLink.'img/valid.png','Affaire archivée');
-	    else $imgArchive = imageTag($suffixeLink.'img/unvalid.png','Affaire non-archivée');
+		$imgArchive = imageTag(getStaticUrl('img').'valid.png','Affaire archivée');
+	    else $imgArchive = imageTag(getStaticUrl('img').'unvalid.png','Affaire non-archivée');
 
 	    $out .= '<tr class="altern'.$alternance.'">';
 	    if(!$modHistorique)
@@ -488,11 +488,11 @@ class affaireView extends generalView {
 	if($modHistorique)
 	    $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaireHisto');
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'affaire');
-	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeAffaireResultPage",$suffixeLink);
+	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeAffaireResultPage");
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
 	$bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="affaireDoExportTableur(this.value);" ').'</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.$suffixeLink.'img/prospec/export-csv.png"/> Export Tableur</a>';
+	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
 	if($modHistorique)
@@ -525,14 +525,14 @@ class affaireView extends generalView {
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
-	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormAffaire\',\'resultAffaireAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
+	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormAffaire\',\'resultAffaireAction\');" class="bouton','Effectuer les changements',getStaticUrl('img').'prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div></div></div>';
 	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.getStaticUrl('img').'prospec/work-multiple.png"/> Actions groupées</a>';
 	return $bouton;
     }
 
@@ -628,16 +628,16 @@ class affaireView extends generalView {
 	    if ($opt != 'new') {
 		$tag['projet'] .= "<div class=\"row\">
 								<div class=\"label\">Détail</div>
-								<div class=\"field\"><a href=\"javascript:window.location.href = 'Affaire.php?id_aff=".$affaire['id_aff']."';zuno.popup.close()\">".imageTag('../img/prospec/voir.png','Affaire Liée')."Fiche affaire complète"."</a></div>
+								<div class=\"field\"><a href=\"javascript:window.location.href = 'Affaire.php?id_aff=".$affaire['id_aff']."';zuno.popup.close()\">".imageTag(getStaticUrl('img').'prospec/voir.png','Affaire Liée')."Fiche affaire complète"."</a></div>
 							</div>";
 		$tag['projet'] .= "<div class=\"row\">
 								<div class=\"label\">Documents</div>
-								<div class=\"field\"><a href=\"#\" onclick=\"return zuno.popup.open('../gnose/$urlGnose','dir=/Affaire/".$affaire['dir_aff']."&format=popup',700,400,'','','resize','gnose');\">".imageTag('../img/prospec/projet.png','Affaire Liée')."Dossier GNOSE"."</a></div>
+								<div class=\"field\"><a href=\"#\" onclick=\"return zuno.popup.open('../gnose/$urlGnose','dir=/Affaire/".$affaire['dir_aff']."&format=popup',700,400,'','','resize','gnose');\">".imageTag(getStaticUrl('img').'prospec/projet.png','Affaire Liée')."Dossier GNOSE"."</a></div>
 							</div>";
 		if ($affaire['projet_aff'] != '')
 		    $tag['projet'] .= "<div class=\"row\">
 								<div class=\"label\">Projet</div>
-								<div class=\"field\"> onclick=\"return zuno.popup.open('../prospec/Projet.php','id_proj=".$affaire['projet_aff']."&format=popup',600,450,'','','resize','projet');\">".imageTag('../img/prospec/projet.png','projet Lié')."voir"."</a></div>
+								<div class=\"field\"> onclick=\"return zuno.popup.open('../prospec/Projet.php','id_proj=".$affaire['projet_aff']."&format=popup',600,450,'','','resize','projet');\">".imageTag(getStaticUrl('img').'prospec/projet.png','projet Lié')."voir"."</a></div>
 							</div>";
 	    }
 	    else	$tag['projet'] .= "";
@@ -653,19 +653,19 @@ class affaireView extends generalView {
 				   associé. Vous pourrez récuperer ce dossier dans l\'historique de la GED.
 				   La fiche affaire sera définitivement supprimée de nos bases.<br/>
 				   Il est préférable d\'archiver les affaires sur lesquels des actions ont été réalisées.</span>';
-	    $pied 	= '<a href="javascript:zuno.popup.close();">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
-				   <a href="PopupAffaire.php?action=suppconfirm&id_aff='.$id_aff.'">'.imageTag('../img/prospec/confirm.png','','middle').' Confirmer</a>';
+	    $pied 	= '<a href="javascript:zuno.popup.close();">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>
+				   <a href="PopupAffaire.php?action=suppconfirm&id_aff='.$id_aff.'">'.imageTag(getStaticUrl('img').'prospec/confirm.png','','middle').' Confirmer</a>';
 	}
 	elseif($opt == 'modif') {
 	    $scoreAffaire = affaireModel::ScoreAffaire($affaire['id_aff']);
 	    $titre = $scoreAffaire['LinkBox']." Affaire ".$affaire['id_aff']." d&eacute;t&eacute;ct&eacute; le ".DateUniv2Human($affaire['detect_aff'],'simpleLong')." d&eacute;t&eacute;ct&eacute; par ".$affaire['commercial_aff'];
-	    $pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
-				   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/record.png','','middle').' Modifier ce affaire</a>';
+	    $pied 	= '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>
+				   <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/record.png','','middle').' Modifier ce affaire</a>';
 	}
 	else {
 	    $titre = "Creation d'une fiche affaire pour l'entreprise ".$con['nom_ent'];
-	    $pied  = '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','','middle').' Annuler</a>
-				  <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag('../img/prospec/record.png','','middle').' Enregistrer cette affaire</a>';
+	    $pied  = '<a href="javascript:document.'.$tag['FormName'].'.reset()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','','middle').' Annuler</a>
+				  <a href="javascript:document.'.$tag['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/record.png','','middle').' Enregistrer cette affaire</a>';
 	}
 
 	// On traite la boite et on retourne le tout
@@ -686,7 +686,7 @@ class affaireView extends generalView {
 
 	foreach($datas as $v) {
 	    $corps .= '<tr class="altern'.($alternance % 2).'">
-			    <td class="nowrap"><img src=\'../img/actualite/'.$v['type'].'.png\' alt=\''.$v['type'].'\'/>'.$v['type'].'</td>
+			    <td class="nowrap"><img src="'.getStaticUrl('img').'actualite/' . $v['type'] . '.png" alt="' . $v['type'] . '"/>' . $v['type'] . '</td>
 			    <td class="barre nowrap">'.DateUniv2Human($v['date'],'shortdetail').'</td>
 			    <td class="barre"><b>'.$v['titre'].'</b><br/><span style="font-size:.8em;font-style:italic;">'.$v['desc'].'</span></td>
 			    <td class="barre nowrap">'.$v['user'].'</td></tr>';

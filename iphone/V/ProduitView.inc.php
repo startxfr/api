@@ -15,7 +15,7 @@ class produitView {
 	    }
 	    $list = substr($list,5).'</ul>';
 	    if ($from == 0) {
-		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 						';
 	    }
 	    $out     .='<div class="iList">
@@ -31,14 +31,14 @@ class produitView {
     static function formAdd($value = array(),$onError = array(),$errorMess = '') {
 
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddProduit\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddProduit\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddProduit" action="Produit.php?action=doAddProd" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
 					'.self::blockAdd($value,$onError);
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddProduit\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddProduit\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>
 				</div>
 				</form>';
@@ -72,7 +72,7 @@ class produitView {
     }
     static function formModif($value = array(),$onError = array(),$errorMess = '',$id = '', $fourn) {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifProduit\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifProduit\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formModifProduit" action="Produit.php?action=doModifProd&id_prod='.$id.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -109,13 +109,13 @@ class produitView {
 	$out .='<input type="hidden" name="nombrefourn" value="'.$numero--.'" />';
 	$out .= '</fieldset>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifProduit\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifProduit\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
     static function view($value = array(), $fourn = array()) {
-	$out = '<a href="Produit.php?action=modifProd&id_prod='.$value["id_prod"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/edit.png" alt="Modifier" /></a>';
+	$out = '<a href="Produit.php?action=modifProd&id_prod='.$value["id_prod"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'edit.png" alt="Modifier" /></a>';
 	$out .= '<div class="iPanel"><fieldset>';
 	$out .= '<ul><li>Nom : '.$value['nom_prod'].'</li>';
 	$out .= '<li>Description : '.$value['description_prod'].'</li>';
@@ -153,13 +153,13 @@ class produitView {
 
     static function subBlockAction($value = array(), $fourn = array()) {
 	if($value['stillAvailable_prod'] == 1) {
-	    $del = ($fourn != array()) ? '<li><a rev="async" href="Produit.php?action=dellFournProd&amp;id_prod='.$value['id_prod'].'"><img src="../img/prospec/contact.delete.png"/> Supprimer un fournisseur</a></li>' : '';
+	    $del = ($fourn != array()) ? '<li><a rev="async" href="Produit.php?action=dellFournProd&amp;id_prod='.$value['id_prod'].'"><img src="'.getStaticUrl('img').'prospec/contact.delete.png"/> Supprimer un fournisseur</a></li>' : '';
 	    $zero = ($del == '') ? 'zero' : 'non';
 	    $out = '<fieldset>
 					<legend>Actions</legend>
 					<ul class="iArrow">
-						<li><a rev="async" href="Produit.php?action=stock&amp;id_prod='.$value['id_prod'].'"><img src="../img/page.menu/page.modif.png"/> Modifier le stock</a></li>
-						<li><a rev="async" href="Produit.php?action=addFournProd&amp;id_prod='.$value['id_prod'].'&fourn='.$zero.'"><img src="../img/prospec/contact.png"/> Ajouter un fournisseur</a></li>
+						<li><a rev="async" href="Produit.php?action=stock&amp;id_prod='.$value['id_prod'].'"><img src="'.getStaticUrl('img').'page.menu/page.modif.png"/> Modifier le stock</a></li>
+						<li><a rev="async" href="Produit.php?action=addFournProd&amp;id_prod='.$value['id_prod'].'&fourn='.$zero.'"><img src="'.getStaticUrl('img').'prospec/contact.png"/> Ajouter un fournisseur</a></li>
 						'.$del.'
 					</ul>
 				</fieldset>';
@@ -218,7 +218,7 @@ class produitView {
 	$form .='<li>'.HtmlFormIphone::InputLabel('remiseF', '', '% Remise : ', 'id="remisefournisseurproduit" onChange="affichertotal(\'remise\', this.value)"').'</li>';
 	$form .='<li id="totalfournisseurajout">Total unitaire : </li></ul></fieldset>';
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddFournProd\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddFournProd\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddFournProd" action="Produit.php?action=doAddFournProd&id_prod='.$id_prod.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -234,7 +234,7 @@ class produitView {
 	    $script .= 'fourn[\''.$v['id_ent'].'\'] = \''.$v['ville_ent'].' ('.$v['cp_ent'].')\';';
 	}
 	$script .= '</script>';
-	$out = '<a href = "#" onclick="return WA.Submit(\'formAddNewFourn\', null, event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>';
+	$out = '<a href = "#" onclick="return WA.Submit(\'formAddNewFourn\', null, event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>';
 	$out .='<form id="formAddNewFourn" action="Produit.php?action=doAddNewFourn" onsubmit="return WA.Submit(this,null,event)">';
 	$out .='<div class="iPanel">';
 	$out .='<fieldset><legend>Fournisseur</legend><ul>';
@@ -244,8 +244,8 @@ class produitView {
 	$out .= '<div id="ContactNewFourn"></div>';
 	$out .= '</fieldset>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddNewFourn\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddNewFourn\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	$out .='</div></form>'.$script;
 	$out .= '<form id="formaddNewFournCont" action="Produit.php?action=listeContFourn" onsubmit="return WA.Submit(this,null,event)">' .
@@ -272,7 +272,7 @@ class produitView {
 	}
     }
     static function modifFourn($liste, $value) {
-	$out = '<a href = "#" onclick="return WA.Submit(\'formModifFourn\', null, event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>';
+	$out = '<a href = "#" onclick="return WA.Submit(\'formModifFourn\', null, event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>';
 	$out .='<form id="formModifFourn" action="Produit.php?action=doModifFourn&id_fourn='.$value['id_fourn'].'" onsubmit="return WA.Submit(this,null,event)">';
 	$out .='<div class="iPanel">';
 	$out .='<fieldset><legend>Fournisseur</legend><ul>';
@@ -281,15 +281,15 @@ class produitView {
 	$out .= self::addNewFournCont($liste, $value);
 	$out .= '</fieldset>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifFourn\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifFourn\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	$out .='</div></form>';
 	return $out;
     }
     static function stockModif($value = array(),$onError = array(),$errorMess = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formStockProduit\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formStockProduit\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formStockProduit" action="Produit.php?action=doStock&id_prod='.$value['id_prod'].'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">

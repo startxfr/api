@@ -38,10 +38,9 @@ class ModuleHFConnect {
      */
     function DisplayModule() {
 	$out = '';
-	$addadmin = ($this->channel == 'normal') ? '' : '../';
 	if(isset($_SESSION) and array_key_exists('user',$_SESSION) and $_SESSION['user']['fullnom'] != '')
-	    $out .= '<li id="logout"><a onclick="zuno.contextBox.open(this,\'DisplayAuthentificationDisconnect\');" title="Logout" href="#"><img title="'.$GLOBALS['Tx4Lg']['Disconnect'].'" src="'.$addadmin.$GLOBALS['REP']['img'].'deconnect.png"/>'.$GLOBALS['Tx4Lg']['Disconnect'].'</a></li>';
-	else $out .= '<li id="login"><a onclick="zuno.contextBox.open(this,\'DisplayAuthentificationConnect\');" title="Login" href="#"><img title="'.$GLOBALS['Tx4Lg']['Connect'].'" src="'.$addadmin.$GLOBALS['REP']['img'].'connect.png"/>'.$GLOBALS['Tx4Lg']['Connect'].'</a></li>';
+	    $out .= '<li id="logout"><a onclick="zuno.contextBox.open(this,\'DisplayAuthentificationDisconnect\');" title="Logout" href="#"><img title="'.$GLOBALS['Tx4Lg']['Disconnect'].'" src="'.getStaticUrl('img').'deconnect.png"/>'.$GLOBALS['Tx4Lg']['Disconnect'].'</a></li>';
+	else $out .= '<li id="login"><a onclick="zuno.contextBox.open(this,\'DisplayAuthentificationConnect\');" title="Login" href="#"><img title="'.$GLOBALS['Tx4Lg']['Connect'].'" src="'.getStaticUrl('img').'connect.png"/>'.$GLOBALS['Tx4Lg']['Connect'].'</a></li>';
 	return $out;
     }
 }

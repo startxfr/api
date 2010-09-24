@@ -206,7 +206,7 @@
 		TEMPLATE D'AFFICHAGE DES ICONES
 	-->
     <xsl:template match="icone">
-        <img src="{$root_path}{.}" hspace="4" alt="{../header}"/>
+        <img src="{.}" hspace="4" alt="{../header}"/>
     </xsl:template>
 	
 	

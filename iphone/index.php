@@ -45,21 +45,21 @@ header('Content-type: text/html; charset=UTF-8');
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-	<link rel="apple-touch-icon" href="Img/zuno.png" />
-	<link rel="Stylesheet" href="WebApp/Design/Render.css" />
+	<link rel="apple-touch-icon" href="<?php echo getStaticUrl('imgPhone'); ?>zuno.png" />
+	<link rel="Stylesheet" href="<?php echo getStaticUrl('Webapp'); ?>Design/Render.css" />
 <?php
 $cliInf = GetClientBrowserInfo();
 if ($cliInf[1] == 'Firefox')
-    echo '<link rel="Stylesheet" href="WebApp/Design/Firefox.css" />';
+    echo '<link rel="Stylesheet" href="'.getStaticUrl('Webapp').'Design/Firefox.css" />';
 ?>
-	<link rel="Stylesheet" href="../jss/iphone/iphone.css" />
-	<link rel="Stylesheet" href="../jss/JSCal2-1.0/css/jscal2.css" />
-	<link rel="Stylesheet" href="../jss/JSCal2-1.0/css/border-radius.css" />
-	<link rel="Stylesheet" href="../jss/JSCal2-1.0/css/reduce-spacing.css" />
-	<script type="text/javascript" src="WebApp/Action/Logic.js"></script>
-	<script type="text/javascript" src="../jss/iphone/iphone.js"></script>
-	<script language="JavaScript" type="text/javascript" src="../jss/JSCal2-1.0/js/jscal2.js"></script>
-	<script language="JavaScript" type="text/javascript" src="../jss/JSCal2-1.0/js/lang/<?php echo $_SESSION["language"]; ?>.js"></script>
+	<link rel="Stylesheet" href="<?php echo getStaticUrl('Jss'); ?>iphone/iphone.css" />
+	<link rel="Stylesheet" href="<?php echo getStaticUrl('Jss'); ?>JSCal2-1.0/css/jscal2.css" />
+	<link rel="Stylesheet" href="<?php echo getStaticUrl('Jss'); ?>JSCal2-1.0/css/border-radius.css" />
+	<link rel="Stylesheet" href="<?php echo getStaticUrl('Jss'); ?>JSCal2-1.0/css/reduce-spacing.css" />
+	<script type="text/javascript" src="<?php echo getStaticUrl('Webapp'); ?>Action/Logic.js"></script>
+	<script type="text/javascript" src="<?php echo getStaticUrl('Jss'); ?>iphone/iphone.js"></script>
+	<script language="JavaScript" type="text/javascript" src="<?php echo getStaticUrl('Jss'); ?>JSCal2-1.0/js/jscal2.js"></script>
+	<script language="JavaScript" type="text/javascript" src="<?php echo getStaticUrl('Jss'); ?>JSCal2-1.0/js/lang/<?php echo $_SESSION["language"]; ?>.js"></script>
     </head>
 <?php
 	echo '<body ';
@@ -71,9 +71,9 @@ if ($cliInf[1] == 'Firefox')
         <div id="WebApp">
     	<div id="loader" class="iItem" style="padding:10px 5px;font-weight:bold;font-size:12px;text-align:center;">
     	    <div style="font-size:20px">
-    		<a href="#" style="display:block;border-width: 0 12px;line-height:45px;-webkit-border-image: url('Img/button-b-black.png') 0 12 0 12;margin:10px;color:white;text-decoration:none;text-align:center;text-shadow:#000 1px -1px 0;font-weight:bold">Test</a>
-    		<a href="#" style="display:block;border-width: 0 12px;line-height:45px;-webkit-border-image: url('Img/button-b-white.png') 0 12 0 12;margin:10px;color:black;text-decoration:none;text-align:center;text-shadow:#fff 1px 1px 0;font-weight:bold">Test</a>
-    		<a href="#" style="display:block;border-width: 0 12px;line-height:45px;-webkit-border-image: url('Img/button-b-red.png') 0 12 0 12;margin:10px;color:white;text-decoration:none;text-align:center;text-shadow:rgba(0,0,0,0.2) 1px -1px 0;font-weight:bold">Test</a>
+    		<a href="#" style="display:block;border-width: 0 12px;line-height:45px;-webkit-border-image: url('<?php echo getStaticUrl('imgPhone'); ?>button-b-black.png') 0 12 0 12;margin:10px;color:white;text-decoration:none;text-align:center;text-shadow:#000 1px -1px 0;font-weight:bold">Test</a>
+    		<a href="#" style="display:block;border-width: 0 12px;line-height:45px;-webkit-border-image: url('<?php echo getStaticUrl('imgPhone'); ?>button-b-white.png') 0 12 0 12;margin:10px;color:black;text-decoration:none;text-align:center;text-shadow:#fff 1px 1px 0;font-weight:bold">Test</a>
+    		<a href="#" style="display:block;border-width: 0 12px;line-height:45px;-webkit-border-image: url('<?php echo getStaticUrl('imgPhone'); ?>button-b-red.png') 0 12 0 12;margin:10px;color:white;text-decoration:none;text-align:center;text-shadow:rgba(0,0,0,0.2) 1px -1px 0;font-weight:bold">Test</a>
     	    </div>
     	</div>
     	<div id="authentificationToken" style="display:none;">
@@ -86,7 +86,7 @@ if ($cliInf[1] == 'Firefox')
     	<!---------------------------------------------- -->
     	<div id="iHeader">
     	    <a href="#" id="waBackButton">Précédent</a>
-    	    <a href="#" id="waHomeButton"><img src="Img/home.png" alt="accueil"/></a>
+    	    <a href="#" id="waHomeButton"><img src="'.getStaticUrl('imgPhone').'home.png" alt="accueil"/></a>
     	    <a href="#_MainMenu" onclick="WA.HideBar()"><span id="waHeadTitle">ZUNO</span></a>
     	</div>
 

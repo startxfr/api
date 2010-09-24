@@ -56,7 +56,7 @@ $out = '<!-- Layer de l\'accueil puis du menu principal -->
 	{
 return '<form id="formConnect" id="formConnectName" action="Connect.php" onsubmit="return WA.Submit(this,null,event)">
 		<div class="iPanel">
-			<h1><img src="Img/zunoHomeP.png" alt="ZUNO" id="homePageHeaderImg"/></h1>
+			<h1><img src="'.getStaticUrl('imgPhone').'zunoHomeP.png" alt="ZUNO" id="homePageHeaderImg"/></h1>
 			<div id="form-connect"></div>
 			<fieldset>
 				<ul>
@@ -65,8 +65,8 @@ return '<form id="formConnect" id="formConnectName" action="Connect.php" onsubmi
 				</ul>
 			</fieldset>
 			<fieldset>
-					<a href="#" class="BigButtonValidLeft"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formConnect\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formConnect\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 			</fieldset>
 		</div>
 		</form>';
@@ -86,29 +86,29 @@ return '<form id="formConnect" id="formConnectName" action="Connect.php" onsubmi
 				</div>';
 		$clavier = '<div class="clavier">
 					<div class="lignepin">
-						<div class="touche" ontouchstart="ajoutepin(\'1\');"><img src="Img/pin/1.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'2\');"><img src="Img/pin/2.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'3\');"><img src="Img/pin/3.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'1\');"><img src="'.getStaticUrl('imgPhone').'pin/1.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'2\');"><img src="'.getStaticUrl('imgPhone').'pin/2.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'3\');"><img src="'.getStaticUrl('imgPhone').'pin/3.png"/></div>
 					</div>
 					<div class="lignepin">
-						<div class="touche" ontouchstart="ajoutepin(\'4\');"><img src="Img/pin/4.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'5\');"><img src="Img/pin/5.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'6\');"><img src="Img/pin/6.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'4\');"><img src="'.getStaticUrl('imgPhone').'pin/4.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'5\');"><img src="'.getStaticUrl('imgPhone').'pin/5.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'6\');"><img src="'.getStaticUrl('imgPhone').'pin/6.png"/></div>
 					</div>
 					<div class="lignepin">
-						<div class="touche" ontouchstart="ajoutepin(\'7\');"><img src="Img/pin/7.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'8\');"><img src="Img/pin/8.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'9\');"><img src="Img/pin/9.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'7\');"><img src="'.getStaticUrl('imgPhone').'pin/7.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'8\');"><img src="'.getStaticUrl('imgPhone').'pin/8.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'9\');"><img src="'.getStaticUrl('imgPhone').'pin/9.png"/></div>
 					</div>
 					<div class="lignepin">
-						<div class="touche" ontouchstart="ajoutepin(\'*\');"><img src="Img/pin/etoile.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'0\');"><img src="Img/pin/0.png"/></div>
-						<div class="touche" ontouchstart="ajoutepin(\'#\');"><img src="Img/pin/dieze.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'*\');"><img src="'.getStaticUrl('imgPhone').'pin/etoile.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'0\');"><img src="'.getStaticUrl('imgPhone').'pin/0.png"/></div>
+						<div class="touche" ontouchstart="ajoutepin(\'#\');"><img src="'.getStaticUrl('imgPhone').'pin/dieze.png"/></div>
 					</div>
 					<div class="lignepin">
-						<div class="touche" ontouchstart="videpin();"><img src="Img/pin/cancel.png"/></div>
-						<div class="touche"><a href="#_Home"><img src="Img/pin/user.png"/></a></div>
-						<div class="touche" ontouchstart="soumettrepin();"><img src="Img/pin/valider.png"/></div>
+						<div class="touche" ontouchstart="videpin();"><img src="'.getStaticUrl('imgPhone').'pin/cancel.png"/></div>
+						<div class="touche"><a href="#_Home"><img src="'.getStaticUrl('imgPhone').'pin/user.png"/></a></div>
+						<div class="touche" ontouchstart="soumettrepin();"><img src="'.getStaticUrl('imgPhone').'pin/valider.png"/></div>
 					</div>
 				</div>';
 
@@ -131,21 +131,21 @@ return '<form id="formConnect" id="formConnectName" action="Connect.php" onsubmi
 		'<a href="#_MainMenu" rel="action"></a><a href="#_MainMenu" rel="back"></a>
 		<div class="iMenu">
 		<ul class="iArrow">
-			<li><a href="#_MenuContact" class="Contact"><img src="Img/iconMenu/contact.png" />Contacts</a></li>
-			<li onClick="chargeAuto(this,\'lienAutoChargeAffaireTri\')"><a href="#_MenuAffaire" class="Affaire"><img src="Img/iconMenu/affaire.png" />Affaires</a></li>
-			<li onClick="chargeAuto(this,\'lienAutoChargeDevisTri\')"><a href="#_MenuDevis" class="Devis"><img src="Img/iconMenu/devis.png" />Devis</a></li>
-			<li onClick="chargeAuto(this,\'lienAutoChargeCommandeTri\')"><a href="#_MenuCommande" class="Commande"><img src="Img/iconMenu/commande.png" />Commandes</a></li>
-			<li onClick="chargeAuto(this,\'lienAutoChargeFactureTri\')"><a href="#_MenuFacture" class="Facture"><img src="Img/iconMenu/facture.png" />Factures</a></li>
-			<li><a href="#_MenuProduit" class="Produit"><img src="Img/iconMenu/produit.png" />Produits</a></li>
+			<li><a href="#_MenuContact" class="Contact"><img src="'.getStaticUrl('imgPhone').'iconMenu/contact.png" />Contacts</a></li>
+			<li onClick="chargeAuto(this,\'lienAutoChargeAffaireTri\')"><a href="#_MenuAffaire" class="Affaire"><img src="'.getStaticUrl('imgPhone').'iconMenu/affaire.png" />Affaires</a></li>
+			<li onClick="chargeAuto(this,\'lienAutoChargeDevisTri\')"><a href="#_MenuDevis" class="Devis"><img src="'.getStaticUrl('imgPhone').'iconMenu/devis.png" />Devis</a></li>
+			<li onClick="chargeAuto(this,\'lienAutoChargeCommandeTri\')"><a href="#_MenuCommande" class="Commande"><img src="'.getStaticUrl('imgPhone').'iconMenu/commande.png" />Commandes</a></li>
+			<li onClick="chargeAuto(this,\'lienAutoChargeFactureTri\')"><a href="#_MenuFacture" class="Facture"><img src="'.getStaticUrl('imgPhone').'iconMenu/facture.png" />Factures</a></li>
+			<li><a href="#_MenuProduit" class="Produit"><img src="'.getStaticUrl('imgPhone').'iconMenu/produit.png" />Produits</a></li>
 		</ul>
 		<ul class="iArrow">
-			<li><a href="Actualite.php" rev="async" class="Actualite"><img src="Img/iconMenu/actualite.png" />Actualités</a></li>
-			<li><a href="Navigator.php?action=racine" rev="async" class="Navigator"><img src="Img/iconMenu/Dossiers.png" />Navigateur</a></li>
-			<li><a href="Search.php" rev="async" class="Search"><img src="Img/iconMenu/search.png" />Recherche</a></li>
+			<li><a href="Actualite.php" rev="async" class="Actualite"><img src="'.getStaticUrl('imgPhone').'iconMenu/actualite.png" />Actualités</a></li>
+			<li><a href="Navigator.php?action=racine" rev="async" class="Navigator"><img src="'.getStaticUrl('imgPhone').'iconMenu/Dossiers.png" />Navigateur</a></li>
+			<li><a href="Search.php" rev="async" class="Search"><img src="'.getStaticUrl('imgPhone').'iconMenu/search.png" />Recherche</a></li>
 		</ul>
 		<ul class="iArrow">
-			<li><a href="#_MainMenuPref" class="Preferences"><img src="Img/iconMenu/pref.png" />Préférences</a></li>
-			<li class="iLess"><a href="Preference.php?action=disconnect#_Home" rev="async" class="Deconnexion"><img src="Img/iconMenu/disconnect.png" />Déconnexion</a></li>
+			<li><a href="#_MainMenuPref" class="Preferences"><img src="'.getStaticUrl('imgPhone').'iconMenu/pref.png" />Préférences</a></li>
+			<li class="iLess"><a href="Preference.php?action=disconnect#_Home" rev="async" class="Deconnexion"><img src="'.getStaticUrl('imgPhone').'iconMenu/disconnect.png" />Déconnexion</a></li>
 		</ul>
 	</div>';
 	}

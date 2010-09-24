@@ -78,7 +78,7 @@ class JournalBanqueView extends generalView {
 	$this->html = new ZunoRenduHtml('ficheCompletePontComptaHisto');
 	$this->html->insertTopJS($this->topscript);
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/journalBanque.png','JournalBanques').' JournalBanque '.$datas['data']['id_jb'], '', $this->form->generateForm(), $pied,'formJournalBanqueModif', 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/journalBanque.png','JournalBanques').' JournalBanque '.$datas['data']['id_jb'], '', $this->form->generateForm(), $pied,'formJournalBanqueModif', 'open');
 	return $this->html->generateRendu();
     }
 
@@ -106,7 +106,7 @@ class JournalBanqueView extends generalView {
 	$this->fieldset3 = new ZunoFieldset('Pièces attachées','','height: 150px');
 	$this->fieldset3->ligneInputFile('Justificatif', 'file_jb', $datas['file_jb'],'','ZTips.journalBanque.file');
 	if($datas['file_jb'] != '')
-	    $this->fieldset3->ligneLinkTo('Justificatif', '../facturier/JournalEcriture.php?action=get&id_jb='.$datas['id_jb'], $datas['file_jb'], '../img/download.png');
+	    $this->fieldset3->ligneLinkTo('Justificatif', '../facturier/JournalEcriture.php?action=get&id_jb='.$datas['id_jb'], $datas['file_jb'], getStaticUrl('img').'download.png');
 	$nomFact = ($datas['facture_jb'] != '') ? $datas['type_fact'].' '.$modelFact->getFormatedIdFromData($datas).': '.$datas['titre_fact'] : '';
 	$idFact  = ($datas['facture_jb'] != '') ? $datas['facture_jb'] : '';
 	$this->fieldset3->ligneAutoComplete("Facture", "facture_jb", $nomFact, $idFact, "listeFacturePlusEnt",'',false,'',true,'ZTips.journalBanque.facture');
@@ -204,7 +204,7 @@ class JournalBanqueView extends generalView {
 	$this->html = new ZunoRenduHtml('ficheCompletePontComptaHisto');
 	$this->html->insertTopJS($this->topscript);
 	$this->html->replaceJS($this->script);
-	$this->html->generateZBox(imageTag('../img/prospec/journalBanque.png','JournalBanques').' Nouveau fichier d\'export comptable', '', $this->form->generateForm(), $pied,'creationPontComptaHisto' , 'open');
+	$this->html->generateZBox(imageTag(getStaticUrl('img').'prospec/journalBanque.png','JournalBanques').' Nouveau fichier d\'export comptable', '', $this->form->generateForm(), $pied,'creationPontComptaHisto' , 'open');
 
 	return $this->html->generateRendu();
     }
@@ -238,7 +238,7 @@ class JournalBanqueView extends generalView {
 		    <input type="hidden" name="exportType" value="" id="resultJournalBanqueExportType" />
 		    <table cellspacing="0"><tbody>';
 	$out .= '<tr class="titre">
-			<th class="barre" rowspan="2" style="width:10px"><img src="../img/prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormJournalBanque\');"/></th>
+			<th class="barre" rowspan="2" style="width:10px"><img src="'.getStaticUrl('img').'prospec/multiple-check.png" onclick="toggleCheckbox(\'resultFormJournalBanque\');"/></th>
 			<th class="center barre" rowspan="2">Libellé</th>
 			<th class="center barre" colspan="2">Date</th>
 			<th class="last center" colspan="2">Montant</th>
@@ -260,11 +260,11 @@ class JournalBanqueView extends generalView {
 		$link = $suffixeLink."facturier/JournalEcriture.php?id_jb=".$result['id_jb'];
 		$onclick = 'window.location=\''.$link.'\'';
 		if($result['file_jb'] != '')
-		    $linkFile = linkTag($suffixeLink.'facturier/JournalEcriture.php?action=get&id_jb='.$result['id_jb'],imageTag($suffixeLink.'img/download.png','Pièce justificative').$result['file_jb'], '', 'Pièce justificative');
+		    $linkFile = linkTag($suffixeLink.'facturier/JournalEcriture.php?action=get&id_jb='.$result['id_jb'],imageTag(getStaticUrl('img').'download.png','Pièce justificative').$result['file_jb'], '', 'Pièce justificative');
 		if($result['facture_jb'] != '')
-		    $linkFact = linkTag($suffixeLink.'facturier/Facture.php?id_fact='.$result['facture_jb'],imageTag($suffixeLink.'img/actualite/facture.png','Facture associée').$result['type_fact'].' '.$modelFact->getFormatedIdFromData($result), '', 'Facture associée');
+		    $linkFact = linkTag($suffixeLink.'facturier/Facture.php?id_fact='.$result['facture_jb'],imageTag(getStaticUrl('img').'actualite/facture.png','Facture associée').$result['type_fact'].' '.$modelFact->getFormatedIdFromData($result), '', 'Facture associée');
 		if($result['entreprise_jb'] != '')
-		    $linkEnt = linkTag($suffixeLink.'prospec/fiche.php?id_ent='.$result['entreprise_jb'],imageTag($suffixeLink.'img/actualite/contact.png','Client associé').$result['nom_ent'], '', 'Client associé');
+		    $linkEnt = linkTag($suffixeLink.'prospec/fiche.php?id_ent='.$result['entreprise_jb'],imageTag(getStaticUrl('img').'actualite/contact.png','Client associé').$result['nom_ent'], '', 'Client associé');
 		$totalC += ($result['montant_jb'] < 0) ? 0 : $result['montant_jb'];
 		$totalD += ($result['montant_jb'] < 0) ? abs($result['montant_jb']) : 0;
 		$montantC = ($result['montant_jb'] < 0) ? '' : formatCurencyDisplay($result['montant_jb']).'';
@@ -322,14 +322,14 @@ class JournalBanqueView extends generalView {
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div>';
 	$fieldset = new ZunoFieldset('Executer le changement');
-	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormJournalBanque\',\'resultJournalBanqueAction\');" class="bouton','Effectuer les changements','../img/prospec/voir.png');
+	$fieldset->ligneLinkTo('','javascript:submitGroupAction(\'resultFormJournalBanque\',\'resultJournalBanqueAction\');" class="bouton','Effectuer les changements',getStaticUrl('img').'prospec/voir.png');
 	$out.= $fieldset->generateFieldset();
 	$out.= '</div></div></div>';
 	return $out;
     }
 
     private function ResultGroupActionBouton($suffixeLink) {
-	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.$suffixeLink.'img/prospec/work-multiple.png"/> Actions groupées</a>';
+	$bouton = '<a name="groupAction" style="cursor:pointer;" onclick="toggleGroupedAction(\'divGroupAction\');"><img title="actions groupées" alt="actions groupées" src="'.getStaticUrl('img').'prospec/work-multiple.png"/> Actions groupées</a>';
 	return $bouton;
     }
 
@@ -354,7 +354,7 @@ class JournalBanqueView extends generalView {
 	    elseif($light == '') $light = 'result';
 	    $form = $this->searchForm($datas,$light);
 	    $rendu = new ZunoRenduHtml('recherchePontComptaHisto');
-	    $form->addButton('Ajouter une nouvelle écriture', 'window.location = \'../facturier/JournalEcriture.php?action=new\';', '../img/prospec/journalBanque.png');
+	    $form->addButton('Ajouter une nouvelle écriture', 'window.location = \'../facturier/JournalEcriture.php?action=new\';', getStaticUrl('img').'prospec/journalBanque.png');
 	    $rendu->generateZBox('Recherche', 'Recherche', $form->generateForm(), $form->generateButtons('listeResultJournalBanque', 'Annuler', 'Rechercher',$popup), 'divSearchPontComptaHisto', 'open');
 	    $rendu->addBox($this->listeResult($datas,$light));
 	    $rendu->insertJS("<script type=\"text/javascript\">Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) zuno.business.formTools.sendFormAjah('formSearchJournalBanque', 'facturier/JournalBanque.php','listeResultJournalBanque'); return false;}, false);</script>".$this->script);

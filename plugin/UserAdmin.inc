@@ -97,8 +97,8 @@ class UserAdminPortlet {
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
 	    $BoxTitre = 'Création d\'un utilisateur';
 	    $BoxCorps = templating('user/create', $tmp);
-	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag('../img/prospec/cancel.png','Effacer','middle').' Annuler</a>
-		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag('../img/prospec/record.png','Enregistrer','middle').' Enregistrer</a>';
+	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Annuler</a>
+		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/record.png','Enregistrer','middle').' Enregistrer</a>';
 	    $this->output = generateZBox($BoxTitre,$BoxTitre,$BoxCorps,$BoxPied,$BoxName);
 	}
 	elseif($type == 'MODIF') {
@@ -138,8 +138,8 @@ class UserAdminPortlet {
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
 	    $BoxTitre = 'Modification de l\'utilisateur';
 	    $BoxCorps = templating('user/modif', $tmp);
-	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag('../img/prospec/cancel.png','Effacer','middle').' Annuler</a>
-		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag('../img/prospec/record.png','Enregistrer','middle').' Enregistrer</a>';
+	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Annuler</a>
+		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/record.png','Enregistrer','middle').' Enregistrer</a>';
 	    $this->output = generateZBox($BoxTitre,$BoxTitre,$BoxCorps,$BoxPied,$BoxName);
 	}
 	elseif($type == 'MANAGE') {
@@ -169,7 +169,7 @@ class UserAdminPortlet {
 		foreach ($res as $key => $val) {
 		    $val['altern'] = ($j++ % 2);
 		    if ( $val['actif'] == 1 )
-			$val['actif'] = "<img src=\"../img/valid.png\" name=\"actif\" alt=\"actif\" title=\"actif\">";
+			$val['actif'] = "<img src=\"".getStaticUrl('img')."valid.png\" name=\"actif\" alt=\"actif\" title=\"actif\">";
 		    else  $val['actif'] = "";
 		    $tmptab .= templating('user/manage.row', $val);
 		}
@@ -208,8 +208,8 @@ class UserAdminPortlet {
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
 	    $BoxTitre = 'Rechercher un utilisateur';
 	    $BoxCorps = templating('user/manage.querybox', $tmp);
-	    $BoxPied  = '<a href="javascript:document.'.$tmp['FormName'].'.reset()">'.imageTag('../img/prospec/cancel.png','Effacer','middle').' Réinitialiser</a>
-		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag('../img/prospec/voir.png','Rechercher','middle').' Lancer la recherche</a>';
+	    $BoxPied  = '<a href="javascript:document.'.$tmp['FormName'].'.reset()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Réinitialiser</a>
+		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'prospec/voir.png','Rechercher','middle').' Lancer la recherche</a>';
 	    $this->output = generateZBox($BoxTitre,$BoxTitre,$BoxCorps,$BoxPied,$BoxName,$BoxState);
 	}
 	elseif($type == 'DELETE') {
@@ -231,7 +231,7 @@ class UserAdminPortlet {
 		$tmp['actif'] = "actif";
 	    else  $tmp['actif'] = "inactif";
 	    if ($res[0]['image'] != '')
-		$tmp['image'] = "<img src=\"../img/".'admin/droit/'.$res[0]['image']."\" name=".$res[0]['image']." alt=\"apercu\"/> <input type=\"hidden\" name=\"img\" value=\"".$GLOBALS['REP']['appli'].'admin/droit/'.$res[0]['image']."\">";
+		$tmp['image'] = "<img src=\"".getStaticUrl('img').'admin/droit/'.$res[0]['image']."\" name=".$res[0]['image']." alt=\"apercu\"/> <input type=\"hidden\" name=\"img\" value=\"".$GLOBALS['REP']['appli'].'admin/droit/'.$res[0]['image']."\">";
 	    else  $tmp['image'] = "<i>aucune image</i>";
 
 	    $BoxName  = 'UserDelete';
@@ -239,8 +239,8 @@ class UserAdminPortlet {
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
 	    $BoxTitre = 'Suppression de l\'utilisateur';
 	    $BoxCorps = templating('user/delete', $tmp);
-	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag('../img/prospec/cancel.png','Effacer','middle').' Annuler</a>
-		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag('../img/valid.png','Confirmer','middle').' Confirmer</a>';
+	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Annuler</a>
+		   			 <a href="javascript:document.'.$tmp['FormName'].'.submit()">'.imageTag(getStaticUrl('img').'valid.png','Confirmer','middle').' Confirmer</a>';
 	    $this->output = generateZBox($BoxTitre,$BoxTitre,$BoxCorps,$BoxPied,$BoxName);
 	}
     }

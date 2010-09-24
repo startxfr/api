@@ -245,8 +245,8 @@
 			});
 	</script>
 	<div class="footer">
-		<a href="javascript:document.pageModif.reset()"><img align="middle" title="../img/prospec/cancel.png" alt="../img/prospec/cancel.png" name="img" src="../img/prospec/cancel.png"/> Annuler</a>
-		<a href="javascript:document.pageModif.submit()"><img align="middle" title="../img/prospec/record.png" alt="../img/prospec/record.png" name="img" src="../img/prospec/record.png"/> Enregister</a>
+		<a href="javascript:document.pageModif.reset()"><img align="middle" title="'.getStaticUrl('img').'prospec/cancel.png" alt="'.getStaticUrl('img').'prospec/cancel.png" name="img" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>
+		<a href="javascript:document.pageModif.submit()"><img align="middle" title="'.getStaticUrl('img').'prospec/record.png" alt="'.getStaticUrl('img').'prospec/record.png" name="img" src="'.getStaticUrl('img').'prospec/record.png"/> Enregister</a>
 	</div>
 </xsl:template>
 
@@ -265,14 +265,14 @@
 					<div class="label" title="Nom de la page. S'affiche dans les menus du site.">Nom</div>
 					<div class="field">
 						<input type="text" name="nom_pg" size="25" value="{nom}"/>
-						<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
+						<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
 					</div>
 				</div>
 				<div class="row"> 
 					<div class="label" title="Titre de la page. S'affiche comme titre de la page.">Titre</div>
 					<div class="field">
 						<input type="text" name="header_pg" size="35" value="{header}"/>
-						<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
+						<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
 					</div>
 				</div>
 			</div>
@@ -292,8 +292,8 @@
 		<textarea id="editor" name="editor" style="width:100%" rows="35" cols="120"><xsl:value-of select="content"/></textarea>
 	</form>
 	<div class="footer">
-		<a href="javascript:document.pageModifContenu.reset()"><img align="middle" title="../img/prospec/cancel.png" alt="../img/prospec/cancel.png" name="img" src="../img/prospec/cancel.png"/> Annuler</a>
-		<a href="javascript:document.pageModifContenu.submit()"><img align="middle" title="../img/prospec/record.png" alt="../img/prospec/record.png" name="img" src="../img/prospec/record.png"/> Enregister</a>
+		<a href="javascript:document.pageModifContenu.reset()"><img align="middle" title="'.getStaticUrl('img').'prospec/cancel.png" alt="'.getStaticUrl('img').'prospec/cancel.png" name="img" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>
+		<a href="javascript:document.pageModifContenu.submit()"><img align="middle" title="'.getStaticUrl('img').'prospec/record.png" alt="'.getStaticUrl('img').'prospec/record.png" name="img" src="'.getStaticUrl('img').'prospec/record.png"/> Enregister</a>
 	</div>
 </xsl:template>
 
@@ -306,7 +306,7 @@
 				<div class="row"> 
 					<div class="label" title="Nom du document">Nom</div>
 					<div class="field"><input type="text" name="nom_doc" size="30" />
-						 <img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
+						 <img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
 					</div>
 				</div>
 				<div class="row"> 
@@ -319,7 +319,7 @@
 					<div class="label" title="Fichier à envoyer au serveur">Fichier</div>
 					<div class="field">
 						<input type="file" name="file_doc" size="15" />
-						<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
+						<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
 					</div>
 				</div>
 				<div class="row"> 
@@ -350,8 +350,8 @@
 	</form>
 	<br class="clear"/>
 	<div class="footer">
-		<a href="javascript:document.pageModifFile.reset()"><img align="middle" title="../img/prospec/cancel.png" alt="../img/prospec/cancel.png" name="img" src="../img/prospec/cancel.png"/> Annuler</a>
-		<a href="javascript:document.pageModifFile.submit()"><img align="middle" title="../img/prospec/record.png" alt="../img/prospec/record.png" name="img" src="../img/prospec/record.png"/> Ajouter ce document</a>
+		<a href="javascript:document.pageModifFile.reset()"><img align="middle" title="'.getStaticUrl('img').'prospec/cancel.png" alt="'.getStaticUrl('img').'prospec/cancel.png" name="img" src="'.getStaticUrl('img').'prospec/cancel.png"/> Annuler</a>
+		<a href="javascript:document.pageModifFile.submit()"><img align="middle" title="'.getStaticUrl('img').'prospec/record.png" alt="'.getStaticUrl('img').'prospec/record.png" name="img" src="'.getStaticUrl('img').'prospec/record.png"/> Ajouter ce document</a>
 	</div>
 </xsl:template>
 
@@ -398,7 +398,7 @@
 				<label for="id" title="ID de la page.">ID :</label>
 				<span class="txt">
 					<input type="text" name="id_pg" size="28" value="" />
-					<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
+					<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
 					###[HelpID]###
 				</span>
 				<br class="clear"/>
@@ -421,11 +421,11 @@
 
 				<label for="nom" title="Nom de la page. S'affiche dans les menus du site.">Nom :</label>
 					<input type="text" name="nom_pg" size="25" />
-					<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
+					<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
 				<br class="clear"/>
 				<label for="titre" title="Titre de la page. S'affiche comme titre de la page.">Titre :</label>
 					<input type="text" name="header_pg" size="35" />
-					<img src="../img/exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
+					<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
 				<br class="clear"/>
 				<label for="desc" title="Brève déscription de la page.">Description :</label>
 					<textarea name="desc_pg" cols="33" rows="2" ><xsl:text> </xsl:text></textarea>

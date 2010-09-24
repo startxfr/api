@@ -12,7 +12,7 @@
 				<!--    Facture : Menu général         -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waMenuFacture" title="Facture">
-				<a href="Facture.php?action=addFacturePre" rev="async" rel="action" class="iButton iBClassic"><img src="Img/add.png" alt="Créer une facture" /></a>
+				<a href="Facture.php?action=addFacturePre" rev="async" rel="action" class="iButton iBClassic"><img src="'.getStaticUrl('imgPhone').'add.png" alt="Créer une facture" /></a>
 				<a href="#" rel="back" class="iButton iBBack" onclick="return WA.Back()">Retour</a>
 				'.self::iMenuGeneral().$footer.'
 				</div>
@@ -28,14 +28,14 @@
 				<!--   Facture : Menu Recherche       -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waSearchFacture" title="Recherche">
-				<a href="#"  onclick="return WA.Submit(\'formSearchFacture\',null,event)" rel="action" class="iButton iBAction"><img src="Img/search.png" alt="recherche" /></a>
+				<a href="#"  onclick="return WA.Submit(\'formSearchFacture\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'search.png" alt="recherche" /></a>
 				'.self::iLayerSearch().$footer.'
 				</div>
 				<!------------------------------------ -->
 				<!-- Facture : Menu statistique        -->
 				<!------------------------------------ -->
 				<div class="iLayer" id="waStatsFacture" title="Statistiques">
-				<a href="#"  onclick="return WA.Submit(\'formStatsFacture\',null,event)" rel="action" class="iButton iBAction"><img src="Img/stats.png" alt="Statistiques" /></a>
+				<a href="#"  onclick="return WA.Submit(\'formStatsFacture\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'stats.png" alt="Statistiques" /></a>
 				'.$footer.'
 				</div>
 		';
@@ -45,13 +45,13 @@
  	{
  		return '<div class="iMenu">
 				<ul class="iArrow">
- 					<li><a href="#_SearchFacture" class="Facture"><img src="Img/iconMenu/facture.search.png" alt="Recherche" /> Rechercher</a></li>
- 					<li><a href="Facture.php?action=addFacturePre&type=Facture" rev="async" rel="action" class="Facture"><img src="Img/iconMenu/facture.add.png" alt="Ajouter" /> Créer une Facture</a></li>
- 					<li><a href="Facture.php?action=addFacturePre&type=Avoir" rev="async" rel="action" class="Facture"><img src="Img/iconMenu/facture.avoirAdd.png" alt="Ajouter" /> Créer un Avoir</a></li>
- 					<li><a href="Facture.php?action=voirStats" rev="async" class="Facture"><img src="Img/iconMenu/facture.stat.png" alt="Statistiques" />Statistiques</a></li>
+ 					<li><a href="#_SearchFacture" class="Facture"><img src="'.getStaticUrl('imgPhone').'iconMenu/facture.search.png" alt="Recherche" /> Rechercher</a></li>
+ 					<li><a href="Facture.php?action=addFacturePre&type=Facture" rev="async" rel="action" class="Facture"><img src="'.getStaticUrl('imgPhone').'iconMenu/facture.add.png" alt="Ajouter" /> Créer une Facture</a></li>
+ 					<li><a href="Facture.php?action=addFacturePre&type=Avoir" rev="async" rel="action" class="Facture"><img src="'.getStaticUrl('imgPhone').'iconMenu/facture.avoirAdd.png" alt="Ajouter" /> Créer un Avoir</a></li>
+ 					<li><a href="Facture.php?action=voirStats" rev="async" class="Facture"><img src="'.getStaticUrl('imgPhone').'iconMenu/facture.stat.png" alt="Statistiques" />Statistiques</a></li>
  				</ul>
  				<ul class="iArrow">
- 					<li><a href="Facture.php?action=addFactureExpress" rev="async" rel="action" class="Facture"><img src="Img/iconMenu/facture.addExp.png" alt="Ajouter Express" /> Facture Express</a></li>
+ 					<li><a href="Facture.php?action=addFactureExpress" rev="async" rel="action" class="Facture"><img src="'.getStaticUrl('imgPhone').'iconMenu/facture.addExp.png" alt="Ajouter Express" /> Facture Express</a></li>
  				</ul></div>'.self::factureForm().'<br class="clear"/>';
  	}
 	static function factureForm($tri = 'creation')
@@ -75,7 +75,7 @@
  	{
  		return '<div class="iMenu">
 		<ul class="iArrow">
-			<li><a href="Facture.php?action=addFacture" rev="async" rel="action"><img src="Img/iconMenu/facture.add.png" alt="Ajouter" />Ajouter une nouvelle Facture</a></li>
+			<li><a href="Facture.php?action=addFacture" rev="async" rel="action"><img src="'.getStaticUrl('imgPhone').'iconMenu/facture.add.png" alt="Ajouter" />Ajouter une nouvelle Facture</a></li>
 		</ul>
 		</div>';
  	}
@@ -96,7 +96,7 @@
 									</li>
 								</ul>
 								<br/>
-								<a href="#" onclick="return WA.Submit(\'formSearchFacture\',null,event)" class="whiteButton"><img src="Img/search.png" style="float: left"/><span>Lancer la recherche</span></a>
+								<a href="#" onclick="return WA.Submit(\'formSearchFacture\',null,event)" class="whiteButton"><img src="'.getStaticUrl('imgPhone').'search.png" style="float: left"/><span>Lancer la recherche</span></a>
 							</fieldset>
 						</div>
 				</form>';

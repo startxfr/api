@@ -31,7 +31,7 @@ class contactEntrepriseView {
 	    }
 	    $list = substr($list,5).'</ul>';
 	    if ($from == 0) {
-		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>
+		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 						';
 	    }
 	    $out     .='<div class="iList">
@@ -56,7 +56,7 @@ class contactEntrepriseView {
 
     static function formAdd($value = array(),$onError = array(),$errorMess = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddContactCompany\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddContactCompany\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddContactCompany" action="Contact.php?action=doAddEnt" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -76,7 +76,7 @@ class contactEntrepriseView {
 
     static function formModif($value = array(),$onError = array(),$errorMess = '',$ident = '') {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifContactCompany\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifContactCompany\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formModifContactCompany" action="Contact.php?action=doModifEnt&id_ent='.$ident.'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -108,8 +108,8 @@ class contactEntrepriseView {
 					</ul>
 				</fieldset>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddContactCompany\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddContactCompany\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
@@ -127,8 +127,8 @@ class contactEntrepriseView {
 					</ul>
 				</fieldset>';
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifContactCompany\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifContactCompany\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 //		$out .='<a href="Contact.php?action=suppEnt&id_ent='.$value["id_ent"].'" rev="async" class="redButton"><span>Supprimer cette entreprise</span></a>';
 	return $out;
@@ -179,7 +179,7 @@ class contactEntrepriseView {
 						<ul>'.$personBlock.'</ul>
 					</fieldset>';
 
-	    $out = '<a href="Contact.php?action=modifEnt&id_ent='.$value["id_ent"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/edit.png" alt="Modifier" /></a>
+	    $out = '<a href="Contact.php?action=modifEnt&id_ent='.$value["id_ent"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'edit.png" alt="Modifier" /></a>
 					<div class="iPanel">
 					<fieldset><ul><li>'.$info.'</li></ul></fieldset>
 					<fieldset>
@@ -193,7 +193,7 @@ class contactEntrepriseView {
 	    $out .= '<a class="whiteButton" href="Contact.php?action=addContactLie&id_ent='.$value['id_ent'].'" rev="async"><span>Ajouter un contact lié</span></a></div>';
 	}
 	else {
-	    $out = '<a href="Produit.php?action=modifFourn&id_fourn='.$value["id_fourn"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/edit.png" alt="Modifier" /></a>
+	    $out = '<a href="Produit.php?action=modifFourn&id_fourn='.$value["id_fourn"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'edit.png" alt="Modifier" /></a>
 					<div class="iPanel">
 					<fieldset><ul><li>'.$info.'</li></ul></fieldset>
 					<fieldset>
@@ -220,7 +220,7 @@ class contactEntrepriseView {
 
     static function delete($value = array(), $nombredecontact = 0, $fourn = 0) {
 	if ($value["id_ent"] == 0) {
-	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="Img/home.png" alt="Accueil" /></a>
+	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 			  <div class="iPanel">
 			  <div class="err">
 			  		<strong> Entreprise supprimée ! </strong>
@@ -229,7 +229,7 @@ class contactEntrepriseView {
 	    return $out;
 	}
 	if ($fourn != 0) {
-	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="Img/home.png" alt="Accueil" /></a>
+	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 			  <div class="iPanel">
 			  <div class="err">
 			  		<strong> Cette entreprise est fournisseur, impossible de la supprimer ! </strong>
@@ -278,7 +278,7 @@ class contactEntrepriseView {
 					<ul>'.$personBlock.'</ul>
 				</fieldset>';
 
-	$out = '<a href="Contact.php?action=doSuppEnt&id_ent='.$value["id_ent"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/remove.png" alt="Supprimer" /></a>
+	$out = '<a href="Contact.php?action=doSuppEnt&id_ent='.$value["id_ent"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'remove.png" alt="Supprimer" /></a>
 				<div class="iPanel">
 				<div class="err">
 					Cette entreprise est liée à '.$nombredecontact.' contact(s).<br />
@@ -302,7 +302,7 @@ class contactEntrepriseView {
      */
 
     static function contactLinkSimple($value = array()) {
-	return '<a href="Contact.php?action=viewEnt&id_ent='.$value['id_ent'].'" class="Entreprise" rev="async"><img src="../img/actualite/contact.png"/> '.strtoupper($value['nom_ent']).'</a>';
+	return '<a href="Contact.php?action=viewEnt&id_ent='.$value['id_ent'].'" class="Entreprise" rev="async"><img src="'.getStaticUrl('img').'actualite/contact.png"/> '.strtoupper($value['nom_ent']).'</a>';
     }
 
 
@@ -319,7 +319,7 @@ class contactEntrepriseView {
 		HtmlElementIphone::linkIconWeb($value["www_ent"],false).
 		HtmlElementIphone::linkIconAddress($value["add1_ent"],$value["add2_ent"],$value["cp_ent"],$value["ville_ent"],$value["nom_pays"],$value["nom_ent"],false).
 		HtmlElementIphone::linkIconAddressWithZSend($value["add1_ent"],$value["add2_ent"],$value["cp_ent"],$value["ville_ent"],$value["nom_pays"],$value["nom_ent"],false);
-	$i = ($value["type_ent"] != '' && $value["type_ent"] != '6' ) ? '<span><img src="../img/prospec/TypeEntreprise/'.$value["type_ent"].'.png"/></span>' : '';
+	$i = ($value["type_ent"] != '' && $value["type_ent"] != '6' ) ? '<span><img src="'.getStaticUrl('img').'prospec/TypeEntreprise/'.$value["type_ent"].'.png"/></span>' : '';
 	$b = ($b != '') ? '<br class="clear"/><div class="listIconLink">'.$b.'<br class="clear"/></div>' : '';
 	if($value["cp_ent"] != '' or $value["ville_ent"] != '') $add = $value["cp_ent"].' - '.$value["ville_ent"];
 	elseif($value["tel_ent"] != '') $add = $value["tel_ent"];
@@ -342,7 +342,7 @@ class contactEntrepriseView {
 	if($value["cp_ent"] != '' or $value["ville_ent"] != '') $add = $value["cp_ent"].' - '.$value["ville_ent"];
 	elseif($value["tel_ent"] != '') $add = $value["tel_ent"];
 	else $add = $value["mail_ent"];
-	$i = ($value["type_ent"] != '' && $value["type_ent"] != '6') ? '<span><img src="../img/prospec/TypeEntreprise/'.$value["type_ent"].'.png"/></span>' : '';
+	$i = ($value["type_ent"] != '' && $value["type_ent"] != '6') ? '<span><img src="'.getStaticUrl('img').'prospec/TypeEntreprise/'.$value["type_ent"].'.png"/></span>' : '';
 
 	$out = '<a href="Contact.php?action=viewEnt&id_ent='.$value["id_ent"].'" rev="async">'.$i.$value["nom_ent"].'<br/>
 							  <small>'.$add.'</small></a>';
@@ -500,10 +500,10 @@ class contactEntrepriseView {
 	$sqlConn->makeRequeteFree("select count(*) as C FROM facture WHERE entreprise_fact = '".$value['id_ent']."'");
 	$temp = $sqlConn->process2();
 	$totalFact = $temp[1][0]['C'];
-	$affaires = ($totalAff == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewAffaireEnt&amp;id='.$value['id_ent'].'"><img src="../img/actualite/affaire.png"/> '.$totalAff.' Affaires</a></li>';
-	$devis = ($totalDev == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewDevisEnt&amp;id='.$value['id_ent'].'"><img src="../img/actualite/devis.png"/> '.$totalDev.' Devis</a></li>';
-	$commandes = ($totalCmd == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewCommandeEnt&amp;id='.$value['id_ent'].'"><img src="../img/actualite/commande.png"/> '.$totalCmd.' Commandes</a></li>';
-	$factures = ($totalFact == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewFactureEnt&amp;id='.$value['id_ent'].'"><img src="../img/actualite/facture.png"/> '.$totalFact.' Factures</a></li>';
+	$affaires = ($totalAff == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewAffaireEnt&amp;id='.$value['id_ent'].'"><img src="'.getStaticUrl('img').'actualite/affaire.png"/> '.$totalAff.' Affaires</a></li>';
+	$devis = ($totalDev == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewDevisEnt&amp;id='.$value['id_ent'].'"><img src="'.getStaticUrl('img').'actualite/devis.png"/> '.$totalDev.' Devis</a></li>';
+	$commandes = ($totalCmd == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewCommandeEnt&amp;id='.$value['id_ent'].'"><img src="'.getStaticUrl('img').'actualite/commande.png"/> '.$totalCmd.' Commandes</a></li>';
+	$factures = ($totalFact == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewFactureEnt&amp;id='.$value['id_ent'].'"><img src="'.getStaticUrl('img').'actualite/facture.png"/> '.$totalFact.' Factures</a></li>';
 	$produits = ($fourn == 'oui') ? self::subBlockProduitsLies($value) : '';
 	$out = ($totalAff == 0 and $totalDev == 0 and $totalFact == 0 and $totalCmd == 0 and $fourn == 'non') ? '<br class="clear" /><a href="Contact.php?action=suppEnt&id_ent='.$value["id_ent"].'" rev="async" class="redButton"><span>Supprimer cette entreprise</span></a><br /><br />' :  '<fieldset>
 					<legend>Ressources Liées</legend>
@@ -523,7 +523,7 @@ class contactEntrepriseView {
 	$temp = $sqlConn->process2();
 	$total = $temp[1][0]['C'];
 	if($total > 0) {
-	    $out = '<li><a rev="async" href="Contact.php?action=viewProduitEnt&amp;id='.$fourn.'"><img src="../img/voir.png" /> '.$total.' Produits</a></li>';
+	    $out = '<li><a rev="async" href="Contact.php?action=viewProduitEnt&amp;id='.$fourn.'"><img src="'.getStaticUrl('img').'voir.png" /> '.$total.' Produits</a></li>';
 	}
 	return $out;
     }
@@ -552,7 +552,7 @@ class contactEntrepriseView {
 	    elseif(array_key_exists('id_prod', $result[0])) {
 		foreach($result as $k => $v) {
 		    if($v['id_prod'] != null)
-			$out .= '<li><a href="Produit.php?action=viewProd&id_prod='.$v['id_prod'].'" class="Produit" rev="async"><img src="../img/voir.png"/> '.$v['nom_prod'].' ('.$v['id_prod'].')<small style="display:block;">'.$v['prixF'].' € (Vente : '.$v['prix_prod'].' €)</small></a></li>';
+			$out .= '<li><a href="Produit.php?action=viewProd&id_prod='.$v['id_prod'].'" class="Produit" rev="async"><img src="'.getStaticUrl('img').'voir.png"/> '.$v['nom_prod'].' ('.$v['id_prod'].')<small style="display:block;">'.$v['prixF'].' € (Vente : '.$v['prix_prod'].' €)</small></a></li>';
 		}
 	    }
 	}
@@ -584,7 +584,7 @@ class contactParticulierView {
 	    }
 	    $list = substr($list,5).'</ul>';
 	    if ($from == 0) {
-		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="Img/home.png" alt="Accueil" /></a>			' ;
+		$out 	 = '<a href="#_MainMenu"  rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>			' ;
 	    }
 	    $out	.='<div class="iList">
 						'.$list.'
@@ -604,7 +604,7 @@ class contactParticulierView {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
 	$addEnt  = (is_array($entrepriseData)) ? '<ul><li>'.contactEntrepriseView::contactLinkWithLinks($entrepriseData).'<li></ul>' : '';
 	$title   = ($title != '') ? '<h1>'.$title.'</h1>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddContactPers" action="Contact.php?action=doAddPart" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -631,7 +631,7 @@ class contactParticulierView {
 	    $value['fax_cont'] = $entrepriseData['fax_ent'];
 	    $value['www_cont'] = $entrepriseData['www_ent'];
 	}
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formAddContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formAddContactPers" action="Contact.php?action=doAddPartBis&id_ent='.$entrepriseData["id_ent"].'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">' .
@@ -658,7 +658,7 @@ class contactParticulierView {
 	$error   = ($errorMess != '') ? '<div class="err">'.$errorMess.'</div>' : '';
 	$addEnt  = (is_array($entrepriseData)) ? contactEntrepriseView::view($entrepriseData) : '';
 	$title   = ($title != '') ? '<h1>'.$title.'</h1>' : '';
-	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="Img/save.png" alt="Enregistrer" /></a>
+	$out 	 = '<a href="#"  onclick="return WA.Submit(\'formModifContactPers\',null,event)" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'save.png" alt="Enregistrer" /></a>
 				<form id="formModifContactPers" action="Contact.php?action=doModifPart&id_cont='.$value['id_cont'].'" onsubmit="return WA.Submit(this,null,event)">
 				'.$error.'
 				<div class="iPanel">
@@ -685,8 +685,8 @@ class contactParticulierView {
 	$out	.= self::subBlockFormMailTel($value,$onError);
 	$out	.= self::subBlockFormAdresse($value,$onError, $id);
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddContactPers\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formAddContactPers\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 	return $out;
     }
@@ -699,8 +699,8 @@ class contactParticulierView {
 	$out	.= self::subBlockFormMailTel($value,$onError);
 	$out	.= self::subBlockFormAdresse($value,$onError, $id);
 	$out .= '<fieldset>
-					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="Img/big.annuler.png" alt="Annuler" /></a>
-					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifContactPers\', null, event)"><img src="Img/big.valider.png" alt="Valider" /></a>
+					<a href="#" class="BigButtonValidLeft" onclick="return WA.Back()"><img src="'.getStaticUrl('imgPhone').'big.annuler.png" alt="Annuler" /></a>
+					<a href="#" class="BigButtonValidRight" onclick="return WA.Submit(\'formModifContactPers\', null, event)"><img src="'.getStaticUrl('imgPhone').'big.valider.png" alt="Valider" /></a>
 				</fieldset>';
 //		$out = '<a href="Contact.php?action=suppPart&id_cont='.$value["id_cont"].'" rev="async" class="redButton"><span> Supprimer ce contact</span></a>';
 	return $out;
@@ -743,7 +743,7 @@ class contactParticulierView {
 	    $addBlock  .= '<ul><li>'.
 		    HtmlElementIphone::linkIconAddress($value["add1_cont"],$value["add2_cont"],$value["cp_cont"],$value["ville_cont"],$value["nom_pays"],$value["civ_cont"].' '.$value["prenom_cont"].' '.$value["nom_cont"]).
 		    HtmlElementIphone::linkIconAddressWithZSend($value["add1_cont"],$value["add2_cont"],$value["cp_cont"],$value["ville_cont"],$value["code_pays"],$value["civ_cont"].' '.$value["prenom_cont"].' '.$value["nom_cont"], false, true).'</li></ul>';
-	$out = '<a href="Contact.php?action=modifPart&id_cont='.$value["id_cont"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/edit.png" alt="Modifier" /></a>
+	$out = '<a href="Contact.php?action=modifPart&id_cont='.$value["id_cont"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'edit.png" alt="Modifier" /></a>
 			  <div class="iPanel">
 				<fieldset>
 					<ul>
@@ -766,7 +766,7 @@ class contactParticulierView {
 
     static function delete($value = array(), $fourn = 0) {
 	if ($value["id_cont"] == 0) {
-	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="Img/home.png" alt="Accueil" /></a>
+	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 			  <div class="iPanel">
 			  <div class="err">
 			  		<strong> Contact supprimé ! </strong>
@@ -775,7 +775,7 @@ class contactParticulierView {
 	    return $out;
 	}
 	if ($fourn != 0) {
-	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="Img/home.png" alt="Accueil" /></a>
+	    $out='<a href="#_MainMenu"  rel="action" class="iButton iBBack"><img src="'.getStaticUrl('imgPhone').'home.png" alt="Accueil" /></a>
 			  <div class="iPanel">
 			  <div class="err">
 			  		<strong> Contact lié à un fournisseur, impossible de le supprimer ! </strong>
@@ -800,7 +800,7 @@ class contactParticulierView {
 		    HtmlElementIphone::linkIconAddress($value["add1_cont"],$value["add2_cont"],$value["cp_cont"],$value["ville_cont"],$value["nom_pays"],$value["civ_cont"].' '.$value["prenom_cont"].' '.$value["nom_cont"]).
 		    HtmlElementIphone::linkIconAddressWithZSend($value["add1_cont"],$value["add2_cont"],$value["cp_cont"],$value["ville_cont"],$value["nom_pays"],$value["civ_cont"].' '.$value["prenom_cont"].' '.$value["nom_cont"]).'</li></ul>';
 
-	$out = '<a href="Contact.php?action=doSuppPart&id_cont='.$value["id_cont"].'"  rev="async" rel="action" class="iButton iBAction"><img src="Img/remove.png" alt="Supprimer" /></a>
+	$out = '<a href="Contact.php?action=doSuppPart&id_cont='.$value["id_cont"].'"  rev="async" rel="action" class="iButton iBAction"><img src="'.getStaticUrl('imgPhone').'remove.png" alt="Supprimer" /></a>
 			  <div class="iPanel">
 			  <div class="err">
 			  		<strong> Êtes vous sur de vouloir supprimer ce contact ? </strong>
@@ -831,13 +831,13 @@ class contactParticulierView {
      */
     static function contactLinkSimple($value = array(), $contact = 'cont') {
 	if($contact == 'cont') {
-	    return '<a href="Contact.php?action=viewPart&id_cont='.$value['id_cont'].'" class="Contact" rev="async"><img src="../img/actualite/contact.png"/> '.$value['civ_cont'].' '.ucfirst($value['prenom_cont']).' '.strtoupper($value['nom_cont']).'</a>';
+	    return '<a href="Contact.php?action=viewPart&id_cont='.$value['id_cont'].'" class="Contact" rev="async"><img src="'.getStaticUrl('img').'actualite/contact.png"/> '.$value['civ_cont'].' '.ucfirst($value['prenom_cont']).' '.strtoupper($value['nom_cont']).'</a>';
 	}
 	elseif($contact == 'achat') {
-	    return '<a href="Contact.php?action=viewPart&id_cont='.$value['id_achat'].'" class="Contact" rev="async"><img src="../img/actualite/contact.png"/> '.$value['civ_achat'].' '.ucfirst($value['prenom_achat']).' '.strtoupper($value['nom_achat']).'</a>';
+	    return '<a href="Contact.php?action=viewPart&id_cont='.$value['id_achat'].'" class="Contact" rev="async"><img src="'.getStaticUrl('img').'actualite/contact.png"/> '.$value['civ_achat'].' '.ucfirst($value['prenom_achat']).' '.strtoupper($value['nom_achat']).'</a>';
 	}
 	else {
-	    return '<a href="Contact.php?action=viewPart&id_cont='.$value['id_cont'].'" class="Contact" rev="async"><img src="../img/actualite/contact.png"/> '.$value['civ_cont'].' '.ucfirst($value['prenom_cont']).' '.strtoupper($value['nom_cont']).'</a>';
+	    return '<a href="Contact.php?action=viewPart&id_cont='.$value['id_cont'].'" class="Contact" rev="async"><img src="'.getStaticUrl('img').'actualite/contact.png"/> '.$value['civ_cont'].' '.ucfirst($value['prenom_cont']).' '.strtoupper($value['nom_cont']).'</a>';
 	}
     }
 
@@ -972,10 +972,10 @@ class contactParticulierView {
 	$sqlConn->makeRequeteFree("select count(*) as C FROM facture WHERE contact_fact = '".$value['id_cont']."'");
 	$temp = $sqlConn->process2();
 	$totalFact = $temp[1][0]['C'];
-	$affaires = ($totalAff == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewAffaireCont&amp;id='.$value['id_cont'].'"><img src="../img/actualite/affaire.png"/> '.$totalAff.' Affaires</a></li>';
-	$devis = ($totalDev == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewDevisCont&amp;id='.$value['id_cont'].'"><img src="../img/actualite/devis.png"/> '.$totalDev.' Devis</a></li>';
-	$commandes = ($totalCmd == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewCommandeCont&amp;id='.$value['id_cont'].'"><img src="../img/actualite/commande.png"/> '.$totalCmd.' Commandes</a></li>';
-	$factures = ($totalFact == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewFactureCont&amp;id='.$value['id_cont'].'"><img src="../img/actualite/facture.png"/> '.$totalFact.' Factures</a></li>';
+	$affaires = ($totalAff == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewAffaireCont&amp;id='.$value['id_cont'].'"><img src="'.getStaticUrl('img').'actualite/affaire.png"/> '.$totalAff.' Affaires</a></li>';
+	$devis = ($totalDev == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewDevisCont&amp;id='.$value['id_cont'].'"><img src="'.getStaticUrl('img').'actualite/devis.png"/> '.$totalDev.' Devis</a></li>';
+	$commandes = ($totalCmd == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewCommandeCont&amp;id='.$value['id_cont'].'"><img src="'.getStaticUrl('img').'actualite/commande.png"/> '.$totalCmd.' Commandes</a></li>';
+	$factures = ($totalFact == 0) ? '' : '<li><a rev="async" href="Contact.php?action=viewFactureCont&amp;id='.$value['id_cont'].'"><img src="'.getStaticUrl('img').'actualite/facture.png"/> '.$totalFact.' Factures</a></li>';
 	$out = ($totalAff == 0 and $totalDev == 0 and $totalFact == 0 and $totalCmd == 0) ? '<br class="clear" /><a href="Contact.php?action=suppPart&id_cont='.$value["id_cont"].'" rev="async" class="redButton"><span> Supprimer ce contact</span></a>' :  '<fieldset>
 					<legend>Ressources Liées</legend>
 					<ul class="iArrow">
