@@ -381,7 +381,7 @@ class ProduitViewOriginal extends generalView {
 	else $titre = $this->resultNavigationTitle($datas['from'],$datas['limit'],$datas['total'],'produit');
 	$bouton = $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeProduitResultPage",$suffixeLink);
 	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
-	$bouton .= '<a name="synchroProduit" onclick="synchToSB();"><img alt="produit" src="../img/prospec/produit.png"/> Synchroniser les produits sur Superbase</a>';
+	$bouton .= '<a name="synchroProduit" onclick="synchToSB();"><img alt="produit" src="'.getStaticUrl('img').'prospec/produit.png"/> Synchroniser les produits sur Superbase</a>';
 
 	if($modHistorique)
 	    $bouton = '';
