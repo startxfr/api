@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="UTF-8" indent="yes"/>
+<xsl:param name="imgPath"/>
 <xsl:param name="message"/>
 <xsl:param name="droit"/>
 <xsl:param name="lang"/>
@@ -22,11 +23,11 @@
 				<div class="leftRow">
 				<label for="nom" title="Nom de la page. S'affiche dans les menus du site.">Nom :</label>
 					<input type="text" name="nom_pg" size="20" value="{nom}"/>
-					<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
+					<img src="{$imgPath}exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
 				<br class="clear"/>
 				<label for="titre" title="Titre de la page. S'affiche comme titre de la page.">Titre :</label>
 					<input type="text" name="header_pg" size="20" value="{header}"/>
-					<img src="'.getStaticUrl('img').'exclam.png" border="0" title="Champ obligatoire" valign="middle"/> 
+					<img src="{$imgPath}exclam.png" border="0" title="Champ obligatoire" valign="middle"/>
 				<br class="clear"/>
 				</div>
 				<div class="rightRow">

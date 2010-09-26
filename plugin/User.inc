@@ -38,6 +38,7 @@ class UserToolkit {
 			'right');
 	    }
 	    $user['language'] = $GLOBALS['LANGUE_'.$_SESSION["language"]][$user['lang']];
+	    $user['imgPath'] = getStaticUrl('img');
 
 	    if($type == 'SIMPLE')
 		$corps = templating('user/Portlet.Simple',$user);

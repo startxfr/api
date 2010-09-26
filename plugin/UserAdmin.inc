@@ -95,6 +95,7 @@ class UserAdminPortlet {
 	    $BoxName  = 'UserCreate';
 	    $tmp['FormName'] 	  = 'Form'.$BoxName;
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
+	    $tmp['imgPath'] = getStaticUrl('img');
 	    $BoxTitre = 'Création d\'un utilisateur';
 	    $BoxCorps = templating('user/create', $tmp);
 	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Annuler</a>
@@ -136,6 +137,7 @@ class UserAdminPortlet {
 	    $BoxName  = 'UserCreateModif';
 	    $tmp['FormName'] 	  = 'Form'.$BoxName;
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
+	    $tmp['imgPath'] = getStaticUrl('img');
 	    $BoxTitre = 'Modification de l\'utilisateur';
 	    $BoxCorps = templating('user/modif', $tmp);
 	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Annuler</a>
@@ -171,6 +173,7 @@ class UserAdminPortlet {
 		    if ( $val['actif'] == 1 )
 			$val['actif'] = "<img src=\"".getStaticUrl('img')."valid.png\" name=\"actif\" alt=\"actif\" title=\"actif\">";
 		    else  $val['actif'] = "";
+		    $val['imgPath'] = getStaticUrl('img');
 		    $tmptab .= templating('user/manage.row', $val);
 		}
 	    }
@@ -180,6 +183,7 @@ class UserAdminPortlet {
 	    $BoxName  = 'UserManage';
 	    $tab['FormName'] 	  = 'Form'.$BoxName;
 	    $tab['PortletName'] = 'Portlet'.$BoxName;
+	    $tab['imgPath'] = getStaticUrl('img');
 	    $BoxTitre = 'Gestion des utilisateurs';
 	    $BoxCorps = templating('user/manage', $tab);
 	    $BoxPied  = '';
@@ -206,6 +210,7 @@ class UserAdminPortlet {
 	    $BoxName  = 'UserSearch';
 	    $tmp['FormName'] 	  = 'Form'.$BoxName;
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
+	    $tmp['imgPath'] = getStaticUrl('img');
 	    $BoxTitre = 'Rechercher un utilisateur';
 	    $BoxCorps = templating('user/manage.querybox', $tmp);
 	    $BoxPied  = '<a href="javascript:document.'.$tmp['FormName'].'.reset()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Réinitialiser</a>
@@ -237,6 +242,7 @@ class UserAdminPortlet {
 	    $BoxName  = 'UserDelete';
 	    $tmp['FormName'] 	  = 'Form'.$BoxName;
 	    $tmp['PortletName'] = 'Portlet'.$BoxName;
+	    $tmp['imgPath'] = getStaticUrl('img');
 	    $BoxTitre = 'Suppression de l\'utilisateur';
 	    $BoxCorps = templating('user/delete', $tmp);
 	    $BoxPied  = '<a href="javascript:history.back()">'.imageTag(getStaticUrl('img').'prospec/cancel.png','Effacer','middle').' Annuler</a>

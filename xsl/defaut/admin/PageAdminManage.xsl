@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="UTF-8"/>
+<xsl:param name="imgPath"/>
 <xsl:param name="channel"/>
 <xsl:param name="droit"/>
 <xsl:include href="../Ref_SXToolkit.xsl" />
@@ -131,6 +132,6 @@
 		<xsl:apply-templates select="submenu"/>
 	</xsl:template>
 	<xsl:template match="@droit">
-		<img src="'.getStaticUrl('img').'deconnect.mini.png" title="Page privee" hspace="4"/>
+		<img src="{$imgPath}deconnect.mini.png" title="Page privee" hspace="4"/>
 	</xsl:template>
 </xsl:stylesheet>

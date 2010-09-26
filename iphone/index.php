@@ -86,7 +86,7 @@ if ($cliInf[1] == 'Firefox')
     	<!---------------------------------------------- -->
     	<div id="iHeader">
     	    <a href="#" id="waBackButton">Précédent</a>
-    	    <a href="#" id="waHomeButton"><img src="'.getStaticUrl('imgPhone').'home.png" alt="accueil"/></a>
+    	    <a href="#" id="waHomeButton"><img src="<?php echo getStaticUrl('imgPhone'); ?>home.png" alt="accueil"/></a>
     	    <a href="#_MainMenu" onclick="WA.HideBar()"><span id="waHeadTitle">ZUNO</span></a>
     	</div>
 

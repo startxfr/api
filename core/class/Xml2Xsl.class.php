@@ -40,7 +40,7 @@ class Xml2Xsl {
 	$this->xsl		= new DomDocument($GLOBALS['CACHEXML']['version'],$GLOBALS['CACHEXML']['encoding']);
 	$this->proc 		= new XsltProcessor();
 	//$this->proc->registerPhpFunctions();
-	$this->xslparam		= '';
+	$this-> xslParameter(array('imgPath'=>getStaticUrl('img')));
     }
 
     /**
