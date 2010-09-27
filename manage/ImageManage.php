@@ -29,7 +29,7 @@ $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 | MODULE PROCESSING
 +------------------------------------------------------------------------*/
 
-$sortie = "<br/><iframe name='preview' src='".getStaticUrl('Jss')."xinha/plugins/ImageManager/backend.php?__plugin=ImageManager&__function=managerSXFO' width='100%' height='450' frameborder='0'>&nbsp;</iframe>";
+$sortie = "<br/>";
 
 /*------------------------------------------------------------------------+
 | DISPLAY PROCESSING

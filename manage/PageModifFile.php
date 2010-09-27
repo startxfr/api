@@ -72,7 +72,6 @@ if($PC->rcvG['id'] != '') {
 	    $sortie = stripslashs($output->Process());
 
 	    $out->AddBodyContent($sortie);
-	    $out->headerHTML->initCalendar();
 	    echo $out->DisplayHeader();
 	    echo $out->DisplayBodyContent();
 	}

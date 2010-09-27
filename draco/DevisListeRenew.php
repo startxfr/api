@@ -23,8 +23,7 @@ loadPlugin(array('ZunoCore','ZView/DevisView'));
 $PC = new PageContext('draco');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
-$out->headerHTML->initCalendar();
+$out = new PageDisplay($PC->channel);
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 
 

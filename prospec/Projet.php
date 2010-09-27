@@ -20,8 +20,7 @@ loadPlugin(array('ZunoCore','ZView/ProspecView','ZView/ContactView'));
 $PC = new PageContext('prospec');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
-$out->headerHTML->initCalendar();
+$out = new PageDisplay($PC->channel);
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING

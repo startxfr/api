@@ -41,7 +41,6 @@ if (($PC->rcvP['type'] == 'popup')or
 else {
     if ($id != '') {
 	$out = new PageDisplay($PC->channel);
-	$out->headerHTML->initCalendar();
 	$out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 	$out->AddBodyContent(UserToolkit::UserPortlet($id));
 	$out->Process();

@@ -23,7 +23,6 @@ $PC = new PageContext('admin');
 $PC->GetFullContext();
 // Whe initialize page display
 $out = new PageDisplay($PC->channel);
-$out->headerHTML->initCalendar();
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 
 /*-----------------------------------------------------------------------*/

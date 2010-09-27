@@ -56,13 +56,7 @@ class PageDisplayHeader {
 	    $this->cssTheme = 'default';
 	else  $this->cssTheme = $GLOBALS['CHANNEL_'.$this->channel]['CSSTheme'];
 
-	$this->AddCSS($this->cssTheme.'/init.css');
-	$this->AddCSS($this->cssTheme.'/style.channel.'.$this->channel.'.css');
-	$this->AddCSS($this->cssTheme.'/style.print.css','print');
 	$this->initAjax();
-	$this->initCalendar();
-	$this->AddJS($this->cssTheme.'/init.js');
-	$this->AddJS($this->cssTheme.'/tooltip.js');
 	$InfoClient = GetClientBrowserInfo();
     }
 
@@ -124,7 +118,7 @@ class PageDisplayHeader {
 	    $addMedia = ($media != 'all') ? " media=\"$media\"" : '';
 	    $tmp  .= "\n\t\t\t<style type=\"text/css\"$addMedia>";
 	    foreach ( $css as $cssFile )
-		$tmp .= "\n\t\t\t\t@import url(\"".getStaticUrl('Jss').$cssFile."\");";
+		$tmp .= "\n\t\t\t\t@import url(\"".$cssFile."\");";
 	    $tmp .= "\n\t\t\t</style>";
 	}
 	$tmp .= $this->generateUserCss();
@@ -157,7 +151,7 @@ class PageDisplayHeader {
 	$tmp = "";
 	foreach( $this->js as $javas ) {
 	    $tmp .= "\n\t\t\t<script language=\"JavaScript\" type=\"text/javascript\" src=\"";
-	    $tmp .= getStaticUrl('Jss').$javas."\"></script>";
+	    $tmp .= $javas."\"></script>";
 	}
 	return $tmp;
     }
@@ -166,28 +160,14 @@ class PageDisplayHeader {
      * If a calendar is required, load appropriate
      * JavaScript and CSS stylesheet
      */
-    function initCalendar() {
-	$this->AddCSS("JSCal2-1.0/css/jscal2.css");
-	$this->AddCSS("JSCal2-1.0/css/border-radius.css");
-	$this->AddCSS("JSCal2-1.0/css/reduce-spacing.css");
-	$this->AddJS("JSCal2-1.0/js/jscal2.js");
-	$this->AddJS("JSCal2-1.0/js/lang/".$_SESSION["language"].".js");
-    }
-
-
-    /**
-     * If a calendar is required, load appropriate
-     * JavaScript and CSS stylesheet
-     */
     function initAjax() {
-	$this->AddJS("script.aculo/js/prototype.js");
-	$this->AddJS("script.aculo/js/scriptaculous.js");
-	$this->AddJS("script.aculo/js/resizable.js");
-	$this->AddJS("script.aculo/js/unittest.js");
-	$this->AddJS("script.aculo/js/menu.js");
-	$this->AddJS("script.aculo/js/accordion.js");
-	$this->AddJS("prototip/js/prototip.js");
-	$this->AddCSS("prototip/css/prototip.css");
+	$this->AddJS(getStaticUrl('Jss')."script.aculo/js/prototype.js");
+	$this->AddJS(getStaticUrl('Jss')."script.aculo/js/scriptaculous.js");
+	$this->AddJS(getStaticUrl('group')."libjs");
+	$this->AddCSS(getStaticUrl('group')."libcss");
+	$this->AddCSS(getStaticUrl('Jss').$this->cssTheme.'/style.channel.'.$this->channel.'.css');
+	$this->AddCSS(getStaticUrl('Jss').$this->cssTheme.'/style.print.css','print');
+	$this->AddJS(getStaticUrl('Jss').$this->cssTheme.'/init.js&debug');
     }
 
 

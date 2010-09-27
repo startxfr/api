@@ -23,8 +23,7 @@ loadPlugin(array('ZunoCore','ZView/JournalBanqueView'));
 $PC = new PageContext('facturier');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
-$out->headerHTML->initCalendar();
+$out = new PageDisplay($PC->channel);
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 
 

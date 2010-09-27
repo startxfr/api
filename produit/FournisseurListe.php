@@ -23,8 +23,7 @@ loadPlugin(array('ZunoCore','ZView/FournisseurView','ZView/ProduitView'));
 $PC = new PageContext('produit');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
-$out->headerHTML->initCalendar();
+$out = new PageDisplay($PC->channel);
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 
 

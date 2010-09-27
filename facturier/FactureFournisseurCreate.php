@@ -20,8 +20,7 @@ loadPlugin(array('ZunoCore','ZView/FactureFournisseurView', 'ZunoRenduHTML', 'ZM
 $PC = new PageContext('facturier');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
-$out->headerHTML->initCalendar();
+$out = new PageDisplay($PC->channel);
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
