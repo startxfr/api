@@ -28,14 +28,14 @@
     </group>
     <group name="zunoClientBanque" modifRight="0" title="Configuration de l'utilisateur et des droits">
 	<value id="titulaire">STARTX</value>
-	<value id="domiciliation">FORTIS Banque (Boulogne)</value>
-	<value id="banque">30488</value>
-	<value id="guichet">000 05</value>
-	<value id="compte">000 205 277 47</value>
-	<value id="cle">90</value>
-	<value id="iban">FR76 3048 8000 0500 0205 2774 790</value>
-	<value id="swift">BPARFRPP</value>
-	<value id="telex">BAPCO 280 150F</value>
+	<value id="domiciliation">BNP Parisbas (Boulogne)</value>
+	<value id="banque">30004</value>
+	<value id="guichet">02908</value>
+	<value id="compte">00010009689</value>
+	<value id="cle">83</value>
+	<value id="iban">FR76 3000 4029 0800 0100 0968 983</value>
+	<value id="swift">BNPAFRPPBBT</value>
+	<value id="telex"></value>
     </group>
     <group name="zunoPayline" modifRight="0" title="Configuration de Payline">
 	<value id="CONTRACT_NUMBER">6891533</value>
