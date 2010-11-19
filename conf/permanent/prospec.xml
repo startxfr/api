@@ -27,6 +27,11 @@
 	<value id="pj.InfoAdministratives.pdf">Informations administratives</value>
 	<value id="pj.plaquette.pdf">Plaquette de présentation</value>
 	<value id="pj.commandeForm.pdf">Formulaire de commande</value>
+	<value id="pj.Le_model_de_souscription_RHEL.pdf">Model de souscription RHEL</value>
+	<value id="pj.RedHat_Solutions_Guide_EN.pdf">Guide des solutions Redhat (EN)</value>
+	<value id="pj.RHEL6-Fiche_technique.pdf"> RHEL6: Fiche technique</value>
+	<value id="pj.RHEL6-Modules_complementaires.pdf"> RHEL6: Modules complémentaires</value>
+	<value id="pj.RHEL6-Nouveautes.pdf">RHEL6: Nouveautés</value>
 	<value id="texte._presentationService.txt">Présentation service</value>
 	<value id="texte._presentationProduit.txt">Présentation produit</value>
 	<value id="texte.presentationDeveloppement.txt">Présentation développement</value>
