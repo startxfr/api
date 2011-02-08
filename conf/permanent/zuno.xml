@@ -28,7 +28,7 @@
     </group>
     <group name="zunoClientBanque" modifRight="0" title="Configuration de l'utilisateur et des droits">
 	<value id="titulaire">STARTX</value>
-	<value id="domiciliation">BNP Parisbas (Boulogne)</value>
+	<value id="domiciliation">BNP PARIBAS (Boulogne-Billancourt)</value>
 	<value id="banque">30004</value>
 	<value id="guichet">02908</value>
 	<value id="compte">00010009689</value>
