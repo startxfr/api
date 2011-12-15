@@ -31,25 +31,25 @@ function simple_mail($to,$message,$subject = '',$from = '',$cc = '',$type ='html
     if ($subject == '')
 	$subject = 'Message de '.$GLOBALS['zunoClientCoordonnee']['nom'];
     if ($type == 'html')
-	$headers .= "Content-type: text/html; charset=UTF-8\r\n";
-    else	$headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+	$headers .= "Content-type: text/html; charset=UTF-8\n";
+    else	$headers .= "Content-type: text/plain; charset=UTF-8\n";
     if ($token != '')
-	$headers .= "ZunoMessageUID: ".$token."\r\n";
-    $headers .= "From: ".$from."\r\n";
-    $headers .= "Reply-To: ".$from."\r\n";
-    $headers .= "Return-Path: ".$from."\r\n";
-    $headers .= "X-Sender: ".$from."\r\n";
+	$headers .= "ZunoMessageUID: ".$token."\n";
+    $headers .= "From: ".$from."\n";
+    $headers .= "Reply-To: ".$from."\n";
+    $headers .= "Return-Path: ".$from."\n";
+    $headers .= "X-Sender: ".$from."\n";
     if ($cc !== false and !is_array($cc))
-	$headers .= "Cc: ".$cc."\r\n";
+	$headers .= "Cc: ".$cc."\n";
     elseif($cc !== false and is_array($cc)) {
 	$hd = "Cc: ";
 	foreach($cc as $v)
 	    $hd .= $v.",";
 	$headers .= rtrim($hd, ",");
-	$headers .= "\r\n";
+	$headers .= "\n";
     }
     if ($bcc != '')
-	$headers .= "Bcc: ".$bcc."\r\n";
+	$headers .= "Bcc: ".$bcc."\n";
     $o	= mail($to, $subject, stripslashes($message), $headers);
     return array($o);
 }
@@ -69,19 +69,19 @@ function MailAttach($to,$messager,$file,$filetype = '',$messagetype = '',$subjec
     elseif ($messagetype == 'html')
 	$messagetype = 'text/html; charset=UTF-8';
     if ($token != '')
-	$heads .= "ZunoMessageUID: ".$token."\r\n";
-    $heads .= "Reply-To: ".$from."\r\n";
-    $heads .= "From: ".$from."\r\n";
-    $heads .= "Return-Path: ".$from."\r\n";
+	$heads .= "ZunoMessageUID: ".$token."\n";
+    $heads .= "Reply-To: ".$from."\n";
+    $heads .= "From: ".$from."\n";
+    $heads .= "Return-Path: ".$from."\n";
     $heads .= "X-Sender: ".$from."\n";
     if ($cc !== false and !is_array($cc))
-	$heads .= "Cc: ".$cc."\r\n";
+	$heads .= "Cc: ".$cc."\n";
     elseif($cc !== false and is_array($cc)) {
 	$hd = "Cc: ";
 	foreach($cc as $v)
 	    $hd .= $v.",";
 	$heads .= rtrim($hd, ",");
-	$heads .= "\r\n";
+	$heads .= "\n";
     }
 
     $message[1]['content_type'] = $messagetype;
@@ -171,11 +171,11 @@ function mp_new_message($message_array) {
 	return array(
 		0 => $buf,
 		1 => 'MIME-Version: 1.0'."\n".
-			'Content-Type: MULTIPART/MIXED;'."\r\n".
-			'  BOUNDARY="'.$boundary.'"'."\r\n",
+			'Content-Type: MULTIPART/MIXED;'."\n".
+			'  BOUNDARY="'.$boundary.'"'."\n",
 		2 => array('MIME-Version: 1.0',
-			'Content-Type: MULTIPART/MIXED;'."\r\n".
-				'  BOUNDARY="'.$boundary.'"\r\n','')
+			'Content-Type: MULTIPART/MIXED;'."\n".
+				'  BOUNDARY="'.$boundary.'"\n','')
 	);
 
     }
