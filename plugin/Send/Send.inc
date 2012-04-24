@@ -397,27 +397,27 @@ class Sender {
 	if ($this->sujet == '')
 	    $this->sujet = $GLOBALS['zunoClientCoordonnee']['nom'];
 	if ($type == 'html')
-	    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-	else	$headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+	    $headers .= "Content-type: text/html; charset=UTF-8\n";
+	else	$headers .= "Content-type: text/plain; charset=UTF-8\n";
 
 	// en-têtes
-	$headers .= "From: ".$from."\r\n";
-	$headers .= "Reply-To: ".$from."\r\n";
-	$headers .= "Return-Path: ".$from."\r\n";
-	$headers .= "ZunoMessageUID: ".$this->token."\r\n";
-	$headers .= "X-Sender: ".$from."\r\n";
+	$headers .= "From: ".$from."\n";
+	$headers .= "Reply-To: ".$from."\n";
+	$headers .= "Return-Path: ".$from."\n";
+	$headers .= "ZunoMessageUID: ".$this->token."\n";
+	$headers .= "X-Sender: ".$from."\n";
 	if ($this->cc !== false and !is_array($this->cc))
-	    $headers .= "Cc: ".$this->cc."\r\n";
+	    $headers .= "Cc: ".$this->cc."\n";
 	elseif($this->cc !== false and is_array($this->cc)) {
 	    $headers .= "Cc: ";
 	    foreach($this->cc as $v) {
 		$headers .= $v.",";
 	    }
 	    $headers = rtrim($headers, ",");
-	    $headers .= "\r\n";
+	    $headers .= "\n";
 	}
 	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
-	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
+	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\n";
 
 	$o	= mail($this->email, $this->sujet, stripslashes($this->message.$this->signature), $headers);
 	return array($o);
@@ -440,22 +440,22 @@ class Sender {
 	elseif ($messagetype == 'html')
 	    $messagetype = 'text/html; charset=UTF-8';
 
-	$heads .= "Reply-To: ".$from."\r\n";
-	$heads .= "From: ".$from."\r\n";
-	$heads .= "Return-Path: ".$from."\r\n";
-	$heads .= "ZunoMessageUID: ".$this->token."\r\n";
+	$heads .= "Reply-To: ".$from."\n";
+	$heads .= "From: ".$from."\n";
+	$heads .= "Return-Path: ".$from."\n";
+	$heads .= "ZunoMessageUID: ".$this->token."\n";
 	$heads .= "X-Sender: ".$from."\n";
 	if ($this->cc !== false and !is_array($this->cc))
-	    $heads .= "Cc: ".$this->cc."\r\n";
+	    $heads .= "Cc: ".$this->cc."\n";
 	elseif($this->cc !== false and is_array($this->cc)) {
 	    $heads .= "Cc: ";
 	    foreach($this->cc as $v)
 		$heads .= $v.",";
 	    $heads = rtrim($heads, ",");
-	    $heads .= "\r\n";
+	    $heads .= "\n";
 	}
 	if ($GLOBALS['ZunoSendMail']['allMailCopy'] == true)
-	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\r\n";
+	    $heads .= "Bcc: ".$GLOBALS['ZunoSendMail']['allMailCopyAdress']."\n";
 
 	$message[1]['content_type'] = $messagetype;
 	$message[1]['filename'] = '';
@@ -537,13 +537,13 @@ class Sender {
 	    return array(
 		    0 => $buf,
 		    1 => 'MIME-Version: 1.0'."\n".
-			    'Content-Type: MULTIPART/MIXED;'."\r\n".
-			    '  BOUNDARY="'.$boundary.'"'."\r\n".
-			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].' '.$GLOBALS['PROJET']['copyright'].";\r\n".'  http://www.zuno.fr/',
+			    'Content-Type: MULTIPART/MIXED;'."\n".
+			    '  BOUNDARY="'.$boundary.'"'."\n".
+			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].' '.$GLOBALS['PROJET']['copyright'].";\n".'  http://www.zuno.fr/',
 		    2 => array('MIME-Version: 1.0',
-			    'Content-Type: MULTIPART/MIXED;'."\r\n".
-				    '  BOUNDARY="'.$boundary.'"\r\n',
-			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].';'."\r\n".'  http://www.zuno.fr/')
+			    'Content-Type: MULTIPART/MIXED;'."\n".
+				    '  BOUNDARY="'.$boundary.'"\n',
+			    'X-Generated-By: '.$GLOBALS['PROJET']['nom'].' Version '.$GLOBALS['PROJET']['version'].';'."\n".'  http://www.zuno.fr/')
 	    );
 
 	}
