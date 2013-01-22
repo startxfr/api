@@ -56,8 +56,10 @@
 	<value id="dir.cannevas" title="Répertoire des cannevas de devis">Cannevas/Devis/</value>
 	<value id="cannevas.defaut" title="Cannevas type pour un devis">_Devis.odt</value>
 	<value id="cannevas.prestation" title="Cannevas type pour un devis">_DevisPrestation.odt</value>
+	<value id="cannevas.formation" title="Cannevas type pour un devis de formation">_DevisFormation.odt</value>
 	<value id="cannevas.academique" title="Cannevas type pour un devis académique">_DevisAcademique.odt</value>
 	<value id="cannevas.dev" title="Cannevas type pour un developpement">DevisDev.odt</value>
+	<value id="cannevas.int" title="Cannevas type pour l'international">_DevisInternational.odt</value>
 	<value id="cannevas.proforma" title="Cannevas type pour un proforma">_Proforma.odt</value>
     </group>
     <group name="ZunoCommande" modifRight="1" title="Cannevas utilisé pour la création de BDCF">
