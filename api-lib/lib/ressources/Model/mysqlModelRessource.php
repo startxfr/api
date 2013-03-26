@@ -29,7 +29,7 @@ class mysqlModelRessource extends defaultModelRessource implements IRessource {
             } else {
                 //affichage de toutes les clefs
                 $search = $this->filterSearchParams($api->getInput()->getParams());
-                $sort = $input->getJsonParam($this->getConfig('sortParam', 'sort'), '[]');
+                $sort = $api->getInput()->getJsonParam($this->getConfig('sortParam', 'sort'), '[]');
                 $order = array();
                 if (is_array($sort))
                     foreach ($sort as $k => $val)
