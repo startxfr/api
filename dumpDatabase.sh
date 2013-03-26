@@ -16,22 +16,7 @@ $collections = array(
 	'system.indexes',
 	'system.users',
 );
-foreach($collections as $col) 
-shell_exec("mongoexport -d $db -c $col -u $user -p $pass -o $localRootPath/dump.$db-$col.bson");
-
-$db = 'startx';
-
-$collections = array(
-	'training.courses',
-	'training.cursus',
-	'training.families',
-	'training.sessions',
-	'training.students',
-	'users',
-	'system.indexes',
-	'system.users',
-);
-foreach($collections as $col) 
+foreach($collections as $col)
 shell_exec("mongoexport -d $db -c $col -u $user -p $pass -o $localRootPath/dump.$db-$col.bson");
 
 ?>

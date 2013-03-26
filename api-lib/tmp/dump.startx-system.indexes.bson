@@ -1,8 +1,0 @@
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "startx.system.users", "name" : "_id_" }
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "startx.training.courses", "name" : "_id_" }
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "startx.training.cursus", "name" : "_id_" }
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "startx.training.families", "name" : "_id_" }
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "startx.training.sessions", "name" : "_id_" }
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "startx.training.students", "name" : "_id_" }
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "startx.users", "name" : "_id_" }
-{ "v" : 1, "key" : { "user" : 1 }, "unique" : true, "ns" : "startx.training.students", "name" : "user_" }
