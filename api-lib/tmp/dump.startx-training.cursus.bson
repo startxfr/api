@@ -1,0 +1,2 @@
+{ "_id" : "jboss", "partner" : "redhat", "tree" : [ { "family" : 8, "children" : [ { "family" : 9, "children" : [ { "family" : 10 } ] } ] } ] }
+{ "_id" : "redhat", "partner" : "redhat", "tree" : [ { "family" : 1, "children" : [ { "family" : 2, "children" : [ { "family" : 4, "children" : [ { "family" : 5, "children" : [ { "family" : 6, "children" : [ { "family" : 7 } ] } ] } ] } ] } ] }, { "family" : 3, "children" : [ { "family" : 4, "children" : [ { "family" : 5, "children" : [ { "family" : 6, "children" : [ { "family" : 7 } ] } ] } ] } ] } ] }
