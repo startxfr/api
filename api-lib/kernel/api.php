@@ -6,7 +6,7 @@ class Api extends Configurable {
      * name of the default API name to use if no apiID is given when instanciating the Api Class
      * @var string the api name. Should be a existing key stored in the api_collection collections tored in nosql backend
      */
-    public $defaultApiID = 'sxapi-sample';
+    public $defaultApiID = 'sample';
 
     /**
      * JSON string with various parameters used for basic functionning of the Api Object. This property is critical and should contain:
@@ -16,7 +16,7 @@ class Api extends Configurable {
      * @var string JSON string with all the given keys used for connecting and reading API backend documents
      */
     public $nosqlApiBackend = '{
-        "connection" : "mongodb://dev:dev@127.0.0.1:27017",
+        "connection" : "mongodb://username:password@127.0.0.1:27017",
         "base" : "sxapi",
         "api_collection" : "sxapi.api"
     }';
