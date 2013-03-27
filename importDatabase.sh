@@ -1,8 +1,8 @@
 #!/usr/bin/php
 <?php
 $localRootPath = '/var/www/virtual/api.startx.fr/api-lib/tmp/';
-$user = 'dev';
-$pass = 'dev';
+$user = 'username';
+$pass = 'password';
 $db = 'sxapi';
 $collections = array(
 	'redirect.hit',
