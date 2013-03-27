@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-$localRootPath = '/var/www/virtual/api.startx.fr/api-lib/tmp/';
+$localRootPath = '/path/to/installed/sxapi/api-lib/tmp/';
 $user = 'username';
 $pass = 'password';
 $db = 'sxapi';
@@ -16,7 +16,7 @@ $collections = array(
 	'system.indexes',
 	'system.users',
 );
-foreach($collections as $col) 
+foreach($collections as $col)
 shell_exec("mongoimport -d $db -c $col -u $user -p $pass $localRootPath/dump.$db-$col.bson");
 
 ?>
