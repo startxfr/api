@@ -146,7 +146,7 @@ class Api extends Configurable {
                 $this->defaultApiID = $_REQUEST['api'];
             $api = $this->nosqlConnection->selectCollection($this->nosqlApiBackend->api_collection)->findOne(array("_id" => $this->defaultApiID));
             if (is_null($api))
-                throw new ApiException("could not find any api document in collection '" . $this->nosqlApiBackend->api_collection . "' from nosql base '" . $this->nosqlApiBackend->base . "'", 10);
+                $this->exitOnError(3, "could not find '".$this->defaultApiID."' api document in '" . $this->nosqlApiBackend->api_collection . "' collection on '" . $this->nosqlApiBackend->base . "' database", $this->nosqlConnection);
             else
                 $this->setConfigs($api);
             $this->logInfo(2, "Loaded version " . $this->getConfig('version', '0.0') . " of '" . $this->getConfig("_id", "_id") . "' API.");
@@ -734,7 +734,6 @@ class Api extends Configurable {
         return $this;
     }
 
-
     public function getTrace() {
         $trace = array(
             'request_method' => $this->getInput()->getMethod(),
@@ -756,7 +755,10 @@ class Api extends Configurable {
     public function exitOnError($code, $message, $data = array()) {
         $this->renderer = null;
         try {
-            $outputName = $this->getInput()->getOutputFormat();
+            if (method_exists($this->getInput(), 'getOutputFormat'))
+                $outputName = $this->getInput()->getOutputFormat();
+            else
+                $outputName = 'html';
         } catch (Exception $e) {
             $outputName = 'html';
         }
