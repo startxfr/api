@@ -38,22 +38,24 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      */
     public function renderOk($message, $data, $count = null) {
         if ($count == null and is_array($data))
-            $count = " (returning ".count($data)." results)";
-        elseif($count > 0)
-            $count = " (returning ".$count." results)";
+            $count = " (returning " . count($data) . " results)";
+        elseif ($count > 0)
+            $count = " (returning " . $count . " results)";
         else
             $count = "";
-        $otherInfo = '<h3>Answer</h3><p>' . $this->layoutContent($data) . '</p>';
+        $otherInfo = '<details open><summary><h3>Answer</h3></summary><p>' . $this->layoutContent($data) . '</p></details>';
         $html = '
                 <body id="answer">
-                    <div>
-                        <h1>Answer to your sxAPI Query</h1>
-                        <h3>Message</h3>
-                        <p>' . $message . $count.'</p>
+                    <header><h1><span>SX</span>API</h1><h2>v 0.1</h2><h3>POSITIVE RESPONSE</h3></header>
+                    <article>
+                        <header>
+                            <h2>RETURN RESPONSE</h2>
+                        </header>
+                        <details><summary><h3>Message</h3></summary><p>' . $message . $count . '</p></details>
                         ' . $otherInfo . '
-                        <h3>Further information</h3>
-                        <p>If you need some other informations, please contact dev@startx.fr</p>
-                    </div>
+                        <details><summary><h3>Further information</h3></summary><p>If you need some other informations, please contact dev@startx.fr or visit <a href="https://github.com/startxfr/sxapi" target="_blank">project page</a> hosted on github. You can also find some useful informations on <a href="https://github.com/startxfr/sxapi/wiki" target="_blank">wiki pages</a></p></details>
+                    </article>
+                    <footer><p>&copy; 2013 - <a href="https://github.com/startxfr/sxapi" target="_blank">SXAPI</a> by <a href="http://www.startx.fr" target="_blank">STARTX</a></p></footer>
                 </body>';
         Api::logDebug(341, "Prepare OK rendering in '" . get_class($this) . "' connector for message : " . $message, $html, 5);
         return $this->render($html);
@@ -68,22 +70,24 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      */
     public function renderError($code, $message = '', $other = array()) {
         header('HTTP/1.1 400 BAD REQUEST');
-        $otherstring = "";
+        $otherDebug = "";
         if (DEBUG)
-            $otherDebug = '<h3>Trace or context</h3><p>' . $this->layoutContent($other) . '</p>';
+            $otherDebug = '<details><summary><h3>Trace or context</h3></summary><p>' . $this->layoutContent($other) . '</p></details>';
         else
-            $otherstring = "<i>You must activate DEBUG constant and set it to true in order to see error detail</i>";
+            $otherDebug = '<details><summary><h3>Trace or context</h3></summary><p><i>You must activate DEBUG constant and set it to true in order to see error detail</i></p></details>';
         $html = '
                 <body id="error">
-                    <div>
-                        <h1>FATAL ERROR CODE ' . $code . '</h1>
-                        <h3>Message</h3>
-                        <p>' . $message . '</p>
+                    <header><h1><span>SX</span>API</h1><h2>v 0.1</h2><h3>NEGATIVE RESPONSE</h3></header>
+                    <article>
+                        <header>
+                            <h2>RETURN ERROR CODE N&deg;' . $code . '</h2>
+                        </header>
+                        <details open><summary><h3>Message</h3></summary><p>' . $message . '</p></details>
                         ' . $otherDebug . '
-                        <h3>Further information</h3>
-                        <p>If you need some other informations, please contact dev@startx.fr</p>
-                    </div>
-                </body>';
+                         <details><summary><h3>Further information</h3></summary><p>If you need some other informations, please contact dev@startx.fr or visit <a href="https://github.com/startxfr/sxapi" target="_blank">project page</a> hosted on github. You can also find some useful informations on <a href="https://github.com/startxfr/sxapi/wiki" target="_blank">wiki pages</a></p></details>
+                   </article>
+                   <footer><p>&copy; 2013 - <a href="https://github.com/startxfr/sxapi" target="_blank">SXAPI</a> by <a href="http://www.startx.fr" target="_blank">STARTX</a></p></footer>
+               </body>';
         Api::logDebug(345, "Prepare ERROR rendering in '" . get_class($this) . "' connector for message : " . $message, $html, 5);
         return $this->render($html);
     }
@@ -109,17 +113,19 @@ class HtmlOutput extends DefaultOutput implements IOutput {
                 $value = date('Y-m-d H:i:s', $value->sec);
             elseif (is_object($value))
                 $value = (array) $value;
-            $ech .= "<li><strong>" . $field . " : </strong> ";
-            if (is_array($value))
+            if (is_array($value)) {
+                $ech .= "<details open><summary>" . $field . "</summary> ";
                 $ech .= $this->layoutContent($value, '');
-            else {
+                $ech .= "</details>";
+            } else {
+                $ech .= "<li><strong>" . $field . "</strong> ";
                 $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
                 if ((strpos($value, 'http://') === 0) || (strpos($value, 'https://') === 0))
                     $ech .= "<a href=\"" . $value . "\">" . $value . "</a>";
                 else
                     $ech .= $value;
+                $ech .= "</li>\n";
             }
-            $ech .= "</li>\n";
         }
         $ech .= "</ul>\n";
         return $ech;
@@ -137,37 +143,46 @@ class HtmlOutput extends DefaultOutput implements IOutput {
                 <title>SX-API v1</title>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
                 <style>
-                    body {
-                        font-family: Helvetica, Arial, sans-serif;
-                        font-size: 14px;
-                        color: #333;
-                        padding: 1em;
-                    }
-                    body > div {box-shadow: 5px 5px 10px  rgba(0,0,0,0.8); padding: 1em; border-radius: 5px; width: 900px; margin: 1em auto  }
-                    h1 { margin: 0; font-size: 4em; line-height: .8em }
-                    h3 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 2.2em;margin: .2em;  }
-                    h4 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1.5em; margin: .2em; }
-                    p { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1.2em; margin: .5em .2em; }
+                    body {font-family: Helvetica, Arial, sans-serif;font-size: 14px;color: #333;padding: 0;margin: 0;}
+                    body > header { width: 900px; padding: 1em; margin: 0 auto 1em auto  }
+                    body > article {box-shadow: 5px 5px 10px  rgba(0,0,0,0.8); padding: 0 0 .5em 0; border-radius: 5px; width: 900px; margin: 2em auto 0 auto }
+                    body > footer { width: 900px; padding: 0em 0 1em 1em; margin: 1.1em auto 1em auto; color: white; font-size: .75em  }
+                    h1 { margin: 0; font-size: 3em; line-height: .8em }
+                    h2 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 2.2em;margin: .2em;  }
+                    h3 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1.5em;margin: .2em;  }
+                    h4 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1.2em; margin: .2em; }
+                    p { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1em; margin: .5em .2em; }
                     ul {
                         padding-bottom: 1em;
                         padding-left: 2em;
                     }
                     a {
-                        color: darkgreen;
+                        color: white;
                         text-decoration: none;
                     }
-                    #error h1 { color : #fee; text-shadow: 0 0 2px white, 0 0 15px #600, 3px 3px 8px rgba(50,0,0,0.9); }
-                    body#error  { background-color : #533 }
-                    #error div { background-color : rgba(255,255,255,0.9); }
-                    #error p { color : darkred; }
-                    #error h3 { color : red; }
+                    body > header h1 { color: #000e44; text-shadow: 0 0 3px  rgb(255,255,255),  0 0 10px  rgba(255,255,255,1),  0 0 20px  rgba(255,255,255,0.6); float: left }
+                    body > header h1 span { color: #0c6f5e }
+                    body > header h2 { color: white; font-size: .7em; font-weight: normal; margin: 2.2em 0 0 1em; float: left }
+                    body > header h3 { color: #0c6f5e; margin: 0; font-size: 2em; float: right }
+                    article header { margin: 0;padding: .3em; box-shadow: 0 0 5px  rgba(0,0,0,0.9); border-radius: 5px 5px 0 0; width: 892px; }
+                    article h3 { display: inline; }
+                    article > details { margin: 1em; }
+
+
+                    body#error  { background-color : #533;}
+                    #error article { color : darkred; background-color : rgba(255,255,255,0.9); clear: both }
+                    #error article h2 { color : white; text-shadow: 0 0 2px white, 0 0 15px #600, 3px 3px 8px rgba(50,0,0,0.9); }
+                    #error article header { background-color : rgba(85,51,51,0.6); }
+                    #error h3, #error article a { color : #744; }
+                    #error article a:hover { color : #533; }
                     #error pre.xdebug-var-dump {font-size:0.8em}
 
-                    #answer h1 { color : #efe; text-shadow: 0 0 2px white, 0 0 15px #060, 3px 3px 8px rgba(0,50,0,0.9); }
                     body#answer  { background-color : #353 }
-                    #answer div { background-color : rgba(255,255,255,0.9); }
-                    #answer p { color : #575; }
-                    #answer h3 { color : #686; }
+                    #answer article { color : #575;background-color : rgba(255,255,255,0.9); clear: both }
+                    #answer article h2 { color : white; text-shadow: 0 0 2px rgba(11,45,11,0.9), 0 0 10px rgba(11,45,11,0.8); }
+                    #answer article header { background-color : rgba(51,85,51,0.6); }
+                    #answer h3, #answer article a { color : #686; }
+                    #answer article a:hover { color : #353; }
                 </style>
             </head>';
     }
