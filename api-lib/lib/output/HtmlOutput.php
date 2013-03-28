@@ -1,11 +1,12 @@
 <?php
 
 /**
- * HTML Output class: renders HTML 5
+ * Class used to render data in HTML5 document
  *
- * @category Output
- * @package  API
+ * @package  SXAPI.Output
  * @author   Mallowtek <mallowtek@gmail.com>
+ * @see      DefaultOutput
+ * @link      https://github.com/startxfr/sxapi/wiki/Outputs
  */
 class HtmlOutput extends DefaultOutput implements IOutput {
 
@@ -13,10 +14,9 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      * Render the view
      *
      * @param array $content data to be rendered
-     *
-     * @return bool
+     * @return void this method echo result and exit program
      */
-    public function render($data) {
+    protected function render($data) {
         header('Content-Type: text/html; charset=utf8');
         ob_start();
         $this->layoutStart();
@@ -32,9 +32,11 @@ class HtmlOutput extends DefaultOutput implements IOutput {
     /**
      * Render the content exiting normally
      *
-     * @param array $content data to be rendered
-     *
-     * @return bool
+     * @param   string  message describing the returned data
+     * @param   mixed   data to be rendered and returned to the client
+     * @param   int     counter to indicate if there is more data that the returned set
+     * @return  void
+     * @see     self::render();
      */
     public function renderOk($message, $data, $count = null) {
         if ($count == null and is_array($data))
@@ -64,9 +66,11 @@ class HtmlOutput extends DefaultOutput implements IOutput {
     /**
      * Render the content exiting with error
      *
-     * @param array $content data to be rendered
-     *
-     * @return bool
+     * @param   int     error code to render
+     * @param   string  message describing the error
+     * @param   mixed   other data to be returned to the client
+     * @return  void
+     * @see     self::render();
      */
     public function renderError($code, $message = '', $other = array()) {
         header('HTTP/1.1 400 BAD REQUEST');
@@ -93,11 +97,10 @@ class HtmlOutput extends DefaultOutput implements IOutput {
     }
 
     /**
-     * Recursively render an array to an HTML list
+     * Recursively render an array to an HTML list and details for folding results
      *
-     * @param array $content data to be rendered
-     *
-     * @return null
+     * @param   mixed   data to be rendered and returned to the client
+     * @return string
      */
     protected function layoutContent($content) {
         if (is_string($content)) {
@@ -134,7 +137,7 @@ class HtmlOutput extends DefaultOutput implements IOutput {
     /**
      * Render start of HTML page
      *
-     * @return null
+     * @return void start sending output to client application
      */
     protected function layoutStart() {
         echo '<!DOCTYPE html>
@@ -190,7 +193,7 @@ class HtmlOutput extends DefaultOutput implements IOutput {
     /**
      * Render end of HTML page
      *
-     * @return null
+     * @return void continue sending output to client application
      */
     protected function layoutStop() {
         echo '</html>';

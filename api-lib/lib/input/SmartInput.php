@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Class for logging detail into a file
- *
- * @author dev@startx.fr
+ * @package  SXAPI.Input
+ * @author   Dev Team <dev@startx.fr>
+ * @see      DefaultInput
+ * @link     https://github.com/startxfr/sxapi/wiki/Inputs
  */
 class SmartInput extends DefaultInput implements IInput {
 

@@ -1,10 +1,18 @@
 <?php
 
-class DefaultOutput extends Configurable implements IOutput {
+/**
+ * Base class used for rendering content to the API client. All output class should be derivated form this class or one of its descendant
+ *
+ * @package  SXAPI.Output
+ * @author   Mallowtek <mallowtek@gmail.com>
+ * @link      https://github.com/startxfr/sxapi/wiki/Outputs
+ */
+abstract class DefaultOutput extends Configurable implements IOutput {
 
     /**
      * init the rendering object
      *
+     * @return void
      */
     public function __construct($config) {
         Api::logDebug(300, "Construct '" . $config["_id"] . "' " . get_class($this) . " connector ", $config, 5);
@@ -14,6 +22,7 @@ class DefaultOutput extends Configurable implements IOutput {
     /**
      * init the rendering object
      *
+     * @return self
      */
     public function init() {
         Api::logDebug(310, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector", null, 5);
@@ -24,9 +33,9 @@ class DefaultOutput extends Configurable implements IOutput {
      * Render the view
      *
      * @param array $content data to be rendered
-     *
+     * @return void this method echo result and exit program
      */
-    public function render($content) {
+    protected function render($content) {
         ob_start();
         print_r($content);
         $output = ob_get_contents();
@@ -39,9 +48,11 @@ class DefaultOutput extends Configurable implements IOutput {
     /**
      * Render the content exiting normally
      *
-     * @param array $content data to be rendered
-     *
-     * @return bool
+     * @param   string  message describing the returned data
+     * @param   mixed   data to be rendered and returned to the client
+     * @param   int     counter to indicate if there is more data that the returned set
+     * @return  void
+     * @see     self::render();
      */
     public function renderOk($message, $data) {
         $config = array(
@@ -56,9 +67,11 @@ class DefaultOutput extends Configurable implements IOutput {
     /**
      * Render the content exiting with error
      *
-     * @param array $content data to be rendered
-     *
-     * @return bool
+     * @param   int     error code to render
+     * @param   string  message describing the error
+     * @param   mixed   other data to be returned to the client
+     * @return  void
+     * @see     self::render();
      */
     public function renderError($code, $message = '', $other = array()) {
         $config = array(

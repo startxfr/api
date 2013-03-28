@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Class for reading GET params
- *
- * @author dev@startx.fr
+ * @package  SXAPI.Input
+ * @author   Dev Team <dev@startx.fr>
+ * @see      DefaultInput
+ * @link     https://github.com/startxfr/sxapi/wiki/Inputs
  */
 class ApplicationInput extends DefaultInput implements IInput {
 

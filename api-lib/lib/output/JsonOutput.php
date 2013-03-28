@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Json Output class: renders json formated string
+ * Class used to render data in json formated string
  *
- * @category Output
- * @package  API
+ * @package  SXAPI.Output
  * @author   Mallowtek <mallowtek@gmail.com>
+ * @see      DefaultOutput
+ * @link      https://github.com/startxfr/sxapi/wiki/Outputs
  */
 class JsonOutput extends DefaultOutput implements IOutput {
 
@@ -13,10 +14,9 @@ class JsonOutput extends DefaultOutput implements IOutput {
      * Render the view
      *
      * @param array $content data to be rendered
-     *
-     * @return bool
+     * @return void this method echo result and exit program
      */
-    public function render($content) {
+    protected function render($content) {
         header('Content-Type: application/json; charset=utf8');
         $output = json_encode($content);
         Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($output) . " octets sended", $content, 3);
@@ -27,9 +27,11 @@ class JsonOutput extends DefaultOutput implements IOutput {
     /**
      * Render the content exiting normally
      *
-     * @param array $content data to be rendered
-     *
-     * @return bool
+     * @param   string  message describing the returned data
+     * @param   mixed   data to be rendered and returned to the client
+     * @param   int     counter to indicate if there is more data that the returned set
+     * @return  void
+     * @see     self::render();
      */
     public function renderOk($message, $data, $count = null) {
         if ($count == null and is_array($data))
@@ -50,9 +52,11 @@ class JsonOutput extends DefaultOutput implements IOutput {
     /**
      * Render the content exiting with error
      *
-     * @param array $content data to be rendered
-     *
-     * @return bool
+     * @param   int     error code to render
+     * @param   string  message describing the error
+     * @param   mixed   other data to be returned to the client
+     * @return  void
+     * @see     self::render();
      */
     public function renderError($code, $message = '', $other = array()) {
         header('HTTP/1.1 400 BAD REQUEST');

@@ -52,14 +52,6 @@ interface IOutput {
     public function init();
 
     /**
-     * Render the view
-     *
-     * @param array $content data to be rendered
-     *
-     */
-    public function render($content);
-
-    /**
      * Render the content exiting normally
      *
      * @param array $content data to be rendered
