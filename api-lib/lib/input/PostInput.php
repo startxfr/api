@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Class used to access data comming from the HTTP POST method. Wrap the $_POST global variable.
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput

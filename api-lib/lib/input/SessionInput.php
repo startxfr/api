@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Class used to access data stored into the current session. If no session found, create one and use the API config to define the storage method. 
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput

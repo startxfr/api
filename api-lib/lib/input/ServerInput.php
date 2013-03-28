@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Class used to access data comming from the HTTP server. Wrap the $_SERVER global variable.
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput

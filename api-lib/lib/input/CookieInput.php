@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Class used to access data stored into the cookies. Wrap the $_COOKIE global variable.
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Class used to access data comming from the HTTP POST, GET and COOKIE method. Order is defined by php config file. Wrap the $_REQUEST global variable.
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput

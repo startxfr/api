@@ -1,6 +1,19 @@
 <?php
 
 /**
+ * Class used to present to HTTP context. It work with the .htaccess file and extract virtual url fragments.
+ * Smart side reside in the fact that this input will analyse the full HTTP context and extract the following elements:
+ * <ul>
+ * <li><strong>protocol</strong> : The used protocol (could be http:// or https://) </li>
+ * <li><strong>host</strong> : The hostname</li>
+ * <li><strong>root</strong> : The root path fragment to the php script file</li>
+ * <li><strong>path</strong> : The API tree path to the ressource (described as a path string)</li>
+ * <li><strong>elements</strong> : Exploded version of the path. Describe requested ressources</li>
+ * <li><strong>method</strong> : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)</li>
+ * <li><strong>format</strong> : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)</li>
+ * <li><strong>data</strong> : Incomings data. According to the HTTP request, could use the request body or the GET method</li>
+ * </ul>
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
@@ -111,11 +124,8 @@ class SmartInput extends DefaultInput implements IInput {
         // now how about PUT/POST bodies? These override what we got from GET
         $body = file_get_contents("php://input");
         $content_type = false;
-        if (isset($_SERVER['CONTENT_TYPE'])) {
+        if (isset($_SERVER['CONTENT_TYPE']))
             $content_type = $_SERVER['CONTENT_TYPE'];
-        } else {
-
-        }
         switch ($content_type) {
             case "application/json":
                 $this->format = "json";
@@ -139,7 +149,7 @@ class SmartInput extends DefaultInput implements IInput {
                     else
                         $this->format = "html";
                 }
-                $parameters = $_REQUEST;
+                $parameters = array_merge($_GET,$_POST);
                 break;
         }
         $this->data = $parameters;
