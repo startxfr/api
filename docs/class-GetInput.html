@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class GetInput | SXAPI Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
+	<script type="text/javascript" src="elementlist.js?2865310049"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active main"><a href="package-SXAPI.html">SXAPI<span></span></a>
+						<ul>
+				<li class="active main"><a href="package-SXAPI.Input.html">Input</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
+				<li><a href="package-PHP.html">PHP</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-ApplicationInput.html">ApplicationInput</a></li>
+				<li><a href="class-CookieInput.html">CookieInput</a></li>
+				<li><a href="class-DefaultInput.html">DefaultInput</a></li>
+				<li class="active"><a href="class-GetInput.html">GetInput</a></li>
+				<li><a href="class-PostInput.html">PostInput</a></li>
+				<li><a href="class-RequestInput.html">RequestInput</a></li>
+				<li><a href="class-ServerInput.html">ServerInput</a></li>
+				<li><a href="class-SessionInput.html">SessionInput</a></li>
+				<li><a href="class-SmartInput.html">SmartInput</a></li>
+				<li><a href="class-UserInput.html">UserInput</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-SXAPI.Input.html" title="Summary of SXAPI\Input"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="sxapi-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class GetInput</h1>
+
+
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+			<a href="class-Configurable.html"><span>Configurable</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by" />
+			<a href="class-DefaultInput.html"><span>DefaultInput</span></a>
+			
+			 implements 
+				<a href="class-IInput.html"><span>IInput</span></a>
+			
+			
+		</dd>
+		<dd style="padding-left:60px">
+			<img src="resources/inherit.png" alt="Extended by" />
+<b><span>GetInput</span></b>			
+			 implements 
+				<a href="class-IInput.html"><span>IInput</span></a>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-SXAPI.html">SXAPI</a>\<a href="package-SXAPI.Input.html">Input</a><br />
+
+				<b>Author:</b>
+				Dev Team &lt;<a href="mailto:dev&#64;startx.fr">dev&#64;<!---->startx.fr</a>&gt;<br />
+				<b>See:</b>
+				<code><code><a href="class-DefaultInput.html">DefaultInput</a></code></code><br />
+				<b>Link:</b>
+				<a href="https://github.com/startxfr/sxapi/wiki/Inputs">https://github.com/startxfr/sxapi/wiki/Inputs</a><br />
+		<b>Located at</b> <a href="source-class-GetInput.html#3-31" title="Go to source code">lib/input/GetInput.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="get" id="_get">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get">#</a>
+		<code><a href="source-class-GetInput.html#11-16" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>return value coresponding to the given key stored in self::$data. If no key
+found, the default value is returned.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>return value coresponding to the given key stored in self::$data. If no key
+found, the default value is returned.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>the searched key</dd>
+					<dt><var>$default</var></dt>
+					<dd><code>mixed</code><br>the default value to return if no key is found</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-DefaultInput.html#_get">DefaultInput::get()</a></code></div>
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-IInput.html#_get">IInput::get()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set" id="_set">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-GetInput.html">GetInput</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set">#</a>
+		<code><a href="source-class-GetInput.html#18-21" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
+
+		<div class="description short">
+			
+<p>associate a value to the given key and store it in self::$data. If key
+already exist, value is replaced.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>associate a value to the given key and store it in self::$data. If key
+already exist, value is replaced.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>the searched key</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>mixed</code><br>the default value to return if no key is found</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-GetInput.html">GetInput</a></code></code><br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-DefaultInput.html#_set">DefaultInput::set()</a></code></div>
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-IInput.html#_set">IInput::set()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getAll" id="_getAll">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getAll">#</a>
+		<code><a href="source-class-GetInput.html#23-25" title="Go to source code">getAll</a>( )</code>
+
+		<div class="description short">
+			
+<p>return all values stored in self::$data</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>return all values stored in self::$data</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-DefaultInput.html#_getAll">DefaultInput::getAll()</a></code></div>
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-IInput.html#_getAll">IInput::getAll()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setAll" id="_setAll">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setAll">#</a>
+		<code><a href="source-class-GetInput.html#27-30" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
+
+		<div class="description short">
+			
+<p>replace all values stored in self::$data by the new $data</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>replace all values stored in self::$data by the new $data</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$data</var></dt>
+					<dd><code>mixed</code><br>new content used to replace old one</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-DefaultInput.html#_setAll">DefaultInput::setAll()</a></code></div>
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-IInput.html#_setAll">IInput::setAll()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-DefaultInput.html#methods">DefaultInput</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-DefaultInput.html#___construct">__construct()</a>, 
+			<a href="class-DefaultInput.html#_init">init()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Configurable.html#methods">Configurable</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Configurable.html#_getConfig">getConfig()</a>, 
+			<a href="class-Configurable.html#_getConfigs">getConfigs()</a>, 
+			<a href="class-Configurable.html#_serialize">serialize()</a>, 
+			<a href="class-Configurable.html#_setConfig">setConfig()</a>, 
+			<a href="class-Configurable.html#_setConfigs">setConfigs()</a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary inherited">
+	<caption>Properties inherited from <a href="class-DefaultInput.html#properties">DefaultInput</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-DefaultInput.html#$data"><var>$data</var></a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		SXAPI Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

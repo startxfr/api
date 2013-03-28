@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: http://github.com/startxfr/sxapi/wiki/docs/sitemap.xml

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/index.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Input.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Output.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-None.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-PHP.html</loc>
+</url>
+
+
+</urlset>
