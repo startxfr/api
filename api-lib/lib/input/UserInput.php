@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Class used to access user informations of the user associated to the current session
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput

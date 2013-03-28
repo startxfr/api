@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Class used to access application informations of the application associated to the current session
+ *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput

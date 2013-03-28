@@ -4,14 +4,14 @@
  * Class used to present to HTTP context. It work with the .htaccess file and extract virtual url fragments.
  * Smart side reside in the fact that this input will analyse the full HTTP context and extract the following elements:
  * <ul>
- * <li><strong>protocol</strong> : The used protocol (could be http:// or https://) </li>
- * <li><strong>host</strong> : The hostname</li>
- * <li><strong>root</strong> : The root path fragment to the php script file</li>
- * <li><strong>path</strong> : The API tree path to the ressource (described as a path string)</li>
- * <li><strong>elements</strong> : Exploded version of the path. Describe requested ressources</li>
- * <li><strong>method</strong> : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)</li>
- * <li><strong>format</strong> : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)</li>
- * <li><strong>data</strong> : Incomings data. According to the HTTP request, could use the request body or the GET method</li>
+ * <li>protocol : The used protocol (could be http:// or https://) </li>
+ * <li>host : The hostname</li>
+ * <li>root : The root path fragment to the php script file</li>
+ * <li>path : The API tree path to the ressource (described as a path string)</li>
+ * <li>elements : Exploded version of the path. Describe requested ressources</li>
+ * <li>method : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)</li>
+ * <li>format : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)</li>
+ * <li>data : Incomings data. According to the HTTP request, could use the request body or the GET method</li>
  * </ul>
  *
  * @package  SXAPI.Input
