@@ -1,9 +1,12 @@
 <?php
 
 /**
- * Class for logging detail into a file
+ * This class allow you to interact with a Ftp server
  *
- * @author dev@startx.fr
+ * @package  SXAPI.Store
+ * @author   Dev Team <dev@startx.fr>
+ * @see      DefaultStore
+ * @link     https://github.com/startxfr/sxapi/wiki/Store
  */
 class FtpStore extends DefaultStore implements IStorage {
 

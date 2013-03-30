@@ -1,19 +1,39 @@
 <?php
 
+/**
+ * SXAPI Main class
+ *
+ * This Class is a singleton and the main entry class for all the SXAPI process.
+ * Developper who want to create a new SXAPI instance server should instanciate it as follow
+ *
+ * Example:
+ * <code>
+ * Api::getInstance()->load()->execute();
+ * </code>
+ *
+ * @see      Configurable
+ * @link     https://github.com/startxfr/sxapi/wiki/API-Document
+ *
+ * @category SXAPI
+ * @package  SXAPI
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
+ */
 class Api extends Configurable {
 
     /**
-     * name of the default API name to use if no apiID is given when instanciating the Api Class
-     * @var string the api name. Should be a existing key stored in the api_collection collections tored in nosql backend
+     * name of the default API name to use if no apiID is given when instanciating the Api Class. Should be a existing key recorded in the api_collection collections stored in nosql backend
      */
     public $defaultApiID = 'sample';
 
     /**
      * JSON string with various parameters used for basic functionning of the Api Object. This property is critical and should contain:
-     * - connection: mongodb connection string used for connecting to the nosql backend
-     * - base: name of the nosql database to use for retriving Api core elements (api documents, logs, app, session, models and ressources)
-     * - api_collection : name of the nosql collection used to store API config document
-     * @var string JSON string with all the given keys used for connecting and reading API backend documents
+     * <ul>
+     * <li>connection: mongodb connection string used for connecting to the nosql backend</li>
+     * <li>base: name of the nosql database to use for retriving Api core elements (api documents, logs, app, session, models and ressources)</li>
+     * <li>api_collection : name of the nosql collection used to store API config document</li>
+     * </ul>
      */
     public $nosqlApiBackend = '{
         "connection" : "mongodb://username:password@127.0.0.1:27017",
@@ -23,61 +43,51 @@ class Api extends Configurable {
 
     /**
      * static property to store unique instance of this singleton class
-     * @var object Api unique instance of Api Class
      */
     private static $_instance = null;
 
     /**
      * the nosql connection ressource used to communicate with Api internal backend. Used for accessing documents used in core function (model, ressource, input, output)
-     * @var ressource the nosql connection ressource
      */
     public $nosqlConnection = null;
 
     /**
-     * list of all input connector. This property is populated when loading input connector as described in the Api Config document
-     * @var array list of input connector with 'id' config key used as key identifier
+     * list of all input connector. This property is populated when loading input connector as described in the Api Config document. 'id' config key is used as key identifier
      */
     private $inputs = array();
 
     /**
      * ID of the default input connector to use. This property is automaticaly set when the "default" property is set to 'true' into one of the input section of the Api Config document
-     * @var string the input connector ID
      */
     private $inputDefault = '';
 
     /**
-     * list of all output connector. This property is populated when loading output connector as described in the Api Config document
-     * @var array list of output connector with 'id' config key used as key identifier
+     * list of all output connector. This property is populated when loading output connector as described in the Api Config document. 'id' config key is used as key identifier
      */
     private $outputs = array();
 
     /**
      * ID of the default output connector to use. This property is automaticaly set when the "default" property is set to 'true' into one of the output section of the Api Config document
-     * @var string the output connector ID
      */
     private $outputDefault = '';
 
     /**
-     * the store manager. This property is used a a cache for all instanciated stores used into the Api. Only required store are dynamicaly loaded when needed
-     * @var array list of store instances with 'id' config key used as key identifier
+     * the store manager. This property is used a a cache for all instanciated stores used into the Api. Only required store are dynamicaly loaded when needed. 'id' config key is used as key identifier
      */
     private $stores = array();
 
     /**
      * ID of the default store connector to use. This property is automaticaly set when the "default" property is set to 'true' into one of the store section of the Api Config document
-     * @var string the store connector ID
      */
     private $storeDefault = '';
 
     /**
-     * the model manager. This property is used a a cache for all instanciated models used into the Api. Only required models are dynamicaly loaded when needed
-     * @var array list of models instances with 'id' config key used as key identifier
+     * the model manager. This property is used a a cache for all instanciated models used into the Api. Only required models are dynamicaly loaded when needed. 'id' config key is used as key identifier
      */
     private $models = array();
 
     /**
-     * the ressource manager. This property is used a a cache for all instanciated ressources used into the Api. Only required ressources are dynamicaly loaded when needed
-     * @var array list of ressource instances with 'id' config key used as key identifier
+     * the ressource manager. This property is used a a cache for all instanciated ressources used into the Api. Only required ressources are dynamicaly loaded when needed. 'id' config key is used as key identifier
      */
     private $ressources = array();
 
@@ -88,7 +98,7 @@ class Api extends Configurable {
      * @param string $defaultApiID with the api id to use for creation
      * @return void
      */
-    public function __construct($defaultApiID = null) {
+    protected function __construct($defaultApiID = null) {
         if (!is_null($defaultApiID))
             $this->defaultApiID = $defaultApiID;
         // connect nosql backend immediately to get log storage support
@@ -146,7 +156,7 @@ class Api extends Configurable {
                 $this->defaultApiID = $_REQUEST['api'];
             $api = $this->nosqlConnection->selectCollection($this->nosqlApiBackend->api_collection)->findOne(array("_id" => $this->defaultApiID));
             if (is_null($api))
-                $this->exitOnError(3, "could not find '".$this->defaultApiID."' api document in '" . $this->nosqlApiBackend->api_collection . "' collection on '" . $this->nosqlApiBackend->base . "' database", $this->nosqlConnection);
+                $this->exitOnError(3, "could not find '" . $this->defaultApiID . "' api document in '" . $this->nosqlApiBackend->api_collection . "' collection on '" . $this->nosqlApiBackend->base . "' database", $this->nosqlConnection);
             else
                 $this->setConfigs($api);
             $this->logInfo(2, "Loaded version " . $this->getConfig('version', '0.0') . " of '" . $this->getConfig("_id", "_id") . "' API.");

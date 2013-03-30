@@ -1,9 +1,13 @@
 <?php
 
 /**
- * Class for recording session using filesystem
+ * This model is used to manipulate data stored in a nosql Store.
  *
- * @author dev@startx.fr
+ * @package  SXAPI.Model
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultModel
+ * @see      nosqlModelRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Model
  */
 class nosqlModel extends defaultModel implements IModel {
 

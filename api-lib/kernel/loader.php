@@ -31,7 +31,13 @@ include_once(KERNPATH . 'interfaces' . EXT);
 include_once(KERNPATH . 'configurable' . EXT);
 
 /**
- * Function used for automatic loading of classes
+ * Function used for automatic loading of classes based on camelCase suffix.
+ *
+ * If class end with Ressource, Model, Exception, Store, Output or Input then look into the appropriate directory.
+ * If Ressource is used, autoload search for a subpackage with pre-suffix founded.
+ *
+ * @param the classname to search for
+ * @return boolean if ok. Throw an exception if not
  */
 function __autoload($classname) {
     $loadingPath = "";

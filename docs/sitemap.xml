@@ -10,7 +10,31 @@
 	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Input.html</loc>
 </url>
 <url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Model.html</loc>
+</url>
+<url>
 	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Output.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Resource.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Resource.Authenticate.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Resource.Http.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Resource.Model.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Resource.Session.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Resource.Test.html</loc>
+</url>
+<url>
+	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-SXAPI.Store.html</loc>
 </url>
 <url>
 	<loc>http://github.com/startxfr/sxapi/wiki/docs/package-None.html</loc>

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This ressource return data about the user curently logged
+ *
+ * @package  SXAPI.Resource.Session
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultSessionRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
+ */
 class userSessionRessource extends defaultSessionRessource implements IRessource {
 
     public function readAction() {

@@ -1,7 +1,16 @@
 <?php
 
 /**
- * Interface to define an input descriptor
+ * Interface to define an input object
+ *
+ * @see      DefaultInput, ApplicationInput, CookieInput, GetInput, PostInput, RequestInput, ServerInput, SmartInput, UserInput
+ * @link     https://github.com/startxfr/sxapi/wiki/Inputs
+ *
+ * @category Input
+ * @package  SXAPI.Input
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
 interface IInput {
 
@@ -37,7 +46,16 @@ interface IInput {
 }
 
 /**
- * Interface to define a renderer object
+ * Interface to define an output object
+ *
+ * @see      DefaultOutput, HtmlOutput, JsonOutput, XmlOutput
+ * @link     https://github.com/startxfr/sxapi/wiki/Outputs
+ *
+ * @category Output
+ * @package  SXAPI.Output
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
 interface IOutput {
 
@@ -72,6 +90,15 @@ interface IOutput {
 
 /**
  * Interface to define a ressource object
+ *
+ * @see      defaultRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resources
+ *
+ * @category Resource
+ * @package  SXAPI.Resource
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
 interface IRessource {
 
@@ -94,7 +121,16 @@ interface IRessource {
 }
 
 /**
- * Interface to define a Storage handler for connecting and read/write to various storage
+ * Interface to define a storage object (connecting and read/write into various storage)
+ *
+ * @see      defaultStore, mysqlStore, nosqlStore
+ * @link     https://github.com/startxfr/sxapi/wiki/Stores
+ *
+ * @category Store
+ * @package  SXAPI.Store
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
 interface IStorage {
 
@@ -159,7 +195,16 @@ interface IStorage {
 }
 
 /**
- * Interface to define a Model container with generics methods to access data
+ * Interface to define a model object
+ *
+ * @see      DefaultModel, mysqlModel, nosqlModel
+ * @link     https://github.com/startxfr/sxapi/wiki/Models
+ *
+ * @category Model
+ * @package  SXAPI.Model
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
 interface IModel {
 

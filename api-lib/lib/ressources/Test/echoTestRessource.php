@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This class deliver test method
- * availables url are
- * - http://api.startx.fr/v1/api/test         -> all test methods
- * - http://api.startx.fr/v1/api/test/echo    -> return the input given (use GET with message=xxxx params. POST or PUT)
- * - http://api.startx.fr/v1/api/test/time    -> return the time, only with GET
- * - http://api.startx.fr/v1/api/test/error   -> return a test error message, only with GET
+ * This ressource is used to return an input message
+ *
+ * @package  SXAPI.Resource.Test
+ * @author   Dev Team <dev@startx.fr>
+ * @see      readonlyRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
 class echoTestRessource extends readonlyRessource implements IRessource {
 

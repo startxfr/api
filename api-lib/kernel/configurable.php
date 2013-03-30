@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * Configurable objects
+ *
+ * This class could be used every time you need to handle configuration data for a given object.
+ *
+ * Example:
+ * <code>
+ * $config = new Configurable(array('key'=>'value'));
+ * echo $config->getConfig('key');
+ * // return 'value'
+ * </code>
+ *
+ * @category SXAPI
+ * @package  SXAPI
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
+ */
 class Configurable {
 
     /**

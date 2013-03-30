@@ -2,7 +2,14 @@
 /**
  * Exception for model connector error
  *
- * @author dev@startx.fr
+ * @see      DefaultModel, mysqlModel, nosqlModel
+ * @link     https://github.com/startxfr/sxapi/wiki/Models
+ *
+ * @category Model
+ * @package  SXAPI.Model
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
 class ModelException extends Exception {
 

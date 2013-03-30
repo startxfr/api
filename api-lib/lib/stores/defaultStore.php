@@ -1,9 +1,13 @@
 <?php
 
 /**
- * Class for logging detail into a file
+ * This ressource class is abstract and should not be used as it.
+ * Developpers can create a new store type by derivating from this class
  *
- * @author dev@startx.fr
+ * @package  SXAPI.Store
+ * @author   Dev Team <dev@startx.fr>
+ * @see      Configurable
+ * @link     https://github.com/startxfr/sxapi/wiki/Store
  */
 abstract class defaultStore extends Configurable implements IStorage {
 

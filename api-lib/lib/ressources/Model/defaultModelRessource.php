@@ -1,9 +1,13 @@
 <?php
 
 /**
- * This class deliver default informations (homepage) and provide default ressource methods
- * availables url are
- * - http://api.startx.fr/v1/       -> informations about the default ressource
+ * This ressource class is abstract and should not be used as it.
+ * Developpers can create a new model ressource type by derivating from this class
+ *
+ * @package  SXAPI.Resource.Model
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
 abstract class defaultModelRessource extends defaultRessource implements IRessource {
 

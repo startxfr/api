@@ -1,9 +1,12 @@
 <?php
 
 /**
- * Class for logging detail into a file
+ * This class allow you to interact with a Webservices described in a WSDL file and accessible in SOAP.
  *
- * @author dev@startx.fr
+ * @package  SXAPI.Store
+ * @author   Dev Team <dev@startx.fr>
+ * @see      DefaultStore
+ * @link     https://github.com/startxfr/sxapi/wiki/Store
  */
 class WsdlStore extends DefaultStore implements IStorage {
 

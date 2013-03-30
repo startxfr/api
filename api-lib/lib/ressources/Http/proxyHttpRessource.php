@@ -1,9 +1,12 @@
 <?php
 
 /**
- * This class deliver default informations (homepage) and provide default ressource methods
- * availables url are
- * - http://api.startx.fr/v1/       -> informations about the default ressource
+ * This ressource is used to get HTTP ressource content and deliver it to the client
+ *
+ * @package  SXAPI.Resource.Http
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultHttpRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
 class proxyHttpRessource extends defaultHttpRessource implements IRessource {
 

@@ -10,8 +10,10 @@
 abstract class DefaultOutput extends Configurable implements IOutput {
 
     /**
-     * init the rendering object
+     * init the output object
      *
+     * @param array configuration of this object
+     * @see Configurable
      * @return void
      */
     public function __construct($config) {

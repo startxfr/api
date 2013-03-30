@@ -69,6 +69,13 @@ class SmartInput extends DefaultInput implements IInput {
      */
     public $format;
 
+    /**
+     * construct the smart input object
+     *
+     * @param array configuration of this object
+     * @see Configurable
+     * @return void
+     */
     public function __construct($config) {
         parent::__construct($config);
         $this->method = strtolower($_SERVER['REQUEST_METHOD']);

@@ -1,9 +1,12 @@
 <?php
 
 /**
- * Class for accessing data in a mysql storage
+ * This class allow you to interact with a mysql database.
  *
- * @author dev@startx.fr
+ * @package  SXAPI.Store
+ * @author   Dev Team <dev@startx.fr>
+ * @see      DefaultStore
+ * @link     https://github.com/startxfr/sxapi/wiki/Store
  */
 class mysqlStore extends defaultStore implements IStorage {
 

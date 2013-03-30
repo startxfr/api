@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class used to access data stored into the current session. If no session found, create one and use the API config to define the storage method. 
+ * Class used to access data stored into the current session. If no session found, create one and use the API config to define the storage method.
  *
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
@@ -13,6 +13,13 @@ class SessionInput extends DefaultInput implements IInput {
     private $sessionStorage = null;
     private $sessionId = null;
 
+    /**
+     * construct the session input object
+     *
+     * @param array configuration of this object
+     * @see Configurable
+     * @return void
+     */
     public function __construct($config) {
         parent::__construct($config);
         $api = Api::getInstance();
@@ -24,6 +31,10 @@ class SessionInput extends DefaultInput implements IInput {
         );
     }
 
+    /**
+     * initialize this instance and make it available and usable
+     * @return self
+     */
     public function init() {
         parent::init();
         session_name($this->getConfig('session_name'));

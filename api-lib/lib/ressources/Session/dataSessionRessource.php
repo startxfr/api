@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This ressource return data stored in session
+ *
+ * @package  SXAPI.Resource.Session
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultSessionRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
+ */
 class dataSessionRessource extends defaultSessionRessource implements IRessource {
 
     public function readAction() {

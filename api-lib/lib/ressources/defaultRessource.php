@@ -1,11 +1,15 @@
 <?php
 
 /**
- * This class deliver default informations (homepage) and provide default ressource methods
- * availables url are
- * - http://api.startx.fr/v1/       -> informations about the default ressource
+ * This ressource class is abstract and should not be used as it.
+ * Developpers can create a new authentification ressource type by derivating from this class
+ *
+ * @package  SXAPI.Resource
+ * @author   Dev Team <dev@startx.fr>
+ * @see      Configurable
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class defaultRessource extends Configurable implements IRessource {
+abstract class defaultRessource extends Configurable implements IRessource {
 
     public function __construct($config) {
         parent::__construct($config);

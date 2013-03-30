@@ -1,14 +1,15 @@
 <?php
 
 /**
- * This class deliver test method
- * availables url are
- * - http://api.startx.fr/v1/api/test         -> all test methods
- * - http://api.startx.fr/v1/api/test/echo    -> return the input given (use GET with message=xxxx params. POST or PUT)
- * - http://api.startx.fr/v1/api/test/time    -> return the time, only with GET
- * - http://api.startx.fr/v1/api/test/error   -> return a test error message, only with GET
+ * This ressource class is abstract and should not be used as it.
+ * Developpers can create a new readonly ressource type by derivating from this class
+ *
+ * @package  SXAPI.Resource
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class readonlyRessource extends defaultRessource implements IRessource {
+abstract class readonlyRessource extends defaultRessource implements IRessource {
 
     public function createAction() {
         Api::getInstance()->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' ressource", $this->getConfigs(), 3);

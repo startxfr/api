@@ -7,7 +7,7 @@
 	<title>Class ApplicationInput | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?2865310049"></script>
+	<script type="text/javascript" src="elementlist.js?3861294456"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -25,7 +25,24 @@
 						<ul>
 				<li class="active main"><a href="package-SXAPI.Input.html">Input</a>
 						</li>
+				<li class="main"><a href="package-SXAPI.Model.html">Model</a>
+						</li>
 				<li class="main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
+						<ul>
+				<li class="main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Model.html">Model</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Test.html">Test</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="package-SXAPI.Store.html">Store</a>
 						</li>
 							</ul></li>
 				<li><a href="package-None.html">None</a>
@@ -53,8 +70,16 @@
 				<li><a href="class-UserInput.html">UserInput</a></li>
 			</ul>
 
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-IInput.html">IInput</a></li>
+			</ul>
 
 
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-InputException.html">InputException</a></li>
+			</ul>
 
 
 		</div>
@@ -157,7 +182,7 @@ to the current session</p>
 				<code><code><a href="class-DefaultInput.html">DefaultInput</a></code></code><br />
 				<b>Link:</b>
 				<a href="https://github.com/startxfr/sxapi/wiki/Inputs">https://github.com/startxfr/sxapi/wiki/Inputs</a><br />
-		<b>Located at</b> <a href="source-class-ApplicationInput.html#3-87" title="Go to source code">lib/input/ApplicationInput.php</a><br />
+		<b>Located at</b> <a href="source-class-ApplicationInput.html#3-98" title="Go to source code">lib/input/ApplicationInput.php</a><br />
 	</div>
 
 
@@ -175,28 +200,32 @@ to the current session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-ApplicationInput.html#16-22" title="Go to source code">__construct</a>( <span>string <var>$config</var></span> )</code>
+		<code><a href="source-class-ApplicationInput.html#16-29" title="Go to source code">__construct</a>( <span>array <var>$config</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the application input object</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the application input object</p>
 
 
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$config</var></dt>
-					<dd><code>string</code><br>a json string with the config description of this input</dd>
+					<dd><code>array</code><br>configuration of this object</dd>
 				</dl></div>
 
 
 
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Configurable.html">Configurable</a></code></code><br />
+				</div>
 
 				<h4>Overrides</h4>
 				<div class="list"><code><a href="class-DefaultInput.html#___construct">DefaultInput::__construct()</a></code></div>
@@ -217,7 +246,7 @@ to the current session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_init">#</a>
-		<code><a href="source-class-ApplicationInput.html#24-28" title="Go to source code">init</a>( )</code>
+		<code><a href="source-class-ApplicationInput.html#31-39" title="Go to source code">init</a>( )</code>
 
 		<div class="description short">
 			
@@ -258,7 +287,7 @@ to the current session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setApp">#</a>
-		<code><a href="source-class-ApplicationInput.html#30-42" title="Go to source code">setApp</a>( )</code>
+		<code><a href="source-class-ApplicationInput.html#41-53" title="Go to source code">setApp</a>( )</code>
 
 		<div class="description short">
 			
@@ -287,7 +316,7 @@ to the current session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_loadCache">#</a>
-		<code><a href="source-class-ApplicationInput.html#44-50" title="Go to source code">loadCache</a>( )</code>
+		<code><a href="source-class-ApplicationInput.html#55-61" title="Go to source code">loadCache</a>( )</code>
 
 		<div class="description short">
 			
@@ -316,7 +345,7 @@ to the current session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getId">#</a>
-		<code><a href="source-class-ApplicationInput.html#52-54" title="Go to source code">getId</a>( )</code>
+		<code><a href="source-class-ApplicationInput.html#63-65" title="Go to source code">getId</a>( )</code>
 
 		<div class="description short">
 			
@@ -345,7 +374,7 @@ to the current session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-ApplicationInput.html#56-63" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-ApplicationInput.html#67-74" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -395,7 +424,7 @@ found, the default value is returned.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set">#</a>
-		<code><a href="source-class-ApplicationInput.html#65-71" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-ApplicationInput.html#76-82" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -445,7 +474,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getAll">#</a>
-		<code><a href="source-class-ApplicationInput.html#73-77" title="Go to source code">getAll</a>( )</code>
+		<code><a href="source-class-ApplicationInput.html#84-88" title="Go to source code">getAll</a>( )</code>
 
 		<div class="description short">
 			
@@ -486,7 +515,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setAll">#</a>
-		<code><a href="source-class-ApplicationInput.html#79-85" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-ApplicationInput.html#90-96" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			

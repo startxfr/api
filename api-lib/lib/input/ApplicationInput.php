@@ -13,6 +13,13 @@ class ApplicationInput extends DefaultInput implements IInput {
     private $applicationStorage = null;
     private $cachedData = null;
 
+    /**
+     * construct the application input object
+     *
+     * @param array configuration of this object
+     * @see Configurable
+     * @return void
+     */
     public function __construct($config) {
         parent::__construct($config);
         $api = Api::getInstance();
@@ -21,6 +28,10 @@ class ApplicationInput extends DefaultInput implements IInput {
             throw new InputException("could not get the application collection '" . $this->getConfig("collection",'application') . "' into nosql backend '" . $api->nosqlApiBackend->base . "' datadase.", 202);
     }
 
+    /**
+     * initialize this instance and make it available and usable
+     * @return self
+     */
     public function init() {
         $this->setApp();
         Api::logDebug(210, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector  setting to '" . Api::getInstance()->getInput('session')->get('application') . "'", Api::getInstance()->getInput('session')->get('application'), 4);

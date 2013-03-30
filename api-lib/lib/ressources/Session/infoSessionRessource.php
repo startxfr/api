@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This ressource return informations about the session context
+ *
+ * @package  SXAPI.Resource.Session
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultSessionRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
+ */
 class infoSessionRessource extends defaultSessionRessource implements IRessource {
 
     public function readAction() {

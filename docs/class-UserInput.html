@@ -7,7 +7,7 @@
 	<title>Class UserInput | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?2865310049"></script>
+	<script type="text/javascript" src="elementlist.js?3861294456"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -25,7 +25,24 @@
 						<ul>
 				<li class="active main"><a href="package-SXAPI.Input.html">Input</a>
 						</li>
+				<li class="main"><a href="package-SXAPI.Model.html">Model</a>
+						</li>
 				<li class="main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
+						<ul>
+				<li class="main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Model.html">Model</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Test.html">Test</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="package-SXAPI.Store.html">Store</a>
 						</li>
 							</ul></li>
 				<li><a href="package-None.html">None</a>
@@ -53,8 +70,16 @@
 				<li class="active"><a href="class-UserInput.html">UserInput</a></li>
 			</ul>
 
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-IInput.html">IInput</a></li>
+			</ul>
 
 
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-InputException.html">InputException</a></li>
+			</ul>
 
 
 		</div>
@@ -157,7 +182,7 @@ session</p>
 				<code><code><a href="class-DefaultInput.html">DefaultInput</a></code></code><br />
 				<b>Link:</b>
 				<a href="https://github.com/startxfr/sxapi/wiki/Inputs">https://github.com/startxfr/sxapi/wiki/Inputs</a><br />
-		<b>Located at</b> <a href="source-class-UserInput.html#3-87" title="Go to source code">lib/input/UserInput.php</a><br />
+		<b>Located at</b> <a href="source-class-UserInput.html#3-107" title="Go to source code">lib/input/UserInput.php</a><br />
 	</div>
 
 
@@ -175,28 +200,32 @@ session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-UserInput.html#17-19" title="Go to source code">__construct</a>( <span>string <var>$config</var></span> )</code>
+		<code><a href="source-class-UserInput.html#26-35" title="Go to source code">__construct</a>( <span>array <var>$config</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the user input object</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the user input object</p>
 
 
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$config</var></dt>
-					<dd><code>string</code><br>a json string with the config description of this input</dd>
+					<dd><code>array</code><br>configuration of this object</dd>
 				</dl></div>
 
 
 
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Configurable.html">Configurable</a></code></code><br />
+				</div>
 
 				<h4>Overrides</h4>
 				<div class="list"><code><a href="class-DefaultInput.html#___construct">DefaultInput::__construct()</a></code></div>
@@ -217,7 +246,7 @@ session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_init">#</a>
-		<code><a href="source-class-UserInput.html#21-24" title="Go to source code">init</a>( )</code>
+		<code><a href="source-class-UserInput.html#37-44" title="Go to source code">init</a>( )</code>
 
 		<div class="description short">
 			
@@ -258,7 +287,7 @@ session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_connect">#</a>
-		<code><a href="source-class-UserInput.html#26-39" title="Go to source code">connect</a>( )</code>
+		<code><a href="source-class-UserInput.html#46-59" title="Go to source code">connect</a>( )</code>
 
 		<div class="description short">
 			
@@ -287,7 +316,7 @@ session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_loadCache">#</a>
-		<code><a href="source-class-UserInput.html#41-48" title="Go to source code">loadCache</a>( )</code>
+		<code><a href="source-class-UserInput.html#61-68" title="Go to source code">loadCache</a>( )</code>
 
 		<div class="description short">
 			
@@ -316,7 +345,7 @@ session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getId">#</a>
-		<code><a href="source-class-UserInput.html#50-52" title="Go to source code">getId</a>( )</code>
+		<code><a href="source-class-UserInput.html#70-72" title="Go to source code">getId</a>( )</code>
 
 		<div class="description short">
 			
@@ -345,7 +374,7 @@ session</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-UserInput.html#54-61" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-UserInput.html#74-81" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -395,7 +424,7 @@ found, the default value is returned.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set">#</a>
-		<code><a href="source-class-UserInput.html#63-70" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-UserInput.html#83-90" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -445,7 +474,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getAll">#</a>
-		<code><a href="source-class-UserInput.html#72-76" title="Go to source code">getAll</a>( )</code>
+		<code><a href="source-class-UserInput.html#92-96" title="Go to source code">getAll</a>( )</code>
 
 		<div class="description short">
 			
@@ -486,7 +515,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setAll">#</a>
-		<code><a href="source-class-UserInput.html#78-85" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-UserInput.html#98-105" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -555,7 +584,7 @@ already exist, value is replaced.</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-UserInput.html#13" title="Go to source code"><var>$userStorage</var></a>
+				<a href="source-class-UserInput.html#13-16" title="Go to source code"><var>$userStorage</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">null</span></code></td>
 		<td class="description"><div>
@@ -563,10 +592,14 @@ already exist, value is replaced.</p>
 
 			<div class="description short">
 				
+<p>store used for getting informations about the current user</p>
+
 			</div>
 
 			<div class="description detailed hidden">
 				
+<p>store used for getting informations about the current user</p>
+
 
 			</div>
 		</div></td>
@@ -578,7 +611,7 @@ already exist, value is replaced.</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-UserInput.html#14" title="Go to source code"><var>$cachedData</var></a>
+				<a href="source-class-UserInput.html#17-20" title="Go to source code"><var>$cachedData</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">null</span></code></td>
 		<td class="description"><div>
@@ -586,10 +619,14 @@ already exist, value is replaced.</p>
 
 			<div class="description short">
 				
+<p>cached data of the current user</p>
+
 			</div>
 
 			<div class="description detailed hidden">
 				
+<p>cached data of the current user</p>
+
 
 			</div>
 		</div></td>
@@ -601,7 +638,7 @@ already exist, value is replaced.</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-UserInput.html#15" title="Go to source code"><var>$isconnected</var></a>
+				<a href="source-class-UserInput.html#21-24" title="Go to source code"><var>$isconnected</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">false</span></code></td>
 		<td class="description"><div>
@@ -609,10 +646,14 @@ already exist, value is replaced.</p>
 
 			<div class="description short">
 				
+<p>boolean set to true when storage is connected</p>
+
 			</div>
 
 			<div class="description detailed hidden">
 				
+<p>boolean set to true when storage is connected</p>
+
 
 			</div>
 		</div></td>

@@ -7,7 +7,7 @@
 	<title>Class SmartInput | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?2865310049"></script>
+	<script type="text/javascript" src="elementlist.js?3861294456"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -25,7 +25,24 @@
 						<ul>
 				<li class="active main"><a href="package-SXAPI.Input.html">Input</a>
 						</li>
+				<li class="main"><a href="package-SXAPI.Model.html">Model</a>
+						</li>
 				<li class="main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
+						<ul>
+				<li class="main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Model.html">Model</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Test.html">Test</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="package-SXAPI.Store.html">Store</a>
 						</li>
 							</ul></li>
 				<li><a href="package-None.html">None</a>
@@ -53,8 +70,16 @@
 				<li><a href="class-UserInput.html">UserInput</a></li>
 			</ul>
 
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-IInput.html">IInput</a></li>
+			</ul>
 
 
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-InputException.html">InputException</a></li>
+			</ul>
 
 
 		</div>
@@ -178,7 +203,7 @@ will analyse the full HTTP context and extract the following elements:
 				<code><code><a href="class-DefaultInput.html">DefaultInput</a></code></code><br />
 				<b>Link:</b>
 				<a href="https://github.com/startxfr/sxapi/wiki/Inputs">https://github.com/startxfr/sxapi/wiki/Inputs</a><br />
-		<b>Located at</b> <a href="source-class-SmartInput.html#3-331" title="Go to source code">lib/input/SmartInput.php</a><br />
+		<b>Located at</b> <a href="source-class-SmartInput.html#3-338" title="Go to source code">lib/input/SmartInput.php</a><br />
 	</div>
 
 
@@ -196,28 +221,32 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-SmartInput.html#72-77" title="Go to source code">__construct</a>( <span>string <var>$config</var></span> )</code>
+		<code><a href="source-class-SmartInput.html#72-84" title="Go to source code">__construct</a>( <span>array <var>$config</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the smart input object</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the smart input object</p>
 
 
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$config</var></dt>
-					<dd><code>string</code><br>a json string with the config description of this input</dd>
+					<dd><code>array</code><br>configuration of this object</dd>
 				</dl></div>
 
 
 
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Configurable.html">Configurable</a></code></code><br />
+				</div>
 
 				<h4>Overrides</h4>
 				<div class="list"><code><a href="class-DefaultInput.html#___construct">DefaultInput::__construct()</a></code></div>
@@ -238,7 +267,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_loadPathInfo">#</a>
-		<code><a href="source-class-SmartInput.html#79-114" title="Go to source code">loadPathInfo</a>( )</code>
+		<code><a href="source-class-SmartInput.html#86-121" title="Go to source code">loadPathInfo</a>( )</code>
 
 		<div class="description short">
 			
@@ -271,7 +300,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_loadIncomingParams">#</a>
-		<code><a href="source-class-SmartInput.html#116-159" title="Go to source code">loadIncomingParams</a>( )</code>
+		<code><a href="source-class-SmartInput.html#123-166" title="Go to source code">loadIncomingParams</a>( )</code>
 
 		<div class="description short">
 			
@@ -304,7 +333,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getOutputFormat">#</a>
-		<code><a href="source-class-SmartInput.html#161-167" title="Go to source code">getOutputFormat</a>( )</code>
+		<code><a href="source-class-SmartInput.html#168-174" title="Go to source code">getOutputFormat</a>( )</code>
 
 		<div class="description short">
 			
@@ -341,7 +370,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getProtocol">#</a>
-		<code><a href="source-class-SmartInput.html#169-175" title="Go to source code">getProtocol</a>( )</code>
+		<code><a href="source-class-SmartInput.html#176-182" title="Go to source code">getProtocol</a>( )</code>
 
 		<div class="description short">
 			
@@ -378,7 +407,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getHost">#</a>
-		<code><a href="source-class-SmartInput.html#177-183" title="Go to source code">getHost</a>( )</code>
+		<code><a href="source-class-SmartInput.html#184-190" title="Go to source code">getHost</a>( )</code>
 
 		<div class="description short">
 			
@@ -415,7 +444,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getRoot">#</a>
-		<code><a href="source-class-SmartInput.html#185-191" title="Go to source code">getRoot</a>( )</code>
+		<code><a href="source-class-SmartInput.html#192-198" title="Go to source code">getRoot</a>( )</code>
 
 		<div class="description short">
 			
@@ -452,7 +481,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getRootUrl">#</a>
-		<code><a href="source-class-SmartInput.html#193-199" title="Go to source code">getRootUrl</a>( )</code>
+		<code><a href="source-class-SmartInput.html#200-206" title="Go to source code">getRootUrl</a>( )</code>
 
 		<div class="description short">
 			
@@ -489,7 +518,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getMethod">#</a>
-		<code><a href="source-class-SmartInput.html#201-207" title="Go to source code">getMethod</a>( )</code>
+		<code><a href="source-class-SmartInput.html#208-214" title="Go to source code">getMethod</a>( )</code>
 
 		<div class="description short">
 			
@@ -526,7 +555,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getPath">#</a>
-		<code><a href="source-class-SmartInput.html#209-215" title="Go to source code">getPath</a>( )</code>
+		<code><a href="source-class-SmartInput.html#216-222" title="Go to source code">getPath</a>( )</code>
 
 		<div class="description short">
 			
@@ -563,7 +592,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getElements">#</a>
-		<code><a href="source-class-SmartInput.html#217-223" title="Go to source code">getElements</a>( )</code>
+		<code><a href="source-class-SmartInput.html#224-230" title="Go to source code">getElements</a>( )</code>
 
 		<div class="description short">
 			
@@ -600,7 +629,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getElement">#</a>
-		<code><a href="source-class-SmartInput.html#225-235" title="Go to source code">getElement</a>( <span>type <var>$position</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-SmartInput.html#232-242" title="Go to source code">getElement</a>( <span>type <var>$position</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -642,7 +671,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getElementPosition">#</a>
-		<code><a href="source-class-SmartInput.html#237-248" title="Go to source code">getElementPosition</a>( <span>type <var>$element</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-SmartInput.html#244-255" title="Go to source code">getElementPosition</a>( <span>type <var>$element</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -684,7 +713,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getParams">#</a>
-		<code><a href="source-class-SmartInput.html#250-256" title="Go to source code">getParams</a>( )</code>
+		<code><a href="source-class-SmartInput.html#257-263" title="Go to source code">getParams</a>( )</code>
 
 		<div class="description short">
 			
@@ -721,7 +750,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getParam">#</a>
-		<code><a href="source-class-SmartInput.html#258-268" title="Go to source code">getParam</a>( <span>type <var>$key</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-SmartInput.html#265-275" title="Go to source code">getParam</a>( <span>type <var>$key</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -765,7 +794,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getJsonParam">#</a>
-		<code><a href="source-class-SmartInput.html#270-281" title="Go to source code">getJsonParam</a>( <span>type <var>$key</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-SmartInput.html#277-288" title="Go to source code">getJsonParam</a>( <span>type <var>$key</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -809,7 +838,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setParam">#</a>
-		<code><a href="source-class-SmartInput.html#283-292" title="Go to source code">setParam</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-SmartInput.html#290-299" title="Go to source code">setParam</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -853,7 +882,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getParamsQuery">#</a>
-		<code><a href="source-class-SmartInput.html#294-301" title="Go to source code">getParamsQuery</a>( )</code>
+		<code><a href="source-class-SmartInput.html#301-308" title="Go to source code">getParamsQuery</a>( )</code>
 
 		<div class="description short">
 			
@@ -890,7 +919,7 @@ will analyse the full HTTP context and extract the following elements:
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-SmartInput.html#303-305" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-SmartInput.html#310-312" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -940,7 +969,7 @@ found, the default value is returned.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set">#</a>
-		<code><a href="source-class-SmartInput.html#307-310" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-SmartInput.html#314-317" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -990,7 +1019,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getAll">#</a>
-		<code><a href="source-class-SmartInput.html#312-314" title="Go to source code">getAll</a>( )</code>
+		<code><a href="source-class-SmartInput.html#319-321" title="Go to source code">getAll</a>( )</code>
 
 		<div class="description short">
 			
@@ -1031,7 +1060,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setAll">#</a>
-		<code><a href="source-class-SmartInput.html#316-319" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-SmartInput.html#323-326" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -1077,7 +1106,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getContext">#</a>
-		<code><a href="source-class-SmartInput.html#321-329" title="Go to source code">getContext</a>( )</code>
+		<code><a href="source-class-SmartInput.html#328-336" title="Go to source code">getContext</a>( )</code>
 
 		<div class="description short">
 			

@@ -10,14 +10,34 @@
  */
 class UserInput extends DefaultInput implements IInput {
 
+    /**
+     * store used for getting informations about the current user
+     */
     private $userStorage = null;
+    /**
+     * cached data of the current user
+     */
     private $cachedData = null;
+    /**
+     * boolean set to true when storage is connected
+     */
     protected $isconnected = false;
 
+    /**
+     * construct the user input object
+     *
+     * @param array configuration of this object
+     * @see Configurable
+     * @return void
+     */
     public function __construct($config) {
         parent::__construct($config);
     }
 
+    /**
+     * initialize this instance and make it available and usable
+     * @return self
+     */
     public function init() {
         Api::logDebug(210, "Init '" . $this->getConfig("_id", 'user') . "' " . get_class($this) . " connector  setting to '" . Api::getInstance()->getInput('session')->get('user') . "'", Api::getInstance()->getInput('session')->get('user'), 4);
         return $this;

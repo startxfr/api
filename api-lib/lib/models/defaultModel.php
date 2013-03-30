@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This ressource class is abstract and should not be used as it.
+ * Developpers can create a new model type by derivating from this class
+ *
+ * @package  SXAPI.Model
+ * @author   Dev Team <dev@startx.fr>
+ * @see      Configurable
+ * @link     https://github.com/startxfr/sxapi/wiki/Model
+ */
 abstract class defaultModel extends Configurable implements IModel {
 
     protected $storage = null;
@@ -73,6 +82,22 @@ abstract class defaultModel extends Configurable implements IModel {
                 if (in_array($k, $this->getConfig('bind_vars', array())))
                     $out[$k] = $v;
         return $out;
+    }
+
+    public function bindFilter($filter) {
+        return $filter;
+    }
+
+    public function getIDKey() {
+        return $this->getConfig('id_key', null);
+    }
+
+    public function getKeys() {
+        return $this->setConfig('output_filter',array());
+    }
+
+    public function getTable() {
+        return $this->getConfig('table', null);
     }
 
     protected function filterResults($results, $outputFilter = true) {

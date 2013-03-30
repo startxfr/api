@@ -7,7 +7,7 @@
 	<title>Class DefaultOutput | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?2865310049"></script>
+	<script type="text/javascript" src="elementlist.js?3861294456"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -25,7 +25,24 @@
 						<ul>
 				<li class="main"><a href="package-SXAPI.Input.html">Input</a>
 						</li>
+				<li class="main"><a href="package-SXAPI.Model.html">Model</a>
+						</li>
 				<li class="active main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
+						<ul>
+				<li class="main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Model.html">Model</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Test.html">Test</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="package-SXAPI.Store.html">Store</a>
 						</li>
 							</ul></li>
 				<li><a href="package-None.html">None</a>
@@ -47,8 +64,16 @@
 				<li><a href="class-XmlOutput.html">XmlOutput</a></li>
 			</ul>
 
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-IOutput.html">IOutput</a></li>
+			</ul>
 
 
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-OutputException.html">OutputException</a></li>
+			</ul>
 
 
 		</div>
@@ -147,7 +172,7 @@ should be derivated form this class or one of its descendant</p>
 href="mailto:mallowtek&#64;gmail.com">mallowtek&#64;<!---->gmail.com</a>&gt;<br />
 				<b>Link:</b>
 				<a href="https://github.com/startxfr/sxapi/wiki/Outputs">https://github.com/startxfr/sxapi/wiki/Outputs</a><br />
-		<b>Located at</b> <a href="source-class-DefaultOutput.html#3-92" title="Go to source code">lib/output/DefaultOutput.php</a><br />
+		<b>Located at</b> <a href="source-class-DefaultOutput.html#3-94" title="Go to source code">lib/output/DefaultOutput.php</a><br />
 	</div>
 
 
@@ -165,23 +190,32 @@ href="mailto:mallowtek&#64;gmail.com">mallowtek&#64;<!---->gmail.com</a>&gt;<br 
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-DefaultOutput.html#12-20" title="Go to source code">__construct</a>( <span>mixed <var>$config</var></span> )</code>
+		<code><a href="source-class-DefaultOutput.html#12-22" title="Go to source code">__construct</a>( <span>array <var>$config</var></span> )</code>
 
 		<div class="description short">
 			
-<p>init the rendering object</p>
+<p>init the output object</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>init the rendering object</p>
+<p>init the output object</p>
 
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$config</var></dt>
+					<dd><code>array</code><br>configuration of this object</dd>
+				</dl></div>
 
 
 
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Configurable.html">Configurable</a></code></code><br />
+				</div>
 
 				<h4>Overrides</h4>
 				<div class="list"><code><a href="class-Configurable.html#___construct">Configurable::__construct()</a></code></div>
@@ -202,7 +236,7 @@ href="mailto:mallowtek&#64;gmail.com">mallowtek&#64;<!---->gmail.com</a>&gt;<br 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_init">#</a>
-		<code><a href="source-class-DefaultOutput.html#22-30" title="Go to source code">init</a>( )</code>
+		<code><a href="source-class-DefaultOutput.html#24-32" title="Go to source code">init</a>( )</code>
 
 		<div class="description short">
 			
@@ -241,7 +275,7 @@ href="mailto:mallowtek&#64;gmail.com">mallowtek&#64;<!---->gmail.com</a>&gt;<br 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_render">#</a>
-		<code><a href="source-class-DefaultOutput.html#32-46" title="Go to source code">render</a>( <span>array <var>$content</var></span> )</code>
+		<code><a href="source-class-DefaultOutput.html#34-48" title="Go to source code">render</a>( <span>array <var>$content</var></span> )</code>
 
 		<div class="description short">
 			
@@ -283,7 +317,7 @@ href="mailto:mallowtek&#64;gmail.com">mallowtek&#64;<!---->gmail.com</a>&gt;<br 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_renderOk">#</a>
-		<code><a href="source-class-DefaultOutput.html#48-65" title="Go to source code">renderOk</a>( <span>string <var>$message</var></span>, <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-DefaultOutput.html#50-67" title="Go to source code">renderOk</a>( <span>string <var>$message</var></span>, <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -329,7 +363,7 @@ href="mailto:mallowtek&#64;gmail.com">mallowtek&#64;<!---->gmail.com</a>&gt;<br 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_renderError">#</a>
-		<code><a href="source-class-DefaultOutput.html#67-90" title="Go to source code">renderError</a>( <span>integer <var>$code</var></span>, <span>string <var>$message</var> = <span class="php-quote">''</span></span>, <span>mixed <var>$other</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-DefaultOutput.html#69-92" title="Go to source code">renderError</a>( <span>integer <var>$code</var></span>, <span>string <var>$message</var> = <span class="php-quote">''</span></span>, <span>mixed <var>$other</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			

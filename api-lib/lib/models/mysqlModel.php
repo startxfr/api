@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This model is used to manipulate data stored in a mysql Store.
+ *
+ * @package  SXAPI.Model
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultModel, mysqlModelRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Model
+ */
 class mysqlModel extends defaultModel implements IModel {
 
     public function __construct($config = array(), $storageID = 'default') {

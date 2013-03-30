@@ -7,7 +7,7 @@
 	<title>Class DefaultInput | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?2865310049"></script>
+	<script type="text/javascript" src="elementlist.js?3861294456"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -25,7 +25,24 @@
 						<ul>
 				<li class="active main"><a href="package-SXAPI.Input.html">Input</a>
 						</li>
+				<li class="main"><a href="package-SXAPI.Model.html">Model</a>
+						</li>
 				<li class="main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
+						<ul>
+				<li class="main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Model.html">Model</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Test.html">Test</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="package-SXAPI.Store.html">Store</a>
 						</li>
 							</ul></li>
 				<li><a href="package-None.html">None</a>
@@ -53,8 +70,16 @@
 				<li><a href="class-UserInput.html">UserInput</a></li>
 			</ul>
 
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-IInput.html">IInput</a></li>
+			</ul>
 
 
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-InputException.html">InputException</a></li>
+			</ul>
 
 
 		</div>
@@ -160,7 +185,7 @@ derivated form this class or one of its descendant</p>
 				<code><code><a href="class-DefaultInput.html">DefaultInput</a></code></code><br />
 				<b>Link:</b>
 				<a href="https://github.com/startxfr/sxapi/wiki/Inputs">https://github.com/startxfr/sxapi/wiki/Inputs</a><br />
-		<b>Located at</b> <a href="source-class-DefaultInput.html#3-80" title="Go to source code">lib/input/DefaultInput.php</a><br />
+		<b>Located at</b> <a href="source-class-DefaultInput.html#3-81" title="Go to source code">lib/input/DefaultInput.php</a><br />
 	</div>
 
 
@@ -178,28 +203,32 @@ derivated form this class or one of its descendant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-DefaultInput.html#18-27" title="Go to source code">__construct</a>( <span>string <var>$config</var></span> )</code>
+		<code><a href="source-class-DefaultInput.html#18-28" title="Go to source code">__construct</a>( <span>array <var>$config</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the input object</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Create the input object and load configuration description</p>
+<p>construct the input object</p>
 
 
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$config</var></dt>
-					<dd><code>string</code><br>a json string with the config description of this input</dd>
+					<dd><code>array</code><br>configuration of this object</dd>
 				</dl></div>
 
 
 
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Configurable.html">Configurable</a></code></code><br />
+				</div>
 
 				<h4>Overrides</h4>
 				<div class="list"><code><a href="class-Configurable.html#___construct">Configurable::__construct()</a></code></div>
@@ -220,7 +249,7 @@ derivated form this class or one of its descendant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_init">#</a>
-		<code><a href="source-class-DefaultInput.html#29-36" title="Go to source code">init</a>( )</code>
+		<code><a href="source-class-DefaultInput.html#30-37" title="Go to source code">init</a>( )</code>
 
 		<div class="description short">
 			
@@ -259,7 +288,7 @@ derivated form this class or one of its descendant</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-DefaultInput.html#38-49" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-DefaultInput.html#39-50" title="Go to source code">get</a>( <span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -307,7 +336,7 @@ found, the default value is returned.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set">#</a>
-		<code><a href="source-class-DefaultInput.html#51-60" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-DefaultInput.html#52-61" title="Go to source code">set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -355,7 +384,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getAll">#</a>
-		<code><a href="source-class-DefaultInput.html#62-68" title="Go to source code">getAll</a>( )</code>
+		<code><a href="source-class-DefaultInput.html#63-69" title="Go to source code">getAll</a>( )</code>
 
 		<div class="description short">
 			
@@ -394,7 +423,7 @@ already exist, value is replaced.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setAll">#</a>
-		<code><a href="source-class-DefaultInput.html#70-78" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-DefaultInput.html#71-79" title="Go to source code">setAll</a>( <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			

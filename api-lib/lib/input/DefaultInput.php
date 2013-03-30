@@ -16,9 +16,10 @@ class DefaultInput extends Configurable implements IInput {
     protected $data = array();
 
     /**
-     * Create the input object and load configuration description
+     * construct the input object
      *
-     * @param string a json string with the config description of this input
+     * @param array configuration of this object
+     * @see Configurable
      * @return void
      */
     public function __construct($config) {

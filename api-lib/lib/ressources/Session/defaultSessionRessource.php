@@ -1,13 +1,15 @@
 <?php
 
 /**
- * This ressource node deliver information about the current session. According to the configuration of this ressource node instance, you could
- * expose various kind of
- * availables url are
- * - http://api.startx.fr/v1/api/test         -> all test methods
- * - http://api.startx.fr/v1/api/test/echo    -> return the input given (use GET with message=xxxx params. POST or PUT)
- * - http://api.startx.fr/v1/api/test/time    -> return the time, only with GET
- * - http://api.startx.fr/v1/api/test/error   -> return a test error message, only with GET
+ * This ressource class is abstract and should not be used as it.
+ * Developpers can create a new session ressource type by derivating from this class
+ *
+ * @package  SXAPI.Resource.Session
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultRessource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
+ *
+ *
  */
 abstract class defaultSessionRessource extends defaultRessource implements IRessource {
 
