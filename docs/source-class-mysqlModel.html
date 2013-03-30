@@ -8,7 +8,7 @@
 	<title>File lib/models/mysqlModel.php | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?3861294456"></script>
+	<script type="text/javascript" src="elementlist.js?636384700"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -128,7 +128,7 @@
 </span></span><span id="5" class="l"><a class="l" href="#5"> 5: </a><span class="php-comment"> *
 </span></span><span id="6" class="l"><a class="l" href="#6"> 6: </a><span class="php-comment"> * @package  SXAPI.Model
 </span></span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-comment"> * @author   Dev Team &lt;dev@startx.fr&gt;
-</span></span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-comment"> * @see      defaultModel, mysqlModelRessource
+</span></span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-comment"> * @see      defaultModel, mysqlModelResource
 </span></span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment"> * @link     https://github.com/startxfr/sxapi/wiki/Model
 </span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> */</span>
 </span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-keyword1">class</span> <a id="mysqlModel" href="#mysqlModel">mysqlModel</a> <span class="php-keyword1">extends</span> defaultModel <span class="php-keyword1">implements</span> IModel {
@@ -139,8 +139,8 @@
 </span><span id="16" class="l"><a class="l" href="#16">16: </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword2">is_object</span>(<span class="php-var">$this</span>-&gt;getStore()) <span class="php-keyword1">or</span> <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>-&gt;getStore()) != <span class="php-quote">'mysqlStore'</span>)
 </span><span id="17" class="l"><a class="l" href="#17">17: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> ModelException(<span class="php-quote">&quot;Could not &quot;</span> . __FUNCTION__ . <span class="php-quote">&quot; &quot;</span> . <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot; because '&quot;</span> . <span class="php-var">$storageID</span> . <span class="php-quote">&quot;' store is not of type mysqlStore&quot;</span>, <span class="php-num">508</span>);
 </span><span id="18" class="l"><a class="l" href="#18">18: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'table'</span>, <span class="php-quote">''</span>) == <span class="php-quote">''</span>) {
-</span><span id="19" class="l"><a class="l" href="#19">19: </a>            <span class="php-var">$api</span>-&gt;logError(<span class="php-num">506</span>, <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot; ressource config should contain the 'table' attribute&quot;</span>, <span class="php-var">$this</span>-&gt;getRessourceTrace(__FUNCTION__, <span class="php-keyword1">false</span>));
-</span><span id="20" class="l"><a class="l" href="#20">20: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> ModelException(<span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot; ressource config should contain the 'table' attribute&quot;</span>);
+</span><span id="19" class="l"><a class="l" href="#19">19: </a>            <span class="php-var">$api</span>-&gt;logError(<span class="php-num">506</span>, <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot; resource config should contain the 'table' attribute&quot;</span>, <span class="php-var">$this</span>-&gt;getResourceTrace(__FUNCTION__, <span class="php-keyword1">false</span>));
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> ModelException(<span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot; resource config should contain the 'table' attribute&quot;</span>);
 </span><span id="21" class="l"><a class="l" href="#21">21: </a>        }
 </span><span id="22" class="l"><a class="l" href="#22">22: </a>    }
 </span><span id="23" class="l"><a class="l" href="#23">23: </a>

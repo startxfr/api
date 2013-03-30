@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This ressource class is abstract and should not be used as it.
+ * This resource class is abstract and should not be used as it.
  * Developpers can create a new model type by derivating from this class
  *
  * @package  SXAPI.Model
@@ -27,8 +27,8 @@ abstract class defaultModel extends Configurable implements IModel {
         if (is_string($this->getConfig('bind_vars')) and $this->getConfig('bind_vars') != '*' and $this->getConfig('bind_vars') != 'all')
             $this->setConfig('bind_vars', explode(',', $this->getConfig('bind_vars')));
         if ($this->getConfig('id_key', '') == '') {
-            $api->logError(506, get_class($this) . " ressource config should contain the 'id_key' attribute", $this->getRessourceTrace(__FUNCTION__, false));
-            throw new ModelException(get_class($this) . " ressource config should contain the 'id_key' attribute");
+            $api->logError(506, get_class($this) . " resource config should contain the 'id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ModelException(get_class($this) . " resource config should contain the 'id_key' attribute");
         }
     }
 

@@ -6,7 +6,7 @@
  * @package  SXAPI.Model
  * @author   Dev Team <dev@startx.fr>
  * @see      defaultModel
- * @see      nosqlModelRessource
+ * @see      nosqlModelResource
  * @link     https://github.com/startxfr/sxapi/wiki/Model
  */
 class nosqlModel extends defaultModel implements IModel {
@@ -17,8 +17,8 @@ class nosqlModel extends defaultModel implements IModel {
         if (!is_object($this->getStore()) or get_class($this->getStore()) != 'nosqlStore')
             throw new ModelException("Could not " . __FUNCTION__ . " " . get_class($this) . " because '" . $storageID . "' store is not of type nosqlStore", 508);
         if ($this->getConfig('collection', '') == '') {
-            $api->logError(506, get_class($this) . " ressource config should contain the 'collection' attribute", $this->getRessourceTrace(__FUNCTION__, false));
-            throw new ModelException(get_class($this) . " ressource config should contain the 'collection' attribute");
+            $api->logError(506, get_class($this) . " resource config should contain the 'collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ModelException(get_class($this) . " resource config should contain the 'collection' attribute");
         }
     }
 

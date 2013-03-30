@@ -31,7 +31,7 @@ class Api extends Configurable {
      * JSON string with various parameters used for basic functionning of the Api Object. This property is critical and should contain:
      * <ul>
      * <li>connection: mongodb connection string used for connecting to the nosql backend</li>
-     * <li>base: name of the nosql database to use for retriving Api core elements (api documents, logs, app, session, models and ressources)</li>
+     * <li>base: name of the nosql database to use for retriving Api core elements (api documents, logs, app, session, models and resources)</li>
      * <li>api_collection : name of the nosql collection used to store API config document</li>
      * </ul>
      */
@@ -47,7 +47,7 @@ class Api extends Configurable {
     private static $_instance = null;
 
     /**
-     * the nosql connection ressource used to communicate with Api internal backend. Used for accessing documents used in core function (model, ressource, input, output)
+     * the nosql connection resource used to communicate with Api internal backend. Used for accessing documents used in core function (model, resource, input, output)
      */
     public $nosqlConnection = null;
 
@@ -87,9 +87,9 @@ class Api extends Configurable {
     private $models = array();
 
     /**
-     * the ressource manager. This property is used a a cache for all instanciated ressources used into the Api. Only required ressources are dynamicaly loaded when needed. 'id' config key is used as key identifier
+     * the resource manager. This property is used a a cache for all instanciated resources used into the Api. Only required resources are dynamicaly loaded when needed. 'id' config key is used as key identifier
      */
-    private $ressources = array();
+    private $resources = array();
 
     /**
      * The Api constructor. Do not directly instanciate this object and prefer using the Api::getInstance() static method for creating and accessing the Api singleton object
@@ -426,54 +426,54 @@ class Api extends Configurable {
     }
 
     /**
-     * Get a ressource connector
-     * return the ressource connector coresponding to the given $id. Dynamicaly load it, initialize it and cache it if not already required.
-     * @return \defaultRessource the ressource connector instance coresponding to the requested $id
+     * Get a resource connector
+     * return the resource connector coresponding to the given $id. Dynamicaly load it, initialize it and cache it if not already required.
+     * @return \defaultResource the resource connector instance coresponding to the requested $id
      * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
      */
-    public function getRessource($id, $config = array()) {
+    public function getResource($id, $config = array()) {
         if (is_null($id) or trim($id) == '') {
-            $this->logWarn(61, "trying to access ressource with a null id.");
-            throw new ApiException("you must give a ressource name", 61);
-        } elseif (is_array($this->ressources) and array_key_exists($id, $this->ressources)) {
-            $this->logDebug(62, "Returning cached ressource '" . $id . "'");
+            $this->logWarn(61, "trying to access resource with a null id.");
+            throw new ApiException("you must give a resource name", 61);
+        } elseif (is_array($this->resources) and array_key_exists($id, $this->resources)) {
+            $this->logDebug(62, "Returning cached resource '" . $id . "'");
             if (is_array($config) and count($config) > 0)
-                $this->ressources[$id] = new $id();
-            return $this->ressources[$id];
+                $this->resources[$id] = new $id();
+            return $this->resources[$id];
         } else {
             if (class_exists($id) !== false) {
-                $this->logDebug(63, "Start loading and caching ressource '" . $id . "'");
-                $this->ressources[$id] = new $id($config);
-                $this->logDebug(64, "Initializing ressource '" . $id . "'");
-                $this->ressources[$id]->init();
-                return $this->ressources[$id];
+                $this->logDebug(63, "Start loading and caching resource '" . $id . "'");
+                $this->resources[$id] = new $id($config);
+                $this->logDebug(64, "Initializing resource '" . $id . "'");
+                $this->resources[$id]->init();
+                return $this->resources[$id];
             } else {
-                $this->logWarn(66, "could not find ressource class '$id'.");
-                throw new ApiException("Ressource class '$id' doesn't exist.", 66);
+                $this->logWarn(66, "could not find resource class '$id'.");
+                throw new ApiException("Resource class '$id' doesn't exist.", 66);
             }
         }
     }
 
     /**
-     * execute the ressource action, render it and exit;
+     * execute the resource action, render it and exit;
      * @return void end of program. exit
      */
 
     /**
-     * Execute the ressource action, render it and exit program;
-     * this is the main method to start the executing of the requested ressource. Each ressource is responsible for output delivery of its content. This method will:
-     * - Find the requested ressource (using the getRessourceConfig method)
-     * - Obtain and Start this ressource (using the getRessource method)
+     * Execute the resource action, render it and exit program;
+     * this is the main method to start the executing of the requested resource. Each resource is responsible for output delivery of its content. This method will:
+     * - Find the requested resource (using the getResourceConfig method)
+     * - Obtain and Start this resource (using the getResource method)
      * - Select the requested action to perform (according to the http method)
-     * - Check if ACL rules apply to this ressource node and check if session context is compliant to theses ACL rules
-     * - Execute the requested action of the requested ressource. This ressource will then perform his task and manage to output to produce
+     * - Check if ACL rules apply to this resource node and check if session context is compliant to theses ACL rules
+     * - Execute the requested action of the requested resource. This resource will then perform his task and manage to output to produce
      * @return \Api instance Api for chaining
-     * @throws ApiException If ressource is not acessible or controlled by ACL rules.
+     * @throws ApiException If resource is not acessible or controlled by ACL rules.
      */
     public function execute() {
         try {
-            $config = $this->getRessourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));
-            $ressource = $this->getRessource($config['class'], $config);
+            $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));
+            $resource = $this->getResource($config['class'], $config);
             $actionName = 'readAction';
             switch ($this->getInput()->getMethod()) {
                 case 'post':
@@ -492,11 +492,11 @@ class Api extends Configurable {
                     $actionName = 'readAction';
                     break;
             }
-            if (method_exists($ressource, $actionName) === false)
+            if (method_exists($resource, $actionName) === false)
                 $actionName = 'readAction';
-            if (method_exists($ressource, $actionName) === false) {
-                $this->logWarn(84, "action $actionName is not implemented in '" . $config['class'] . "' ressource.", $config);
-                throw new ApiException("action $actionName is not implemented in '" . $config['class'] . "' ressource", 5);
+            if (method_exists($resource, $actionName) === false) {
+                $this->logWarn(84, "action $actionName is not implemented in '" . $config['class'] . "' resource.", $config);
+                throw new ApiException("action $actionName is not implemented in '" . $config['class'] . "' resource", 5);
             } else {
                 if (array_key_exists('acl', $config) and is_array($config['acl'])) {
                     if (!is_array($config['acl']['user']) and ($config['acl']['user'] == '*' or $config['acl']['user'] == ''))
@@ -516,24 +516,24 @@ class Api extends Configurable {
                     if ($users == '*' or in_array($this->getInput('user')->getId(), $users))
                         $returnUser = true;
                     else {
-                        $this->logError(81, "execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this ressource", $config);
-                        throw new ApiException("execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this ressource", 81);
+                        $this->logError(81, "execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this resource", $config);
+                        throw new ApiException("execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this resource", 81);
                     }
                     if ($applications == '*' or in_array($this->getInput('application')->getId(), $applications))
                         $returnApp = true;
                     else {
-                        $this->logError(82, "execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. Application '" . $this->getInput('application')->getId() . "' is not allowed to access this ressource", $config);
-                        throw new ApiException("execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. Application '" . $this->getInput('application')->getId() . "' is not allowed to access this ressource", 82);
+                        $this->logError(82, "execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. Application '" . $this->getInput('application')->getId() . "' is not allowed to access this resource", $config);
+                        throw new ApiException("execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. Application '" . $this->getInput('application')->getId() . "' is not allowed to access this resource", 82);
                     }
                     if ($returnApp and $returnUser)
                         $doExec = true;
                     if ($doExec) {
                         $this->logInfo(80, "Succesfully pass ACL strategy. User '" . $this->getInput('user')->getId() . "' with application '" . $this->getInput('application')->getId() . "' can perform  $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config['acl'], 3);
-                        $ressource->$actionName();
+                        $resource->$actionName();
                     }
                 } else {
                     $this->logInfo(80, "No ACL rules for $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config['acl'], 3);
-                    $ressource->$actionName();
+                    $resource->$actionName();
                 }
             }
             session_write_close();
@@ -545,34 +545,34 @@ class Api extends Configurable {
     }
 
     /**
-     * Scan the API ressource tree according to the requested path and search for the requested ressource.
-     * This method also merge every ressource config node matching this path for return a config array with all ascendant param merged with into the requested one
-     * @return array containing the ressource config to execute
-     * @throws ApiException If tree node is malformed (missing 'ressource' key) or if path and tree are not given.
+     * Scan the API resource tree according to the requested path and search for the requested resource.
+     * This method also merge every resource config node matching this path for return a config array with all ascendant param merged with into the requested one
+     * @return array containing the resource config to execute
+     * @throws ApiException If tree node is malformed (missing 'resource' key) or if path and tree are not given.
      */
-    private function getRessourceConfig($elements, $configtree, $outputConfig = array()) {
+    private function getResourceConfig($elements, $configtree, $outputConfig = array()) {
         if (!is_array($elements) or !is_array($configtree))
-            throw new ApiException("getRessourceConfig could not work if both \$elements and \$configtree are not array", 85);
+            throw new ApiException("getResourceConfig could not work if both \$elements and \$configtree are not array", 85);
         $searchedPath = trim(array_shift($elements));
         // on traite le cas de la racine
         if ($searchedPath == '/' and $configtree['path'] == $searchedPath) {
             $outputConfig = $configtree;
             unset($outputConfig['children']);
-            if ($configtree['ressource'] == '') {
-                $this->logError(86, " path '" . $searchedPath . "' config should contain the 'ressource' attribute", $outputConfig);
-                throw new ApiException(" path '" . $searchedPath . "' config should contain the 'ressource' attribute");
+            if ($configtree['resource'] == '') {
+                $this->logError(86, " path '" . $searchedPath . "' config should contain the 'resource' attribute", $outputConfig);
+                throw new ApiException(" path '" . $searchedPath . "' config should contain the 'resource' attribute");
             }
-            $configRessource = $this->nosqlConnection->selectCollection($this->getConfig("ressource_collection", "ressources"))->findOne(array("_id" => $configtree['ressource']));
-            if (is_null($configRessource) or $configRessource["_id"] == '')
-                throw new ApiException("Can't find the ressource config in stored ressources", 87);
-            $this->logDebug(87, "Ressource '" . $configtree['ressource'] . "' found in ressource backend", $configRessource, 5);
-            if ($configRessource['class'] == '') {
-                $this->logError(87, " ressource '" . $configtree['ressource'] . "' config should contain the 'class' attribute", $configRessource);
-                throw new ApiException(" ressource '" . $configtree['ressource'] . "' config should contain the 'class' attribute", 87);
+            $configResource = $this->nosqlConnection->selectCollection($this->getConfig("resource_collection", "resources"))->findOne(array("_id" => $configtree['resource']));
+            if (is_null($configResource) or $configResource["_id"] == '')
+                throw new ApiException("Can't find the resource config in stored resources", 87);
+            $this->logDebug(87, "Resource '" . $configtree['resource'] . "' found in resource backend", $configResource, 5);
+            if ($configResource['class'] == '') {
+                $this->logError(87, " resource '" . $configtree['resource'] . "' config should contain the 'class' attribute", $configResource);
+                throw new ApiException(" resource '" . $configtree['resource'] . "' config should contain the 'class' attribute", 87);
             }
-            $outputConfig = Toolkit::array_merge_recursive_distinct($configRessource, $outputConfig);
+            $outputConfig = Toolkit::array_merge_recursive_distinct($configResource, $outputConfig);
             if (count($elements) > 0)
-                return $this->getRessourceConfig($elements, $configtree['children'], $outputConfig);
+                return $this->getResourceConfig($elements, $configtree['children'], $outputConfig);
             else
                 return $outputConfig;
         } else {
@@ -590,7 +590,7 @@ class Api extends Configurable {
                     unset($wildcardChild['path']);
                     if ($wildcardChild != null)
                         $outputConfig = Toolkit::array_merge_recursive_distinct($outputConfig, $wildcardChild);
-                    $this->logError(85, " path '" . $searchedPath . "' could not be found in api tree but wildcard node is found. Use previous ressource '" . $outputConfig['class'] . "' instead", $outputConfig);
+                    $this->logError(85, " path '" . $searchedPath . "' could not be found in api tree but wildcard node is found. Use previous resource '" . $outputConfig['class'] . "' instead", $outputConfig);
                     return $outputConfig;
                 }
                 if ($selectedChild === null) {
@@ -598,19 +598,19 @@ class Api extends Configurable {
                 } else {
                     $addedConfig = $selectedChild;
                     unset($addedConfig['children']);
-                    if ($addedConfig['ressource'] == '') {
-                        $this->logError(86, " path '" . $searchedPath . "' config should contain the 'ressource' attribute", $addedConfig);
-                        throw new ApiException(" path '" . $searchedPath . "' config should contain the 'ressource' attribute");
+                    if ($addedConfig['resource'] == '') {
+                        $this->logError(86, " path '" . $searchedPath . "' config should contain the 'resource' attribute", $addedConfig);
+                        throw new ApiException(" path '" . $searchedPath . "' config should contain the 'resource' attribute");
                     }
-                    $configRessource = $this->nosqlConnection->selectCollection($this->getConfig("ressource_collection", "ressources"))->findOne(array("_id" => $addedConfig['ressource']));
-                    if (is_null($configRessource) or $configRessource["_id"] == '')
-                        throw new ApiException("Can't find the ressource config in stored ressources", 87);
-                    $this->logDebug(87, "Ressource '" . $addedConfig['ressource'] . "' found in ressource backend", $configRessource, 5);
-                    if ($configRessource['class'] == '') {
-                        $this->logError(87, " ressource '" . $addedConfig['ressource'] . "' config should contain the 'class' attribute", $configRessource);
-                        throw new ApiException(" ressource '" . $addedConfig['ressource'] . "' config should contain the 'class' attribute", 87);
+                    $configResource = $this->nosqlConnection->selectCollection($this->getConfig("resource_collection", "resources"))->findOne(array("_id" => $addedConfig['resource']));
+                    if (is_null($configResource) or $configResource["_id"] == '')
+                        throw new ApiException("Can't find the resource config in stored resources", 87);
+                    $this->logDebug(87, "Resource '" . $addedConfig['resource'] . "' found in resource backend", $configResource, 5);
+                    if ($configResource['class'] == '') {
+                        $this->logError(87, " resource '" . $addedConfig['resource'] . "' config should contain the 'class' attribute", $configResource);
+                        throw new ApiException(" resource '" . $addedConfig['resource'] . "' config should contain the 'class' attribute", 87);
                     }
-                    $addedConfig = Toolkit::array_merge_recursive_distinct($configRessource, $addedConfig);
+                    $addedConfig = Toolkit::array_merge_recursive_distinct($configResource, $addedConfig);
                     if (array_key_exists('children', $addedConfig) and !array_key_exists('children', $selectedChild))
                         $selectedChild['children'] = $addedConfig['children'];
                     if (!array_key_exists('children', $selectedChild))
@@ -620,7 +620,7 @@ class Api extends Configurable {
                         if ($selectedChild['children'] == "*")
                             return $outputConfig;
                         else
-                            return $this->getRessourceConfig($elements, $selectedChild['children'], $outputConfig);
+                            return $this->getResourceConfig($elements, $selectedChild['children'], $outputConfig);
                     }
                     else
                         return $outputConfig;
@@ -628,7 +628,7 @@ class Api extends Configurable {
             }
             else {
                 if (count($elements) == 0)
-                    return $this->getRessourceConfig($elements, $configtree, $outputConfig);
+                    return $this->getResourceConfig($elements, $configtree, $outputConfig);
                 else
                     return $outputConfig;
             }

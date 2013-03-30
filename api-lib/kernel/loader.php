@@ -33,8 +33,8 @@ include_once(KERNPATH . 'configurable' . EXT);
 /**
  * Function used for automatic loading of classes based on camelCase suffix.
  *
- * If class end with Ressource, Model, Exception, Store, Output or Input then look into the appropriate directory.
- * If Ressource is used, autoload search for a subpackage with pre-suffix founded.
+ * If class end with Resource, Model, Exception, Store, Output or Input then look into the appropriate directory.
+ * If Resource is used, autoload search for a subpackage with pre-suffix founded.
  *
  * @param the classname to search for
  * @return boolean if ok. Throw an exception if not
@@ -44,11 +44,11 @@ function __autoload($classname) {
     $arr = preg_split('/(?=[A-Z])/', $classname);
     $suffix = array_pop($arr);
     switch ($suffix) {
-        case 'Ressource':
+        case 'Resource':
             if (count($arr) >= 2)
-                $loadingPath = LIBPATH . 'ressources' . DS . $arr[1] . DS . $classname . EXT;
+                $loadingPath = LIBPATH . 'resources' . DS . $arr[1] . DS . $classname . EXT;
             else
-                $loadingPath = LIBPATH . 'ressources' . DS . $classname . EXT;
+                $loadingPath = LIBPATH . 'resources' . DS . $classname . EXT;
             break;
         case 'Model':
             $loadingPath = LIBPATH . 'models' . DS . $classname . EXT;

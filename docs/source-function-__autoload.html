@@ -8,7 +8,7 @@
 	<title>File kernel/loader.php | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?3861294456"></script>
+	<script type="text/javascript" src="elementlist.js?636384700"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -146,8 +146,8 @@
 </span><span id="33" class="l"><a class="l" href="#33">33: </a><span class="php-comment">/**
 </span></span><span id="34" class="l"><a class="l" href="#34">34: </a><span class="php-comment"> * Function used for automatic loading of classes based on camelCase suffix.
 </span></span><span id="35" class="l"><a class="l" href="#35">35: </a><span class="php-comment"> *
-</span></span><span id="36" class="l"><a class="l" href="#36">36: </a><span class="php-comment"> * If class end with Ressource, Model, Exception, Store, Output or Input then look into the appropriate directory.
-</span></span><span id="37" class="l"><a class="l" href="#37">37: </a><span class="php-comment"> * If Ressource is used, autoload search for a subpackage with pre-suffix founded.
+</span></span><span id="36" class="l"><a class="l" href="#36">36: </a><span class="php-comment"> * If class end with Resource, Model, Exception, Store, Output or Input then look into the appropriate directory.
+</span></span><span id="37" class="l"><a class="l" href="#37">37: </a><span class="php-comment"> * If Resource is used, autoload search for a subpackage with pre-suffix founded.
 </span></span><span id="38" class="l"><a class="l" href="#38">38: </a><span class="php-comment"> *
 </span></span><span id="39" class="l"><a class="l" href="#39">39: </a><span class="php-comment"> * @param the classname to search for
 </span></span><span id="40" class="l"><a class="l" href="#40">40: </a><span class="php-comment"> * @return boolean if ok. Throw an exception if not
@@ -157,11 +157,11 @@
 </span><span id="44" class="l"><a class="l" href="#44">44: </a>    <span class="php-var">$arr</span> = <span class="php-keyword2">preg_split</span>(<span class="php-quote">'/(?=[A-Z])/'</span>, <span class="php-var">$classname</span>);
 </span><span id="45" class="l"><a class="l" href="#45">45: </a>    <span class="php-var">$suffix</span> = <span class="php-keyword2">array_pop</span>(<span class="php-var">$arr</span>);
 </span><span id="46" class="l"><a class="l" href="#46">46: </a>    <span class="php-keyword1">switch</span> (<span class="php-var">$suffix</span>) {
-</span><span id="47" class="l"><a class="l" href="#47">47: </a>        <span class="php-keyword1">case</span> <span class="php-quote">'Ressource'</span>:
+</span><span id="47" class="l"><a class="l" href="#47">47: </a>        <span class="php-keyword1">case</span> <span class="php-quote">'Resource'</span>:
 </span><span id="48" class="l"><a class="l" href="#48">48: </a>            <span class="php-keyword1">if</span> (<span class="php-keyword2">count</span>(<span class="php-var">$arr</span>) &gt;= <span class="php-num">2</span>)
-</span><span id="49" class="l"><a class="l" href="#49">49: </a>                <span class="php-var">$loadingPath</span> = LIBPATH . <span class="php-quote">'ressources'</span> . DS . <span class="php-var">$arr</span>[<span class="php-num">1</span>] . DS . <span class="php-var">$classname</span> . EXT;
+</span><span id="49" class="l"><a class="l" href="#49">49: </a>                <span class="php-var">$loadingPath</span> = LIBPATH . <span class="php-quote">'resources'</span> . DS . <span class="php-var">$arr</span>[<span class="php-num">1</span>] . DS . <span class="php-var">$classname</span> . EXT;
 </span><span id="50" class="l"><a class="l" href="#50">50: </a>            <span class="php-keyword1">else</span>
-</span><span id="51" class="l"><a class="l" href="#51">51: </a>                <span class="php-var">$loadingPath</span> = LIBPATH . <span class="php-quote">'ressources'</span> . DS . <span class="php-var">$classname</span> . EXT;
+</span><span id="51" class="l"><a class="l" href="#51">51: </a>                <span class="php-var">$loadingPath</span> = LIBPATH . <span class="php-quote">'resources'</span> . DS . <span class="php-var">$classname</span> . EXT;
 </span><span id="52" class="l"><a class="l" href="#52">52: </a>            <span class="php-keyword1">break</span>;
 </span><span id="53" class="l"><a class="l" href="#53">53: </a>        <span class="php-keyword1">case</span> <span class="php-quote">'Model'</span>:
 </span><span id="54" class="l"><a class="l" href="#54">54: </a>            <span class="php-var">$loadingPath</span> = LIBPATH . <span class="php-quote">'models'</span> . DS . <span class="php-var">$classname</span> . EXT;

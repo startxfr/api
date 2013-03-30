@@ -10,7 +10,7 @@ $collections = array(
 	'sxapi.application',
 	'sxapi.logs',
 	'sxapi.models',
-	'sxapi.ressources',
+	'sxapi.resources',
 	'sxapi.session',
 	'sxapi.users',
 	'system.indexes',

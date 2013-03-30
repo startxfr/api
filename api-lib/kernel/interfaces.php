@@ -89,9 +89,9 @@ interface IOutput {
 }
 
 /**
- * Interface to define a ressource object
+ * Interface to define a resource object
  *
- * @see      defaultRessource
+ * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resources
  *
  * @category Resource
@@ -100,7 +100,7 @@ interface IOutput {
  * @copyright Copyright (c) 2003-2013 startx.fr
  * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
-interface IRessource {
+interface IResource {
 
     /**
      * Check and control the given configuration. Called by the constructor

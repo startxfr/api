@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This ressource class is abstract and should not be used as it.
+ * This resource class is abstract and should not be used as it.
  * Developpers can create a new store type by derivating from this class
  *
  * @package  SXAPI.Store

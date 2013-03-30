@@ -7,7 +7,7 @@
 	<title>Class Api | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?3861294456"></script>
+	<script type="text/javascript" src="elementlist.js?636384700"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -799,22 +799,22 @@ configured (no 'class' or 'store' key) or is not instanciable.<br />
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="getRessource" id="_getRessource">
+	<tr data-order="getResource" id="_getResource">
 
 		<td class="attributes"><code>
 			 public 
-			<code><a href="class-defaultRessource.html">defaultRessource</a></code>
+			<code><a href="class-defaultResource.html">defaultResource</a></code>
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_getRessource">#</a>
-		<code><a href="source-class-Api.html#428-455" title="Go to source code">getRessource</a>( <span>mixed <var>$id</var></span>, <span>mixed <var>$config</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<a class="anchor" href="#_getResource">#</a>
+		<code><a href="source-class-Api.html#428-455" title="Go to source code">getResource</a>( <span>mixed <var>$id</var></span>, <span>mixed <var>$config</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
-<p>Get a ressource connector return the ressource connector coresponding to the
+<p>Get a resource connector return the resource connector coresponding to the
 given $id. Dynamicaly load it, initialize it and cache it if not already
 required.</p>
 
@@ -822,7 +822,7 @@ required.</p>
 
 		<div class="description detailed hidden">
 			
-<p>Get a ressource connector return the ressource connector coresponding to the
+<p>Get a resource connector return the resource connector coresponding to the
 given $id. Dynamicaly load it, initialize it and cache it if not already
 required.</p>
 
@@ -831,7 +831,7 @@ required.</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-defaultRessource.html">defaultRessource</a></code></code><br>the ressource connector instance coresponding to the requested $id<br />
+					<code><code><a href="class-defaultResource.html">defaultResource</a></code></code><br>the resource connector instance coresponding to the requested $id<br />
 				</div>
 
 				<h4>Throws</h4>
@@ -860,21 +860,21 @@ configured (no 'class' or 'store' key) or is not instanciable.<br />
 
 		<div class="description short">
 			
-<p>Execute the ressource action, render it and exit program; this is the main
-method to start the executing of the requested ressource. Each ressource is
+<p>Execute the resource action, render it and exit program; this is the main
+method to start the executing of the requested resource. Each resource is
 responsible for output delivery of its content. This method will:</p>
 
 <ul>
-	<li>Find the requested ressource (using the getRessourceConfig method)</li>
+	<li>Find the requested resource (using the getResourceConfig method)</li>
 
-	<li>Obtain and Start this ressource (using the getRessource method)</li>
+	<li>Obtain and Start this resource (using the getResource method)</li>
 
 	<li>Select the requested action to perform (according to the http method)</li>
 
-	<li>Check if ACL rules apply to this ressource node and check if session context
+	<li>Check if ACL rules apply to this resource node and check if session context
 	is compliant to theses ACL rules</li>
 
-	<li>Execute the requested action of the requested ressource. This ressource will
+	<li>Execute the requested action of the requested resource. This resource will
 	then perform his task and manage to output to produce</li>
 </ul>
 
@@ -882,21 +882,21 @@ responsible for output delivery of its content. This method will:</p>
 
 		<div class="description detailed hidden">
 			
-<p>Execute the ressource action, render it and exit program; this is the main
-method to start the executing of the requested ressource. Each ressource is
+<p>Execute the resource action, render it and exit program; this is the main
+method to start the executing of the requested resource. Each resource is
 responsible for output delivery of its content. This method will:</p>
 
 <ul>
-	<li>Find the requested ressource (using the getRessourceConfig method)</li>
+	<li>Find the requested resource (using the getResourceConfig method)</li>
 
-	<li>Obtain and Start this ressource (using the getRessource method)</li>
+	<li>Obtain and Start this resource (using the getResource method)</li>
 
 	<li>Select the requested action to perform (according to the http method)</li>
 
-	<li>Check if ACL rules apply to this ressource node and check if session context
+	<li>Check if ACL rules apply to this resource node and check if session context
 	is compliant to theses ACL rules</li>
 
-	<li>Execute the requested action of the requested ressource. This ressource will
+	<li>Execute the requested action of the requested resource. This resource will
 	then perform his task and manage to output to produce</li>
 </ul>
 
@@ -910,7 +910,7 @@ responsible for output delivery of its content. This method will:</p>
 
 				<h4>Throws</h4>
 				<div class="list">
-					<code><code><a href="class-ApiException.html">ApiException</a></code></code><br>If ressource is not acessible or controlled by ACL rules.<br />
+					<code><code><a href="class-ApiException.html">ApiException</a></code></code><br>If resource is not acessible or controlled by ACL rules.<br />
 				</div>
 
 
@@ -918,7 +918,7 @@ responsible for output delivery of its content. This method will:</p>
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="getRessourceConfig" id="_getRessourceConfig">
+	<tr data-order="getResourceConfig" id="_getResourceConfig">
 
 		<td class="attributes"><code>
 			 private 
@@ -928,36 +928,36 @@ responsible for output delivery of its content. This method will:</p>
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_getRessourceConfig">#</a>
-		<code><a href="source-class-Api.html#547-636" title="Go to source code">getRessourceConfig</a>( <span>mixed <var>$elements</var></span>, <span>mixed <var>$configtree</var></span>, <span>mixed <var>$outputConfig</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<a class="anchor" href="#_getResourceConfig">#</a>
+		<code><a href="source-class-Api.html#547-636" title="Go to source code">getResourceConfig</a>( <span>mixed <var>$elements</var></span>, <span>mixed <var>$configtree</var></span>, <span>mixed <var>$outputConfig</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
-<p>Scan the API ressource tree according to the requested path and search for
-the requested ressource. This method also merge every ressource config node
-matching this path for return a config array with all ascendant param merged
-with into the requested one</p>
+<p>Scan the API resource tree according to the requested path and search for the
+requested resource. This method also merge every resource config node matching
+this path for return a config array with all ascendant param merged with into
+the requested one</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Scan the API ressource tree according to the requested path and search for
-the requested ressource. This method also merge every ressource config node
-matching this path for return a config array with all ascendant param merged
-with into the requested one</p>
+<p>Scan the API resource tree according to the requested path and search for the
+requested resource. This method also merge every resource config node matching
+this path for return a config array with all ascendant param merged with into
+the requested one</p>
 
 
 
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>array</code><br>containing the ressource config to execute<br />
+					<code>array</code><br>containing the resource config to execute<br />
 				</div>
 
 				<h4>Throws</h4>
 				<div class="list">
-					<code><code><a href="class-ApiException.html">ApiException</a></code></code><br>If tree node is malformed (missing 'ressource' key) or if path and tree are not
+					<code><code><a href="class-ApiException.html">ApiException</a></code></code><br>If tree node is malformed (missing 'resource' key) or if path and tree are not
 given.<br />
 				</div>
 
@@ -1391,7 +1391,7 @@ Object. This property is critical and should contain:
 	backend</li>
 
 	<li>base: name of the nosql database to use for retriving Api core elements (api
-	documents, logs, app, session, models and ressources)</li>
+	documents, logs, app, session, models and resources)</li>
 
 	<li>api_collection : name of the nosql collection used to store API config
 	document</li>
@@ -1407,7 +1407,7 @@ Object. This property is critical and should contain:
 	backend</li>
 
 	<li>base: name of the nosql database to use for retriving Api core elements (api
-	documents, logs, app, session, models and ressources)</li>
+	documents, logs, app, session, models and resources)</li>
 
 	<li>api_collection : name of the nosql collection used to store API config
 	document</li>
@@ -1459,16 +1459,16 @@ Object. This property is critical and should contain:
 
 			<div class="description short">
 				
-<p>the nosql connection ressource used to communicate with Api internal backend.
-Used for accessing documents used in core function (model, ressource, input,
+<p>the nosql connection resource used to communicate with Api internal backend.
+Used for accessing documents used in core function (model, resource, input,
 output)</p>
 
 			</div>
 
 			<div class="description detailed hidden">
 				
-<p>the nosql connection ressource used to communicate with Api internal backend.
-Used for accessing documents used in core function (model, ressource, input,
+<p>the nosql connection resource used to communicate with Api internal backend.
+Used for accessing documents used in core function (model, resource, input,
 output)</p>
 
 
@@ -1692,32 +1692,32 @@ needed. 'id' config key is used as key identifier</p>
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="ressources" id="$ressources">
+	<tr data-order="resources" id="$resources">
 		<td class="attributes"><code>
 			private  
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Api.html#89-92" title="Go to source code"><var>$ressources</var></a>
+				<a href="source-class-Api.html#89-92" title="Go to source code"><var>$resources</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
 		<td class="description"><div>
-			<a href="#$ressources" class="anchor">#</a>
+			<a href="#$resources" class="anchor">#</a>
 
 			<div class="description short">
 				
-<p>the ressource manager. This property is used a a cache for all instanciated
-ressources used into the Api. Only required ressources are dynamicaly loaded
-when needed. 'id' config key is used as key identifier</p>
+<p>the resource manager. This property is used a a cache for all instanciated
+resources used into the Api. Only required resources are dynamicaly loaded when
+needed. 'id' config key is used as key identifier</p>
 
 			</div>
 
 			<div class="description detailed hidden">
 				
-<p>the ressource manager. This property is used a a cache for all instanciated
-ressources used into the Api. Only required ressources are dynamicaly loaded
-when needed. 'id' config key is used as key identifier</p>
+<p>the resource manager. This property is used a a cache for all instanciated
+resources used into the Api. Only required resources are dynamicaly loaded when
+needed. 'id' config key is used as key identifier</p>
 
 
 			</div>

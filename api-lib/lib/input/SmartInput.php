@@ -7,8 +7,8 @@
  * <li>protocol : The used protocol (could be http:// or https://) </li>
  * <li>host : The hostname</li>
  * <li>root : The root path fragment to the php script file</li>
- * <li>path : The API tree path to the ressource (described as a path string)</li>
- * <li>elements : Exploded version of the path. Describe requested ressources</li>
+ * <li>path : The API tree path to the resource (described as a path string)</li>
+ * <li>elements : Exploded version of the path. Describe requested resources</li>
  * <li>method : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)</li>
  * <li>format : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)</li>
  * <li>data : Incomings data. According to the HTTP request, could use the request body or the GET method</li>
