@@ -36,7 +36,7 @@ class Api extends Configurable {
      * </ul>
      */
     public $nosqlApiBackend = '{
-        "connection" : "mongodb://dev:dev@127.0.0.1:27017",
+        "connection" : "mongodb://username:password@127.0.0.1:27017",
         "base" : "sxapi",
         "api_collection" : "sxapi.api"
     }';
