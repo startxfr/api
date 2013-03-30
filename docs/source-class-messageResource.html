@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+	<meta name="robots" content="noindex" />
+
+	<title>File lib/resources/messageResource.php | SXAPI Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
+	<script type="text/javascript" src="elementlist.js?636384700"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active main"><a href="package-SXAPI.html">SXAPI<span></span></a>
+						<ul>
+				<li class="main"><a href="package-SXAPI.Input.html">Input</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Model.html">Model</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+				<li class="active main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
+						<ul>
+				<li class="main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Model.html">Model</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Test.html">Test</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="package-SXAPI.Store.html">Store</a>
+						</li>
+							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
+				<li><a href="package-PHP.html">PHP</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-apiResource.html">apiResource</a></li>
+				<li><a href="class-defaultResource.html">defaultResource</a></li>
+				<li class="active"><a href="class-messageResource.html">messageResource</a></li>
+				<li><a href="class-nodemapResource.html">nodemapResource</a></li>
+				<li><a href="class-readonlyResource.html">readonlyResource</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-IResource.html">IResource</a></li>
+			</ul>
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-ResourceException.html">ResourceException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-SXAPI.Resource.html" title="Summary of SXAPI\Resource"><span>Package</span></a>
+			</li>
+			<li>
+				<a href="class-messageResource.html" title="Summary of messageResource"><span>Class</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="sxapi-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
+	</div>
+
+<pre><code><span id="1" class="l"><a class="l" href="#1"> 1: </a><span class="xlang">&lt;?php</span>
+</span><span id="2" class="l"><a class="l" href="#2"> 2: </a>
+</span><span id="3" class="l"><a class="l" href="#3"> 3: </a><span class="php-comment">/**
+</span></span><span id="4" class="l"><a class="l" href="#4"> 4: </a><span class="php-comment"> * This resource return a simple message
+</span></span><span id="5" class="l"><a class="l" href="#5"> 5: </a><span class="php-comment"> *
+</span></span><span id="6" class="l"><a class="l" href="#6"> 6: </a><span class="php-comment"> * @package  SXAPI.Resource
+</span></span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-comment"> * @author   Dev Team &lt;dev@startx.fr&gt;
+</span></span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-comment"> * @see      readonlyResource
+</span></span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment"> * @link     https://github.com/startxfr/sxapi/wiki/Resource
+</span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> */</span>
+</span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-keyword1">class</span> <a id="messageResource" href="#messageResource">messageResource</a> <span class="php-keyword1">extends</span> readonlyResource <span class="php-keyword1">implements</span> IResource {
+</span><span id="12" class="l"><a class="l" href="#12">12: </a>
+</span><span id="13" class="l"><a class="l" href="#13">13: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_readAction" href="#_readAction">readAction</a>() {
+</span><span id="14" class="l"><a class="l" href="#14">14: </a>        Api::getInstance()-&gt;logDebug(<span class="php-num">910</span>, <span class="php-quote">&quot;Start executing '&quot;</span> . __FUNCTION__ . <span class="php-quote">&quot;' on '&quot;</span> . <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot;' resource&quot;</span>, <span class="php-var">$this</span>-&gt;getConfigs(), <span class="php-num">3</span>);
+</span><span id="15" class="l"><a class="l" href="#15">15: </a>        <span class="php-var">$message</span> = <span class="php-keyword2">sprintf</span>(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'message_service_read'</span>,<span class="php-quote">'message service read'</span>), @<span class="php-keyword2">strlen</span>(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'message'</span>)));
+</span><span id="16" class="l"><a class="l" href="#16">16: </a>        Api::getInstance()-&gt;logInfo(<span class="php-num">910</span>, <span class="php-quote">&quot;'&quot;</span> . __FUNCTION__ . <span class="php-quote">&quot;' in '&quot;</span> . <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot;' return : &quot;</span> . <span class="php-var">$message</span>, <span class="php-var">$this</span>-&gt;getResourceTrace(__FUNCTION__, <span class="php-keyword1">false</span>), <span class="php-num">1</span>);
+</span><span id="17" class="l"><a class="l" href="#17">17: </a>        Api::getInstance()-&gt;getOutput()-&gt;renderOk(<span class="php-var">$message</span>, <span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'message'</span>));
+</span><span id="18" class="l"><a class="l" href="#18">18: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">true</span>;
+</span><span id="19" class="l"><a class="l" href="#19">19: </a>    }
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>
+</span><span id="21" class="l"><a class="l" href="#21">21: </a>}
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>
+</span><span id="23" class="l"><a class="l" href="#23">23: </a><span class="xlang">?&gt;</span>
+</span><span id="24" class="l"><a class="l" href="#24">24: </a></span></code></pre>
+
+	<div id="footer">
+		SXAPI Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>
