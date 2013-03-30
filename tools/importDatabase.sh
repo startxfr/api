@@ -1,8 +1,8 @@
 #!/usr/bin/php
 <?php
-$localRootPath = '/path/to/installed/sxapi/api-lib/tmp/';
-$user = 'username';
-$pass = 'password';
+$localRootPath = '/secure/github/sxapi/api-lib/tmp/';
+$user = 'dev';
+$pass = 'dev';
 $db = 'sxapi';
 $collections = array(
 	'redirect.hit',
