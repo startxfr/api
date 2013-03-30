@@ -36,7 +36,7 @@ class Api extends Configurable {
      * </ul>
      */
     public $nosqlApiBackend = '{
-        "connection" : "mongodb://username:password@127.0.0.1:27017",
+        "connection" : "mongodb://dev:dev@127.0.0.1:27017",
         "base" : "sxapi",
         "api_collection" : "sxapi.api"
     }';
@@ -98,7 +98,7 @@ class Api extends Configurable {
      * @param string $defaultApiID with the api id to use for creation
      * @return void
      */
-    protected function __construct($defaultApiID = null) {
+    public function __construct($defaultApiID = null) {
         if (!is_null($defaultApiID))
             $this->defaultApiID = $defaultApiID;
         // connect nosql backend immediately to get log storage support
@@ -107,7 +107,7 @@ class Api extends Configurable {
             $nosqlConnection = new Mongo($this->nosqlApiBackend->connection);
             $this->nosqlConnection = $nosqlConnection->selectDB($this->nosqlApiBackend->base);
         } catch (Exception $exc) {
-            $this->exitOnError(0, "Error when creating Api object because nosql backend responded : " . $exc->getMessage(), $exc);
+            echo "Error communicating with nosql backend : " . $exc->getMessage(); exit;
         }
     }
 
