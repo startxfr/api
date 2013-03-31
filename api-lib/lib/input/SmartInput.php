@@ -267,11 +267,33 @@ class SmartInput extends DefaultInput implements IInput {
      * @param type $key the key of the parameter
      * @return string
      */
+    public function isParam($key = null) {
+        if (!is_null($key) and array_key_exists($key, $this->data))
+            return true;
+        else
+            return false;
+    }
+    /**
+     * return the value of the given request parameters
+     * @param type $key the key of the parameter
+     * @return string
+     */
     public function getParam($key = null, $default = null) {
         if (!is_null($key) and array_key_exists($key, $this->data))
             return $this->data[$key];
         else
             return $default;
+    }
+
+    /**
+     * set the value of the given key into request parameters
+     * @param string $key the key of the parameter
+     * @param string $value the value of the parameter
+     * @return this
+     */
+    public function setParam($key, $value = null) {
+        $this->data[$key] = $value;
+        return this;
     }
 
     /**
@@ -285,17 +307,6 @@ class SmartInput extends DefaultInput implements IInput {
             return Toolkit::object2Array(@json_decode($data));
         else
             return $data;
-    }
-
-    /**
-     * set the value of the given key into request parameters
-     * @param string $key the key of the parameter
-     * @param string $value the value of the parameter
-     * @return this
-     */
-    public function setParam($key, $value = null) {
-        $this->data[$key] = $value;
-        return this;
     }
 
     /**

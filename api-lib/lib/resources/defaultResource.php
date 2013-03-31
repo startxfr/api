@@ -63,13 +63,17 @@ abstract class defaultResource extends Configurable implements IResource {
         exit;
     }
 
-    public function getResourceTrace($method = null, $forDisplay = true) {
+    public function getResourceTrace($method = null, $forDisplay = true, $other = null) {
         $api = Api::getInstance();
         $trace = $api->getTrace();
         $trace['class'] = get_class($this);
         $trace['method'] = $method;
         if($forDisplay === false)
            $trace['config'] = $this->getConfigs();
+        if(!is_null($other) and !is_array($other))
+           $other = array($other);
+        if(is_array($other))
+           $trace = array_merge($trace,$other);
         return $trace;
     }
 

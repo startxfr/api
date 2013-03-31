@@ -95,10 +95,14 @@ class UserInput extends DefaultInput implements IInput {
         return $this->cachedData;
     }
 
-    public function setAll($data) {
+    public function setAll($data, $add = false) {
         $this->connect();
-        $this->userStorage->update(
-                $this->getConfig('collection', 'users'), $this->getConfig('id_field', "_id"), Api::getInstance()->getInput('session')->get('user'), $data
+        $result = $this->userStorage->update(
+                $this->getConfig('collection', 'users'),
+                $this->getConfig('id_field', "_id"),
+                Api::getInstance()->getInput('session')->get('user'),
+                $data,
+                $add
         );
         $this->loadCache();
         return $this;
