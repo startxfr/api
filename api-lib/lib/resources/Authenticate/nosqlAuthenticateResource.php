@@ -17,7 +17,7 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
             $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
             $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
             $user = $this->doAuthenticate($login, $pass);
-            $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create','message service create'), $login), $user);
+            $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $login), $user);
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
@@ -32,7 +32,7 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
             $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
             $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
             $user = $this->doAuthenticate($login, $pass);
-            $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_update','message service update'), $login), $user);
+            $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_update', 'message service update'), $login), $user);
         } catch (Exception $exc) {
             $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
