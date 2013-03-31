@@ -1,0 +1,169 @@
+<?php
+
+require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
+
+/**
+ * This resource is used to authenticate using google, and obtaining access to google's services.
+ *
+ * @package  SXAPI.Resource.Authenticate
+ * @author   Dev Team <dev@startx.fr>
+ * @see      defaultAuthenticateResource
+ * @link     https://github.com/startxfr/sxapi/wiki/Resource
+ */
+class goauthAuthenticateResource extends defaultAuthenticateResource implements IResource {
+
+    protected $client = null;
+    protected $services = array();
+
+    public function __construct($config) {
+        parent::__construct($config);
+        $this->client = new Google_Client();
+    }
+
+    public function init() {
+        parent::init();
+        $api = Api::getInstance();
+        $input = $api->getInput();
+        if ($this->getConfig('application_name') != '')
+            $this->client->setApplicationName($this->getConfig('application_name'));
+        if ($this->getConfig('client_id') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'client_id' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'client_id' attribute");
+        }
+        $this->client->setClientId($this->getConfig('client_id'));
+        if ($this->getConfig('client_secret') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'client_secret' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'client_secret' attribute");
+        }
+        $this->client->setClientSecret($this->getConfig('client_secret'));
+        $this->client->setRedirectUri($this->getConfig('redirect_uri', $input->getRootUrl() . $input->getPath() . DS . $this->getConfig('callback_path', 'callback')));
+
+        return $this;
+    }
+
+    public function readAction() {
+        $api = Api::getInstance();
+        $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
+        try {
+            $input = $api->getInput();
+            $sessElPosition = $input->getElementPosition($this->getConfig('path'));
+            $nextPath = $input->getElement($sessElPosition + 1);
+            switch ($nextPath) {
+                case 'callback':
+                    if ($input->isParam('code')) {
+                        $this->client->setRedirectUri($input->getRootUrl() . $input->getPath());
+                        $this->loadServices();
+                        $this->client->authenticate($input->getParam('code'));
+                        $accessInfo = json_decode($this->client->getAccessToken());
+                        $_SESSION['user']['access_token'] = $accessInfo->access_token;
+                        $_SESSION['user']['refresh_token'] = $accessInfo->refresh_token;
+                        $user = $this->services['Oauth2']->userinfo->get();
+                        $user['email'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+                        $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
+                        $api->getInput('session')->set('user', $user['email']);
+                        $api->getInput('user')->setAll(array_merge(Toolkit::object2Array($accessInfo),$user),'save');
+                        $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
+                        $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
+                        $api->getOutput()->renderOk($message, $user, count($user));
+                    } else {
+                        switch ($_GET['error']) {
+                            case "access_denied":
+                                $message = "No user access from google because : " . $_GET['error'];
+                                break;
+                            default:
+                                $message = "No user access from google because : " . $_GET['error'];
+                                break;
+                        }
+                        $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $message, $exc);
+                        $api->getOutput()->renderError(910, $message);
+                    }
+                    break;
+                default:
+                    $this->loadServices();
+                    $authUrl = $this->client->createAuthUrl();
+                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' start oauth request with google ", $this->getResourceTrace(__FUNCTION__, false, array('oauth_url' => $authUrl)), 1);
+                    header('Location: ' . $authUrl);
+                    exit;
+                    break;
+            }
+        } catch (Exception $exc) {
+            $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+        }
+        return true;
+    }
+
+    public function loadServices() {
+        $api = Api::getInstance();
+        foreach ($this->getConfig('requested_services', array("Oauth2")) as $serviceName) {
+            try {
+                $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
+                require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
+                $this->services[$serviceName] = new $serviceClass($this->client);
+            } catch (Exception $exc) {
+                $api->logWarn(910, "Warning on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : " . $exc->getMessage(), $exc);
+            }
+        }
+        return true;
+    }
+
+    public function createAction() {
+        $api = Api::getInstance();
+        $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
+        try {
+            $newId = $this->getModel()->create($api->getInput()->getParams());
+            $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
+            $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
+            $api->getOutput()->renderOk($message, $newId);
+        } catch (Exception $exc) {
+            $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+        }
+        return true;
+    }
+
+    public function updateAction() {
+        $api = Api::getInstance();
+        $api->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
+        try {
+            $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
+            $nextPath = $api->getInput()->getElement($sessElPosition + 1);
+            if ($nextPath !== null) {
+                $return = $this->getModel()->update($nextPath, $api->getInput()->getParams());
+                $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
+                $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
+                $api->getOutput()->renderOk($message, $return);
+            } else {
+                throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
+            }
+        } catch (Exception $exc) {
+            $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+        }
+        return true;
+    }
+
+    public function deleteAction() {
+        $api = Api::getInstance();
+        $api->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
+        try {
+            $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
+            $nextPath = $api->getInput()->getElement($sessElPosition + 1);
+            if ($nextPath !== null) {
+                $return = $this->getModel()->delete($nextPath);
+                $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
+                $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
+                $api->getOutput()->renderOk($message, $return);
+            } else {
+                throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
+            }
+        } catch (Exception $exc) {
+            $api->logError(970, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+        }
+        return true;
+    }
+
+}
+
+?>

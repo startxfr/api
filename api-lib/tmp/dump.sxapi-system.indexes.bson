@@ -3,7 +3,6 @@
 { "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.application", "name" : "_id_" }
 { "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.logs", "name" : "_id_" }
 { "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.models", "name" : "_id_" }
-{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.resources", "name" : "_id_" }
 { "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.session", "name" : "_id_" }
 { "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.users", "name" : "_id_" }
 { "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.system.users", "name" : "_id_" }
@@ -14,4 +13,5 @@
 { "v" : 1, "key" : { "time_end" : 1 }, "ns" : "sxapi.sxapi.session", "name" : "time_end_" }
 { "v" : 1, "key" : { "time_start" : 1 }, "ns" : "sxapi.sxapi.session", "name" : "time_start_" }
 { "v" : 1, "key" : { "time_update" : 1 }, "ns" : "sxapi.sxapi.session", "name" : "time_update_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.resources", "name" : "_id_" }
 { "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.logs", "name" : "_id_" }

@@ -1,16 +1,41 @@
 <?php
 
+require_once 'api-lib/lib/plugins/google-api-php-client/src/Google_Client.php';
+require_once 'api-lib/lib/plugins/google-api-php-client/src/contrib/Google_CalendarService.php';
+require_once 'api-lib/lib/plugins/google-api-php-client/src/contrib/Google_Oauth2Service.php';
+session_start();
 
-$url = "https://accounts.google.com/o/oauth2/auth?";
-$url.= "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&";
-//$url.= "state=profile&";
-$url.= "redirect_uri=http%3A%2F%2F127.0.0.1%2Fgithub%2Fsxapi%2Foauth-google2.php&";
-$url.= "response_type=code&";
-$url.= "access_type=offline&";
-$url.= "client_id=703694493039.apps.googleusercontent.com&";
-$url.= "approval_prompt=force";
+$client = new Google_Client();
+//$client->setApplicationName("Google Calendar PHP Starter Application");
+$client->setClientId('703694493039.apps.googleusercontent.com');
+$client->setClientSecret('ghpmYHB6pOTB5m1EBpaap2Ju');
+$client->setRedirectUri('http://127.0.0.1/github/sxapi/oauth-google2.php');
 
 
-header("location: $url");
-exit;
+if (isset($_GET['logout'])) {
+    unset($_SESSION['user']['access_token']);
+}
+
+if (isset($_SESSION['user']['access_token'])) {
+    $client->setAccessToken($_SESSION['user']['access_token']);
+    $oauth2 = new Google_Oauth2Service($client);
+    $user = $oauth2->userinfo->get();
+    // These fields are currently filtered through the PHP sanitize filters.
+    // See http://www.php.net/manual/en/filter.filters.sanitize.php
+    $email = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+    $img = filter_var($user['picture'], FILTER_VALIDATE_URL);
+    print "$email<div><img src='$img?sz=50'></div>";
+    $cal = new Google_CalendarService($client);
+    $calList = $cal->calendarList->listCalendarList();
+    print "<h1>Calendar List</h1>";
+    foreach ($calList['items'] as $cal)
+        echo '<div style="background-color:' . $cal['backgroundColor'] . ';color:' . $cal['foregroundColor'] . ';padding:0.33em">' . $cal['summary'] . '</div><br/>';
+    $_SESSION['user']['access_token'] = $client->getAccessToken();
+} else {
+    $cal = new Google_CalendarService($client);
+    $oauth2 = new Google_Oauth2Service($client);
+    $authUrl = $client->createAuthUrl();
+    print "<a class='login' href='$authUrl'>Connect Me!</a>";
+    print "<a class='login' href='http://127.0.0.1/github/sxapi/oauth-google.php?logout=true'>Logout</a>";
+}
 ?>

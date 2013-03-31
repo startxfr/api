@@ -590,7 +590,7 @@ class Api extends Configurable {
                     unset($wildcardChild['path']);
                     if ($wildcardChild != null)
                         $outputConfig = Toolkit::array_merge_recursive_distinct($outputConfig, $wildcardChild);
-                    $this->logError(85, " path '" . $searchedPath . "' could not be found in api tree but wildcard node is found. Use previous resource '" . $outputConfig['class'] . "' instead", $outputConfig);
+                    $this->logWarn(85, " path '" . $searchedPath . "' could not be found in api tree but wildcard node is found. Use previous resource '" . $outputConfig['class'] . "' instead", $outputConfig);
                     return $outputConfig;
                 }
                 if ($selectedChild === null) {

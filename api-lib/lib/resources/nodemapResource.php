@@ -28,7 +28,7 @@ class nodemapResource extends readonlyResource implements IResource {
         if ($nodes == null)
             $nodes = array($api->getConfig("tree"));
         if ($path == null)
-            $path = $api->getInput()->getProtocol() . $api->getInput()->getHost() . $api->getInput()->getRoot();
+            $path = $api->getInput()->getRootUrl();
         $treeOut = array();
         if (is_array($nodes)) {
             foreach ($nodes as $node) {

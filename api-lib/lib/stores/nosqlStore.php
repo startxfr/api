@@ -72,10 +72,13 @@ class nosqlStore extends defaultStore implements IStorage {
         }
     }
 
-    public function update($table, $key, $id, $data) {
+    public function update($table, $key, $id, $data, $upsert = false) {
         try {
             $this->connect();
-            $this->lastResult = $this->connection->selectCollection($table)->update(array($key => $id), array('$set' => $data));
+            if($upsert)
+                $this->lastResult = $this->connection->selectCollection($table)->update(array($key => $id), array('$set' => $data), array('upsert' => true));
+            else
+                $this->lastResult = $this->connection->selectCollection($table)->update(array($key => $id), array('$set' => $data));
             Api::getInstance()->logDebug(450, "'" . __FUNCTION__ . "' '" . get_class($this) . "' updated id '" . $id . "' entry", array('table' => $table, 'key' => $key, 'id' => $id, 'data' => $data), 4);
             return $this->lastResult;
         } catch (Exception $e) {
