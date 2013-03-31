@@ -4,11 +4,10 @@ if (isset($_GET['code'])) {
     require_once 'api-lib/lib/plugins/google-api-php-client/src/Google_Client.php';
     session_start();
     $client = new Google_Client();
-    $client->setApplicationName("Google Calendar PHP Starter Application");
+//    $client->setApplicationName("Google Calendar PHP Starter Application");
     $client->setClientId('703694493039.apps.googleusercontent.com');
     $client->setClientSecret('ghpmYHB6pOTB5m1EBpaap2Ju');
     $client->setRedirectUri('http://127.0.0.1/github/sxapi/oauth-google2.php');
-    $client->setDeveloperKey('AI39si52MyOlUTuIrQJkLYlbTR5TPK46Ny5Kk6p-Ps5s2dh4jD3N4k161rSD4cvljNczLg8cVEkfj92DhIUk25DUt3K7tG9iWg');
     $client->authenticate($_GET['code']);
     $_SESSION['token'] = $client->getAccessToken();
     header('Location: http://127.0.0.1/github/sxapi/oauth-google.php');
