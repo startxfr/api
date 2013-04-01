@@ -8,7 +8,7 @@
 	<title>File lib/resources/Authenticate/nosqlAuthenticateResource.php | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?636384700"></script>
+	<script type="text/javascript" src="elementlist.js?3844580267"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -33,6 +33,8 @@
 				<li class="active main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
 						<ul>
 				<li class="active main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Google.html">Google</a>
 						</li>
 				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
 						</li>
@@ -60,6 +62,7 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-defaultAuthenticateResource.html">defaultAuthenticateResource</a></li>
+				<li><a href="class-goauthAuthenticateResource.html">goauthAuthenticateResource</a></li>
 				<li><a href="class-mysqlAuthenticateResource.html">mysqlAuthenticateResource</a></li>
 				<li class="active"><a href="class-nosqlAuthenticateResource.html">nosqlAuthenticateResource</a></li>
 			</ul>
@@ -132,7 +135,7 @@
 </span><span id="17" class="l"><a class="l" href="#17">17: </a>            <span class="php-var">$login</span> = <span class="php-var">$api</span>-&gt;getInput()-&gt;getParam(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'id_param'</span>, <span class="php-quote">&quot;_id&quot;</span>));
 </span><span id="18" class="l"><a class="l" href="#18">18: </a>            <span class="php-var">$pass</span> = <span class="php-var">$api</span>-&gt;getInput()-&gt;getParam(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'pwd_param'</span>, <span class="php-quote">'pass'</span>));
 </span><span id="19" class="l"><a class="l" href="#19">19: </a>            <span class="php-var">$user</span> = <span class="php-var">$this</span>-&gt;doAuthenticate(<span class="php-var">$login</span>, <span class="php-var">$pass</span>);
-</span><span id="20" class="l"><a class="l" href="#20">20: </a>            <span class="php-var">$api</span>-&gt;getOutput()-&gt;renderOk(<span class="php-keyword2">sprintf</span>(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'message_service_create'</span>,<span class="php-quote">'message service create'</span>), <span class="php-var">$login</span>), <span class="php-var">$user</span>);
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>            <span class="php-var">$api</span>-&gt;getOutput()-&gt;renderOk(<span class="php-keyword2">sprintf</span>(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'message_service_create'</span>, <span class="php-quote">'message service create'</span>), <span class="php-var">$login</span>), <span class="php-var">$user</span>);
 </span><span id="21" class="l"><a class="l" href="#21">21: </a>        } <span class="php-keyword1">catch</span> (Exception <span class="php-var">$exc</span>) {
 </span><span id="22" class="l"><a class="l" href="#22">22: </a>            <span class="php-var">$api</span>-&gt;logError(<span class="php-num">930</span>, <span class="php-quote">&quot;Error on '&quot;</span> . __FUNCTION__ . <span class="php-quote">&quot;' for '&quot;</span> . <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot;' return : &quot;</span> . <span class="php-var">$exc</span>-&gt;getMessage(), <span class="php-var">$exc</span>);
 </span><span id="23" class="l"><a class="l" href="#23">23: </a>            <span class="php-var">$api</span>-&gt;getOutput()-&gt;renderError(<span class="php-var">$exc</span>-&gt;getCode(), <span class="php-var">$exc</span>-&gt;getMessage());
@@ -147,7 +150,7 @@
 </span><span id="32" class="l"><a class="l" href="#32">32: </a>            <span class="php-var">$login</span> = <span class="php-var">$api</span>-&gt;getInput()-&gt;getParam(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'id_param'</span>, <span class="php-quote">&quot;_id&quot;</span>));
 </span><span id="33" class="l"><a class="l" href="#33">33: </a>            <span class="php-var">$pass</span> = <span class="php-var">$api</span>-&gt;getInput()-&gt;getParam(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'pwd_param'</span>, <span class="php-quote">'pass'</span>));
 </span><span id="34" class="l"><a class="l" href="#34">34: </a>            <span class="php-var">$user</span> = <span class="php-var">$this</span>-&gt;doAuthenticate(<span class="php-var">$login</span>, <span class="php-var">$pass</span>);
-</span><span id="35" class="l"><a class="l" href="#35">35: </a>            <span class="php-var">$api</span>-&gt;getOutput()-&gt;renderOk(<span class="php-keyword2">sprintf</span>(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'message_service_update'</span>,<span class="php-quote">'message service update'</span>), <span class="php-var">$login</span>), <span class="php-var">$user</span>);
+</span><span id="35" class="l"><a class="l" href="#35">35: </a>            <span class="php-var">$api</span>-&gt;getOutput()-&gt;renderOk(<span class="php-keyword2">sprintf</span>(<span class="php-var">$this</span>-&gt;getConfig(<span class="php-quote">'message_service_update'</span>, <span class="php-quote">'message service update'</span>), <span class="php-var">$login</span>), <span class="php-var">$user</span>);
 </span><span id="36" class="l"><a class="l" href="#36">36: </a>        } <span class="php-keyword1">catch</span> (Exception <span class="php-var">$exc</span>) {
 </span><span id="37" class="l"><a class="l" href="#37">37: </a>            <span class="php-var">$api</span>-&gt;logError(<span class="php-num">950</span>, <span class="php-quote">&quot;Error on '&quot;</span> . __FUNCTION__ . <span class="php-quote">&quot;' for '&quot;</span> . <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>) . <span class="php-quote">&quot;' return : &quot;</span> . <span class="php-var">$exc</span>-&gt;getMessage(), <span class="php-var">$exc</span>);
 </span><span id="38" class="l"><a class="l" href="#38">38: </a>            <span class="php-var">$api</span>-&gt;getOutput()-&gt;renderError(<span class="php-var">$exc</span>-&gt;getCode(), <span class="php-var">$exc</span>-&gt;getMessage());
