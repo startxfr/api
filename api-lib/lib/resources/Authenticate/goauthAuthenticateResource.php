@@ -1,7 +1,5 @@
 <?php
 
-require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
-
 /**
  * This resource is used to authenticate using google, and obtaining access to google's services.
  *
@@ -17,6 +15,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
 
     public function __construct($config) {
         parent::__construct($config);
+        require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
         $this->client = new Google_Client();
     }
 
@@ -60,8 +59,9 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                         $user = $this->services['Oauth2']->userinfo->get();
                         $user['email'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
                         $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
+                        $user['google_token'] = $accessInfo;
                         $api->getInput('session')->set('user', $user['email']);
-                        $api->getInput('user')->setAll(array_merge(Toolkit::object2Array($accessInfo),$user),'save');
+                        $api->getInput('user')->setAll($user,'save');
                         $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
                         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
                         $api->getOutput()->renderOk($message, $user, count($user));
