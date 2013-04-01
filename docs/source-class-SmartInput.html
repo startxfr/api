@@ -8,7 +8,7 @@
 	<title>File lib/input/SmartInput.php | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?636384700"></script>
+	<script type="text/javascript" src="elementlist.js?3844580267"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -33,6 +33,8 @@
 				<li class="main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
 						<ul>
 				<li class="main"><a href="package-SXAPI.Resource.Authenticate.html">Authenticate</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Resource.Google.html">Google</a>
 						</li>
 				<li class="main"><a href="package-SXAPI.Resource.Http.html">Http</a>
 						</li>
@@ -397,77 +399,88 @@
 </span></span><span id="267" class="l"><a class="l" href="#267">267: </a><span class="php-comment">     * @param type $key the key of the parameter
 </span></span><span id="268" class="l"><a class="l" href="#268">268: </a><span class="php-comment">     * @return string
 </span></span><span id="269" class="l"><a class="l" href="#269">269: </a><span class="php-comment">     */</span>
-</span><span id="270" class="l"><a class="l" href="#270">270: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getParam" href="#_getParam">getParam</a>(<span class="php-var">$key</span> = <span class="php-keyword1">null</span>, <span class="php-var">$default</span> = <span class="php-keyword1">null</span>) {
+</span><span id="270" class="l"><a class="l" href="#270">270: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_isParam" href="#_isParam">isParam</a>(<span class="php-var">$key</span> = <span class="php-keyword1">null</span>) {
 </span><span id="271" class="l"><a class="l" href="#271">271: </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword2">is_null</span>(<span class="php-var">$key</span>) <span class="php-keyword1">and</span> <span class="php-keyword2">array_key_exists</span>(<span class="php-var">$key</span>, <span class="php-var">$this</span>-&gt;data))
-</span><span id="272" class="l"><a class="l" href="#272">272: </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;data[<span class="php-var">$key</span>];
+</span><span id="272" class="l"><a class="l" href="#272">272: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">true</span>;
 </span><span id="273" class="l"><a class="l" href="#273">273: </a>        <span class="php-keyword1">else</span>
-</span><span id="274" class="l"><a class="l" href="#274">274: </a>            <span class="php-keyword1">return</span> <span class="php-var">$default</span>;
+</span><span id="274" class="l"><a class="l" href="#274">274: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
 </span><span id="275" class="l"><a class="l" href="#275">275: </a>    }
-</span><span id="276" class="l"><a class="l" href="#276">276: </a>
-</span><span id="277" class="l"><a class="l" href="#277">277: </a>    <span class="php-comment">/**
-</span></span><span id="278" class="l"><a class="l" href="#278">278: </a><span class="php-comment">     * return the value of the given request parameters
-</span></span><span id="279" class="l"><a class="l" href="#279">279: </a><span class="php-comment">     * @param type $key the key of the parameter
-</span></span><span id="280" class="l"><a class="l" href="#280">280: </a><span class="php-comment">     * @return string
-</span></span><span id="281" class="l"><a class="l" href="#281">281: </a><span class="php-comment">     */</span>
-</span><span id="282" class="l"><a class="l" href="#282">282: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getJsonParam" href="#_getJsonParam">getJsonParam</a>(<span class="php-var">$key</span> = <span class="php-keyword1">null</span>, <span class="php-var">$default</span> = <span class="php-keyword1">null</span>) {
-</span><span id="283" class="l"><a class="l" href="#283">283: </a>        <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;getParam(<span class="php-var">$key</span>, <span class="php-var">$default</span>);
-</span><span id="284" class="l"><a class="l" href="#284">284: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword2">is_string</span>(<span class="php-var">$data</span>) <span class="php-keyword1">and</span> (<span class="php-keyword2">substr</span>(<span class="php-var">$data</span>, <span class="php-num">0</span>, <span class="php-num">1</span>) == <span class="php-quote">'['</span> <span class="php-keyword1">or</span> <span class="php-keyword2">substr</span>(<span class="php-var">$data</span>, <span class="php-num">0</span>, <span class="php-num">1</span>) == <span class="php-quote">'{'</span>))
-</span><span id="285" class="l"><a class="l" href="#285">285: </a>            <span class="php-keyword1">return</span> Toolkit::object2Array(@<span class="php-keyword2">json_decode</span>(<span class="php-var">$data</span>));
-</span><span id="286" class="l"><a class="l" href="#286">286: </a>        <span class="php-keyword1">else</span>
-</span><span id="287" class="l"><a class="l" href="#287">287: </a>            <span class="php-keyword1">return</span> <span class="php-var">$data</span>;
-</span><span id="288" class="l"><a class="l" href="#288">288: </a>    }
-</span><span id="289" class="l"><a class="l" href="#289">289: </a>
-</span><span id="290" class="l"><a class="l" href="#290">290: </a>    <span class="php-comment">/**
-</span></span><span id="291" class="l"><a class="l" href="#291">291: </a><span class="php-comment">     * set the value of the given key into request parameters
-</span></span><span id="292" class="l"><a class="l" href="#292">292: </a><span class="php-comment">     * @param string $key the key of the parameter
-</span></span><span id="293" class="l"><a class="l" href="#293">293: </a><span class="php-comment">     * @param string $value the value of the parameter
-</span></span><span id="294" class="l"><a class="l" href="#294">294: </a><span class="php-comment">     * @return this
-</span></span><span id="295" class="l"><a class="l" href="#295">295: </a><span class="php-comment">     */</span>
-</span><span id="296" class="l"><a class="l" href="#296">296: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setParam" href="#_setParam">setParam</a>(<span class="php-var">$key</span>, <span class="php-var">$value</span> = <span class="php-keyword1">null</span>) {
-</span><span id="297" class="l"><a class="l" href="#297">297: </a>        <span class="php-var">$this</span>-&gt;data[<span class="php-var">$key</span>] = <span class="php-var">$value</span>;
-</span><span id="298" class="l"><a class="l" href="#298">298: </a>        <span class="php-keyword1">return</span> this;
-</span><span id="299" class="l"><a class="l" href="#299">299: </a>    }
-</span><span id="300" class="l"><a class="l" href="#300">300: </a>
-</span><span id="301" class="l"><a class="l" href="#301">301: </a>    <span class="php-comment">/**
-</span></span><span id="302" class="l"><a class="l" href="#302">302: </a><span class="php-comment">     * return the request parameters
-</span></span><span id="303" class="l"><a class="l" href="#303">303: </a><span class="php-comment">     * @return array
-</span></span><span id="304" class="l"><a class="l" href="#304">304: </a><span class="php-comment">     */</span>
-</span><span id="305" class="l"><a class="l" href="#305">305: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getParamsQuery" href="#_getParamsQuery">getParamsQuery</a>() {
-</span><span id="306" class="l"><a class="l" href="#306">306: </a>        <span class="php-var">$params</span> = <span class="php-keyword2">http_build_query</span>(<span class="php-var">$this</span>-&gt;data);
-</span><span id="307" class="l"><a class="l" href="#307">307: </a>        <span class="php-keyword1">return</span> (<span class="php-var">$params</span> == <span class="php-quote">''</span>) ? <span class="php-quote">''</span> : <span class="php-quote">'?'</span> . <span class="php-var">$params</span>;
-</span><span id="308" class="l"><a class="l" href="#308">308: </a>    }
-</span><span id="309" class="l"><a class="l" href="#309">309: </a>
-</span><span id="310" class="l"><a class="l" href="#310">310: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get" href="#_get">get</a>(<span class="php-var">$key</span>, <span class="php-var">$default</span> = <span class="php-keyword1">null</span>) {
-</span><span id="311" class="l"><a class="l" href="#311">311: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;getParam(<span class="php-var">$key</span>, <span class="php-var">$default</span>);
-</span><span id="312" class="l"><a class="l" href="#312">312: </a>    }
-</span><span id="313" class="l"><a class="l" href="#313">313: </a>
-</span><span id="314" class="l"><a class="l" href="#314">314: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_set" href="#_set">set</a>(<span class="php-var">$key</span>, <span class="php-var">$data</span>) {
-</span><span id="315" class="l"><a class="l" href="#315">315: </a>        <span class="php-var">$this</span>-&gt;setParam(<span class="php-var">$key</span>, <span class="php-var">$data</span>);
-</span><span id="316" class="l"><a class="l" href="#316">316: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>;
-</span><span id="317" class="l"><a class="l" href="#317">317: </a>    }
-</span><span id="318" class="l"><a class="l" href="#318">318: </a>
-</span><span id="319" class="l"><a class="l" href="#319">319: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getAll" href="#_getAll">getAll</a>() {
-</span><span id="320" class="l"><a class="l" href="#320">320: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;getParams();
-</span><span id="321" class="l"><a class="l" href="#321">321: </a>    }
-</span><span id="322" class="l"><a class="l" href="#322">322: </a>
-</span><span id="323" class="l"><a class="l" href="#323">323: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setAll" href="#_setAll">setAll</a>(<span class="php-var">$data</span>) {
-</span><span id="324" class="l"><a class="l" href="#324">324: </a>        <span class="php-var">$this</span>-&gt;data = <span class="php-var">$data</span>;
-</span><span id="325" class="l"><a class="l" href="#325">325: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>;
-</span><span id="326" class="l"><a class="l" href="#326">326: </a>    }
-</span><span id="327" class="l"><a class="l" href="#327">327: </a>
-</span><span id="328" class="l"><a class="l" href="#328">328: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getContext" href="#_getContext">getContext</a>() {
-</span><span id="329" class="l"><a class="l" href="#329">329: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>(
-</span><span id="330" class="l"><a class="l" href="#330">330: </a>            <span class="php-quote">'method'</span> =&gt; <span class="php-var">$this</span>-&gt;getMethod(),
-</span><span id="331" class="l"><a class="l" href="#331">331: </a>            <span class="php-quote">'root'</span> =&gt; <span class="php-var">$this</span>-&gt;getRootUrl(),
-</span><span id="332" class="l"><a class="l" href="#332">332: </a>            <span class="php-quote">'path'</span> =&gt; <span class="php-var">$this</span>-&gt;getPath(),
-</span><span id="333" class="l"><a class="l" href="#333">333: </a>            <span class="php-quote">'elements'</span> =&gt; <span class="php-var">$this</span>-&gt;getElements(),
-</span><span id="334" class="l"><a class="l" href="#334">334: </a>            <span class="php-quote">'params'</span> =&gt; <span class="php-var">$this</span>-&gt;getParams()
-</span><span id="335" class="l"><a class="l" href="#335">335: </a>        );
-</span><span id="336" class="l"><a class="l" href="#336">336: </a>    }
-</span><span id="337" class="l"><a class="l" href="#337">337: </a>
-</span><span id="338" class="l"><a class="l" href="#338">338: </a>}
-</span><span id="339" class="l"><a class="l" href="#339">339: </a>
-</span><span id="340" class="l"><a class="l" href="#340">340: </a></span><span class="xlang">?&gt;</span></code></pre>
+</span><span id="276" class="l"><a class="l" href="#276">276: </a>    <span class="php-comment">/**
+</span></span><span id="277" class="l"><a class="l" href="#277">277: </a><span class="php-comment">     * return the value of the given request parameters
+</span></span><span id="278" class="l"><a class="l" href="#278">278: </a><span class="php-comment">     * @param type $key the key of the parameter
+</span></span><span id="279" class="l"><a class="l" href="#279">279: </a><span class="php-comment">     * @return string
+</span></span><span id="280" class="l"><a class="l" href="#280">280: </a><span class="php-comment">     */</span>
+</span><span id="281" class="l"><a class="l" href="#281">281: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getParam" href="#_getParam">getParam</a>(<span class="php-var">$key</span> = <span class="php-keyword1">null</span>, <span class="php-var">$default</span> = <span class="php-keyword1">null</span>) {
+</span><span id="282" class="l"><a class="l" href="#282">282: </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword2">is_null</span>(<span class="php-var">$key</span>) <span class="php-keyword1">and</span> <span class="php-keyword2">array_key_exists</span>(<span class="php-var">$key</span>, <span class="php-var">$this</span>-&gt;data))
+</span><span id="283" class="l"><a class="l" href="#283">283: </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;data[<span class="php-var">$key</span>];
+</span><span id="284" class="l"><a class="l" href="#284">284: </a>        <span class="php-keyword1">else</span>
+</span><span id="285" class="l"><a class="l" href="#285">285: </a>            <span class="php-keyword1">return</span> <span class="php-var">$default</span>;
+</span><span id="286" class="l"><a class="l" href="#286">286: </a>    }
+</span><span id="287" class="l"><a class="l" href="#287">287: </a>
+</span><span id="288" class="l"><a class="l" href="#288">288: </a>    <span class="php-comment">/**
+</span></span><span id="289" class="l"><a class="l" href="#289">289: </a><span class="php-comment">     * set the value of the given key into request parameters
+</span></span><span id="290" class="l"><a class="l" href="#290">290: </a><span class="php-comment">     * @param string $key the key of the parameter
+</span></span><span id="291" class="l"><a class="l" href="#291">291: </a><span class="php-comment">     * @param string $value the value of the parameter
+</span></span><span id="292" class="l"><a class="l" href="#292">292: </a><span class="php-comment">     * @return this
+</span></span><span id="293" class="l"><a class="l" href="#293">293: </a><span class="php-comment">     */</span>
+</span><span id="294" class="l"><a class="l" href="#294">294: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setParam" href="#_setParam">setParam</a>(<span class="php-var">$key</span>, <span class="php-var">$value</span> = <span class="php-keyword1">null</span>) {
+</span><span id="295" class="l"><a class="l" href="#295">295: </a>        <span class="php-var">$this</span>-&gt;data[<span class="php-var">$key</span>] = <span class="php-var">$value</span>;
+</span><span id="296" class="l"><a class="l" href="#296">296: </a>        <span class="php-keyword1">return</span> this;
+</span><span id="297" class="l"><a class="l" href="#297">297: </a>    }
+</span><span id="298" class="l"><a class="l" href="#298">298: </a>
+</span><span id="299" class="l"><a class="l" href="#299">299: </a>    <span class="php-comment">/**
+</span></span><span id="300" class="l"><a class="l" href="#300">300: </a><span class="php-comment">     * return the value of the given request parameters
+</span></span><span id="301" class="l"><a class="l" href="#301">301: </a><span class="php-comment">     * @param type $key the key of the parameter
+</span></span><span id="302" class="l"><a class="l" href="#302">302: </a><span class="php-comment">     * @return string
+</span></span><span id="303" class="l"><a class="l" href="#303">303: </a><span class="php-comment">     */</span>
+</span><span id="304" class="l"><a class="l" href="#304">304: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getJsonParam" href="#_getJsonParam">getJsonParam</a>(<span class="php-var">$key</span> = <span class="php-keyword1">null</span>, <span class="php-var">$default</span> = <span class="php-keyword1">null</span>) {
+</span><span id="305" class="l"><a class="l" href="#305">305: </a>        <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;getParam(<span class="php-var">$key</span>, <span class="php-var">$default</span>);
+</span><span id="306" class="l"><a class="l" href="#306">306: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword2">is_string</span>(<span class="php-var">$data</span>) <span class="php-keyword1">and</span> (<span class="php-keyword2">substr</span>(<span class="php-var">$data</span>, <span class="php-num">0</span>, <span class="php-num">1</span>) == <span class="php-quote">'['</span> <span class="php-keyword1">or</span> <span class="php-keyword2">substr</span>(<span class="php-var">$data</span>, <span class="php-num">0</span>, <span class="php-num">1</span>) == <span class="php-quote">'{'</span>))
+</span><span id="307" class="l"><a class="l" href="#307">307: </a>            <span class="php-keyword1">return</span> Toolkit::object2Array(@<span class="php-keyword2">json_decode</span>(<span class="php-var">$data</span>));
+</span><span id="308" class="l"><a class="l" href="#308">308: </a>        <span class="php-keyword1">else</span>
+</span><span id="309" class="l"><a class="l" href="#309">309: </a>            <span class="php-keyword1">return</span> <span class="php-var">$data</span>;
+</span><span id="310" class="l"><a class="l" href="#310">310: </a>    }
+</span><span id="311" class="l"><a class="l" href="#311">311: </a>
+</span><span id="312" class="l"><a class="l" href="#312">312: </a>    <span class="php-comment">/**
+</span></span><span id="313" class="l"><a class="l" href="#313">313: </a><span class="php-comment">     * return the request parameters
+</span></span><span id="314" class="l"><a class="l" href="#314">314: </a><span class="php-comment">     * @return array
+</span></span><span id="315" class="l"><a class="l" href="#315">315: </a><span class="php-comment">     */</span>
+</span><span id="316" class="l"><a class="l" href="#316">316: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getParamsQuery" href="#_getParamsQuery">getParamsQuery</a>() {
+</span><span id="317" class="l"><a class="l" href="#317">317: </a>        <span class="php-var">$params</span> = <span class="php-keyword2">http_build_query</span>(<span class="php-var">$this</span>-&gt;data);
+</span><span id="318" class="l"><a class="l" href="#318">318: </a>        <span class="php-keyword1">return</span> (<span class="php-var">$params</span> == <span class="php-quote">''</span>) ? <span class="php-quote">''</span> : <span class="php-quote">'?'</span> . <span class="php-var">$params</span>;
+</span><span id="319" class="l"><a class="l" href="#319">319: </a>    }
+</span><span id="320" class="l"><a class="l" href="#320">320: </a>
+</span><span id="321" class="l"><a class="l" href="#321">321: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get" href="#_get">get</a>(<span class="php-var">$key</span>, <span class="php-var">$default</span> = <span class="php-keyword1">null</span>) {
+</span><span id="322" class="l"><a class="l" href="#322">322: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;getParam(<span class="php-var">$key</span>, <span class="php-var">$default</span>);
+</span><span id="323" class="l"><a class="l" href="#323">323: </a>    }
+</span><span id="324" class="l"><a class="l" href="#324">324: </a>
+</span><span id="325" class="l"><a class="l" href="#325">325: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_set" href="#_set">set</a>(<span class="php-var">$key</span>, <span class="php-var">$data</span>) {
+</span><span id="326" class="l"><a class="l" href="#326">326: </a>        <span class="php-var">$this</span>-&gt;setParam(<span class="php-var">$key</span>, <span class="php-var">$data</span>);
+</span><span id="327" class="l"><a class="l" href="#327">327: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>;
+</span><span id="328" class="l"><a class="l" href="#328">328: </a>    }
+</span><span id="329" class="l"><a class="l" href="#329">329: </a>
+</span><span id="330" class="l"><a class="l" href="#330">330: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getAll" href="#_getAll">getAll</a>() {
+</span><span id="331" class="l"><a class="l" href="#331">331: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;getParams();
+</span><span id="332" class="l"><a class="l" href="#332">332: </a>    }
+</span><span id="333" class="l"><a class="l" href="#333">333: </a>
+</span><span id="334" class="l"><a class="l" href="#334">334: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setAll" href="#_setAll">setAll</a>(<span class="php-var">$data</span>) {
+</span><span id="335" class="l"><a class="l" href="#335">335: </a>        <span class="php-var">$this</span>-&gt;data = <span class="php-var">$data</span>;
+</span><span id="336" class="l"><a class="l" href="#336">336: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>;
+</span><span id="337" class="l"><a class="l" href="#337">337: </a>    }
+</span><span id="338" class="l"><a class="l" href="#338">338: </a>
+</span><span id="339" class="l"><a class="l" href="#339">339: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getContext" href="#_getContext">getContext</a>() {
+</span><span id="340" class="l"><a class="l" href="#340">340: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>(
+</span><span id="341" class="l"><a class="l" href="#341">341: </a>            <span class="php-quote">'method'</span> =&gt; <span class="php-var">$this</span>-&gt;getMethod(),
+</span><span id="342" class="l"><a class="l" href="#342">342: </a>            <span class="php-quote">'root'</span> =&gt; <span class="php-var">$this</span>-&gt;getRootUrl(),
+</span><span id="343" class="l"><a class="l" href="#343">343: </a>            <span class="php-quote">'path'</span> =&gt; <span class="php-var">$this</span>-&gt;getPath(),
+</span><span id="344" class="l"><a class="l" href="#344">344: </a>            <span class="php-quote">'elements'</span> =&gt; <span class="php-var">$this</span>-&gt;getElements(),
+</span><span id="345" class="l"><a class="l" href="#345">345: </a>            <span class="php-quote">'params'</span> =&gt; <span class="php-var">$this</span>-&gt;getParams()
+</span><span id="346" class="l"><a class="l" href="#346">346: </a>        );
+</span><span id="347" class="l"><a class="l" href="#347">347: </a>    }
+</span><span id="348" class="l"><a class="l" href="#348">348: </a>
+</span><span id="349" class="l"><a class="l" href="#349">349: </a>}
+</span><span id="350" class="l"><a class="l" href="#350">350: </a>
+</span><span id="351" class="l"><a class="l" href="#351">351: </a></span><span class="xlang">?&gt;</span></code></pre>
 
 	<div id="footer">
 		SXAPI Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>

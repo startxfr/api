@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This resource is used to authenticate using google, and obtaining access to google's services.
+ * This resource is used to get user information stored in google.
  *
- * @package  SXAPI.Resource.Authenticate
+ * @package  SXAPI.Resource.Google
  * @author   Dev Team <dev@startx.fr>
- * @see      defaultAuthenticateResource
+ * @see      defaultGoogleResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
 class userinfoGoogleResource extends defaultGoogleResource implements IResource {
