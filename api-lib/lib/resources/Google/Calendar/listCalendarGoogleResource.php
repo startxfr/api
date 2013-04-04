@@ -19,7 +19,6 @@ class listCalendarGoogleResource extends defaultGoogleResource implements IResou
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
-            $this->addService("Calendar");
             $calendar = $this->getService("Calendar")->calendarList->listCalendarList();
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier

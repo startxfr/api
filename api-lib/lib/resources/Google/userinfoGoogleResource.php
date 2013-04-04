@@ -19,9 +19,7 @@ class userinfoGoogleResource extends defaultGoogleResource implements IResource 
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
-            $this->addService("Plus");
             $user = $this->getService("Plus")->people->get('me');
-            $this->addService("Oauth2");
             $user = array_merge($user,$this->getService("Oauth2")->userinfo_v2_me->get());
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier

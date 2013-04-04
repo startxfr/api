@@ -19,7 +19,6 @@ class peoplesPlusGoogleResource extends defaultGoogleResource implements IResour
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
-            $this->addService("Plus");
             $people = $this->getService("Plus")->people->listPeople('me', 'visible', array());
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier

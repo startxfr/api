@@ -19,7 +19,6 @@ class listaccountAnalyticsGoogleResource extends defaultGoogleResource implement
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
-            $this->addService("Analytics");
             $accounts = $this->getService("Analytics")->management_accounts->listManagementAccounts();
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier

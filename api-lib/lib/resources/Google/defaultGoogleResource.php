@@ -45,6 +45,8 @@ abstract class defaultGoogleResource extends defaultResource implements IResourc
             else
                 $this->client->setAccessToken($api->getInput("session")->get('user_goauth_token'));
         }
+        if ($this->getConfig('google_service') != '')
+            $this->addService($this->getConfig('google_service'));
         // check for config key client_id
         $this->client->setClientId($this->getConfig('client_id'));
         if ($this->getConfig('client_secret') == '') {
@@ -66,13 +68,16 @@ abstract class defaultGoogleResource extends defaultResource implements IResourc
     }
 
     public function addService($serviceName = "Oauth2") {
-        $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
-        require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
-        $this->services[$serviceName] = new $serviceClass($this->client);
+        if (!array_key_exists($serviceName, $this->services)) {
+            $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
+            require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
+            $this->services[$serviceName] = new $serviceClass($this->client);
+        }
         return true;
     }
 
     public function getService($serviceName = "Oauth2") {
+        $this->addService($serviceName);
         if (array_key_exists($serviceName, $this->services))
             return $this->services[$serviceName];
         else
