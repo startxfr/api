@@ -107,7 +107,8 @@ class Api extends Configurable {
             $nosqlConnection = new Mongo($this->nosqlApiBackend->connection);
             $this->nosqlConnection = $nosqlConnection->selectDB($this->nosqlApiBackend->base);
         } catch (Exception $exc) {
-            echo "Error communicating with nosql backend : " . $exc->getMessage(); exit;
+            echo "Error communicating with nosql backend : " . $exc->getMessage();
+            exit;
         }
     }
 
