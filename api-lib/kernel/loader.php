@@ -45,7 +45,9 @@ function __autoload($classname) {
     $suffix = array_pop($arr);
     switch ($suffix) {
         case 'Resource':
-            if (count($arr) >= 2)
+            if (count($arr) == 3)
+                $loadingPath = LIBPATH . 'resources' . DS . $arr[2] .DS . $arr[1] . DS . $classname . EXT;
+            elseif (count($arr) == 2)
                 $loadingPath = LIBPATH . 'resources' . DS . $arr[1] . DS . $classname . EXT;
             else
                 $loadingPath = LIBPATH . 'resources' . DS . $classname . EXT;

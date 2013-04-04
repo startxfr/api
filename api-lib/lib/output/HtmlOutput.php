@@ -103,9 +103,10 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      * @return string
      */
     protected function layoutContent($content) {
-        if (is_string($content)) {
+        if (is_string($content))
             return $content;
-        }
+        elseif (is_null($content))
+            return 'null';
         $ech = "<ul>\n";
         if (!is_array($content))
             $content = array($content);
@@ -118,7 +119,7 @@ class HtmlOutput extends DefaultOutput implements IOutput {
                 $value = (array) $value;
             if (is_array($value)) {
                 $ech .= "<details open><summary>" . $field . "</summary> ";
-                $ech .= $this->layoutContent($value, '');
+                $ech .= $this->layoutContent($value);
                 $ech .= "</details>";
             } else {
                 $ech .= "<li><strong>" . $field . "</strong> ";
@@ -143,7 +144,7 @@ class HtmlOutput extends DefaultOutput implements IOutput {
         echo '<!DOCTYPE html>
             <html>
             <head>
-                <title>SX-API v1</title>
+                <title>SX-API v1 - '.Api::getInstance()->getInput()->getPath().'</title>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
                 <style>
                     body {font-family: Helvetica, Arial, sans-serif;font-size: 14px;color: #333;padding: 0;margin: 0;}

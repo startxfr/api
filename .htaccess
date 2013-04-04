@@ -24,7 +24,7 @@
     # and the request is for something within the component folder,
     # or for the site root, or for an extensionless URL, or the
     # requested URL ends with one of the listed extensions
-    RewriteCond %{REQUEST_URI} (/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
+    #RewriteCond %{REQUEST_URI} (/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
     # and the requested path and file doesn't directly match a physical file or folder
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

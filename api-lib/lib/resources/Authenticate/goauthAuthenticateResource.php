@@ -54,12 +54,12 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                         $this->loadServices();
                         $this->client->authenticate($input->getParam('code'));
                         $accessInfo = json_decode($this->client->getAccessToken());
-                        $_SESSION['user']['access_token'] = $accessInfo->access_token;
-                        $_SESSION['user']['refresh_token'] = $accessInfo->refresh_token;
+                        $api->getInput("session")->set('user_goauth_token',json_encode($accessInfo));
                         $user = $this->services['Oauth2']->userinfo->get();
                         $user['email'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
                         $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
                         $user['google_token'] = $accessInfo;
+                        $api->getInput("session")->set('user_goauth_token',json_encode($accessInfo));
                         $api->getInput('session')->set('user', $user['email']);
                         $api->getInput('user')->setAll($user,'save');
                         $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
@@ -95,7 +95,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
 
     public function loadServices() {
         $api = Api::getInstance();
-        foreach ($this->getConfig('requested_services', array("Oauth2")) as $serviceName) {
+        $serviceName = $this->getConfig('google_service', "Oauth2");
             try {
                 $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
                 require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
@@ -103,65 +103,22 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             } catch (Exception $exc) {
                 $api->logWarn(910, "Warning on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : " . $exc->getMessage(), $exc);
             }
-        }
         return true;
     }
 
     public function createAction() {
-        $api = Api::getInstance();
-        $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
-        try {
-            $newId = $this->getModel()->create($api->getInput()->getParams());
-            $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
-            $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $newId);
-        } catch (Exception $exc) {
-            $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
-        }
-        return true;
+        Api::getInstance()->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
     }
 
     public function updateAction() {
-        $api = Api::getInstance();
-        $api->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
-        try {
-            $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
-            $nextPath = $api->getInput()->getElement($sessElPosition + 1);
-            if ($nextPath !== null) {
-                $return = $this->getModel()->update($nextPath, $api->getInput()->getParams());
-                $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
-                $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return);
-            } else {
-                throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
-            }
-        } catch (Exception $exc) {
-            $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
-        }
-        return true;
+        Api::getInstance()->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
     }
 
     public function deleteAction() {
-        $api = Api::getInstance();
-        $api->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
-        try {
-            $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
-            $nextPath = $api->getInput()->getElement($sessElPosition + 1);
-            if ($nextPath !== null) {
-                $return = $this->getModel()->delete($nextPath);
-                $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
-                $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return);
-            } else {
-                throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
-            }
-        } catch (Exception $exc) {
-            $api->logError(970, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
-        }
-        return true;
+        Api::getInstance()->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
     }
 
 }
