@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>sxAPI Test page</title>
+        <script type="text/javascript">
+            (function() {
+                var po = document.createElement('script');
+                po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://plus.google.com/js/client:plusone.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(po, s);
+            })();
+        </script>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+        <script type="text/javascript">
+
+            var config = {
+                debug: true,
+                rootURL : "http://127.0.0.1/github/sxapi/",
+                dataType : "json",
+                contentType : 'application/json',
+                user :  {
+                    login:"dev",
+                    pwd:"dev"
+                }
+            }
+
+            function initSxapiClient() {
+                sxapi = {
+                    config: config
+                };
+                sxapi.pagesIds = 1;
+                sxapi.rest = {
+                    __callRest : function(config) {
+                        console.log('sxapi.rest.__callRest');
+                        $.ajax(config);
+                    },
+                    __defaultErrorCallback : function(jqXHR, textStatus, errorThrown){
+                        console.log('sxapi.rest.__defaultErrorCallback');
+                        console.log(jqXHR, textStatus, errorThrown);
+                        var response = null;
+                        if(jqXHR.responseText)
+                            response = JSON.parse(jqXHR.responseText);
+                        if(!response.message)
+                            response.message = textStatus;
+                        sxapi.rest.__displayMessage("<b>ERROR : </b>"+response.message,response);
+                        //                        console.log(response);
+                    },
+                    __defaultOkCallback : function(response, textStatus){
+                        console.log('sxapi.rest.__defaultOkCallback');
+                        if(!response.message)
+                            response.message = textStatus;
+                        sxapi.rest.__displayMessage(response.message,response);
+                        console.log(response);
+                    },
+                    __displayMessage : function(message,response){
+                        if(response != undefined) {
+                            sxapi.pagesIds++;
+                            var data = JSON.stringify(response, null, 4);
+                            $('body').append('<div data-role="page" id="pg'+sxapi.pagesIds+'"><div data-role="content"><pre>' + data + '</pre></div></div>');
+                            $('#pg'+sxapi.pagesIds).page();
+                            $("#messageList").append('<li><a href="#pg'+sxapi.pagesIds+'">'+message+'</a></li>').listview('refresh');
+                        }
+                        else
+                            $("#messageList").append('<li><p>'+message+'</p></li>').listview('refresh');
+                        return this;
+                    },
+                    create : function(path,data,okcallback,errorcallback) {
+                        console.log('sxapi.rest.create : '+path);
+                        if(typeof okcallback != 'function')
+                            okcallback = sxapi.rest.__defaultOkCallback;
+                        if(typeof errorcallback != 'function')
+                            errorcallback = sxapi.rest.__defaultErrorCallback;
+                        var config = {
+                            type: 'POST',
+                            contentType: sxapi.config.contentType,
+                            url: sxapi.config.rootURL+path,
+                            dataType: sxapi.config.dataType,
+                            data: JSON.stringify(data),
+                            success: okcallback,
+                            error: errorcallback
+                        }
+                        sxapi.rest.__callRest(config);
+                    },
+                    read : function(path,data,okcallback,errorcallback) {
+                        console.log('sxapi.rest.read : '+path);
+                        if(typeof okcallback != 'function')
+                            okcallback = sxapi.rest.__defaultOkCallback;
+                        if(typeof errorcallback != 'function')
+                            errorcallback = sxapi.rest.__defaultErrorCallback;
+                        var config = {
+                            type: 'GET',
+                            url: sxapi.config.rootURL+path,
+                            dataType: sxapi.config.dataType,
+                            data: data,
+                            success: okcallback,
+                            error: errorcallback
+                        }
+                        sxapi.rest.__callRest(config);
+                    },
+                    update : function(path,data,okcallback,errorcallback) {
+                        console.log('sxapi.rest.update : '+path);
+                        if(typeof okcallback != 'function')
+                            okcallback = sxapi.rest.__defaultOkCallback;
+                        if(typeof errorcallback != 'function')
+                            errorcallback = sxapi.rest.__defaultErrorCallback;
+                        var config = {
+                            type: 'PUT',
+                            contentType: sxapi.config.contentType,
+                            url: sxapi.config.rootURL+path,
+                            dataType: sxapi.config.dataType,
+                            data: JSON.stringify(data),
+                            success: okcallback,
+                            error: errorcallback
+                        }
+                        sxapi.rest.__callRest(config);
+                    },
+                    remove : function(path,data,okcallback,errorcallback) {
+                        console.log('sxapi.rest.remove : '+path);
+                        if(typeof okcallback != 'function')
+                            okcallback = sxapi.rest.__defaultOkCallback;
+                        if(typeof errorcallback != 'function')
+                            errorcallback = sxapi.rest.__defaultErrorCallback;
+                        var config = {
+                            type: 'DELETE',
+                            contentType: sxapi.config.contentType,
+                            url: sxapi.config.rootURL+path,
+                            dataType: sxapi.config.dataType,
+                            data: JSON.stringify(data),
+                            success: okcallback,
+                            error: errorcallback
+                        }
+                        sxapi.rest.__callRest(config);
+                    }
+                }
+            }
+
+            $("#main").live('pageinit', function(){
+                initSxapiClient();
+                sxapi.start = function() {
+                    sxapi.rest.__displayMessage('START testing process');
+                    console.log("START");
+                    sxapi.rest.create('session', null,function(response, textStatus){
+                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                        sxapi.testSession();
+                    });
+                }
+                sxapi.testSession = function() {
+                    sxapi.rest.update('session/data', {'truc' : 'biduleAAAAA'},function(response, textStatus){
+                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                        sxapi.rest.update('session/application/client-test', null,function(response, textStatus){
+                            sxapi.rest.__defaultOkCallback(response, textStatus);
+                            sxapi.rest.update('session/auth', {"login":sxapi.config.user.login,"pwd":sxapi.config.user.pwd},function(response, textStatus){
+                                sxapi.rest.__defaultOkCallback(response, textStatus);
+                                sxapi.rest.read('session', null,function(response, textStatus){
+                                    sxapi.rest.__defaultOkCallback(response, textStatus);
+                                    sxapi.rest.read('session/user', null,function(response, textStatus){
+                                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                                        sxapi.rest.read('session/data', null,function(response, textStatus){
+                                            sxapi.rest.__defaultOkCallback(response, textStatus);
+                                            sxapi.testTests();
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+                sxapi.testTests = function() {
+                    sxapi.rest.read('test', null,function(response, textStatus){
+                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                        sxapi.rest.read('test/proxy', null,function(response, textStatus){
+                            sxapi.rest.__displayMessage(response.message);
+                            sxapi.rest.create('test/time', null,function(response, textStatus){
+                                sxapi.rest.__defaultOkCallback(response, textStatus);
+                                sxapi.rest.update('test/echo', {"message":"mon message envoyé"},function(response, textStatus){
+                                    sxapi.rest.__defaultOkCallback(response, textStatus);
+                                    sxapi.testLogs();
+                                });
+                            });
+                        });
+                    });
+                }
+                sxapi.testLogs = function() {
+                    sxapi.rest.read('api/logs', {"type":"info"},function(response, textStatus){
+                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                        sxapi.rest.create('api/logs', {"type":"info","message":"XXXXXXXXXXXXX"},function(response, textStatus){
+                            sxapi.rest.__defaultOkCallback(response, textStatus);
+                            sxapi.rest.update('api/logs/51260b66b01cb1d23d000212', {"type":"info","message":"YYYYYYYY"},function(response, textStatus){
+                                sxapi.rest.__defaultOkCallback(response, textStatus);
+                                sxapi.rest.remove('api/logs/51260b66b01cb1d23d000212', null,function(response, textStatus){
+                                    sxapi.rest.__defaultOkCallback(response, textStatus);
+                                    sxapi.rest.read('api/logs/51260b66b01cb1d23d000212', null,function(response, textStatus){
+                                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                                        sxapi.rest.read('api/logs', null,function(response, textStatus){
+                                            sxapi.rest.__defaultOkCallback(response, textStatus);
+                                            sxapi.testUsertest();
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+                sxapi.testUsertest = function() {
+                    sxapi.rest.read('api/usertest', {"product_reference":"RH254"},function(response, textStatus){
+                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                        sxapi.rest.create('api/usertest', {"login":"xxxxxs","test":"ddd"},function(response, textStatus){
+                            sxapi.rest.__defaultOkCallback(response, textStatus);
+                            sxapi.rest.update('api/usertest/xxxxxs', {"data":"testttttt"},function(response, textStatus){
+                                sxapi.rest.__defaultOkCallback(response, textStatus);
+                                sxapi.rest.remove('api/usertest/xxxxxs', null,function(response, textStatus){
+                                    sxapi.rest.__defaultOkCallback(response, textStatus);
+                                    sxapi.rest.read('api/usertest/xxxxxs', null,function(response, textStatus){
+                                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                                        sxapi.rest.read('api/usertest', null,function(response, textStatus){
+                                            sxapi.rest.__defaultOkCallback(response, textStatus);
+                                            sxapi.end();
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+                sxapi.end = function() {
+//                    sxapi.rest.remove('session', null,function(response, textStatus){
+//                        sxapi.rest.__defaultOkCallback(response, textStatus);
+                        sxapi.rest.__displayMessage('END testing process');
+                        console.log("END");
+//                    });
+                }
+
+
+
+                //                location.href = sxapi.config.rootURL+'session/goauth';
+
+                sxapi.start();
+            });
+
+            $(document).ready(function() {
+                console.log("document ready")
+                $('#disconnect').click(function() {
+                    console.log("disconnectServer function")
+                    // Revoke the server tokens
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://127.0.0.1/github/sxapi/session/goauth/plusconnect/close?format=json',
+                        async: false,
+                        success: function(result) {
+                            console.log('revoke response: ', result);
+                            $.mobile.changePage("#main",{
+                                reverse: true,
+                                changeHash: false
+                            });
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    });
+                });
+            });
+
+            /**
+             * Calls the helper method that handles the authentication flow.
+             *
+             * @param {Object} authResult An Object which contains the access token and
+             *   other authentication information.
+             */
+            function onSignInCallback(authResult) {
+                console.log("onSignInCallback wrapper");
+                console.log(window.location);
+                $.mobile.changePage("#gplus",{
+                                reverse: false,
+                                changeHash: false
+                            });
+                if (authResult['access_token']) {
+                    $('#gplusList').append('<li><h3>Google return '+authResult['access_token']+' access token </h3></li>').listview('refresh');
+                    // The user is signed in
+                    this.authResult = authResult;
+                    // After we load the Google+ API, call connect
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://127.0.0.1/github/sxapi/session/goauth/plusconnect?state=token123sxapi&format=json',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function(result) {
+                            console.log("return connection");
+                            console.log(result);
+                            $('#gplusList').append('<li><h3>SXAPI connection return</h3><pre>'+JSON.stringify(result, null, 4)+'</pre></li>').listview('refresh');
+                            $.ajax({
+                                type: 'GET',
+                                url: 'http://127.0.0.1/github/sxapi/gapi/peoples?format=json',
+                                contentType: 'application/json; charset=utf-8',
+                                success: function(result) {
+                                    console.log("return peoples");
+                                    console.log(result);
+                                    $('#gplusList').append('<li><h3>SXAPI peoples return </h3><pre>'+JSON.stringify(result, null, 4)+'</pre></li>').listview('refresh');
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: 'http://127.0.0.1/github/sxapi/gapi/analytics?format=json',
+                                        contentType: 'application/json; charset=utf-8',
+                                        success: function(result) {
+                                            console.log("return analytics");
+                                            console.log(result);
+                                            $('#gplusList').append('<li><h3>SXAPI analytics return</h3><pre>'+JSON.stringify(result, null, 4)+'</pre></li>').listview('refresh');
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: 'http://127.0.0.1/github/sxapi/gapi/calendar?format=json',
+                                                contentType: 'application/json; charset=utf-8',
+                                                success: function(result) {
+                                                    console.log("return calendars");
+                                                    console.log(result);
+                                                    $('#gplusList').append('<li><h3>SXAPI calendar return </h3><pre>'+JSON.stringify(result, null, 4)+'</pre></li>').listview('refresh');
+                                                },
+                                                processData: false
+                                            });
+                                        },
+                                        processData: false
+                                    });
+                                },
+                                processData: false
+                            });
+                        },
+                        processData: false,
+                        data: this.authResult.code
+                    });
+                } else if (authResult['error']) {
+                    // There was an error, which means the user is not signed in.
+                    // As an example, you can troubleshoot by writing to the console:
+                    console.log('There was an error in signin : ' + authResult['error']);
+                    console.log(authResult);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <!-- Page d'Accueil -->
+        <div data-role="page" id="main">
+            <div data-role="header">
+                <h1>Accueil</h1>
+            </div>
+            <div data-role="content">
+                <ul data-role="listview" data-divider-theme="b"  data-theme="d" data-inset="false" id="messageList">
+                    <li id="gConnect">
+                        <button class="g-signin"
+                                data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://mail.google.com/mail/feed/atom https://www.google.com/m8/feeds/ https://www.googleapis.com/auth/analytics.readonly"
+                                data-requestvisibleactions="http://schemas.google.com/AddActivity"
+                                data-clientId="703694493039.apps.googleusercontent.com"
+                                data-accesstype="offline"
+                                data-callback="onSignInCallback"
+                                data-approvalprompt="force"
+                                data-theme="dark"
+                                data-cookiepolicy="single_host_origin">
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="page" id="gplus">
+            <div data-role="header">
+                <h1>G+</h1>
+                <a href="#" id="disconnect">Disconnect</a>
+            </div>
+            <div data-role="content">
+                <ul data-role="listview" data-divider-theme="b"  data-theme="d" data-inset="false" id="gplusList">
+
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -19,13 +19,10 @@ class userinfoGoogleResource extends defaultGoogleResource implements IResource 
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
-            $tokens = $api->getInput('user')->get('google_token');
-            // request data from google API
-            $this->client->setAccessToken(json_encode($tokens));
+            $this->addService("Plus");
+            $user = $this->getService("Plus")->people->get('me');
             $this->addService("Oauth2");
-            $user = $this->getService("Oauth2")->userinfo_v2_me->get();
-            $user['email'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
-            $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
+            $user = array_merge($user,$this->getService("Oauth2")->userinfo_v2_me->get());
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, $api->getInput('user')->get('_id'));
