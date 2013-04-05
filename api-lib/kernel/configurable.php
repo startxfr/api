@@ -48,6 +48,17 @@ class Configurable {
      * return the full config array or only part of it
      * @return array full config or fragment
      */
+    public function isConfig($key = null) {
+        if ($key != null and is_array($this->config) and array_key_exists($key, $this->config))
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * return the full config array or only part of it
+     * @return array full config or fragment
+     */
     public function getConfigs() {
         return $this->config;
     }

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class used to render data in wddx xml format
+ * Class used to render data in json formated string
  *
  * @package  SXAPI.Output
  * @author   Mallowtek <mallowtek@gmail.com>
  * @see      DefaultOutput
  * @link      https://github.com/startxfr/sxapi/wiki/Outputs
  */
-class XmlOutput extends DefaultOutput implements IOutput {
+class TxtOutput extends DefaultOutput implements IOutput {
 
     /**
      * Render the view
@@ -17,10 +17,10 @@ class XmlOutput extends DefaultOutput implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($content) {
-        header('Content-Type: '.$this->getConfig("content_type","text/xml").'; charset=utf8');
-        $output = wddx_serialize_value($content);
-        Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($output) . " octets sended", $output, 3);
-        echo $output;
+        header('Content-Type: '.$this->getConfig("content_type","text/plain").'; charset=utf8');
+        $content = http_build_query($content, $this->getConfig("field_prefix_numeric","v"), $this->getConfig("field_separator","\n"));
+        Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($content) . " octets sended", $content, 3);
+        echo $content;
         exit;
     }
 

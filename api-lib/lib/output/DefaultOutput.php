@@ -17,7 +17,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @return void
      */
     public function __construct($config) {
-        Api::logDebug(300, "Construct '" . $config["_id"] . "' " . get_class($this) . " connector ", $config, 5);
+        Api::logDebug(300, "Construct '" . $config["id"] . "' " . get_class($this) . " connector ", $config, 5);
         parent::__construct($config);
     }
 
@@ -38,6 +38,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($content) {
+        header('Content-Type: '.$this->getConfig("content_type","text/plain").'; charset=utf8');
         ob_start();
         print_r($content);
         $output = ob_get_contents();
@@ -56,11 +57,17 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @return  void
      * @see     self::render();
      */
-    public function renderOk($message, $data) {
+    public function renderOk($message, $data, $count = null) {
+        if ($count == null and is_array($data))
+            $count = count($data);
+        elseif ($count == null)
+            $count = 1;
         $config = array(
-            'status' => 'ok',
-            'message' => $message,
-            'data' => $data
+            $this->getConfig("outputkey_status",'status') => $this->getConfig("status_ok",'ok'),
+            $this->getConfig("outputkey_success",'success') => true,
+            $this->getConfig("outputkey_total",'total') => $count,
+            $this->getConfig("outputkey_message",'message') => $message,
+            $this->getConfig("outputkey_data",'data') => $data
         );
         Api::logDebug(341, "Prepare OK rendering in '" . get_class($this) . "' connector for message : " . $message, $config, 5);
         return $this->render($config);
@@ -76,10 +83,14 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @see     self::render();
      */
     public function renderError($code, $message = '', $other = array()) {
+        if($this->getConfig("error_do404",true)===true)
+            header('HTTP/1.1 400 BAD REQUEST');
         $config = array(
-            'status' => 'error',
-            'code' => $code,
-            'message' => $message
+            $this->getConfig("outputkey_status",'status') => $this->getConfig("status_error",'error'),
+            $this->getConfig("outputkey_success",'success') => false,
+            $this->getConfig("outputkey_total",'total') => 0,
+            $this->getConfig("outputkey_message",'message') => $message,
+            $this->getConfig("outputkey_code",'code') => $code
         );
         if (!is_array($other))
             $other = array($other);

@@ -314,6 +314,15 @@ class Api extends Configurable {
         return $this->outputs[$this->outputDefault];
     }
 
+
+    public function setOutputDefault($id = null) {
+        if (is_array($this->outputs) and array_key_exists($id, $this->outputs)) {
+            $this->outputDefault = $id;
+            $this->getInput()->format = $id;
+        }
+        return $this->outputDefault;
+    }
+
     /**
      * Load the stores sections required by the Api config document
      * This method will loop throught the store section of the Api config document and try to load all the required stores connectors
