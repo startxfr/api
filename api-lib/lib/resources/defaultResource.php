@@ -16,6 +16,11 @@ abstract class defaultResource extends Configurable implements IResource {
     }
 
     public function init() {
+        $api = Api::getInstance();
+        if ($this->isConfig('force_output')) {
+             $api->logDebug(907, get_class($this) . " resource config has 'force_output' attribute set to ".$this->getConfig('force_output'), $this->getResourceTrace(__FUNCTION__, false));
+             $api->setOutputDefault($this->getConfig('force_output'));
+        }
         return $this;
     }
 
