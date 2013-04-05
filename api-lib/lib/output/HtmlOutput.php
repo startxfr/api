@@ -17,7 +17,7 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($data) {
-        header('Content-Type: text/html; charset=utf8');
+        header('Content-Type: ' . $this->getConfig("content_type", "text/html") . '; charset=utf8');
         ob_start();
         $this->layoutStart();
         echo $data;
@@ -45,19 +45,36 @@ class HtmlOutput extends DefaultOutput implements IOutput {
             $count = " (returning " . $count . " results)";
         else
             $count = "";
-        $otherInfo = '<details open><summary><h3>Answer</h3></summary><p>' . $this->layoutContent($data) . '</p></details>';
+        $api = Api::getInstance();
+        if ($this->getConfig("display_footer", true)) {
+            $apiContact = $api->getConfig("contact");
+            $footer = '<footer><p>&copy; ' . date('Y');
+            if ($this->getConfig("footer_project_url", $api->getConfig("url", null)) != null)
+                $footer.= ' - <a href="' . $this->getConfig("footer_project_url", $api->getConfig("url")) . '" target="_blank">' . $this->getConfig("footer_project_name", $api->getConfig("name", 'SXAPI')) . '</a>';
+            else
+                $footer.= ' - ' . $this->getConfig("footer_project_name", $api->getConfig("name", 'SXAPI'));
+            if ($this->getConfig("footer_owner_url", $apiContact['url']) != '')
+                $footer.= ' - <a href="' . $apiContact['url'] . '" target="_blank">' . $this->getConfig("footer_owner_name", $apiContact['name']) . '</a>';
+            else
+                $footer.= ' - ' . $this->getConfig("footer_owner_name", $apiContact['name']);
+            $footer.= '</p></footer>';
+        }
+        $infos = '';
+        if ($this->getConfig("display_message", true))
+            $infos.= '<details><summary><h3>Message</h3></summary><p>' . $message . $count . '</p></details>';
+        $infos.= '<details open><summary><h3>Answer</h3></summary><p>' . $this->layoutContent($data) . '</p></details>';
+        if ($this->getConfig("display_moreinfo", true))
+            $infos.= '<details><summary><h3>Further information</h3></summary><p>If you need some other informations, please contact dev@startx.fr or visit <a href="https://github.com/startxfr/sxapi" target="_blank">project page</a> hosted on github. You can also find some useful informations on <a href="https://github.com/startxfr/sxapi/wiki" target="_blank">wiki pages</a></p></details>';
         $html = '
                 <body id="answer">
-                    <header><h1><span>SX</span>API</h1><h2>v 0.1</h2><h3>POSITIVE RESPONSE</h3></header>
+                    <header><h1><span>SX</span>API</h1><h2>v' . $api->getConfig("version") . '</h2><h3>POSITIVE RESPONSE</h3></header>
                     <article>
                         <header>
                             <h2>RETURN RESPONSE</h2>
                         </header>
-                        <details><summary><h3>Message</h3></summary><p>' . $message . $count . '</p></details>
-                        ' . $otherInfo . '
-                        <details><summary><h3>Further information</h3></summary><p>If you need some other informations, please contact dev@startx.fr or visit <a href="https://github.com/startxfr/sxapi" target="_blank">project page</a> hosted on github. You can also find some useful informations on <a href="https://github.com/startxfr/sxapi/wiki" target="_blank">wiki pages</a></p></details>
+                        ' . $infos . '
                     </article>
-                    <footer><p>&copy; 2013 - <a href="https://github.com/startxfr/sxapi" target="_blank">SXAPI</a> by <a href="http://www.startx.fr" target="_blank">STARTX</a></p></footer>
+                    ' . $footer . '
                 </body>';
         Api::logDebug(341, "Prepare OK rendering in '" . get_class($this) . "' connector for message : " . $message, $html, 5);
         return $this->render($html);
@@ -73,24 +90,41 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      * @see     self::render();
      */
     public function renderError($code, $message = '', $other = array()) {
-        header('HTTP/1.1 400 BAD REQUEST');
-        $otherDebug = "";
+        if ($this->getConfig("error_do404", true) === true)
+            header('HTTP/1.1 400 BAD REQUEST');
+        $api = Api::getInstance();
+        if ($this->getConfig("display_footer", true)) {
+            $apiContact = $api->getConfig("contact");
+            $footer = '<footer><p>&copy; ' . date('Y');
+            if ($this->getConfig("footer_project_url", $api->getConfig("url", null)) != null)
+                $footer.= ' - <a href="' . $this->getConfig("footer_project_url", $api->getConfig("url")) . '" target="_blank">' . $this->getConfig("footer_project_name", $api->getConfig("name", 'SXAPI')) . '</a>';
+            else
+                $footer.= ' - ' . $this->getConfig("footer_project_name", $api->getConfig("name", 'SXAPI'));
+            if ($this->getConfig("footer_owner_url", $apiContact['url']) != '')
+                $footer.= ' - <a href="' . $apiContact['url'] . '" target="_blank">' . $this->getConfig("footer_owner_name", $apiContact['name']) . '</a>';
+            else
+                $footer.= ' - ' . $this->getConfig("footer_owner_name", $apiContact['name']);
+            $footer.= '</p></footer>';
+        }
+        $infos = '';
+        if ($this->getConfig("display_message", true))
+            $infos.= '<details open><summary><h3>Message</h3></summary><p>' . $message . '</p></details>';
         if (DEBUG)
-            $otherDebug = '<details><summary><h3>Trace or context</h3></summary><p>' . $this->layoutContent($other) . '</p></details>';
+            $infos.= '<details><summary><h3>Trace or context</h3></summary><p>' . $this->layoutContent($other) . '</p></details>';
         else
-            $otherDebug = '<details><summary><h3>Trace or context</h3></summary><p><i>You must activate DEBUG constant and set it to true in order to see error detail</i></p></details>';
+            $infos.= '<details><summary><h3>Trace or context</h3></summary><p><i>You must activate DEBUG constant and set it to true in order to see error detail</i></p></details>';
+        if ($this->getConfig("display_moreinfo", true))
+            $infos.= '<details><summary><h3>Further information</h3></summary><p>If you need some other informations, please contact dev@startx.fr or visit <a href="https://github.com/startxfr/sxapi" target="_blank">project page</a> hosted on github. You can also find some useful informations on <a href="https://github.com/startxfr/sxapi/wiki" target="_blank">wiki pages</a></p></details>';
         $html = '
                 <body id="error">
-                    <header><h1><span>SX</span>API</h1><h2>v 0.1</h2><h3>NEGATIVE RESPONSE</h3></header>
+                    <header><h1><span>SX</span>API</h1><h2>v' . $api->getConfig("version") . '</h2><h3>NEGATIVE RESPONSE</h3></header>
                     <article>
                         <header>
                             <h2>RETURN ERROR CODE N&deg;' . $code . '</h2>
                         </header>
-                        <details open><summary><h3>Message</h3></summary><p>' . $message . '</p></details>
-                        ' . $otherDebug . '
-                         <details><summary><h3>Further information</h3></summary><p>If you need some other informations, please contact dev@startx.fr or visit <a href="https://github.com/startxfr/sxapi" target="_blank">project page</a> hosted on github. You can also find some useful informations on <a href="https://github.com/startxfr/sxapi/wiki" target="_blank">wiki pages</a></p></details>
+                        ' . $infos . '
                    </article>
-                   <footer><p>&copy; 2013 - <a href="https://github.com/startxfr/sxapi" target="_blank">SXAPI</a> by <a href="http://www.startx.fr" target="_blank">STARTX</a></p></footer>
+                    ' . $footer . '
                </body>';
         Api::logDebug(345, "Prepare ERROR rendering in '" . get_class($this) . "' connector for message : " . $message, $html, 5);
         return $this->render($html);
@@ -141,11 +175,13 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      * @return void start sending output to client application
      */
     protected function layoutStart() {
+        $api = Api::getInstance();
+        $title = sprintf($this->getConfig('head_title', '%s v%s - Node %s'), $api->getConfig("name"), $api->getConfig("version"), $api->getInput()->getPath());
         echo '<!DOCTYPE html>
             <html>
             <head>
-                <title>SX-API v1 - '.Api::getInstance()->getInput()->getPath().'</title>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <title>' . $title . '</title>
+                <meta http-equiv="Content-Type" content="' . $this->getConfig("content_type", "text/html") . '; charset=UTF-8" />
                 <style>
                     body {font-family: Helvetica, Arial, sans-serif;font-size: 14px;color: #333;padding: 0;margin: 0;}
                     body > header { width: 900px; padding: 1em; margin: 0 auto 1em auto  }
@@ -153,9 +189,9 @@ class HtmlOutput extends DefaultOutput implements IOutput {
                     body > footer { width: 900px; padding: 0em 0 1em 1em; margin: 1.1em auto 1em auto; color: white; font-size: .75em  }
                     h1 { margin: 0; font-size: 3em; line-height: .8em }
                     h2 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 2.2em;margin: .2em;  }
-                    h3 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1.5em;margin: .2em;  }
-                    h4 { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1.2em; margin: .2em; }
-                    p { text-shadow: 1px 1px 1px rgba(0,0,0,0.25); font-size: 1em; margin: .5em .2em; }
+                    h3 { text-shadow: 1px 1px 0px rgba(255,255,255,1); font-size: 1.5em;margin: .2em;  }
+                    h4 {  font-size: 1.2em; margin: .2em; }
+                    p { font-size: 1em; margin: .5em .2em; }
                     ul {
                         padding-bottom: 1em;
                         padding-left: 2em;
