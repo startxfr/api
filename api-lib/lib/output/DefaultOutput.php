@@ -17,7 +17,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @return void
      */
     public function __construct($config) {
-        Api::logDebug(300, "Construct '" . $config["_id"] . "' " . get_class($this) . " connector ", $config, 5);
+        Api::logDebug(300, "Construct '" . $config["id"] . "' " . get_class($this) . " connector ", $config, 5);
         parent::__construct($config);
     }
 
