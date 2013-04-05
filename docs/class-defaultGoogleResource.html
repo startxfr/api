@@ -7,7 +7,7 @@
 	<title>Class defaultGoogleResource | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?3844580267"></script>
+	<script type="text/javascript" src="elementlist.js?334020060"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -60,8 +60,10 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-calendarGoogleResource.html">calendarGoogleResource</a></li>
 				<li class="active"><a href="class-defaultGoogleResource.html">defaultGoogleResource</a></li>
+				<li><a href="class-listaccountAnalyticsGoogleResource.html">listaccountAnalyticsGoogleResource</a></li>
+				<li><a href="class-listCalendarGoogleResource.html">listCalendarGoogleResource</a></li>
+				<li><a href="class-peoplesPlusGoogleResource.html">peoplesPlusGoogleResource</a></li>
 				<li><a href="class-userinfoGoogleResource.html">userinfoGoogleResource</a></li>
 			</ul>
 
@@ -153,7 +155,9 @@ create a new google resource type by derivating from this class</p>
 
 	<div>
 		<h4>Direct known subclasses</h4>
-			<a href="class-calendarGoogleResource.html">calendarGoogleResource</a>, 
+			<a href="class-listaccountAnalyticsGoogleResource.html">listaccountAnalyticsGoogleResource</a>, 
+			<a href="class-listCalendarGoogleResource.html">listCalendarGoogleResource</a>, 
+			<a href="class-peoplesPlusGoogleResource.html">peoplesPlusGoogleResource</a>, 
 			<a href="class-userinfoGoogleResource.html">userinfoGoogleResource</a>
 	</div>
 
@@ -174,7 +178,7 @@ create a new google resource type by derivating from this class</p>
 				<code><code><a href="class-defaultResource.html">defaultResource</a></code></code><br />
 				<b>Link:</b>
 				<a href="https://github.com/startxfr/sxapi/wiki/Resource">https://github.com/startxfr/sxapi/wiki/Resource</a><br />
-		<b>Located at</b> <a href="source-class-defaultGoogleResource.html#3-63" title="Go to source code">lib/resources/Google/defaultGoogleResource.php</a><br />
+		<b>Located at</b> <a href="source-class-defaultGoogleResource.html#3-87" title="Go to source code">lib/resources/Google/defaultGoogleResource.php</a><br />
 	</div>
 
 
@@ -192,7 +196,7 @@ create a new google resource type by derivating from this class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-defaultGoogleResource.html#16-20" title="Go to source code">__construct</a>( <span>mixed <var>$config</var></span> )</code>
+		<code><a href="source-class-defaultGoogleResource.html#17-21" title="Go to source code">__construct</a>( <span>mixed <var>$config</var></span> )</code>
 
 		<div class="description short">
 			
@@ -229,7 +233,7 @@ create a new google resource type by derivating from this class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_init">#</a>
-		<code><a href="source-class-defaultGoogleResource.html#22-41" title="Go to source code">init</a>( )</code>
+		<code><a href="source-class-defaultGoogleResource.html#23-62" title="Go to source code">init</a>( )</code>
 
 		<div class="description short">
 			
@@ -262,7 +266,7 @@ create a new google resource type by derivating from this class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addServices">#</a>
-		<code><a href="source-class-defaultGoogleResource.html#43-47" title="Go to source code">addServices</a>( <span>mixed <var>$services</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-defaultGoogleResource.html#64-68" title="Go to source code">addServices</a>( <span>mixed <var>$services</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -291,7 +295,7 @@ create a new google resource type by derivating from this class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addService">#</a>
-		<code><a href="source-class-defaultGoogleResource.html#49-54" title="Go to source code">addService</a>( <span>mixed <var>$serviceName</var> = <span class="php-quote">&quot;Oauth2&quot;</span></span> )</code>
+		<code><a href="source-class-defaultGoogleResource.html#70-77" title="Go to source code">addService</a>( <span>mixed <var>$serviceName</var> = <span class="php-quote">&quot;Oauth2&quot;</span></span> )</code>
 
 		<div class="description short">
 			
@@ -320,7 +324,7 @@ create a new google resource type by derivating from this class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getService">#</a>
-		<code><a href="source-class-defaultGoogleResource.html#56-61" title="Go to source code">getService</a>( <span>mixed <var>$serviceName</var> = <span class="php-quote">&quot;Oauth2&quot;</span></span> )</code>
+		<code><a href="source-class-defaultGoogleResource.html#79-85" title="Go to source code">getService</a>( <span>mixed <var>$serviceName</var> = <span class="php-quote">&quot;Oauth2&quot;</span></span> )</code>
 
 		<div class="description short">
 			
@@ -359,6 +363,7 @@ create a new google resource type by derivating from this class</p>
 		<td><code>
 			<a href="class-Configurable.html#_getConfig">getConfig()</a>, 
 			<a href="class-Configurable.html#_getConfigs">getConfigs()</a>, 
+			<a href="class-Configurable.html#_isConfig">isConfig()</a>, 
 			<a href="class-Configurable.html#_serialize">serialize()</a>, 
 			<a href="class-Configurable.html#_setConfig">setConfig()</a>, 
 			<a href="class-Configurable.html#_setConfigs">setConfigs()</a>
@@ -390,6 +395,29 @@ create a new google resource type by derivating from this class</p>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
 			<a href="#$client" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="tokens" id="$tokens">
+		<td class="attributes"><code>
+			protected  
+			mixed
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-defaultGoogleResource.html#15" title="Go to source code"><var>$tokens</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$tokens" class="anchor">#</a>
 
 			<div class="description short">
 				
