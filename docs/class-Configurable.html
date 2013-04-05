@@ -7,7 +7,7 @@
 	<title>Class Configurable | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?3844580267"></script>
+	<script type="text/javascript" src="elementlist.js?334020060"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -165,12 +165,15 @@ class="php-comment">// return 'value'</span>
 			<a href="class-errorTestResource.html">errorTestResource</a>, 
 			<a href="class-GetInput.html">GetInput</a>, 
 			<a href="class-goauthAuthenticateResource.html">goauthAuthenticateResource</a>, 
+			<a href="class-goauthplusAuthenticateResource.html">goauthplusAuthenticateResource</a>, 
 			<a href="class-HtmlOutput.html">HtmlOutput</a>, 
 			<a href="class-infoSessionResource.html">infoSessionResource</a>, 
 			<a href="class-JsonOutput.html">JsonOutput</a>, 
+			<a href="class-listaccountAnalyticsGoogleResource.html">listaccountAnalyticsGoogleResource</a>, 
+			<a href="class-applicationSessionResource.html">applicationSessionResource</a>, 
+			<a href="class-listCalendarGoogleResource.html">listCalendarGoogleResource</a>, 
 			<a href="class-messageResource.html">messageResource</a>, 
 			<a href="class-mysqlAuthenticateResource.html">mysqlAuthenticateResource</a>, 
-			<a href="class-applicationSessionResource.html">applicationSessionResource</a>, 
 			<a href="class-mysqlModel.html">mysqlModel</a>, 
 			<a href="class-mysqlModelResource.html">mysqlModelResource</a>, 
 			<a href="class-mysqlStore.html">mysqlStore</a>, 
@@ -178,21 +181,23 @@ class="php-comment">// return 'value'</span>
 			<a href="class-nosqlAuthenticateResource.html">nosqlAuthenticateResource</a>, 
 			<a href="class-nosqlModel.html">nosqlModel</a>, 
 			<a href="class-nosqlModelResource.html">nosqlModelResource</a>, 
+			<a href="class-CookieInput.html">CookieInput</a>, 
 			<a href="class-nosqlStore.html">nosqlStore</a>, 
+			<a href="class-peoplesPlusGoogleResource.html">peoplesPlusGoogleResource</a>, 
 			<a href="class-PostInput.html">PostInput</a>, 
 			<a href="class-proxyHttpResource.html">proxyHttpResource</a>, 
-			<a href="class-calendarGoogleResource.html">calendarGoogleResource</a>, 
 			<a href="class-readonlyResource.html">readonlyResource</a>, 
 			<a href="class-redirectHttpResource.html">redirectHttpResource</a>, 
 			<a href="class-RequestInput.html">RequestInput</a>, 
 			<a href="class-ServerInput.html">ServerInput</a>, 
 			<a href="class-SessionInput.html">SessionInput</a>, 
 			<a href="class-SmartInput.html">SmartInput</a>, 
+			<a href="class-CsvOutput.html">CsvOutput</a>, 
 			<a href="class-timeTestResource.html">timeTestResource</a>, 
+			<a href="class-TxtOutput.html">TxtOutput</a>, 
 			<a href="class-userinfoGoogleResource.html">userinfoGoogleResource</a>, 
 			<a href="class-UserInput.html">UserInput</a>, 
 			<a href="class-userSessionResource.html">userSessionResource</a>, 
-			<a href="class-CookieInput.html">CookieInput</a>, 
 			<a href="class-XmlOutput.html">XmlOutput</a>, 
 			<a href="class-dataSessionResource.html">dataSessionResource</a>, 
 			<a href="class-defaultAuthenticateResource.html">defaultAuthenticateResource</a>, 
@@ -219,7 +224,7 @@ class="php-comment">// return 'value'</span>
 				<a href="https://github.com/startxfr/sxapi/blob/master/licence.txt">https://github.com/startxfr/sxapi/blob/master/licence.txt</a><br />
 				<b>Author:</b>
 				Dev Team &lt;<a href="mailto:dev&#64;startx.fr">dev&#64;<!---->startx.fr</a>&gt;<br />
-		<b>Located at</b> <a href="source-class-Configurable.html#3-84" title="Go to source code">kernel/configurable.php</a><br />
+		<b>Located at</b> <a href="source-class-Configurable.html#3-95" title="Go to source code">kernel/configurable.php</a><br />
 	</div>
 
 
@@ -296,6 +301,43 @@ class="php-comment">// return 'value'</span>
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="isConfig" id="_isConfig">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isConfig">#</a>
+		<code><a href="source-class-Configurable.html#47-56" title="Go to source code">isConfig</a>( <span>mixed <var>$key</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>return the full config array or only part of it</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>return the full config array or only part of it</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>full config or fragment<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="getConfigs" id="_getConfigs">
 
 		<td class="attributes"><code>
@@ -307,7 +349,7 @@ class="php-comment">// return 'value'</span>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getConfigs">#</a>
-		<code><a href="source-class-Configurable.html#47-53" title="Go to source code">getConfigs</a>( )</code>
+		<code><a href="source-class-Configurable.html#58-64" title="Go to source code">getConfigs</a>( )</code>
 
 		<div class="description short">
 			
@@ -344,7 +386,7 @@ class="php-comment">// return 'value'</span>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setConfig">#</a>
-		<code><a href="source-class-Configurable.html#55-62" title="Go to source code">setConfig</a>( <span>mixed <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Configurable.html#66-73" title="Go to source code">setConfig</a>( <span>mixed <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -381,7 +423,7 @@ class="php-comment">// return 'value'</span>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setConfigs">#</a>
-		<code><a href="source-class-Configurable.html#65-74" title="Go to source code">setConfigs</a>( <span>mixed <var>$config</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$convert</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-Configurable.html#76-85" title="Go to source code">setConfigs</a>( <span>mixed <var>$config</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$convert</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -418,7 +460,7 @@ class="php-comment">// return 'value'</span>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_serialize">#</a>
-		<code><a href="source-class-Configurable.html#76-82" title="Go to source code">serialize</a>( )</code>
+		<code><a href="source-class-Configurable.html#87-93" title="Go to source code">serialize</a>( )</code>
 
 		<div class="description short">
 			
