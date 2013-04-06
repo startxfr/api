@@ -1,6 +1,6 @@
 <?php
 
-require_once('..' . DIRECTORY_SEPARATOR .'..' . DIRECTORY_SEPARATOR .'..' . DIRECTORY_SEPARATOR .'api-lib' . DIRECTORY_SEPARATOR .'kernel' . DIRECTORY_SEPARATOR . 'loader.php');
+require_once('..' . DIRECTORY_SEPARATOR .'..' . DIRECTORY_SEPARATOR .'api-lib' . DIRECTORY_SEPARATOR .'kernel' . DIRECTORY_SEPARATOR . 'loader.php');
 
 Api::getInstance()
         ->load()

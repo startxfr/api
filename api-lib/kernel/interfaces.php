@@ -259,4 +259,31 @@ interface IModel {
     public function delete($id);
 }
 
+
+/**
+ * Interface to define a plugin object
+ *
+ * @see      DefaultPlugin, trackingPlugin
+ * @link     https://github.com/startxfr/sxapi/wiki/Plugins
+ *
+ * @category Plugin
+ * @package  SXAPI.Plugin
+ * @author   Dev Team <dev@startx.fr>
+ * @copyright Copyright (c) 2003-2013 startx.fr
+ * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
+ */
+interface IPlugin {
+
+    /**
+     * Check and control the given configuration. Called by the constructor
+     */
+    public function __construct($config);
+
+    /**
+     * get a singleton instance
+     */
+    public static function getInstance($config);
+
+}
+
 ?>

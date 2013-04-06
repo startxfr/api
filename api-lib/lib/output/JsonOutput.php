@@ -17,10 +17,12 @@ class JsonOutput extends DefaultOutput implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($content) {
+        Event::trigger('output.render.before');
         header('Content-Type: '.$this->getConfig("content_type","application/json").'; charset=utf8');
         $output = json_encode($content);
         Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($output) . " octets sended", $content, 3);
         echo $output;
+        Event::trigger('output.render.after');
         exit;
     }
 

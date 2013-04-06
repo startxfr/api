@@ -17,10 +17,12 @@ class nosqlStore extends defaultStore implements IStorage {
             $password = ((string) $this->getConfig('passwd', '') != '') ? ':' . (string) $this->getConfig('passwd') : '';
             $username = ((string) $this->getConfig('username', '') != '') ? (string) $this->getConfig('username') . $password . '@' : '';
             try {
+        Event::trigger('store.connect.before');
                 parent::connect();
                 $connection = new Mongo("mongodb://" . $username . $server);
                 $this->connection = $connection->selectDB($database);
                 $this->isconnected = true;
+        Event::trigger('store.connect.after');
             } catch (Exception $e) {
                 throw new StoreException("could not connect to nosql storage because " . $e->getMessage());
             }

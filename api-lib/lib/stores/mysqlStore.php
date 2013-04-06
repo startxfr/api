@@ -13,9 +13,11 @@ class mysqlStore extends defaultStore implements IStorage {
     public function connect() {
         if (!$this->isconnected) {
             try {
+        Event::trigger('store.connect.before');
                 parent::connect();
                 $this->connection = new PDO("mysql:host=" . $this->getConfig('server', '127.0.0.1') . ";dbname=" . $this->getConfig('base', 'base'), $this->getConfig('username', ''), $this->getConfig('passwd', ''));
                 $this->isconnected = true;
+        Event::trigger('store.connect.after');
             } catch (Exception $e) {
                 throw new StoreException("we could not connect to mysql storage because " . $e->getMessage());
             }

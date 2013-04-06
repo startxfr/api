@@ -16,7 +16,7 @@ abstract class defaultGoogleResource extends defaultResource implements IResourc
 
     public function __construct($config) {
         parent::__construct($config);
-        require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
+        require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
         $this->client = new Google_Client();
     }
 
@@ -70,7 +70,7 @@ abstract class defaultGoogleResource extends defaultResource implements IResourc
     public function addService($serviceName = "Oauth2") {
         if (!array_key_exists($serviceName, $this->services)) {
             $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
-            require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
+            require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
             $this->services[$serviceName] = new $serviceClass($this->client);
         }
         return true;

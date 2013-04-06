@@ -1,13 +1,47 @@
 <?php
 
 /**
- * Base class used for rendering content to the API client. All output class should be derivated form this class or one of its descendant
+ * Base class used for binding specific process to the API event. All plugin class should be derivated form this class or one of its descendant
  *
- * @package  SXAPI.Output
+ * @package  SXAPI.Plugin
  * @author   Mallowtek <mallowtek@gmail.com>
- * @link      https://github.com/startxfr/sxapi/wiki/Outputs
+ * @link      https://github.com/startxfr/sxapi/wiki/Plugins
  */
-abstract class DefaultOutput extends Configurable implements IOutput {
+class defaultPlugin extends Configurable implements IPlugin {
+
+    /**
+     * @var Singleton
+     * @access private
+     * @static
+     */
+    private static $_instance = null;
+
+    /**
+     * The Plugin constructor. Do not directly instanciate this object and prefer using the DefaultPlugin::getInstance() static method for creating and accessing the plugin singleton object
+     * This constructor will configure the config properties.
+     *
+     * @param mixed $config the plugin config stored in api backend
+     * @return void
+     */
+    public function __construct($config) {
+        Api::logDebug(100, "Load '" . $config["id"] . "' " . get_class($this) . " plugin ", $config, 5);
+        parent::__construct($config);
+    }
+
+    /**
+     * Method used to create and access unique instance of this class
+     * if exist return it, if not, create and then return it
+     *
+     * @param string $config with the plugin config
+     * @return DefaultPlugin singleton instance of DefaultPlugin Class
+     */
+    public static function getInstance($config = null) {
+        if (is_null(self::$_instance)) {
+            $className = $config['class'];
+            self::$_instance = new $className($config);
+        }
+        return self::$_instance;
+    }
 
     /**
      * init the output object
@@ -16,7 +50,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @see Configurable
      * @return void
      */
-    public function __construct($config) {
+    public function __constructOld($config) {
         Api::logDebug(300, "Construct '" . $config["id"] . "' " . get_class($this) . " connector ", $config, 5);
         parent::__construct($config);
     }
@@ -27,9 +61,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @return self
      */
     public function init() {
-        Event::trigger('output.init.before');
         Api::logDebug(310, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector", null, 5);
-        Event::trigger('output.init.after');
         return $this;
     }
 
@@ -40,15 +72,13 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($content) {
-        Event::trigger('output.render.before');
-        header('Content-Type: '.$this->getConfig("content_type","text/plain").'; charset=utf8');
+        header('Content-Type: ' . $this->getConfig("content_type", "text/plain") . '; charset=utf8');
         ob_start();
         print_r($content);
         $output = ob_get_contents();
         ob_end_clean();
         Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($output) . " octets sended", $output, 3);
         echo $output;
-        Event::trigger('output.render.after');
         exit;
     }
 
@@ -67,11 +97,11 @@ abstract class DefaultOutput extends Configurable implements IOutput {
         elseif ($count == null)
             $count = 1;
         $config = array(
-            $this->getConfig("outputkey_status",'status') => $this->getConfig("status_ok",'ok'),
-            $this->getConfig("outputkey_success",'success') => true,
-            $this->getConfig("outputkey_total",'total') => $count,
-            $this->getConfig("outputkey_message",'message') => $message,
-            $this->getConfig("outputkey_data",'data') => $data
+            $this->getConfig("outputkey_status", 'status') => $this->getConfig("status_ok", 'ok'),
+            $this->getConfig("outputkey_success", 'success') => true,
+            $this->getConfig("outputkey_total", 'total') => $count,
+            $this->getConfig("outputkey_message", 'message') => $message,
+            $this->getConfig("outputkey_data", 'data') => $data
         );
         Api::logDebug(341, "Prepare OK rendering in '" . get_class($this) . "' connector for message : " . $message, $config, 5);
         return $this->render($config);
@@ -87,14 +117,14 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @see     self::render();
      */
     public function renderError($code, $message = '', $other = array()) {
-        if($this->getConfig("error_do404",true)===true)
+        if ($this->getConfig("error_do404", true) === true)
             header('HTTP/1.1 400 BAD REQUEST');
         $config = array(
-            $this->getConfig("outputkey_status",'status') => $this->getConfig("status_error",'error'),
-            $this->getConfig("outputkey_success",'success') => false,
-            $this->getConfig("outputkey_total",'total') => 0,
-            $this->getConfig("outputkey_message",'message') => $message,
-            $this->getConfig("outputkey_code",'code') => $code
+            $this->getConfig("outputkey_status", 'status') => $this->getConfig("status_error", 'error'),
+            $this->getConfig("outputkey_success", 'success') => false,
+            $this->getConfig("outputkey_total", 'total') => 0,
+            $this->getConfig("outputkey_message", 'message') => $message,
+            $this->getConfig("outputkey_code", 'code') => $code
         );
         if (!is_array($other))
             $other = array($other);
