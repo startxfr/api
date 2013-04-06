@@ -25,10 +25,15 @@ define('KERNPATH', BASEPATH . 'kernel' . DS);
  * the lib path for loading MVC components
  */
 define('LIBPATH', BASEPATH . 'lib' . DS);
+/**
+ * the lib path for loading external projects (php-ga,google-api-php-client)
+ */
+define('LIBPATHEXT', BASEPATH . 'lib-ext' . DS);
 
 include_once(KERNPATH . 'toolkit' . EXT);
 include_once(KERNPATH . 'interfaces' . EXT);
 include_once(KERNPATH . 'configurable' . EXT);
+include_once(KERNPATH . 'event' . EXT);
 
 /**
  * Function used for automatic loading of classes based on camelCase suffix.
@@ -66,6 +71,9 @@ function autoloader($classname) {
             break;
         case 'Input':
             $loadingPath = LIBPATH . 'input' . DS . $classname . EXT;
+            break;
+        case 'Plugin':
+            $loadingPath = LIBPATH . 'plugins' . DS . $classname . EXT;
             break;
         default:
             break;

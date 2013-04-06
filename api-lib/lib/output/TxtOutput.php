@@ -17,10 +17,12 @@ class TxtOutput extends DefaultOutput implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($content) {
+        Event::trigger('output.render.before');
         header('Content-Type: '.$this->getConfig("content_type","text/plain").'; charset=utf8');
         $content = http_build_query($content, $this->getConfig("field_prefix_numeric","v"), $this->getConfig("field_separator","\n"));
         Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($content) . " octets sended", $content, 3);
         echo $content;
+        Event::trigger('output.render.after');
         exit;
     }
 

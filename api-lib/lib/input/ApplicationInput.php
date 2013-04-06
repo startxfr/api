@@ -33,8 +33,11 @@ class ApplicationInput extends DefaultInput implements IInput {
      * @return self
      */
     public function init() {
+        Event::trigger('input.init.before');
+        parent::init(false);
         $this->setApp();
         Api::logDebug(210, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector  setting to '" . Api::getInstance()->getInput('session')->get('application') . "'", Api::getInstance()->getInput('session')->get('application'), 4);
+        Event::trigger('input.init.after');
         return $this;
     }
 

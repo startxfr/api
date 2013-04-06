@@ -95,6 +95,7 @@ class Api extends Configurable {
      * The Api constructor. Do not directly instanciate this object and prefer using the Api::getInstance() static method for creating and accessing the Api singleton object
      * This constructor will decode the $nosqlApiBackend and try to connect to the nosql backend.
      * If an exception is catched, call the exitOnError method for exiting program.
+     *
      * @param string $defaultApiID with the api id to use for creation
      * @return void
      */
@@ -115,8 +116,9 @@ class Api extends Configurable {
     /**
      * Method used to create and access unique instance of this class
      * if exist return it, if not, create and then return it
+     *
      * @param string $defaultApiID with the api id to use for creation
-     * @return object Api Singleton instance of Api Class
+     * @return Api singleton instance of Api Class
      */
     public static function getInstance($defaultApiID = null) {
         if (is_null(self::$_instance))
@@ -135,9 +137,12 @@ class Api extends Configurable {
     public function load() {
         $this->loadApi();
         try {
+            $this->loadPlugins();
+            Event::trigger('app.load.before');
             $this->loadInputFactory()->initInputFactory();
             $this->loadOutputFactory()->initOutputFactory();
             $this->loadStoreFactory()->initStoreFactory();
+            Event::trigger('app.load.after');
             return $this;
         } catch (Exception $exc) {
             $this->exitOnError($exc->getCode(), "Error when loading api because " . $exc->getMessage(), $exc);
@@ -165,6 +170,53 @@ class Api extends Configurable {
         } catch (Exception $e) {
             $this->exitOnError(3, "could not get api document because noSql backend failure. " . $e->getMessage(), $e);
         }
+    }
+
+    /**
+     * Load the plugins sections required by the Api config document
+     * This method will loop throught the plugin section of the Api config document and try to load all the required plugins connectors
+     * @return \Api instance Api for chaining
+     * @throws ApiException if an error occur when instanciating plugin connector
+     */
+    private function loadPlugins() {
+        if (is_array($this->getConfig('plugins'))) {
+            $this->logDebug(20, "Loading " . count($this->getConfig('plugins')) . " plugin.", null, 4);
+            $listPlugins = array();
+            foreach ($this->getConfig('plugins') as $pluginconf) {
+                if ($pluginconf['id'] == '')
+                    $this->logError(16, " plugin config should contain the 'id' attribute", $pluginconf);
+                else {
+                    try {
+                        $configPlugin = $this->nosqlConnection->selectCollection($this->getConfig("plugin_collection", "plugin"))->findOne(array("_id" => $pluginconf['id']));
+                    } catch (Exception $e) {
+                        $this->logWarn(13, "Could not load '" . $pluginconf["id"] . "' plugin. " . $e->getMessage(), $e->getTrace());
+                    }
+                    if (is_null($configPlugin) or $configPlugin["_id"] == '')
+                        $this->logError(18, " plugin config could not be found in plugins instances", $pluginconf);
+                    else {
+                        $this->logDebug(17, "Plugin '" . $pluginconf['id'] . "' found in resource backend", $configPlugin, 5);
+                        if ($configPlugin['class'] == '') {
+                            $this->logError(17, " plugin '" . $pluginconf['id'] . "' config should contain the 'class' attribute", $configPlugin);
+                        } else {
+                            $pluginName = $configPlugin['class'];
+                            if (class_exists($pluginName)) {
+                                try {
+                                    $configPlugin = array_merge($configPlugin,$pluginconf);
+                                    $pluginName::getInstance($configPlugin);
+                                    $listPlugins[] = $pluginName;
+                                } catch (Exception $e) {
+                                    $this->logWarn(13, "Could not load '" . $pluginconf["id"] . "' plugin. " . $e->getMessage(), $e->getTrace());
+                                }
+                            }
+                            else
+                                $this->logWarn(11, "Could not set '" . $pluginconf["id"] . "' plugin because class " . $pluginName . " doesn't exist");
+                        }
+                    }
+                }
+            }
+            $this->logInfo(10, "Loaded " . count($listPlugins) . " plugin (" . implode(',', array_keys($listPlugins)) . ")", $listPlugins, 3);
+        }
+        return $this;
     }
 
     /**
@@ -313,7 +365,6 @@ class Api extends Configurable {
             $this->logWarn(37, "the '" . $id . "' output connector could not be found in curently loaded output list. Check if it's declared on api config document ");
         return $this->outputs[$this->outputDefault];
     }
-
 
     public function setOutputDefault($id = null) {
         if (is_array($this->outputs) and array_key_exists($id, $this->outputs)) {

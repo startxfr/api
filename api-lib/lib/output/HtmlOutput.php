@@ -17,6 +17,7 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($data) {
+        Event::trigger('output.render.before');
         header('Content-Type: ' . $this->getConfig("content_type", "text/html") . '; charset=utf8');
         ob_start();
         $this->layoutStart();
@@ -26,6 +27,7 @@ class HtmlOutput extends DefaultOutput implements IOutput {
         ob_end_clean();
         Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($output) . " octets sended", $output, 3);
         echo $output;
+        Event::trigger('output.render.after');
         exit;
     }
 
@@ -176,7 +178,9 @@ class HtmlOutput extends DefaultOutput implements IOutput {
      */
     protected function layoutStart() {
         $api = Api::getInstance();
-        $title = sprintf($this->getConfig('head_title', '%s v%s - Node %s'), $api->getConfig("name"), $api->getConfig("version"), $api->getInput()->getPath());
+        if($api->getInput() != null)
+            $path = $api->getInput()->getPath();
+        $title = sprintf($this->getConfig('head_title', '%s v%s - Node %s'), $api->getConfig("name"), $api->getConfig("version"), $path);
         echo '<!DOCTYPE html>
             <html>
             <head>

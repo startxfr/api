@@ -17,6 +17,7 @@ class CsvOutput extends TxtOutput implements IOutput {
      * @return void this method echo result and exit program
      */
     protected function render($content) {
+        Event::trigger('output.render.before');
         header('Content-Type: '.$this->getConfig("content_type","text/csv").'; charset=utf8');
         header("Content-Disposition: attachment; filename=example.csv");
         header("Pragma: no-cache");
@@ -30,6 +31,7 @@ class CsvOutput extends TxtOutput implements IOutput {
                 fputcsv($outputBuffer, array($val));
         }
         fclose($outputBuffer);
+        Event::trigger('output.render.after');
         exit;
     }
 

@@ -15,7 +15,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
 
     public function __construct($config) {
         parent::__construct($config);
-        require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
+        require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
         $this->client = new Google_Client();
     }
 
@@ -98,7 +98,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
         $serviceName = $this->getConfig('google_service', "Oauth2");
             try {
                 $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
-                require_once LIBPATH . 'plugins' . DS . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
+                require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
                 $this->services[$serviceName] = new $serviceClass($this->client);
             } catch (Exception $exc) {
                 $api->logWarn(910, "Warning on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : " . $exc->getMessage(), $exc);
