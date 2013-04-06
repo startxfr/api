@@ -23,6 +23,8 @@ class curlStore extends DefaultStore implements IStorage {
     }
 
     public function init() {
+        Event::trigger('store.init.before');
+        Api::logDebug(410, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector ", null, 5);
         if ($this->getConfig('url', '') == '')
             throw new StoreException("store config should contain the 'url' attribute");
         if (!is_null($this->getConfig('auth')) and $this->getConfig('auth') != false) {
@@ -31,12 +33,14 @@ class curlStore extends DefaultStore implements IStorage {
             if ($this->getConfig('auth_pwd', '') == '')
                 throw new StoreException("store config should contain the 'auth_pwd' attribute because 'auth' attribute is activated");
         }
+        Event::trigger('store.init.after');
         return $this;
     }
 
     public function connect() {
         if (!$this->isconnected) {
             try {
+        Event::trigger('store.connect.before');
                 parent::connect();
                 $this->connexion = curl_init();
                 curl_setopt($this->connexion, CURLOPT_RETURNTRANSFER, true);
@@ -52,6 +56,7 @@ class curlStore extends DefaultStore implements IStorage {
                     }
                 }
                 $this->isconnected = true;
+        Event::trigger('store.connect.after');
             } catch (Exception $e) {
                 throw new StoreException("could not connect to nosql storage because " . $e->getMessage());
             }

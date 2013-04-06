@@ -135,14 +135,19 @@ class Api extends Configurable {
      * @return \Api instance Api for chaining
      */
     public function load() {
+        Event::trigger('api.begin');
         $this->loadApi();
+        Event::trigger('api.load.begin');
         try {
             $this->loadPlugins();
-            Event::trigger('app.load.before');
+            Event::trigger('api.load.plugins');
             $this->loadInputFactory()->initInputFactory();
+            Event::trigger('api.load.input');
             $this->loadOutputFactory()->initOutputFactory();
+            Event::trigger('api.load.output');
             $this->loadStoreFactory()->initStoreFactory();
-            Event::trigger('app.load.after');
+            Event::trigger('api.load.store');
+            Event::trigger('api.load.end');
             return $this;
         } catch (Exception $exc) {
             $this->exitOnError($exc->getCode(), "Error when loading api because " . $exc->getMessage(), $exc);
@@ -201,7 +206,7 @@ class Api extends Configurable {
                             $pluginName = $configPlugin['class'];
                             if (class_exists($pluginName)) {
                                 try {
-                                    $configPlugin = array_merge($configPlugin,$pluginconf);
+                                    $configPlugin = array_merge($configPlugin, $pluginconf);
                                     $pluginName::getInstance($configPlugin);
                                     $listPlugins[] = $pluginName;
                                 } catch (Exception $e) {
@@ -533,6 +538,7 @@ class Api extends Configurable {
      */
     public function execute() {
         try {
+            Event::trigger('api.execute.before');
             $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));
             $resource = $this->getResource($config['class'], $config);
             $actionName = 'readAction';
@@ -597,6 +603,8 @@ class Api extends Configurable {
                     $resource->$actionName();
                 }
             }
+            Event::trigger('api.execute.after');
+            Event::trigger('api.end');
             session_write_close();
             exit;
         } catch (Exception $exc) {

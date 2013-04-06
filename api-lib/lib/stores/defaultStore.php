@@ -26,15 +26,18 @@ abstract class defaultStore extends Configurable implements IStorage {
     }
 
     public function init() {
+        Event::trigger('store.init.before');
         Api::logDebug(410, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector ", null, 5);
         if ($this->getConfig('server') == '')
             throw new StoreException("store config should contain the 'server' attribute");
         if ($this->getConfig('base') == '')
             throw new StoreException("store config should contain the 'base' attribute");
+        Event::trigger('store.init.after');
         return $this;
     }
 
     public function connect() {
+        Event::trigger('store.connect.before');
         Api::getInstance()->logDebug(410, "'" . __FUNCTION__ . "' '" . get_class($this) . "' ", $this->getConfigs(), 5);
         $this->isconnected = false;
         return $this;
