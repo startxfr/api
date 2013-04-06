@@ -4,10 +4,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="generator" content="ApiGen 2.8.0" />
 
-	<title>Function __autoload | SXAPI Documentation</title>
+	<title>Class Event | SXAPI Documentation</title>
 
 	<script type="text/javascript" src="resources/combined.js?1145318285"></script>
-	<script type="text/javascript" src="elementlist.js?334020060"></script>
+	<script type="text/javascript" src="elementlist.js?3183972774"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -28,6 +28,8 @@
 				<li class="main"><a href="package-SXAPI.Model.html">Model</a>
 						</li>
 				<li class="main"><a href="package-SXAPI.Output.html">Output</a>
+						</li>
+				<li class="main"><a href="package-SXAPI.Plugin.html">Plugin</a>
 						</li>
 				<li class="main"><a href="package-SXAPI.Resource.html">Resource<span></span></a>
 						<ul>
@@ -58,6 +60,10 @@
 
 
 		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Event.html">Event</a></li>
+			</ul>
 
 
 
@@ -65,7 +71,7 @@
 
 			<h3>Functions</h3>
 			<ul>
-				<li class="active"><a href="function-__autoload.html">__autoload</a></li>
+				<li><a href="function-autoloader.html">autoloader</a></li>
 			</ul>
 		</div>
 	</div>
@@ -91,7 +97,7 @@
 				<a href="package-None.html" title="Summary of None"><span>Package</span></a>
 			</li>
 			<li class="active">
-<span>Function</span>			</li>
+<span>Class</span>			</li>
 		</ul>
 		<ul>
 			<li>
@@ -111,49 +117,143 @@
 		</ul>
 	</div>
 
-<div id="content" class="function">
-	<h1>Function __autoload</h1>
+<div id="content" class="class">
+	<h1>Class Event</h1>
 
 
 	<div class="description">
 	
-<p>Function used for automatic loading of classes based on camelCase suffix.</p>
+<p>Simple class for handling event in php</p>
 
-<p>If class end with Resource, Model, Exception, Store, Output or Input then
-look into the appropriate directory. If Resource is used, autoload search for a
-subpackage with pre-suffix founded.</p>
+<p>ex: Event::bind('input.preprocess', function($args = array()) { ... }); ex:
+Event::trigger('input.preprocess', $data);</p>
 
 	</div>
+
+
+
+
+
+
+
+
 
 	<div class="info">
 		
 		
-		<b>Located at</b> <a href="source-function-__autoload.html#33-78" title="Go to source code">kernel/loader.php</a><br />
+		
+		
+
+				<b>Author:</b>
+				<a href="mailto:dev&#64;startx.fr">dev&#64;<!---->startx.fr</a><br />
+		<b>Located at</b> <a href="source-class-Event.html#2-26" title="Go to source code">kernel/event.php</a><br />
 	</div>
 
 
-	<table class="summary" id="parameters">
-	<caption>Parameters summary</caption>
-	<tr id="$classname">
-		<td class="name"><code>the</code></td>
-		<td class="value"><code><var>$classname</var></code></td>
-		<td>
-			classname to search for
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="trigger" id="_trigger">
+
+		<td class="attributes"><code>
+			 public static
+			
+			
+			</code>
 		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_trigger">#</a>
+		<code><a href="source-class-Event.html#14-20" title="Go to source code">trigger</a>( <span>mixed <var>$event</var></span>, <span>mixed <var>$args</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="bind" id="_bind">
+
+		<td class="attributes"><code>
+			 public static
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_bind">#</a>
+		<code><a href="source-class-Event.html#22-24" title="Go to source code">bind</a>( <span>mixed <var>$event</var></span>, <span>mixed <var>$func</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
 	</tr>
 	</table>
 
-	<table class="summary" id="returns">
-	<caption>Return value summary</caption>
-	<tr>
-		<td class="name"><code>
-			boolean
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="events" id="$events">
+		<td class="attributes"><code>
+			public static 
+			array
 		</code></td>
-		<td>
-			if ok. Throw an exception if not
+
+		<td class="name">
+				<a href="source-class-Event.html#12" title="Go to source code"><var>$events</var></a>
 		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$events" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
 	</tr>
 	</table>
+
+
+
+
 
 
 </div>

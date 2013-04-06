@@ -5,7 +5,7 @@ destination: ../docs/
 # List of allowed file extensions
 extensions: [php]
 # Mask to exclude file or directory from processing
-exclude: ["/secure/github/sxapi/api-lib/lib/plugins"]
+exclude: ["/secure/github/sxapi/api-lib/lib-ext"]
 # Don't generate documentation for classes from file or directory with this mask
 skipDocPath:
 # Don't generate documentation for classes with this name prefix
