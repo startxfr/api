@@ -39,7 +39,7 @@ include_once(KERNPATH . 'configurable' . EXT);
  * @param the classname to search for
  * @return boolean if ok. Throw an exception if not
  */
-function __autoload($classname) {
+function autoloader($classname) {
     $loadingPath = "";
     $arr = preg_split('/(?=[A-Z])/', $classname);
     $suffix = array_pop($arr);
@@ -76,6 +76,7 @@ function __autoload($classname) {
     else
         return true;
 }
+spl_autoload_register('autoloader');
 
 include_once(KERNPATH . 'api' . EXT);
 ?>
