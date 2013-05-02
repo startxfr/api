@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Plugin used to track request into the Google Analytics backend.
  * Have a look at the plugin configuration for more detail about it configuration
@@ -35,21 +34,31 @@ class trackingPlugin extends defaultPlugin implements IPlugin {
         $plugin = self::getInstance();
         require_once(LIBPATHEXT . 'php-ga-1.1.1' . DS . 'src' . DS . 'autoload.php');
         // Initilize GA Tracker
-        $tracker = new UnitedPrototype\GoogleAnalytics\Tracker($plugin->getConfig('account_id'), $plugin->getConfig('domain_name',$api->getInput()->getHost()));
+        $tracker = new UnitedPrototype\GoogleAnalytics\Tracker($plugin->getConfig('account_id'), $plugin->getConfig('domain_name', $api->getInput()->getHost()));
         // Assemble Visitor information
         // (could also get unserialized from database)
-        $visitor = new UnitedPrototype\GoogleAnalytics\Visitor();
-        $visitor->setIpAddress($_SERVER['REMOTE_ADDR']);
-        $visitor->setUserAgent($_SERVER['HTTP_USER_AGENT']);
-        $visitor->setScreenResolution('1024x768');
-        // Assemble Session information
-        // (could also get unserialized from PHP session)
-        $session = new UnitedPrototype\GoogleAnalytics\Session();
+        $session = $api->getInput('session');
+        if ($session->get('trackingPlugin_visitor') != null) {
+            $visitor = unserialize($session->get('trackingPlugin_visitor'));
+        } else{
+            $visitor = new UnitedPrototype\GoogleAnalytics\Visitor();
+            $visitor->setIpAddress($_SERVER['REMOTE_ADDR']);
+            $visitor->setUserAgent($_SERVER['HTTP_USER_AGENT']);
+            $visitor->setScreenResolution('1024x768');
+            $session->set('trackingPlugin_visitor',serialize($visitor));
+        }
+        if ($session->get('trackingPlugin_session') != null) {
+            $sessionga = unserialize($session->get('trackingPlugin_session'));
+        }
+        else {
+            $sessionga = new UnitedPrototype\GoogleAnalytics\Session();
+            $session->set('trackingPlugin_session', serialize($sessionga));
+        }
         // Assemble Page information
-        $page = new UnitedPrototype\GoogleAnalytics\Page(DS.$api->getInput()->getPath());
-        $page->setTitle('Resource XXXX');
+        $page = new UnitedPrototype\GoogleAnalytics\Page(DS . $api->getInput()->getPath());
+        $page->setTitle('Resource ' . $api->getInput()->getPath());
         // Track page view
-        $tracker->trackPageview($page, $session, $visitor);
+        $tracker->trackPageview($page, $sessionga, $visitor);
         return true;
     }
 
