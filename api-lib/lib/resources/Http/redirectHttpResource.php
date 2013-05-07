@@ -30,17 +30,8 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
             if (is_array($configRecord)) {
                 try {
                     $store = $api->getStore($configRecord['store']);
-                    $obj = new stdClass();
-                    $obj->date = new MongoDate();
-                    $obj->ip = $_SERVER['REMOTE_ADDR'];
-                    $obj->redirect_to = $this->getConfig('url', $_SERVER['REFERER']);
-                    $obj->request_referer = $_SERVER['REFERER'];
-                    $obj->request_method = $api->getInput()->getMethod();
-                    $obj->request_method = $api->getInput()->getMethod();
-                    $obj->request_rooturl = $api->getInput()->getRootUrl();
-                    $obj->request_path = $api->getInput()->getPath();
-                    $obj->request_params = $api->getInput()->getParams();
-                    $store->create($configRecord['collection'], $obj);
+                    $trace = $this->createHitTrace();
+                    $store->create($configRecord['collection'], $trace);
                 } catch (Exception $exc) {
                     $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' when trying to record redirect trace : " . $exc->getMessage(), $exc);
                     if ($configRecord['fatal'] === true)
@@ -59,6 +50,20 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
             $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
         }
         return true;
+    }
+
+    protected function createHitTrace() {
+        $input = Api::getInstance()->getInput();
+        $trace = new stdClass();
+                    $trace->date = new MongoDate();
+                    $trace->ip = $_SERVER['REMOTE_ADDR'];
+                    $trace->redirect_to = $this->getConfig('url', $_SERVER['REFERER']);
+                    $trace->request_referer = $_SERVER['REFERER'];
+                    $trace->request_method = $input->getMethod();
+                    $trace->request_rooturl = $input->getRootUrl();
+                    $trace->request_path = $input->getPath();
+                    $trace->request_params = $input->getParams();
+        return $trace;
     }
 
 }

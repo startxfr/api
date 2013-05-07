@@ -40,7 +40,6 @@ class UserInput extends DefaultInput implements IInput {
      */
     public function init() {
         Event::trigger('input.init.before');
-        parent::init(false);
         Api::logDebug(210, "Init '" . $this->getConfig("_id", 'user') . "' " . get_class($this) . " connector  setting to '" . Api::getInstance()->getInput('session')->get('user') . "'", Api::getInstance()->getInput('session')->get('user'), 4);
         Event::trigger('input.init.after');
         return $this;

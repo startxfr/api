@@ -37,7 +37,8 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $store = $api->getStore($this->getConfig('store', 'curl'));
-            $store->setConfig('url', $this->getConfig('url'));
+            if ($this->isConfig('url'))
+                $store->setConfig('url', $this->getConfig('url'));
             $return = $store->read($this->getConfig('url_path', ''), $api->getInput()->getParams());
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), $this->getConfig('url'));
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
@@ -54,7 +55,8 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $store = $api->getStore($this->getConfig('store', 'curl'));
-            $store->setConfig('url', $this->getConfig('url'));
+            if ($this->isConfig('url'))
+                $store->setConfig('url', $this->getConfig('url'));
             $return = $store->create($this->getConfig('url_path', ''), $api->getInput()->getParams());
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $this->getConfig('url'));
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
@@ -71,7 +73,8 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
         $api->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $store = $api->getStore($this->getConfig('store', 'curl'));
-            $store->setConfig('url', $this->getConfig('url'));
+            if ($this->isConfig('url'))
+                $store->setConfig('url', $this->getConfig('url'));
             $return = $store->update($this->getConfig('url_path', ''), $this->getConfig('key', ''), $api->getInput()->getParam('val', ''), $api->getInput()->getParams());
             $message = sprintf($this->getConfig('message_service_update', 'message service update'), $this->getConfig('url'));
             $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
@@ -88,7 +91,8 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
         $api->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $store = $api->getStore($this->getConfig('store', 'curl'));
-            $store->setConfig('url', $this->getConfig('url'));
+            if ($this->isConfig('url'))
+                $store->setConfig('url', $this->getConfig('url'));
             $return = $store->delete($this->getConfig('url_path', ''), $this->getConfig('key', ''), $api->getInput()->getParam('val', ''));
             $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $this->getConfig('url'));
             $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);

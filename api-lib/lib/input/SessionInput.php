@@ -37,13 +37,13 @@ class SessionInput extends DefaultInput implements IInput {
      */
     public function init() {
         Event::trigger('input.init.before');
-        parent::init(false);
         session_name($this->getConfig('session_name'));
         $paramPassedToken = Api::getInstance()->getInput()->getParam($this->getConfig("session_name"));
         if ($paramPassedToken != '')
             session_id($paramPassedToken);
         session_start();
         $this->sessionId = session_id();
+        Api::logDebug(210, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector for session '".$this->getConfig('session_name')."' with  id " . $this->sessionId, $this->getAll(), 5);
         Event::trigger('input.init.after');
         return $this;
     }

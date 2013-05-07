@@ -18,14 +18,18 @@ class CsvOutput extends TxtOutput implements IOutput {
      */
     protected function render($content) {
         Event::trigger('output.render.before');
-        header('Content-Type: '.$this->getConfig("content_type","text/csv").'; charset=utf8');
+        header('Content-Type: ' . $this->getConfig("content_type", "text/csv") . '; charset=utf8');
         header("Content-Disposition: attachment; filename=example.csv");
         header("Pragma: no-cache");
         header("Expires: 0");
         Api::logInfo(350, "Render '" . get_class($this) . "' connector " . @count($content) . " lines sended", $content, 3);
         $outputBuffer = fopen("php://output", 'w');
+        if ($this->getConfig("first_line", true) and is_array($content[0])) {
+            $keys = array_keys($content[0]);
+            fputcsv($outputBuffer, $keys);
+        }
         foreach ($content as $val) {
-            if(is_array($val))
+            if (is_array($val))
                 fputcsv($outputBuffer, $val);
             else
                 fputcsv($outputBuffer, array($val));
@@ -60,7 +64,6 @@ class CsvOutput extends TxtOutput implements IOutput {
     public function renderError($code, $message = '', $other = array()) {
         return parent::renderError($code, $message, $other);
     }
-
 
 }
 
