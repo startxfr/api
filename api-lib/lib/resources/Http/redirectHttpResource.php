@@ -60,7 +60,6 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
                     $trace->redirect_to = $this->getConfig('url', $_SERVER['REFERER']);
                     $trace->request_referer = $_SERVER['REFERER'];
                     $trace->request_method = $input->getMethod();
-                    $trace->request_method = $input->getMethod();
                     $trace->request_rooturl = $input->getRootUrl();
                     $trace->request_path = $input->getPath();
                     $trace->request_params = $input->getParams();
