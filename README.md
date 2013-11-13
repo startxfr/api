@@ -1,7 +1,7 @@
-SXAPI
-=====
+SXAPI (PROD version)
+====================
 
-SXAPI is a lightweight and flexible framework for building open or private API with a minimum of time.
-Based on PHP and NoSQL technologies, this framework allow developpers to build their own API an deliver in a unified way various informations resources.
 
-For more informations, please visit the wiki pages of the project on https://github.com/startxfr/sxapi/wiki
+This is the production branch used by STARTX to manage all business informations for all it's applications. This branch is stricty private and should not be accessible to unauthorized users.
+
+Based on the open-source project sxapi https://github.com/startxfr/sxapi/wiki
