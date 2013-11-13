@@ -1,5 +1,6 @@
 <?php
 
+date_default_timezone_set("Europe/Paris");
 /**
  * the directory separator used for this instance
  */
