@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-$localRootPath = '/secure/github/sxapi/api-lib/tmp/';
+$localRootPath = '/secure/dev/github/sxapi/api-lib/tmp/';
 $user = 'dev';
 $pass = 'dev';
 $db = 'sxapi';

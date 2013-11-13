@@ -5,7 +5,7 @@ destination: ../docs/
 # List of allowed file extensions
 extensions: [php]
 # Mask to exclude file or directory from processing
-exclude: ["/secure/github/sxapi/api-lib/lib-ext"]
+exclude: ["/secure/dev/github/sxapi/api-lib/lib-ext"]
 # Don't generate documentation for classes from file or directory with this mask
 skipDocPath:
 # Don't generate documentation for classes with this name prefix
@@ -26,7 +26,7 @@ googleCseLabel:
 # Google Analytics tracking code
 googleAnalytics:
 # Template config file
-# templateConfig: '/secure/github/sxapi/tools/apigen-template.neon'
+# templateConfig: '/secure/dev/github/sxapi/tools/apigen-template.neon'
 # Grouping of classes
 groups: auto
 # List of allowed HTML tags in documentation
