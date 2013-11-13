@@ -1,9 +1,9 @@
 #!/usr/bin/php
 <?php
-$localRootPath = '/path/to/sxapi/api-lib/tmp/';
-$user = 'username';
-$pass = 'password';
-$db = 'sxapi';
+$localRootPath = '/var/www/virtual/api.startx.fr/v2/api-lib/tmp/';
+$user = 'dev';
+$pass = 'dev';
+$db = 'sxapi2';
 $collections = array(
 	'redirect.hit',
 	'sxapi.api',
@@ -18,6 +18,6 @@ $collections = array(
 	'system.users',
 );
 foreach($collections as $col)
-shell_exec("mongoimport -d $db -c $col -u $user -p $pass $localRootPath/dump.$db-$col.bson");
+shell_exec("mongoimport -d $db -c $col -u $user -p $pass $localRootPath/dump.sxapi-$col.bson");
 
 ?>

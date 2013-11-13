@@ -36,8 +36,8 @@ class Api extends Configurable {
      * </ul>
      */
     public $nosqlApiBackend = '{
-        "connection" : "mongodb://username:password@127.0.0.1:27017",
-        "base" : "sxapi",
+        "connection" : "mongodb://dev:dev@127.0.0.1:27017",
+        "base" : "sxapi2",
         "api_collection" : "sxapi.api"
     }';
 
@@ -207,7 +207,7 @@ class Api extends Configurable {
                             if (class_exists($pluginName)) {
                                 try {
                                     $configPlugin = array_merge($configPlugin, $pluginconf);
-                                    $pluginName::getInstance($configPlugin);
+                                    call_user_func(  array($pluginName, 'getInstance') , $configPlugin);
                                     $listPlugins[] = $pluginName;
                                 } catch (Exception $e) {
                                     $this->logWarn(13, "Could not load '" . $pluginconf["id"] . "' plugin. " . $e->getMessage(), $e->getTrace());

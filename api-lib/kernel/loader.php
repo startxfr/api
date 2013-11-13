@@ -29,7 +29,6 @@ define('LIBPATH', BASEPATH . 'lib' . DS);
  * the lib path for loading external projects (php-ga,google-api-php-client)
  */
 define('LIBPATHEXT', BASEPATH . 'lib-ext' . DS);
-
 include_once(KERNPATH . 'toolkit' . EXT);
 include_once(KERNPATH . 'interfaces' . EXT);
 include_once(KERNPATH . 'configurable' . EXT);
@@ -85,6 +84,9 @@ function autoloader($classname) {
         return true;
 }
 spl_autoload_register('autoloader');
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
 include_once(KERNPATH . 'api' . EXT);
 ?>
