@@ -8,10 +8,10 @@
     <group name="zunoClientCoordonnee" modifRight="0" title="Configuration de l'utilisateur et des droits">
 	<value id="nom">STARTX</value>
 	<value id="nom_court">STARTX</value>
-	<value id="adresse">177 avenue Georges Clemenceau</value>
+	<value id="adresse">171 avenue Georges Clemenceau</value>
 	<value id="adresse2"></value>
-	<value id="cp">92024</value>
-	<value id="ville">NANTERRE Cedex</value>
+	<value id="cp">92000</value>
+	<value id="ville">NANTERRE</value>
 	<value id="tel">+33 (0)1 46 69 00 00</value>
 	<value id="fax">+33 (0)9 72 14 70 16</value>
 	<value id="mail">info@startx.fr</value>
@@ -20,8 +20,8 @@
     <group name="zunoClientStatut" modifRight="0" title="Configuration de l'utilisateur et des droits">
 	<value id="rs">STARTX</value>
 	<value id="statut">SARL</value>
-	<value id="capital">7500</value>
-	<value id="rcs">RCS Nanterre 449 970 524 00020</value>
+	<value id="capital">50005</value>
+	<value id="rcs">RCS Nanterre 449 970 524 00038</value>
 	<value id="ape">6202A</value>
 	<value id="tva">FR 26 449 970 524</value>
 	<value id="tauxTVA">19.6</value>
