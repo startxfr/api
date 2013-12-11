@@ -14,7 +14,7 @@
 	<value id="ville">NANTERRE</value>
 	<value id="tel">+33 (0)1 46 69 00 00</value>
 	<value id="fax">+33 (0)9 72 14 70 16</value>
-	<value id="mail">dev@startx.fr</value>
+	<value id="mail">info@startx.fr</value>
 	<value id="url">www.startx.fr</value>
     </group>
     <group name="zunoClientStatut" modifRight="0" title="Configuration de l'utilisateur et des droits">

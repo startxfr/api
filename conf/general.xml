@@ -9,10 +9,10 @@
 	<value id="nom">STARTX.SXA</value>
 	<value id="nommail">STARTX.FR</value>
 	<value id="auteur">STARTX</value>
-	<value id="mail">dev@startx.fr</value>
+	<value id="mail">sxa@startx.fr</value>
 	<value id="copyright">2010 STARTX</value>
 	<value id="version">3.0.16</value>
-	<value id="revision">$Rev$</value>
+	<value id="revision">$Rev: 5438 $</value>
 	<value id="contact">Christophe LARUE</value>
 	<value id="footeradd">un service édité par STARTX</value>
 	<value id="pageOutputEncoding">UTF-8</value>
