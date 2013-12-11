@@ -8,7 +8,7 @@
     <group name="LOG" modifRight="0" title="Configuration des log">
 	<!-- Name of logs coming from this application	-->
 	<value id="Name">ZUNO-SXA</value>
-	<value id="DisplayDebug">FALSE</value>
+	<value id="DisplayDebug">TRUE</value>
 	<!-- Type of output				-->
 		<!-- 	TIME    => Display only time of processing-->
 		<!--	STAT    => Display time and process statistics-->

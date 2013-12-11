@@ -13,9 +13,9 @@
     <group name="DBPool_1" modifRight="0" title="Premier POOL de connexion">
 	<value id="type">mysql</value>
 	<value id="serveur">127.0.0.1</value>
-	<value id="login">zunoSxaProd</value>
-	<value id="pass">zunoSxaProd</value>
-	<value id="base">PROD_sxa</value>
+	<value id="login">dev</value>
+	<value id="pass">dev</value>
+	<value id="base">DEV_sxa</value>
 	<value id="persistant">TRUE</value>
     </group>
     <group name="DBPool_10" modifRight="0" title="POOL de connexion de reference">
