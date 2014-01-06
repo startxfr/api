@@ -486,7 +486,7 @@ class commandeView extends generalView {
 
 	$corps = '<div id="ContenuTraitementCommande" >' . $mess . $this->interneTraitement($datas) . '</div>';
 
-	if ($datas['data']['status_cmd'] == "1" and verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd'])) {
+	if ($datas['data']['status_cmd'] == "1" and verifDroitsAuto('commande', 14, $datas['data']['commercial_cmd'])) {
 	    $bouton = '<a name="valid" onclick="ChangeCommandeAction(\'Valid\');zuno.business.formTools.sendFormAjah(\'ActionCommande\', \'pegase/Commande.php\',\'traitementCommande\');" title="Valider"><img src="'.getStaticUrl('img').'prospec/commande.valid.png" alt="valid" title="Valider la commande" /> Valider le bon de commande client</a>';
 	} elseif (verifDroitsAuto('commande', 60, $datas['data']['commercial_cmd'])) {
 	    $bouton .= '<a onclick="ChangeCommandeAction(\'GenererDocs\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');" title="Enregistrer" name="enreg"><img align="middle" title="Enregistrer" alt="enreg" name="img" src="'.getStaticUrl('img').'prospec/commande.record.png"/> Enregistrer</a>';
@@ -497,7 +497,7 @@ class commandeView extends generalView {
 	    }
 	}
 	// Quand status Envoyé
-	if (($datas['data']['status_cmd'] >= "4") and (verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd']))) {
+	if (($datas['data']['status_cmd'] >= "4") and (verifDroitsAuto('commande', 14, $datas['data']['commercial_cmd']))) {
 	    if ($datas['data']['status_cmd'] == "4")
 		$bouton .= '<a title="Traitement" name="traitement" onclick="ChangeCommandeAction(\'traitement\');zuno.business.formTools.sendFormAjah(\'ActionCommandePDF\', \'pegase/Commande.php\',\'traitementCommande\');"><img align="middle" title="Traitement" alt="Traitement" name="img" src="'.getStaticUrl('img').'prospec/commande.AR.png"/> Commande en traitement</a>';
 	    if ($datas['data']['status_cmd'] == "6")
@@ -528,7 +528,7 @@ class commandeView extends generalView {
 	$tag['action'] .= inputTag('hidden', 'dir_aff', '', '', '', $datas['data']['dir_aff']);
 	$AutoMessage = "Changement de la commande " . $id_cmd . " par " . $_SESSION['user']['id'];
 
-	if ($datas['data']['status_cmd'] == "1" and verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd'])) {
+	if ($datas['data']['status_cmd'] == "1" and verifDroitsAuto('commande', 14, $datas['data']['commercial_cmd'])) {
 	    $tag['BDCclient_cmd'] = inputTag('text', 'BDCclient_cmd', '', '', '', $datas['data']['BDCclient_cmd'], '');
 	    $tag['modereglement_cmd'] = HtmlForm::addAutoSelect('modereglement_cmd', 'ref_modereglement', $datas['data']['modereglement_cmd'], '', '', ' ORDER BY id_modereg ASC', $GLOBALS['PropsecConf']['DBPool']);
 	    $tag['condireglement_cmd'] = HtmlForm::addAutoSelect('condireglement_cmd', 'ref_condireglement', $datas['data']['condireglement_cmd'], '', '', ' ORDER BY id_condreg ASC', $GLOBALS['PropsecConf']['DBPool']);
@@ -877,6 +877,8 @@ class commandeView extends generalView {
 	    // Quand status créer
 	    if (($v['status_cmd'] == "1") and (verifDroitsAuto('commande', 13, $datas['data']['commercial_cmd']))) {
 		$action .= "<a href=\"#\" onclick=\"return zuno.popup.open('${suffixeLink}pegase/Commande.php','id_commande=" . $v['id_cmd'] . "&action=supp',600,290,'','','resize','devisDelete');\">" . imageTag(getStaticUrl('img').'prospec/commande.delete.png', 'Supprimer') . "</a> ";
+	  }
+	    elseif (($v['status_cmd'] == "1") and (verifDroitsAuto('commande', 14, $datas['data']['commercial_cmd']))) {
 		$action .= '<a href="' . $suffixeLink . '.pegase/Commande.php?id_cmd=' . $v['id_cmd'] . '" title="Enregistrer" name="enreg"><img align="middle" title="Valider" alt="enreg" name="img" src="' . getStaticUrl('img').'prospec/commande.valid.png"/></a>';
 	    }
 	    // Quand status Validé
@@ -948,9 +950,12 @@ class commandeView extends generalView {
 	$bouton .= $this->resultNavigation($datas['from'], $datas['limit'], $datas['total'], "ChangeCmdResultPage");
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
-	$bouton .= '<div style="display:none;" id="divExportTableur">' . selectTag('format_export', $availableConvFormat, '', '', ' onchange="cmdDoExportTableur(this.value);" ') . '</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="' . getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
-	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
+	if(verifDroitsAuto('commande', 82, $v['commercial_dev']))
+            $bouton .= '<div style="display:none;" id="divExportTableur">' . selectTag('format_export', $availableConvFormat, '', '', ' onchange="cmdDoExportTableur(this.value);" ') . '</div>';
+	if(verifDroitsAuto('commande', 82, $v['commercial_dev']))
+            $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="' . getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
+	if(verifDroitsAuto('commande', 81, $v['commercial_dev']))
+            $bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
 	if ($modHistorique)
 	    $bouton = '';

@@ -40,7 +40,7 @@
 	30719   E_ALL
     -->
     <group name="LOG_DB" modifRight="0" title="Configuration des log sql">
-	<value id="activate">TRUE</value>
+	<value id="activate">FALSE</value>
 	<value id="level">256,512,1024,1500</value>
 	<value id="base_pool">1</value>
 	<value id="base_table">log</value>
