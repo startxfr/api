@@ -491,9 +491,12 @@ class affaireView extends generalView {
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeAffaireResultPage");
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
-	$bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="affaireDoExportTableur(this.value);" ').'</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
-	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
+        if(verifDroitsAuto('affaire', 82, $v['commercial_dev']))
+            $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="affaireDoExportTableur(this.value);" ').'</div>';
+        if(verifDroitsAuto('affaire', 82, $v['commercial_dev']))
+            $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
+        if(verifDroitsAuto('affaire', 81, $v['commercial_dev']))
+            $bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
 	if($modHistorique)
 	    $bouton = '';

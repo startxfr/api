@@ -218,7 +218,7 @@ function selectTag($name,$champ,$id_select="",$class="",$autre="",$withBlank = T
 
 function selectTVATag($name, $champ = array(), $id_select="", $class = "", $autre = "", $withBlank = false) {
     $autre = ' onblur="finishEditing();" onclick="beginEditing(this);" '.$autre;
-    $champ = array('0' => '0', '5.5' => '5,5', '8.5' => '8,5 (DOM-TOM)', '19.6' => '19,6');
+    $champ = array('0' => '0%', '5.5' => '5,5%', '10.0' => '10%', '8.5' => '8,5% (DOM-TOM)', '19.6' => '19,6% (périmé)', '20.0' => '20%');
     return selectTag($name, $champ, $id_select, $class, $autre, $withBlank);
 }
 

@@ -498,15 +498,14 @@ function IsNumeric(input)
 	// Quand status Envoyé
 	if (($datas['data']['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $datas['data']['commercial_dev']))) {
 	    $bouton .= '<a title="Perdu" name="perdu" onclick="return zuno.popup.open(\'Devis.php\', \'devis='.$datas['data']['id_dev'].'&action=Perdu\',500,280);"><img align="middle" title="Perdu" alt="perdu" name="img" src="'.getStaticUrl('img').'prospec/devis.perdu.png"/> Devis perdu</a>';
+	}
+	if (($datas['data']['status_dev'] == "4")and(verifDroitsAuto('devis', 14, $datas['data']['commercial_dev']))) {
 	    $bouton   .= "<a name=\"valider\" onclick=\"return zuno.popup.open('Devis.php','id_devis=".$datas['data']['id_dev']."&action=valid',950,380,'','','resize','commandeCreate');\">".imageTag(getStaticUrl('img').'prospec/devis.valid.png','Validé')." Valider</a> ";
 	}
 	// Clonage
 	if(verifDroitsAuto('devis', 25, $datas['data']['commercial_dev']))
 	    $bouton .= '<a title="Cloner" href="Devis.php?action=cloner&dev='.$datas['data']['id_dev'].'"><img align="middle" title="Cloner" alt="cloner" name="img" src="'.getStaticUrl('img').'prospec/devis.clone.png"/> Cloner</a>';
-
-
 	$titre = imageTag(getStaticUrl('img').'prospec/devis.record.png','créer')." Traitement du devis ".$datas['data']['id_dev'];
-
 	return generateZBox($titre,$titre,$corps.$outJS,$bouton,'traitementDevis','');
     }
     private function interneTraitement($datas) {
@@ -799,6 +798,8 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 	    // Quand status Envoyé
 	    elseif (($v['status_dev'] == "4")and(verifDroitsAuto('devis', 13, $v['commercial_dev']))) {
 		$action .= '<a title="Perdu" name="perdu" onclick="ChangeDevisAction(\'Perdu\');ChangeDevisID(\''.$v['id_dev'].'\');zuno.business.formTools.sendFormAjah(\'searchDevis\', \'draco/DevisListe.php\',\'listeResultDevis\');"><img align="middle" title="Perdu" alt="perdu" name="img" src="'.getStaticUrl('img').'prospec/devis.perdu.png"/></a>';
+	  }
+	    elseif (($v['status_dev'] == "4")and(verifDroitsAuto('devis', 14, $v['commercial_dev']))) {
 		$action .= "<a name=\"valider\" onclick=\"return zuno.popup.open('$suffixeLink/draco/Devis.php','id_devis=".$v['id_dev']."&action=valid',950,380);\">".imageTag(getStaticUrl('img').'prospec/devis.valid.png','Validé')."</a> ";
 	    }
 	    if (array_key_exists('isRenew',$datas) and $datas['isRenew']) {
@@ -869,9 +870,12 @@ zuno.business.formTools.sendFormAjah('searchDevis', 'draco/DevisListe.php','list
 	$bouton .= $this->resultNavigation($datas['from'],$datas['limit'],$datas['total'],"ChangeDevisResultPage");
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
-	$bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="devisDoExportTableur(this.value);" ').'</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
-	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
+        if(verifDroitsAuto('devis', 82, $v['commercial_dev']))
+            $bouton .= '<div style="display:none;" id="divExportTableur">'.selectTag('format_export', $availableConvFormat, '', '', ' onchange="devisDoExportTableur(this.value);" ').'</div>';
+	if(verifDroitsAuto('devis', 82, $v['commercial_dev']))
+            $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="'.getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
+	if(verifDroitsAuto('devis', 81, $v['commercial_dev']))
+            $bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
 	if($modHistorique)
 	    $bouton = '';

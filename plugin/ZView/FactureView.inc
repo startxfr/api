@@ -445,11 +445,11 @@ class factureView extends generalView {
 	if (verifDroitsAuto('facture', 50, $datas['data']['commercial_fact']))
 	    $bouton .= '<a onclick="ChangeFactureAction(\'Send\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="'.getStaticUrl('img').'prospec/facture.send.png"/> Envoyer</a>';
 
-	if (($datas['data']['status_fact'] < 5) and (verifDroitsAuto('facture', 13, $datas['data']['commercial_fact'])))
+	if (($datas['data']['status_fact'] < 5) and (verifDroitsAuto('facture', 14, $datas['data']['commercial_fact'])))
 	    $bouton .= '<a title="En attente de règlement" name="attenteRglmt" onclick="ChangeFactureAction(\'AttenteRglmt\');zuno.business.formTools.sendFormAjah(\'ActionFacturePDF\', \'facturier/Facture.php\',\'traitementFacture\');"><img align="middle" title="En attente de règlement" alt="En attente de règlement" name="img" src="'.getStaticUrl('img').'prospec/facture.attente.png"/> En attente du règlement</a>';
 
 	// Quand status Envoyé
-	if (($datas['data']['status_fact'] == "5") and (verifDroitsAuto('facture', 13, $datas['data']['commercial_fact']))) {
+	if (($datas['data']['status_fact'] == "5") and (verifDroitsAuto('facture', 14, $datas['data']['commercial_fact']))) {
 	    $bouton .= '<a title="Réglée" name="regle" onclick="return zuno.popup.open(\'Facture.php\', \'facture=' . $datas['data']['id_fact'] . '&action=confirmClore\', 520, 250, \'\', \'\', \'resize\', \'PopupConfirmCloreFact\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="'.getStaticUrl('img').'prospec/facture.paye.png"/> Facture réglée</a>';
 	    if (array_key_exists('zunoPayline', $GLOBALS) and $GLOBALS['zunoPayline']['MERCHANT_ID'] != "")
 		$bouton .= '<a title="Payer par carte bancaire" name="CB" onclick="zuno.popup.open(\'Facture.php\', \'action=popupCB&facture=' . $datas['data']['id_fact'] . '\',800,230);"><img align="middle" title="Payer par carte bancaire" alt="payer par carte" name="img" src="'.getStaticUrl('img').'prospec/facture.paye.png"/> Payer par carte bancaire</a>';
@@ -761,7 +761,7 @@ class factureView extends generalView {
 	    elseif (($v['status_fact'] == "3") and (verifDroitsAuto('facture', 50, $v['commercial_fact'])))
 		$action .= '<a href="' . $suffixeLink . 'facturier/Facture.php?id_fact=' . $v['id_fact'] . '" title="Envoyer" name="envoyer"><img align="middle" title="Envoyer" alt="envoyer" name="img" src="' . getStaticUrl('img').'prospec/facture.send.png"/></a>';
 	    // Quand status Envoyé
-	    elseif (($v['status_fact'] == "4") and (verifDroitsAuto('facture', 13, $v['commercial_fact'])))
+	    elseif (($v['status_fact'] == "4") and (verifDroitsAuto('facture', 14, $v['commercial_fact'])))
 		$action .= '<a title="Réglée" name="reglee" onclick="ChangeFactureAction(\'Clore\');ChangeFactureID(\'' . $v['id_fact'] . '\');zuno.business.formTools.sendFormAjah(\'searchFacture\', \'' . $suffixeLink . 'facturier/FactureListe.php\',\'listeResultFacture\');"><img align="middle" title="Réglée" alt="reglee" name="img" src="' . getStaticUrl('img').'prospec/facture.paye.png"/></a>';
 
 	    if ($v['nom_ent'] != '') {
@@ -826,9 +826,12 @@ class factureView extends generalView {
 	$bouton .= $this->resultNavigation($datas['from'], $datas['limit'], $datas['total'], "ChangeFactureResultPage");
 	loadPlugin(array('OOConverter'));
 	$availableConvFormat = OOConverterAvailable('spreadsheet');
-	$bouton .= '<div style="display:none;" id="divExportTableur">' . selectTag('format_export', $availableConvFormat, '', '', ' onchange="factureDoExportTableur(this.value);" ') . '</div>';
-	$bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="' . getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
-	$bouton .= $this->ResultGroupActionBouton($suffixeLink);
+	if(verifDroitsAuto('facture', 82, $v['commercial_dev']))
+            $bouton .= '<div style="display:none;" id="divExportTableur">' . selectTag('format_export', $availableConvFormat, '', '', ' onchange="factureDoExportTableur(this.value);" ') . '</div>';
+	if(verifDroitsAuto('facture', 82, $v['commercial_dev']))
+            $bouton .= '<a name="export" style="cursor:pointer;" onclick="exportTab();"><img title="exportation tableur" alt="exportation tableur" src="' . getStaticUrl('img').'prospec/export-csv.png"/> Export Tableur</a>';
+	if(verifDroitsAuto('facture', 81, $v['commercial_dev']))
+            $bouton .= $this->ResultGroupActionBouton($suffixeLink);
 
 	if ($modHistorique)
 	    $bouton = '';

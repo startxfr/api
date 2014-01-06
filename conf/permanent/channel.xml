@@ -27,7 +27,7 @@
 		<!-- and private page, configure this to FALSE	-->
 	<value id="private">FALSE</value>
 	<!-- If private part, specify minimum right	-->
-	<value id="RequiredRight">0,1,2,3,4,5,10,15,20</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,15,17,20</value>
 	<!-- Force visitor to use HTTPS connexion	-->
 	<value id="requireSSL">FALSE</value>
 	<!-- Name for session of this pool		-->
@@ -54,7 +54,7 @@
 	<value id="name">ZUNOSXA-PROSPEC</value>
 	<value id="path">prospec/</value>
 	<value id="private">TRUE</value>
-	<value id="RequiredRight">0,1,2,3,4,5,10,15,20</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,15,17,20</value>
 	<value id="requireSSL">FALSE</value>
 	<value id="SessName">ZUNOSXA</value>
 	<value id="SessDBPool" modifRight="0">1</value>
@@ -71,7 +71,7 @@
 	<value id="name">ZUNOSXA-AFFAIRE</value>
 	<value id="path">draco/</value>
 	<value id="private">TRUE</value>
-	<value id="RequiredRight">0,1,2,3,4,10,15</value>
+	<value id="RequiredRight">0,1,2,3,4,10,15,17</value>
 	<value id="requireSSL">FALSE</value>
 	<value id="SessName">ZUNOSXA</value>
 	<value id="SessDBPool" modifRight="0">1</value>
@@ -88,7 +88,7 @@
 	<value id="name">ZUNOSXA-COMMANDE</value>
 	<value id="path">pegase/</value>
 	<value id="private">FALSE</value>
-	<value id="RequiredRight">0,1,2,3,4,10,15,20</value>
+	<value id="RequiredRight">0,1,2,3,4,10,20</value>
 	<value id="requireSSL">FALSE</value>
 	<value id="SessName">ZUNOSXA</value>
 	<value id="SessDBPool" modifRight="0">1</value>
@@ -105,7 +105,7 @@
 	<value id="name">ZUNOSXA-GED</value>
 	<value id="path">gnose/</value>
 	<value id="private">TRUE</value>
-	<value id="RequiredRight">0,1,2,3,4,5,10,15</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10</value>
 	<value id="requireSSL">FALSE</value>
 	<value id="SessName">ZUNOSXA</value>
 	<value id="SessDBPool" modifRight="0">1</value>
@@ -122,7 +122,7 @@
 	<value id="name">ZUNOSXA-FACTURE</value>
 	<value id="path">facturier/</value>
 	<value id="private">FALSE</value>
-	<value id="RequiredRight">0,1,2,3,4,5,10,15</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10</value>
 	<value id="requireSSL">FALSE</value>
 	<value id="SessName">ZUNOSXA</value>
 	<value id="SessDBPool" modifRight="0">1</value>
@@ -139,7 +139,7 @@
 	<value id="name">ZUNOSXA-IPHONE</value>
 	<value id="path">iphone/</value>
 	<value id="private">TRUE</value>
-	<value id="RequiredRight">0,1,2,3,4,5,10,15,20</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,15,17,20</value>
 	<value id="requireSSL">FALSE</value>
 	<value id="SessName">ZUNOSXA-IPHONE</value>
 	<value id="SessDBPool" modifRight="0">1</value>
@@ -173,7 +173,7 @@
 	<value id="name">ZUNOSXA-PRODUIT</value>
 	<value id="path">produit/</value>
 	<value id="private">TRUE</value>
-	<value id="RequiredRight">0,1,2,3,4,5,10,15,20</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,17</value>
 	<value id="requireSSL">FALSE</value>
 	<value id="SessName">ZUNOSXA</value>
 	<value id="SessDBPool" modifRight="0">1</value>

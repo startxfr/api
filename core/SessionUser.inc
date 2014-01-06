@@ -248,6 +248,52 @@ function verifDroitsAuto($partie, $souspartie, $proprio) {
     }
 }
 
+//
+//	partie 'actualite': 1000;
+//	partie 'affaire': 1100;
+//	partie 'commande': 1200;
+//	partie 'contact': 1300;
+//	partie 'devis': 1400;
+//	partie 'facture': 1500;
+//	partie 'navigator': 2000;
+//	partie 'preference': 3000;
+//	partie 'search': 2100;
+//	partie 'send': 2200;
+//	partie 'avoir': 1600;
+//	partie 'produit': 1700;
+//	partie 'statistiques': 5000;
+//	partie default: 9900;
+//            
+//	action '00': accès complet
+//	      0  autorisation complete
+//	      5  consulter la partie
+//	      10 Consulter les autre, si partie 10, alors result de recherche voit tout
+//	      13 perdu
+//            14 valider
+//            15 modifier les miens seulement
+//            17 modifier Les autres
+//            20 transformer etape suivante
+//            25 cloner
+//            30 suppression
+//            35 cloner les miens seulement
+//            30 suppression les miens seulement
+//            45 voir une statistique
+//            50 envoi par mail
+//            52 envoi par fax
+//            54 envoi par courrier
+//            59 envoi xxxx
+//            60 generer & enregistrer
+//            62 generer ou télécharger le fichier générer
+//            62 generer ou télécharger le fichier générer
+//            81 export des resultats
+//            82 Action groupée sur les resultats
+//            99 interdiction formelle
+//            
+
+
+                
+ 
+
 /**
  * Fonction qui gère les accès aux différentes parties de l'appli
  * @param string $partie Le nom de la partie / du module dans le quel on se trouve
@@ -314,7 +360,7 @@ function verifDroits($partie, $souspartie = 99 ) {
     elseif($_SESSION['user']['module'][$partie] != 'oui') {return array('0', $partie);}
     elseif((($souspartie>=50 and $souspartie<=55) or $souspartie == 59)and $_SESSION['user']['module']['send'] != 'oui') {return array('0', 'Send');}
     elseif($souspartie == 45 and $_SESSION['user']['module']['statistiques'] != 'oui') {return array('0', 'statistiques');}
-
+                 
     // Ici on sait que le client a acheté le module, on vérifie s'il a le droit de faire l'action désirée
     if($_SESSION['user']['right'] == 2) {return 1;} // C'est le compte principal du client, il a donc le droit
     elseif(array_key_exists('permissions', $_SESSION['user'])) {
