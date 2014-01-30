@@ -37,7 +37,7 @@
 	<value id="texte.presentationDeveloppement.txt">Presentation developpement</value>
 	<value id="texte._Devis.txt">Devis</value>
 	<value id="texte.DevisClientRedhat.txt">Devis (client redhat)</value>
-	<value id="texte.DevisFormation.txt">Devis (client redhat)</value>
+	<value id="texte.DevisFormation.txt">Devis (formation)</value>
 	<value id="texte.DevisNewClient.txt">Devis (nouv client)</value>
 	<value id="texte.DevisNewClientAcademique.txt">Devis (nouv client académique)</value>
 	<value id="texte._CommandeEnregistree.txt">Commande enregistrée</value>
