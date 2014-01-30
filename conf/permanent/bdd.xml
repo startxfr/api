@@ -13,9 +13,9 @@
     <group name="DBPool_1" modifRight="0" title="Premier POOL de connexion">
 	<value id="type">mysql</value>
 	<value id="serveur">127.0.0.1</value>
-	<value id="login">dev</value>
-	<value id="pass">dev</value>
-	<value id="base">startx_sxa</value>
+	<value id="login">testing</value>
+	<value id="pass">x3WpT3faCSa6BWd3</value>
+	<value id="base">TESTING_sxa</value>
 	<value id="persistant">TRUE</value>
     </group>
     <group name="DBPool_10" modifRight="0" title="POOL de connexion de reference">

@@ -37,7 +37,7 @@
 	<value id="MimeTypeFile">/etc/mime.types</value>
     </group>
     <group name="URL">
-	<value id="appli">localhost/startx/sxa/</value>
+	<value id="appli">dev.startx.fr/sxa/</value>
     </group>
     <group name="CACHEXML">
 	<value id="version">1.0</value>
