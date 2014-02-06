@@ -34,11 +34,13 @@ class Api extends Configurable {
      * <li>base: name of the nosql database to use for retriving Api core elements (api documents, logs, app, session, models and resources)</li>
      * <li>api_collection : name of the nosql collection used to store API config document</li>
      * </ul>
+     * This property has to be overwritten before any call to Api::getInstance() or related method who will construct the Api singleton.
+     * To overwrite this property, simply redefine Api::$nosqlApiBackend = '{ ... }';
      */
-    public $nosqlApiBackend = '{
+    public static $nosqlApiBackend = '{
         "connection" : "mongodb://username:password@127.0.0.1:27017",
-        "base" : "sxapi",
-        "api_collection" : "sxapi.api"
+        "base" : "basename",
+        "api_collection" : "collectionname"
     }';
 
     /**
@@ -93,7 +95,7 @@ class Api extends Configurable {
 
     /**
      * The Api constructor. Do not directly instanciate this object and prefer using the Api::getInstance() static method for creating and accessing the Api singleton object
-     * This constructor will decode the $nosqlApiBackend and try to connect to the nosql backend.
+     * This constructor will decode the Api::$nosqlApiBackend and try to connect to the nosql backend.
      * If an exception is catched, call the exitOnError method for exiting program.
      *
      * @param string $defaultApiID with the api id to use for creation
@@ -104,9 +106,9 @@ class Api extends Configurable {
             $this->defaultApiID = $defaultApiID;
         // connect nosql backend immediately to get log storage support
         try {
-            $this->nosqlApiBackend = json_decode($this->nosqlApiBackend);
-            $nosqlConnection = new Mongo($this->nosqlApiBackend->connection);
-            $this->nosqlConnection = $nosqlConnection->selectDB($this->nosqlApiBackend->base);
+            Api::$nosqlApiBackend = json_decode(Api::$nosqlApiBackend);
+            $nosqlConnection = new Mongo(Api::$nosqlApiBackend->connection);
+            $this->nosqlConnection = $nosqlConnection->selectDB(Api::$nosqlApiBackend->base);
         } catch (Exception $exc) {
             echo "Error communicating with nosql backend : " . $exc->getMessage();
             exit;
@@ -165,9 +167,9 @@ class Api extends Configurable {
         try {
             if ($_REQUEST['api'] != "")
                 $this->defaultApiID = $_REQUEST['api'];
-            $api = $this->nosqlConnection->selectCollection($this->nosqlApiBackend->api_collection)->findOne(array("_id" => $this->defaultApiID));
+            $api = $this->nosqlConnection->selectCollection(Api::$nosqlApiBackend->api_collection)->findOne(array("_id" => $this->defaultApiID));
             if (is_null($api))
-                $this->exitOnError(3, "could not find '" . $this->defaultApiID . "' api document in '" . $this->nosqlApiBackend->api_collection . "' collection on '" . $this->nosqlApiBackend->base . "' database", $this->nosqlConnection);
+                $this->exitOnError(3, "could not find '" . $this->defaultApiID . "' api document in '" . Api::$nosqlApiBackend->api_collection . "' collection on '" . Api::$nosqlApiBackend->base . "' database", $this->nosqlConnection);
             else
                 $this->setConfigs($api);
             $this->logInfo(2, "Loaded version " . $this->getConfig('version', '0.0') . " of '" . $this->getConfig("_id", "_id") . "' API.");

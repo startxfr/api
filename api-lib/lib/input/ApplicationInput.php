@@ -25,7 +25,7 @@ class ApplicationInput extends DefaultInput implements IInput {
         $api = Api::getInstance();
         $this->applicationStorage = $api->nosqlConnection->selectCollection($this->getConfig("collection",'application'));
         if (is_null($this->applicationStorage))
-            throw new InputException("could not get the application collection '" . $this->getConfig("collection",'application') . "' into nosql backend '" . $api->nosqlApiBackend->base . "' datadase.", 202);
+            throw new InputException("could not get the application collection '" . $this->getConfig("collection",'application') . "' into nosql backend '" . Api::$nosqlApiBackend->base . "' datadase.", 202);
     }
 
     /**
