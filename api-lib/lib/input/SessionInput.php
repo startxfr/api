@@ -25,7 +25,7 @@ class SessionInput extends DefaultInput implements IInput {
         $api = Api::getInstance();
         $this->sessionStorage = $api->nosqlConnection->selectCollection($this->getConfig("collection",'session'));
         if (is_null($this->sessionStorage))
-            throw new InputException("could not get the session collection '" . $this->getConfig("collection",'session') . "' into nosql backend '" . $api->nosqlApiBackend->base . "' datadase.", 202);
+            throw new InputException("could not get the session collection '" . $this->getConfig("collection",'session') . "' into nosql backend '" . Api::$nosqlApiBackend->base . "' datadase.", 202);
         session_set_save_handler(
                 array($this, 'openHandler'), array($this, 'closeHandler'), array($this, 'readHandler'), array($this, 'writeHandler'), array($this, 'destroyHandler'), array($this, 'gcHandler')
         );
