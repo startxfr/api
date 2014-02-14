@@ -24,7 +24,8 @@ class defaultPlugin extends Configurable implements IPlugin {
      * @return void
      */
     public function __construct($config) {
-        Api::logDebug(100, "Load '" . $config["id"] . "' " . get_class($this) . " plugin ", $config, 5);
+        $id = (array_key_exists('_id', $config)) ? $config["_id"] : 'default';
+        Api::logDebug(100, "Load '" . $id . "' " . get_class($this) . " plugin ", $config, 5);
         parent::__construct($config);
     }
 

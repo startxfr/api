@@ -23,7 +23,8 @@ class DefaultInput extends Configurable implements IInput {
      * @return void
      */
     public function __construct($config) {
-        Api::logDebug(200, "Construct '" . $config["_id"] . "' " . get_class($this) . " connector ", $config, 5);
+        $id = (array_key_exists('id', $config)) ? $config["id"] : 'default';
+        Api::logDebug(200, "Construct '" . $id . "' " . get_class($this) . " connector ", $config, 5);
         parent::__construct($config);
     }
 

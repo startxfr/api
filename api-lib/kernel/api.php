@@ -165,7 +165,7 @@ class Api extends Configurable {
      */
     private function loadApi() {
         try {
-            if ($_REQUEST['api'] != "")
+            if (array_key_exists('api', $_REQUEST) and $_REQUEST['api'] != "")
                 $this->defaultApiID = $_REQUEST['api'];
             $api = $this->nosqlConnection->selectCollection(Api::$nosqlApiBackend->api_collection)->findOne(array("_id" => $this->defaultApiID));
             if (is_null($api))
@@ -214,8 +214,7 @@ class Api extends Configurable {
                                 } catch (Exception $e) {
                                     $this->logWarn(13, "Could not load '" . $pluginconf["id"] . "' plugin. " . $e->getMessage(), $e->getTrace());
                                 }
-                            }
-                            else
+                            } else
                                 $this->logWarn(11, "Could not set '" . $pluginconf["id"] . "' plugin because class " . $pluginName . " doesn't exist");
                         }
                     }
@@ -241,7 +240,7 @@ class Api extends Configurable {
                 if (class_exists($inputName)) {
                     try {
                         $this->inputs[$inputconf["id"]] = new $inputName($inputconf);
-                        if ($inputconf['default'] === true) {
+                        if (array_key_exists('default', $inputconf) and $inputconf['default'] === true) {
                             $this->inputDefault = $inputconf["id"];
                         }
                     } catch (Exception $e) {
@@ -249,8 +248,7 @@ class Api extends Configurable {
                         $this->logWarn(23, "Could not load '" . $inputconf["id"] . "' input connector. " . $e->getMessage(), $e->getTrace());
                         throw new ApiException("we could not load '" . $inputconf["id"] . "' input connector. " . $e->getMessage(), 23);
                     }
-                }
-                else
+                } else
                     $this->logWarn(21, "Could not set '" . $inputconf["id"] . "' input connector. because class " . $inputName . " doesn't exist");
             }
             $this->logInfo(20, "Loaded " . count($this->inputs) . " input connector (" . implode(',', array_keys($this->inputs)) . ") and default set to '" . $this->inputDefault . "'", array_keys($this->inputs), 3);
@@ -323,8 +321,7 @@ class Api extends Configurable {
                         $this->logWarn(33, "Could not load '" . $outputconf["id"] . "' output connector. " . $e->getMessage(), $e->getTrace());
                         throw new ApiException("we could not load '" . $outputconf["id"] . "' output connector. " . $e->getMessage(), 33);
                     }
-                }
-                else
+                } else
                     $this->logWarn(31, "Could not load '" . $outputconf["id"] . "' output connector. because class " . $outputName . " doesn't exist");
             }
             if ($this->getInput()->getOutputFormat() != '' and array_key_exists($this->getInput()->getOutputFormat(), $this->outputs)) {
@@ -404,8 +401,7 @@ class Api extends Configurable {
                         $this->logWarn(43, "Could not load '" . $storeconf["id"] . "' store connector. " . $e->getMessage(), $e->getTrace());
                         throw new ApiException("we could not load '" . $storeconf["id"] . "' store connector. " . $e->getMessage(), 43);
                     }
-                }
-                else
+                } else
                     $this->logWarn(42, "Could not load '" . $storeconf["id"] . "' store connector. class '$storeName' doesn't exist", $storeconf);
             }
             $this->logInfo(40, "Loaded " . count($this->stores) . " store connector (" . implode(',', array_keys($this->stores)) . ") and default set to '" . $this->storeDefault . "'", array_keys($this->stores), 3);
@@ -561,30 +557,43 @@ class Api extends Configurable {
                     $actionName = 'readAction';
                     break;
             }
-            if (method_exists($resource, $actionName) === false)
+            if (method_exists($resource, $actionName) === false) {
                 $actionName = 'readAction';
+            }
             if (method_exists($resource, $actionName) === false) {
                 $this->logWarn(84, "action $actionName is not implemented in '" . $config['class'] . "' resource.", $config);
                 throw new ApiException("action $actionName is not implemented in '" . $config['class'] . "' resource", 5);
             } else {
                 if (array_key_exists('acl', $config) and is_array($config['acl'])) {
-                    if (!is_array($config['acl']['user']) and ($config['acl']['user'] == '*' or $config['acl']['user'] == ''))
-                        $users = '*';
-                    elseif (is_array($config['acl']['user']))
-                        $users = $config['acl']['user'];
-                    else
-                        $users = explode(',', $config['acl']['user']);
-                    if (!is_array($config['acl']['application']) and ($config['acl']['application'] == '*' or $config['acl']['application'] == ''))
-                        $applications = '*';
-                    elseif (is_array($config['acl']['application']))
-                        $applications = $config['acl']['application'];
-                    else
-                        $applications = explode(',', $config['acl']['application']);
+                    if (array_key_exists('user', $config['acl'])) {
+                        if (!is_array($config['acl']['user']) and ($config['acl']['user'] == '*' or $config['acl']['user'] == '')) {
+                            $users = '*';
+                        } elseif (is_array($config['acl']['user'])) {
+                            $users = $config['acl']['user'];
+                        } else {
+                            $users = explode(',', $config['acl']['user']);
+                        }
+                    }
+                    else {
+                         $users = '*';
+                    }
+                    if (array_key_exists('application', $config['acl'])) {
+                        if (!is_array($config['acl']['application']) and ($config['acl']['application'] == '*' or $config['acl']['application'] == '')) {
+                            $applications = '*';
+                        } elseif (is_array($config['acl']['application'])) {
+                            $applications = $config['acl']['application'];
+                        } else {
+                            $applications = explode(',', $config['acl']['application']);
+                        }
+                    }
+                    else {
+                         $applications = '*';
+                    }
                     $doExec = false;
                     $returnApp = $returnUser = true;
-                    if ($users == '*' or in_array($this->getInput('user')->getId(), $users))
+                    if ($users == '*' or in_array($this->getInput('user')->getId(), $users)) {
                         $returnUser = true;
-                    else {
+                    } else {
                         $this->logError(81, "execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this resource", $config);
                         throw new ApiException("execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this resource", 81);
                     }
@@ -601,7 +610,7 @@ class Api extends Configurable {
                         $resource->$actionName();
                     }
                 } else {
-                    $this->logInfo(80, "No ACL rules for $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config['acl'], 3);
+                    $this->logInfo(80, "No ACL rules for $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config, 3);
                     $resource->$actionName();
                 }
             }
@@ -692,8 +701,7 @@ class Api extends Configurable {
                             return $outputConfig;
                         else
                             return $this->getResourceConfig($elements, $selectedChild['children'], $outputConfig);
-                    }
-                    else
+                    } else
                         return $outputConfig;
                 }
             }

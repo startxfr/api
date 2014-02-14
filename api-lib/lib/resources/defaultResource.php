@@ -12,6 +12,8 @@
 abstract class defaultResource extends Configurable implements IResource {
 
     public function __construct($config) {
+        $id = (array_key_exists('_id', $config)) ? $config["_id"] : 'default';
+        Api::logDebug(900, "Load '" . $id . "' " . get_class($this) . " resource ", $config, 5);
         parent::__construct($config);
     }
 

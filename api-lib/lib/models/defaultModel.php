@@ -14,7 +14,8 @@ abstract class defaultModel extends Configurable implements IModel {
     protected $storage = null;
 
     public function __construct($config = array(), $storageID = 'default') {
-        Api::logDebug(500, "Construct '" . $config["_id"] . "' " . get_class($this) . " model ", $config, 5);
+        $id = (array_key_exists('_id', $config)) ? $config["_id"] : 'default';
+        Api::logDebug(500, "Construct '" . $id . "' " . get_class($this) . " model ", $config, 5);
         parent::__construct($config);
         $api = Api::getInstance();
         $this->storage = Api::getInstance()->getStore($storageID);
