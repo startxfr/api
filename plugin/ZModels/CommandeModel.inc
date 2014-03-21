@@ -756,7 +756,15 @@ class commandeModel extends GeneralModel {
      */
     public function getAllFournisseursFromID($id, $quoi = "simple") {
 	if($quoi == "simple") {
-	    $this->makeRequeteFree("select *, dp.prixF as prixF2, dp.remiseF as remiseF2 from commande_produit dp left join produit p on p.id_prod=dp.id_produit left join produit_fournisseur pf on pf.produit_id = dp.id_produit left join fournisseur ON fournisseur.id_fourn = pf.fournisseur_id left join entreprise e ON e.id_ent = fournisseur.entreprise_fourn left join contact c on c.id_cont=fournisseur.contactComm_fourn where dp.id_commande = '".trim($id)."' order by id_produit ASC ;");
+	    $this->makeRequeteFree("SELECT * , dp.prixF AS prixF2, dp.remiseF AS remiseF2
+                FROM commande_produit dp
+                LEFT JOIN produit p ON p.id_prod = dp.id_produit
+                LEFT JOIN produit_fournisseur pf ON pf.produit_id = dp.id_produit AND pf.fournisseur_id = dp.fournisseur
+                LEFT JOIN fournisseur ON fournisseur.id_fourn = pf.fournisseur_id
+                LEFT JOIN entreprise e ON e.id_ent = fournisseur.entreprise_fourn
+                LEFT JOIN contact c ON c.id_cont = fournisseur.contactComm_fourn
+                WHERE dp.id_commande =  '".trim($id)."'
+                ORDER BY id_produit ASC ;");
 	    $result = $this->process2();
 	    $old = null;
 	    $increment = 0;
