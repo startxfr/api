@@ -42,6 +42,7 @@
 	<value id="texte.DevisNewClientAcademique.txt">Devis (nouv client académique)</value>
 	<value id="texte._CommandeEnregistree.txt">Commande enregistrée</value>
 	<value id="texte._Facture.txt">Votre facture STARTX</value>
+	<value id="texte._FactureRevente.txt">Votre facture STARTX - souscriptions Red Hat</value>
 	<value id="texte._Relance.txt">Votre facture STARTX : relance</value>
 	<value id="coverFax">Cannevas/_CouvertureFax.odt</value>
 	<value id="maxEnvoiFax">-1</value>
@@ -82,7 +83,6 @@
 	<value id="dir.facture" title="Répertoire de stockage des factures">Factures/Clients/</value>
 	<value id="dir.factureFournisseur" title="Répertoire de stockage des factures fournisseur">Factures/Fournisseurs/</value>
 	<value id="cannevas.defaut" title="Cannevas type pour une facture">_Facture.odt</value>
-	<value id="cannevas.revente" title="Cannevas type pour une facture avec de la revente">_FactureRevente.odt</value>
 	<value id="cannevas.en" title="Cannevas pour une facture en anglais">_FactureEN.odt</value>
 	<value id="cannevas.avoir" title="Cannevas type pour un avoir">_FactureAvoir.odt</value>
 	<value id="cannevas.duplicata" title="Cannevas type pour un duplicata">_Duplicata.odt</value>
