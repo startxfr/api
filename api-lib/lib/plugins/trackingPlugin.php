@@ -34,32 +34,112 @@ class trackingPlugin extends defaultPlugin implements IPlugin {
         $plugin = self::getInstance();
         require_once(LIBPATHEXT . 'php-ga-1.1.1' . DS . 'src' . DS . 'autoload.php');
         // Initilize GA Tracker
+        try {
+            $tracker = $plugin->initTracker();
+        } catch (Exception $e) {
+            $api->logError(530, "tracking plugin error when starting tracker " . $e->getMessage(), $e);
+            return false;
+        }
+        try {
+            $visitor = $plugin->initVisitor();
+        } catch (Exception $e) {
+            $api->logError(531, "tracking plugin error obtaining tracking visitor. " . $e->getMessage(), $e);
+            return false;
+        }
+        try {
+            $sessionga = $plugin->initSession();
+        } catch (Exception $e) {
+            $api->logError(532, "tracking plugin error when recovering tracking session into api session " . $e->getMessage(), $e);
+            return false;
+        }
+        try {
+            $page = $plugin->initPage();
+        } catch (Exception $e) {
+            $api->logError(533, "tracking plugin error when creating tracking page " . $e->getMessage(), $e);
+            return false;
+        }
+        // Track page view
+        try {
+            $tracker->trackPageview($page, $sessionga, $visitor);
+        } catch (Exception $e) {
+            $api->logError(533, "tracking plugin error when recording this trace. " . $e->getMessage(), $e);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Render the tracker object
+     *
+     * @return UnitedPrototype\GoogleAnalytics\Tracker object
+     * @throws Exception
+     */
+    public function initTracker() {
+        $api = Api::getInstance();
+        $plugin = self::getInstance();
         $tracker = new UnitedPrototype\GoogleAnalytics\Tracker($plugin->getConfig('account_id'), $plugin->getConfig('domain_name', $api->getInput()->getHost()));
-        // Assemble Visitor information
-        // (could also get unserialized from database)
+        return $tracker;
+    }
+
+    /**
+     * Render the visitor object
+     *
+     * @return UnitedPrototype\GoogleAnalytics\Visitor object
+     * @throws Exception
+     */
+    public function initVisitor() {
+        $api = Api::getInstance();
         $session = $api->getInput('session');
         if ($session->get('trackingPlugin_visitor') != null) {
             $visitor = unserialize($session->get('trackingPlugin_visitor'));
-        } else{
-            $visitor = new UnitedPrototype\GoogleAnalytics\Visitor();
-            $visitor->setIpAddress($_SERVER['REMOTE_ADDR']);
-            $visitor->setUserAgent($_SERVER['HTTP_USER_AGENT']);
-            $visitor->setScreenResolution('1024x768');
-            $session->set('trackingPlugin_visitor',serialize($visitor));
+            if ($visitor === false) {
+                $api->logWarn(531, "tracking plugin error when unserializing tracking visitor from api session " . $session->get('_id'), $session->get('trackingPlugin_visitor'));
+            } else {
+                return $visitor;
+            }
         }
+        $visitor = new UnitedPrototype\GoogleAnalytics\Visitor();
+        $visitor->setIpAddress($_SERVER['REMOTE_ADDR']);
+        $visitor->setUserAgent($_SERVER['HTTP_USER_AGENT']);
+        $visitor->setScreenResolution('1024x768');
+        $session->set('trackingPlugin_visitor', serialize($visitor));
+        return $visitor;
+    }
+
+    /**
+     * Render the session object
+     *
+     * @return UnitedPrototype\GoogleAnalytics\Session object
+     * @throws Exception
+     */
+    public function initSession() {
+        $api = Api::getInstance();
+        $session = $api->getInput('session');
         if ($session->get('trackingPlugin_session') != null) {
             $sessionga = unserialize($session->get('trackingPlugin_session'));
+            if ($sessionga === false) {
+                $api->logWarn(532, "tracking plugin error when recovering tracking session from api session " . $session->get('_id'), $session->get('trackingPlugin_visitor'));
+            } else {
+                return $sessionga;
+            }
         }
-        else {
-            $sessionga = new UnitedPrototype\GoogleAnalytics\Session();
-            $session->set('trackingPlugin_session', serialize($sessionga));
-        }
-        // Assemble Page information
+        $sessionga = new UnitedPrototype\GoogleAnalytics\Session();
+        $session->set('trackingPlugin_session', serialize($sessionga));
+        return $sessionga;
+    }
+    
+    
+    /**
+     * Render the page object
+     *
+     * @return UnitedPrototype\GoogleAnalytics\Page object
+     * @throws Exception
+     */
+    public function initPage() {
+        $api = Api::getInstance();
         $page = new UnitedPrototype\GoogleAnalytics\Page(DS . $api->getInput()->getPath());
-        $page->setTitle('Resource ' . $api->getInput()->getPath());
-        // Track page view
-        $tracker->trackPageview($page, $sessionga, $visitor);
-        return true;
+            $page->setTitle('Resource ' . $api->getInput()->getPath());
+        return $page;
     }
 
 }
