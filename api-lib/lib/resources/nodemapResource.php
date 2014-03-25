@@ -13,49 +13,59 @@ class nodemapResource extends readonlyResource implements IResource {
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        $tree = $this->extractTreeStructure();
-        $outputType = $api->getOutput()->getConfig("_id");
-        $message = sprintf($this->getConfig('message_service_read','message service read'), count($tree));
-        if ($outputType == "html")
-            $tree = $this->generateHtmlTree($tree);
+        if ($this->getConfig('root_path', false)) {
+            $path = null;
+        } else {
+            $path = $api->getInput()->getRootUrl() . $this->getConfig('sub_path', $api->getInput()->getPath());
+        }
+        $tree = $this->extractTreeStructure($path);
+        $outputType = $api->getOutput()->getConfig("class");
+        $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($tree));
+        $tree = ($outputType == "HtmlOutput") ? $this->generateHtmlTree($tree) : $tree[0];
         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
         $api->getOutput()->renderOk($message, $tree);
         return true;
     }
 
-    private function extractTreeStructure($nodes = null, $path = null) {
+    private function extractTreeStructure($limitPath = null, $nodes = null, $path = null) {
         $api = Api::getInstance();
-        if ($nodes == null)
+        if ($nodes == null and $path == null)
             $nodes = array($api->getConfig("tree"));
         if ($path == null)
             $path = $api->getInput()->getRootUrl();
         $treeOut = array();
+        $params = (count($_GET) > 0) ? '?' . http_build_query($_GET) : '';
         if (is_array($nodes)) {
             foreach ($nodes as $node) {
-                if ($node['path'] == '/')
+                if ($node['path'] == '/') {
                     $url = $path;
-                else
+                } else {
                     $url = $path . $node['path'] . '/';
-                $params = (count($_GET) > 0) ? '?'.http_build_query($_GET) : '';
-                if (array_key_exists('children', $node))
+                }
+                if (array_key_exists('children', $node)) {
                     $treeOut[] = array(
                         "name" => @$node['path'],
                         "url" => $url . $params,
                         "desc" => @$node['desc'],
-                        "children" => $this->extractTreeStructure($node['children'], $url)
+                        "children" => $this->extractTreeStructure($limitPath, $node['children'], $url)
                     );
-                else
+                } else {
                     $treeOut[] = array(
                         "name" => @$node['path'],
                         "url" => $url . $params,
                         "desc" => @$node['desc']
                     );
+                }
             }
         }
         return $treeOut;
     }
 
     private function generateHtmlTree($tree) {
+        if (!is_array($tree))
+            $tree = array($tree);
+        elseif (is_object($tree))
+            $tree = (array) $tree;
         if (is_array($tree)) {
             $html = "<ul>";
             foreach ($tree as $node) {

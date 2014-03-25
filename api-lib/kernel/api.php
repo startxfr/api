@@ -313,7 +313,7 @@ class Api extends Configurable {
                 if (class_exists($outputName)) {
                     try {
                         $this->outputs[$outputconf["id"]] = new $outputName($outputconf);
-                        if ($outputconf['default'] === true) {
+                        if (array_key_exists('default', $outputconf) and $outputconf['default'] === true) {
                             $this->outputDefault = $outputconf["id"];
                         }
                     } catch (Exception $e) {
@@ -668,8 +668,9 @@ class Api extends Configurable {
                     $elements = array();
                     unset($outputConfig['children']);
                     unset($wildcardChild['path']);
-                    if ($wildcardChild != null)
+                    if ($wildcardChild != null) {
                         $outputConfig = Toolkit::array_merge_recursive_distinct($outputConfig, $wildcardChild);
+                    }
                     $this->logWarn(85, " path '" . $searchedPath . "' could not be found in api tree but wildcard node is found. Use previous resource '" . $outputConfig['class'] . "' instead", $outputConfig);
                     return $outputConfig;
                 }
@@ -678,13 +679,14 @@ class Api extends Configurable {
                 } else {
                     $addedConfig = $selectedChild;
                     unset($addedConfig['children']);
-                    if ($addedConfig['resource'] == '') {
+                    if (!array_key_exists('resource', $addedConfig) or $addedConfig['resource'] == '') {
                         $this->logError(86, " path '" . $searchedPath . "' config should contain the 'resource' attribute", $addedConfig);
                         throw new ApiException(" path '" . $searchedPath . "' config should contain the 'resource' attribute");
                     }
                     $configResource = $this->nosqlConnection->selectCollection($this->getConfig("resource_collection", "resources"))->findOne(array("_id" => $addedConfig['resource']));
-                    if (is_null($configResource) or $configResource["_id"] == '')
+                    if (is_null($configResource) or !array_key_exists('_id', $configResource) or $configResource["_id"] == '') {
                         throw new ApiException("Can't find the resource config in stored resources", 87);
+                    }
                     $this->logDebug(87, "Resource '" . $addedConfig['resource'] . "' found in resource backend", $configResource, 5);
                     if ($configResource['class'] == '') {
                         $this->logError(87, " resource '" . $addedConfig['resource'] . "' config should contain the 'class' attribute", $configResource);
@@ -715,7 +717,7 @@ class Api extends Configurable {
     }
 
     /**
-     * log informationnal message into log backend
+     * log message into log backend
      * Could be used as a static or instance method
      * @param int $code the code coresponding to this log entry
      * @param string $message a message describing the information
@@ -844,29 +846,32 @@ class Api extends Configurable {
     public function exitOnError($code, $message, $data = array()) {
         $this->renderer = null;
         try {
-            if (method_exists($this->getInput(), 'getOutputFormat'))
+            if (method_exists($this->getInput(), 'getOutputFormat')) {
                 $outputName = $this->getInput()->getOutputFormat();
-            else
+            } else {
                 $outputName = 'html';
+            }
         } catch (Exception $e) {
             $outputName = 'html';
         }
         try {
             $outputClassName = ucfirst($outputName) . 'Output';
             $this->renderer = new $outputClassName(array());
-            if (method_exists($this->renderer, "renderError") !== false)
+            if (method_exists($this->renderer, "renderError") !== false) {
                 $this->renderer->renderError(($code + 1000), $message, $data);
-            elseif (method_exists($this->renderer, "render") !== false)
+            } elseif (method_exists($this->renderer, "render") !== false) {
                 $this->renderer->render($message);
-            else {
+            } else {
                 echo $message;
-                if (DEBUG)
+                if (DEBUG) {
                     var_dump($data);
+                }
             }
         } catch (Exception $e) {
             echo $message;
-            if (DEBUG)
+            if (DEBUG) {
                 var_dump($data);
+            }
         }
         session_write_close();
         exit;
@@ -874,4 +879,3 @@ class Api extends Configurable {
 
 }
 
-?>
