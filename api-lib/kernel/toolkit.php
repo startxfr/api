@@ -38,12 +38,32 @@ class Toolkit {
         }
     }
 
+    /**
+     * Convert string to array according to a sep
+     */
+    static function string2Array($string, $sep = ',') {
+        if (is_string($string) and strpos($string, $sep) !== false) {
+            $ex = @explode($sep, $string);
+            if (is_array($ex)) {
+                return $ex;
+            } else {
+                return array($string);
+            }
+        } elseif (is_array($string)) {
+            return $string;
+        } elseif (is_null()) {
+            return array();
+        } else {
+            return array($string);
+        }
+    }
+
     static function &array_merge_recursive_distinct(array &$array1, &$array2 = null) {
         $merged = $array1;
         if (is_array($array2)) {
             foreach ($array2 as $key => $val) {
                 if (is_array($array2[$key])) {
-                    $merged[$key] = (array_key_exists($key,$merged) and is_array($merged[$key])) ? Toolkit::array_merge_recursive_distinct($merged[$key], $array2[$key]) : $array2[$key];
+                    $merged[$key] = (array_key_exists($key, $merged) and is_array($merged[$key])) ? Toolkit::array_merge_recursive_distinct($merged[$key], $array2[$key]) : $array2[$key];
                 } else {
                     $merged[$key] = $val;
                 }

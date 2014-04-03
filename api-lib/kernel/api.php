@@ -110,7 +110,15 @@ class Api extends Configurable {
             $nosqlConnection = new Mongo(Api::$nosqlApiBackend->connection);
             $this->nosqlConnection = $nosqlConnection->selectDB(Api::$nosqlApiBackend->base);
         } catch (Exception $exc) {
-            echo "Error communicating with nosql backend : " . $exc->getMessage();
+            http_response_code(503);
+            $message = "Error communicating with nosql backend : " . $exc->getMessage();
+            if ($_REQUEST["format"] == "json") {
+                header('Content-Type: text/json; charset=utf8');
+                echo json_encode(array('status' => 'error', 'success' => false, 'total' => 0, 'message' => $message, 'data' => null));
+            } else {
+                header('Content-Type: text/plain; charset=utf8');
+                echo $message;
+            }
             exit;
         }
     }
@@ -565,30 +573,8 @@ class Api extends Configurable {
                 throw new ApiException("action $actionName is not implemented in '" . $config['class'] . "' resource", 5);
             } else {
                 if (array_key_exists('acl', $config) and is_array($config['acl'])) {
-                    if (array_key_exists('user', $config['acl'])) {
-                        if (!is_array($config['acl']['user']) and ($config['acl']['user'] == '*' or $config['acl']['user'] == '')) {
-                            $users = '*';
-                        } elseif (is_array($config['acl']['user'])) {
-                            $users = $config['acl']['user'];
-                        } else {
-                            $users = explode(',', $config['acl']['user']);
-                        }
-                    }
-                    else {
-                         $users = '*';
-                    }
-                    if (array_key_exists('application', $config['acl'])) {
-                        if (!is_array($config['acl']['application']) and ($config['acl']['application'] == '*' or $config['acl']['application'] == '')) {
-                            $applications = '*';
-                        } elseif (is_array($config['acl']['application'])) {
-                            $applications = $config['acl']['application'];
-                        } else {
-                            $applications = explode(',', $config['acl']['application']);
-                        }
-                    }
-                    else {
-                         $applications = '*';
-                    }
+                    $users = $this->executeExtractAclUser($config['acl']);
+                    $applications = $this->executeExtractAclApplication($config['acl']);
                     $doExec = false;
                     $returnApp = $returnUser = true;
                     if ($users == '*' or in_array($this->getInput('user')->getId(), $users)) {
@@ -622,6 +608,46 @@ class Api extends Configurable {
             $this->getOutput()->renderError($exc->getCode(), "Error when executing api process because " . $exc->getMessage());
         }
         return $this;
+    }
+
+    /**
+     * Extract form the resource config the acl user autorized
+     * @param mix $aclRules the 
+     * @return array/string with autorized users
+     * @throws ApiException If resource is not acessible or controlled by ACL rules.
+     */
+    private function executeExtractAclUser($aclRules) {
+        $users = '*';
+        if (array_key_exists('user', $aclRules)) {
+            if (!is_array($aclRules['user']) and ($aclRules['user'] == '*' or $aclRules['user'] == '')) {
+                $users = '*';
+            } elseif (is_array($aclRules['user'])) {
+                $users = $aclRules['user'];
+            } else {
+                $users = Toolkit::string2Array($aclRules['user']);
+            }
+        }
+        return $users;
+    }
+
+    /**
+     * Extract form the resource config the acl user autorized
+     * @param mix $aclRules the 
+     * @return array/string with autorized users
+     * @throws ApiException If resource is not acessible or controlled by ACL rules.
+     */
+    private function executeExtractAclApplication($aclRules) {
+        $applications = '*';
+        if (array_key_exists('application', $aclRules)) {
+            if (!is_array($aclRules['application']) and ($aclRules['application'] == '*' or $aclRules['application'] == '')) {
+                $applications = '*';
+            } elseif (is_array($aclRules['application'])) {
+                $applications = $aclRules['application'];
+            } else {
+                $applications = Toolkit::string2Array($aclRules['application']);
+            }
+        }
+        return $applications;
     }
 
     /**

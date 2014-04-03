@@ -116,6 +116,16 @@ class SessionInput extends DefaultInput implements IInput {
             $this->sessionId = session_id();
         else
             $this->sessionId = $id;
+        
+        $request = array(
+            'first' => $context,
+            'last' => $context
+        );
+        $trace = array(
+            'server' => $_SERVER,
+            'cookie' => $_COOKIE,
+            'request' => $request
+        );
         $default = array(
             "_id" => $this->sessionId,
             'data' => $data,
@@ -124,10 +134,7 @@ class SessionInput extends DefaultInput implements IInput {
             'time_start' => new MongoDate(time()),
             'time_update' => new MongoDate(time()),
             'time_end' => new MongoDate(time() + $this->getConfig('timeout', 240 * 60)),
-            'trace_server' => $_SERVER,
-            'trace_cookie' => $_COOKIE,
-            'trace_first_request' => $context,
-            'trace_last_request' => $context
+            'trace' => $trace
         );
         Api::logDebug(220, "Generate new session '" . $this->sessionId . "' descriptor", $default, 5);
         return $default;
@@ -146,8 +153,8 @@ class SessionInput extends DefaultInput implements IInput {
         $inDb = $this->findOneSession($id);
         // first time this session is done, so we create a new record
         if (is_null($inDb) or $inDb["_id"] == '')
-              throw new InputException("session " . $id. " is not recorded. Please use another session token or renew your authentification");
-//             $inDb = $this->createSession(array(), $id);
+//              throw new InputException("session " . $id. " is not recorded. Please use another session token or renew your authentification");
+             $inDb = $this->createSession(array(), $id);
         else {
             if (time() > $inDb['time_end']->sec) {
                 Api::logWarn(211, "Session '" . $id . "' is expired and is closed until '" . date('Y-m-d H:i:s', $inDb['time_end']->sec));
@@ -193,7 +200,7 @@ class SessionInput extends DefaultInput implements IInput {
             'state' => '1',
             'data' => $return_data,
             'time_update' => new MongoDate(time()),
-            'trace_last_request' => Api::getInstance()->getInput()->getContext()
+            'trace.request.last' => Api::getInstance()->getInput()->getContext()
         );
         $this->sessionStorage->update(array("_id" => $id), array('$set' => $data));
         return true;
@@ -208,7 +215,7 @@ class SessionInput extends DefaultInput implements IInput {
                 'state' => '2',
                 'time_update' => new MongoDate(time()),
                 'time_end' => new MongoDate(time()),
-                'trace_last_request' => Api::getInstance()->getInput()->getContext()
+                'trace.request.last' => Api::getInstance()->getInput()->getContext()
             )
         ));
         return true;
