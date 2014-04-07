@@ -13,21 +13,23 @@ class nodemapResource extends readonlyResource implements IResource {
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        if ($this->getConfig('root_path', false)) {
-            $path = null;
-        } else {
-            $path = $api->getInput()->getRootUrl() . $this->getConfig('sub_path', $api->getInput()->getPath());
-        }
-        $tree = $this->extractTreeStructure($path);
+        $subpath = $this->getConfig('sub_path', "");
         $outputType = $api->getOutput()->getConfig("class");
+        if ($subpath != "") {
+            $path = $api->getInput()->getRootUrl() . $subpath;
+            $tree = $this->filterTreeStructure($this->extractTreeStructure(), $path);
+            $treeOutput = ($outputType == "HtmlOutput") ? $this->generateHtmlTree($tree) : $tree;
+        } else {
+            $tree = $this->extractTreeStructure();
+            $treeOutput = ($outputType == "HtmlOutput") ? $this->generateHtmlTree($tree) : $tree[0];
+        }
         $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($tree));
-        $tree = ($outputType == "HtmlOutput") ? $this->generateHtmlTree($tree) : $tree[0];
         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $tree);
+        $api->getOutput()->renderOk($message, $treeOutput);
         return true;
     }
 
-    private function extractTreeStructure($limitPath = null, $nodes = null, $path = null) {
+    private function extractTreeStructure($nodes = null, $path = null) {
         $api = Api::getInstance();
         if ($nodes == null and $path == null)
             $nodes = array($api->getConfig("tree"));
@@ -47,7 +49,7 @@ class nodemapResource extends readonlyResource implements IResource {
                         "name" => @$node['path'],
                         "url" => $url . $params,
                         "desc" => @$node['desc'],
-                        "children" => $this->extractTreeStructure($limitPath, $node['children'], $url)
+                        "children" => $this->extractTreeStructure($node['children'], $url)
                     );
                 } else {
                     $treeOut[] = array(
@@ -59,6 +61,25 @@ class nodemapResource extends readonlyResource implements IResource {
             }
         }
         return $treeOut;
+    }
+
+    private function filterTreeStructure($tree, $filterUrl) {
+        if (is_array($tree)) {
+            foreach ($tree as $node) {
+                if (strpos($filterUrl, @$node['url']) !== false) {
+                    if (strpos(@$node['url'], $filterUrl) !== false) {
+                        if (array_key_exists('children', $node)) {
+                            return $node['children'];
+                        } else {
+                            return array($node);
+                        }
+                    } elseif (array_key_exists('children', $node)) {
+                        return $this->filterTreeStructure($node['children'], $filterUrl);
+                    }
+                }
+            }
+        }
+        return array();
     }
 
     private function generateHtmlTree($tree) {
