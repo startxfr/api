@@ -35,7 +35,7 @@ class DefaultInput extends Configurable implements IInput {
     public function init($doEvent =true) {
         if($doEvent)
             Event::trigger('input.init.before');
-        Api::logDebug(210, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector  with " . count($this->getAll()) . " params", $this->getAll(), 5);
+        Api::logDebug(210, "Init '" . $this->getConfig("id") . "' " . get_class($this) . " connector  with " . count($this->getAll()) . " params", $this->getAll(), 5);
         if($doEvent)
             Event::trigger('input.init.after');
         return $this;

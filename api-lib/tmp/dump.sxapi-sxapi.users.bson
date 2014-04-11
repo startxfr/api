@@ -1,1 +1,2 @@
 { "_id" : "dev", "pwd" : "e77989ed21758e78331b20e477fc5582", "name" : "user de developpement", "mail" : "cl@startx.fr" }
+{ "_id" : "test", "pwd" : "e77989ed21758e78331b20e477fc5582", "name" : "user de test", "mail" : "test@startx.fr" }

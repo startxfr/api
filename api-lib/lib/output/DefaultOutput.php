@@ -29,7 +29,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      */
     public function init() {
         Event::trigger('output.init.before');
-        Api::logDebug(310, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector", null, 5);
+        Api::logDebug(310, "Init '" . $this->getConfig("id") . "' " . get_class($this) . " connector", null, 5);
         Event::trigger('output.init.after');
         return $this;
     }

@@ -322,7 +322,7 @@ class Api extends Configurable {
                     try {
                         $this->outputs[$outputconf["id"]] = new $outputName($outputconf);
                         if (array_key_exists('default', $outputconf) and $outputconf['default'] === true) {
-                            $this->outputDefault = $outputconf["id"];
+                            $this->setOutputDefault($outputconf["id"]);
                         }
                     } catch (Exception $e) {
                         unset($this->outputs[$outputconf["id"]]);
@@ -333,7 +333,7 @@ class Api extends Configurable {
                     $this->logWarn(31, "Could not load '" . $outputconf["id"] . "' output connector. because class " . $outputName . " doesn't exist");
             }
             if ($this->getInput()->getOutputFormat() != '' and array_key_exists($this->getInput()->getOutputFormat(), $this->outputs)) {
-                $this->outputDefault = $this->getInput()->getOutputFormat();
+                $this->setOutputDefault($this->getInput()->getOutputFormat());
                 $this->logDebug(34, "default output connector set to '" . $this->outputDefault . "' by request input param ( ?format=" . $this->getInput()->getOutputFormat() . ' )');
             }
             $this->logInfo(30, "Loaded " . count($this->outputs) . " output connector (" . implode(',', array_keys($this->outputs)) . ") and default set to '" . $this->outputDefault . "'", array_keys($this->outputs), 3);
@@ -381,7 +381,6 @@ class Api extends Configurable {
     public function setOutputDefault($id = null) {
         if (is_array($this->outputs) and array_key_exists($id, $this->outputs)) {
             $this->outputDefault = $id;
-            $this->getInput()->format = $id;
         }
         return $this->outputDefault;
     }
@@ -668,9 +667,10 @@ class Api extends Configurable {
                 $this->logError(86, " path '" . $searchedPath . "' config should contain the 'resource' attribute", $outputConfig);
                 throw new ApiException(" path '" . $searchedPath . "' config should contain the 'resource' attribute");
             }
-            $configResource = $this->nosqlConnection->selectCollection($this->getConfig("resource_collection", "resources"))->findOne(array("_id" => $configtree['resource']));
+            $resourceCollection = $this->getConfig("resource_collection", "resources");
+            $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $configtree['resource']));
             if (is_null($configResource) or $configResource["_id"] == '')
-                throw new ApiException("Can't find the resource config in stored resources", 87);
+                throw new ApiException("Can't find the resource '" . $configtree['resource'] . "' in resources collection '" . $resourceCollection . "'", 87);
             $this->logDebug(87, "Resource '" . $configtree['resource'] . "' found in resource backend", $configResource, 5);
             if ($configResource['class'] == '') {
                 $this->logError(87, " resource '" . $configtree['resource'] . "' config should contain the 'class' attribute", $configResource);
@@ -709,9 +709,10 @@ class Api extends Configurable {
                         $this->logError(86, " path '" . $searchedPath . "' config should contain the 'resource' attribute", $addedConfig);
                         throw new ApiException(" path '" . $searchedPath . "' config should contain the 'resource' attribute");
                     }
-                    $configResource = $this->nosqlConnection->selectCollection($this->getConfig("resource_collection", "resources"))->findOne(array("_id" => $addedConfig['resource']));
+                    $resourceCollection = $this->getConfig("resource_collection", "resources");
+                    $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $addedConfig['resource']));
                     if (is_null($configResource) or !array_key_exists('_id', $configResource) or $configResource["_id"] == '') {
-                        throw new ApiException("Can't find the resource config in stored resources", 87);
+                        throw new ApiException("Can't find the resource '" . $addedConfig['resource'] . "' in resources collection '" . $resourceCollection . "'", 87);
                     }
                     $this->logDebug(87, "Resource '" . $addedConfig['resource'] . "' found in resource backend", $configResource, 5);
                     if ($configResource['class'] == '') {
