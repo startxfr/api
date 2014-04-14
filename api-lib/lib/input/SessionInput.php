@@ -39,7 +39,12 @@ class SessionInput extends DefaultInput implements IInput {
         Event::trigger('input.init.before');
         $inputParams = $this->getConfig('token',array());
         $sessionName = ($inputParams['name'] != '') ? $inputParams['name'] : 'session';
-        $paramPassedToken = Api::getInstance()->getInput($inputParams['input'])->getParam($sessionName,'');
+        if($inputParams['input'] == "xauth") {
+            $paramPassedToken = $_SERVER['X-Auth-Token'];
+        }
+        else {
+            $paramPassedToken = Api::getInstance()->getInput($inputParams['input'])->getParam($sessionName,'');
+        }
         session_name($sessionName);
         if ($paramPassedToken != '') {
             session_id($paramPassedToken);

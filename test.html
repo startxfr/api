@@ -86,17 +86,17 @@
                         if (conf.next === undefined)
                             conf.next = sxtest.doEnd;
                         if (conf.next !== undefined)
-                            nextCallOK = conf.next;
-                        var callOK = function(a) {
+                            sxtest.nextCallOK = conf.next;
+                        sxtest.callOK = function(a) {
                             var message = "<h5>Réponse OK</h5><p><b>message : </b>" + a.message + "<br><b>data : </b>" + JSON.stringify(a.data) + "</p>";
                             displayMessage(message);
-                            if (nextCallOK !== undefined) {
-                                nextCallOK();
-                                nextCallOK = undefined;
+                            if (sxtest.nextCallOK !== undefined) {
+                                sxtest.nextCallOK();
+                                sxtest.nextCallOK = undefined;
                             }
                         };
                         $(sxajax.messageContainer).append("<h4>" + conf.titre + "</h4>");
-                        eval("sxajax." + conf.method + "(conf.path, conf.data, callOK)");
+                        eval("sxajax." + conf.method + "(conf.path, conf.data, sxtest.callOK)");
                     },
                     doStart: function() {
                         sxtest.do({
@@ -113,6 +113,24 @@
                             method: "post",
                             path: "auth/basic",
                             data: {format: "json", app: "www", login: "dev", pwd: "dev"},
+                            next: sxtest.doInfoContact
+                        });
+                    },
+                    doListContact: function() {
+                        sxtest.do({
+                            titre: "Test de liste des contacts",
+                            method: "get",
+                            path: "contacts",
+                            data: {format: "json", start: 0, limit: 5, nom_cont: "larue"},
+                            next: sxtest.doInfoContact
+                        });
+                    },
+                    doInfoContact: function() {
+                        sxtest.do({
+                            titre: "Test de lecture des info d'un contact",
+                            method: "get",
+                            path: "contacts/117521",
+                            data: {format: "json"},
                             next: sxtest.doEnd
                         });
                     },
