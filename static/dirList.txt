@@ -1,0 +1,6 @@
+Liste des repertoires qui composent cet espace web
+-------------------------------------------------
+za : ZunoApplication - utilisé pour les instances zuno
+zs : ZunoSuperbase - utilisé uniquement pour superbase
+zm : ZunoManager - utilisé uniquement par les managers
+zw : ZunoWeb - utilisé pour le site web
