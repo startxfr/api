@@ -1,0 +1,90 @@
+#iHeader{background-color:#888}#WebApp{background-color:#bbb}.iFormI{position:inherit !important}.iMore:not(.__lod):active,
+li.iRadio.__sel,
+.iMenu li.__sel,
+.iList
+li.__sel{background-color:#888}.iMenu li span,
+.iPanel li
+span{color:#888}.iMenu h3,
+.iBlock h1,
+.iPanel
+legend{color:#888}b.iToggle.__sel{border-color:#555;background-color:#888}a{color:#000}#iHeader
+.iTab{margin-right:55px}.iPanel  label + input[type],
+.iPanel  label+textarea{padding-left:95px}.iPanel label+select{left:95px}.iPanel textarea,
+.iPanel
+select{width:100%;margin:-4px 0 -5px;padding:4px
+0 5px;border:0;font-size:inherit;line-height:inherit;font-weight:normal;background:none;-webkit-border-radius:0;-webkit-appearance:none;float:right;position:relative}.iTab
+li{width:33%}.iTab li:first-child{width:34%}.msg{background-color:#080;color:#fff;font-size:11px;padding:5px;-webkit-border-radius:4px;margin:8px}.err{background-color:#800;color:#fff;font-size:11px;padding:5px;-webkit-border-radius:4px;margin:8px}.iFormErr{background-color:#800;color:#fff;font-size:1px;padding-left:5px;float:right;border:0px;width:100%;-webkit-border-radius:2px;height:4px}ul.iArrow li.iLess
+a{background-image:none}.whiteButton,.redButton{display:block;width:280px ! important;height:46px;margin-left:0px !important;border-width:0 12px;text-align:center;padding-top:10px;font-size:20px;font-weight:bold;text-decoration:inherit;color:inherit}.whiteButton span,
+.redButton
+span{display:block;margin-top:10px !important}.whiteButton img,
+.redButton
+img{float:left;paddin-left:12px;margin-top:12px !important}.whiteButton{-webkit-border-image:url(/za/iphone/Img/whiteButton.png) 0 12 0 12;color:#555 !important;text-shadow:rgba(255, 255, 255, 0.7) 0 1px 0}.whiteButton:hover{-webkit-border-image:url(/za/iphone/Img/whiteButtonOn.png) 0 12 0 12;color:#005 !important;text-shadow:rgba(155, 155, 255, 0.7) 0 2px 0}.redButton{-webkit-border-image:url(/za/iphone/Img/redButton.png) 0 12 0 12;color:#fff !important;text-shadow:#80080b 0 1px 0}br.clear{clear:both}.iFormI,.iListFormI{margin-left:9px;margin-right:9px;display:block}.iFormI
+legend{display:none}.iFormI
+fieldset{padding:0;margin:0;border:none;position:relative;text-shadow:none;font-weight:normal;line-height:normal}.iFormI input[type=text],
+.iFormI input[type=password],
+.iFormI input[type=search]{width:100%;display:block;font-size:15px;line-height:19px;height:31px;margin:4px
+0;padding:3px
+0;border-width:3px 6px;-webkit-border-image:url(/za/iphone/WebApp/Design/Img/form-input.gif) 3 6}.iFormI
+select{font-size:15px;width:100%;display:block;margin:4px
+0;height:31px;background:#fff;border-color:#49607e}.iFormI
+label{display:none;position:absolute;color:#8f8f8f;text-align:right;left:16px;padding:6px
+0;font-size:15px;line-height:19px}.iFormI
+ul{width:100%;height:20px;margin:0px;display:block;padding-left:0px;background:#000 url(/za/iphone/Img/subHeaderBlack.png) !important;-webkit-border-top-left-radius:8px;-webkit-border-top-right-radius:8px}.iFormI ul
+li{display:inline;height:24px;padding-left:3px;padding-right:3px}.iFormI ul li
+a{color:#fff;font-size: .8em;height:24px;text-decoration:none}.iFormI ul
+li.select{background-image:url(/za/iphone/Img/subHeaderBlack.select.png)}.iFormI ul li.select
+a{color:#fbab11}.iListFormI
+h2{padding:0px}.listIconLink
+a{width:auto;display:inline;float:left;margin: -5px 6px -12px !important;overflow:inherit !important}a.Contact,
+a.Contact em,
+i.Contact,
+.iMenu h3.Contact,
+h1.Contact,
+.Contact fieldset
+legend{color:#a02b2b !important}h2.Contact{border-bottom:solid 1px #c36464;text-shadow:#6b1b1b 0 1px 0;background-color:#a02b2b}#iHeader.Contact{background-color:#a02b2b}#WebApp.Contact{background-color:#e59797}a.Entreprise,
+a.Entreprise em,
+i.Entreprise,
+.iMenu h3.Entreprise,
+h1.Entreprise,
+.Entreprise fieldset
+legend{color:#a02b2b !important}h2.Entreprise{border-bottom:solid 1px #c36464;text-shadow:#6b1b1b 0 1px 0;background-color:#a02b2b}#iHeader.Entreprise{background-color:#a02b2b}#WebApp.Entreprise{background-color:#e59797}a.Affaire,
+a.Affaire em,
+i.Affaire,
+.iMenu h3.Affaire,
+h1.Affaire,
+.Affaire fieldset
+legend{color:#aeb83e !important}h2.Affaire{border-bottom:solid 1px #d7de62;text-shadow:#5d6315 0 1px 0;background-color:#aeb83e}#iHeader.Affaire{background-color:#eaf853}#WebApp.Affaire{background-color:#dfe5a0}a.Devis,
+a.Devis em,
+i.Devis,
+.iMenu h3.Devis,
+h1.Devis,
+.Devis fieldset
+legend{color:#547c30 !important}h2.Devis{border-bottom:solid 1px #94b378;text-shadow:#2c4912 0 1px 0;background-color:#547c30}#iHeader.Devis{background-color:#547c30}#WebApp.Devis{background-color:#abcb8f}a.Commande,
+a.Commande em,
+i.Commande,
+.iMenu h3.Commande,
+h1.Commande,
+.Commande fieldset
+legend{color:#348c6e !important}h2.Commande{border-bottom:solid 1px #79bca5;text-shadow:#165e45 0 1px 0;background-color:#348c6e}#iHeader.Commande{background-color:#348c6e}#WebApp.Commande{background-color:#98cbba}a.Produit,
+a.Produit em,
+i.Produit,
+.iMenu h3.Produit,
+h1.Produit,
+.Produit fieldset
+legend{color:#227182 !important}h2.Produit{border-bottom:solid 1px #30a0b8;text-shadow:#133e47 0 1px 0;background-color:#227182}#iHeader.Produit{background-color:#227182}#WebApp.Produit{background-color:#5cbfd4}a.Facture,
+a.Facture em,
+i.Facture,
+.iMenu h3.Facture,
+h1.Facture,
+.Facture fieldset
+legend{color:#3c508c !important}h2.Facture{border-bottom:solid 1px #8493c1;text-shadow:#152a64 0 1px 0;background-color:#3c508c}#iHeader.Facture{background-color:#3c508c}#WebApp.Facture{background-color:#a6b4db}a.Actualite,
+a.Actualite em,
+i.Actualite,
+.iMenu h3.Actualite,
+h1.Actualite,
+.Actualite fieldset
+legend{color:#f3cf09 !important}h2.Actualite{border-bottom:solid 1px #8493c1;text-shadow:#152a64 0 1px 0;background-color:#f3cf09}#iHeader.Actualite{background-image:url(/za/iphone/Img/bgHead/Actualite.png) !important}#WebApp.Actualite{background-color:#f4e79c}.actualiteHeure{font-size: .5em;font-weight:normal}a.Search{color:#800080 !important}a.Navigator{color:#8470FF !important}a.Preferences{color:#696969 !important}a.Deconnexion{color:#B22222 !important}label.inputDate{float:left}div.inputDate{float:left;width:65%;padding-left:4px}input.inputDate{float:left;width:90% ! important}a.inputDate{float:left;margin-top:8px}img.croix{display:none;float:right;margin-top:-21px;right:0.15em;z-index:20;position:relative}img.croixLabel{display:none;float:right;margin-top:-21px;right:0.15em;z-index:20;position:relative}span.linkCont{float:right;margin-right:40px}a.linkCont{float:right;width:20px;right:40px;position:relative}a.linkCont2{float:right;width:20px;bottom:27px;position:relative}fieldset>span.smallActionButton{float:right;margin-top: -10px}fieldset > span.smallActionButton
+a{margin:0px;margin-top: -9px}fieldset>legend.smallActionlegend{width:100% ! important;display:block}fieldset
+a.BigButtonValidLeft{float:left;margin-left:8px}fieldset
+a.BigButtonValidRight{float:right;margin-right:8px}#iFooter,.iFooter{color:#828ca2}#iFooter small,.iFooter
+small{color:#adb4c3}.proposition_entreprise{background-color:#C0C0C0}.InputCroix{width:92% !important}div.chiffreslogin{padding-left:40px;width:300px;margin-top:1%;margin-left:10px;height:40px;border-width:0}div.chiffres{width:50px;margin-right:6px;height:100%;text-align:center;float:left;border-width:1px;border-style:solid;border-color:#a9acaf;-webkit-border-radius:8px;background-color:#fff}div.clavier{width:300px;margin-top:3%;height:316px;margin-left:10px}div.lignepin{display:block}div.touche{display:inline;float:left}.liensupp{text-align:center;color:#F00 !important;width:100%;height:10%;text-shadow:0 1px 0 #80080B}.iBBack{-webkit-border-image:url(/za/iphone/WebApp/Design/Img/button-back.png) 0 10 0 15}
