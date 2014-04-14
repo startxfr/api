@@ -18,11 +18,11 @@
 	<value id="LANG_TxtNoTrans">TRUE</value>
     </group>
     <group name="StaticContent" modifRight="0" title="Configuration des répertoires">
-	<value id="urlGroup">http://localhost/startx/sxa/static/min/?g=za-</value>
-	<value id="urlJss">http://localhost/startx/sxa/static/min/?f=za/jss/</value>
-	<value id="UrlImg">http://localhost/startx/sxa/static/za/img/</value>
-	<value id="UrlImgPhone">http://localhost/startx/sxa/static/za/p/img/</value>
-	<value id="urlWebapp">http://localhost/startx/sxa/static/min/?f=za/p/WebApp/</value>
+	<value id="urlGroup">https://dev.startx.fr/sxa/static/min/?g=za-</value>
+	<value id="urlJss">https://dev.startx.fr/sxa/static/min/?f=za/jss/</value>
+	<value id="UrlImg">https://dev.startx.fr/sxa/static/za/img/</value>
+	<value id="UrlImgPhone">https://dev.startx.fr/sxa/static/za/p/img/</value>
+	<value id="urlWebapp">https://dev.startx.fr/sxa/static/min/?f=za/p/WebApp/</value>
     </group>
     <group name="MutTools" modifRight="0" title="Configuration des répertoires">
 	<value id="pathJpgraph">/var/zuno/manager/muTools/jpgraph/</value>
