@@ -43,7 +43,8 @@
 	<value id="texte._CommandeEnregistree.txt">Commande enregistrée</value>
 	<value id="texte._Facture.txt">Votre facture STARTX</value>
 	<value id="texte._FactureRevente.txt">Votre facture STARTX - souscriptions Red Hat</value>
-	<value id="texte._Relance.txt">Votre facture STARTX : relance</value>
+	<value id="texte._FactureRelance.txt">Votre facture STARTX : relance</value>
+	<value id="texte._FactureAccuseReception.txt">Votre facture STARTX : Accusé reception de votre facture</value>
 	<value id="coverFax">Cannevas/_CouvertureFax.odt</value>
 	<value id="maxEnvoiFax">-1</value>
 	<value id="maxEnvoiCourrier">-1</value>
