@@ -20,7 +20,8 @@ loadPlugin(array('ZunoCore','ZView/AffaireView', 'ZModels/ActualiteModel'));
 $PC = new PageContext('draco');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
+$out = new PageDisplay($PC->channel);
+
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
@@ -60,6 +61,12 @@ elseif($PC->rcvP['action'] == "doArchiver") {
     foreach($PC->rcvP['ID'] as $k => $v)
 	affaireModel::archivateAffaireInDB($k);
     echo viewFiche($PC->rcvP['aff'], 'affaire', 'interneInfos', 'non', 'web', true, 'Archivée');
+    exit;
+}
+elseif($PC->rcvG['action'] == "doArchiver") {
+    foreach($PC->rcvG['ID'] as $k => $v)
+	affaireModel::archivateAffaireInDB($k);
+    echo viewFiche($PC->rcvG['aff'], 'affaire', 'interneInfos', 'non', 'web', true, 'Archivée');
     exit;
 }
 /*------------------------------------------------------------------------+
