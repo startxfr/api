@@ -64,7 +64,7 @@ elseif($PC->rcvP['action'] == "doArchiver") {
     exit;
 }
 elseif($PC->rcvG['action'] == "doArchiver") {
-    foreach($PC->rcvG['ID'] as $k => $v)
+    foreach($_GET['ID'] as $k => $v)
 	affaireModel::archivateAffaireInDB($k);
     echo viewFiche($PC->rcvG['aff'], 'affaire', 'interneInfos', 'non', 'web', true, 'Archivée');
     exit;
