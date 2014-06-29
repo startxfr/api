@@ -43,9 +43,11 @@ elseif (($PC->rcvP['action'] == "ModifCommande")or
 	($PC->rcvP['action'] == "GenererBDCC")or
 	($PC->rcvP['action'] == "GenererBDL")or
 	($PC->rcvP['action'] == "GenererRI")or
+	($PC->rcvP['action'] == "GenererPVR")or
 	($PC->rcvP['action'] == "VoirBDCC")or
 	($PC->rcvP['action'] == "VoirBDL")or
 	($PC->rcvP['action'] == "VoirRI")or
+	($PC->rcvP['action'] == "VoirPVR")or
 	($PC->rcvP['action'] == "Generer")or
 	($PC->rcvP['action'] == "SendBDCF")or
 	($PC->rcvP['action'] == "BDCF-AR")or
@@ -126,6 +128,10 @@ elseif ($action == 'GenererRI') {
     $Doc = commandeGnose::CommandeGenerateRI($id_cmd);
     PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc);
 }
+elseif ($action == 'GenererPVR') {
+    $Doc = commandeGnose::CommandeGeneratePVR($id_cmd);
+    PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc);
+}
 elseif ($action == 'Generer') {
     $bddtmp->makeRequeteFree("SELECT id_fourn
 				  FROM `commande_produit`, fournisseur
@@ -167,13 +173,15 @@ elseif ($action == 'Generer') {
 elseif ($action == 'VoirBDCC' or
 	$action == 'VoirBDCF' or
 	$action == 'VoirBDL' or
-	$action == 'VoirRI') {
+	$action == 'VoirRI' or
+	$action == 'VoirPVR') {
      $bddAff = new affaireModel();
     $PathTo = $bddAff->getAffaireDirectoryPathById(substr($id_cmd, 0, 6));
     if ($action == 'VoirBDCC')		$Doc = $id_cmd.'C.pdf';
     elseif ($action == 'VoirBDCF')	$Doc = $id_cmd.'F-'.$id_fourn.'.pdf';
     elseif ($action == 'VoirBDL')		$Doc = substr($id_cmd,0,-1).'L.pdf';
     elseif ($action == 'VoirRI')		$Doc = "RapportIntervention.".$id_cmd.'.pdf';
+    elseif ($action == 'VoirPVR')		$Doc = "PVRecette.".$id_cmd.'.pdf';
     PushFileToBrowser($PathTo.$Doc,$Doc);
 }
 elseif ($action == 'SendBDCF') {

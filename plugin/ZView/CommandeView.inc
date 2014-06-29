@@ -628,11 +628,26 @@ class commandeView extends generalView {
 		    $listeDoc[$fileName . '.doc'] = $fileName . '.doc';
 		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'doc\');"><img src="'.getStaticUrl('img').'files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirRI\');changeCommandeFormat(\'doc\');">' . $fileName . '.doc</a></div></div>';
 		}
+                
+		$fileName = 'PVRecette.' . $datas['data']['id_dev'];
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.pdf')) {
+		    $listeDoc[$fileName . '.pdf'] = $fileName . '.pdf';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirPVR\');changeCommandeFormat(\'pdf\');"><img src="'.getStaticUrl('img').'files/pdf.png" alt="pdf" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirPVR\');changeCommandeFormat(\'pdf\');">' . $fileName . '.pdf</a></div></div>';
+		}
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.odt')) {
+		    $listeDoc[$fileName . '.odt'] = $fileName . '.odt';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirPVR\');changeCommandeFormat(\'odt\');"><img src="'.getStaticUrl('img').'files/document.png" alt="odt" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirPVR\');changeCommandeFormat(\'odt\');">' . $fileName . '.odt</a></div></div>';
+		}
+		if ($this->modelAffaire->isAffaireDirectoryFileExist($datas['data'], $fileName . '.doc')) {
+		    $listeDoc[$fileName . '.doc'] = $fileName . '.doc';
+		    $generes .= '<div class="row"><div class="label"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirPVR\');changeCommandeFormat(\'doc\');"><img src="'.getStaticUrl('img').'files/document.png" alt="doc" /></a></div><div class="field"><a href="javascript:document.ActionCommandePDF.submit();" onclick="ChangeCommandeAction(\'VoirPVR\');changeCommandeFormat(\'doc\');">' . $fileName . '.doc</a></div></div>';
+		}
 	    }
 
 	    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="GetDocBDC" value="1" /></div><div class="field">Bon de commande client</div></div>';
 	    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="GetDocBDL" value="1" /></div><div class="field">Bon de livraison</div></div>';
 	    $docs .= '<div class="row"><div class="label"><input type="checkbox" name="GetDocRI" value="1" /></div><div class="field">Rapport d\'intervention</div></div>';
+            $docs .= '<div class="row"><div class="label"><input type="checkbox" name="GetDocPVR" value="1" /></div><div class="field">PV de Recette</div></div>';
 
 	    return '<form name="ActionCommandePDF" action="Commande.php" method="post">
 		<input type="hidden" id="MakeCommandeAction" value="ActionCommande" name="action"/>

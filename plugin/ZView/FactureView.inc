@@ -653,9 +653,9 @@ class factureView extends generalView {
 	$corps .= '<div id="PortletSearchFacture">';
 	$corps .= '<input type="hidden" name="action" value="searchFacture" id="listeFactureAction" />';
 	$corps .= '<input type="hidden" name="id_fact" value="" id="idFactureSearch" />';
-	$corps .= '<input type="hidden" name="from" value="" id="fromFactureSearch" />';
-	$corps .= '<input type="hidden" name="limit" value="" id="limitFactureSearch" />';
-	$corps .= '<input type="hidden" name="order" value="id_cmd" id="orderFactureSearch" />';
+	$corps .= '<input type="hidden" name="from" value="0" id="fromFactureSearch" />';
+	$corps .= '<input type="hidden" name="limit" value="100" id="limitFactureSearch" />';
+	$corps .= '<input type="hidden" name="order" value="id_fact" id="orderFactureSearch" />';
 	$corps .= '<input type="hidden" name="orderSens" value="DESC" id="orderSensFactureSearch" />';
 	$corps .= $this->interneSearch($datas);
 	$corps .= '</div></form>';
