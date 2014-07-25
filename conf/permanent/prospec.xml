@@ -73,6 +73,7 @@
 	<value id="cannevas.BDCC" title="Cannevas type pour un BDCC">_BDCC.odt</value>
 	<value id="cannevas.BDL" title="Cannevas type pour un BDL">_BDL.odt</value>
 	<value id="cannevas.RI" title="Cannevas type pour un Rapport d'intervention">_RapportIntervention.odt</value>
+	<value id="cannevas.PVR" title="Cannevas type pour un PV de recette">_PVRecette.odt</value>
 	<value id="cannevas.BDCF" title="Cannevas type pour un devis">_BDCF.Default.odt</value>
 	<value id="mail.pj.1" title="Fichier a envoyer en pj">plaquette.pdf</value>
 	<value id="mail.pj.2" title="Fichier a envoyer en pj">commandeForm.pdf</value>
@@ -84,8 +85,10 @@
 	<value id="dir.facture" title="Répertoire de stockage des factures">Factures/Clients/</value>
 	<value id="dir.factureFournisseur" title="Répertoire de stockage des factures fournisseur">Factures/Fournisseurs/</value>
 	<value id="cannevas.defaut" title="Cannevas type pour une facture">_Facture.odt</value>
+	<value id="cannevas.formation" title="Cannevas type pour une facture formation">_FactureFormation.odt</value>
 	<value id="cannevas.en" title="Cannevas pour une facture en anglais">_FactureEN.odt</value>
 	<value id="cannevas.avoir" title="Cannevas type pour un avoir">_FactureAvoir.odt</value>
+	<value id="cannevas.formation" title="Cannevas type pour une formation conventionnée STARTX">_FactureFormation.odt</value>
 	<value id="cannevas.duplicata" title="Cannevas type pour un duplicata">_Duplicata.odt</value>
     </group>
     <group name="ZunoFournisseur" modifRight="1" title="parametrage des fournisseurs">

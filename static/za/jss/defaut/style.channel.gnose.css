@@ -36,7 +36,7 @@ a.bouton,
     background-color: #7f0039;
 }
 /******** BORDURE DE COULEUR FONCE ***********/
-.ZBox .body .block fieldset
+.ZBox .body .block fieldset{
 border-color: #7f0039;
 }
 /******** TEXTE DE COULEUR FONCE ***********/

@@ -44,6 +44,8 @@ class commandeGnose {
 	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.BDL'];
 	elseif($type == 'RI')
 	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.RI'];
+	elseif($type == 'PVR')
+	    $cannevasFile = $GLOBALS['SVN_Pool1']['WorkCopy'].$GLOBALS['SVN_Pool1']['WorkDir'].$GLOBALS['ZunoCommande']['dir.cannevas'].$GLOBALS['ZunoCommande']['cannevas.PVR'];
 	$id_cmd = $datas['data']['id_cmd'];
 
 	if($datas['data']['id_cmd'] != '') {

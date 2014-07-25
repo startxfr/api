@@ -259,7 +259,7 @@ a.bouton:hover,
 #PortletPageSearch ul
 { list-style: none;
   width: 100%;
-  margin-left 0px;
+  margin-left: 0px;
   margin-top: 6px }
 #PortletPageSearch li
 { width: 100% ; 
@@ -302,7 +302,7 @@ a.bouton:hover,
 #PortletPagePlan ul.submenu
 { margin-bottom: 4px}
 #PortletPagePlan ul.first
-{ margin-left 0px;
+{ margin-left: 0px;
   margin-top: 6px }
 #PortletPagePlan li
 { margin-bottom: 4px;

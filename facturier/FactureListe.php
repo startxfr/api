@@ -23,7 +23,8 @@ loadPlugin(array('ZunoCore','ZView/FactureView'));
 $PC = new PageContext('facturier');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
+$out = new PageDisplay($PC->channel);
+
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 
 
@@ -239,7 +240,7 @@ else {
     if(array_key_exists('status_fact', $PC->rcvG) and $PC->rcvG['status_fact'] != '')
 	$data['status_fact'] = $PC->rcvG['status_fact'];
     $datas['from'] = 0;
-    $datas['limit'] = 30;
+    $datas['limit'] = 100;
     $datas['order'] = 'id_fact';
     $datas['orderSens'] = 'DESC';
     $ordre = 'ORDER BY '.$datas['order'].' '.$datas['orderSens'];

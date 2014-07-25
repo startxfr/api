@@ -20,7 +20,8 @@ loadPlugin(array('ZunoCore', 'ZView/CommandeView', 'ZModels/AffaireModel', 'Send
 $PC = new PageContext('pegase');
 $PC->GetFullContext();
 // Whe initialize page display
-$out = new PageDisplay($PC->channel);
+$out = new PageDisplay($PC->channel);
+
 $out->ConfigureWithPageData($PC->Data,$PC->cacheXML);
 /*------------------------------------------------------------------------+
 | MODULE PROCESSING
@@ -58,12 +59,14 @@ elseif ($PC->rcvG['id_commande'] != '' and $PC->rcvG['action'] == 'suppconfirm')
 elseif ($PC->rcvG['action'] == 'VoirBDCC' or
 	$PC->rcvG['action'] == 'VoirBDCF' or
 	$PC->rcvG['action'] == 'VoirBDL' or
-	$PC->rcvG['action'] == 'VoirRI') {
+	$PC->rcvG['action'] == 'VoirRI' or
+	$PC->rcvG['action'] == 'VoirPVR') {
     $PathTo  = $bddAff->getAffaireDirectoryPathById(substr($PC->rcvG['id_commande'],0,-5));
     if ($PC->rcvG['action'] == 'VoirBDCC')		$Doc = $PC->rcvG['id_commande'].'C.pdf';
     elseif ($PC->rcvG['action'] == 'VoirBDCF')		$Doc = $PC->rcvG['id_commande'].'F-'.$PC->rcvG['fourn'].'.pdf';
     elseif ($PC->rcvG['action'] == 'VoirBDL')		$Doc = substr($PC->rcvG['id_commande'],0,-1).'L.pdf';
     elseif ($PC->rcvG['action'] == 'VoirRI')		$Doc = "RapportIntervention.".$PC->rcvG['id_commande'].'.pdf';
+    elseif ($PC->rcvG['action'] == 'VoirPVR')		$Doc = "PVRecette.".$PC->rcvG['id_commande'].'.pdf';
     PushFileToBrowser($PathTo.$Doc,$Doc);
 }
 elseif($PC->rcvP['action'] == 'addCmd') {
@@ -205,6 +208,18 @@ elseif($PC->rcvP['action'] == 'GenererRI') {
     $Doc = $gnose->CommandeGenerateBDC($datas, 'pdf', 'RI');
     PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc);
 }
+elseif($PC->rcvP['action'] == 'GenererPVR') {
+    aiJeLeDroit('commande', 62, 'web');
+    $gnose = new commandeGnose();
+    $bdd = new commandeModel();
+    $result = $bdd->getDataFromID($PC->rcvP['id_cmd']);
+    $datas['data'] = $result[1][0];
+    $datas["data"]['tauxTVA_ent'] = $datas["data"]['tva_cmd'];
+    $datas['pays'] =  $bdd->getPays();
+    $datas['user'] = $bdd->getUser($PC->rcvP['id_cmd']);
+    $Doc = $gnose->CommandeGenerateBDC($datas, 'pdf', 'PVR');
+    PushFileToBrowser($GLOBALS['REP']['appli'].$GLOBALS['REP']['tmp'].$Doc,$Doc);
+}
 elseif(substr($PC->rcvP['action'],0,11) == 'GenererBDCF') {
     aiJeLeDroit('commande', 62, 'web');
     $fourn = substr($PC->rcvP['action'], 12,4);
@@ -341,6 +356,11 @@ elseif(($PC->rcvP['action'] == 'GenererDocs') or($PC->rcvP['action'] == 'RecordS
 elseif($PC->rcvP['action'] == 'VoirRI') {
     aiJeLeDroit('commande', 62, 'web');
     $Doc = 'RapportIntervention.'.substr($PC->rcvP['id_cmd'],0,9).'.'.$PC->rcvP['format'];
+    PushFileToBrowser($bddAff->getAffaireDirectoryPathById(substr($PC->rcvP['id_cmd'],0,-5)).$Doc, $Doc);
+}
+elseif($PC->rcvP['action'] == 'VoirPVR') {
+    aiJeLeDroit('commande', 62, 'web');
+    $Doc = 'PVRecette.'.substr($PC->rcvP['id_cmd'],0,9).'.'.$PC->rcvP['format'];
     PushFileToBrowser($bddAff->getAffaireDirectoryPathById(substr($PC->rcvP['id_cmd'],0,-5)).$Doc, $Doc);
 }
 elseif($PC->rcvP['action'] == 'VoirBC') {
