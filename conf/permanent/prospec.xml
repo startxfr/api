@@ -85,6 +85,7 @@
 	<value id="dir.facture" title="Répertoire de stockage des factures">Factures/Clients/</value>
 	<value id="dir.factureFournisseur" title="Répertoire de stockage des factures fournisseur">Factures/Fournisseurs/</value>
 	<value id="cannevas.defaut" title="Cannevas type pour une facture">_Facture.odt</value>
+	<value id="cannevas.formation" title="Cannevas type pour une facture formation">_FactureFormation.odt</value>
 	<value id="cannevas.en" title="Cannevas pour une facture en anglais">_FactureEN.odt</value>
 	<value id="cannevas.avoir" title="Cannevas type pour un avoir">_FactureAvoir.odt</value>
 	<value id="cannevas.formation" title="Cannevas type pour une formation conventionnée STARTX">_FactureFormation.odt</value>
