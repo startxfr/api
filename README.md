@@ -1,4 +1,3 @@
-
 sxa2: projet sablier
 ==================
 
