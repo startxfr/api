@@ -11,7 +11,7 @@
 	<value id="auteur">STARTX</value>
 	<value id="mail">dev@startx.fr</value>
 	<value id="copyright">2014 STARTX</value>
-	<value id="version">3.1.4</value>
+	<value id="version">3.1.5</value>
 	<value id="revision">$Rev$</value>
 	<value id="contact">Christophe LARUE</value>
 	<value id="footeradd">un service édité par STARTX</value>
@@ -37,7 +37,7 @@
 	<value id="MimeTypeFile">/etc/mime.types</value>
     </group>
     <group name="URL">
-	<value id="appli">localhost/git/fr.startx.sxa/</value>
+	<value id="appli">localhost/startx/sxa/</value>
     </group>
     <group name="CACHEXML">
 	<value id="version">1.0</value>
