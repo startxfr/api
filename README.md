@@ -1,5 +1,5 @@
-sxa2: projet sablier
-==================
+sxa3: STARTX Application v3
+===========================
 
 Interface de recherche d'un calendrier de formation avec les options suivantes :
 * Interface Javascript (jquery) de réservation des formations
