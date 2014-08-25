@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title> Formation</title>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+        <script>
+            $(function() {
+                /**
+                 *  string message the message to display
+                 *  string type could be success,info,warning,danger
+                 *  string place dom element where we have to push message to (default body)
+                 */
+                function displayMessage(message, type, place) {
+                    if (place == undefined)
+                        place = $(sxajax.messageContainer);
+                    else
+                        place = $(place);
+                    if (type == undefined)
+                        type = "info";
+                    var out = '<div class="alert alert-' + type + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + message + '</div>';
+                    place.append(out)
+                }
+                var sxajax = {
+                    url_base: "http://localhost/startx/api/",
+                    messageContainer: "#resultBox",
+                    get: function(path, data, callbackOk, callbackNok) {
+                        return sxajax._call("GET", path, data, callbackOk, callbackNok);
+                    },
+                    post: function(path, data, callbackOk, callbackNok) {
+                        return sxajax._call("POST", path, data, callbackOk, callbackNok);
+                    },
+                    put: function(path, data, callbackOk, callbackNok) {
+                        return sxajax._call("PUT", path, data, callbackOk, callbackNok);
+                    },
+                    delete: function(path, data, callbackOk, callbackNok) {
+                        return sxajax._call("DELETE", path, data, callbackOk, callbackNok);
+                    },
+                    defaultCallbackOK: function(a) {
+                        var message = "<h5>AJAX response OK (defaultCallbackOK)</h5><p><b>message : </b>" + a.message + "<br><b>data : </b>" + JSON.stringify(a.data) + "</p>";
+                        displayMessage(message);
+                    },
+                    defaultCallbackNOK: function(a) {
+                        if (a.message === undefined)
+                            a.message = a.responseText;
+                        var message = "<h5>AJAX response ERROR <b>" + a.statusText + " - code " + a.status + "</b> (defaultCallbackNOK)</h5><p><b>message : </b>" + a.message + "<br><b>data : </b>" + JSON.stringify(a.data) + "</p>";
+                        displayMessage(message, "error");
+                    },
+                    _call: function(method, path, data, callbackOk, callbackNok) {
+                        if (method === undefined) {
+                            method = "GET";
+                        }
+                        if (path === undefined) {
+                            path = "";
+                        }
+                        if (callbackOk === undefined) {
+                            callbackOk = sxajax.defaultCallbackOK;
+                        }
+                        if (callbackNok === undefined) {
+                            callbackNok = sxajax.defaultCallbackNOK;
+                        }
+                        var conf = {
+                            type: method,
+                            url: sxajax.url_base + path
+                        };
+                        if (data !== undefined && data !== null) {
+                            conf.data = data;
+                        }
+                        $.ajax(conf).done(callbackOk).fail(callbackNok);
+                    }
+                }
+                var sxtest = {
+                    do: function(conf) {
+                        if (conf === undefined)
+                            conf = {};
+                        if (conf.titre === undefined)
+                            conf.titre = "Titre par defaut";
+                        if (conf.method === undefined)
+                            conf.method = "get";
+                        if (conf.path === undefined)
+                            conf.path = "";
+                        if (conf.data === undefined)
+                            conf.data = {};
+                        if (conf.next === undefined)
+                            conf.next = sxtest.doEnd;
+                        if (conf.next !== undefined)
+                            sxtest.nextCallOK = conf.next;
+                        sxtest.callOK = function(a) {
+                            var message = "<h5>Réponse OK</h5><p><b>message : </b>" + a.message + "<br><b>data : </b>" + JSON.stringify(a.data) + "</p>";
+                            displayMessage(message);
+                            if (sxtest.nextCallOK !== undefined) {
+                                sxtest.nextCallOK();
+                                sxtest.nextCallOK = undefined;
+                            }
+                        };
+                        $(sxajax.messageContainer).append("<h4>" + conf.titre + "</h4>");
+                        eval("sxajax." + conf.method + "(conf.path, conf.data, sxtest.callOK)");
+                    },
+                    doStart: function() {
+                        sxtest.do({
+                            titre: "Test de liste des services",
+                            method: "get",
+                            path: "",
+                            data: {format: "json"},
+                            next: sxtest.doAuth
+                        });
+                    },
+                    doAuth: function() {
+                        sxtest.do({
+                            titre: "Test d'authentification",
+                            method: "post",
+                            path: "auth/basic",
+                            data: {format: "json", app: "www", login: "dev", pwd: "dev"},
+                            next: sxtest.doInfoContact
+                        });
+                    },
+                    doListContact: function() {
+                        sxtest.do({
+                            titre: "Test de liste des contacts",
+                            method: "get",
+                            path: "contacts",
+                            data: {format: "json", start: 0, limit: 5, nom_cont: "larue"},
+                            next: sxtest.doInfoContact
+                        });
+                    },
+                    doInfoContact: function() {
+                        sxtest.do({
+                            titre: "Test de lecture des info d'un contact",
+                            method: "get",
+                            path: "contacts/117521",
+                            data: {format: "json"},
+                            next: sxtest.doEnd
+                        });
+                    },
+                    doEnd: function() {
+                        $(sxajax.messageContainer).append("<h4>Fin des test</h4>");
+                    }
+                }
+                $("#startBtn").click(function() {
+                    sxtest.doStart();
+                });
+            })
+        </script>  
+    </head>
+    <body><div data-role="page" data-control-title="Home" id="page1">
+            <div data-theme="a" data-role="header" data-position="fixed">
+                <a data-role="button" data-theme="b" href="#" id="startBtn" class="ui-btn-right">Start
+                </a>
+                <h3>Test Page</h3>
+            </div>
+            <div data-role="content">
+                <h3>Result</h3>
+                <div data-controltype="textblock" id="resultBox">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

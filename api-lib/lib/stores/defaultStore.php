@@ -17,7 +17,8 @@ abstract class defaultStore extends Configurable implements IStorage {
     public $lastResult = null;
 
     public function __construct($config) {
-        Api::logDebug(400, "Construct '" . $config["_id"] . "' " . get_class($this) . " connector ", $config, 5);
+        $id = (array_key_exists('id', $config)) ? $config["id"] : 'default';
+        Api::logDebug(400, "Construct '" . $id . "' " . get_class($this) . " connector ", $config, 5);
         parent::__construct($config);
     }
 

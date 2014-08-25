@@ -5,17 +5,17 @@ $user = 'dev';
 $pass = 'dev';
 $db = 'sxapi';
 $collections = array(
-	'redirect.hit',
-	'sxapi.api',
-	'sxapi.application',
-	'sxapi.logs',
-	'sxapi.models',
-	'sxapi.plugins',
-	'sxapi.resources',
-	'sxapi.session',
-	'sxapi.users',
-	'system.indexes',
-	'system.users',
+	'manager.resources',
+        'startx.logs',
+        'startx.models',
+        'startx.resources',
+        'sxapi.api',
+        'sxapi.application',
+        'sxapi.plugins',
+        'sxapi.session',
+        'sxapi.users',
+        'system.indexes',
+        'system.users'
 );
 foreach($collections as $col)
 shell_exec("mongoexport -d $db -c $col -u $user -p $pass -o $localRootPath/dump.$db-$col.bson");

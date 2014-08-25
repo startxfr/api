@@ -38,24 +38,24 @@ abstract class defaultSessionResource extends defaultResource implements IResour
      */
     public function readAction() {
         Api::getInstance()->logError(910, "Performing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource is not allowed", $this->getResourceTrace(__FUNCTION__, false));
-        Api::getInstance()->getOutput()->renderError(910, $this->getConfig('message_service_read', 'could not read this node'), $this->getResourceTrace(__FUNCTION__));
+        Api::getInstance()->getOutput()->renderError(910, $this->getConfig('message_service_read', 'could not read this node'), $this->getResourceTrace(__FUNCTION__), 405);
         return true;
     }
 
     public function createAction() {
         Api::getInstance()->logError(910, "Performing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource is not allowed", $this->getResourceTrace(__FUNCTION__, false));
-        Api::getInstance()->getOutput()->renderError(930, $this->getConfig('message_service_create', 'could not create this node'), $this->getResourceTrace(__FUNCTION__));
+        Api::getInstance()->getOutput()->renderError(930, $this->getConfig('message_service_create', 'could not create this node'), $this->getResourceTrace(__FUNCTION__), 405);
     }
 
     public function updateAction() {
         Api::getInstance()->logError(910, "Performing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource is not allowed", $this->getResourceTrace(__FUNCTION__, false));
-        Api::getInstance()->getOutput()->renderError(950, $this->getConfig('message_service_update', 'could not update this node'));
+        Api::getInstance()->getOutput()->renderError(950, $this->getConfig('message_service_update', 'could not update this node'), array(), 405);
         return true;
     }
 
     public function deleteAction() {
         Api::getInstance()->logError(910, "Performing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource is not allowed", $this->getResourceTrace(__FUNCTION__, false));
-        Api::getInstance()->getOutput()->renderError(970, $this->getConfig('message_service_delete', 'could not delete this node'));
+        Api::getInstance()->getOutput()->renderError(970, $this->getConfig('message_service_delete', 'could not delete this node'), array(), 405);
         return true;
     }
 

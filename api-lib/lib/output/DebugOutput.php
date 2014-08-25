@@ -46,7 +46,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
         http_response_code($httpCode);
         header('Content-Type: '.$this->getConfig("content_type","text/plain").'; charset=utf8');
         ob_start();
-        print_r($content);
+        var_dump($content);
         $output = ob_get_contents();
         ob_end_clean();
         Api::logInfo(350, "Render '" . get_class($this) . "' connector " . strlen($output) . " octets sended", $output, 3);

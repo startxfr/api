@@ -37,13 +37,21 @@ class SessionInput extends DefaultInput implements IInput {
      */
     public function init() {
         Event::trigger('input.init.before');
-        session_name($this->getConfig('session_name'));
-        $paramPassedToken = Api::getInstance()->getInput()->getParam($this->getConfig("session_name"));
-        if ($paramPassedToken != '')
+        $inputParams = $this->getConfig('token',array());
+        $sessionName = ($inputParams['name'] != '') ? $inputParams['name'] : 'session';
+        if($inputParams['input'] == "xauth") {
+            $paramPassedToken = $_SERVER['X-Auth-Token'];
+        }
+        else {
+            $paramPassedToken = Api::getInstance()->getInput($inputParams['input'])->getParam($sessionName,'');
+        }
+        session_name($sessionName);
+        if ($paramPassedToken != '') {
             session_id($paramPassedToken);
+        }
         session_start();
         $this->sessionId = session_id();
-        Api::logDebug(210, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector for session '".$this->getConfig('session_name')."' with  id " . $this->sessionId, $this->getAll(), 5);
+        Api::logDebug(210, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector for session '".$sessionName."' with  id " . $this->sessionId, $this->getAll(), 5);
         Event::trigger('input.init.after');
         return $this;
     }
@@ -58,10 +66,11 @@ class SessionInput extends DefaultInput implements IInput {
     }
 
     public function get($key, $default = null) {
-        if (is_array($_SESSION) and array_key_exists($key, $_SESSION))
+        if (is_array($_SESSION) and array_key_exists($key, $_SESSION)) {
             return $_SESSION[$key];
-        else
+        } else {
             return $default;
+        }
     }
 
     public function set($key, $data) {
@@ -74,10 +83,12 @@ class SessionInput extends DefaultInput implements IInput {
     }
 
     public function setAll($data) {
-        if (is_array($data) and !array_key_exists('application', $data))
-            $data['application'] = $_SESSION['application'];
-        if (is_array($data) and !array_key_exists('user', $data))
-            $data['user'] = $_SESSION['user'];
+        $applicationParamName = $this->getConfig("application_key",'application');
+        $userParamName = $this->getConfig("user_key",'user');
+        if (is_array($data) and !array_key_exists($applicationParamName, $data))
+            $data[$applicationParamName] = $_SESSION[$applicationParamName];
+        if (is_array($data) and !array_key_exists($userParamName, $data))
+            $data[$userParamName] = $_SESSION[$userParamName];
         $_SESSION = $data;
         return $this;
     }
@@ -110,6 +121,16 @@ class SessionInput extends DefaultInput implements IInput {
             $this->sessionId = session_id();
         else
             $this->sessionId = $id;
+        
+        $request = array(
+            'first' => $context,
+            'last' => $context
+        );
+        $trace = array(
+            'server' => $_SERVER,
+            'cookie' => $_COOKIE,
+            'request' => $request
+        );
         $default = array(
             "_id" => $this->sessionId,
             'data' => $data,
@@ -118,10 +139,7 @@ class SessionInput extends DefaultInput implements IInput {
             'time_start' => new MongoDate(time()),
             'time_update' => new MongoDate(time()),
             'time_end' => new MongoDate(time() + $this->getConfig('timeout', 240 * 60)),
-            'trace_server' => $_SERVER,
-            'trace_cookie' => $_COOKIE,
-            'trace_first_request' => $context,
-            'trace_last_request' => $context
+            'trace' => $trace
         );
         Api::logDebug(220, "Generate new session '" . $this->sessionId . "' descriptor", $default, 5);
         return $default;
@@ -140,19 +158,20 @@ class SessionInput extends DefaultInput implements IInput {
         $inDb = $this->findOneSession($id);
         // first time this session is done, so we create a new record
         if (is_null($inDb) or $inDb["_id"] == '')
-            $inDb = $this->createSession(array(), $id);
+//              throw new InputException("session " . $id. " is not recorded. Please use another session token or renew your authentification");
+             $inDb = $this->createSession(array(), $id);
         else {
             if (time() > $inDb['time_end']->sec) {
-                Api::logWarn(211, "Session '" . $id . "' is expired and supposed to be ended until '" . date('Y-m-d H:i:s', $inDb['time_end']->sec));
+                Api::logWarn(211, "Session '" . $id . "' is expired and is closed until '" . date('Y-m-d H:i:s', $inDb['time_end']->sec));
                 if ($this->getConfig('auto_extend_timeout', true)) {
                     $this->sessionStorage->update(array("_id" => $id), array('$set' => array('time_end' => new MongoDate(time() + $this->getConfig('timeout', 240 * 60)))));
-                    Api::logInfo(212, "Automaticaly extend session '" . $id . "' exiration date from '" . date('Y-m-d H:i:s', $inDb['time_end']->sec) . "' to '" . date('Y-m-d H:i:s', time() + $this->getConfig('timeout', 240 * 60)) . "' according to the auto_extend_timeout config property", null, 4);
+                    Api::logInfo(212, "Automaticaly extend session '" . $id . "' expiration date from '" . date('Y-m-d H:i:s', $inDb['time_end']->sec) . "' to '" . date('Y-m-d H:i:s', time() + $this->getConfig('timeout', 240 * 60)) . "' according to the auto_extend_timeout config property", null, 4);
                 }
                 else
                     throw new InputException("session is expired until " . date('Y-m-d H:i:s', $inDb['time_end']->sec));
             }
             else
-                Api::logInfo(210, "Re-open session '" . $id . "' expiring on " . date('Y-m-d H:i:s', $inDb['time_end']->sec), 3);
+                Api::logInfo(210, "Continue session '" . $id . "' until " . date('Y-m-d H:i:s', $inDb['time_end']->sec), 3);
         }
 
         $_SESSION = $inDb['data'];
@@ -177,7 +196,8 @@ class SessionInput extends DefaultInput implements IInput {
         }
         $inDb = $this->findOneSession($id);
         if (is_null($inDb) or $inDb["_id"] == '')
-            $inDb = $this->createSession($return_data, $id);
+              throw new InputException("session " . $id. " could not be recorded as it has to be recorded.");
+//          $inDb = $this->createSession($return_data, $id);
         else
             Api::logInfo(210, "Record session '" . $id . "' object in backend", null, 4);
 
@@ -185,7 +205,7 @@ class SessionInput extends DefaultInput implements IInput {
             'state' => '1',
             'data' => $return_data,
             'time_update' => new MongoDate(time()),
-            'trace_last_request' => Api::getInstance()->getInput()->getContext()
+            'trace.request.last' => Api::getInstance()->getInput()->getContext()
         );
         $this->sessionStorage->update(array("_id" => $id), array('$set' => $data));
         return true;
@@ -200,7 +220,7 @@ class SessionInput extends DefaultInput implements IInput {
                 'state' => '2',
                 'time_update' => new MongoDate(time()),
                 'time_end' => new MongoDate(time()),
-                'trace_last_request' => Api::getInstance()->getInput()->getContext()
+                'trace.request.last' => Api::getInstance()->getInput()->getContext()
             )
         ));
         return true;

@@ -16,12 +16,7 @@ class apiResource extends readonlyResource implements IResource {
         if ($this->getConfig('exposed_keys', '') == '')
             $api->logWarn(907, get_class($this) . " resource config should contain the 'exposed_keys' attribute", $this->getResourceTrace(__FUNCTION__, false));
         else {
-            if (is_array($this->getConfig('exposed_keys')))
-                $this->setConfig('exposed_keys', $this->getConfig('exposed_keys'));
-            elseif (is_string($this->getConfig('exposed_keys')))
-                $this->setConfig('exposed_keys', explode(',', $this->getConfig('exposed_keys')));
-            else
-                $this->setConfig('exposed_keys', array());
+            $this->setConfig('exposed_keys', Toolkit::string2Array($this->getConfig('exposed_keys')));
         }
         return $this;
     }
