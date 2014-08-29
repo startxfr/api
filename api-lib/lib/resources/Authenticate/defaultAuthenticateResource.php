@@ -23,13 +23,13 @@ abstract class defaultAuthenticateResource extends defaultResource implements IR
 
     public function readAction() {
         Api::getInstance()->logError(910, "Performing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource is not allowed", $this->getResourceTrace(__FUNCTION__, false));
-        Api::getInstance()->getOutput()->renderError(910, $this->getConfig('message_service_read', 'could not read this node'), $this->getResourceTrace(__FUNCTION__));
+        Api::getInstance()->getOutput()->renderError(910, $this->getConfig('message_service_read', 'could not read this node'), $this->getResourceTrace(__FUNCTION__),405);
         return true;
     }
 
     public function deleteAction() {
         Api::getInstance()->logError(970, "Performing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource is not allowed", $this->getResourceTrace(__FUNCTION__, false));
-        Api::getInstance()->getOutput()->renderError(910, $this->getConfig('message_service_delete', 'could not delete this node'), $this->getResourceTrace(__FUNCTION__));
+        Api::getInstance()->getOutput()->renderError(910, $this->getConfig('message_service_delete', 'could not delete this node'), $this->getResourceTrace(__FUNCTION__),405);
         return true;
     }
 

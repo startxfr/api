@@ -45,7 +45,7 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
             $api->getOutput()->renderOk($message, $return);
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -63,7 +63,7 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
             $api->getOutput()->renderOk($message, $return);
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -81,7 +81,7 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
             $api->getOutput()->renderOk($message, $return);
         } catch (Exception $exc) {
             $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -99,7 +99,7 @@ class proxyHttpResource extends defaultHttpResource implements IResource {
             $api->getOutput()->renderOk($message, $return);
         } catch (Exception $exc) {
             $api->logError(970, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }

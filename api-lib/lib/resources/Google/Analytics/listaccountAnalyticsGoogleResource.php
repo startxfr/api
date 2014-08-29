@@ -38,7 +38,6 @@ class listaccountAnalyticsGoogleResource extends defaultGoogleResource implement
         return true;
     }
 
-
 }
 
 ?>

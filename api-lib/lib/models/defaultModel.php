@@ -14,18 +14,17 @@ abstract class defaultModel extends Configurable implements IModel {
     protected $storage = null;
 
     public function __construct($config = array(), $storageID = 'default') {
-        Api::logDebug(500, "Construct '" . $config["_id"] . "' " . get_class($this) . " model ", $config, 5);
+        $id = (array_key_exists('_id', $config)) ? $config["_id"] : 'default';
+        Api::logDebug(500, "Construct '" . $id . "' " . get_class($this) . " model ", $config, 5);
         parent::__construct($config);
         $api = Api::getInstance();
         $this->storage = Api::getInstance()->getStore($storageID);
         if ($this->getStore() == false)
             throw new ModelException(get_class($this) . " require '" . $storageID . "' storage witch is unvailable from the storage factory.");
-        if (is_string($this->getConfig('output_filter')))
-            $this->setConfig('output_filter', explode(',', $this->getConfig('output_filter')));
-        if (is_string($this->getConfig('output_security_filter')))
-            $this->setConfig('output_security_filter', explode(',', $this->getConfig('output_security_filter')));
+        $this->setConfig('output_filter',Toolkit::string2Array($this->getConfig('output_filter')));
+        $this->setConfig('output_security_filter',Toolkit::string2Array($this->getConfig('output_security_filter')));
         if (is_string($this->getConfig('bind_vars')) and $this->getConfig('bind_vars') != '*' and $this->getConfig('bind_vars') != 'all')
-            $this->setConfig('bind_vars', explode(',', $this->getConfig('bind_vars')));
+            $this->setConfig('bind_vars', Toolkit::string2Array($this->getConfig('bind_vars')));
         if ($this->getConfig('id_key', '') == '') {
             $api->logError(506, get_class($this) . " resource config should contain the 'id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
             throw new ModelException(get_class($this) . " resource config should contain the 'id_key' attribute");

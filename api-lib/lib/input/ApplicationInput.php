@@ -2,11 +2,22 @@
 
 /**
  * Class used to access application informations of the application associated to the current session
- *
+ * == Config options ==
+ * -------------------------------------------
+ * param          | default       | description 
+ * -------------------------------------------
+ * collection     | 'application' | nosql collection name used for retriving application details
+ * supported      | null          | array or comma separated string list of supported application
+ * default_client | none          | default client to use when no application is declared
+ * param_name     | app           | Name of the parameter used to pass application identity
+ * param_input    | null          | identifier of the input method used to retrieve application name. Default use the default input object defined in running API
+ * default_client | default       | 
+ * 
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
+ * @
  */
 class ApplicationInput extends DefaultInput implements IInput {
 
@@ -24,6 +35,7 @@ class ApplicationInput extends DefaultInput implements IInput {
         parent::__construct($config);
         $api = Api::getInstance();
         $this->applicationStorage = $api->nosqlConnection->selectCollection($this->getConfig("collection",'application'));
+        $this->setConfig('supported',Toolkit::string2Array($this->getConfig('supported')));
         if (is_null($this->applicationStorage))
             throw new InputException("could not get the application collection '" . $this->getConfig("collection",'application') . "' into nosql backend '" . Api::$nosqlApiBackend->base . "' datadase.", 202);
     }
@@ -35,21 +47,22 @@ class ApplicationInput extends DefaultInput implements IInput {
     public function init() {
         Event::trigger('input.init.before');
         $this->setApp();
-        Api::logDebug(210, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector  setting to '" . Api::getInstance()->getInput('session')->get('application') . "'", Api::getInstance()->getInput('session')->get('application'), 4);
+        Api::logDebug(210, "Init '" . $this->getConfig("id") . "' " . get_class($this) . " connector  setting to '" . Api::getInstance()->getInput('session')->get('application') . "'", Api::getInstance()->getInput('session')->get('application'), 4);
         Event::trigger('input.init.after');
         return $this;
     }
 
     public function setApp() {
         $sessionInput = Api::getInstance()->getInput('session');
-        $defaultInput = Api::getInstance()->getInput();
-        if ($defaultInput->get('app') != '') {
-            if (is_array($this->getConfig('supported')) and !in_array($defaultInput->get('app'), $this->getConfig('supported')))
-                throw new InputException("could not set application '" . $defaultInput->get('app') . "' as it is not a supported app for this API. See application section of your sxapi document", 220);
-            $sessionInput->set('application', $defaultInput->get('app'));
+        $defaultInput = Api::getInstance()->getInput($this->getConfig("param_input",''));
+        $appParamName = $this->getConfig("param_name",'app');
+        if ($defaultInput->get($appParamName) != '') {
+            if (is_array($this->getConfig('supported')) and !in_array($defaultInput->get($appParamName), $this->getConfig('supported')))
+                throw new InputException("could not set application '" . $defaultInput->get($appParamName) . "' as it is not a supported app for this API. See application section of your sxapi document", 220);
+            $sessionInput->set('application', $defaultInput->get($appParamName));
         }
         elseif($sessionInput->get('application') == '') {
-            $sessionInput->set('application', $this->getConfig('default_client'));
+            $sessionInput->set('application', $this->getConfig('default_client','default'));
         }
         return $this;
     }

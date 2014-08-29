@@ -35,7 +35,7 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
                 } catch (Exception $exc) {
                     $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' when trying to record redirect trace : " . $exc->getMessage(), $exc);
                     if ($configRecord['fatal'] === true)
-                        $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+                        $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
                 }
             }
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), $this->getConfig('url'));
@@ -47,7 +47,7 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
             exit;
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -55,14 +55,14 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
     protected function createHitTrace() {
         $input = Api::getInstance()->getInput();
         $trace = new stdClass();
-                    $trace->date = new MongoDate();
-                    $trace->ip = $_SERVER['REMOTE_ADDR'];
-                    $trace->redirect_to = $this->getConfig('url', $_SERVER['REFERER']);
-                    $trace->request_referer = $_SERVER['REFERER'];
-                    $trace->request_method = $input->getMethod();
-                    $trace->request_rooturl = $input->getRootUrl();
-                    $trace->request_path = $input->getPath();
-                    $trace->request_params = $input->getParams();
+        $trace->date = new MongoDate();
+        $trace->ip = $_SERVER['REMOTE_ADDR'];
+        $trace->redirect_to = $this->getConfig('url', $_SERVER['REFERER']);
+        $trace->request_referer = $_SERVER['REFERER'];
+        $trace->request_method = $input->getMethod();
+        $trace->request_rooturl = $input->getRootUrl();
+        $trace->request_path = $input->getPath();
+        $trace->request_params = $input->getParams();
         return $trace;
     }
 

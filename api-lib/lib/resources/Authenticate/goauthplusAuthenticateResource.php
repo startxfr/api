@@ -56,11 +56,11 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
                         // If there was an error in the token info, abort.
                         if ($tokenInfo->error) {
                             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $tokenInfo->error, $tokenInfo);
-                            $api->getOutput()->renderError(910, $tokenInfo->error);
+                            $api->getOutput()->renderError(910, $tokenInfo->error,array(),401);
                         } elseif ($tokenInfo->audience != $this->getConfig('client_id')) {
                             $response = 'Token\'s client ID does not match app\'s.';
                             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $response, $tokenInfo);
-                            $api->getOutput()->renderError(910, $response);
+                            $api->getOutput()->renderError(910, $response,array(),401);
                         } else {
 
 
@@ -106,7 +106,7 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(),array(),401);
         }
         return true;
     }
