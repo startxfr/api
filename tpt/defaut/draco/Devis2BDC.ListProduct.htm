@@ -1,0 +1,139 @@
+<script>
+
+    prix = new Array();
+    remise = new Array();
+    produit = new Array();
+
+    ###[script]###
+
+
+
+
+
+</script>
+<div>
+    <form name="choix" action="#" method="GET">
+	<div class="block width50">
+	    <fieldset class="form">
+		<legend>Action</legend>
+		<div class="row">
+		    <div class="label"><input type="radio" name="choix" onclick="showCmd();" /></div>
+		    <div class="field">Générer la commande correspondante</div>
+		</div>
+		<div class="row">
+		    <div class="label"><input type="radio" name="choix" onclick="showFact();" /></div>
+		    <div class="field">Facturer directement</div>
+		</div>
+	    </fieldset>
+	</div>
+    </form>
+</div>
+
+<div id="commandePopupForm" style="display:none;">
+    <form method='post' action='Commande.php' name='addCmd'>
+	<input type="hidden" name="action" value="addCmd"/>
+	<input type="hidden" name="id_dev" value="###[id_dev]###"/>
+	<div class="blockTable">
+	    <table width='100%' border='0' cellspacing='0' cellpadding='2'>
+		<tr class="titre">
+		    <th rowspan="2" style="width: 135px">ID</th>
+		    <th rowspan="2">Fournisseur</th>
+		    <th rowspan="2" style="width: 16px">Stock</th>
+		    <th colspan="4">Client</th>
+		    <th colspan="4">Fournisseur</th>
+		    <th rowspan="2" style="width: 30px">Marge</th>
+		</tr>
+		<tr class="subtitre">
+		    <th style="width: 30px">Quantité</th>
+		    <th style="width: 90px">Prix</th>
+		    <th style="width: 65px">Remise</th>
+		    <th style="width: 110px">Total</th>
+		    <th style="width: 30px">Quantité</th>
+		    <th style="width: 90px">Prix</th>
+		    <th style="width: 65px">Remise</th>
+		    <th style="width: 110px">Total</th>
+		</tr>
+	###[liste]###
+		<tr>
+		    <th colspan="3" rowspan="2"> </th>
+		    <th colspan="6"> </th>
+		</tr>
+		<tr class="titre">
+		    <th colspan="3" nowrap="nowrap">HT Client</th>
+		    <th id="TotalHT" nowrap="nowrap">###[totalHT]### &euro;</th>
+		    <th colspan="2"></th>
+		    <th nowrap="nowrap">HT Fournisseur</th>
+		    <th id="TotalHTF" nowrap="nowrap">0.00 &euro;</th>
+		    <th id="TotalMarge" nowrap="nowrap" colspan="2">0.00 &euro;</th>
+		</tr>
+	    </table>
+	    <br/>
+	</div>
+	<div class="block width50">
+	    <fieldset class="form">
+		<legend>Renouvellement automatique</legend>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.cmdRenew);">Programmer</div>
+		    <div class="field">###[renew]###</div>
+		</div>
+		<div class="row" style="display: none;" id="renewPeriode">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.devis.cmdRenewCycle);">Cycle</div>
+		    <div class="field">###[renewperiode]###</div>
+		</div>
+	    </fieldset>
+	</div>
+	<div class="block width50">
+	    <fieldset class="form">
+		<legend>Informations sur la commande</legend>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.nom);">Nom de la commande</div>
+		    <div class="field">###[nom_cmd]###</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.bdcc);">Bon de Commande</div>
+		    <div class="field">###[BDC]###</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.reglementMode);">Mode de règlement</div>
+		    <div class="field">###[ModeReglement]###</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.reglementCondi);">Conditions de règlement</div>
+		    <div class="field">###[CondiReglement]###</div>
+		</div>
+	    </fieldset>
+	</div>
+
+
+    </form>
+    <br class="clear"/>
+</div>
+
+<div id="facturePopupForm" style="display:none;">
+    <form method='post' action='FactureCreate.php' name='addFact'>
+	<input type="hidden" name="action" value="createFromDevis"/>
+	<input type="hidden" name="devis" value="###[id_dev]###"/>
+	<div class="block width50">
+	    <fieldset class="form">
+		<legend>Informations sur la facture</legend>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.nom);">Nom de la facture</div>
+		    <div class="field">###[nom_cmd]###</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.commande.bdcc);">Bon de Commande</div>
+		    <div class="field">###[BDC]###</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementMode);">Mode de règlement</div>
+		    <div class="field">###[ModeReglement]###</div>
+		</div>
+		<div class="row">
+		    <div class="label" onmouseover="zuno.tooltip(this,ZTips.facture.reglementCondi);">Conditions de règlement</div>
+		    <div class="field">###[CondiReglement]###</div>
+		</div>
+	    </fieldset>
+	</div>
+    </form>
+    <br class="clear"/>
+</div>

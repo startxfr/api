@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       zuno.xml					-->
+<!-- desc :       ZUNO init file			-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="zunoClientCoordonnee" modifRight="0" title="Configuration de l'utilisateur et des droits">
+	<value id="nom">STARTX</value>
+	<value id="nom_court">STARTX</value>
+	<value id="adresse">171 avenue Georges Clemenceau</value>
+	<value id="adresse2"></value>
+	<value id="cp">92000</value>
+	<value id="ville">NANTERRE</value>
+	<value id="tel">+33 (0)1 46 69 00 00</value>
+	<value id="fax">+33 (0)9 72 14 70 16</value>
+	<value id="mail">info@startx.fr</value>
+	<value id="url">www.startx.fr</value>
+    </group>
+    <group name="zunoClientStatut" modifRight="0" title="Configuration de l'utilisateur et des droits">
+	<value id="rs">STARTX</value>
+	<value id="statut">SARL</value>
+	<value id="capital">50005</value>
+	<value id="rcs">RCS Nanterre 449 970 524 00038</value>
+	<value id="ape">6202A</value>
+	<value id="tva">FR 26 449 970 524</value>
+	<value id="tauxTVA">19.6</value>
+    </group>
+    <group name="zunoClientBanque" modifRight="0" title="Configuration de l'utilisateur et des droits">
+	<value id="titulaire">STARTX</value>
+	<value id="domiciliation">BNP PARIBAS (Boulogne-Billancourt)</value>
+	<value id="banque">30004</value>
+	<value id="guichet">02908</value>
+	<value id="compte">00010009689</value>
+	<value id="cle">83</value>
+	<value id="iban">FR76 3000 4029 0800 0100 0968 983</value>
+	<value id="swift">BNPAFRPPBBT</value>
+	<value id="telex"></value>
+    </group>
+    <group name="zunoPayline" modifRight="0" title="Configuration de Payline">
+	<value id="CONTRACT_NUMBER">4525454</value>
+	<value id="CONTRACT_NUMBER_LIST">4525454</value>
+	<value id="MERCHANT_ID">30118170124619</value>
+	<value id="ACCESS_KEY">N5GYGOpkGV4CAgIgHreu</value>
+	<value id="PRODUCTION">TRUE</value> 
+	<value id="PAYMENT_CURRENCY">978</value>
+	<value id="ORDER_CURRENCY">978</value>
+	<value id="SECURITY_MODE">SSL</value>
+	<value id="LANGUAGE_CODE">fra</value>
+	<value id="PAYMENT_ACTION">100</value>
+	<value id="PAYMENT_MODE">CPT</value>
+	<value id="CANCEL_URL">http://www.payline.com</value>
+	<value id="NOTIFICATION_URL">http://www.payline.com</value>
+	<value id="RETURN_URL">http://www.payline.com</value>
+	<value id="CUSTOM_PAYMENT_TEMPLATE_URL"></value>
+	<value id="CUSTOM_PAYMENT_PAGE_CODE"></value>
+	<value id="PROXY_HOST">null</value>
+	<value id="PROXY_PORT">null</value>
+	<value id="PROXY_LOGIN"></value>
+	<value id="PROXY_PASSWORD"></value>
+    </group>
+    <group name="zunoWebService" modifRight="0" title="Configuration ddes webservices ZUNO">
+	<value id="instance_code">75_SXA01</value>
+	<value id="managerWebServicePath">https://manager1.zuno.fr/ws/</value>
+	<value id="wsdlCacheEnabled">1</value>
+    </group>
+    <group name="zunoManagerWebService" modifRight="0" title="Configuration de prospec">
+	<value id="manager_name">sxa</value>
+	<value id="manager_key">00017beeb22bedca8a1bc7d9c6ee4b19</value>
+	<value id="superBase_token">00017beeb22bedca8a1bc7d9c6ee4b19</value>
+	<value id="superBaseWebServicePath">https://superbase.zuno.fr/ws/</value>
+	<value id="webServicePath">https://sxa.startx.fr/ws/</value>
+	<value id="wsdlCacheEnabled">1</value>
+	<value id="wsdlClientHttpAccess">true</value>
+	<value id="wsdlClientHttpAccesstype">Basic</value>
+	<value id="wsdlClientHttpAccessUser">zunows</value>
+        <value id="wsdlClientHttpAccessPass">11zunows09</value>
+        <!--value id="wsdlClientHttpAccessUser">cl</value>
+        <value id="wsdlClientHttpAccessPass">8j9y8hw3</value-->
+    </group>
+    <group name="zunoPontComptable" modifRight="0" title="Configuration du pont comptable">
+	<value id="histoDir">PontComptable/</value>
+	<value id="filePrefix">pontComptableZuno.</value>
+	<value id="fileExt">.txt</value>
+	<value id="CodeJournal">2</value>
+	<value id="CreationDefaultSelectedStatutFactClient">4,5,6</value>
+	<value id="CreationDefaultSelectedStatutFactFourn">2,3,4,5</value>
+	<value id="FCCompteProduitDefaut">70617000</value>
+	<value id="FCCompteTVADefaut">44570000</value>
+	<value id="FCCompteDebitDefaut">41100000</value>
+	<value id="FFCompteProduitDefaut">70617000</value>
+	<value id="FFCompteTVADefaut">44570000</value>
+	<value id="FFCompteDebitDefaut">41100000</value>
+    </group>
+    <group name="zunoProduit" modifRight="0" title="Configuration de prospec">
+	<value id="defautNewFamilleCode">R19</value>
+    </group>
+    <group name="zunoJournalBanque" modifRight="0" title="Configuration du journal de banque">
+	<value id="pieceDir">Compta/PiecesBancaires/</value>
+	<value id="pieceFilePrefix">Piece-</value>
+    </group>
+</configuration>

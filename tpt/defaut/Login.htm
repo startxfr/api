@@ -1,0 +1,28 @@
+<form method="post" action="Login.php" name="login">
+    <input type="hidden" name="to" value="###[to]###" />
+    <div class="ContextBox" id="PortletLogin" style="position: absolute; margin-left: 33%; width: 400px; height: 200px">
+	<div class="title">
+	    <span class="left"><img src="'###[imgPath]###connect.png" title="" alt=""/> Authentification</span>
+	    <span class="right">&nbsp;</span>
+	</div>
+	<div class="body">
+	    <div class="content" style="margin-top:10px">
+		###[message]###
+		<br/>
+		<label onmouseover="zuno.tooltip(this,ZTips.authentification.identifiant);">Identifiant</label>
+		<input type="text" name="login" value='###[login]###'/>
+		<br class="clear"/>
+		<label id="passwd" onmouseover="zuno.tooltip(this,ZTips.authentification.mdp);">Mot de passe</label>
+		<input type="password" name="pwd"/>
+		<br class="clear"/>
+	    </div>
+	</div>
+	<div class="foot">
+	    <input type="submit" name="bouton" class="bouton" value="Envoyer"/>
+	    <input type="reset" name="bouton" class="bouton" value="Annuler"/>
+	</div>
+	<script type="text/javascript">
+	    var promptForFirefox = true;
+	</script>
+    </div>
+</form>

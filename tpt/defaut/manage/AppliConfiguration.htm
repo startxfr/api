@@ -1,0 +1,74 @@
+<div id="PortletAppConf" class="Portlet2">
+###[message]###
+<div class="leftRow">
+<h2>Configuration de l'application</h2>
+<DIV ID="AppConfFileOn" style="POSITION: relative;">
+	<fieldset>
+	<legend>Général | <a href="#" onclick="SX_RollDIV('AppConfFileOn','none');SX_RollDIV('AppConfLangOn','');SX_RollDIV('AppConfChannelOn','none');">Langues</a> | <a href="#" onclick="SX_RollDIV('AppConfFileOn','none');SX_RollDIV('AppConfLangOn','none');SX_RollDIV('AppConfChannelOn','');">Channel</a></legend>
+		<label for="page" title="">Général</label>
+		<span class="txt"><a href="#\" onclick=\"return zuno.popup.open('PluginConfigure.php','id=../general.xml&action=popup','730','600','','','','PluginConfigure');">Modifier la configuration</a></span>
+		<br class="clear"/>
+		<label for="page" title="">BDD</label>
+		<span class="txt"><a href="#\" onclick=\"return zuno.popup.open('PluginConfigure.php','id=bdd.xml&action=popup','730','600','','','','PluginConfigure');">Modifier la configuration</a></span>
+		<br class="clear"/>
+		<label for="page" title="">log</label>
+		<span class="txt"><a href="#\" onclick=\"return zuno.popup.open('PluginConfigure.php','id=log.xml&action=popup','730','600','','','','PluginConfigure');">Modifier la configuration</a></span>
+		<br class="clear"/>
+	</fieldset>
+</DIV>
+<DIV ID="AppConfLangOn" style="display:none; POSITION: relative;">
+	<fieldset>
+	<legend><a href="#" onclick="SX_RollDIV('AppConfFileOn','');SX_RollDIV('AppConfLangOn','none');">Général</a> | Langues | <a href="#" onclick="SX_RollDIV('AppConfFileOn','none');SX_RollDIV('AppConfLangOn','none');SX_RollDIV('AppConfChannelOn','');">Channel</a></legend>
+		###[LangList]###
+	</fieldset>
+</DIV>
+<DIV ID="AppConfChannelOn" style="display:none; POSITION: relative;">
+	<fieldset>
+	<legend><a href="#" onclick="SX_RollDIV('AppConfFileOn','');SX_RollDIV('AppConfLangOn','none');">Général</a> | <a href="#" onclick="SX_RollDIV('AppConfFileOn','none');SX_RollDIV('AppConfLangOn','');SX_RollDIV('AppConfChannelOn','none');">Langues</a> | Channel</legend>
+		<label for="page" title="">Channel</label>
+		<span class="txt"><a href="#\" onclick=\"return zuno.popup.open('PluginConfigure.php','id=channel.xml&action=popup','730','600','','','','PluginConfigure');">Modifier la configuration</a></span>
+		<br class="clear"/>
+		<hr/>
+		<form method="post" action="ApplicationConfig.php">
+		<h4>Créer un channel</h4>
+			<input type="hidden" name="action" value="CreateChannel">
+			<label>Nom :</label><input type="text" name="channel" value="" class="free">
+			<input type="submit" name="bouton" value="Créer">
+		<br class="clear"/>
+		<hr/>
+	</form>
+	</fieldset>
+</DIV>
+<br class="clear"/>
+</div>
+<div class="rightRow">
+<h2>Gestion de l'application</h2>
+<DIV ID="AppConfCacheOn" style="POSITION: relative;">
+	<fieldset>
+	<legend>Cache | <a href="#" onclick="SX_RollDIV('AppConfCacheOn','none');SX_RollDIV('AppConfRewriteOn','');">Contenu</a></legend>
+		<form method="post" action="ApplicationConfig.php" class=""><input type="submit" name="action" class="" value="Nettoyer le cache"></form>
+	</fieldset>
+</DIV>
+<DIV ID="AppConfRewriteOn" style="display:none; POSITION: relative;">
+	<fieldset>
+		<legend><a href="#" onclick="SX_RollDIV('AppConfCacheOn','');SX_RollDIV('AppConfRewriteOn','none');">Cache</a> | Contenu</legend>
+		<br/>
+	<form method="post" action="ApplicationConfig.php">
+		<h4>Rechercher - Remplacer</h4>
+			<input type="hidden" name="action" value="SearchReplace">
+			<label>Chercher :</label><input type="text" name="search" value="" class="free">
+			<br class="clear"/>
+			<label>Remplacer par :</label><input type="text" name="replace" value="" class="free">
+			<br class="clear"/>
+			<label>dans le channel:</label><span class="txt"> admin <input name="channel" value="admin" type="radio">
+			- normal<input name="channel" value="normal" checked="checked" type="radio"></span>
+			<br class="clear"/>
+			<input type="submit" name="bouton" value="Effectuer le remplacement">
+		<br class="clear"/>
+		<hr/>
+	</form>
+	</fieldset>
+</DIV>
+</div>
+</div>
+<br class="clear"/>

@@ -1,0 +1,482 @@
+/*#########################################################################
+#
+#   name :       Core.CSS
+#   desc :       Central CSS style for Normal channel
+#   categorie :  CSS Style
+#   ID :  	 $Id: style.channel.admin.css 5466 2010-09-26 03:10:59Z cl $
+#
+#   copyright:   See licence.txt for this script licence
+#########################################################################*/
+
+
+/******** IMAGES DU WORKSPACE ***********/
+.ContextBox .title 			{ background-color: rgb(127,  0,  0); }
+.ContextBox .body 			{ background-color: rgba(127,  0,  0,0.8); }
+.ContextBox .foot 			{ background-color: rgba(127,  0,  0,0.8); }
+.ZBox .header	 			{ background-color: rgba(127,  0,  0,0.2); }
+.ZBox .header .title			{ background-color: rgba(127,  0,  0,0.8); }
+.ZBox .footer				{ background-color: rgba(127,  0,  0,0.15);}
+.ZBox .blockTable .subtitre th,
+.ZBox .blockTable .subtitre .celluleH	{background-color: rgba(141, 78, 78,0.7); }
+
+/******** BACKGROUND DE COULEUR FONCE ***********/
+.ZBox .footer a:hover, 
+.ZBox .footer input[type="submit"]:hover, 
+.ZBox .footer input[type="reset"]:hover,
+.ZBox .footer select:hover,
+.ZBox .footer .selected,
+.ZBox .blockTable .titre th,
+#MenuSubBar,
+a.bouton,
+.ContextBox input[type=button],
+.ContextBox input[type=submit],
+.ContextBox input[type=reset],
+#ScanSearchCode:hover {
+    background-color: #7f0000;
+}
+/******** BORDURE DE COULEUR FONCE ***********/
+.ZBox .body .block fieldset {
+    border-color: #7f0000;
+}
+/******** TEXTE DE COULEUR FONCE ***********/
+#ZWFooter a:hover,
+body, 
+a,
+a.bouton:hover,
+#PortletPageDesc h1,
+.ZBox .footer a:hover,
+.ZBox .body input[type="text"],
+.ZBox .body input[type="file"],
+.ZBox .body textarea,
+.ZBox .body select,
+.ZBox .footer a,
+.ZBox .footer input[type="submit"], 
+.ZBox .footer input[type="reset"],
+.ZBox .body .block fieldset legend,
+#ScanSearchCode,
+#PageTitle h1,
+#NavBar li,
+.ContextBox input[type=button]:hover,
+.ContextBox input[type=submit]:hover,
+.ContextBox input[type=reset]:hover {
+    color: #7f0000;
+}
+.prototip .content {
+    color: #7f0000 !important;
+}
+
+/******** BACKGROUND DE COULEUR CLAIRE ***********/
+.ZBox .footer a,
+.ZBox .footer input[type="submit"], 
+.ZBox .footer input[type="reset"],
+.ZBox .body input[type="text"],
+.ZBox .body input[type="file"],
+.ZBox .body textarea,
+.ZBox .body select,
+.ZBox .footer a,
+.ZBox .footer input[type="submit"], 
+.ZBox .footer input[type="reset"],
+#PageTitle,
+a.bouton:hover,
+.ContextBox input[type=button]:hover,
+.ContextBox input[type=submit]:hover,
+.ContextBox input[type=reset]:hover {
+    background-color: #ffeded;
+}
+/******** BORDURE DE COULEUR CLAIRE ***********/
+.ZBox .body,
+.ZBox .blockTable .titre th.barre {
+    border-color: #ffeded;
+}
+/******** TEXTE DE COULEUR CLAIRE ***********/
+#ZWFooter a,
+.ZBox .footer a:hover,
+.ZBox .footer input[type="submit"]:hover,
+.ZBox .footer input[type="reset"]:hover,
+#ScanSearchCode:hover {
+    color: #ffeded;
+}
+
+
+
+
+
+
+
+/** STYLE FOR LogView PORTLET
+ *  specific style to apply for login portlet */
+#LogView td
+{ font-size: .7em; }
+
+/** STYLE FOR PAGE ADMIN PORTLET
+ *  specific style to apply for login portlet */
+#PortletPageModif #Affichage label
+{ width: 150px; }
+
+
+#PortletPageAdmin
+{ width: 100%; }
+#PortletPageAdmin ul
+{ list-style: none;
+  padding-top: 15px;
+  margin-left: 15px;
+  margin-right: 15px }
+#PortletPageAdmin ul.submenu
+{ margin-left: 30px;
+  margin-right: 0px;
+  padding-top: 4px }
+#PortletPageAdmin ul.normal,
+#PortletPageAdmin ul.admin
+{ width: 100%;
+  margin-left: 0px;
+  margin-top: 6px }
+#PortletPageAdmin li
+{ width: 100% ; 
+  height: 24px ; }
+#PortletPageAdmin li.Brouillon *
+{ font-style: italic;
+  text-decoration: blink }
+#PortletPageAdmin li.Desactif *
+{ text-decoration: line-through;
+  color: #f00; }
+#PortletPageAdmin li.Archive *
+{ font-style: italic;
+  text-decoration: line-through; }
+#PortletPageAdmin .txt
+{ color: #000;
+  padding-left: 3px;
+  padding-right: 3px;
+  float : left; }
+#PortletPageAdmin a
+{ padding-top: 3px;
+  float : left; }
+#PortletPageAdmin .right
+{ color: #513;
+  margin-left: .5em;
+  float : right; }
+#PortletPageAdmin li a.bouton
+{ float : right;  }
+#PortletPageAdmin li:hover a.bouton
+{ border: 1px inset #ee7;
+  color: #000; }
+#PortletPageAdmin li.altern1
+{ background-color: #fae0ff; }
+#PortletPageAdmin li:hover
+{  background-color: 	#F4B9FF; }
+#PortletPageAdmin li:hover .txt,
+#PortletPageAdmin li:hover .right
+{ color: #fff; }
+
+#PortletPageDeleteFile
+{ width: 615px;
+  margin: 0px;
+  padding: 0px;}
+
+#PortletPageModifContent
+{ width: 615px;
+  margin: 0px;
+  padding: 0px;}
+#PortletPageModifContent label
+{ width: 60px; }
+#PortletPageModif input[type="password"]
+{ background: #dbb;
+  padding: 0px;
+  border: 1px solid #c44;
+  float: left;
+  color: #c44; }
+#PortletPageModif input[type="password"]:focus
+{ background: #fcc;
+  border: 1px inset #f88;
+  color: #f88; }
+
+
+/** STYLE FOR IMAGE INSERT PORTLET
+ *  specific style to image insert popup portlet */
+#PortletImageInsert div.leftRow
+{ width: 250px ;
+}
+#PortletImageInsert div.rightRow 
+{ width: 310px ;
+}
+#PortletImageInsert 
+{ width: 600px;
+  position: relative;
+  left: -40px
+}
+#PortletImageInsert div.rightRow div.ZBox .blockTable
+{ width: 270px ;
+}
+
+/** STYLE FOR USER PORTLET
+ *  specific style to image insert popup portlet */
+#UserManageBox div.leftRow label
+{ width: 100px ;
+}
+#PortletPageModif input[type="password"]
+{ background: #fcc;
+  border: 1px inset #f88;
+  padding: 0px;
+  float: left;
+  color: #c44; }
+#PortletPageModif input[type="password"]:focus
+{ background: #fff;
+  color: #c44;
+  font-weight: bold; }
+
+/** IMAGE TREE PORTLET
+ *  Style to apply for image tree table module */
+.ImageTree
+{ width: 100%;
+  margin-bottom: 20px;
+  border: 0 !important; }
+.ImageTree th
+{ background: transparent;
+  border: 0;
+  border-bottom: 1px inset #bbb;
+  padding: .4em;
+  color: #555; }
+.ImageTree th input
+{ float: right; }
+.ImageTree .altern1 th
+{ background: #ddd;
+  border-bottom: 1px inset #513; }
+.ImageTree td
+{ border: 0;
+  background: #eee;
+  border-bottom: 1px inset #bbb;
+  padding: .3em }
+.ImageTree .altern1 td
+{ background: #eee;
+  border-bottom: 1px inset #513; }
+
+
+/** STYLE FOR PAGE SEARCH PORTLET
+ *  specific style to apply for login portlet */
+#PortletPageSearch
+{ width: 875px;
+  margin-bottom: 20px;
+  padding-left: 35px; }
+#PortletPageSearch ul
+{ list-style: none;
+  width: 100%;
+  margin-left: 0px;
+  margin-top: 6px }
+#PortletPageSearch li
+{ width: 100% ; 
+  float : left;
+  display: block;
+  margin-bottom: 4px;
+  height: 40px ; }
+#PortletPageSearch .titre
+{ width: 75% ; 
+  font-size: 1.4em;
+  float : left;
+  font-weight: bold;
+  color: #624; }
+#PortletPageSearch .visit
+{ width: 24% ; 
+  font-size: .8em;
+  font-weight: normal;
+  color: #513;
+  float : right; }
+#PortletPageSearch .content
+{ float : left;
+  color: #513; }
+#PortletPageSearch a
+{ float : left; }
+#PortletPageSearch li:hover
+{ background: #eee; }
+#PortletPageSearch li:hover .titre,
+#PortletPageSearch li:hover .visit
+{ color: #624; }
+
+/** STYLE FOR PAGE PLAN PORTLET
+ *  specific style to apply for login portlet */
+#PortletPagePlan
+{ width: 875px;
+  margin-bottom: 20px;
+  padding-left: 35px; }
+#PortletPagePlan ul
+{ list-style: none;
+  margin-left: 35px }
+#PortletPagePlan ul.submenu
+{ margin-bottom: 4px}
+#PortletPagePlan ul.first
+{ margin-left: 0px;
+  margin-top: 6px }
+#PortletPagePlan li
+{ margin-bottom: 4px;
+  height: 30px ; }
+#PortletPagePlan .title
+{ color: #513;
+  font-size: 1.3em; }
+#PortletPagePlan .modif
+{ padding-left: 8px;
+  font-size: .8em; }
+#PortletPagePlan ul.submenu li
+{ margin-bottom: 0px }
+#PortletPagePlan .stat
+{ font-size: .8em;
+  color: #513;
+  float : right; }
+#PortletPagePlan li:hover
+{ background: #eee; }
+#PortletPagePlan li:hover .title,
+#PortletPagePlan li:hover .stat
+{ color: #624; }
+
+/** STYLE FOR PortletModifPropRules PORTLET
+ *  specific style to file modif popup portlet */
+#PortletPluginView
+{ width: 615px;
+  margin: 0px;
+  padding: 0px;}
+#PortletPluginView #SQLView label
+{ width: 175px; }
+
+#PortletPluginUpgrade
+{ width: 875px;
+  margin: 0px;
+  margin-left: 25px;
+  padding: 0px;}
+#PortletPluginUpgrade #SQLView label
+{ width: 175px; }
+
+/** STYLE FOR PortletModifPropRules PORTLET
+ *  specific style to file modif popup portlet */
+#PortletModifPropRules
+{ width: 615px;
+  margin: 0px;
+  padding: 0px;}
+#PortletModifPropRules fieldset label
+{ width: 175px; }
+
+/** STYLE FOR PortletFileModif PORTLET
+ *  specific style to file modif popup portlet */
+table.del
+{ border: 1px outset #733; }
+table.del .titre th
+{ background: #a66;
+  border-bottom: 1px inset #733; }
+table.del .titre th.barre
+{ border-right: 1px solid #733; }
+table.del th.barre
+{ border-right: 1px solid #b77; }
+table.del td.barre
+{ border-right: 1px solid #9bb; }
+table.del .bg
+{ background: #fdd; }
+table.del .altern0
+{ background: #fdd; }
+table.del .altern0 .bg
+{ background: #ecc; }
+table.del tr.altern0 a,
+table.del tr.altern0 th,
+table.del tr.altern0 td,
+tr.delete0 th,
+tr.delete0 td,
+tr.delete0 a
+{ color: #a55; }
+table.del tr.altern1 a,
+table.del tr.altern1 th,
+table.del tr.altern1 td,
+tr.delete1 th,
+tr.delete1 td,
+tr.delete1 a
+{ color: #944; }
+tr.delete1
+{ background: #dcc url("../../img/gnose/Delfile.bg.png") left top; }
+tr.delete1 .bg
+{ background: #cbb url("../../img/gnose/Delfile.bg1.png") left top; }
+tr.delete0
+{ background: #cbb url("../../img/gnose/Delfile.bg2.png") left top; }
+tr.delete0 .bg
+{ background: #baa url("../../img/gnose/Delfile.bg3.png") left top; }
+
+table.add
+{ border: 1px outset #6a6; }
+table.add .titre th
+{ background: #372;
+  border-bottom: 1px inset #6a6; }
+table.add .titre th.barre
+{ border-right: 1px solid #733; }
+table.add th.barre
+{ border-right: 1px solid #b77; }
+table.add td.barre
+{ border-right: 1px solid #9bb; }
+table.add .bg
+{ background: #dfd; }
+table.add .altern0
+{ background: #cec; }
+table.add .altern0 .bg
+{ background: #bdb; }
+table.add tr.altern0 a,
+table.add tr.altern0 th,
+table.add tr.altern0 td,
+tr.add0 th,
+tr.add0 td,
+tr.add0 a
+{ color: #372; }
+table.add tr.altern1 a,
+table.add tr.altern1 th,
+table.add tr.altern1 td,
+tr.add1 th,
+tr.add1 td,
+tr.add1 a
+{ color: #261; }
+tr.add1
+{ background: #dcc url("../../img/gnose/Addfile.bg.png") left top; }
+tr.add1 .bg
+{ background: #cbb url("../../img/gnose/Addfile.bg1.png") left top; }
+tr.add0
+{ background: #cbb url("../../img/gnose/Addfile.bg2.png") left top; }
+tr.add0 .bg
+{ background: #baa url("../../img/gnose/Addfile.bg3.png") left top; }
+
+table.mod
+{ border: 1px outset #ec6; }
+table.mod .titre th
+{ background: #ec6;
+  border-bottom: 1px inset #db5; }
+table.mod .titre th.barre
+{ border-right: 1px solid #ec6; }
+table.mod th.barre
+{ border-right: 1px solid #ec6; }
+table.mod td.barre
+{ border-right: 1px solid #ec6; }
+table.mod .bg
+{ background: #ffc; }
+table.mod .altern0
+{ background: #eeb; }
+table.mod .altern0 .bg
+{ background: #dda; }
+table.mod tr.altern0 a,
+table.mod tr.altern0 th,
+table.mod tr.altern0 td,
+tr.modif0 th,
+tr.modif0 td,
+tr.modif0 a
+{ color: #db5; }
+table.mod tr.altern1 a,
+table.mod tr.altern1 th,
+table.mod tr.altern1 td,
+tr.modif1 th,
+tr.modif1 td,
+tr.modif1 a
+{ color: #ec6; }
+tr.modif1
+{ background: #fdd url("../../img/gnose/Modifile.bg.png") left top; }
+tr.modif1 .bg
+{ background: #fdd url("../../img/gnose/Modifile.bg1.png") left top; }
+tr.modif0
+{ background: #ecc url("../../img/gnose/Modifile.bg2.png") left top; }
+tr.modif0 .bg
+{ background: #ecc url("../../img/gnose/Modifile.bg3.png") left top; }
+
+#PortletPluginConfig
+{ width: 615px;
+  margin: 0px;
+  padding: 0px;}
+
+#PortletPluginConfig label
+{ width: 200px; }

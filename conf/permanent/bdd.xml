@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       bdd.xml					-->
+<!-- desc :       bdd init file					-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <!-- DBPool are configuration set used for database interface		-->
+	<!-- You can create as many DBPool as required for your application	-->
+	<!-- Only First DBPool is required and used as default Database		-->
+	<!-- This Database should contain required table for your framework	-->
+	<!-- Additional pool can be used regarding plugin configuration file	-->
+    <group name="DBPool_1" modifRight="0" title="Premier POOL de connexion">
+	<value id="type">mysql</value>
+	<value id="serveur">127.0.0.1</value>
+	<value id="login">testing</value>
+	<value id="pass">x3WpT3faCSa6BWd3</value>
+	<value id="base">TESTING_sxa</value>
+	<value id="persistant">TRUE</value>
+    </group>
+    <group name="DBPool_10" modifRight="0" title="POOL de connexion de reference">
+	<value id="type">mysql</value>
+	<value id="serveur">localhost</value>
+	<value id="login">zunoref</value>
+	<value id="pass">zunoref</value>
+	<value id="base">zunoRef</value>
+	<value id="persistant">FALSE</value>
+    </group>
+</configuration>

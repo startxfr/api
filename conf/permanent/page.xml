@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       page.xml					-->
+<!-- desc :       page content and management init file		-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="PAGE_HEADER" title="Informations d'en-tête">
+	<value id="keyword" title="Mot clef pour le référencement">aucun</value>
+	<value id="description" title="Texte de déscription du site">Progiciel de gestion STARTX</value>
+    </group>
+    <group name="PAGE" modifRight="0" title="Configuration des répertoires">
+	<value id="REP_doc">download/doc/</value>
+	<value id="REP_newsletter">download/newsletter/</value>
+	<value id="REP_phototeque">img/imgbank/</value>
+	<!-- Display a message if no translated content -->
+		<!-- is found for the requested language 	-->
+	<value id="LANG_TxtNoTrans">TRUE</value>
+    </group>
+    <group name="StaticContent" modifRight="0" title="Configuration des répertoires">
+	<value id="urlGroup">https://dev.startx.fr/sxa/static/min/?g=za-</value>
+	<value id="urlJss">https://dev.startx.fr/sxa/static/min/?f=za/jss/</value>
+	<value id="UrlImg">https://dev.startx.fr/sxa/static/za/img/</value>
+	<value id="UrlImgPhone">https://dev.startx.fr/sxa/static/za/p/img/</value>
+	<value id="urlWebapp">https://dev.startx.fr/sxa/static/min/?f=za/p/WebApp/</value>
+    </group>
+    <group name="MutTools" modifRight="0" title="Configuration des répertoires">
+	<value id="pathJpgraph">/var/zuno/manager/muTools/jpgraph/</value>
+    </group>
+</configuration>

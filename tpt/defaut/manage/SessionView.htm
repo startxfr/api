@@ -1,0 +1,42 @@
+<div class="Portlet2">
+<fieldset>
+		<legend>Rechercher une session : </legend>
+		<form method=post>
+			<div class="leftRow">
+				<label for="" title="from">Date de debut :</label>
+				<input type="hidden" name="action" value="search"/>
+				###[input_date_from]###
+				###[select_heure_from]###
+				<br class="clear"/>
+				<label for="" title="to">Date de fin :</label>
+				###[input_date_to]###
+				###[select_heure_to]###
+				<br class="clear"/>
+				<label for="" title="date_type">Type de date :</label>
+				debut <input type="radio" name="date_type" value="debut" checked/>
+				ou fin <input type="radio" name="date_type" value="fin"/>
+				de session
+			</div>
+			<div class="rightRow">
+				<label for="" title="level">Id :</label>
+				<input type="text" name="id_sess" size="22" value="###[id_sess]###"/>
+				<br class="clear"/>
+				<label for="" title="user_sess">Utilisateur :</label>
+				<input type="text" name="user_sess" size="22" value="###[user_sess]###"/>
+				<br class="clear"/>
+				<label for="" title="channel">Channel :</label>
+				<select name="channel_sess">
+					<option value ="normal">normal</option>
+					<option value ="admin">Admin</option>
+				</select>
+			</div>
+			
+			<br class="clear"/>
+			<br>
+			<input type="submit" name="bouton" class="" value="Rechercher">
+			<input type="reset" name="bouton" class="" value="reinitialiser la recherche">
+			<br>
+		</form>
+
+	</fieldset>
+</div>

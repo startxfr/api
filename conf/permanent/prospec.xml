@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       log.xml					-->
+<!-- desc :       log content and management init file		-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="PropsecConf" modifRight="0" title="Configuration de prospec">
+	<value id="DBPool">1</value>
+	<value id="list.limite.relance">350</value>
+	<value id="right.deleteCompany">1</value>
+	<value id="right.deleteContact">1</value>
+	<value id="dir.img">prospec/</value>
+	<value id="color.leadRdv" title="couleur des RDV projet">#900</value>
+	<value id="image.score.width" title="largeur de l'image picto">40</value>
+	<value id="dir.cannevas.exportTableur" title="">Cannevas/ExportTableur/</value>
+	<value id="cannevas.exportContactTableur">_ExportContact.ods</value>
+    </group>
+    <group name="ZunoAffaire" modifRight="1" title="Documents à joindre lors d'un envoi">
+	<value id="cannevas.exportTableur">_ExportAffaire.ods</value>
+	<value id="dir.affaire" title="Répertoire des affaires">Affaires/</value>
+	<value id="dir.archives" title="Répertoire des affaires archivées">Affaires/</value>
+    </group>
+    <group name="ZunoSendMail" modifRight="1" title="Documents à joindre lors d'un envoi">
+	<value id="dir.pj">Cannevas/Mail/PiecesJointes/</value>
+	<value id="dir.texte">Cannevas/Mail/Textes/</value>
+	<value id="pj.InfoAdministratives.pdf">Informations administratives</value>
+	<value id="pj.plaquette.pdf">Plaquette de presentation</value>
+	<value id="pj.commandeForm.pdf">Formulaire de commande</value>
+	<value id="pj.Le_model_de_souscription_RHEL.pdf">Model de souscription RHEL</value>
+	<value id="pj.RedHat_Solutions_Guide_EN.pdf">Guide des solutions Redhat (EN)</value>
+	<value id="pj.RHEL6-Fiche_technique.pdf"> RHEL6: Fiche technique</value>
+	<value id="pj.RHEL6-Modules_complementaires.pdf"> RHEL6: Modules complementaires</value>
+	<value id="pj.RHEL6-Nouveautes.pdf">RHEL6: Nouveautes</value>
+	<value id="texte._presentationService.txt">Presentation service</value>
+	<value id="texte._presentationProduit.txt">Presentation produit</value>
+	<value id="texte.presentationDeveloppement.txt">Presentation developpement</value>
+	<value id="texte._Devis.txt">Devis</value>
+	<value id="texte.DevisClientRedhat.txt">Devis (client redhat)</value>
+	<value id="texte.DevisFormation.txt">Devis (formation)</value>
+	<value id="texte.DevisNewClient.txt">Devis (nouv client)</value>
+	<value id="texte.DevisNewClientAcademique.txt">Devis (nouv client académique)</value>
+	<value id="texte._CommandeEnregistree.txt">Commande enregistrée</value>
+	<value id="texte._Facture.txt">Votre facture STARTX</value>
+	<value id="texte._FactureRevente.txt">Votre facture STARTX - souscriptions Red Hat</value>
+	<value id="texte._FactureRelance.txt">Votre facture STARTX : relance</value>
+	<value id="texte._FactureAccuseReception.txt">Votre facture STARTX : Accusé reception de votre facture</value>
+	<value id="coverFax">Cannevas/_CouvertureFax.odt</value>
+	<value id="maxEnvoiFax">-1</value>
+	<value id="maxEnvoiCourrier">-1</value>
+	<value id="maxEnvoiMail">-1</value>
+	<value id="allMailCopy">true</value>
+	<value id="allMailCopyAdress">sxa@startx.fr</value>
+    </group>
+    <group name="ZunoDevis" modifRight="1" title="parametrage du devis">
+	<value id="right.record" title="Droit pour l'enregistrement">1</value>
+	<value id="file.suffixe" title="Suffixe des PDF">Devis.</value>
+	<value id="cannevas.exportTableur">_ExportDevis.ods</value>
+	<value id="dir.cannevas" title="Répertoire des cannevas de devis">Cannevas/Devis/</value>
+	<value id="cannevas.defaut" title="Cannevas type pour un devis">_Devis.odt</value>
+	<value id="cannevas.prestation" title="Cannevas type pour un devis">_DevisPrestation.odt</value>
+	<value id="cannevas.formation" title="Cannevas type pour un devis de formation">_DevisFormation.odt</value>
+	<value id="cannevas.academique" title="Cannevas type pour un devis académique">_DevisAcademique.odt</value>
+	<value id="cannevas.dev" title="Cannevas type pour un developpement">DevisDev.odt</value>
+	<value id="cannevas.int" title="Cannevas type pour l'international">_DevisInternational.odt</value>
+	<value id="cannevas.proforma" title="Cannevas type pour un proforma">_Proforma.odt</value>
+    </group>
+    <group name="ZunoCommande" modifRight="1" title="Cannevas utilisé pour la création de BDCF">
+	<value id="right.record" title="Droit pour l'enregistrement">1</value>
+	<value id="file.suffixe" title="Suffixe des PDF">CMD.</value>
+	<value id="cannevas.exportTableur">_ExportCommande.ods</value>
+	<value id="dir.cannevas" title="Répertoire des cannevas de devis">Cannevas/Commandes/</value>
+	<value id="cannevas.BDCC" title="Cannevas type pour un BDCC">_BDCC.odt</value>
+	<value id="cannevas.BDL" title="Cannevas type pour un BDL">_BDL.odt</value>
+	<value id="cannevas.RI" title="Cannevas type pour un Rapport d'intervention">_RapportIntervention.odt</value>
+	<value id="cannevas.PVR" title="Cannevas type pour un PV de recette">_PVRecette.odt</value>
+	<value id="cannevas.BDCF" title="Cannevas type pour un devis">_BDCF.Default.odt</value>
+	<value id="mail.pj.1" title="Fichier a envoyer en pj">plaquette.pdf</value>
+	<value id="mail.pj.2" title="Fichier a envoyer en pj">commandeForm.pdf</value>
+    </group>
+    <group name="ZunoFacture" modifRight="1" title="Documents à joindre lors d'un envoi">
+	<value id="right.record" title="Droit pour l'enregistrement">1</value>
+	<value id="cannevas.exportTableur">_ExportFacture.ods</value>
+	<value id="dir.cannevas" title="Répertoire des cannevas de facture">Cannevas/Factures/</value>
+	<value id="dir.facture" title="Répertoire de stockage des factures">Factures/Clients/</value>
+	<value id="dir.factureFournisseur" title="Répertoire de stockage des factures fournisseur">Factures/Fournisseurs/</value>
+	<value id="cannevas.defaut" title="Cannevas type pour une facture">_Facture.odt</value>
+	<value id="cannevas.formation" title="Cannevas type pour une facture formation">_FactureFormation.odt</value>
+	<value id="cannevas.en" title="Cannevas pour une facture en anglais">_FactureEN.odt</value>
+	<value id="cannevas.avoir" title="Cannevas type pour un avoir">_FactureAvoir.odt</value>
+	<value id="cannevas.formation" title="Cannevas type pour une formation conventionnée STARTX">_FactureFormation.odt</value>
+	<value id="cannevas.duplicata" title="Cannevas type pour un duplicata">_Duplicata.odt</value>
+    </group>
+    <group name="ZunoFournisseur" modifRight="1" title="parametrage des fournisseurs">
+	<value id="Defaut" title="Droit pour l'enregistrement">92EM</value>
+    </group>
+    <group name="MailevaConf" modifRight="0" title="Configuration des envois courrier">
+	<value id="mailToCourrier">a00138669@courrier.maileva.com</value>
+	<value id="mailToFax">a00138669@fax.maileva.com</value>
+	<value id="pjsFileName">maileva.pjs</value>
+	<value id="clientId">startx.zuno</value>
+	<value id="clientPwd">sdIMUy2</value>
+	<value id="clientRfr">WP002000021883</value>
+	<value id="MessageBackAddr">maileva@zuno.fr</value>
+    </group>
+</configuration>

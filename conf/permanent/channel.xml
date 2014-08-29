@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name :       channel.xml					-->
+<!-- desc :       channel init file				-->
+<!-- categorie :  config					-->
+<!-- ID :  	 $Id$	-->
+<!-- copyright:   See licence.txt for this script licence	-->
+<configuration>
+    <group name="CHANNEL_list" modifRight="0">
+	<value id="normal">normal</value>
+	<value id="prospec">Clients</value>
+	<value id="draco">Affaires</value>
+	<value id="pegase">Commandes</value>
+	<value id="facturier">Factures</value>
+	<value id="produit">Produits</value>
+	<value id="gnose">Documents</value>
+	<value id="admin">Administration</value>
+	<value id="iPhone">iPhone</value>
+    </group>
+    <!-- INIT DEFAULT CHANNEL				-->
+    <group name="CHANNEL_normal" modifRight="2">
+	<!-- cookie name for this channel		-->
+	<value id="name">ZUNOSXA</value>
+	<!-- directory where script page are stored	-->
+	<value id="path"/>
+	<!-- private channel need a user session to view-->
+		<!-- the channel content If you have both public-->
+		<!-- and private page, configure this to FALSE	-->
+	<value id="private">FALSE</value>
+	<!-- If private part, specify minimum right	-->
+	<value id="RequiredRight">0,1,2,3,4,5,10,15,17,20</value>
+	<!-- Force visitor to use HTTPS connexion	-->
+	<value id="requireSSL">FALSE</value>
+	<!-- Name for session of this pool		-->
+	<value id="SessName">ZUNOSXA</value>
+	<!-- DBPool to use for store session		-->
+	<value id="SessDBPool" modifRight="0">1</value>
+	<!-- Timeout of the session			-->
+	<value id="SessTimeOut">32400</value>
+	<!-- Lenght of the session ID			-->
+	<value id="SessKeyLenght">32</value>
+	<!-- Frameset template directory		-->
+	<value id="FramesetTmpDir" modifRight="0">FramesetNormal/</value>
+	<!-- Display Navigation bar			-->
+	<value id="DisplayNavBar">FALSE</value>
+	<!-- Right to acces page modif and autoring	-->
+	<value id="PageManageRequiredRight" modifRight="0">0,1,2,3</value>
+	<!-- CSS theme used for graphical display	-->
+	<value id="CSSTheme">defaut</value>
+	<!-- CSS theme used for graphical display	-->
+	<value id="isOnMenu">false</value>
+    </group>
+    <!-- INIT PROSPEC CHANNEL				-->
+    <group name="CHANNEL_prospec" modifRight="2">
+	<value id="name">ZUNOSXA-PROSPEC</value>
+	<value id="path">prospec/</value>
+	<value id="private">TRUE</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,15,17,20</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA</value>
+	<value id="SessDBPool" modifRight="0">1</value>
+	<value id="SessTimeOut">32400</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir" modifRight="0">FramesetSub/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight" modifRight="0">0,1</value>
+	<value id="CSSTheme">defaut</value>
+	<value id="isOnMenu">true</value>
+    </group>
+    <!-- INIT DRACO CHANNEL				-->
+    <group name="CHANNEL_draco" modifRight="2">
+	<value id="name">ZUNOSXA-AFFAIRE</value>
+	<value id="path">draco/</value>
+	<value id="private">TRUE</value>
+	<value id="RequiredRight">0,1,2,3,4,10,15,17</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA</value>
+	<value id="SessDBPool" modifRight="0">1</value>
+	<value id="SessTimeOut">32400</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir" modifRight="0">FramesetSub/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight" modifRight="0">0,1,2</value>
+	<value id="CSSTheme">defaut</value>
+	<value id="isOnMenu">true</value>
+    </group>
+    <!-- INIT PEGASE CHANNEL				-->
+    <group name="CHANNEL_pegase" modifRight="2">
+	<value id="name">ZUNOSXA-COMMANDE</value>
+	<value id="path">pegase/</value>
+	<value id="private">FALSE</value>
+	<value id="RequiredRight">0,1,2,3,4,10,20</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA</value>
+	<value id="SessDBPool" modifRight="0">1</value>
+	<value id="SessTimeOut">32400</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir" modifRight="0">FramesetSub/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight" modifRight="0">0,1,2</value>
+	<value id="CSSTheme">defaut</value>
+	<value id="isOnMenu">true</value>
+    </group>
+    <!-- INIT GNOSE CHANNEL					-->
+    <group name="CHANNEL_gnose" modifRight="2">
+	<value id="name">ZUNOSXA-GED</value>
+	<value id="path">gnose/</value>
+	<value id="private">TRUE</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,17</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA</value>
+	<value id="SessDBPool" modifRight="0">1</value>
+	<value id="SessTimeOut">32400</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir" modifRight="0">FramesetSub/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight" modifRight="0">0,1</value>
+	<value id="CSSTheme">defaut</value>
+	<value id="isOnMenu">true</value>
+    </group>
+    <!-- INIT FACTURIER CHANNEL					-->
+    <group name="CHANNEL_facturier" modifRight="1">
+	<value id="name">ZUNOSXA-FACTURE</value>
+	<value id="path">facturier/</value>
+	<value id="private">FALSE</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,17</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA</value>
+	<value id="SessDBPool" modifRight="0">1</value>
+	<value id="SessTimeOut">32400</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir" modifRight="0">FramesetSub/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight" modifRight="0">0,1</value>
+	<value id="CSSTheme">defaut</value>
+	<value id="isOnMenu">true</value>
+    </group>
+    <!-- INIT IPHONE CHANNEL					-->
+    <group name="CHANNEL_iPhone" modifRight="1">
+	<value id="name">ZUNOSXA-IPHONE</value>
+	<value id="path">iphone/</value>
+	<value id="private">TRUE</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,15,17,20</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA-IPHONE</value>
+	<value id="SessDBPool" modifRight="0">1</value>
+	<value id="SessTimeOut">28800</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir" modifRight="0">FramesetNormal/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight" modifRight="0">0,1</value>
+	<value id="CSSTheme">iphone</value>
+	<value id="isOnMenu">false</value>
+    </group>
+    <!-- INIT ADMIN CHANNEL					-->
+    <group name="CHANNEL_admin" modifRight="0">
+	<value id="name">ZUNOSXA-ADMIN</value>
+	<value id="path">manage/</value>
+	<value id="private">TRUE</value>
+	<value id="RequiredRight">0,1</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA</value>
+	<value id="SessDBPool">1</value>
+	<value id="SessTimeOut">32400</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir">FramesetSub/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight">0</value>
+	<value id="CSSTheme">defaut</value>
+	<value id="isOnMenu">true</value>
+    </group>
+    <!-- INIT PRODUIT CHANNEL				-->
+    <group name="CHANNEL_produit" modifRight="2">
+	<value id="name">ZUNOSXA-PRODUIT</value>
+	<value id="path">produit/</value>
+	<value id="private">TRUE</value>
+	<value id="RequiredRight">0,1,2,3,4,5,10,17</value>
+	<value id="requireSSL">FALSE</value>
+	<value id="SessName">ZUNOSXA</value>
+	<value id="SessDBPool" modifRight="0">1</value>
+	<value id="SessTimeOut">32400</value>
+	<value id="SessKeyLenght">32</value>
+	<value id="FramesetTmpDir" modifRight="0">FramesetSub/</value>
+	<value id="DisplayNavBar">FALSE</value>
+	<value id="PageManageRequiredRight" modifRight="0">0,1,2</value>
+	<value id="CSSTheme">defaut</value>
+	<value id="isOnMenu">true</value>
+    </group>
+</configuration>
