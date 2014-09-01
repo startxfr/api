@@ -4,81 +4,54 @@
         {
             "id": "293",
             "training": "AW001",
-            "title": "AWS Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=293",
-            "class": "event-warning",
             "start": "1362938400000",
             "end": "1363197686300"
         },
         {
             "id": "256",
             "training": "JB248",
-            "title": "JB248 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=256",
-            "class": "event-warning",
             "start": "1363155300000",
             "end": "1363227600000"
         },
         {
             "id": "276",
             "training": "RH403",
-            "title": "RH403 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=276",
-            "class": "event-success",
             "start": "1363245600000",
             "end": "1363252200000"
         },
         {
             "id": "294",
             "training": "RH255",
-            "title": "RH255 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=294",
-            "class": "event-info",
             "start": "1363111200000",
             "end": "1363284086400"
         },
         {
             "id": "297",
             "training": "RH300",
-            "title": "RH300 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=297",
-            "class": "event-success",
             "start": "1363234500000",
             "end": "1363284062400"
         },
         {
             "id": "54",
             "training": "RH134",
-            "title": "RH134 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=54",
-            "class": "",
             "start": "1363712400000",
             "end": "1363716086400"
         },
         {
             "id": "532",
             "training": "RH199",
-            "title": "RH199 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=532",
-            "class": "event-inverse",
             "start": "1364407200000",
             "end": "1364493686400"
         },
         {
             "id": "548",
             "training": "RH200",
-            "title": "RH200 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=548",
-            "class": "event-special",
             "start": "1363197600000",
             "end": "1363629686400"
         },
         {
             "id": "295",
             "training": "RH300",
-            "title": "RH300 Exemple",
-            "url": "http://localhost/startx/formation/reserver.html?id=295",
-            "class": "event-important",
             "start": "1364320800000",
             "end": "1364407286400"
         }
