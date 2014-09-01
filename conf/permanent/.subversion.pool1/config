@@ -1,4 +1,0 @@
-[miscellany]
-global-ignores = *tmp/* 
-enable-auto-props = yes
-
