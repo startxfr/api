@@ -14,10 +14,12 @@ class CsvOutput extends TxtOutput implements IOutput {
      * Render the view
      *
      * @param array $content data to be rendered
+     * @param int   $httpCode Http response code
      * @return void this method echo result and exit program
      */
-    protected function render($content) {
+    protected function render($content, $httpCode = 200) {
         Event::trigger('output.render.before');
+        http_response_code($httpCode);
         header('Content-Type: ' . $this->getConfig("content_type", "text/csv") . '; charset=utf8');
         header("Content-Disposition: attachment; filename=example.csv");
         header("Pragma: no-cache");
@@ -45,11 +47,12 @@ class CsvOutput extends TxtOutput implements IOutput {
      * @param   string  message describing the returned data
      * @param   mixed   data to be rendered and returned to the client
      * @param   int     counter to indicate if there is more data that the returned set
+     * @param   int     $httpCode Http response code
      * @return  void
      * @see     self::render();
      */
-    public function renderOk($message, $data, $count = null) {
-        return $this->render($data);
+    public function renderOk($message, $data, $count = null, $httpCode = 200) {
+        return $this->render($data, $httpCode);
     }
 
     /**
@@ -58,11 +61,12 @@ class CsvOutput extends TxtOutput implements IOutput {
      * @param   int     error code to render
      * @param   string  message describing the error
      * @param   mixed   other data to be returned to the client
+     * @param   int     $httpCode Http response code
      * @return  void
      * @see     self::render();
      */
-    public function renderError($code, $message = '', $other = array()) {
-        return parent::renderError($code, $message, $other);
+    public function renderError($code, $message = '', $other = array(), $httpCode = 400) {
+        return parent::renderError($code, $message, $other, $httpCode);
     }
 
 }

@@ -54,14 +54,14 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                         $this->loadServices();
                         $this->client->authenticate($input->getParam('code'));
                         $accessInfo = json_decode($this->client->getAccessToken());
-                        $api->getInput("session")->set('user_goauth_token',json_encode($accessInfo));
+                        $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
                         $user = $this->services['Oauth2']->userinfo->get();
                         $user['email'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
                         $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
                         $user['google_token'] = $accessInfo;
-                        $api->getInput("session")->set('user_goauth_token',json_encode($accessInfo));
+                        $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
                         $api->getInput('session')->set('user', $user['email']);
-                        $api->getInput('user')->setAll($user,'save');
+                        $api->getInput('user')->setAll($user, 'save');
                         $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
                         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
                         $api->getOutput()->renderOk($message, $user, count($user));
@@ -75,7 +75,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                                 break;
                         }
                         $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $message, $exc);
-                        $api->getOutput()->renderError(910, $message);
+                        $api->getOutput()->renderError(910, $message, array(), 401);
                     }
                     break;
                 default:
@@ -88,7 +88,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 401);
         }
         return true;
     }
@@ -96,13 +96,13 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
     public function loadServices() {
         $api = Api::getInstance();
         $serviceName = $this->getConfig('google_service', "Oauth2");
-            try {
-                $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
-                require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
-                $this->services[$serviceName] = new $serviceClass($this->client);
-            } catch (Exception $exc) {
-                $api->logWarn(910, "Warning on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : " . $exc->getMessage(), $exc);
-            }
+        try {
+            $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';
+            require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';
+            $this->services[$serviceName] = new $serviceClass($this->client);
+        } catch (Exception $exc) {
+            $api->logWarn(910, "Warning on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : " . $exc->getMessage(), $exc);
+        }
         return true;
     }
 

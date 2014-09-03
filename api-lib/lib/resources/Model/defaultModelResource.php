@@ -21,10 +21,7 @@ abstract class defaultModelResource extends defaultResource implements IResource
             throw new ResourceException(get_class($this) . " resource config should contain the 'model' attribute");
         }
         $this->model = $api->getModel($this->getConfig('model'));
-        if (is_null($this->getConfig('search_params')))
-            $this->setConfig('search_params', array());
-        elseif (is_string($this->getConfig('search_params')))
-            $this->setConfig('search_params', explode(',', $this->getConfig('search_params')));
+        $this->setConfig('search_params', Toolkit::string2Array($this->getConfig('search_params')));
         return $this;
     }
 
@@ -37,7 +34,7 @@ abstract class defaultModelResource extends defaultResource implements IResource
         if ($this->getConfig('search_params') == '*' or $this->getConfig('search_params') == 'all' or is_null($this->getConfig('search_params')))
             return $params;
         if (is_string($this->getConfig('search_params')))
-            $this->setConfig('search_params', explode(',', $this->getConfig('search_params')));
+            $this->setConfig('search_params', Toolkit::string2Array($this->getConfig('search_params')));
         foreach ($this->getConfig('search_params', array()) as $key)
             if ($params[$key] != null)
                 $search[$key] = $params[$key];

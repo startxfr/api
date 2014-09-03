@@ -13,7 +13,7 @@ class errorTestResource extends readonlyResource implements IResource {
     public function readAction() {
         Api::getInstance()->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
         $input = Api::getInstance()->getInput();
-        $message = $this->getConfig('message_service_read','message service read');
+        $message = $this->getConfig('message_service_read', 'message service read');
         Api::getInstance()->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : fake error with message " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
         Api::getInstance()->getOutput()->renderError(
                 $this->getConfig('error_code'), $message, array(

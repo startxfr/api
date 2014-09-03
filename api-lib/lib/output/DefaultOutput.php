@@ -17,7 +17,8 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @return void
      */
     public function __construct($config) {
-        Api::logDebug(300, "Construct '" . $config["id"] . "' " . get_class($this) . " connector ", $config, 5);
+        $id = (array_key_exists('id', $config)) ? $config["id"] : 'default';
+        Api::logDebug(300, "Construct '" . $id . "' " . get_class($this) . " connector ", $config, 5);
         parent::__construct($config);
     }
 
@@ -28,7 +29,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      */
     public function init() {
         Event::trigger('output.init.before');
-        Api::logDebug(310, "Init '" . $this->getConfig("_id") . "' " . get_class($this) . " connector", null, 5);
+        Api::logDebug(310, "Init '" . $this->getConfig("id") . "' " . get_class($this) . " connector", null, 5);
         Event::trigger('output.init.after');
         return $this;
     }
@@ -37,10 +38,12 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * Render the view
      *
      * @param array $content data to be rendered
+     * @param int   $httpCode Http response code
      * @return void this method echo result and exit program
      */
-    protected function render($content) {
+    protected function render($content, $httpCode = 200) {
         Event::trigger('output.render.before');
+        http_response_code($httpCode);
         header('Content-Type: '.$this->getConfig("content_type","text/plain").'; charset=utf8');
         ob_start();
         print_r($content);
@@ -58,10 +61,11 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @param   string  message describing the returned data
      * @param   mixed   data to be rendered and returned to the client
      * @param   int     counter to indicate if there is more data that the returned set
+     * @param   int     $httpCode Http response code
      * @return  void
      * @see     self::render();
      */
-    public function renderOk($message, $data, $count = null) {
+    public function renderOk($message, $data, $count = null, $httpCode = 200) {
         if ($count == null and is_array($data))
             $count = count($data);
         elseif ($count == null)
@@ -74,7 +78,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
             $this->getConfig("outputkey_data",'data') => $data
         );
         Api::logDebug(341, "Prepare OK rendering in '" . get_class($this) . "' connector for message : " . $message, $config, 5);
-        return $this->render($config);
+        return $this->render($config, $httpCode);
     }
 
     /**
@@ -83,12 +87,11 @@ abstract class DefaultOutput extends Configurable implements IOutput {
      * @param   int     error code to render
      * @param   string  message describing the error
      * @param   mixed   other data to be returned to the client
+     * @param   int     $httpCode Http response code
      * @return  void
      * @see     self::render();
      */
-    public function renderError($code, $message = '', $other = array()) {
-        if($this->getConfig("error_do404",true)===true)
-            header('HTTP/1.1 400 BAD REQUEST');
+    public function renderError($code, $message = '', $other = array(), $httpCode = 400) {
         $config = array(
             $this->getConfig("outputkey_status",'status') => $this->getConfig("status_error",'error'),
             $this->getConfig("outputkey_success",'success') => false,
@@ -103,7 +106,7 @@ abstract class DefaultOutput extends Configurable implements IOutput {
         if (is_array($other))
             $config = array_merge($config, $other);
         Api::logDebug(345, "Prepare ERROR rendering in '" . get_class($this) . "' connector for message : " . $message, $config, 5);
-        return $this->render($config);
+        return $this->render($config, $httpCode);
     }
 
 }

@@ -1,0 +1,155 @@
+{
+    "success": true,
+    "result": [
+        {
+            "id": "redhat",
+            "url_token": "redhat",
+            "img": "http://lorempixel.com/400/200",
+            "img_s": "http://lorempixel.com/400/200",
+            "img_l": "http://lorempixel.com/400/200",
+            "title": "Red Hat",
+            "title_s": "Redhat",
+            "title_l": "Red Hat Inc",
+            "desc": "Red Hat est une société américaine éditant des logiciels GNU/Linux. Elle est l'une des rares entreprises exclusivement dédiées aux logiciels Open Source, industrie dont elle est la plus importante et la plus reconnue. L'entreprise est principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation destiné aux entreprises. ",
+            "desc_s": "Red Hat est une multinationale américaine principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation libre destiné aux entreprises.",
+            "desc_l": "Red Hat est une société multinationale d'origine américaine éditant des distributions GNU/Linux. Elle est l'une des entreprises dédiées aux logiciels Open Source les plus importantes et les plus reconnues. Elle constitue également le premier distributeur du système d'exploitation GNU/Linux. Red Hat a été fondée en 1993 et son siège social se trouve à Raleigh en Caroline du Nord. Elle possède en plus de ce dernier un nombre important de bureaux dans le monde entier. L'entreprise est principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation destiné aux entreprises. Red Hat fournit des plateformes logicielles (système d'exploitation, intergiciel comme JBoss).",
+            "cursus": [ 
+                {
+                    "id": "redhat_infra_rhcsa",
+                    "url_token": "infrastructure_rhcsa",
+                    "img": "http://lorempixel.com/400/200",
+                    "img_s": "http://lorempixel.com/400/200",
+                    "img_l": "http://lorempixel.com/400/200",
+                    "color_class": "event-info",  
+                    "title": "Administrateur Linux Certifié",
+                    "title_s": "RHCSA",
+                    "title_l": "RHCSA : Administrateur Linux Certifié Red Hat",
+                    "desc": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "desc_s": "Une certification qui atteste des compétences requise pour administrer un parc de serveurs Red Hat Enterprise Linux",
+                    "desc_l": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "courses": ["RH124", "RH134", "RH199", "RH200", "EX200"]
+                },
+                {
+                    "id": "redhat_infra_rhce",
+                    "url_token": "infrastructure_rhce",
+                    "img": "http://lorempixel.com/400/200",
+                    "img_s": "http://lorempixel.com/400/200",
+                    "img_l": "http://lorempixel.com/400/200",
+                    "color_class": "event-warning",
+                    "title": "Ingénieur Linux Certifié",
+                    "title_s": "RHCE",
+                    "title_l": "RHCE : Ingénieur Linux Certifié Red Hat",
+                    "desc": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "desc_s": "Une certification qui atteste des compétences requise pour administrer un parc de serveurs Red Hat Enterprise Linux",
+                    "desc_l": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "courses": ["RH255", "RH300", "EX300"]
+                },
+                {
+                    "id": "redhat_infra_rhca",
+                    "url_token": "infrastructure_rhca",
+                    "img": "http://lorempixel.com/400/200",
+                    "img_s": "http://lorempixel.com/400/200",
+                    "img_l": "http://lorempixel.com/400/200",
+                    "color_class": "event-success",
+                    "title": "Architecte Linux Certifié",
+                    "title_s": "RHCA",
+                    "title_l": "RHCA : Architecte Linux Certifié Red Hat",
+                    "desc": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "desc_s": "Une certification qui atteste des compétences requise pour administrer un parc de serveurs Red Hat Enterprise Linux",
+                    "desc_l": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "courses": ["RH403", "EX403"]
+                },
+                {
+                    "id": "redhat_cloud",
+                    "url_token": "cloud",
+                    "img": "http://lorempixel.com/400/200",
+                    "img_s": "http://lorempixel.com/400/200",
+                    "img_l": "http://lorempixel.com/400/200",
+                    "color_class": "event-special",
+                    "title": "Cursus Cloud",
+                    "title_s": "Cloud",
+                    "title_l": "Cursus Cloud Openstack",
+                    "desc": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "desc_s": "Une certification qui atteste des compétences requise pour administrer un parc de serveurs Red Hat Enterprise Linux",
+                    "desc_l": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "courses": ["RH403", "EX403"]
+                }
+            ]
+        },
+        {
+            "id": "jboss",
+            "url_token": "jboss",
+            "img": "http://lorempixel.com/400/200",
+            "img_s": "http://lorempixel.com/400/200",
+            "img_l": "http://lorempixel.com/400/200",
+            "title": "JBoss",
+            "title_s": "JBoss",
+            "title_l": "Red Hat - JBoss",
+            "desc": "Red Hat est une société américaine éditant des logiciels GNU/Linux. Elle est l'une des rares entreprises exclusivement dédiées aux logiciels Open Source, industrie dont elle est la plus importante et la plus reconnue. L'entreprise est principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation destiné aux entreprises. ",
+            "desc_s": "Red Hat est une multinationale américaine principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation libre destiné aux entreprises.",
+            "desc_l": "Red Hat est une société multinationale d'origine américaine éditant des distributions GNU/Linux. Elle est l'une des entreprises dédiées aux logiciels Open Source les plus importantes et les plus reconnues. Elle constitue également le premier distributeur du système d'exploitation GNU/Linux. Red Hat a été fondée en 1993 et son siège social se trouve à Raleigh en Caroline du Nord. Elle possède en plus de ce dernier un nombre important de bureaux dans le monde entier. L'entreprise est principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation destiné aux entreprises. Red Hat fournit des plateformes logicielles (système d'exploitation, intergiciel comme JBoss).",
+            "cursus": [
+                {
+                    "id": "jboss_admin",
+                    "url_token": "administrateur",
+                    "img": "http://lorempixel.com/400/200",
+                    "img_s": "http://lorempixel.com/400/200",
+                    "img_l": "http://lorempixel.com/400/200",
+                    "color_class": "event-inverse",
+                    "title": "JBoss Certified Administrator",
+                    "title_s": "JBoss JBCAA",
+                    "title_l": "JBCAA - JBoss Certified Application Administrator",
+                    "desc": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "desc_s": "Une certification qui atteste des compétences requise pour administrer un parc de serveurs Red Hat Enterprise Linux",
+                    "desc_l": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "courses": ["JB248"]
+                },
+                {
+                    "id": "jboss_dev",
+                    "url_token": "developpeur",
+                    "img": "http://lorempixel.com/400/200",
+                    "img_s": "http://lorempixel.com/400/200",
+                    "img_l": "http://lorempixel.com/400/200",
+                    "color_class": "event-important",
+                    "title": "JBoss Certified Developpeur",
+                    "title_s": "JBoss JBCD",
+                    "title_l": "JBCD - JBoss Certified Application Developper",
+                    "desc": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "desc_s": "Une certification qui atteste des compétences requise pour administrer un parc de serveurs Red Hat Enterprise Linux",
+                    "desc_l": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "courses": ["JB248"]
+                }
+            ]
+        },
+        {
+            "id": "aws",
+            "url_token": "aws",
+            "img": "http://lorempixel.com/400/200",
+            "img_s": "http://lorempixel.com/400/200",
+            "img_l": "http://lorempixel.com/400/200",
+            "title": "Amazon AWS",
+            "title_s": "AWS",
+            "title_l": "AWS - Amazon Web Services",
+            "desc": "Red Hat est une société américaine éditant des logiciels GNU/Linux. Elle est l'une des rares entreprises exclusivement dédiées aux logiciels Open Source, industrie dont elle est la plus importante et la plus reconnue. L'entreprise est principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation destiné aux entreprises. ",
+            "desc_s": "Red Hat est une multinationale américaine principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation libre destiné aux entreprises.",
+            "desc_l": "Red Hat est une société multinationale d'origine américaine éditant des distributions GNU/Linux. Elle est l'une des entreprises dédiées aux logiciels Open Source les plus importantes et les plus reconnues. Elle constitue également le premier distributeur du système d'exploitation GNU/Linux. Red Hat a été fondée en 1993 et son siège social se trouve à Raleigh en Caroline du Nord. Elle possède en plus de ce dernier un nombre important de bureaux dans le monde entier. L'entreprise est principalement connue pour son produit Red Hat Enterprise Linux, un système d'exploitation destiné aux entreprises. Red Hat fournit des plateformes logicielles (système d'exploitation, intergiciel comme JBoss).",
+            "cursus": [
+                {
+                    "id": "aws_paas",
+                    "url_token": "paas",
+                    "img": "http://lorempixel.com/400/200",
+                    "img_s": "http://lorempixel.com/400/200",
+                    "img_l": "http://lorempixel.com/400/200",
+                    "color_class": "event-important",
+                    "title": "AWS - PAAS",
+                    "title_s": "PAAS",
+                    "title_l": "Amazon Web Services - Plateform As A Service",
+                    "desc": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "desc_s": "Une certification qui atteste des compétences requise pour administrer un parc de serveurs Red Hat Enterprise Linux",
+                    "desc_l": "Un professionnel de l'informatique qui a passé avec succès la certification administrateur système Red Hat (RHCSA) dispose des compétences de base en administration système pour effectuer les tâches requises dans les environnements Red Hat Enterprise Linux. Le titre est obtenu après avoir passé avec succès l'examen Certified System Administrator Red Hat (RHCSA)",
+                    "courses": ["AW001"]
+                }
+            ]
+        }
+    ]
+}

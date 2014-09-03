@@ -51,7 +51,7 @@ class applicationSessionResource extends defaultSessionResource implements IReso
             $api->getOutput()->renderOk($message, $api->getInput('application')->getAll());
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError(930, sprintf($this->getConfig('message_service_errorcreate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc);
+            $api->getOutput()->renderError(930, sprintf($this->getConfig('message_service_errorcreate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc, 500);
         }
         return true;
     }
@@ -70,7 +70,7 @@ class applicationSessionResource extends defaultSessionResource implements IReso
             $api->getOutput()->renderOk($message, $api->getInput('application')->getAll());
         } catch (Exception $exc) {
             $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError(950, sprintf($this->getConfig('message_service_errorupdate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc);
+            $api->getOutput()->renderError(950, sprintf($this->getConfig('message_service_errorupdate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc, 500);
         }
         return true;
     }
