@@ -646,7 +646,7 @@ class Api extends Configurable {
                 $applications = Toolkit::string2Array($aclRules['application']);
             }
         }
-        return $applications;
+             return $applications;
     }
 
     /**

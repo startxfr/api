@@ -3,9 +3,9 @@
 require_once('api-lib' . DIRECTORY_SEPARATOR .'kernel' . DIRECTORY_SEPARATOR . 'loader.php');
 
 Api::$nosqlApiBackend = '{
-        "connection" : "mongodb://__user__:__password__@127.0.0.1:27017",
-        "base" : "__dbname__",
-        "api_collection" : "__collection__"
+        "connection" : "mongodb://startx:314159@127.0.0.1:27017",
+        "base" : "sxapi",
+        "api_collection" : "sxapi.api"
     }';
 $api = Api::getInstance('startx');
 $api->load()->execute();
