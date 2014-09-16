@@ -242,8 +242,8 @@ class SmartInput extends DefaultInput implements IInput {
     }
 
     /**
-     * return the value of the given request element
-     * @param type $position the position of an element
+     * return the position of the given request element
+     * @param type $element the element to track
      * @return string
      */
     public function getElementPosition($element = null) {
@@ -336,6 +336,10 @@ class SmartInput extends DefaultInput implements IInput {
         return $this;
     }
 
+    /**
+     * return the context
+     * @return array
+     */
     public function getContext() {
         return array(
             'method' => $this->getMethod(),

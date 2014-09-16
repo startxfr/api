@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title> Formation</title>
+        <title>Title Zone</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
@@ -14,14 +14,14 @@
                  *  string place dom element where we have to push message to (default body)
                  */
                 function displayMessage(message, type, place) {
-                    if (place == undefined)
+                    if (place === undefined)
                         place = $(sxajax.messageContainer);
                     else
                         place = $(place);
-                    if (type == undefined)
+                    if (type === undefined)
                         type = "info";
                     var out = '<div class="alert alert-' + type + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + message + '</div>';
-                    place.append(out)
+                    place.append(out);
                 }
                 var sxajax = {
                     url_base: "http://localhost/startx/api/",
@@ -41,12 +41,14 @@
                     defaultCallbackOK: function(a) {
                         var message = "<h5>AJAX response OK (defaultCallbackOK)</h5><p><b>message : </b>" + a.message + "<br><b>data : </b>" + JSON.stringify(a.data) + "</p>";
                         displayMessage(message);
+                        console.log("default callback OK");
                     },
                     defaultCallbackNOK: function(a) {
                         if (a.message === undefined)
                             a.message = a.responseText;
                         var message = "<h5>AJAX response ERROR <b>" + a.statusText + " - code " + a.status + "</b> (defaultCallbackNOK)</h5><p><b>message : </b>" + a.message + "<br><b>data : </b>" + JSON.stringify(a.data) + "</p>";
                         displayMessage(message, "error");
+                        console.log("default callback NOK");
                     },
                     _call: function(method, path, data, callbackOk, callbackNok) {
                         if (method === undefined) {
@@ -68,7 +70,8 @@
                         if (data !== undefined && data !== null) {
                             conf.data = data;
                         }
-                        $.ajax(conf).done(callbackOk).fail(callbackNok);
+                        var toto = $.ajax(conf).done(callbackOk).fail(callbackNok);
+                        console.log(toto);
                     }
                 }
                 var sxtest = {
@@ -85,20 +88,22 @@
                             conf.data = {};
                         if (conf.next === undefined)
                             conf.next = sxtest.doEnd;
-                        if (conf.next !== undefined)
-                            sxtest.nextCallOK = conf.next;
+                        sxtest.nextCallOK = conf.next;
+            console.log("========");
+            console.log(conf.titre);            
                         sxtest.callOK = function(a) {
                             var message = "<h5>Réponse OK</h5><p><b>message : </b>" + a.message + "<br><b>data : </b>" + JSON.stringify(a.data) + "</p>";
                             displayMessage(message);
                             if (sxtest.nextCallOK !== undefined) {
                                 sxtest.nextCallOK();
-                                sxtest.nextCallOK = undefined;
+                              //  sxtest.nextCallOK = undefined;
                             }
                         };
                         $(sxajax.messageContainer).append("<h4>" + conf.titre + "</h4>");
                         eval("sxajax." + conf.method + "(conf.path, conf.data, sxtest.callOK)");
                     },
                     doStart: function() {
+                        console.log("=doStart");
                         sxtest.do({
                             titre: "Test de liste des services",
                             method: "get",
@@ -108,15 +113,17 @@
                         });
                     },
                     doAuth: function() {
+                        console.log("=doAuth");
                         sxtest.do({
                             titre: "Test d'authentification",
                             method: "post",
                             path: "auth/basic",
                             data: {format: "json", app: "www", login: "dev", pwd: "dev"},
-                            next: sxtest.doInfoContact
+                            next: sxtest.doListContact
                         });
                     },
                     doListContact: function() {
+                        console.log("=doList");
                         sxtest.do({
                             titre: "Test de liste des contacts",
                             method: "get",
