@@ -2,7 +2,8 @@
 
 /**
  * Class used to access application informations of the application associated to the current session
- * == Config options ==
+ * 
+ * \code== Config options ==
  * -------------------------------------------
  * param          | default       | description 
  * -------------------------------------------
@@ -12,7 +13,7 @@
  * param_name     | app           | Name of the parameter used to pass application identity
  * param_input    | null          | identifier of the input method used to retrieve application name. Default use the default input object defined in running API
  * default_client | default       | 
- * 
+ * \endcode
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
