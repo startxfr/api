@@ -7,10 +7,10 @@ Api::$nosqlApiBackend = '{
         "base" : "sxapi",
         "api_collection" : "sxapi.api"
     }';
-/*
-print_r($_SERVER);
+
+print_r($_REQUEST);
 exit;
-*/
+
  
 $api = Api::getInstance('startx');
 $api->load()->execute();
