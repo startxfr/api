@@ -3,7 +3,7 @@
 /**
  * This resource return informations about the currently used  API Document
  *
- * @package  SXAPI.Resource
+ * @class    apiResource
  * @author   Dev Team <dev@startx.fr>
  * @see      readonlyResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource

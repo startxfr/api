@@ -4,7 +4,7 @@
  * This resource class is abstract and should not be used as it.
  * Developpers can create a new model type by derivating from this class
  *
- * @package  SXAPI.Model
+ * @class    defaultModel
  * @author   Dev Team <dev@startx.fr>
  * @see      Configurable
  * @link     https://github.com/startxfr/sxapi/wiki/Model

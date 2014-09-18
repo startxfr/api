@@ -2,9 +2,10 @@
 /**
  * Simple class for handling event in php
  *
- * ex: Event::bind('input.preprocess', function($args = array()) { ... });
+ * ex: Event::bind('input.preprocess', function($args = array()) { ... });\n
  * ex: Event::trigger('input.preprocess', $data);
  *
+ * @class Event
  * @author dev@startx.fr
  */
 class Event {

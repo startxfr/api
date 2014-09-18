@@ -3,7 +3,7 @@
 /**
  * Class used to access user informations of the curently logged user (see session)
  *
- * @package  SXAPI.Input
+ * @class    UserInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
@@ -26,7 +26,7 @@ class UserInput extends DefaultInput implements IInput {
     /**
      * construct the user input object
      *
-     * @param array configuration of this object
+     * @param $config array configuration of this object
      * @see Configurable
      * @return void
      */

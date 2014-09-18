@@ -3,7 +3,7 @@
 /**
  * Class used to render data in json formated string
  *
- * @package  SXAPI.Output
+ * @class     CsvOutput
  * @author   Mallowtek <mallowtek@gmail.com>
  * @see      DefaultOutput
  * @link      https://github.com/startxfr/sxapi/wiki/Outputs
@@ -13,8 +13,8 @@ class CsvOutput extends TxtOutput implements IOutput {
     /**
      * Render the view
      *
-     * @param array $content data to be rendered
-     * @param int   $httpCode Http response code
+     * @param $content array data to be rendered
+     * @param $httpCode int Http response code
      * @return void this method echo result and exit program
      */
     protected function render($content, $httpCode = 200) {
@@ -44,10 +44,10 @@ class CsvOutput extends TxtOutput implements IOutput {
     /**
      * Render the content exiting normally
      *
-     * @param   string  message describing the returned data
-     * @param   mixed   data to be rendered and returned to the client
-     * @param   int     counter to indicate if there is more data that the returned set
-     * @param   int     $httpCode Http response code
+     * @param   $message    string describing the returned data
+     * @param   $data       mixed data to be rendered and returned to the client
+     * @param   $count      int  counter to indicate if there is more data that the returned set
+     * @param   $httpCode   int $httpCode Http response code
      * @return  void
      * @see     self::render();
      */
@@ -58,10 +58,10 @@ class CsvOutput extends TxtOutput implements IOutput {
     /**
      * Render the content exiting with error
      *
-     * @param   int     error code to render
-     * @param   string  message describing the error
-     * @param   mixed   other data to be returned to the client
-     * @param   int     $httpCode Http response code
+     * @param   $code       int     error code to render
+     * @param   $message    string  message describing the error
+     * @param   $other      mixed   other data to be returned to the client
+     * @param   $httpCode   int     Http response code
      * @return  void
      * @see     self::render();
      */

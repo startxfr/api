@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ```This resource is used to authenticate a user by using a nosql database backend.
+ * This resource is used to authenticate a user by using a nosql database backend.
  * 
  * Method GET PUT and DELETE are forbidden, consequently the request will be rejected. Use POST.
  * The request should feature a Json object of the following type:
@@ -15,7 +15,7 @@
  *          "login": "bigjohn",
  *          "pwd": "WTCforever"
  *      }
- * }```
+ * }
  * 
  * @package  SXAPI.Resource.Authenticate
  * @author   Dev Team <dev@startx.fr>

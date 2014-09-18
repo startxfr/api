@@ -3,7 +3,7 @@
 /**
  * This model is used to manipulate data stored in a nosql Store.
  *
- * @package  SXAPI.Model
+ * @class    nosqlModel
  * @author   Dev Team <dev@startx.fr>
  * @see      defaultModel
  * @see      nosqlModelResource

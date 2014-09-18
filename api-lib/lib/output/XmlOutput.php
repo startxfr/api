@@ -3,7 +3,7 @@
 /**
  * Class used to render data in wddx xml format
  *
- * @package  SXAPI.Output
+ * @class    XmlOutput
  * @author   Mallowtek <mallowtek@gmail.com>
  * @see      DefaultOutput
  * @link      https://github.com/startxfr/sxapi/wiki/Outputs

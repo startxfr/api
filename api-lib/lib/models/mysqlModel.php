@@ -3,7 +3,7 @@
 /**
  * This model is used to manipulate data stored in a mysql Store.
  *
- * @package  SXAPI.Model
+ * @class    mysqlModel
  * @author   Dev Team <dev@startx.fr>
  * @see      defaultModel, mysqlModelResource
  * @link     https://github.com/startxfr/sxapi/wiki/Model

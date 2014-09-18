@@ -6,7 +6,7 @@
  * @see      DefaultInput, ApplicationInput, CookieInput, GetInput, PostInput, RequestInput, ServerInput, SmartInput, UserInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
  *
- * @category Input
+ * @class InputException
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr

@@ -4,7 +4,7 @@
  * Plugin used to track request into the Google Analytics backend.
  * Have a look at the plugin configuration for more detail about it configuration
  *
- * @package  SXAPI.Plugin
+ * @class    trackingPlugin
  * @author   Mallowtek <mallowtek@gmail.com>
  * @link      https://github.com/startxfr/sxapi/wiki/Plugins
  */

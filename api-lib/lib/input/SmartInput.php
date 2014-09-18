@@ -3,18 +3,18 @@
 /**
  * Class used to present to HTTP context. It work with the .htaccess file and extract virtual url fragments.
  * Smart side reside in the fact that this input will analyse the full HTTP context and extract the following elements:
- * <ul>
- * <li>protocol : The used protocol (could be http:// or https://) </li>
- * <li>host : The hostname</li>
- * <li>root : The root path fragment to the php script file</li>
- * <li>path : The API tree path to the resource (described as a path string)</li>
- * <li>elements : Exploded version of the path. Describe requested resources</li>
- * <li>method : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)</li>
- * <li>format : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)</li>
- * <li>data : Incomings data. According to the HTTP request, could use the request body or the GET method</li>
- * </ul>
+ * 
+ *   - protocol : The used protocol (could be http:// or https://) 
+ *   - host : The hostname
+ *   - root : The root path fragment to the php script file
+ *   - path : The API tree path to the resource (described as a path string)
+ *   - elements : Exploded version of the path. Describe requested resources
+ *   - method : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)
+ *   - format : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)
+ *   - data : Incomings data. According to the HTTP request, could use the request body or the GET method
+ * 
  *
- * @package  SXAPI.Input
+ * @class    SmartInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
@@ -23,7 +23,7 @@ class SmartInput extends DefaultInput implements IInput {
 
     /**
      * protocol used to call this webservice
-     * @var string
+     * @var is string
      */
     private $protocol;
 

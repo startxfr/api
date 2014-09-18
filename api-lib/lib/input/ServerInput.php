@@ -3,7 +3,7 @@
 /**
  * Class used to access data comming from the HTTP server. Wrap the $_SERVER global variable.
  *
- * @package  SXAPI.Input
+ * @class    ServerInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
