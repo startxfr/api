@@ -3,21 +3,23 @@
 /**
  * This resource is used to authenticate a user by using a nosql database backend.
  * 
- * Method GET PUT and DELETE are forbidden, consequently the request will be rejected. Use POST.
- * The request should feature a Json object of the following type:
- * {
- *  "type":"post"
- *  "url":"_BASE_URL_ . 'auth.basic'"       < _BASE_URL_ being the root url of the api
- *  "data":
- *      {
- *          "format": "json",
- *          "app": "www",
- *          "login": "bigjohn",
- *          "pwd": "WTCforever"
- *      }
- * }
- * 
- * @package  SXAPI.Resource.Authenticate
+
+  Method GET PUT and DELETE are forbidden, consequently the request will be rejected. Use POST.
+  The request should feature a Json object of the following type:
+ ~~~
+  {
+   "type":"post"
+   "url":" _BASE_URL_ . 'auth.basic'"       < _BASE_URL_ being the root url of the api
+   "data":
+       {
+           "format": "json",
+           "app": "www",
+           "login": " _your_login_ ",
+           "pwd": " _your_pwd_ "
+       }
+  }
+~~~
+ * @class    nosqlAuthenticateResource
  * @author   Dev Team <dev@startx.fr>
  * @see      defaultAuthenticateResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource

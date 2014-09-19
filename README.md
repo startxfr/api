@@ -1,4 +1,4 @@
-SXAPI
+SXAPI   {#mainpage}
 =====
 
 SXAPI is a lightweight and flexible framework for building open or private API with a minimum of time.
