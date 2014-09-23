@@ -3,7 +3,7 @@
 /**
  * Class used to render data in json formated string
  *
- * @package  SXAPI.Output
+ * @class    JsonOutput
  * @author   Mallowtek <mallowtek@gmail.com>
  * @see      DefaultOutput
  * @link      https://github.com/startxfr/sxapi/wiki/Outputs

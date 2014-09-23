@@ -1,23 +1,25 @@
 <?php
 
 /**
- * Class used to access application informations of the application associated to the current session
- * == Config options ==
- * -------------------------------------------
- * param          | default       | description 
- * -------------------------------------------
- * collection     | 'application' | nosql collection name used for retriving application details
- * supported      | null          | array or comma separated string list of supported application
- * default_client | none          | default client to use when no application is declared
- * param_name     | app           | Name of the parameter used to pass application identity
- * param_input    | null          | identifier of the input method used to retrieve application name. Default use the default input object defined in running API
- * default_client | default       | 
- * 
- * @package  SXAPI.Input
+ * @brief Class used to access application informations of the application associated to the current session.
+  
+  ##Config options## 
+
+ | param          | default       | description| 
+ | ---------------|---------------|-----------|
+ | collection     | application | nosql collection name used for retriving application details|
+ | supported      | null          | array or comma separated string list of supported application|
+ | default_client | none          | default client to use when no application is declared|
+ | param_name     | app           | Name of the parameter used to pass application identity|
+ | param_input    | null          | identifier of the input method used to retrieve application name. Default use the default input object defined in running API|
+ | default_client | default       | |
+  
+  
+ * @class    ApplicationInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
- * @
+ * 
  */
 class ApplicationInput extends DefaultInput implements IInput {
 
@@ -27,7 +29,7 @@ class ApplicationInput extends DefaultInput implements IInput {
     /**
      * construct the application input object
      *
-     * @param array configuration of this object
+     * @param config array configuration of this object
      * @see Configurable
      * @return void
      */

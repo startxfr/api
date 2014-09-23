@@ -1,0 +1,11 @@
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.logs", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.startx.models", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.startx.resources", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.api", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.application", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.models", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.plugins", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.resources", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.users", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.startx.logs", "name" : "_id_" }
+{ "v" : 1, "key" : { "_id" : 1 }, "ns" : "sxapi.sxapi.session", "name" : "_id_" }

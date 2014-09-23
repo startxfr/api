@@ -1,0 +1,4 @@
+{ "_id" : "Votron", "pwd" : "3b2285b348e95774cb556cb36e583106" }
+{ "_id" : "dev", "mail" : "cl@startx.fr", "name" : "user de developpement", "pwd" : "e77989ed21758e78331b20e477fc5582" }
+{ "_id" : "test", "pwd" : "e77989ed21758e78331b20e477fc5582", "name" : "user de test", "mail" : "test@startx.fr" }
+{ "_id" : "toto", "pwd" : "e77989ed21758e78331b20e477fc5582" }

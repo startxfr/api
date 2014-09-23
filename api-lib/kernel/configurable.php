@@ -12,7 +12,7 @@
  * // return 'value'
  * </code>
  *
- * @category SXAPI
+ * @class Configurable
  * @package  SXAPI
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
@@ -22,7 +22,7 @@ class Configurable {
 
     /**
      * information about the application
-     * @var object stdClass
+     * @var object std or Json
      */
     private $config;
 

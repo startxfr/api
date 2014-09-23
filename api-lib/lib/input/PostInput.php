@@ -3,7 +3,7 @@
 /**
  * Class used to access data comming from the HTTP POST method. Wrap the $_POST global variable.
  *
- * @package  SXAPI.Input
+ * @class    PostInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs

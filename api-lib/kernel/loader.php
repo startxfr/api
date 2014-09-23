@@ -42,10 +42,10 @@ include_once(KERNPATH . 'event' . EXT);
  * If class end with Resource, Model, Exception, Store, Output or Input then look into the appropriate directory.
  * If Resource is used, autoload search for a subpackage with pre-suffix founded.
  *
- * @param the classname to search for
+ * @param $classname name of the class to load
  * @return boolean if ok. Throw an exception if not
  */
-function autoloader($classname) {
+function autoloader($classname) {   
     $loadingPath = "";
     $arr = preg_split('/(?=[A-Z])/', $classname);
     $suffix = array_pop($arr);
@@ -78,10 +78,11 @@ function autoloader($classname) {
             break;
         default:
             break;
+    }  
+    if ((@include_once $loadingPath) == false){
+        //throw new Exception("could not load $classname Class. File " . $loadingPath . " not found");
+        return false;  
     }
-    if ((@include_once $loadingPath) == false)
-//        throw new Exception("could not load $classname Class. File " . $loadingPath . " not found");
-        return false;
     else
         return true;
 }

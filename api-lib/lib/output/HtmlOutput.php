@@ -3,7 +3,7 @@
 /**
  * Class used to render data in HTML5 document
  *
- * @package  SXAPI.Output
+ * @class    HtmlOutput
  * @author   Mallowtek <mallowtek@gmail.com>
  * @see      DefaultOutput
  * @link      https://github.com/startxfr/sxapi/wiki/Outputs

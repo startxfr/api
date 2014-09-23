@@ -3,7 +3,7 @@
 /**
  * Base class used for binding specific process to the API event. All plugin class should be derivated form this class or one of its descendant
  *
- * @package  SXAPI.Plugin
+ * @class    defaultPlugin
  * @author   Mallowtek <mallowtek@gmail.com>
  * @link      https://github.com/startxfr/sxapi/wiki/Plugins
  */

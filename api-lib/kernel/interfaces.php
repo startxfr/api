@@ -6,7 +6,7 @@
  * @see      DefaultInput, ApplicationInput, CookieInput, GetInput, PostInput, RequestInput, ServerInput, SmartInput, UserInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
  *
- * @category Input
+ * @class Input
  * @package  SXAPI.Input
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
@@ -51,7 +51,7 @@ interface IInput {
  * @see      DefaultOutput, HtmlOutput, JsonOutput, XmlOutput
  * @link     https://github.com/startxfr/sxapi/wiki/Outputs
  *
- * @category Output
+ * @class Output
  * @package  SXAPI.Output
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
@@ -94,7 +94,7 @@ interface IOutput {
  * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resources
  *
- * @category Resource
+ * @class Resource
  * @package  SXAPI.Resource
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
@@ -126,7 +126,7 @@ interface IResource {
  * @see      defaultStore, mysqlStore, nosqlStore
  * @link     https://github.com/startxfr/sxapi/wiki/Stores
  *
- * @category Store
+ * @class Store
  * @package  SXAPI.Store
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
@@ -200,7 +200,7 @@ interface IStorage {
  * @see      DefaultModel, mysqlModel, nosqlModel
  * @link     https://github.com/startxfr/sxapi/wiki/Models
  *
- * @category Model
+ * @class Model
  * @package  SXAPI.Model
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
@@ -266,7 +266,7 @@ interface IModel {
  * @see      DefaultPlugin, trackingPlugin
  * @link     https://github.com/startxfr/sxapi/wiki/Plugins
  *
- * @category Plugin
+ * @class Plugin
  * @package  SXAPI.Plugin
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
