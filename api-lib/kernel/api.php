@@ -682,11 +682,12 @@ class Api extends Configurable {
             if ($searchedPath != '') {
                 $selectedChild = null;
                 $wildcardChild = null;
-                foreach ($configtree as $child)
+                foreach ($configtree as $child) {
                     if ($child['path'] == $searchedPath)
                         $selectedChild = $child;
                     elseif ($child['path'] == '*')
-                        $wildcardChild = $child;
+                        $wildcardChild = $child;                     
+                }
                 if ($selectedChild == null and ($wildcardChild != null or $outputConfig['children'] == "*")) {
                     $elements = array();
                     unset($outputConfig['children']);

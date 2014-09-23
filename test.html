@@ -138,6 +138,15 @@
                             method: "get",
                             path: "contacts/117521",
                             data: {format: "json"},
+                            next: sxtest.doRegister
+                        });
+                    },
+                    doRegister: function() {
+                        sxtest.do({
+                            titre: "Test d'enregistrement",
+                            method: "post",
+                            path: "auth/register",
+                            data: {format: "json", app: "www", login: "toto", pwd: "dev"},
                             next: sxtest.doEnd
                         });
                     },
