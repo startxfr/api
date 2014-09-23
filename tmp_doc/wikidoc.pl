@@ -25,8 +25,9 @@ foreach (@list2) {
 
 	foreach my $line (<$fd_in>) {
 		if($line =~ /Detailed Description/) {
+			$line = "Detailed Description\n";
 			$id = 1; }
-		if($line =~ /Member Function Documentation/) {
+		if($line =~ /Member Function Documentation/ || $line =~ /Constructor & Destructor Documentation/) {
 			$id = 0; }
 		if ($id == 1) {
 			print $fd_out $line; }
