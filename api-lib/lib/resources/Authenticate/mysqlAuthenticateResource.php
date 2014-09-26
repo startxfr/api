@@ -48,8 +48,8 @@ class mysqlAuthenticateResource extends defaultAuthenticateResource implements I
         elseif ($pass == '')
             throw new ResourceException(sprintf($this->getConfig('message_service_nopwd'), $this->getConfig('pwd_param', 'pass')), 912);
         switch ($this->getConfig('pwd_encryption', 'none')) {
-            case 'md5':
-                $pass = md5($pass);
+            case 'sha256':
+                $pass = hash("sha256", $pass);
                 break;
             default:
                 break;
