@@ -57,20 +57,20 @@ function createMdPage($file, $dirO) {
 	if (($obj = getFamily($file)) === false)
 		return 0;
 	$fd = fopen($dirO . $file . ".md", "w");
-	$title = "##" . $obj["class_name"] . "\n";
-	$desc = $obj["desc"] . "\n";
+	$title = "##" . $obj["class_name"] . "\n\n";
+	$desc = $obj["desc"] . "\n\n";
 
-	$table = "|name|type|mandatory|desc|\n|----|----|----|----|\n";
+	$table = "|name|type|mandatory|desc|\n\n|----|----|----|----|\n\n";
 	foreach ($obj["propreties"] as $line) {
 		$table .= "|" . $line["name"] . "|" . $line["type"]. "|" 
-					. $line["mandatory"]. "|" . $line["desc"]. "|\n";
+					. $line["mandatory"]. "|" . $line["desc"]. "|\n\n";
 	}
 
 	$family_ref = $obj["class_name"];
 	foreach ($obj["family"] as $parent) {
 		$family_ref .= " <- " . $parent;
 	}
-	$family_ref .= "\n";
+	$family_ref .= "\n\n";
 
 	fwrite($fd, $title . $desc . $table . $family_ref);
 	fclose($fd);
