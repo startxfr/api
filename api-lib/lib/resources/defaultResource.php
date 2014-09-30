@@ -11,6 +11,44 @@
  */
 abstract class defaultResource extends Configurable implements IResource {
 
+    static public $ConfDesc = '{"class_name":"defaultResource",
+  "desc":"desc defaultResource",
+  "propreties":
+	[
+		{
+			"name":"_id",
+			"type":"int",
+			"mandatory":"true",
+			"desc":"desc _id"
+		},
+		{
+			"name":"api",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"desc api"
+		},
+		{
+			"name":"class",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"desc class"
+		},
+		{
+			"name":"force_output",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"desc class"
+		},
+		{
+			"name":"desc",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"desc desc"
+		}
+	]
+}'
+;
+    
     public function __construct($config) {
         $id = (array_key_exists('_id', $config)) ? $config["_id"] : 'default';
         Api::logDebug(900, "Load '" . $id . "' " . get_class($this) . " resource ", $config, 5);

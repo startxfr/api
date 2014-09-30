@@ -7,12 +7,12 @@
 
  | param          | default       | description| 
  | ---------------|---------------|-----------|
- | collection     | application | nosql collection name used for retriving application details|
+ | collection     | application   | nosql collection name used for retriving application details|
  | supported      | null          | array or comma separated string list of supported application|
  | default_client | none          | default client to use when no application is declared|
  | param_name     | app           | Name of the parameter used to pass application identity|
  | param_input    | null          | identifier of the input method used to retrieve application name. Default use the default input object defined in running API|
- | default_client | default       | |
+ | default_client | default       |  |
   
   
  * @class    ApplicationInput
