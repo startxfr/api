@@ -138,6 +138,6 @@ $wiki = "../../api.wiki/";
 $obj = sanitizeFiles(getAllFiles(split_dir($dirI)));
 createDoc($obj, $dirO);
 createSidebar($dirO);
-#move_dir($dirO, $wiki);
+move_dir($dirO, $wiki);
 
 ?>
