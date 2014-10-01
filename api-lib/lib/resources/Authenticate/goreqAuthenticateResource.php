@@ -42,40 +42,23 @@ class goreqAuthenticateResource extends defaultAuthenticateResource implements I
 
     public function readAction() {
         $api = Api::getInstance();
-     /*   if (isset($_REQUEST['code'])) {
-            print_r($this->client);
-            print_r($_REQUEST['code']);
-            exit(0);
-        }*/
-        
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
-//            print_r("input:<br />");
-//            var_dump($input);
-//            print_r("<br />sessElPosition:<br />");
-//            print_r($sessElPosition);
-//            print_r("<br />nextPath:<br />");
-//            print_r($nextPath);
-//            exit(0);
-//                if (isset($_REQUEST['code'])) {
-//                    $this->loadServices();                    
-//                    $this->client->authenticate($_REQUEST['code']);
-//                    $_SESSION['access_token'] = $this->client->getAccessToken();
-//                    $redirect = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-//                    header('Location: ' . filter_var($redirect, FILTER_SANITIZE_URL));
-//                }                
-//                else if (isset($_REQUEST['access_token'])) {
                 if (isset($_GET['code'])) {    
-              //      $this->client->setRedirectUri($input->getRootUrl() );
-
                     $this->loadServices();
                     $this->client->authenticate($_GET['code']);
                     $accessInfo = json_decode($this->client->getAccessToken());
                     $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
                     $user = $this->services['Oauth2']->userinfo->get();
+                    
+                    
+                   // var_dump($user);
+                    header('Location: ' . 'http://localhost/startx/formation/toto.html?user_email='.$user['email'].'&user_forname='.$user['given_name'].'&user_lastname='.$user['family_name']);
+                    exit();
+                    
                     $user['email'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
                     $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
                     $user['google_token'] = $accessInfo;
@@ -85,7 +68,8 @@ class goreqAuthenticateResource extends defaultAuthenticateResource implements I
                     $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
                     $api->getOutput()->renderOk($message, $user, count($user));
-                } else {
+                } 
+                else if (isset($_GET['error'])) {
                     switch ($_GET['error']) {
                         case "access_denied":
                             $message = "No user access from google because : " . $_GET['error'];
@@ -96,7 +80,14 @@ class goreqAuthenticateResource extends defaultAuthenticateResource implements I
                     }
                     $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $message, $exc);
                     $api->getOutput()->renderError(910, $message, array(), 401);
-                }                          
+                }
+                else {
+                    $this->loadServices();
+                    $this->client->setRedirectUri("http://localhost/startx/api/auth/oauthnext") ;
+                    $authUrl = $this->client->createAuthUrl();
+                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' start oauth request with google ", $this->getResourceTrace(__FUNCTION__, false, array('oauth_url' => $authUrl)), 1);
+                    $api->getOutput()->renderOk("googleOauth", $authUrl);
+                }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 401);
