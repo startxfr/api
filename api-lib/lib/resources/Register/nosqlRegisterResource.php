@@ -69,8 +69,8 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         if (is_array($data) and $data[$this->getConfig('id_field', "_id")] == $login)
             throw new ResourceException(sprintf($this->getConfig('message_service_badid'), $this->getConfig('id_param', "_id")), 913);
         switch ($this->getConfig('pwd_encryption', 'none')) {
-            case 'md5':
-                $pass = md5($pass);
+            case 'sha256':
+                $pass = hash("sha256", $pass);
                 break;
             default:
                 break;

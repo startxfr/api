@@ -11,6 +11,37 @@
  */
 class mysqlModelResource extends defaultModelResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"mysqlModelResource",
+  "desc":"desc mysqlModelResource",
+  "propreties":
+	[
+		{
+			"name":"message_service_create",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"desc message_service"
+		},
+		{
+			"name":"message_service_read",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"desc message_service"
+		},
+		{
+			"name":"message_service_delete",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"desc message_service"
+		},
+		{
+			"name":"message_service_update",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"desc message_service"
+		}
+	]
+}';
+    
     public function init() {
         parent::init();
         if (!is_object($this->model) or get_class($this->model) != 'mysqlModel')

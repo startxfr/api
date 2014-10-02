@@ -119,6 +119,26 @@
                             method: "post",
                             path: "auth/basic",
                             data: {format: "json", app: "www", login: "dev", pwd: "dev"},
+                            next: sxtest.doAuth2
+                        });
+                    },
+                    doAuth2: function() {
+                        console.log("=doAuth");
+                        sxtest.do({
+                            titre: "Test d'authentification",
+                            method: "post",
+                            path: "auth/basic",
+                            data: {format: "json", app: "www", login: "test", pwd: "dev"},
+                            next: sxtest.doAuth3
+                        });
+                    },
+                    doAuth3: function() {
+                        console.log("=doAuth");
+                        sxtest.do({
+                            titre: "Test d'authentification",
+                            method: "post",
+                            path: "auth/basic",
+                            data: {format: "json", app: "www", login: "toto", pwd: "dev"},
                             next: sxtest.doListContact
                         });
                     },
@@ -138,18 +158,9 @@
                             method: "get",
                             path: "contacts/117521",
                             data: {format: "json"},
-                            next: sxtest.doRegister
-                        });
-                    },
-                    doRegister: function() {
-                        sxtest.do({
-                            titre: "Test d'enregistrement",
-                            method: "post",
-                            path: "auth/register",
-                            data: {format: "json", app: "www", login: "toto", pwd: "dev"},
                             next: sxtest.doEnd
                         });
-                    },
+                    },                   
                     doEnd: function() {
                         $(sxajax.messageContainer).append("<h4>Fin des test</h4>");
                     }

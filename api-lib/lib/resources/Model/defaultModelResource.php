@@ -11,6 +11,26 @@
  */
 abstract class defaultModelResource extends defaultResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"defaultModelResource",
+                                "desc":"desc defaultModelResource",
+                                "propreties":
+	[
+		{
+			"name":"model",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"desc model"
+		},
+		{
+			"name":"search_params",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"desc search_params"
+		}
+	]
+}'
+;
+    
     protected $model;
 
     public function init() {
