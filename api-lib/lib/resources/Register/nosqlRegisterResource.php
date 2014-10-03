@@ -30,9 +30,12 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
+            if ($api->getInput()->getParam($this->getConfig('mode')) === 'oauth')
+                var_dump("test");
+            else {
             $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
             $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
-            $user = $this->doAuthenticate($login, $pass);
+            $user = $this->doAuthenticate($login, $pass);}
             $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $login), $user);
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
