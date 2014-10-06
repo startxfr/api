@@ -57,7 +57,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
 
                 $store = $api->getStore('nosql');
                 $data = $store->readOne( $this->getConfig('collection', 'user'), array("_id" => $user['email']) );
-                         
+                
                 if (is_array($data) and $data["_id"] == $user['email']) {
                     $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
                     $api->getInput('session')->set('user', $user['email']);              
