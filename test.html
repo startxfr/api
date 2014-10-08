@@ -108,8 +108,8 @@
                             titre: "Test de liste des services",
                             method: "get",
                             path: "",
-                            data: {format: "json"},
-                            next: sxtest.doAuth 
+                            data: {format: "json"},                            
+                            next: sxtest.sessUser
                         });
                     },
                     doAuth: function() {
@@ -129,17 +129,27 @@
                             method: "post",
                             path: "auth/basic",
                             data: {format: "json", app: "www", login: "test", pwd: "dev"},
-                            next: sxtest.doAuth3
+                            next: sxtest.doListContact
+                        });
+                    },                    
+                    sessUser: function() {
+                        console.log("=sessuser");
+                        sxtest.do({
+                            titre: "Test recuperation user data",
+                            method: "get",
+                            path: "session/user",
+                            data: {format: "json", app: "www"},                            
+                            next: sxtest.getResource
                         });
                     },
-                    doAuth3: function() {
-                        console.log("=doAuth");
+                    getResource: function() {
+                        console.log("=getResource");
                         sxtest.do({
-                            titre: "Test d'authentification",
-                            method: "post",
-                            path: "auth/basic",
-                            data: {format: "json", app: "www", login: "toto", pwd: "dev"},
-                            next: sxtest.doListContact
+                            titre: "Test de recuperation de donnees",
+                            methode: 'get',
+                            path: "testdata_sessions.json",
+                            data: null,
+                            next: sxtest.doEnd
                         });
                     },
                     doListContact: function() {

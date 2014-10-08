@@ -64,6 +64,9 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                     $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
                     $api->getOutput()->renderOk($message, $user, count($user));
+                //    $app_uri = $this->getConfig('uri_log');
+                //    header('Location: ' . $app_uri);
+                    exit();
                 }
                 else {
                     $user_data = json_encode($this->prepUserData($user));       
