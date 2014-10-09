@@ -13,4 +13,4 @@ branches:
 before_install:
  - sudo apt-get update -qq
 install: true
-script: ./script/ci/run_build.sh
+script: ./startx/run_build.sh
