@@ -30,10 +30,22 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
-            $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
-            $user = $this->doAuthenticate($login, $pass);
-            $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $login), $user);
+            $mode = $api->getInput()->getParam('mode');
+            $data = $api->getInput()->getParam('data');
+            if ($mode === 'oauth') {
+                $data[$this->getConfig('id_field', "_id")] = $data['email'];
+                $store = $api->getStore($this->getConfig('store', 'users'));
+                $store->create($this->getConfig('collection', 'user'), $data);
+                $api->getInput('session')->set('user', $data[$this->getConfig('id_field', "_id")]);
+                $user = $api->getInput('user')->getAll();
+                $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $data['_id']), $user);
+            }
+            else {
+                $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
+                $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
+                $user = $this->doAuthenticate($login, $pass, $data);
+                $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $login), $user);
+            }            
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(),array(),401);
@@ -57,7 +69,7 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         return true;
     }
 
-    private function doAuthenticate($login, $pass) {
+    private function doAuthenticate($login, $pass, $user_data) {
         $api = Api::getInstance();
         $store = $api->getStore($this->getConfig('store', 'users'));
                 
@@ -75,10 +87,9 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
             default:
                 break;
         }
-        $store->create($this->getConfig('collection', 'user'), array( 
-                    $this->getConfig('id_field', "_id") => $login,
-                    $this->getConfig('pwd_field', 'pass') => $pass
-                ));       
+        $user_data[$this->getConfig('id_field', "_id")] = $login;
+        $user_data[$this->getConfig('pwd_field', 'pass')] = $pass;
+        $store->create($this->getConfig('collection', 'user'), $user_data);       
         $api->logInfo(960, "User '" . $login . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);
         $api->getInput('session')->set('user', $login);
         return $api->getInput('user')->getAll();

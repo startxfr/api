@@ -27,7 +27,7 @@ abstract class defaultSessionResource extends defaultResource implements IResour
 
     /**
      * This method is used for all GET request made to a sessionResource resource
-     * accoridng to the type, this resource can have multiple forms
+     * according to the type, this resource can have multiple forms
      * type 'info' : return the session informations (default)
      * type 'data' : return the data stored in this session
      * type 'user' : return the user data stored for this session. Could be null if anonymous

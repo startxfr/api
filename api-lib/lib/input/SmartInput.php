@@ -248,9 +248,10 @@ class SmartInput extends DefaultInput implements IInput {
      */
     public function getElementPosition($element = null) {
         $list = array_reverse($this->elements, true);
-        foreach ($list as $key => $value)
+        foreach ($list as $key => $value) {
             if ($element == $value)
                 return $key;
+        }
         return false;
     }
 
