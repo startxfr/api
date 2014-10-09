@@ -10,12 +10,16 @@ out_dir="/var/www/html/startx/api/api-lib/tmp"
 tmp_file="tmp_file"
 echo "print('_ ' + db.getCollectionNames())" > $tmp_file
 cols=`mongo $db $tmp_file | grep '_' | awk '{print $2}' | tr ',' ' '`
-for c in $cols
-do
-	if [[ $c != "logs" ]] && [[ $c != "startx.logs" ]] && [[ $c != "sxapi.session" ]] ; then
-		echo -n 'Exporting' $c ' : '
-    	mongoexport -d $db -c $c -o "$out_dir/dump_${db}_${c}.json" > /dev/null
-	fi
-done
-rm $tmp_file
+echo "-- Dump des bases de données"
+read -p "-- Souhaitez-vous dumper les bases de données (y/n)?" CONT
+if [ "$CONT" == "y" ]; then
+    for c in $cols
+    do
+        if [[ $c != "logs" ]] && [[ $c != "startx.logs" ]] && [[ $c != "sxapi.session" ]] ; then
+                echo -n 'Exporting' $c ' : '
+        mongoexport -d $db -c $c -o "$out_dir/dump_${db}_${c}.json" --jsonArray > /dev/null
+        fi
+    done
+    rm $tmp_file
+fi
 exit 0;
