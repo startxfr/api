@@ -32,18 +32,20 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         try {
             $mode = $api->getInput()->getParam('mode');
             $data = $api->getInput()->getParam('data');
-            if ($mode === 'rrroauth') {
+            if ($mode === 'oauth') {
                 $data[$this->getConfig('id_field', "_id")] = $data['email'];
                 $store = $api->getStore($this->getConfig('store', 'users'));
                 $store->create($this->getConfig('collection', 'user'), $data);
                 $api->getInput('session')->set('user', $data[$this->getConfig('id_field', "_id")]);
+                $user = $api->getInput('user')->getAll();
+                $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $data['_id']), $user);
             }
             else {
                 $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
                 $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
                 $user = $this->doAuthenticate($login, $pass, $data);
-            }
-            $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $login), $user);
+                $api->getOutput()->renderOk(sprintf($this->getConfig('message_service_create', 'message service create'), $login), $user);
+            }            
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(),array(),401);

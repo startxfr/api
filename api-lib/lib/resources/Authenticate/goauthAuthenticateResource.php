@@ -43,9 +43,10 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            if (isset($_GET['code'])) {                       
-                if ($api->getInput('session')->get('af_token') !== $_GET['state'])
-                    $api->getOutput()->renderError(910, "No user access from google because : anti-forgery token is not valid", array(), 401);                
+            if (isset($_GET['code'])) {
+                $state = $this->retrieveStatetokenData($_GET['state']);                
+                if ($api->getInput('session')->get('af_token') !== $state->state)
+                    $api->getOutput()->renderError(910, "No user access from google because : anti-forgery token is not valid", array(), 401);                 
                 $this->loadServices();
                 $this->client->authenticate($_GET['code']);
                 $accessInfo = json_decode($this->client->getAccessToken());
@@ -56,25 +57,24 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 $user['google_token'] = $accessInfo;
 
                 $store = $api->getStore('nosql');
-                $data = $store->readOne( $this->getConfig('collection', 'user'), array("_id" => $user['email']) );
+                $data = $store->readOne( $this->getConfig('collection', 'user'), array("_id" => $user['email']) );                
                 
                 if (is_array($data) and $data["_id"] == $user['email']) {
                     $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
                     $api->getInput('session')->set('user', $user['email']);              
                     $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
-                    $api->getOutput()->renderOk($message, $user, count($user));
-                //    $app_uri = $this->getConfig('uri_log');
-                //    header('Location: ' . $app_uri);
+                //    $api->getOutput()->renderOk($message, $user, count($user));
+                    $app_uri = $state->local_uri;
+                    header('Location: ' . $app_uri);
                     exit();
                 }
                 else {
                     $user_data = json_encode($this->prepUserData($user));       
-                    $app_uri = $this->getConfig('uri_reg');
+                    $app_uri = $state->reg_uri;
                     header('Location: ' . $app_uri . '?user_data='.$user_data);
                     exit();
-                } 
-                //$api->getInput('user')->setAll($user, 'save');             
+                }                              
             } 
             else if (isset($_GET['error'])) {
                 switch ($_GET['error']) {
@@ -90,8 +90,10 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             }
             else {
                 $af_token = md5(rand());
+                $reg_uri = $_GET['reg_uri'];
+                $local_uri = $_GET['local_uri'];
                 $api->getInput('session')->set('af_token', $af_token);
-                $this->client->setState($af_token);
+                $this->client->setState($this->prepStateTokenData($af_token, $reg_uri, $local_uri));
                 $this->loadServices();
                 $authUrl = $this->client->createAuthUrl();
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' start oauth request with google ", $this->getResourceTrace(__FUNCTION__, false, array('oauth_url' => $authUrl)), 1);
@@ -124,6 +126,20 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
         $data['email'] = $user['email'];
         $data['refresh_token'] = $user['google_token']->refresh_token;
         return $data;
+    }
+    
+    public function prepStateTokenData( $state, $reg_uri, $local_uri ) {
+        $data = [];
+        $data['state'] = $state;
+        $data['reg_uri'] = $reg_uri;
+        $data['local_uri'] = $local_uri;
+        $str = base64_encode(json_encode($data));
+        return $str;
+    }
+    
+    public function retrieveStatetokenData( $state_data ) {
+        $state = json_decode(base64_decode($state_data));
+        return $state;
     }
     
     public function createAction() {
