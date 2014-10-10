@@ -1,0 +1,4 @@
+#!/bin/bash
+
+dir=`dirname $0`
+apigen --config $dir/apigen/config.neon

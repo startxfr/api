@@ -92,7 +92,7 @@ print $line . "\n";
 
 ### MAIN ###
 print "Begin script\n";
-my ($dir) = "../api-lib/lib/resources/";
+my ($dir) = "../../../../api-lib/lib/resources/";
 
 ## GET ALL FILES FROM DIR (RECURSIVELY) ##
 @list = getAllFiles($dir);

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+dir=`dirname $0`
+#Generate doc technique
+( . $dir/doc-tools/generate-classes )
+#Generate doc user
+( . $dir/doc-tools/generate-resources )

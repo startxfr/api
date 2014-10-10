@@ -1,4 +1,5 @@
 #!/bin/bash
 
+dir=`dirname $0`
 #Execute Perl script in the containing folder
-( cd doxygen ; ./wikidoc.pl )
+( cd $dir/doxygen ; ./wikidoc.pl )
