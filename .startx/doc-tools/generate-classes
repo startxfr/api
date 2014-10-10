@@ -1,5 +1,5 @@
 #!/bin/bash
 
-dir=`dirname $0`
+dir="/var/www/html/startx/api"
 #Execute Perl script in the containing folder
-( cd $dir/doxygen ; ./wikidoc.pl )
+( cd $dir/.startx/doc-tools/doxygen ; ./wikidoc.pl )

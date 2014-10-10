@@ -1,5 +1,5 @@
 #!/bin/bash
 
-dir=`dirname $0`
+dir="/var/www/html/startx/api"
 #Execute PHP script in the containing folder
-( cd $dir/doxygen ; ./docgen.php )
+( cd $dir/.startx/doc-tools/doxygen ; ./docgen.php )
