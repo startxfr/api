@@ -66,7 +66,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
                 //    $api->getOutput()->renderOk($message, $user, count($user));
                     $app_uri = $state->local_uri;
-                    header('Location: ' . $app_uri);
+                    header('Location: ' . $app_uri . '?authmsg=Successfully logged in');
                     exit();
                 }
                 else {
@@ -77,6 +77,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 }                              
             } 
             else if (isset($_GET['error'])) {
+                $state = $this->retrieveStatetokenData($_GET['state']);
                 switch ($_GET['error']) {
                     case "access_denied":
                         $message = "No user access from google because : " . $_GET['error'];
@@ -86,7 +87,10 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                         break;
                 }
                 $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $message, $exc);
-                $api->getOutput()->renderError(910, $message, array(), 401);
+                //$api->getOutput()->renderError(910, $message, array(), 401);
+                $app_uri = $state->local_uri;
+                header('Location: ' . $app_uri . '?authmsg=' . $message);
+                exit();
             }
             else {
                 $af_token = md5(rand());
