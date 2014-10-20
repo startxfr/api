@@ -225,7 +225,7 @@ class Api extends Configurable {
                     }
                 }
             }
-            $this->logInfo(10, "Loaded " . count($listPlugins) . " plugin (" . implode(',', array_keys($listPlugins)) . ")", $listPlugins, 3);
+            $this->logInfo(10, "Loaded " . count($listPlugins) . " plugin (" . implode(',', $listPlugins) . ")", $listPlugins, 3);
         }
         return $this;
     }
