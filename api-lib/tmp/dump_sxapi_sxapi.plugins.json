@@ -1,1 +1,2 @@
+{ "_id" : "mailer", "class" : "mailerPlugin", "host" : "smtp.gmail.com", "password" : "Joseph2014", "port" : "587", "username" : "jr@startx.com" }
 { "_id" : "tracking", "account_id" : "UA-22272724-3", "class" : "trackingPlugin" }
