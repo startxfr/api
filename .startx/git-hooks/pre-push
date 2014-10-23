@@ -9,7 +9,7 @@ function genereDoc {
    echo -e "$echo_prefix Generating documentation"
    ( . $dir/.startx/doc-generate >> /dev/null )
    echo -e "$echo_prefix Updating online documentation"
-   (cd $dir/../api.wiki; git commit -a -m "$doc_commit_msg" >> /dev/null; git push >> /dev/null; cd -)
+   (cd $dir/../api.wiki; git pull ; git add * ; git commit -a -m "$doc_commit_msg" >> /dev/null; git push >> /dev/null; cd -)
 }
 
 echo -e "$echo_prefix Start pre-push process"
