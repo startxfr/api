@@ -2,57 +2,30 @@
 
 dir="/var/www/html/startx/api"
 doc_commit_msg="génération de la documentation"
+echo_prefix="[pre-push hook]"
 
+# execute doc-generate and comit-push to github
 function genereDoc {
-   cd $dir/../api.wiki
-   git commit -a -m \"$doc_commit_msg\"
-   git push 
-   cd -
+   echo -e "$echo_prefix Generating documentation"
+   ( . $dir/.startx/doc-generate >> /dev/null )
+   echo -e "$echo_prefix Updating online documentation"
+   (cd $dir/../api.wiki; git commit -a -m "$doc_commit_msg" >> /dev/null; git push >> /dev/null; cd -)
 }
 
-echo "[pre-push hook] Start"
+echo -e "$echo_prefix Start pre-push process"
 
 # Allows us to read user input below, assigns stdin to keyboard
 exec < /dev/tty
-
 while true; do
-    read -p "[pre-push hook] Generating docs ? (Y/n) " yn
+    read -p "$echo_prefix Generating docs ? (Y/n) " yn
     if [ "$yn" = "" ]; then
        yn='Y'
     fi
     case $yn in
        [Yy] ) genereDoc; exit 0;;
        [Nn] ) exit 0;;
-       * ) echo "[pre-push hook] Please answer y or n for yes or no.";;
+       * ) echo -e "$echo_prefix Please answer y or n for yes or no.";;
     esac
 done
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#echo "-- Génération de la documentation"
-#read -p "-- Souhaitez-vous générer la documentation [y/n] ?" CONT
-#if [ "$CONT" == "y" ]; then
-    ( . $dir/.startx/doc-generate )
-#fi
-#read -p "-- Souhaitez-vous pousser la documentation [y/n] ?" CONT2
-#if [ "$CONT2" == "y" ]; then
-
-#cd $dir/../api.wiki
-#    git commit -a -m \"génération de la documentation\"
-#    git push 
-#    cd -
-#fi
-exit 0;
-
+echo -e "$echo_prefix End pre-push process"
