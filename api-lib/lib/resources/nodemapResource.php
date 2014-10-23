@@ -25,7 +25,7 @@ class nodemapResource extends readonlyResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($tree));
         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $treeOutput);
+        return array(true, $message, $treeOutput);
         return true;
     }
 

@@ -27,12 +27,12 @@ class dataSessionResource extends defaultSessionResource implements IResource {
             // recherche d'une clef en particulier
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out[$nextPath]);
+            return array(true, $message, $out[$nextPath]);
         } else {
             //affichage de toutes les clefs
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($out), session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out);
+            return array(true, $message, $out);
         }
         return true;
     }
@@ -56,7 +56,7 @@ class dataSessionResource extends defaultSessionResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_create', 'message service create'), implode(',', array_keys($addCount)));
         $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $addCount);
+        return array(true, $message, $addCount);
         return true;
     }
 
@@ -72,7 +72,7 @@ class dataSessionResource extends defaultSessionResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_update', 'message service update'), implode(',', array_keys($updateCount)));
         $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $updateCount);
+        return array(true, $message, $updateCount);
         return true;
     }
 
@@ -90,7 +90,7 @@ class dataSessionResource extends defaultSessionResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $key2Remove);
         $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $key2Remove);
+        return array(true, $message, $key2Remove);
         return true;
     }
 

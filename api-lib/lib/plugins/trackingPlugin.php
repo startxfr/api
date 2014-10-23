@@ -10,6 +10,7 @@
  */
 class trackingPlugin extends defaultPlugin implements IPlugin {
 
+    
     /**
      * init the output object
      *

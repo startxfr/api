@@ -35,7 +35,7 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
                 } catch (Exception $exc) {
                     $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' when trying to record redirect trace : " . $exc->getMessage(), $exc);
                     if ($configRecord['fatal'] === true)
-                        $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
+                        return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
                 }
             }
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), $this->getConfig('url'));
@@ -47,7 +47,7 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
             exit;
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }

@@ -9,7 +9,7 @@
  * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-abstract class defaultAuthenticateResource extends defaultResource implements IResource {
+abstract class defaultAuthenticateResource extends linkableResource implements IResource {
 
     public function init() {
         parent::init();

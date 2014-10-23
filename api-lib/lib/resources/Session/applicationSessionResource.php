@@ -27,12 +27,12 @@ class applicationSessionResource extends defaultSessionResource implements IReso
             // recherche d'une clef en particulier
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out[$nextPath]);
+            return array(true, $message, $out[$nextPath]);
         } else {
             //affichage de toutes les clefs
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($out), session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out);
+            return array(true, $message, $out);
         }
         return true;
     }
@@ -48,10 +48,10 @@ class applicationSessionResource extends defaultSessionResource implements IReso
             $api->getInput('application')->setApp()->loadCache();
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), session_id(), $api->getInput('session')->get('application'));
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $api->getInput('application')->getAll());
+            return array(true, $message, $api->getInput('application')->getAll());
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError(930, sprintf($this->getConfig('message_service_errorcreate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc, 500);
+            return array(false, 930, sprintf($this->getConfig('message_service_errorcreate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc, 500);
         }
         return true;
     }
@@ -67,10 +67,10 @@ class applicationSessionResource extends defaultSessionResource implements IReso
             $api->getInput('application')->setApp()->loadCache();
             $message = sprintf($this->getConfig('message_service_update', 'message service update'), session_id(), $api->getInput('session')->get('application'));
             $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $api->getInput('application')->getAll());
+            return array(true, $message, $api->getInput('application')->getAll());
         } catch (Exception $exc) {
             $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError(950, sprintf($this->getConfig('message_service_errorupdate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc, 500);
+            return array(false, 950, sprintf($this->getConfig('message_service_errorupdate'), session_id(), $api->getInput('session')->get('application'), $exc->getMessage()), $exc, 500);
         }
         return true;
     }

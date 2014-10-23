@@ -9,7 +9,7 @@
  * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-abstract class defaultModelResource extends defaultResource implements IResource {
+abstract class defaultModelResource extends linkableResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"defaultModelResource",
                                 "desc":"desc defaultModelResource",
@@ -55,9 +55,10 @@ abstract class defaultModelResource extends defaultResource implements IResource
             return $params;
         if (is_string($this->getConfig('search_params')))
             $this->setConfig('search_params', Toolkit::string2Array($this->getConfig('search_params')));
-        foreach ($this->getConfig('search_params', array()) as $key)
+        foreach ($this->getConfig('search_params', array()) as $key) {
             if ($params[$key] != null)
                 $search[$key] = $params[$key];
+        }
         return $search;
     }
 
