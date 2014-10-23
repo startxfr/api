@@ -46,7 +46,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             if (isset($_GET['code'])) {
                 $state = $this->retrieveStatetokenData($_GET['state']);                
                 if ($api->getInput('session')->get('af_token') !== $state->state)
-                    $api->getOutput()->renderError(910, "No user access from google because : anti-forgery token is not valid", array(), 401);                 
+                    return array(false, 910, "No user access from google because : anti-forgery token is not valid", array(), 401);                 
                 $this->loadServices();
                 $this->client->authenticate($_GET['code']);
                 $accessInfo = json_decode($this->client->getAccessToken());
@@ -64,7 +64,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                     $api->getInput('session')->set('user', $user['email']);              
                     $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
-                //    $api->getOutput()->renderOk($message, $user, count($user));
+                //    return array(true, $message, $user, count($user));
                     $app_uri = $state->local_uri;
                     header('Location: ' . $app_uri . '?authmsg=Successfully logged in');
                     exit();
@@ -87,7 +87,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                         break;
                 }
                 $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $message, $exc);
-                //$api->getOutput()->renderError(910, $message, array(), 401);
+                //return array(false, 910, $message, array(), 401);
                 $app_uri = $state->local_uri;
                 header('Location: ' . $app_uri . '?authmsg=' . $message);
                 exit();
@@ -101,11 +101,11 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 $this->loadServices();
                 $authUrl = $this->client->createAuthUrl();
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' start oauth request with google ", $this->getResourceTrace(__FUNCTION__, false, array('oauth_url' => $authUrl)), 1);
-                $api->getOutput()->renderOk("googleOauth", $authUrl);
+                return array(true, "googleOauth", $authUrl);
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 401);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
         }
         return true;
     }

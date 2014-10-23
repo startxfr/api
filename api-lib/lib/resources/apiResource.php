@@ -29,7 +29,7 @@ class apiResource extends readonlyResource implements IResource {
             $out[$key] = $api->getConfig($key);
         $message = sprintf($this->getConfig('message_service_read', 'message service read'), session_id());
         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $out);
+        return array(true, $message, $out);
         return true;
     }
 

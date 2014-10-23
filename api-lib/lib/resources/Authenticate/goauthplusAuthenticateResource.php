@@ -40,7 +40,7 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
                     $api->getInput("session")->clear('user_goauth_token');
                     $message = sprintf($this->getConfig('message_service_close', 'session %s is disconnected form google api using token %s'), session_id(), $token->access_token);
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' disconnect " . $user['email'] . " from google api", $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
-                    $api->getOutput()->renderOk($message, true);
+                    return array(true, $message, true);
                     break;
                 default:
                     $this->loadServices();
@@ -56,11 +56,11 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
                         // If there was an error in the token info, abort.
                         if ($tokenInfo->error) {
                             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $tokenInfo->error, $tokenInfo);
-                            $api->getOutput()->renderError(910, $tokenInfo->error,array(),401);
+                            return array(false, 910, $tokenInfo->error,array(),401);
                         } elseif ($tokenInfo->audience != $this->getConfig('client_id')) {
                             $response = 'Token\'s client ID does not match app\'s.';
                             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $response, $tokenInfo);
-                            $api->getOutput()->renderError(910, $response,array(),401);
+                            return array(false, 910, $response,array(),401);
                         } else {
 
 
@@ -79,7 +79,7 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
 //                                $api->getInput('user')->setAll($user, 'save');
 //                                $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
 //                                $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
-//                                $api->getOutput()->renderOk($message, $user, count($user));
+//                                return array(true, $message, $user, count($user));
 //                            } else {
 //                                switch ($_GET['error']) {
 //                                    case "access_denied":
@@ -90,7 +90,7 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
 //                                        break;
 //                                }
 //                                $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $message, $exc);
-//                                $api->getOutput()->renderError(910, $message);
+//                                return array(false, 910, $message);
 //                            }
 
 
@@ -102,11 +102,11 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
                     }
                     $message = sprintf($this->getConfig('message_service_read', 'session %s is associated to user %s and have a google access_token '), session_id(), $user['email'], $token->access_token);
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return google access_token " . $token->access_token, $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
-                    $api->getOutput()->renderOk($message, $token);
+                    return array(true, $message, $token);
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(),array(),401);
+            return array(false, $exc->getCode(), $exc->getMessage(),array(),401);
         }
         return true;
     }

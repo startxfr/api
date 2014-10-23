@@ -29,12 +29,12 @@ class userSessionResource extends defaultSessionResource implements IResource {
             // recherche d'une clef en particulier
             $message = sprintf($this->getConfig('message_service_read','message service read'), 1, session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out[$nextPath]);
+            return array(true, $message, $out[$nextPath]);
         } else {
             //affichage de toutes les clefs
             $message = sprintf($this->getConfig('message_service_read','message service read'), count($out), session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out);
+            return array(true, $message, $out);
         }
         return true;
     }
@@ -47,7 +47,7 @@ class userSessionResource extends defaultSessionResource implements IResource {
         $api->getInput('session')->clear("user_goauth_token");
         $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $user);
         $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $user);
+        return array(true, $message, $user);
         return true;
     }
     

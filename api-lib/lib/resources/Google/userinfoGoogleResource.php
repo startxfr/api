@@ -25,16 +25,16 @@ class userinfoGoogleResource extends defaultGoogleResource implements IResource 
                 // recherche d'une clef en particulier
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, $api->getInput('user')->get('_id'));
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return $nextPath=" . $user[$nextPath], $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $user[$nextPath]);
+                return array(true, $message, $user[$nextPath]);
             } else {
                 //affichage de toutes les clefs
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($user), $api->getInput('user')->get('_id'));
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $user);
+                return array(true, $message, $user);
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            return array(false, $exc->getCode(), $exc->getMessage());
         }
         return true;
     }
@@ -46,10 +46,10 @@ class userinfoGoogleResource extends defaultGoogleResource implements IResource 
             $newId = $this->getModel()->create($api->getInput()->getParams());
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $newId);
+            return array(true, $message, $newId);
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            return array(false, $exc->getCode(), $exc->getMessage());
         }
         return true;
     }
@@ -64,13 +64,13 @@ class userinfoGoogleResource extends defaultGoogleResource implements IResource 
                 $return = $this->getModel()->update($nextPath, $api->getInput()->getParams());
                 $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
                 $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return);
+                return array(true, $message, $return);
             } else {
                 throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
             }
         } catch (Exception $exc) {
             $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            return array(false, $exc->getCode(), $exc->getMessage());
         }
         return true;
     }
@@ -85,13 +85,13 @@ class userinfoGoogleResource extends defaultGoogleResource implements IResource 
                 $return = $this->getModel()->delete($nextPath);
                 $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
                 $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return);
+                return array(true, $message, $return);
             } else {
                 throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
             }
         } catch (Exception $exc) {
             $api->logError(970, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            return array(false, $exc->getCode(), $exc->getMessage());
         }
         return true;
     }

@@ -21,10 +21,10 @@ class listEventGoogleResource extends proxyHttpResource implements IResource {
             $return = $store->read($this->getConfig('url_path', ''), $api->getInput()->getParams());
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), $this->getConfig('url'));
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $return);
+            return array(true, $message, $return);
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            return array(false, $exc->getCode(), $exc->getMessage());
         }
         return true;
     }

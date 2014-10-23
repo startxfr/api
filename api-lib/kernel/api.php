@@ -499,17 +499,17 @@ class Api extends Configurable {
      * @return defaultResource the resource connector instance coresponding to the requested $id
      * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
      */
-    public function getResource($id, $config = array()) {
+    public function getResource($id, $config = array()) {       
         if (is_null($id) or trim($id) == '') {
             $this->logWarn(61, "trying to access resource with a null id.");
             throw new ApiException("you must give a resource name", 61);
         } elseif (is_array($this->resources) and array_key_exists($id, $this->resources)) {
             $this->logDebug(62, "Returning cached resource '" . $id . "'");
             if (is_array($config) and count($config) > 0)
-                $this->resources[$id] = new $id();
+                $this->resources[$id] = new $id($config);
             return $this->resources[$id];
-        } else {
-            if (class_exists($id) !== false) {
+        } else {            
+            if (class_exists($id) !== false) {                                
                 $this->logDebug(63, "Start loading and caching resource '" . $id . "'");
                 $this->resources[$id] = new $id($config);
                 $this->logDebug(64, "Initializing resource '" . $id . "'");
@@ -538,12 +538,14 @@ class Api extends Configurable {
      * @return Api instance Api for chaining
      * @throws ApiException If resource is not acessible or controlled by ACL rules.
      */
-    public function execute() {
+    public function execute() {        
         try {
             Event::trigger('api.execute.before');
-            $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));
+            $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));            
             $resource = $this->getResource($config['class'], $config);
+            $this->logDebug(80, "tamere", $resource);
             $actionName = 'readAction';
+            
             switch ($this->getInput()->getMethod()) {
                 case 'post':
                     $actionName = 'createAction';
@@ -589,11 +591,13 @@ class Api extends Configurable {
                         $doExec = true;
                     if ($doExec) {
                         $this->logInfo(80, "Succesfully pass ACL strategy. User '" . $this->getInput('user')->getId() . "' with application '" . $this->getInput('application')->getId() . "' can perform  $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config['acl'], 3);
-                        $resource->$actionName();
+                        $output = $resource->$actionName();
+                        $this->makeOutput($output);
                     }
                 } else {
                     $this->logInfo(80, "No ACL rules for $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config, 3);
-                    $resource->$actionName();
+                    $output = $resource->$actionName();
+                    $this->makeOutput($output);
                 }
             }
             Event::trigger('api.execute.after');
@@ -606,6 +610,25 @@ class Api extends Configurable {
         return $this;
     }
 
+    private function makeOutput($output) {
+        if ($output[0] === false) {
+            if (!isset($output[2]))
+                $output[2] = "";
+            if (!isset($output[3]))
+                $output[3] = array();
+            if (!isset($output[4]))
+                $output[4] = 400;
+            $this->getOutput()->renderError ($output[1], $output[2], $output[3], $output[4]);
+        }
+        else {
+            if (!isset($output[3]))
+                $output[3] = null;
+            if (!isset($output[4]))
+                $output[4] = 200;
+            $this->getOutput()->renderOk($output[1], $output[2], $output[3], $output[4]);
+        }
+    }
+    
     /**
      * Extract form the resource config the acl user autorized
      * @param mix $aclRules the 

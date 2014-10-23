@@ -30,7 +30,7 @@ class nosqlModelResource extends defaultModelResource implements IResource {
                 $return = $this->getModel()->readOne($nextPath);
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return);
+                return array(true, $message, $return);
             } else {
                 //affichage de toutes les clefs
                 $search = $this->filterSearchParams($input->getParams());
@@ -47,11 +47,11 @@ class nosqlModelResource extends defaultModelResource implements IResource {
                 $countResult = $this->getModel()->readCount($search);
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return, $countResult);
+                return array(true, $message, $return, $countResult);
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -63,10 +63,10 @@ class nosqlModelResource extends defaultModelResource implements IResource {
             $newId = $this->getModel()->create($api->getInput()->getParams());
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $newId);
+            return array(true, $message, $newId);
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -81,13 +81,13 @@ class nosqlModelResource extends defaultModelResource implements IResource {
                 $return = $this->getModel()->update($nextPath, $api->getInput()->getParams());
                 $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
                 $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return);
+                return array(true, $message, $return);
             } else {
                 throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
             }
         } catch (Exception $exc) {
             $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -102,13 +102,13 @@ class nosqlModelResource extends defaultModelResource implements IResource {
                 $return = $this->getModel()->delete($nextPath);
                 $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
                 $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $return);
+                return array(true, $message, $return);
             } else {
                 throw new ResourceException("could not " . __FUNCTION__ . " on " . get_class($this) . " because no id found in path ", 911);
             }
         } catch (Exception $exc) {
             $api->logError(970, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage(), array(), 500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
