@@ -8,7 +8,7 @@
  * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class createusermailSequenceResource extends linkableResource implements IResource {         
+class createusermailFormationStartxResource extends linkableResource implements IResource {         
 
     public function createAction() {
         $api = Api::getInstance();
@@ -16,10 +16,13 @@ class createusermailSequenceResource extends linkableResource implements IResour
         $prevOutput = $this->getPrevOutput();
         if ($this->getPrevBool() === false)
             return array(false, 930, $prevOutput);
-        $body = "An user was created in SXA_db with id:". $prevOutput[0][0] ."\n";
-        if (count($prevOutput[1][0]) !== 0) {    
+        $body = "An user was created in SXA_db with id:". $prevOutput[0][0] ."\n";        
+        
+        if (count($prevOutput[1][0]) !== 0) {  
             $body .= "There are duplicates of the same email address in SXA_db:\n";
-            $body .= implode ("\n", $prevOutput[1]);           
+            foreach ($prevOutput[1][0] as $cont) {
+                $body .= " - " . $cont['id_cont'] . "\n";
+            }
         }
         return array(true, 'processing complete', array($body));
     }

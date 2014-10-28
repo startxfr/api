@@ -31,34 +31,24 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $mode = $api->getInput()->getParam('mode');
-            $data = $api->getInput()->getParam('data');           
+            $data = $api->getInput()->getParam('data');  
+            $data['nom_cont'] = strtoupper($data['nom_cont']);
+            $data['prenom_cont'] = ucfirst(strtolower($data['prenom_cont']));
+            $data['enterprise']['nom_ent'] = strtoupper($data['enterprise']['nom_ent']);
             $sxa_store = $api->getStore($this->getConfig('store_sxa', "mysql"));
-            $cont = $sxa_store->read('contact', array("mail_cont" => $data['email']));            
+            $cont = $sxa_store->read('contact', array("mail_cont" => $data['mail_cont']));  
             $add_data = array();
             if ($data['enterprise']['nom_ent'] !== "") {
                 $ent_data = $data['enterprise'];
                 $id_ent = $sxa_store->create('entreprise', $ent_data);
                 $add_data['entreprise_cont'] = $id_ent;
-            }
+            }            
             $cont_data = $this->_changeData($data, $add_data);
             $id_cont = $sxa_store->create('contact', $cont_data);            
-            $return_data = array(array($id_cont), array($cont));
-            if ($mode === 'oauth') {
-                $data[$this->getConfig('id_field', "_id")] = $data['mail_cont'];
-                $store = $api->getStore($this->getConfig('store', 'users'));
-                $store->create($this->getConfig('collection', 'user'), $data);
-                $api->getInput('session')->set('user', $data[$this->getConfig('id_field', "_id")]);
-                $user = $api->getInput('user')->getAll();
-                $return_data[0][] = $user;
-                return array(true, sprintf($this->getConfig('message_service_create', 'message service create'), $data['_id']), $return_data);
-            }
-            else {
-                $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
-                $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
-                $user = $this->doAuthenticate($login, $pass, $data);
-                $return_data[0][] = $user;
-                return array(true, sprintf($this->getConfig('message_service_create', 'message service create'), $login), $return_data);
-            }            
+            $return_data = array(array($id_cont), array($cont));            
+            $user = $this->doNosqlRegister($data, $mode, $id_cont);
+            $return_data[0][] = $user;
+            return array(true, sprintf($this->getConfig('message_service_create', 'message service create'), $user['_id']), $return_data);                       
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(),array(),401);
@@ -66,46 +56,38 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         return true;
     }
 
-    public function updateAction() {
-        return true;
+    private function doNosqlRegister($data, $mode, $id_cont) {
         $api = Api::getInstance();
-        $api->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
-        try {
+        $user_data = array();
+        if ($mode === 'oauth') {
+            $user_data[$this->getConfig('id_field', "_id")] = $data['mail_cont'];
+            $user_data['refresh_token'] = $data['refresh_token'];
+        }
+        else {
             $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
             $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
-            $user = $this->doAuthenticate($login, $pass);
-            return array(true, sprintf($this->getConfig('message_service_update', 'message service update'), $login), $user);
-        } catch (Exception $exc) {
-            $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            return array(false, $exc->getCode(), $exc->getMessage(),array(),401);
+            switch ($this->getConfig('pwd_encryption', 'none')) {
+                case 'sha256':
+                    $pass = hash("sha256", $pass);
+                    break;
+                default:
+                    break;
+            }
+            $user_data[$this->getConfig('id_field', "_id")] = $login;
+            $user_data[$this->getConfig('pwd_field', 'pass')] = $pass;
         }
-        return true;
-    }
-
-    private function doAuthenticate($login, $pass, $user_data) {
-        $api = Api::getInstance();
+        $user_data['role'] = $data['role'];
+        $user_data['email'] = $data['mail_cont'];
+        $user_data['id_cont'] = $id_cont;
+        $user_name = $data['prenom_cont'] . " " . $data['nom_cont'];
+        if ($user_name === " ")
+            $user_name = $user_data[$this->getConfig('id_field', "_id")];
+        $user_data['username'] = $user_name;
         $store = $api->getStore($this->getConfig('store', 'users'));
-                
-        if ($login == '')
-            throw new ResourceException(sprintf($this->getConfig('message_service_noid'), $this->getConfig('id_param', "_id")), 911);
-        elseif ($pass == '')
-            throw new ResourceException(sprintf($this->getConfig('message_service_nopwd'), $this->getConfig('pwd_param', 'pass')), 912);
-        $data = $store->readOne($this->getConfig('collection', 'user'), array( $this->getConfig('id_field', "_id") => $login ));
-        if (is_array($data) and $data[$this->getConfig('id_field', "_id")] == $login)
-            throw new ResourceException(sprintf($this->getConfig('message_service_badid'), $this->getConfig('id_param', "_id")), 913);
-        switch ($this->getConfig('pwd_encryption', 'none')) {
-            case 'sha256':
-                $pass = hash("sha256", $pass);
-                break;
-            default:
-                break;
-        }
-        $user_data[$this->getConfig('id_field', "_id")] = $login;
-        $user_data[$this->getConfig('pwd_field', 'pass')] = $pass;
-        $store->create($this->getConfig('collection', 'user'), $user_data);       
-        $api->logInfo(960, "User '" . $login . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getInput('session')->set('user', $login);
-        return $api->getInput('user')->getAll();
+        $store->create($this->getConfig('collection', 'user'), $user_data);         
+        $api->getInput('session')->set('user', $user_data[$this->getConfig('id_field', "_id")]);                                   
+        $api->logInfo(960, "User '" . $user_data[$this->getConfig('id_field', "_id")] . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);        
+        return $api->getInput('user')->getAll();                
     }
     
     private function _changeData($data, $add_data = array()) {
