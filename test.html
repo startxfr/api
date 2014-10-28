@@ -109,68 +109,122 @@
                             method: "get",
                             path: "",
                             data: {format: "json"},                            
-                            next: sxtest.sessUser
+                            next: sxtest.doShowCont
                         });
                     },
-                    doAuth: function() {
-                        console.log("=doAuth");
+//                    doAuth: function() {
+//                        console.log("=doAuth");
+//                        sxtest.do({
+//                            titre: "Test d'authentification",
+//                            method: "post",
+//                            path: "auth/basic",
+//                            data: {format: "json", app: "www", login: "dev", pwd: "dev"},
+//                            next: sxtest.doAuth2
+//                        });
+//                    },
+//                    doAuth2: function() {
+//                        console.log("=doAuth");
+//                        sxtest.do({
+//                            titre: "Test d'authentification",
+//                            method: "post",
+//                            path: "auth/basic",
+//                            data: {format: "json", app: "www", login: "test", pwd: "dev"},
+//                            next: sxtest.doListContact
+//                        });
+//                    },                    
+//                    sessUser: function() {
+//                        console.log("=sessuser");
+//                        sxtest.do({
+//                            titre: "Test recuperation user data",
+//                            method: "get",
+//                            path: "session/user",
+//                            data: {format: "json", app: "www"},                            
+//                            next: sxtest.getResource
+//                        });
+//                    },
+//                    getResource: function() {
+//                        console.log("=getResource");
+//                        sxtest.do({
+//                            titre: "Test de recuperation de donnees",
+//                            methode: 'get',
+//                            path: "testdata_sessions.json",
+//                            data: null,
+//                            next: sxtest.doEnd
+//                        });
+//                    },
+//                    doListContact: function() {
+//                        console.log("=doList");
+//                        sxtest.do({
+//                            titre: "Test de liste des contacts",
+//                            method: "get",
+//                            path: "contacts",
+//                            data: {format: "json", start: 0, limit: 5, nom_cont: "larue"},
+//                            next: sxtest.doInfoContact
+//                        });
+//                    },                    
+                    doShowCont: function() {
                         sxtest.do({
-                            titre: "Test d'authentification",
-                            method: "post",
-                            path: "auth/basic",
-                            data: {format: "json", app: "www", login: "dev", pwd: "dev"},
-                            next: sxtest.doAuth2
-                        });
-                    },
-                    doAuth2: function() {
-                        console.log("=doAuth");
-                        sxtest.do({
-                            titre: "Test d'authentification",
-                            method: "post",
-                            path: "auth/basic",
-                            data: {format: "json", app: "www", login: "test", pwd: "dev"},
-                            next: sxtest.doListContact
-                        });
-                    },                    
-                    sessUser: function() {
-                        console.log("=sessuser");
-                        sxtest.do({
-                            titre: "Test recuperation user data",
+                            titre: "show all contacts",
                             method: "get",
-                            path: "session/user",
-                            data: {format: "json", app: "www"},                            
-                            next: sxtest.getResource
+                            path: "contactsbis",
+                            data: {format: "json", mail_cont: "tarz@tar.tr"},
+                            next: sxtest.doCreateCont
                         });
                     },
-                    getResource: function() {
-                        console.log("=getResource");
+                    doCreateCont: function() {
                         sxtest.do({
-                            titre: "Test de recuperation de donnees",
-                            methode: 'get',
-                            path: "testdata_sessions.json",
-                            data: null,
-                            next: sxtest.doEnd
+                            titre: "create cont",
+                            method: "post",
+                            path: "contactsbis",
+                            data: {format: "json", nom_cont: "jopiii", prenom_cont: "jola", mail_cont: "tarz@tar.tr"},
+                            next: sxtest.doInfoCont
                         });
                     },
-                    doListContact: function() {
-                        console.log("=doList");
-                        sxtest.do({
-                            titre: "Test de liste des contacts",
-                            method: "get",
-                            path: "contacts",
-                            data: {format: "json", start: 0, limit: 5, nom_cont: "larue"},
-                            next: sxtest.doInfoContact
-                        });
-                    },
-                    doInfoContact: function() {
+                    doInfoCont: function() {
                         sxtest.do({
                             titre: "Test de lecture des info d'un contact",
                             method: "get",
-                            path: "contacts/117521",
-                            data: {format: "json"},
+                            path: "contacts",
+                            data: {format: "json", nom_cont: "jopi"},
+                            next: sxtest.doUpdateCont
+                        });
+                    },
+                    doUpdateCont: function() {
+                        sxtest.do({
+                            titre: "update cont",
+                            method: "put",
+                            path: "contactsbis/6",
+                            data: {format: "json", nom_cont: "johti", prenom_cont: "jolala"},
+                            next: sxtest.doInfoCont2
+                        });
+                    },   
+                    doInfoCont2: function() {
+                        sxtest.do({
+                            titre: "Test de lecture des info d'un contact",
+                            method: "get",
+                            path: "contactsbis",
+                            data: {format: "json", nom_cont: "joi"},
+                            next: sxtest.doDeleteCont
+                        });
+                    },
+                    doDeleteCont: function() {
+                        sxtest.do({
+                            titre: "update cont",
+                            method: "put",
+                            path: "contactsbis",
+                            data: {format: "json", nom_cont: "joi", prenom_cont: "jolala"},
+                            next: sxtest.doShowCont2
+                        });
+                    },
+                    doShowCont2: function() {
+                        sxtest.do({
+                            titre: "show all contacts",
+                            method: "get",
+                            path: "contactsbis",
+                            data: {format: "json", mail_cont: "tarz@tar.tr"},
                             next: sxtest.doEnd
                         });
-                    },                   
+                    },
                     doEnd: function() {
                         $(sxajax.messageContainer).append("<h4>Fin des test</h4>");
                     }

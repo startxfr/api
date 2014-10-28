@@ -22,12 +22,6 @@ abstract class defaultResource extends Configurable implements IResource {
 			"desc":"desc _id"
 		},
 		{
-			"name":"api",
-			"type":"string",
-			"mandatory":"false",
-			"desc":"desc api"
-		},
-		{
 			"name":"class",
 			"type":"string",
 			"mandatory":"true",

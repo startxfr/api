@@ -70,21 +70,24 @@ class nosqlModel extends defaultModel implements IModel {
 
     protected function filterResults($results, $outputFilter = true) {
         if (is_array($results))
-            foreach ($results as $k => $v)
-                foreach ($v as $k2 => $v2)
+            foreach ($results as $k => $v) {
+                foreach ($v as $k2 => $v2) {
                     if ($k2 == $this->getConfig('id_key', '_id') and is_object($v2) and get_class($v2) == 'MongoId')
                         $results[$k][$k2] = (string) $v2;
                     elseif (is_object($v2) and get_class($v2) == 'MongoDate')
                         $results[$k][$k2] = date('Y-m-d H:i:s', (string) $v2->sec);
+                }
+            }
         return parent::filterResults($results, $outputFilter);
     }
 
     protected function filterResult($result, $outputFilter = true) {
-        foreach ($result as $k => $v)
+        foreach ($result as $k => $v) {
             if ($k == $this->getConfig('id_key', '_id') and is_object($v) and get_class($v) == 'MongoId')
                 $result[$k] = (string) $v;
             elseif (is_object($v) and get_class($v) == 'MongoDate')
                 $result[$k] = date('Y-m-d H:i:s', (string) $v->sec);
+        }
         return parent::filterResult($result, $outputFilter);
     }
 

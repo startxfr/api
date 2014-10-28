@@ -9,7 +9,7 @@
  * @see      defaultModelResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class mysqlModelResource extends defaultModelResource implements IResource {
+class mysqlStoreResource extends defaultStoreResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"mysqlModelResource",
   "desc":"desc mysqlModelResource",
@@ -44,8 +44,12 @@ class mysqlModelResource extends defaultModelResource implements IResource {
     
     public function init() {
         parent::init();
-        if (!is_object($this->model) or get_class($this->model) != 'mysqlModel')
-            throw new ResourceException("Could not " . __FUNCTION__ . " " . get_class($this) . " because the provided model is not of type mysqlModel", 908);
+        if (!is_object($this->storage) or get_class($this->storage) != 'mysqlStore')
+            throw new ResourceException("Could not " . __FUNCTION__ . " " . get_class($this) . " because the provided store is not of type mysql", 908);
+        if ($this->getConfig('table', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'table' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'table' attribute");
+        }
         return $this;
     }
 
@@ -57,7 +61,8 @@ class mysqlModelResource extends defaultModelResource implements IResource {
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier                
-                $return = $this->getModel()->readOne($nextPath);                
+                $return = $this->getStorage()->readOne($this->getConfig('table'), array($this->getConfig('id_key', "_id") => $nextPath));                
+                $return = $this->filterResult($return, false);                                
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
@@ -66,15 +71,18 @@ class mysqlModelResource extends defaultModelResource implements IResource {
                 $search = $this->filterSearchParams($api->getInput()->getParams());
                 $sort = $api->getInput()->getJsonParam($this->getConfig('sortParam', 'sort'), '[]');
                 $order = array();
-                if (is_array($sort))
-                    foreach ($sort as $k => $val)
+                if (is_array($sort)) {
+                    foreach ($sort as $k => $val) {
                         $order[$val['property']] = (strtoupper(trim($val['direction'])) == 'DESC') ? -1 : 1;
+                    }
+                }
                 else
                     $order['id'] = 'ASC';
                 $start = $api->getInput()->getParam($this->getConfig('startParam', 'start'), 0);
                 $max = $api->getInput()->getParam($this->getConfig('limitParam', 'limit'), 30);
-                $return = $this->getModel()->read($search, $order, $start, $max);
-                $countResult = $this->getModel()->readCount($search);
+                $return = $this->getStorage()->read($this->getConfig('table'), $search, $order, $start, $max);
+                $return = $this->filterResults($return);
+                $countResult = $this->getStorage()->readCount($this->getConfig('table'), $search);
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return, $countResult);
@@ -90,7 +98,7 @@ class mysqlModelResource extends defaultModelResource implements IResource {
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $newId = $this->getModel()->create($api->getInput()->getParams());
+            $newId = $this->getStorage()->create($this->getConfig('table'), $this->bindVars($api->getInput()->getParams()));
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
             return array(true, $message, $newId);
@@ -107,8 +115,10 @@ class mysqlModelResource extends defaultModelResource implements IResource {
         try {
             $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
-            if ($nextPath !== null) {
-                $return = $this->getModel()->update($nextPath, $api->getInput()->getParams());
+            if ($nextPath !== null) {                
+                $data = $api->getInput()->getParams();
+                unset($data[$this->getConfig('id_key', '_id')]);
+                $return =  $this->getStorage()->update($this->getConfig('table'), $this->getConfig('id_key', "_id"), $nextPath, $this->bindVars($data));        
                 $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
                 $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
@@ -129,7 +139,7 @@ class mysqlModelResource extends defaultModelResource implements IResource {
             $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
-                $return = $this->getModel()->delete($nextPath);
+                $return = $this->getStorage()->delete($this->getConfig('table'), $this->getConfig('id_key', "_id"), $nextPath);
                 $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
                 $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);

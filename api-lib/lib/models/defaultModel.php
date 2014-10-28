@@ -76,10 +76,12 @@ abstract class defaultModel extends Configurable implements IModel {
         $out = array();
         if ($this->getConfig('bind_vars') == false or $this->getConfig('bind_vars') == '*' or $this->getConfig('bind_vars') == 'all')
             $out = $vars;
-        elseif (is_array($this->getConfig('bind_vars', array())) and is_array($vars))
-            foreach ($vars as $k => $v)
+        elseif (is_array($this->getConfig('bind_vars', array())) and is_array($vars)) {
+            foreach ($vars as $k => $v) {
                 if (in_array($k, $this->getConfig('bind_vars', array())))
                     $out[$k] = $v;
+            }
+        }
         return $out;
     }
 
@@ -102,18 +104,22 @@ abstract class defaultModel extends Configurable implements IModel {
     protected function filterResults($results, $outputFilter = true) {
         $out = array();
         if (is_array($this->getConfig('output_security_filter', null)) and is_array($results)) {
-            foreach ($results as $k => $v)
-                foreach ($v as $k2 => $v2)
+            foreach ($results as $k => $v) {
+                foreach ($v as $k2 => $v2) {
                     if (!in_array($k2, $this->getConfig('output_security_filter', array())))
                         $out[$k][$k2] = $v2;
+                }
+            }
             $results = $out;
             $out = array();
         }
         if ($outputFilter and is_array($this->getConfig('output_filter', null)) and is_array($results)) {
-            foreach ($results as $k => $v)
-                foreach ($v as $k2 => $v2)
+            foreach ($results as $k => $v) {
+                foreach ($v as $k2 => $v2) {
                     if (in_array($k2, $this->getConfig('output_filter', array())))
                         $out[$k][$k2] = $v2;
+                }
+            }
         }
         else
             $out = $results;
@@ -123,16 +129,18 @@ abstract class defaultModel extends Configurable implements IModel {
     protected function filterResult($result, $outputFilter = true) {
         $out = array();
         if (is_array($this->getConfig('output_security_filter', null)) and is_array($result)) {
-            foreach ($result as $k => $v)
+            foreach ($result as $k => $v) {
                 if (!in_array($k, $this->getConfig('output_security_filter', array())))
                     $out[$k] = $v;
+            }
             $result = $out;
             $out = array();
         }
         if ($outputFilter and is_array($this->getConfig('output_filter', null)) and is_array($result)) {
-            foreach ($result as $k => $v)
+            foreach ($result as $k => $v) {
                 if (in_array($k, $this->getConfig('output_filter', array())))
                     $out[$k] = $v;
+            }
         }
         else
             $out = $result;
