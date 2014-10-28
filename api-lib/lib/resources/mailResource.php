@@ -27,7 +27,6 @@ class mailResource extends linkableResource implements IResource {
         $default_params = $this->getConfig('default_params');
         var_dump($default_params);
         var_dump($overwrite_params);
-        exit(0);
         $p_to = 'to';
         $p_sub = 'subject';
         $p_body = 'body';
@@ -48,6 +47,10 @@ class mailResource extends linkableResource implements IResource {
         $to = $api->getInput()->getParam($p_to, $default_params['to']); 
         $sub = $api->getInput()->getParam($p_sub, $default_params['sub']);
         $defaultBody = $default_params['body'];
+        var_dump($to);
+        var_dump($sub);
+        var_dump($defaultBody);
+        exit(0);
         if (count($this->getPrevOutput()) !== 0)            
             $defaultBody = implode("\n", $this->getPrevOutput());                   
         $body = $api->getInput()->getParam($p_body, $defaultBody);
