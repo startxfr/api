@@ -23,12 +23,34 @@ class mailResource extends linkableResource implements IResource {
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        $to = $api->getInput()->getParam('to', $this->getConfig("to")); 
-        $sub = $api->getInput()->getParam('subject', $this->getConfig("subject"));                        
+        $overwrite_params = $this->getConfig('overwrite_params');
+        $default_params = $this->getConfig('default_params');
+        var_dump($default_params);
+        var_dump($overwrite_params);
+        exit(0);
+        $p_to = 'to';
+        $p_sub = 'subject';
+        $p_body = 'body';
+        foreach ($overwrite_params as $param) {
+            switch($param['map'])
+            {
+                case $p_to:
+                    $p_to = $param['in'];
+                    break;
+                case $p_sub:
+                    $p_sub = $param['in'];
+                    break;
+                case $p_body:
+                    $p_body = $param['in'];
+                    break;               
+            }
+        }        
+        $to = $api->getInput()->getParam($p_to, $default_params['to']); 
+        $sub = $api->getInput()->getParam($p_sub, $default_params['sub']);
+        $defaultBody = $default_params['body'];
         if (count($this->getPrevOutput()) !== 0)            
-            $body = implode("\n", $this->getPrevOutput());                   
-        else
-            $body = $api->getInput()->getParam('body', $this->getConfig("body"));
+            $defaultBody = implode("\n", $this->getPrevOutput());                   
+        $body = $api->getInput()->getParam($p_body, $defaultBody);
         $bool = $this->sendMail($to, $sub, $body);
         if ($bool)
             return array($bool, "mail sent", array("to" => $to, "sub" => $sub, "body" => $body));
@@ -48,6 +70,7 @@ class mailResource extends linkableResource implements IResource {
     public function init() {
         $api = Api::getInstance();
         $api->logDebug(576, "launch mailer init");
+        $server = $this->getConfig('server');
         //Create a new PHPMailer instance
         $this->mail = new PHPMailer;
         //Tell PHPMailer to use SMTP
@@ -60,17 +83,17 @@ class mailResource extends linkableResource implements IResource {
         //Ask for HTML-friendly debug output
         $this->mail->Debugoutput = 'html';
         //Set the hostname of the mail server
-        $this->mail->Host = $this->getConfig('host');
+        $this->mail->Host = $server['host'];
         //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-        $this->mail->Port = $this->getConfig('port');
+        $this->mail->Port = $server['port'];
         //Set the encryption system to use - ssl (deprecated) or tls
         $this->mail->SMTPSecure = 'tls';
         //Whether to use SMTP authentication
         $this->mail->SMTPAuth = true;
         //Username to use for SMTP authentication - use full email address for gmail
-        $this->mail->Username = $this->getConfig('username');
+        $this->mail->Username = $server['username'];
         //Password to use for SMTP authentication
-        $this->mail->Password = $this->getConfig('password');
+        $this->mail->Password = $server['password'];
         $api->logDebug(576, "mailer init");
         return $this;
     }
