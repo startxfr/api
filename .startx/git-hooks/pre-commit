@@ -1,25 +1,40 @@
 #!/bin/bash
 # Script use to save the database collections
-# To enable this script in GitHub's pre-commit hook
-# add bash <path_to_script>/git_hook_precommit.sh 
-# in .git/hooks/pre-commit. If there isn't the file .git/hooks/pre-commit
-# copy and rename .git/hooks/pre-commit.sample.
 
 db="sxapi"
-out_dir="/var/www/html/startx/api/api-lib/tmp"
+out_dir="/var/www/html/startx/api/.startx/db-dump"
 tmp_file="tmp_file"
 echo "print('_ ' + db.getCollectionNames())" > $tmp_file
 cols=`mongo $db $tmp_file | grep '_' | awk '{print $2}' | tr ',' ' '`
-echo "-- Dump des bases de données"
-read -p "-- Souhaitez-vous dumper les bases de données (y/n)?" CONT
-if [ "$CONT" == "y" ]; then
-    for c in $cols
+rm $tmp_file
+echo_prefix="[pre-commit hook]"
+
+# execute doc-generate and comit-push to github
+function dumpDatabases {
+   echo -e "$echo_prefix Start dumping database"
+   for c in $cols
     do
         if [[ $c != "logs" ]] && [[ $c != "startx.logs" ]] && [[ $c != "sxapi.session" ]] ; then
-                echo -n 'Exporting' $c ' : '
-        mongoexport -d $db -c $c -o "$out_dir/dump_${db}_${c}.json" --jsonArray > /dev/null
+        echo -e "$echo_prefix Exporting $c "
+        mongoexport -d $db -c $c -o "$out_dir/dump_${db}_${c}.json" --jsonArray &> /dev/null
         fi
     done
-fi
-rm $tmp_file
-exit 0;
+   echo -e "$echo_prefix End dumping database"
+}
+
+
+echo -e "$echo_prefix Start pre-commit process"
+# Allows us to read user input below, assigns stdin to keyboard
+exec < /dev/tty
+while true; do
+    read -p "$echo_prefix Do you wan't to dump database(s) ? (Y/n) " yn
+    if [ "$yn" = "" ]; then
+       yn='Y'
+    fi
+    case $yn in
+       [Yy] ) dumpDatabases; exit 0;;
+       [Nn] ) exit 0;;
+       * ) echo -e "$echo_prefix Please answer y or n for yes or no.";;
+    esac
+done
+echo -e "$echo_prefix End pre-commit process"
