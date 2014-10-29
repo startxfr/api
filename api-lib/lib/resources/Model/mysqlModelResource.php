@@ -11,37 +11,37 @@
  */
 class mysqlModelResource extends defaultModelResource implements IResource {
 
-    static public $ConfDesc = '{"class_name":"mysqlModelResource",
-  "desc":"desc mysqlModelResource",
-  "propreties":
-	[
-		{
-			"name":"message_service_create",
-			"type":"string",
-			"mandatory":"true",
-			"desc":"desc message_service"
-		},
-		{
-			"name":"message_service_read",
-			"type":"string",
-			"mandatory":"true",
-			"desc":"desc message_service"
-		},
-		{
-			"name":"message_service_delete",
-			"type":"string",
-			"mandatory":"true",
-			"desc":"desc message_service"
-		},
-		{
-			"name":"message_service_update",
-			"type":"string",
-			"mandatory":"true",
-			"desc":"desc message_service"
-		}
+    static public $ConfDesc = '{
+        "class_name":"mysqlModelResource",
+        "desc":"desc mysqlModelResource",
+        "properties": [ 
+            {
+                "name":"message_service_create",
+                "type":"string",
+                "mandatory":"true",
+                "desc":"desc message_service"
+            }, 
+            {
+                "name":"message_service_read",
+                "type":"string",
+                "mandatory":"true",
+                "desc":"desc message_service"
+            },
+            {
+                "name":"message_service_delete",
+                "type":"string",
+                "mandatory":"true",
+                "desc":"desc message_service"
+            },
+            {
+                "name":"message_service_update",
+                "type":"string",
+                "mandatory":"true",
+                "desc":"desc message_service"
+            }
 	]
-}';
-    
+    }';
+
     public function init() {
         parent::init();
         if (!is_object($this->model) or get_class($this->model) != 'mysqlModel')
@@ -81,7 +81,7 @@ class mysqlModelResource extends defaultModelResource implements IResource {
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            return array(false, $exc->getCode(), $exc->getMessage(),array(),500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -96,7 +96,7 @@ class mysqlModelResource extends defaultModelResource implements IResource {
             return array(true, $message, $newId);
         } catch (Exception $exc) {
             $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            return array(false, $exc->getCode(), $exc->getMessage(),array(),500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -117,7 +117,7 @@ class mysqlModelResource extends defaultModelResource implements IResource {
             }
         } catch (Exception $exc) {
             $api->logError(950, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            return array(false, $exc->getCode(), $exc->getMessage(),array(),500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
@@ -138,7 +138,7 @@ class mysqlModelResource extends defaultModelResource implements IResource {
             }
         } catch (Exception $exc) {
             $api->logError(970, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            return array(false, $exc->getCode(), $exc->getMessage(),array(),500);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
     }
