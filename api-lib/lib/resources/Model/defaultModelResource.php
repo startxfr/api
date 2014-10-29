@@ -13,7 +13,7 @@ abstract class defaultModelResource extends linkableResource implements IResourc
 
     static public $ConfDesc = '{"class_name":"defaultModelResource",
                                 "desc":"desc defaultModelResource",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"model",
