@@ -133,20 +133,22 @@ class SmartInput extends DefaultInput implements IInput {
         $content_type = false;
         if (isset($_SERVER['CONTENT_TYPE']))
             $content_type = $_SERVER['CONTENT_TYPE'];
-        switch ($content_type) {
+        switch ($content_type) {            
             case "application/json":
                 $this->format = "json";
                 $body_params = json_decode($body);
                 if ($body_params)
-                    foreach ($body_params as $param_name => $param_value)
+                    foreach ($body_params as $param_name => $param_value) {
                         $parameters[$param_name] = $param_value;
+                    }
                 break;
-            case "application/x-www-form-urlencoded":
+            case "application/x-www-form-urlencoded; charset=UTF-8":
                 $this->format = "html";
                 $postvars = array();
                 parse_str($body, $postvars);
-                foreach ($postvars as $field => $value)
+                foreach ($postvars as $field => $value) {
                     $parameters[$field] = $value;
+                }
                 break;
             default:
                 $list = explode(",", $_SERVER['HTTP_ACCEPT']);

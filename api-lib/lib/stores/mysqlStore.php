@@ -118,6 +118,8 @@ class mysqlStore extends defaultStore implements IStorage {
 
     public function update($table, $key, $id, $data) {
         try {
+            if (empty($data))
+                throw new StoreException("no data");
             $this->connect();
             $action = 'UPDATE';
             $top = "$action `" . $table . "` SET ";

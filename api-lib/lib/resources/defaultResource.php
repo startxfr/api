@@ -47,6 +47,7 @@ abstract class defaultResource extends Configurable implements IResource {
         $id = (array_key_exists('_id', $config)) ? $config["_id"] : 'default';
         Api::logDebug(900, "Load '" . $id . "' " . get_class($this) . " resource ", $config, 5);
         parent::__construct($config);
+        $this->prepareFilters();
     }
 
     public function init() {
@@ -112,7 +113,106 @@ abstract class defaultResource extends Configurable implements IResource {
             $trace = array_merge($trace, $other);
         return $trace;
     }
-
+    
+    public function filterParams( $params, $way ) {
+        if ($way !== "output" && $way !== "input")
+            return $params;
+        $out = array();
+        if ( ($filter_inc = $this->getConfig($way."_include_paramfilter", null)) !== null ) {
+            if (is_string($filter_inc)) {
+                $tmp_array = explode(":", $filter_inc);
+                if (count($tmp_array) === 1 && $tmp_array[0] === "*")
+                    return $params;
+                else {
+                    foreach($params as $key => $value) {
+                        $out[$key] = $tmp_array[1]($value);
+                    }
+                }
+            }
+            else {
+                foreach ($params as $key => $value) {
+                    if (array_key_exists($key, $filter_inc)) {
+                        $filter_val = $filter_inc[$key];
+                        if (strpos($filter_val, ":") !== false) {
+                            $tmp_array = explode(":", $filter_val);
+                            $out[$tmp_array[1]] = $tmp_array[0]($value);
+                        }
+                        else
+                            $out[$filter_val] = $value;
+                    }                   
+                }
+            }
+        }
+        else if ( ($filter_exc = $this->getConfig($way."_exclude_paramfilter", null)) !== null) {
+            if (is_string($filter_exc) && $filter_exc === "*")
+                return $out;
+            else {
+                foreach ($params as $key => $value) {
+                    if (!array_key_exists($key, $filter_exc))
+                         $out[$key] = $value;
+                }
+            }
+        }
+        return $out;
+    }
+    
+    private function transformFilter($filter, $include = true) {
+        $new_filter = array();        
+        if (($include) && (($filter[0] === "{" || $filter[0] === "[") && ($tmp_array = json_decode($filter)) !== null)) {
+            foreach ($tmp_array as $elem) {
+                $process = "";
+                if (array_key_exists("process", $elem))
+                    $process = $elem['process'] . ":";
+                $new_filter[$elem['input']] = $process . $elem['map'];
+            }
+        }        
+        else if (is_string($filter)){
+            $tmp_array = explode(",", $filter);
+            if (count($tmp_array) === 1 && (preg_match('/^(all|\*)/', $tmp_array[0]))) {
+                $new_filter = "*";
+                if (strpos($tmp_array[0], ":") !== false) {
+                   $keyval = explode (":", $tmp_array[0]);
+                   $new_filter.= ":" . $keyval[1];
+                }
+            }
+            else {
+                foreach ($tmp_array as $value) {
+                    if (strpos($value, ":") !== false) {
+                       $keyval = explode (":", $value);
+                       $new_filter[$keyval[0]] = $keyval[1];
+                    }
+                    else {
+                        $new_filter[$value] = $value;
+                    }
+                }
+            }
+        }
+        else if ($include){
+            foreach ($filter as $elem) {
+                $process = "";
+                if (array_key_exists("process", $elem) && is_callable($elem['process']))
+                    $process = $elem['process'] . ":";
+                $new_filter[$elem['input']] = $process . $elem['map'];
+            }           
+        }
+        return $new_filter;
+    }
+    
+    private function prepareFilters() {
+        if ( ($input_include_paramfilter = $this->getConfig("input_include_paramfilter", null)) !== null ) {
+            $this->setConfig("input_include_paramfilter", $this->transformFilter($input_include_paramfilter));
+        }
+        if ( ($input_exclude_paramfilter = $this->getConfig("input_exclude_paramfilter", null)) !== null ) {
+            $this->setConfig("input_exclude_paramfilter", $this->transformFilter($input_exclude_paramfilter, false));
+        }
+        if ( ($output_include_paramfilter = $this->getConfig("output_include_paramfilter", null)) !== null ) {
+            $this->setConfig("output_include_paramfilter", $this->transformFilter($output_include_paramfilter));
+        }
+        if ( ($output_exclude_paramfilter = $this->getConfig("output_exclude_paramfilter", null)) !== null ) {
+            $this->setConfig("output_exclude_paramfilter", $this->transformFilter($output_exclude_paramfilter, false));
+        }        
+    }
+    
 }
 
 ?>

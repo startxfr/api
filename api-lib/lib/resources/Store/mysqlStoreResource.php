@@ -61,14 +61,14 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier                
-                $return = $this->getStorage()->readOne($this->getConfig('table'), array($this->getConfig('id_key', "_id") => $nextPath));                
-                $return = $this->filterResult($return, false);                                
+                $return = $this->getStorage()->readOne($this->getConfig('table'), array($this->getConfig('id_key', "_id") => $nextPath)); 
+                $return = $this->filterParams($return, "output");                                
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
             } else {
                 //affichage de toutes les clefs
-                $search = $this->filterSearchParams($api->getInput()->getParams());
+                $search = $this->filterParams($api->getInput()->getParams(), "input");
                 $sort = $api->getInput()->getJsonParam($this->getConfig('sortParam', 'sort'), '[]');
                 $order = array();
                 if (is_array($sort)) {
@@ -98,7 +98,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $newId = $this->getStorage()->create($this->getConfig('table'), $this->bindVars($api->getInput()->getParams()));
+            $newId = $this->getStorage()->create($this->getConfig('table'), $this->filterParams($api->getInput()->getParams(), "input"));
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
             return array(true, $message, $newId);
@@ -118,7 +118,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
             if ($nextPath !== null) {                
                 $data = $api->getInput()->getParams();
                 unset($data[$this->getConfig('id_key', '_id')]);
-                $return =  $this->getStorage()->update($this->getConfig('table'), $this->getConfig('id_key', "_id"), $nextPath, $this->bindVars($data));        
+                $return =  $this->getStorage()->update($this->getConfig('table'), $this->getConfig('id_key', "_id"), $nextPath, $this->filterParams($data, "input"));        
                 $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
                 $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);

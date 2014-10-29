@@ -542,10 +542,8 @@ class Api extends Configurable {
         try {
             Event::trigger('api.execute.before');
             $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));            
-            $resource = $this->getResource($config['class'], $config);
-            $this->logDebug(80, "tamere", $resource);
-            $actionName = 'readAction';
-            
+            $resource = $this->getResource($config['class'], $config);            
+            $actionName = 'readAction';            
             switch ($this->getInput()->getMethod()) {
                 case 'post':
                     $actionName = 'createAction';

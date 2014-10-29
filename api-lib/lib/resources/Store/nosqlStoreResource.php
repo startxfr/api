@@ -13,8 +13,12 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
 
     public function init() {
         parent::init();
-        if (!is_object($this->model) or get_class($this->model) != 'nosqlModel')
-            throw new ResourceException("Could not " . __FUNCTION__ . " " . get_class($this) . " because the provided model is not of type nosqlModel", 908);
+        if (!is_object($this->storage) or get_class($this->storage) != 'nosqlStore')
+            throw new ResourceException("Could not " . __FUNCTION__ . " " . get_class($this) . " because the provided store is not of type nosql", 908);
+        if ($this->getConfig('collection', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'collection' attribute");
+        }
         return $this;
     }
 

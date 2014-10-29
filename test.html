@@ -167,35 +167,37 @@
                             titre: "show all contacts",
                             method: "get",
                             path: "contactsbis",
-                            data: {format: "json", mail_cont: "tarz@tar.tr"},
-                            next: sxtest.doCreateCont
-                        });
-                    },
-                    doCreateCont: function() {
-                        sxtest.do({
-                            titre: "create cont",
-                            method: "post",
-                            path: "contactsbis",
-                            data: {format: "json", nom_cont: "jopiii", prenom_cont: "jola", mail_cont: "tarz@tar.tr"},
-                            next: sxtest.doInfoCont
-                        });
-                    },
-                    doInfoCont: function() {
-                        sxtest.do({
-                            titre: "Test de lecture des info d'un contact",
-                            method: "get",
-                            path: "contacts",
-                            data: {format: "json", nom_cont: "jopi"},
+                            data: {format: "json"},
+                            //next: sxtest.doCreateCont
                             next: sxtest.doUpdateCont
                         });
                     },
+//                    doCreateCont: function() {
+//                        sxtest.do({
+//                            titre: "create cont",
+//                            method: "post",
+//                            path: "contactsbis",
+//                            data: {format: "json", nom_cont: "francis", prenom_cont: "jonh", mail_cont: "tarz@taar.tr", add1_cont: "ppoo"},
+//                            next: sxtest.doInfoCont
+//                            //next: sxtest.doEnd
+//                        });
+//                    },
+//                    doInfoCont: function() {
+//                        sxtest.do({
+//                            titre: "Test de lecture des info d'un contact",
+//                            method: "get",
+//                            path: "contactsbis",
+//                            data: {format: "json", mail_cont: "tarz@taar.tr"},
+//                            next: sxtest.doUpdateCont
+//                        });
+//                    },
                     doUpdateCont: function() {
                         sxtest.do({
                             titre: "update cont",
                             method: "put",
-                            path: "contactsbis/6",
-                            data: {format: "json", nom_cont: "johti", prenom_cont: "jolala"},
-                            next: sxtest.doInfoCont2
+                            path: "contactsbis/10",
+                            data: {format: "json", nom_cont: "derek", prenom_cont: "jolala"},
+                            next: sxtest.doInfoCont2                            
                         });
                     },   
                     doInfoCont2: function() {
@@ -203,16 +205,17 @@
                             titre: "Test de lecture des info d'un contact",
                             method: "get",
                             path: "contactsbis",
-                            data: {format: "json", nom_cont: "joi"},
-                            next: sxtest.doDeleteCont
+                            data: {format: "json", add1_cont: "4 rue"},
+                            //next: sxtest.doDeleteCont
+                            next: sxtest.doEnd
                         });
                     },
                     doDeleteCont: function() {
                         sxtest.do({
-                            titre: "update cont",
-                            method: "put",
-                            path: "contactsbis",
-                            data: {format: "json", nom_cont: "joi", prenom_cont: "jolala"},
+                            titre: "delete cont",
+                            method: "delete",
+                            path: "contactsbis/7",
+                            data: {format: "json"},
                             next: sxtest.doShowCont2
                         });
                     },
@@ -221,7 +224,7 @@
                             titre: "show all contacts",
                             method: "get",
                             path: "contactsbis",
-                            data: {format: "json", mail_cont: "tarz@tar.tr"},
+                            data: {format: "json"},
                             next: sxtest.doEnd
                         });
                     },
