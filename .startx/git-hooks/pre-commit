@@ -18,7 +18,8 @@ function dumpDatabases {
         echo -e "$echo_prefix Exporting $c "
         mongoexport -d $db -c $c -o "$out_dir/dump_${db}_${c}.json" --jsonArray &> /dev/null
         fi
-    done
+   done
+   git add $out_dir/*
    echo -e "$echo_prefix End dumping database"
 }
 
