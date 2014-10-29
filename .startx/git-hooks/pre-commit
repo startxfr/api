@@ -20,6 +20,6 @@ if [ "$CONT" == "y" ]; then
         mongoexport -d $db -c $c -o "$out_dir/dump_${db}_${c}.json" --jsonArray > /dev/null
         fi
     done
-    rm $tmp_file
 fi
+rm $tmp_file
 exit 0;
