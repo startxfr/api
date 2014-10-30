@@ -1,23 +1,24 @@
 #!/usr/bin/php
 <?php
-$localRootPath = '/secure/dev/startx/api/api-lib/tmp/';
+$localRootPath = '/secure/dev/startx/api/.startx/db-dump';
 $user = 'dev';
 $pass = 'dev';
 $db = 'sxapi';
 $collections = array(
-	'redirect.hit',
-	'sxapi.api',
-	'sxapi.application',
-	'sxapi.logs',
-	'sxapi.models',
-	'sxapi.plugins',
-	'sxapi.resources',
-	'sxapi.session',
-	'sxapi.users',
-	'system.indexes',
-	'system.users',
-);
-foreach($collections as $col)
-shell_exec("mongoimport -d $db -c $col -u $user -p $pass $localRootPath/dump.$db-$col.bson");
+         'startx.models',
+         'startx.resources',
+         'sxapi.api',
+         'sxapi.application',
+         'sxapi.models',
+         'sxapi.plugins',
+         'sxapi.resources',
+         'sxapi.users',
+	 'system.indexes'
+	);
 
+
+foreach($collections as $col) {
+shell_exec("mongoimport -d $db -c $col -u $user -p $pass $localRootPath/dump_${db}_$col.json");
+shell_exec("echo \"dump_${db}_$col.json imported\" >&2");
+}
 ?>
