@@ -11,33 +11,15 @@
  */
 class mysqlStoreResource extends defaultStoreResource implements IResource {
 
-    static public $ConfDesc = '{"class_name":"mysqlModelResource",
-  "desc":"desc mysqlModelResource",
+    static public $ConfDesc = '{"class_name":"mysqlStoreResource",
+  "desc":"Resource to access mysql storage",
   "propreties":
 	[
 		{
-			"name":"message_service_create",
+			"name":"table",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"desc message_service"
-		},
-		{
-			"name":"message_service_read",
-			"type":"string",
-			"mandatory":"true",
-			"desc":"desc message_service"
-		},
-		{
-			"name":"message_service_delete",
-			"type":"string",
-			"mandatory":"true",
-			"desc":"desc message_service"
-		},
-		{
-			"name":"message_service_update",
-			"type":"string",
-			"mandatory":"true",
-			"desc":"desc message_service"
+			"desc":"name of the table in which to search"
 		}
 	]
 }';
@@ -61,8 +43,8 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier                
-                $return = $this->getStorage()->readOne($this->getConfig('table'), array($this->getConfig('id_key', "_id") => $nextPath)); 
-                $return = $this->filterParams($return, "output");                                
+                $data = $this->getStorage()->readOne($this->getConfig('table'), array($this->getConfig('id_key', "_id") => $nextPath)); 
+                $return = $this->filterParams($data, "output");                                
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
@@ -80,8 +62,8 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
                     $order['id'] = 'ASC';
                 $start = $api->getInput()->getParam($this->getConfig('startParam', 'start'), 0);
                 $max = $api->getInput()->getParam($this->getConfig('limitParam', 'limit'), 30);
-                $return = $this->getStorage()->read($this->getConfig('table'), $search, $order, $start, $max);
-                $return = $this->filterResults($return);
+                $data = $this->getStorage()->read($this->getConfig('table'), $search, $order, $start, $max);
+                $return = $this->filterResults($data);
                 $countResult = $this->getStorage()->readCount($this->getConfig('table'), $search);
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);

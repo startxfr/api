@@ -11,21 +11,21 @@
  */
 abstract class defaultStoreResource extends linkableResource implements IResource {
 
-    static public $ConfDesc = '{"class_name":"defaultModelResource",
-                                "desc":"desc defaultModelResource",
+    static public $ConfDesc = '{"class_name":"defaultStoreResource",
+                                "desc":"Resource to access data in store",
                                 "propreties":
 	[
 		{
-			"name":"model",
+			"name":"store",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"desc model"
+			"desc":"store to query"
 		},
 		{
-			"name":"search_params",
+			"name":"id_key",
 			"type":"string",
-			"mandatory":"false",
-			"desc":"desc search_params"
+			"mandatory":"true",
+			"desc":"name of the id key of the database entries"
 		}
 	]
 }'

@@ -11,6 +11,31 @@
  */
 class nosqlStoreResource extends defaultStoreResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"nosqlStoreResource",
+  "desc":"Resource to access nosql storage",
+  "propreties":
+	[
+		{
+			"name":"collection",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"name of the collection in which to search"
+		},
+                {
+			"name":"filter_mongoid",
+			"type":"bool",
+			"mandatory":"false",
+			"desc":"if true id_key will be converted to a MongoId object"
+		},
+                {
+			"name":"filter_mongodate",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"list of parameters to be converted in MongoDate object"
+		}
+	]
+}';
+    
     public function init() {
         parent::init();
         if (!is_object($this->storage) or get_class($this->storage) != 'nosqlStore')
@@ -19,6 +44,7 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
             Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
             throw new ResourceException(get_class($this) . " resource config should contain the 'collection' attribute");
         }
+        $this->prepareMongoDateFilter();
         return $this;
     }
 
@@ -31,24 +57,28 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
             $nextPath = $input->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier
-                $return = $this->getModel()->readOne($nextPath);
+                $data = $this->getStorage()->readOne($this->getConfig('collection'), array($this->getConfig('id_key', '_id') => $this->convertMongoId($nextPath)));
+                $return = $this->filterParams($data, "output");
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
             } else {
                 //affichage de toutes les clefs
-                $search = $this->filterSearchParams($input->getParams());
+                $search = $this->filterParams($input->getParams(), "input");
                 $sort = $input->getJsonParam($this->getConfig('sortParam', 'sort'), '[]');
                 $order = array();
-                if (is_array($sort))
-                    foreach ($sort as $k => $val)
+                if (is_array($sort)) {
+                    foreach ($sort as $k => $val) {
                         $order[$val['property']] = (strtoupper(trim($val['direction'])) == 'DESC') ? -1 : 1;
+                    }
+                }
                 else
                     $order['_id'] = 1;
                 $start = $input->getParam($this->getConfig('startParam', 'start'), 0);
-                $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);
-                $return = $this->getModel()->read($search, $order, $start, $max);
-                $countResult = $this->getModel()->readCount($search);
+                $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);                                                                
+                $data = $this->getStorage()->read($this->getConfig('collection'), $search, $order, $start, $max);
+                $return =  $this->filterResults(iterator_to_array($data,false));            
+                $countResult = $this->getStorage()->readCount($this->getConfig('collection'), $search);            
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return, $countResult);
@@ -64,7 +94,14 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $newId = $this->getModel()->create($api->getInput()->getParams());
+            $data = $api->getInput()->getParams();
+            if (!array_key_exists($this->getConfig("id_key", "_id"), $data)) {
+                if ($this->getConfig("filter_mongoid", false) !== false)
+                    $data[$this->getConfig("id_key", "_id")] = new MongoId();
+                else
+                    throw new ResourceException("Could not create new entry without 'id_key' key.");
+            }
+            $newId = $this->getStorage()->create($this->getConfig('collection'), $this->filterParams($data, "input"));            
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
             return array(true, $message, $newId);
@@ -81,8 +118,10 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
         try {
             $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
-            if ($nextPath !== null) {
-                $return = $this->getModel()->update($nextPath, $api->getInput()->getParams());
+            if ($nextPath !== null) {                               
+                $data = $api->getInput()->getParams();        
+                unset($data[$this->getConfig('id_key', '_id')]);
+                $return = $this->getStorage()->update($this->getConfig('collection'), $this->getConfig('id_key', '_id'), $this->convertMongoId($nextPath), $this->filterParams($data, "input"));                
                 $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
                 $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
@@ -102,8 +141,8 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
         try {
             $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
-            if ($nextPath !== null) {
-                $return = $this->getModel()->delete($nextPath);
+            if ($nextPath !== null) {                                
+                $return = $this->getStorage()->delete($this->getConfig('collection'), $this->getConfig('id_key', '_id'), $this->convertMongoId($nextPath));                
                 $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
                 $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
@@ -117,6 +156,67 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
         return true;
     }
 
+    protected function filterResults($results) {
+        if (is_array($results))
+            foreach ($results as $k => $v) {
+                foreach ($v as $k2 => $v2) {
+                    if ($k2 == $this->getConfig('id_key', '_id') and is_object($v2) and get_class($v2) == 'MongoId')
+                        $results[$k][$k2] = (string) $v2;
+                    elseif (is_object($v2) and get_class($v2) == 'MongoDate')
+                        $results[$k][$k2] = date('Y-m-d H:i:s', (string) $v2->sec);
+                }
+            }
+        return parent::filterResults($results);
+    }
+    
+    protected function convertMongoId($id) {
+        if ($this->getConfig("filter_mongoid", false) !== false && get_class($id) != 'MongoId') {
+            if (strlen($id) === 24 && ctype_xdigit($id))
+                return new MongoId($id);        
+            return new MongoId();
+        }
+        return $id;
+    }
+    
+    protected function convertMongoDate($params) {
+        if (($date_filter = $this->getConfig("filter_mongodate", null)) !== null) {
+            foreach ($params as $key => $val) {
+                foreach ($date_filter as $elem) {
+                    if ($key === $elem && (ctype_digit($val) || ($val = strtotime($val)) !== false))
+                        $params[$key] = new MongoDate($val);
+                }
+            }
+        }
+    }
+    
+    public function filterParams($params, $way) {
+        if ($way === "input") {
+            if (array_key_exists("_id", $params)) {
+                $params['_id'] = $this->convertMongoId($params['_id']);                
+            }
+            $this->convertMongoDate($params);
+        }
+        else if ($way === "output") {
+            foreach ($params as $k => $v) {
+                if ($k == $this->getConfig('id_key', '_id') and is_object($v) and get_class($v) == 'MongoId')
+                    $params[$k] = (string) $v;
+                elseif (is_object($v) and get_class($v) == 'MongoDate')
+                    $params[$k] = date('Y-m-d H:i:s', $v->sec);
+            }    
+        }
+        return parent::filterParams($params, $way);
+    }
+    
+    private function prepareMongoDateFilter() {
+        if (($date_filter = $this->getConfig("filter_mongodate", null)) !== null) {
+            if (is_string($date_filter)) {
+                $this->setConfig("filter_mongodate", explode(",", $date_filter));
+            }
+            else
+                $this->setConfig("filter_mongodate", null);
+        }
+    }
+    
 }
 
 ?>

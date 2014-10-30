@@ -20,7 +20,7 @@ class mailResource extends linkableResource implements IResource {
         return $this->readAction();
     }
 
-    public function readAction() {
+    public function readoAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
         $overwrite_params = $this->getConfig('overwrite_params');
@@ -48,6 +48,23 @@ class mailResource extends linkableResource implements IResource {
         if (count($this->getPrevOutput()) !== 0)            
             $defaultBody = implode("\n", $this->getPrevOutput());                   
         $body = $api->getInput()->getParam($p_body, $defaultBody);
+        $bool = $this->sendMail($to, $sub, $body);
+        if ($bool)
+            return array($bool, "mail sent", array("to" => $to, "sub" => $sub, "body" => $body));
+        return array($bool, 1002, "mail error");
+    }
+    
+    public function readAction() {
+        $api = Api::getInstance();
+        $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        $default_params = $this->getConfig('default_params');        
+        $data = $this->filterParams($api->getInput()->getParams(), "input");        
+        $defaultBody = $default_params['body'];        
+        if (count($this->getPrevOutput()) !== 0)            
+            $defaultBody = implode("\n", $this->getPrevOutput());          
+        $to = (isset($data['to']) ? $data['to'] : $default_params['to']);
+        $sub = (isset($data['subject']) ? $data['subject'] : $default_params['subject']);
+        $body = (isset($data['body']) ? $data['body'] : $defaultBody);               
         $bool = $this->sendMail($to, $sub, $body);
         if ($bool)
             return array($bool, "mail sent", array("to" => $to, "sub" => $sub, "body" => $body));

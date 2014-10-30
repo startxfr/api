@@ -153,6 +153,9 @@ abstract class defaultResource extends Configurable implements IResource {
                 }
             }
         }
+        else {
+            return $params;
+        }
         return $out;
     }
     
