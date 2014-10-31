@@ -10,6 +10,20 @@
  */
 class infoSessionResource extends defaultSessionResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"infoSessionsResource",
+                                "desc":"access to session info",
+                                "propreties":
+	[
+		{
+			"name":"exclude_data",
+			"type":"array",
+			"mandatory":"false",
+			"desc":"data not to return"
+		}
+	]
+}'
+;
+    
     public function readAction() {
         $api = Api::getInstance();
         $out = $api->getInput('session')->findOneSession(session_id());

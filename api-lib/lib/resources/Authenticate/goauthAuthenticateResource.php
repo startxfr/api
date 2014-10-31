@@ -10,6 +10,68 @@
  */
 class goauthAuthenticateResource extends defaultAuthenticateResource implements IResource {
 
+        static public $ConfDesc = '{"class_name":"goauthAuthenticateResource",
+                                "desc":"Google Authentication mechanism",
+                                "propreties":
+	[
+                {
+			"name":"store",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"store to query"
+		},                
+                {
+			"name":"store_collection",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"collection to query"
+		},
+                {
+			"name":"store_id_key",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"name of the id key use in store"
+		},
+                {
+			"name":"application_name",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"name of the application"
+		},
+                {
+			"name":"client_id",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"your google client_id"
+		},
+                {
+			"name":"client_secret",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"your google client_secret"
+		},
+                {
+			"name":"google_service",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"name of the google service you want to use, will be Oauth2 by default"
+		},
+                {
+			"name":"uri_local_default",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"where to redirect when logged. Will be override by $_GET[\'uri_local\']"
+		},
+                {
+			"name":"uri_reg_default",
+			"type":"string",
+			"mandatory":"true,
+			"desc":"where to redirect when Oauth Authentication succeed but user doesn\'t exist. Will be override by $_GET[\'uri_reg\']"
+		}
+	]
+}'
+;
+    
     protected $client = null;
     protected $services = array();
 
@@ -17,6 +79,26 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
         parent::__construct($config);
         require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';
         $this->client = new Google_Client();
+        if ($this->getConfig('uri_local_default', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'uri_local_default' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'uri_local_default' attribute");
+        }
+        if ($this->getConfig('uri_reg_default', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'uri_reg_default' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'uri_reg_default' attribute");
+        }
+        if ($this->getConfig('store', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store' attribute");
+        }
+        if ($this->getConfig('store_collection', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_collection' attribute");
+        }
+        if ($this->getConfig('store_id_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_id_key' attribute");
+        }
     }
 
     public function init() {
@@ -56,8 +138,8 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
                 $user['google_token'] = $accessInfo;
 
-                $store = $api->getStore('nosql');
-                $data = $store->readOne( $this->getConfig('collection', 'user'), array("_id" => $user['email']) );                
+                $store = $api->getStore($this->getConfig('store'));
+                $data = $store->readOne($this->getConfig('store_collection'), array($this->getConfig('store_id_key') => $user['email']) );                
                 
                 if (is_array($data) and $data["_id"] == $user['email']) {
                     $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
@@ -94,8 +176,10 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             }
             else {
                 $af_token = md5(rand());
-                $reg_uri = $_GET['reg_uri'];
-                $local_uri = $_GET['local_uri'];
+                $reg_uri = (array_key_exists('reg_uri', $_GET) ? $_GET['reg_uri'] : $this->getConfig('uri_reg_default'));
+                $local_uri = (array_key_exists('local_uri', $_GET) ? $_GET['local_uri'] : $this->getConfig('uri_local_default'));
+                //$reg_uri = $_GET['reg_uri'];
+                //$local_uri = $_GET['local_uri'];
                 $api->getInput('session')->set('af_token', $af_token);
                 $this->client->setState($this->prepStateTokenData($af_token, $reg_uri, $local_uri));
                 $this->loadServices();

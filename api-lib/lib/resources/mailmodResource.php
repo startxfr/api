@@ -8,25 +8,27 @@
  * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class createusermailFormationStartxResource extends linkableResource implements IResource {         
+class mailmodResource extends linkableResource implements IResource {         
 
-    static public $ConfDesc = '{"class_name":"createusermailFormationStartxResource",
+    static public $ConfDesc = '{"class_name":"mailmodResource",
   "desc":"processing resource use to format mail",
   "propreties":[]
 }';
     
-    public function createAction() {
+    public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3); 
         $prevOutput = $this->getPrevOutput();
+//        var_dump($prevOutput);
+//        exit;
         if ($this->getPrevBool() === false)
             return array(false, 930, $prevOutput);
-        $body = "An user was created in SXA_db with id:". $prevOutput[0][0] ."\n";        
+               
         
-        if (count($prevOutput[1][0]) !== 0) {  
-            $body .= "There are duplicates of the same email address in SXA_db:\n";
-            foreach ($prevOutput[1][0] as $cont) {
-                $body .= " - " . $cont['id_cont'] . "\n";
+        if (count($prevOutput) !== 0) {  
+            $body = "those are the users\n";
+            foreach ($prevOutput as $user) {
+                $body .= implode(" - ", $user) . "\n";
             }
         }
         return array(true, 'processing complete', array($body));

@@ -30,7 +30,7 @@ abstract class defaultStoreResource extends linkableResource implements IResourc
 	]
 }'
 ;
-    
+      
     protected $storage;
 
     public function init() {

@@ -11,6 +11,11 @@
  */
 abstract class linkableResource extends defaultResource implements IResource {
     
+    static public $ConfDesc = '{"class_name":"linkableResource",
+  "desc":"abstract resource which enable communication between resource and make them sequencable",
+  "propreties":[]
+}';
+    
     private $prevOutput;
     private $prevBool;
     

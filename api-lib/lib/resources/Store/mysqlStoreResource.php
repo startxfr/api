@@ -23,7 +23,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
 		}
 	]
 }';
-    
+      
     public function init() {
         parent::init();
         if (!is_object($this->storage) or get_class($this->storage) != 'mysqlStore')

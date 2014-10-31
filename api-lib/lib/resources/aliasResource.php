@@ -8,13 +8,47 @@
  * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class aliasResource extends defaultResource implements IResource {
+class aliasResource extends linkableResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"aliasResource",
+                                "desc":"alias for a resource, resource conf is overridden by alias conf",
+                                "propreties":
+	[
+		{
+			"name":"alias_id",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"id of the resource to alias"
+		},
+		{
+			"name":"collection",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"collection of the store to query for the resource conf"
+		},
+                {
+			"name":"find_filter",
+			"type":"array",
+			"mandatory":"false",
+			"desc":"optional array of config arguments not to import from resource config"
+		}
+	]
+}'
+;
+    
     private $aliasObject;
     
     public function __construct($config) {
         parent::__construct($config);
         $api = Api::getInstance();
+        if ($this->getConfig('alias_id', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'alias_id' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'alias_id' attribute");
+        }
+        if ($this->getConfig('collection', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'collection' attribute");
+        }        
         $criteria = array('_id' => $this->getConfig('alias_id'));
         $filter = $this->getConfig('find_filter', array());
         $collect = $this->getConfig('collection');

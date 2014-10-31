@@ -23,7 +23,7 @@ class goauthplusAuthenticateResource extends goauthAuthenticateResource implemen
             $this->setConfig('google_service', "Plus");
         return $this;
     }
-
+               
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);

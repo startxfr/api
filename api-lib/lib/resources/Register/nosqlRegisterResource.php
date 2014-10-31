@@ -26,6 +26,105 @@
  */
 class nosqlRegisterResource extends defaultAuthenticateResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"nosqlRegisterResource",
+                                "desc":"create user in nosql and mysql databases",
+                                "propreties":
+	[
+		{
+			"name":"mysql_store",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"mysql store"
+		},
+                {
+			"name":"mysql_table",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"mysql table to query"
+		},
+                {
+			"name":"nosql_store",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"nosql store"
+		},                
+                {
+			"name":"nosql_collection",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"nosql collection to query"
+		},
+                {
+			"name":"nosql_id_key",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"name of the id use in nosql"
+		},
+                {
+			"name":"nosql_pwd_key",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"name of the pwd key use in nosql"
+		},
+                {
+			"name":"pwd_encryption",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"encrytption algorithm to use on passwd"
+		},
+                {
+			"name":"pwd_param",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"name of pwd field in Param"
+		},
+                {
+			"name":"login_param",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"name of login field in Param"
+		}
+	]
+}'
+;
+    
+    public function __construct($config) {
+        parent::__construct($config);
+        $api = Api::getInstance();
+        if ($this->getConfig('mysql_store', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_store' attribute");
+        }
+        if ($this->getConfig('mysql_table', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_table' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_table' attribute");
+        }
+        if ($this->getConfig('nosql_store', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_store' attribute");
+        }
+        if ($this->getConfig('nosql_collection', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_collection' attribute");
+        }
+        if ($this->getConfig('nosql_id_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_id_key' attribute");
+        }
+        if ($this->getConfig('nosql_pwd_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_pwd_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_pwd_key' attribute");
+        }
+        if ($this->getConfig('pwd_param', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'pwd_param' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'pwd_param' attribute");
+        }
+        if ($this->getConfig('login_param', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'login_param' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'login_param' attribute");
+        }
+    }
+    
     public function createAction() {
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
@@ -35,8 +134,8 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
             $data['nom_cont'] = strtoupper($data['nom_cont']);
             $data['prenom_cont'] = ucfirst(strtolower($data['prenom_cont']));
             $data['enterprise']['nom_ent'] = strtoupper($data['enterprise']['nom_ent']);
-            $sxa_store = $api->getStore($this->getConfig('store_sxa', "mysql"));
-            $cont = $sxa_store->read('contact', array("mail_cont" => $data['mail_cont']));  
+            $sxa_store = $api->getStore($this->getConfig('mysql_store', "mysql"));
+            $cont = $sxa_store->read($this->getConfig('mysql_table', "contact"), array("mail_cont" => $data['mail_cont']));  
             $add_data = array();
             if ($data['enterprise']['nom_ent'] !== "") {
                 $ent_data = $data['enterprise'];
@@ -44,7 +143,7 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
                 $add_data['entreprise_cont'] = $id_ent;
             }            
             $cont_data = $this->_changeData($data, $add_data);
-            $id_cont = $sxa_store->create('contact', $cont_data);            
+            $id_cont = $sxa_store->create($this->getConfig('mysql_table', "contact"), $cont_data);            
             $return_data = array(array($id_cont), array($cont));            
             $user = $this->doNosqlRegister($data, $mode, $id_cont);
             $return_data[0][] = $user;
@@ -60,12 +159,12 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         $api = Api::getInstance();
         $user_data = array();
         if ($mode === 'oauth') {
-            $user_data[$this->getConfig('id_field', "_id")] = $data['mail_cont'];
+            $user_data[$this->getConfig('nosql_id_key', "_id")] = $data['mail_cont'];
             $user_data['refresh_token'] = $data['refresh_token'];
         }
         else {
-            $login = $api->getInput()->getParam($this->getConfig('id_param', "_id"));
-            $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pass'));
+            $login = $api->getInput()->getParam($this->getConfig('login_param', "login"));
+            $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pwd'));
             switch ($this->getConfig('pwd_encryption', 'none')) {
                 case 'sha256':
                     $pass = hash("sha256", $pass);
@@ -73,20 +172,20 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
                 default:
                     break;
             }
-            $user_data[$this->getConfig('id_field', "_id")] = $login;
-            $user_data[$this->getConfig('pwd_field', 'pass')] = $pass;
+            $user_data[$this->getConfig('nosql_id_key', "_id")] = $login;
+            $user_data[$this->getConfig('nosql_pwd_key', 'pwd')] = $pass;
         }
         $user_data['role'] = $data['role'];
         $user_data['email'] = $data['mail_cont'];
         $user_data['id_cont'] = $id_cont;
         $user_name = $data['prenom_cont'] . " " . $data['nom_cont'];
         if ($user_name === " ")
-            $user_name = $user_data[$this->getConfig('id_field', "_id")];
+            $user_name = $user_data[$this->getConfig('nosql_id_key', "_id")];
         $user_data['username'] = $user_name;
-        $store = $api->getStore($this->getConfig('store', 'users'));
-        $store->create($this->getConfig('collection', 'user'), $user_data);         
-        $api->getInput('session')->set('user', $user_data[$this->getConfig('id_field', "_id")]);                                   
-        $api->logInfo(960, "User '" . $user_data[$this->getConfig('id_field', "_id")] . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);        
+        $store = $api->getStore($this->getConfig('nosql_store', 'users'));
+        $store->create($this->getConfig('nosql_collection', 'user'), $user_data);         
+        $api->getInput('session')->set('user', $user_data[$this->getConfig('nosql_id_key', "_id")]);                                   
+        $api->logInfo(960, "User '" . $user_data[$this->getConfig('nosql_id_key', "_id")] . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);        
         return $api->getInput('user')->getAll();                
     }
     
@@ -100,7 +199,7 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
             $new_data[$key] = $value;
         }
         if ($new_data['nom_cont'] === "")
-            $new_data['nom_cont'] = "anon";
+            $new_data['nom_cont'] = Api::getInstance()->getInput()->getParam($this->getConfig('login_param', "login"));
         return $new_data;
     }
 }

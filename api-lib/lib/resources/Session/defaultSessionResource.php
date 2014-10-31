@@ -13,6 +13,20 @@
  */
 abstract class defaultSessionResource extends defaultResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"defaultSessionsResource",
+                                "desc":"abstract resource, access to session",
+                                "propreties":
+	[
+		{
+			"name":"session_name",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"id of the session"
+		}
+	]
+}'
+;
+    
     public function __construct($config) {
         parent::__construct($config);
     }

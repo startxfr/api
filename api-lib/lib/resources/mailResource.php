@@ -10,77 +10,39 @@
  */
 class mailResource extends linkableResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"mailResource",
+                                "desc":"Send mail",
+                                "propreties":
+	[
+		{
+			"name":"server",
+			"type":"array",
+			"mandatory":"true",
+			"desc":"mailer configuration. should contain: host, port, username, password"
+		},
+		{
+			"name":"default_params",
+			"type":"array",
+			"mandatory":"true",
+			"desc":"default values for: to, subject, body"
+                }
+	]
+}'
+;
+    
     public function __construct($config) {
         parent::__construct($config);    
         require_once(LIBPATHEXT . 'PHPMailer' . DS .  'PHPMailerAutoload.php');
+        if ($this->getConfig('server', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'server' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'server' attribute");
+        }
+        if ($this->getConfig('default_params', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'default_params' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'default_params' attribute");
+        }
     }
     
-    public function createAction() {
-        Api::getInstance()->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        return $this->readAction();
-    }
-
-    public function readoAction() {
-        $api = Api::getInstance();
-        $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        $overwrite_params = $this->getConfig('overwrite_params');
-        $default_params = $this->getConfig('default_params');
-        $p_to = 'to';
-        $p_sub = 'subject';
-        $p_body = 'body';
-        foreach ($overwrite_params as $param) {
-            switch($param['map'])
-            {
-                case $p_to:
-                    $p_to = $param['in'];
-                    break;
-                case $p_sub:
-                    $p_sub = $param['in'];
-                    break;
-                case $p_body:
-                    $p_body = $param['in'];
-                    break;               
-            }
-        }        
-        $to = $api->getInput()->getParam($p_to, $default_params['to']); 
-        $sub = $api->getInput()->getParam($p_sub, $default_params['subject']);
-        $defaultBody = $default_params['body'];        
-        if (count($this->getPrevOutput()) !== 0)            
-            $defaultBody = implode("\n", $this->getPrevOutput());                   
-        $body = $api->getInput()->getParam($p_body, $defaultBody);
-        $bool = $this->sendMail($to, $sub, $body);
-        if ($bool)
-            return array($bool, "mail sent", array("to" => $to, "sub" => $sub, "body" => $body));
-        return array($bool, 1002, "mail error");
-    }
-    
-    public function readAction() {
-        $api = Api::getInstance();
-        $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        $default_params = $this->getConfig('default_params');        
-        $data = $this->filterParams($api->getInput()->getParams(), "input");        
-        $defaultBody = $default_params['body'];        
-        if (count($this->getPrevOutput()) !== 0)            
-            $defaultBody = implode("\n", $this->getPrevOutput());          
-        $to = (isset($data['to']) ? $data['to'] : $default_params['to']);
-        $sub = (isset($data['subject']) ? $data['subject'] : $default_params['subject']);
-        $body = (isset($data['body']) ? $data['body'] : $defaultBody);               
-        $bool = $this->sendMail($to, $sub, $body);
-        if ($bool)
-            return array($bool, "mail sent", array("to" => $to, "sub" => $sub, "body" => $body));
-        return array($bool, 1002, "mail error");
-    }
-    
-    public function updateAction() {
-        Api::getInstance()->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        return $this->readAction();
-    }
-
-    public function deleteAction() {
-        Api::getInstance()->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        return $this->readAction();
-    }
-
     public function init() {
         $api = Api::getInstance();
         $api->logDebug(576, "launch mailer init");
@@ -111,6 +73,38 @@ class mailResource extends linkableResource implements IResource {
         $api->logDebug(576, "mailer init");
         return $this;
     }
+    
+    public function createAction() {
+        Api::getInstance()->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
+    }
+    
+    public function readAction() {
+        $api = Api::getInstance();
+        $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        $default_params = $this->getConfig('default_params');        
+        $data = $this->filterParams($api->getInput()->getParams(), "input");        
+        $defaultBody = $default_params['body'];        
+        if (count($this->getPrevOutput()) !== 0)            
+            $defaultBody = implode("\n", $this->getPrevOutput());          
+        $to = (isset($data['to']) ? $data['to'] : $default_params['to']);
+        $sub = (isset($data['subject']) ? $data['subject'] : $default_params['subject']);
+        $body = (isset($data['body']) ? $data['body'] : $defaultBody);               
+        $bool = $this->sendMail($to, $sub, $body);
+        if ($bool)
+            return array($bool, "mail sent", array("to" => $to, "sub" => $sub, "body" => $body));
+        return array($bool, 1002, "mail error");
+    }
+    
+    public function updateAction() {
+        Api::getInstance()->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
+    }
+
+    public function deleteAction() {
+        Api::getInstance()->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
+    }  
     
     public function sendMail($to = "", $subject = "", $body = "") {
         $api = Api::getInstance();

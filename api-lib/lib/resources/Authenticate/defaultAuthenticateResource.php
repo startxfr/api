@@ -11,13 +11,44 @@
  */
 abstract class defaultAuthenticateResource extends linkableResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"defaultAuthenticateResource",
+                                "desc":"abstract resource, authenticate mechanism",
+                                "propreties":[
+                {
+                        "name":"message_service_noid",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when no id is given to the resource"
+                }, 
+                {
+                        "name":"message_service_nopwd",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when no pwd is given to the resource"
+                }                                
+        ]
+}'
+;
+    
     public function init() {
         parent::init();
         $api = Api::getInstance();
-        if ($this->getConfig('message_service_read', '') == '')
-            $api->logWarn(907, get_class($this) . " resource config should contain the 'message_service_read' attribute", $this->getResourceTrace(__FUNCTION__, false));
-        if ($this->getConfig('message_service_delete', '') == '')
+        if ($this->getConfig('message_service_read', '') == '') {
+            $api->logWarn(907, get_class($this) . " resource config should contain the 'message_service_read' attribute", $this->getResourceTrace(__FUNCTION__, false));        
+            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_read' attribute");
+        }
+        if ($this->getConfig('message_service_delete', '') == '') {
             $api->logWarn(907, get_class($this) . " resource config should contain the 'message_service_delete' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_delete' attribute");
+        }
+        if ($this->getConfig('message_service_noid', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'message_service_noid' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_noid' attribute");
+        }
+        if ($this->getConfig('message_service_nopwd', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'message_service_nopwd' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_nopwd' attribute");
+        }
         return $this;
     }
 

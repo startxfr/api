@@ -19,13 +19,13 @@ abstract class defaultResource extends Configurable implements IResource {
 			"name":"_id",
 			"type":"int",
 			"mandatory":"true",
-			"desc":"desc _id"
+			"desc":"id of the resource"
 		},
 		{
 			"name":"class",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"desc class"
+			"desc":"name of the class to load to use the resource"
 		},
 		{
 			"name":"force_output",
@@ -37,7 +37,55 @@ abstract class defaultResource extends Configurable implements IResource {
 			"name":"desc",
 			"type":"string",
 			"mandatory":"false",
-			"desc":"desc desc"
+			"desc":"short description of the resource"
+		},
+                {
+                        "name":"message_service_create",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on createAction"
+                }, 
+                {
+                        "name":"message_service_read",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on readAction"
+                },
+                {
+                        "name":"message_service_delete",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on deleteAction"
+                },
+                {
+                        "name":"message_service_update",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on updateAction"
+                },
+                {
+			"name":"input_include_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
+		},
+                {
+			"name":"input_exclude_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
+		},
+                {
+			"name":"output_include_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
+		},
+                {
+			"name":"output_exclude_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
 		}
 	]
 }'

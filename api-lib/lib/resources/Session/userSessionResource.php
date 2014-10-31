@@ -10,6 +10,20 @@
  */
 class userSessionResource extends defaultSessionResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"userSessionsResource",
+                                "desc":"access to session user",
+                                "propreties":
+	[
+		{
+			"name":"exclude_data",
+			"type":"array",
+			"mandatory":"false",
+			"desc":"data not to return"
+		}
+	]
+}'
+;
+    
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);

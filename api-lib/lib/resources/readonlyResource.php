@@ -11,6 +11,11 @@
  */
 abstract class readonlyResource extends defaultResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"readonlyResource",
+  "desc":"abstract resource redirect all action on readAction",
+  "propreties":[]
+}';
+    
     public function createAction() {
         Api::getInstance()->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
         return $this->readAction();
