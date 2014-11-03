@@ -12,7 +12,7 @@ class dataSessionResource extends defaultSessionResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"dataSessionsResource",
                                 "desc":"access to session data",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"exclude_data",

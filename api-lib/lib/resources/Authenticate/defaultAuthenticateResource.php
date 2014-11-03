@@ -13,7 +13,7 @@ abstract class defaultAuthenticateResource extends linkableResource implements I
 
     static public $ConfDesc = '{"class_name":"defaultAuthenticateResource",
                                 "desc":"abstract resource, authenticate mechanism",
-                                "propreties":[
+                                "properties":[
                 {
                         "name":"message_service_noid",
                         "type":"string",

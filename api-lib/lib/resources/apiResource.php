@@ -12,7 +12,7 @@ class apiResource extends readonlyResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"apiResource",
                                 "desc":"non renseignee",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"exposed_keys",

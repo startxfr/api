@@ -12,7 +12,7 @@ class defaultSequenceResource extends linkableResource implements IResource {
     
     static public $ConfDesc = '{"class_name":"defaultSequenceResource",
                                 "desc":"Enable sequencing of resources",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"collection",

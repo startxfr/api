@@ -13,7 +13,7 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"nosqlStoreResource",
   "desc":"Resource to access nosql storage",
-  "propreties":
+  "properties":
 	[
 		{
 			"name":"collection",

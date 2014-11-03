@@ -13,7 +13,7 @@ abstract class defaultStoreResource extends linkableResource implements IResourc
 
     static public $ConfDesc = '{"class_name":"defaultStoreResource",
                                 "desc":"Resource to access data in store",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"store",

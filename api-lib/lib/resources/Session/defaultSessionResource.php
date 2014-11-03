@@ -15,7 +15,7 @@ abstract class defaultSessionResource extends defaultResource implements IResour
 
     static public $ConfDesc = '{"class_name":"defaultSessionsResource",
                                 "desc":"abstract resource, access to session",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"session_name",

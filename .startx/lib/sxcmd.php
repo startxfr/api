@@ -5,6 +5,9 @@ $SXCMD_PATH = "~/.sxcmd";
 $EP = "[sxcmd-api]";
 $cwd = trim(shell_exec("pwd"));
 
+require_once('sxcmd_documentation.php');
+require_once('sxcmd_database.php');
+
 function ask($q) {
     return trim(shell_exec("read -p '$q ' q\necho \$q"));
 }
@@ -59,13 +62,16 @@ function displayMenuDatabase() {
     echo "$EP 1. Sauvegarder la base mongodb locale\n";
     echo "$EP 2. Importer la base sauvegardée\n";
     echo "$EP 9. Retour menu principal\n";
+    echo "$EP 0. Quit\n";
     echo "$EP\n";
     switch (ask("$EP    Votre choix : ")) {
-        case "1": displayMenuDatabase();
+        case "1": exportDB();displayMenuDatabase();
             break;
-        case "2": displayMenuDocumentation();
+        case "2": importDB();displayMenuDatabase();
             break;
         case "9": displayMenuPrincipal();
+            break;
+        case "0": exit;
             break;
         default: displayMenuDatabase();
             break;
@@ -82,15 +88,20 @@ function displayMenuDocumentation() {
     echo "$EP 2. Générer la documentation\n";
     echo "$EP 3. Publier la documentation\n";
     echo "$EP 9. Retour menu principal\n";
+    echo "$EP 0. Quit\n";
     echo "$EP\n";
     switch (ask("$EP    Votre choix : ")) {
-        case "1": displayMenuDatabase();
+        case "1": docGenerate();docPublish();displayMenuDocumentation();
             break;
-        case "2": displayMenuDocumentation();
+        case "2": docGenerate();displayMenuDocumentation();
+            break;
+        case "3": docPublish();displayMenuDocumentation();
             break;
         case "9": displayMenuPrincipal();
             break;
-        default: displayMenuDatabase();
+        case "0": exit;
+            break;
+        default: displayMenuDocumentation();
             break;
     }
 }

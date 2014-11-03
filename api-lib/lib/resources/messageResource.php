@@ -12,7 +12,7 @@ class messageResource extends readonlyResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"messageResource",
   "desc":"return message",
-  "propreties":[
+  "properties":[
                 {
 			"name":"message",
 			"type":"string",

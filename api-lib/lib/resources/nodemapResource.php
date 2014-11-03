@@ -12,7 +12,7 @@ class nodemapResource extends readonlyResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"nodemapResource",
   "desc":"make tree of children",
-  "propreties":[
+  "properties":[
                 {
 			"name":"subpath",
 			"type":"string",

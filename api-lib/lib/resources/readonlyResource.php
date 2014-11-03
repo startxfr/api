@@ -13,7 +13,7 @@ abstract class readonlyResource extends defaultResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"readonlyResource",
   "desc":"abstract resource redirect all action on readAction",
-  "propreties":[]
+  "properties":[]
 }';
     
     public function createAction() {

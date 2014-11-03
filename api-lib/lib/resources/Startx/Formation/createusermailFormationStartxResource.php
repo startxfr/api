@@ -12,7 +12,7 @@ class createusermailFormationStartxResource extends linkableResource implements 
 
     static public $ConfDesc = '{"class_name":"createusermailFormationStartxResource",
   "desc":"processing resource use to format mail",
-  "propreties":[]
+  "properties":[]
 }';
     
     public function createAction() {

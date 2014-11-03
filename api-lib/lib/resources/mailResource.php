@@ -12,7 +12,7 @@ class mailResource extends linkableResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"mailResource",
                                 "desc":"Send mail",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"server",

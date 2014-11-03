@@ -12,7 +12,7 @@ class applicationSessionResource extends defaultSessionResource implements IReso
 
     static public $ConfDesc = '{"class_name":"applicationSessionsResource",
                                 "desc":"access to session application",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"exclude_data",

@@ -2,4 +2,4 @@
 
 dir="/var/www/html/startx/api"
 #Execute PHP script in the containing folder
-( cd $dir/.startx/doc-tools/doxygen ; ./docgen.php )
+( cd $dir/.startx/doc-tools/doxygen ; ./gen_wikidoc.php )

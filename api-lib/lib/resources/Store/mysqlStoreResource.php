@@ -13,7 +13,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"mysqlStoreResource",
   "desc":"Resource to access mysql storage",
-  "propreties":
+  "properties":
 	[
 		{
 			"name":"table",

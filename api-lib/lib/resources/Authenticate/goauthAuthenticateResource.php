@@ -12,7 +12,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
 
         static public $ConfDesc = '{"class_name":"goauthAuthenticateResource",
                                 "desc":"Google Authentication mechanism",
-                                "propreties":
+                                "properties":
 	[
                 {
 			"name":"store",
@@ -65,7 +65,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 {
 			"name":"uri_reg_default",
 			"type":"string",
-			"mandatory":"true,
+			"mandatory":"true",
 			"desc":"where to redirect when Oauth Authentication succeed but user doesn\'t exist. Will be override by $_GET[\'uri_reg\']"
 		}
 	]

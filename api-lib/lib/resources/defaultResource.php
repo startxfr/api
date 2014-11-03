@@ -12,7 +12,7 @@
 abstract class defaultResource extends Configurable implements IResource {
 
     static public $ConfDesc = '{"class_name":"defaultResource",
-  "desc":"desc defaultResource",
+  "desc":"abstract base class from which all resources inherit",
   "properties":
 	[
 		{

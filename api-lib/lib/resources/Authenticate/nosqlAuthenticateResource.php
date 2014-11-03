@@ -29,7 +29,7 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
 
     static public $ConfDesc = '{"class_name":"nosqlAuthenticateResource",
                                 "desc":"nosql Authentication mechanism",
-                                "propreties":
+                                "properties":
 	[
                 {
 			"name":"nosql_store",

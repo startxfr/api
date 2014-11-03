@@ -28,7 +28,7 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
 
     static public $ConfDesc = '{"class_name":"nosqlRegisterResource",
                                 "desc":"create user in nosql and mysql databases",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"mysql_store",

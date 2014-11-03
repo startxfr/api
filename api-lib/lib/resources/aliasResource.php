@@ -12,7 +12,7 @@ class aliasResource extends linkableResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"aliasResource",
                                 "desc":"alias for a resource, resource conf is overridden by alias conf",
-                                "propreties":
+                                "properties":
 	[
 		{
 			"name":"alias_id",

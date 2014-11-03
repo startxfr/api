@@ -12,7 +12,7 @@ class mysqlAuthenticateResource extends defaultAuthenticateResource implements I
 
     static public $ConfDesc = '{"class_name":"mysqlAuthenticateResource",
                                 "desc":"mysql Authentication mechanism",
-                                "propreties":
+                                "properties":
 	[
                 {
 			"name":"mysql_store",

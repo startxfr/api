@@ -12,7 +12,7 @@ class mailmodResource extends linkableResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"mailmodResource",
   "desc":"processing resource use to format mail",
-  "propreties":[]
+  "properties":[]
 }';
     
     public function readAction() {
