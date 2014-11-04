@@ -22,7 +22,7 @@ function exportDB()
 		 	 'system.indexes'
 	);
 	foreach($collections as $col)
-		shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_$db_$col.json");
+		shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_$db_$col.json --jsonArray");
 }
 
 function importDB()

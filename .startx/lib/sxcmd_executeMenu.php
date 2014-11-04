@@ -49,7 +49,7 @@ function executeMenuDev($choice, $display = true)
             break;
         case "4": echo "Push\n";gitPush('dev2');
             break;
-        case "5": echo "Commit & Push\n";
+        case "5": echo "Commit & Push\n";gitCommit("dev commit");gitPush('dev2');
             break;
         case "6": echo "Merge to master\n";
             break;
