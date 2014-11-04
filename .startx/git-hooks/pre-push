@@ -1,19 +1,9 @@
 #!/bin/sh
 
 dir="/var/www/html/startx/api"
-doc_commit_msg="génération de la documentation"
 echo_prefix="[pre-push hook]"
 
-# execute doc-generate and comit-push to github
-function genereDoc {
-   echo -e "$echo_prefix Generating documentation"
-   ( . $dir/.startx/doc-generate >> /dev/null )
-   echo -e "$echo_prefix Updating online documentation"
-   (cd $dir/../api.wiki; git pull ; git add * ; git commit -a -m "$doc_commit_msg" >> /dev/null; git push origin master >> /dev/null; cd -)
-}
-
 echo -e "$echo_prefix Start pre-push process"
-
 # Allows us to read user input below, assigns stdin to keyboard
 exec < /dev/tty
 while true; do
@@ -22,10 +12,9 @@ while true; do
        yn='Y'
     fi
     case $yn in
-       [Yy] ) genereDoc; exit 0;;
+       [Yy] ) $sxcmd 2.1; exit 0;;
        [Nn] ) exit 0;;
        * ) echo -e "$echo_prefix Please answer y or n for yes or no.";;
     esac
 done
-
 echo -e "$echo_prefix End pre-push process"
