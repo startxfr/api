@@ -6,15 +6,16 @@ function gitCheckout($branch)
 	echo $cmd_output;
 }
 
-function gitStatus()
+function gitStatus($branchsrc)
 {
+
 	$cmd_output = `git status`;
 	echo $cmd_output;
 }
 
 function gitCommit($commitMsg)
 {
-	$cmd_output = `git add -A *`;
+	$cmd_output = `git add -A`;
 	echo $cmd_output;
 	$cmd_output = `git commit -am "$commitMsg"`;
 	echo $cmd_output;
