@@ -50,7 +50,7 @@ function executeMenuDev($choice, $display = true)
 			gitStatus("dev2");
             break;
 		case "3": echo "$EP    Commit\n";
-			gitCommit("dev2", "sxcmd_auto-commit");
+			gitCommit("dev2", "dev commit");
             break;
 		case "4": echo "$EP    Push\n";
 			gitPush('dev2');

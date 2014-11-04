@@ -3,8 +3,8 @@
 $PROJECT_DIR = "/var/www/html/startx/api";
 $DB_DUMP = "$PROJECT_DIR/.startx/db-dump2";
 
-$user = 'startx';
-$pwd = '314159';
+$user = 'admin';
+$pwd = 'admin';
 $db = 'sxapi';
 
 function exportDB()
