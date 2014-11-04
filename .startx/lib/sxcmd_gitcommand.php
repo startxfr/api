@@ -14,7 +14,7 @@ function gitStatus()
 
 function gitCommit($commitMsg)
 {
-	$cmd_output = `git add *`;
+	$cmd_output = `git add -A *`;
 	echo $cmd_output;
 	$cmd_output = `git commit -am "$commitMsg"`;
 	echo $cmd_output;
