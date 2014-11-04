@@ -1,22 +1,49 @@
 <?php
 
 $PROJECT_DIR = "/var/www/html/startx/api";
-$DBTOOLS = "$PROJECT_DIR/.startx/db-tools";
+$DB_DUMP = "$PROJECT_DIR/.startx/db-dump2";
+
+$user = 'startx';
+$pwd = '314159';
+$db = 'sxapi';
 
 function exportDB()
 {
-	global $EP, $DBTOOLS;
+	global $EP, $DB_DUMP, $user, $pwd, $db;
 
 	echo "$EP   dumping databases\n";
-	`. $DBTOOLS/dumpDatabase.sh`;
+	$collections = array(
+			 'startx.resources',
+			 'sxapi.api',
+			 'sxapi.application',
+			 'sxapi.plugins',
+			 'sxapi.resources',
+			 'sxapi.users',
+		 	 'system.indexes'
+	);
+	foreach($collections as $col)
+		shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_$db_$col.json");
 }
 
 function importDB()
 {
-	global $EP, $DBTOOLS;
+	global $EP, $DB_DUMP, $user, $pwd, $db;
 
 	echo "$EP   importing databases\n";
-	`. $DBTOOLS/importDatabase.sh`;
+	$collections = array(
+			 'startx.resources',
+			 'sxapi.api',
+			 'sxapi.application',
+			 'sxapi.plugins',
+			 'sxapi.resources',
+			 'sxapi.users',
+		 	 'system.indexes'
+	);
+
+	foreach($collections as $col) {
+		shell_exec("mongoimport -d $db -c $col -u $user -p $pwd $DB_DUMP/dump_${db}_$col.json");
+		shell_exec("echo \"dump_${db}_$col.json imported\" >&2");
+	}
 }
 
 ?>

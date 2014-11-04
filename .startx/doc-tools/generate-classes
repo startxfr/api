@@ -1,5 +1,0 @@
-#!/bin/bash
-
-dir="/var/www/html/startx/api"
-#Execute Perl script in the containing folder
-( cd $dir/.startx/doc-tools/doxygen ; ./gen_doxygen.pl )

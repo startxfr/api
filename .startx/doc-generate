@@ -1,7 +1,0 @@
-#!/bin/bash
-
-dir="/var/www/html/startx/api"
-#Generate doc technique
-( . $dir/.startx/doc-tools/generate-classes )
-#Generate doc user
-( . $dir/.startx/doc-tools/generate-resources )

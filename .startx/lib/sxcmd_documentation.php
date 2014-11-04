@@ -1,33 +1,41 @@
 <?php
 
 $PROJECT_DIR = "/var/www/html/startx/api";
-$DOCGEN = "$PROJECT_DIR/.startx/doc-generate";
+$WIKI_DIR = "/var/www/html/startx/api.wiki";
 $DOC_COMMIT_MSG="génération de la documentation";
+
+require_once('sxcmd_documentation_wiki.php');
 
 function docGenerate()
 {
-	global $EP, $DOCGEN;
+	global $EP, $PROJECT_DIR, $WIKI_DIR;
+	$dirI = "$PROJECT_DIR/api-lib/lib/resources/";
+	$dirO = "resources/";
 
-	echo "$EP   generating doc\n";
+	echo "$EP	 Generating doc\n";
 
-	`. $DOCGEN`;
-	echo "$EP   doc generated\n";
+	$obj = sanitizeFiles(getAllFiles(split_dir($dirI)));
+	createDoc($obj, $dirO);
+	createSidebar($dirO);
+	#move_dir($dirO, $WIKI_DIR);
+	
+	echo "$EP	 Doc generated\n";
 }
 
 function docPublish()
 {
-	global $EP, $PROJECT_DIR, $DOC_COMMIT_MSG;
+	global $EP, $WIKI_DIR, $DOC_COMMIT_MSG;
 
-	echo "$EP   publishing doc\n";
+	echo "$EP	 Publishing doc\n";
 
-	`cd $PROJECT_DIR/../api.wiki;
+	`cd $WIKI_DIR;
 	git pull;
 	git add *;
-	git commit -a -m ".$DOC_COMMIT_MSG." >> /dev/null;
+	git commit -a -m $DOC_COMMIT_MSG >> /dev/null;
 	git push origin master >> /dev/null;
 	cd -`;
 
-	echo "$EP   publishing done\n";
+	echo "$EP	 Publishing done\n";
 }
 
 ?>
