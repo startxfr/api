@@ -1,7 +1,7 @@
 #!/bin/sh
 
-dir="/var/www/html/startx/api"
 echo_prefix="[pre-push hook]"
+sxcmd="/var/www/html/startx/api/.startx/sxcmd"
 
 echo -e "$echo_prefix Start pre-push process"
 # Allows us to read user input below, assigns stdin to keyboard
