@@ -17,8 +17,9 @@ function gitStatus($branchsrc)
 	echo $cmd_output;
 }
 
-function gitCommit($commitMsg)
+function gitCommit($branchsrc, $commitMsg)
 {
+	gitCheckout($branchsrc, false);
 	$cmd_output = `git add -A`;
 	echo $cmd_output;
 	$cmd_output = `git commit -am "$commitMsg"`;
@@ -27,13 +28,15 @@ function gitCommit($commitMsg)
 
 function gitPush($branch)
 {
+	gitCheckout($branch, false);
 	$cmd_output = `git push origin $branch`;
 	echo $cmd_output;
 }
 
-function gitMerge($branch)
+function gitMerge($branchToMerge, $branchsrc)
 {
-	$cmd_output = `git merge $branch`;
+	gitCheckout($branchsrc, false);
+	$cmd_output = `git merge $branchToMerge`;
 	echo $cmd_output;
 }
 
