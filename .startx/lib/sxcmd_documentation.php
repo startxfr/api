@@ -17,8 +17,10 @@ function docGenerate()
 	$obj = sanitizeFiles(getAllFiles(split_dir($dirI)));
 	createDoc($obj, $dirO);
 	createSidebar($dirO);
-	#move_dir($dirO, $WIKI_DIR);
-	
+	move_dir($dirO, $WIKI_DIR);
+
+	`(cd $PROJECT_DIR/.startx/lib/lib-doc/ ; ./generate-doxygen)`;
+
 	echo "$EP	 Doc generated\n";
 }
 
