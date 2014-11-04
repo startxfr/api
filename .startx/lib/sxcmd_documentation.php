@@ -32,8 +32,8 @@ function docPublish()
 
 	`cd $WIKI_DIR;
 	git pull;
-	git add *;
-	git commit -a -m $DOC_COMMIT_MSG >> /dev/null;
+	git add -A;
+	git commit -am $DOC_COMMIT_MSG >> /dev/null;
 	git push origin master >> /dev/null;
 	cd -`;
 

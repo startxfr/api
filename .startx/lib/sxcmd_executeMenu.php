@@ -40,24 +40,26 @@ function executeMenuDocumentation($choice, $display = true)
 
 function executeMenuDev($choice, $display = true)
 {
+	global $EP;
+
     switch ($choice) {
-		case "1": echo "Go to dev Branch\n";
+		case "1": echo "$EP    Go to dev Branch\n";
 			gitCheckout("dev2");
             break;
-		case "2": echo "Status\n";
+		case "2": echo "$EP    Status\n";
 			gitStatus("dev2");
             break;
-		case "3": echo "Commit\n";
+		case "3": echo "$EP    Commit\n";
 			gitCommit("dev2", "sxcmd_auto-commit");
             break;
-		case "4": echo "Push\n";
+		case "4": echo "$EP    Push\n";
 			gitPush('dev2');
             break;
-		case "5": echo "Commit & Push\n";
+		case "5": echo "$EP    Commit & Push\n";
 			gitCommit("dev2", "dev commit");
 			gitPush('dev2');
             break;
-        case "6": echo "Merge to master\n";
+        case "6": echo "$EP    Merge to master\n";
 			gitMerge("dev2", "master");
             break;
         case "9": if ($display){displayMenuPrincipal();}
@@ -71,20 +73,23 @@ function executeMenuDev($choice, $display = true)
 
 function executeMenuTest($choice, $display = true)
 {
+	global $EP;
+
     switch ($choice) {
-        case "1": echo "Go to test Branch\n";
+        case "1": echo "$EP    Go to test Branch\n";
 			gitCheckout("testing");
             break;
-        case "2": echo "Merge from master\n";
+        case "2": echo "$EP    Merge from master\n";
 			gitMerge("master", "testing");
             break;
-        case "3": echo "Merge to prod\n";
+        case "3": echo "$EP    Merge to prod\n";
 			gitMerge("testing", "production");
             break;
-        case "4": echo "Push\n";
+        case "4": echo "$EP    Push\n";
 			gitPush('testing');
             break;
-        case "5": echo "Push Paas\n... nothing happened...\n";
+        case "5": echo "$EP    Push Paas\n";
+			gitPush('testing');
             break;
         case "9": if ($display){displayMenuPrincipal();}
             break;
@@ -97,17 +102,20 @@ function executeMenuTest($choice, $display = true)
 
 function executeMenuProd($choice, $display = true)
 {
+	global $EP;
+
     switch ($choice) {
-        case "1": echo "Go to prod Branch\n";
+        case "1": echo "$EP    Go to prod Branch\n";
 			gitCheckout("production");
             break;
-        case "2": echo "Merge from test\n";
+        case "2": echo "$EP    Merge from test\n";
 			gitMerge("testing", "production");
             break;
-        case "3": echo "Push\n";
+        case "3": echo "$EP    Push\n";
 			gitPush('production');
             break;
-        case "4": echo "Push Paas\n... nothing happened...\n";
+        case "4": echo "$EP    Push Paas\n";
+			gitPush('production');
             break;
         case "9": if ($display){displayMenuPrincipal();}
             break;
