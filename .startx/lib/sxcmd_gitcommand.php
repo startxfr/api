@@ -1,14 +1,18 @@
 <?php
 
-function gitCheckout($branch)
+function gitCheckout($branch, $verb = true)
 {
 	$cmd_output = `git checkout $branch`;
-	echo $cmd_output;
+	if ($verb)
+		echo $cmd_output;
+	$cmd_output = `git pull origin $branch`;
+	if ($verb)
+		echo $cmd_output;
 }
 
 function gitStatus($branchsrc)
 {
-
+	gitCheckout($branchsrc, false);
 	$cmd_output = `git status`;
 	echo $cmd_output;
 }
