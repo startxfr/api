@@ -1,7 +1,7 @@
 <?php
 
 $PROJECT_DIR = "/var/www/html/startx/api";
-$DB_DUMP = "$PROJECT_DIR/.startx/db-dump2";
+$DB_DUMP = "$PROJECT_DIR/.startx/db-dump";
 
 $user = 'admin';
 $pwd = 'admin';
@@ -22,7 +22,8 @@ function exportDB()
 		 	 'system.indexes'
 	);
 	foreach($collections as $col)
-		shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_${db}_$col.json --jsonArray");
+		shell_exec("mongoexport -d $db -c $col -o $DB_DUMP/dump_${db}_$col.json --jsonArray");
+		#shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_${db}_$col.json --jsonArray");
 }
 
 function importDB()
@@ -41,7 +42,7 @@ function importDB()
 	);
 
 	foreach($collections as $col) {
-		shell_exec("mongoimport -d $db -c $col -u $user -p $pwd $DB_DUMP/dump_${db}_$col.json");
+		shell_exec("mongoimport -d $db -c $col -u $user -p $pwd $DB_DUMP/dump_${db}_$col.json --jsonArray");
 		shell_exec("echo \"dump_${db}_$col.json imported\" >&2");
 	}
 }
