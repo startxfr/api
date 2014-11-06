@@ -16,10 +16,10 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
   "properties":
 	[
 		{
-			"name":"collection",
+			"name":"dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"name of the collection in which to search"
+			"desc":"name of the dataset in which to search"
 		},
                 {
 			"name":"filter_mongoid",
@@ -40,9 +40,9 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
         parent::init();
         if (!is_object($this->storage) or get_class($this->storage) != 'nosqlStore')
             throw new ResourceException("Could not " . __FUNCTION__ . " " . get_class($this) . " because the provided store is not of type nosql", 908);
-        if ($this->getConfig('collection', '') == '') {
-            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'collection' attribute");
+        if ($this->getConfig('dataset', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'dataset' attribute");
         }
         $this->prepareMongoDateFilter();
         return $this;
@@ -57,7 +57,7 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
             $nextPath = $input->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier
-                $data = $this->getStorage()->readOne($this->getConfig('collection'), array($this->getConfig('id_key', '_id') => $this->convertMongoId($nextPath)));
+                $data = $this->getStorage()->readOne($this->getConfig('dataset'), array($this->getConfig('id_key', '_id') => $this->convertMongoId($nextPath)));
                 $return = $this->filterParams($data, "output");
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
@@ -76,9 +76,9 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
                     $order['_id'] = 1;
                 $start = $input->getParam($this->getConfig('startParam', 'start'), 0);
                 $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);                                                                
-                $data = $this->getStorage()->read($this->getConfig('collection'), $search, $order, $start, $max);
+                $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max);
                 $return =  $this->filterResults(iterator_to_array($data,false));            
-                $countResult = $this->getStorage()->readCount($this->getConfig('collection'), $search);            
+                $countResult = $this->getStorage()->readCount($this->getConfig('dataset'), $search);            
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return, $countResult);
@@ -101,7 +101,7 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
                 else
                     throw new ResourceException("Could not create new entry without 'id_key' key.");
             }
-            $newId = $this->getStorage()->create($this->getConfig('collection'), $this->filterParams($data, "input"));            
+            $newId = $this->getStorage()->create($this->getConfig('dataset'), $this->filterParams($data, "input"));            
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
             return array(true, $message, $newId);
@@ -121,7 +121,7 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
             if ($nextPath !== null) {                               
                 $data = $api->getInput()->getParams();        
                 unset($data[$this->getConfig('id_key', '_id')]);
-                $return = $this->getStorage()->update($this->getConfig('collection'), $this->getConfig('id_key', '_id'), $this->convertMongoId($nextPath), $this->filterParams($data, "input"));                
+                $return = $this->getStorage()->update($this->getConfig('dataset'), $this->getConfig('id_key', '_id'), $this->convertMongoId($nextPath), $this->filterParams($data, "input"));                
                 $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
                 $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
@@ -142,7 +142,7 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
             $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
             if ($nextPath !== null) {                                
-                $return = $this->getStorage()->delete($this->getConfig('collection'), $this->getConfig('id_key', '_id'), $this->convertMongoId($nextPath));                
+                $return = $this->getStorage()->delete($this->getConfig('dataset'), $this->getConfig('id_key', '_id'), $this->convertMongoId($nextPath));                
                 $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
                 $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
