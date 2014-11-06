@@ -44,23 +44,23 @@ function executeMenuDev($choice, $display = true)
 
     switch ($choice) {
 		case "1": echo "$EP    Go to dev Branch\n";
-			gitCheckout("dev2");
+			gitCheckout("dev");
             break;
 		case "2": echo "$EP    Status\n";
-			gitStatus("dev2");
+			gitStatus("dev");
             break;
 		case "3": echo "$EP    Commit\n";
-			gitCommit("dev2", "dev commit");
+			gitCommit("dev", "dev commit");
             break;
 		case "4": echo "$EP    Push\n";
-			gitPush('dev2');
+			gitPush('dev');
             break;
 		case "5": echo "$EP    Commit & Push\n";
-			gitCommit("dev2", "dev commit");
-			gitPush('dev2');
+			gitCommit("dev", "dev commit");
+			gitPush('dev');
             break;
         case "6": echo "$EP    Merge to master\n";
-			gitMerge("dev2", "master");
+			gitMerge("dev", "master");
             break;
         case "9": if ($display){displayMenuPrincipal();}
             break;
