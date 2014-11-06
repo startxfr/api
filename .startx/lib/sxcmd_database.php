@@ -3,8 +3,8 @@
 $PROJECT_DIR = "/var/www/html/startx/api";
 $DB_DUMP = "$PROJECT_DIR/.startx/db-dump";
 
-$user = 'admin';
-$pwd = 'admin';
+$user = 'dev';
+$pwd = 'dev';
 $db = 'sxapi';
 
 function exportDB()
@@ -22,8 +22,7 @@ function exportDB()
 		 	 'system.indexes'
 	);
 	foreach($collections as $col)
-		shell_exec("mongoexport -d $db -c $col -o $DB_DUMP/dump_${db}_$col.json --jsonArray");
-		#shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_${db}_$col.json --jsonArray");
+		shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_${db}_$col.json --jsonArray");
 }
 
 function importDB()
