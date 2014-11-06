@@ -3,4 +3,4 @@
 echo_prefix="[pre-push hook]"
 sxcmd="/var/www/html/startx/api/.startx/sxcmd"
 
-# no pre-push process on the production branch, see testing or dev branch for a workable script
+# no pre-push process on the production branch, see master or dev branch for a workable script

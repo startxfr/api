@@ -3,4 +3,4 @@
 echo_prefix="[pre-commit hook]"
 sxcmd="/var/www/html/startx/api/.startx/sxcmd"
 
-# no pre-commit hook for the produciton branch, see testing or dev branch for a workable script
+# no pre-commit hook for the production branch, see master or dev branch for a workable script
