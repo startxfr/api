@@ -4,7 +4,7 @@ $VERSION = "dev/cl";
 $SXCMD_PATH = "~/.sxcmd";
 $EP = "[sxcmd-api]";
 $cwd = trim(shell_exec("pwd"));
-$COL = array('white' => "\033[0;37m", 'red' => "\033[0;31m", 'blue' => "\033[1;36m", 'green' => "\033[0;32m");
+$COL = array('white' => "\033[0;0m", 'red' => "\033[0;31m", 'blue' => "\033[1;36m", 'green' => "\033[0;32m");
 
 require_once('sxcmd_executeMenu.php');
 
