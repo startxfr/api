@@ -15,28 +15,28 @@ class mysqlAuthenticateResource extends defaultAuthenticateResource implements I
                                 "properties":
 	[
                 {
-			"name":"mysql_store",
+			"name":"store",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"mysql store"
+			"desc":"store to query"
 		},                
                 {
-			"name":"mysql_table",
+			"name":"store_dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"mysql table to query"
+			"desc":"store dataset to query"
 		},
                 {
-			"name":"mysql_id_key",
+			"name":"store_id_key",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"name of the id key use in mysql"
+			"desc":"name of the id key use in store"
 		},
                 {
-			"name":"mysql_pwd_key",
+			"name":"store_pwd_key",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"name of the pwd key use in mysql"
+			"desc":"name of the pwd key use in store"
 		},
                 {
 			"name":"pwd_encryption",
@@ -63,21 +63,21 @@ class mysqlAuthenticateResource extends defaultAuthenticateResource implements I
     public function __construct($config) {
         parent::__construct($config);
         $api = Api::getInstance();        
-        if ($this->getConfig('mysql_store', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_store' attribute");
+        if ($this->getConfig('store', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store' attribute");
         }
-        if ($this->getConfig('mysql_collection', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_collection' attribute");
+        if ($this->getConfig('store_dataset', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_dataset' attribute");
         }
-        if ($this->getConfig('mysql_id_key', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_id_key' attribute");
+        if ($this->getConfig('store_id_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_id_key' attribute");
         }
-        if ($this->getConfig('mysql_pwd_key', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_pwd_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_pwd_key' attribute");
+        if ($this->getConfig('store_pwd_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_pwd_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_pwd_key' attribute");
         }
         if ($this->getConfig('pwd_param', '') == '') {
             $api->logError(906, get_class($this) . " resource config should contain the 'pwd_param' attribute", $this->getResourceTrace(__FUNCTION__, false));
@@ -121,7 +121,7 @@ class mysqlAuthenticateResource extends defaultAuthenticateResource implements I
 
     private function doAuthenticate($login, $pass) {
         $api = Api::getInstance();
-        $store = $api->getStore($this->getConfig('mysql_store', 'users'));
+        $store = $api->getStore($this->getConfig('store', 'users'));
         if ($login == '')
             throw new ResourceException(sprintf($this->getConfig('message_service_noid'), $this->getConfig('id_param', "_id")), 911);
         elseif ($pass == '')
@@ -133,11 +133,11 @@ class mysqlAuthenticateResource extends defaultAuthenticateResource implements I
             default:
                 break;
         }
-        $data = $store->readOne($this->getConfig('mysql_table', 'user'), array(
-            $this->getConfig('mysql_id_key', "_id") => $login,
-            $this->getConfig('mysql_pwd_key', 'pass') => $pass
+        $data = $store->readOne($this->getConfig('store_dataset', 'user'), array(
+            $this->getConfig('store_id_key', "_id") => $login,
+            $this->getConfig('store_pwd_key', 'pass') => $pass
                 ));
-        if ($data[$this->getConfig('mysql_id_key', "_id")] != '') {
+        if ($data[$this->getConfig('store_id_key', "_id")] != '') {
             $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : User '" . $login . "' authenticated with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);
             $api->getInput('session')->set('user', $login);
             return $api->getInput('user')->getAll();

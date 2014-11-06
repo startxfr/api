@@ -21,10 +21,10 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
 			"desc":"store to query"
 		},                
                 {
-			"name":"store_collection",
+			"name":"store_dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"collection to query"
+			"desc":"dataset to query"
 		},
                 {
 			"name":"store_id_key",
@@ -91,9 +91,9 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             $api->logError(906, get_class($this) . " resource config should contain the 'store' attribute", $this->getResourceTrace(__FUNCTION__, false));
             throw new ResourceException(get_class($this) . " resource config should contain the 'store' attribute");
         }
-        if ($this->getConfig('store_collection', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'store_collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'store_collection' attribute");
+        if ($this->getConfig('store_dataset', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_dataset' attribute");
         }
         if ($this->getConfig('store_id_key', '') == '') {
             $api->logError(906, get_class($this) . " resource config should contain the 'store_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
@@ -139,7 +139,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 $user['google_token'] = $accessInfo;
 
                 $store = $api->getStore($this->getConfig('store'));
-                $data = $store->readOne($this->getConfig('store_collection'), array($this->getConfig('store_id_key') => $user['email']) );                
+                $data = $store->readOne($this->getConfig('store_dataset'), array($this->getConfig('store_id_key') => $user['email']) );                
                 
                 if (is_array($data) and $data["_id"] == $user['email']) {
                     $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
