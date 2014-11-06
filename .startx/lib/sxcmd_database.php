@@ -41,7 +41,7 @@ function importDB()
 	);
 
 	foreach($collections as $col) {
-		shell_exec("mongoimport -d $db -c $col -u $user -p $pwd $DB_DUMP/dump_${db}_$col.json");
+		shell_exec("mongoimport -d $db -c $col -u $user -p $pwd $DB_DUMP/dump_${db}_$col.json --jsonArray");
 		shell_exec("echo \"dump_${db}_$col.json imported\" >&2");
 	}
 }
