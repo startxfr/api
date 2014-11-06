@@ -3,18 +3,4 @@
 echo_prefix="[pre-push hook]"
 sxcmd="/var/www/html/startx/api/.startx/sxcmd"
 
-echo -e "$echo_prefix Start pre-push process"
-# Allows us to read user input below, assigns stdin to keyboard
-exec < /dev/tty
-while true; do
-    read -p "$echo_prefix Generating docs ? (Y/n) " yn
-    if [ "$yn" = "" ]; then
-       yn='Y'
-    fi
-    case $yn in
-       [Yy] ) $sxcmd 2.1; exit 0;;
-       [Nn] ) exit 0;;
-       * ) echo -e "$echo_prefix Please answer y or n for yes or no.";;
-    esac
-done
-echo -e "$echo_prefix End pre-push process"
+# no pre-push process on the production branch, see testing or dev branch for a workable script
