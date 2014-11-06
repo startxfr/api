@@ -15,10 +15,10 @@ class defaultSequenceResource extends linkableResource implements IResource {
                                 "properties":
 	[
 		{
-			"name":"collection",
+			"name":"dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"collection to query"
+			"desc":"dataset to query"
 		},
 		{
 			"name":"seq_conf",
@@ -42,9 +42,9 @@ class defaultSequenceResource extends linkableResource implements IResource {
     public function __construct($config) {
         parent::__construct($config);
         $api = Api::getInstance();
-        if ($this->getConfig('collection', '') == '') {
-            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'collection' attribute");
+        if ($this->getConfig('dataset', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'dataset' attribute");
         }
         if ($this->getConfig('seq_conf', '') == '') {
             Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'seq_conf' attribute", $this->getResourceTrace(__FUNCTION__, false));
@@ -57,27 +57,19 @@ class defaultSequenceResource extends linkableResource implements IResource {
             $options[$value['id']]['action_name'] = (array_key_exists("action_name", $value) ? $value['action_name'] : "readAction");
             $options[$value['id']]['over_conf'] = (array_key_exists("conf_override", $value) ? $value['conf_override'] : array());            
         }
-//        var_dump($config['seq_conf']);
-//        var_dump($options);
-//        exit;
         $criteria = array('$or' => $configs);
         $filter = $this->getConfig('find_filter', array());
-        $collect = $this->getConfig('collection');
+        $collect = $this->getConfig('dataset');
         $db_connect = $api->nosqlConnection;
         $it_on_conf = $db_connect->selectCollection($collect)->find($criteria, $filter);        
         $this->seqObject = array(); 
-//        var_dump(iterator_to_array($it_on_conf));
         foreach ($it_on_conf as $conf) {
-//            var_dump($conf);
             $conf = array_replace($config, $conf, $options[$conf['_id']]['over_conf']);
-//            var_dump($conf);
             $object = $conf['class'];
             $obj = new $object($conf);
             $obj->init();
             $this->seqObject[] = array($obj, $options[$conf['_id']]['action_name']);
         }
-        //var_dump($this->seqObject);
- //       exit; 
     }
     
     public function createAction() {

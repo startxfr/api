@@ -38,7 +38,7 @@ class JsonOutput extends DefaultOutput implements IOutput {
      * @return  void
      * @see     self::render();
      */
-    public function renderOk($message, $data, $count = null, $httpCode = 200) {
+    public function renderOk($message, $data, $count = null, $httpCode = 200) {        
         return parent::renderOk($message, $data, $count, $httpCode);
     }
 
