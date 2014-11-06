@@ -1,0 +1,10 @@
+{
+	"VERSION": "dev/cl",
+	"SXCMD_PATH": "~/.sxcmd",
+	"WIKI_DIR": "/var/www/html/startx/api.wiki",
+	"DOC_COMMIT_MSG": "generation de la documentation",
+	"DEVBRANCH": "dev2",
+	"DB": "sxapi", 
+	"USER": "dev",
+	"PWD": "dev"
+}

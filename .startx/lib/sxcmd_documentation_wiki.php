@@ -1,4 +1,8 @@
 <?php
+
+
+$PROJECT_DIR = dirname(dirname(array_shift(get_included_files())));
+
 require_once("$PROJECT_DIR/api-lib/kernel/loader.php");
 
 function create_dir($dir) {

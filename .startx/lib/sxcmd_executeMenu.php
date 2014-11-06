@@ -40,27 +40,32 @@ function executeMenuDocumentation($choice, $display = true)
 
 function executeMenuDev($choice, $display = true)
 {
-	global $EP;
+	global $EP, $DEVBRANCH;
 
     switch ($choice) {
 		case "1": echo "$EP    Go to dev Branch\n";
-			gitCheckout("dev2");
+			gitCheckout($DEVBRANCH);
             break;
 		case "2": echo "$EP    Status\n";
-			gitStatus("dev2");
+			gitStatus($DEVBRANCH);
             break;
 		case "3": echo "$EP    Commit\n";
-			gitCommit("dev2", "dev commit");
+			gitCommit($DEVBRANCH, "dev commit");
             break;
-		case "4": echo "$EP    Push\n";
-			gitPush('dev2');
+		case "4": echo "$EP    Commit & Push\n";
+			gitCommit($DEVBRANCH, "dev commit");
+			gitPush($DEVBRANCH);
             break;
-		case "5": echo "$EP    Commit & Push\n";
-			gitCommit("dev2", "dev commit");
-			gitPush('dev2');
+        case "5": echo "$EP    Merge to master\n";
+			gitMerge($DEVBRANCH, "master");
             break;
-        case "6": echo "$EP    Merge to master\n";
-			gitMerge("dev2", "master");
+        case "6": echo "$EP    Merge from master\n";
+			gitMerge("master", $DEVBRANCH);
+            break;
+        case "7": echo "$EP    Commit & Push & Merge to master\n";
+			gitCommit($DEVBRANCH, "dev commit");
+			gitPush($DEVBRANCH);
+			gitMerge($DEVBRANCH, "master");
             break;
         case "9": if ($display){displayMenuPrincipal();}
             break;
