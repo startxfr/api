@@ -40,27 +40,32 @@ function executeMenuDocumentation($choice, $display = true)
 
 function executeMenuDev($choice, $display = true)
 {
-	global $EP;
-	$branchname= "dev";
+	global $EP, $DEVBRANCH;
+
     switch ($choice) {
-		case "1": echo "$EP    Go to branch $branchname\n";
-			gitCheckout($branchname);
+		case "1": echo "$EP    Go to dev Branch\n";
+			gitCheckout($DEVBRANCH);
             break;
-		case "2": echo "$EP    Branch $branchname status\n";
-			gitStatus($branchname);
+		case "2": echo "$EP    Status\n";
+			gitStatus($DEVBRANCH);
             break;
-		case "3": echo "$EP    Commit branch $branchname\n";
-			gitCommit($branchname, "$branchname commit");
+		case "3": echo "$EP    Commit\n";
+			gitCommit($DEVBRANCH, "dev commit");
             break;
-		case "4": echo "$EP    Push branch $branchname\n";
-			gitPush($branchname);
+		case "4": echo "$EP    Commit & Push\n";
+			gitCommit($DEVBRANCH, "dev commit");
+			gitPush($DEVBRANCH);
             break;
-		case "5": echo "$EP    Commit & Push branch $branchname\n";
-			gitCommit($branchname, "$branchname commit");
-			gitPush($branchname);
+        case "5": echo "$EP    Merge to master\n";
+			gitMerge($DEVBRANCH, "master");
             break;
-        case "6": echo "$EP    Merge $branchname > master\n";
-			gitMerge($branchname, "master");
+        case "6": echo "$EP    Merge from master\n";
+			gitMerge("master", $DEVBRANCH);
+            break;
+        case "7": echo "$EP    Commit & Push & Merge to master\n";
+			gitCommit($DEVBRANCH, "dev commit");
+			gitPush($DEVBRANCH);
+			gitMerge($DEVBRANCH, "master");
             break;
         case "9": if ($display){displayMenuPrincipal();}
             break;

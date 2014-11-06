@@ -47,7 +47,7 @@ function gitMerge($branchToMerge, $branchsrc)
 	global $PROJECT_DIR;
 
 	gitCheckout($branchsrc, false);
-	$cmd_output = `(cd $PROJECT_DIR ; git merge $branchToMerge)`;
+	$cmd_output = `(cd $PROJECT_DIR ; git merge $branchToMerge ; git push origin $branchsrc)`;
 	echo $cmd_output;
 }
 

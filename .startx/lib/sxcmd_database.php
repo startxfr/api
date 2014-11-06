@@ -1,15 +1,8 @@
 <?php
 
-$PROJECT_DIR = "/var/www/html/startx/api";
-$DB_DUMP = "$PROJECT_DIR/.startx/db-dump2";
-
-$user = 'admin';
-$pwd = 'admin';
-$db = 'sxapi';
-
 function exportDB()
 {
-	global $EP, $DB_DUMP, $user, $pwd, $db;
+	global $EP, $DB_DUMP, $USER, $PWD, $DB;
 
 	echo "$EP   dumping databases\n";
 	$collections = array(
@@ -22,12 +15,12 @@ function exportDB()
 		 	 'system.indexes'
 	);
 	foreach($collections as $col)
-		shell_exec("mongoexport -d $db -c $col -u $user -p $pwd -o $DB_DUMP/dump_${db}_$col.json --jsonArray");
+		shell_exec("mongoexport -d $DB -c $col -u $USER -p $PWD -o $DB_DUMP/dump_${DB}_$col.json --jsonArray");
 }
 
 function importDB()
 {
-	global $EP, $DB_DUMP, $user, $pwd, $db;
+	global $EP, $DB_DUMP, $USER, $PWD, $DB;
 
 	echo "$EP   importing databases\n";
 	$collections = array(
@@ -41,8 +34,8 @@ function importDB()
 	);
 
 	foreach($collections as $col) {
-		shell_exec("mongoimport -d $db -c $col -u $user -p $pwd $DB_DUMP/dump_${db}_$col.json");
-		shell_exec("echo \"dump_${db}_$col.json imported\" >&2");
+		shell_exec("mongoimport -d $DB -c $col -u $USER -p $PWD $DB_DUMP/dump_${DB}_$col.json --jsonArray");
+		shell_exec("echo \"dump_${DB}_$col.json imported\" >&2");
 	}
 }
 

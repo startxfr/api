@@ -1,9 +1,5 @@
 <?php
 
-$PROJECT_DIR = "/var/www/html/startx/api";
-$WIKI_DIR = "/var/www/html/startx/api.wiki";
-$DOC_COMMIT_MSG="génération de la documentation";
-
 require_once('sxcmd_documentation_wiki.php');
 
 function docGenerate()
