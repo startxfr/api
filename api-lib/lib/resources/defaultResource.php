@@ -11,10 +11,91 @@
  */
 abstract class defaultResource extends Configurable implements IResource {
 
+    static public $ConfDesc = '{"class_name":"defaultResource",
+  "desc":"abstract base class from which all resources inherit",
+  "properties":
+	[
+		{
+			"name":"_id",
+			"type":"int",
+			"mandatory":"true",
+			"desc":"id of the resource"
+		},
+		{
+			"name":"class",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"name of the class to load to use the resource"
+		},
+		{
+			"name":"force_output",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"desc class"
+		},
+		{
+			"name":"desc",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"short description of the resource"
+		},
+                {
+                        "name":"message_service_create",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on createAction"
+                }, 
+                {
+                        "name":"message_service_read",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on readAction"
+                },
+                {
+                        "name":"message_service_delete",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on deleteAction"
+                },
+                {
+                        "name":"message_service_update",
+                        "type":"string",
+                        "mandatory":"true",
+                        "desc":"message used when success on updateAction"
+                },
+                {
+			"name":"input_include_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
+		},
+                {
+			"name":"input_exclude_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
+		},
+                {
+			"name":"output_include_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
+		},
+                {
+			"name":"output_exclude_paramfilter",
+			"type":"mixed",
+			"mandatory":"false",
+			"desc":"see io_paramfilter for details"
+		}
+	]
+}'
+;
+    
     public function __construct($config) {
         $id = (array_key_exists('_id', $config)) ? $config["_id"] : 'default';
         Api::logDebug(900, "Load '" . $id . "' " . get_class($this) . " resource ", $config, 5);
         parent::__construct($config);
+        $this->prepareFilters();
     }
 
     public function init() {
@@ -30,29 +111,25 @@ abstract class defaultResource extends Configurable implements IResource {
     public function readAction() {
         $api = Api::getInstance();
         $api->logError(910, "Performing '" . __FUNCTION__ . "' on 'defaultResource' resource is not allowed. '" . get_class($this) . "' must implement '" . __FUNCTION__ . "'", $this->getResourceTrace(__FUNCTION__, false));
-        $api->getOutput()->renderError(910, "You can't perform a readAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement readAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);
-        return true;
+        return array(false, 910, "You can't perform a readAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement readAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);        
     }
 
     public function createAction() {
         $api = Api::getInstance();
         $api->logError(930, "Performing '" . __FUNCTION__ . "' on 'defaultResource' resource is not allowed. '" . get_class($this) . "' must implement '" . __FUNCTION__ . "'", $this->getResourceTrace(__FUNCTION__, false));
-        $api->getOutput()->renderError(930, "You can't perform a createAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement createAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);
-        return true;
+        return array(false, 930, "You can't perform a createAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement createAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);       
     }
 
     public function updateAction() {
         $api = Api::getInstance();
         $api->logError(950, "Performing '" . __FUNCTION__ . "' on 'defaultResource' resource is not allowed. '" . get_class($this) . "' must implement '" . __FUNCTION__ . "'", $this->getResourceTrace(__FUNCTION__, false));
-        $api->getOutput()->renderError(950, "You can't perform a updateAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement updateAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);
-        return true;
+        return array(false, 950, "You can't perform a updateAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement updateAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);       
     }
 
     public function deleteAction() {
         $api = Api::getInstance();
         $api->logError(970, "Performing '" . __FUNCTION__ . "' on 'defaultResource' resource is not allowed. '" . get_class($this) . "' must implement '" . __FUNCTION__ . "'", $this->getResourceTrace(__FUNCTION__, false));
-        $api->getOutput()->renderError(970, "You can't perform a deleteAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement deleteAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);
-        return true;
+        return array(false, 970, "You can't perform a deleteAction with '" . get_class($this) . "' resource. " . get_class($this) . " should implement deleteAction method before using it.", $this->getResourceTrace(__FUNCTION__), 405);        
     }
 
     public function optionsAction() {
@@ -84,7 +161,109 @@ abstract class defaultResource extends Configurable implements IResource {
             $trace = array_merge($trace, $other);
         return $trace;
     }
-
+    
+    public function filterParams( $params, $way ) {
+        if ($way !== "output" && $way !== "input")
+            return $params;
+        $out = array();
+        if ( ($filter_inc = $this->getConfig($way."_include_paramfilter", null)) !== null ) {
+            if (is_string($filter_inc)) {
+                $tmp_array = explode(":", $filter_inc);
+                if (count($tmp_array) === 1 && $tmp_array[0] === "*")
+                    return $params;
+                else {
+                    foreach($params as $key => $value) {
+                        $out[$key] = $tmp_array[1]($value);
+                    }
+                }
+            }
+            else {
+                foreach ($params as $key => $value) {
+                    if (array_key_exists($key, $filter_inc)) {
+                        $filter_val = $filter_inc[$key];
+                        if (strpos($filter_val, ":") !== false) {
+                            $tmp_array = explode(":", $filter_val);
+                            $out[$tmp_array[1]] = $tmp_array[0]($value);
+                        }
+                        else
+                            $out[$filter_val] = $value;
+                    }                   
+                }
+            }
+        }
+        else if ( ($filter_exc = $this->getConfig($way."_exclude_paramfilter", null)) !== null) {
+            if (is_string($filter_exc) && $filter_exc === "*")
+                return $out;
+            else {
+                foreach ($params as $key => $value) {
+                    if (!array_key_exists($key, $filter_exc))
+                         $out[$key] = $value;
+                }
+            }
+        }
+        else {
+            return $params;
+        }
+        return $out;
+    }
+    
+    private function transformFilter($filter, $include = true) {
+        $new_filter = array();        
+        if (($include) && (($filter[0] === "{" || $filter[0] === "[") && ($tmp_array = json_decode($filter)) !== null)) {
+            foreach ($tmp_array as $elem) {
+                $process = "";
+                if (array_key_exists("process", $elem))
+                    $process = $elem['process'] . ":";
+                $new_filter[$elem['input']] = $process . $elem['map'];
+            }
+        }        
+        else if (is_string($filter)){
+            $tmp_array = explode(",", $filter);
+            if (count($tmp_array) === 1 && (preg_match('/^(all|\*)/', $tmp_array[0]))) {
+                $new_filter = "*";
+                if (strpos($tmp_array[0], ":") !== false) {
+                   $keyval = explode (":", $tmp_array[0]);
+                   $new_filter.= ":" . $keyval[1];
+                }
+            }
+            else {
+                foreach ($tmp_array as $value) {
+                    if (strpos($value, ":") !== false) {
+                       $keyval = explode (":", $value);
+                       $new_filter[$keyval[0]] = $keyval[1];
+                    }
+                    else {
+                        $new_filter[$value] = $value;
+                    }
+                }
+            }
+        }
+        else if ($include){
+            foreach ($filter as $elem) {
+                $process = "";
+                if (array_key_exists("process", $elem) && is_callable($elem['process']))
+                    $process = $elem['process'] . ":";
+                $new_filter[$elem['input']] = $process . $elem['map'];
+            }           
+        }
+        return $new_filter;
+    }
+    
+    private function prepareFilters() {
+        if ( ($input_include_paramfilter = $this->getConfig("input_include_paramfilter", null)) !== null ) {
+            $this->setConfig("input_include_paramfilter", $this->transformFilter($input_include_paramfilter));
+        }
+        if ( ($input_exclude_paramfilter = $this->getConfig("input_exclude_paramfilter", null)) !== null ) {
+            $this->setConfig("input_exclude_paramfilter", $this->transformFilter($input_exclude_paramfilter, false));
+        }
+        if ( ($output_include_paramfilter = $this->getConfig("output_include_paramfilter", null)) !== null ) {
+            $this->setConfig("output_include_paramfilter", $this->transformFilter($output_include_paramfilter));
+        }
+        if ( ($output_exclude_paramfilter = $this->getConfig("output_exclude_paramfilter", null)) !== null ) {
+            $this->setConfig("output_exclude_paramfilter", $this->transformFilter($output_exclude_paramfilter, false));
+        }        
+    }
+    
 }
 
 ?>

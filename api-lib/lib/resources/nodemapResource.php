@@ -10,6 +10,18 @@
  */
 class nodemapResource extends readonlyResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"nodemapResource",
+  "desc":"make tree of children",
+  "properties":[
+                {
+			"name":"subpath",
+			"type":"string",
+			"mandatory":"false",
+			"desc":"make the tree begin at sub_path instead of root"
+		}  
+        ]
+}';
+    
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
@@ -25,8 +37,7 @@ class nodemapResource extends readonlyResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($tree));
         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $treeOutput);
-        return true;
+        return array(true, $message, $treeOutput);       
     }
 
     private function extractTreeStructure($nodes = null, $path = null) {

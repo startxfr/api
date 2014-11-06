@@ -3,7 +3,7 @@
 /**
  * Base class used for rendering content to the API client. All output class should be derivated form this class or one of its descendant
  *
- * @package  SXAPI.Output
+ * @class    DefaultOutput
  * @author   Mallowtek <mallowtek@gmail.com>
  * @link      https://github.com/startxfr/sxapi/wiki/Outputs
  */

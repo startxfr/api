@@ -5,8 +5,7 @@
  *
  * Currently used for conversion of array and object structures. Could be used to record small an re-usable function
  *
- * @category SXAPI
- * @package  SXAPI
+ * @class Toolkit
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
  * @license https://github.com/startxfr/sxapi/blob/master/licence.txt

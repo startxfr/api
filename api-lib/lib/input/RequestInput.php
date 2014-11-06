@@ -3,7 +3,7 @@
 /**
  * Class used to access data comming from the HTTP POST, GET and COOKIE method. Order is defined by php config file. Wrap the $_REQUEST global variable.
  *
- * @package  SXAPI.Input
+ * @class    RequestInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs

@@ -5,7 +5,7 @@
  * @see      DefaultOutput, HtmlOutput, JsonOutput, XmlOutput
  * @link     https://github.com/startxfr/sxapi/wiki/Outputs
  *
- * @category Output
+ * @class OutputException
  * @package  SXAPI.Output
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr

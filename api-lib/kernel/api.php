@@ -7,16 +7,14 @@
  * Developper who want to create a new SXAPI instance server should instanciate it as follow
  *
  * Example:
- * <code>
+ * \code
  * Api::getInstance()->load()->execute();
- * </code>
+ * \endcode
  *
+ * @class  Api
+ * @author   Dev Team <dev@startx.fr>
  * @see      Configurable
  * @link     https://github.com/startxfr/sxapi/wiki/API-Document
- *
- * @category SXAPI
- * @package  SXAPI
- * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr
  * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
@@ -141,8 +139,7 @@ class Api extends Configurable {
      * This method will load the current Api configuration document, from the nosql backend, and store it.
      * It will then start the loading and initializing of Input, Output and Store connectors.
      * If an exception is catched, call the exitOnError method for exiting program.
-     * @param string $defaultApiID with the api id to use for creation
-     * @return \Api instance Api for chaining
+     * @return  Api instance Api for chaining
      */
     public function load() {
         Event::trigger('api.begin');
@@ -169,7 +166,7 @@ class Api extends Configurable {
      * Load the Api configuration
      * If 'api' param is received form the client, it will set it as the $defaultApiID. Then it will retreive the API config document from the nosql backend and store it configuration into this Api instance
      * If an exception is catched, call the exitOnError method for exiting program.
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      */
     private function loadApi() {
         try {
@@ -190,7 +187,7 @@ class Api extends Configurable {
     /**
      * Load the plugins sections required by the Api config document
      * This method will loop throught the plugin section of the Api config document and try to load all the required plugins connectors
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException if an error occur when instanciating plugin connector
      */
     private function loadPlugins() {
@@ -228,7 +225,7 @@ class Api extends Configurable {
                     }
                 }
             }
-            $this->logInfo(10, "Loaded " . count($listPlugins) . " plugin (" . implode(',', array_keys($listPlugins)) . ")", $listPlugins, 3);
+            $this->logInfo(10, "Loaded " . count($listPlugins) . " plugin (" . implode(',', $listPlugins) . ")", $listPlugins, 3);
         }
         return $this;
     }
@@ -236,7 +233,7 @@ class Api extends Configurable {
     /**
      * Load the inputs sections required by the Api config document
      * This method will loop throught the input section of the Api config document and try to load all the required inputs connectors
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException if an error occur when instanciating input connector
      */
     private function loadInputFactory() {
@@ -267,7 +264,7 @@ class Api extends Configurable {
     /**
      * Initiate the loaded inputs sections
      * This method will loop throught the previously loaded input section and try to init each input connector
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException if an error occur when initializing input connector
      */
     private function initInputFactory() {
@@ -293,7 +290,7 @@ class Api extends Configurable {
     /**
      * Get an input connector
      * return the input connector coresponding to the given $id. If no $id is given, or if $id = 'default', then the default input connector is returned. If $id doesn't exist, then also return the default connector and record a log warning trace.
-     * @return \defaultInput the input connector instance coresponding to the requested $id
+     * @return defaultInput the input connector instance coresponding to the requested $id
      */
     public function getInput($id = null) {
         if (is_null($id) or trim($id) == '' or trim($id) == 'default')
@@ -309,7 +306,7 @@ class Api extends Configurable {
     /**
      * Load the outputs sections required by the Api config document
      * This method will loop throught the output section of the Api config document and try to load all the required outputs connectors
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException if an error occur when instanciating output connector
      */
     private function loadOutputFactory() {
@@ -344,7 +341,7 @@ class Api extends Configurable {
     /**
      * Initiate the loaded outputs sections
      * This method will loop throught the previously loaded output section and try to init each output connector
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException if an error occur when initializing output connector
      */
     private function initOutputFactory() {
@@ -366,7 +363,7 @@ class Api extends Configurable {
     /**
      * Get an output connector
      * return the output connector coresponding to the given $id. If no $id is given, or if $id = 'default', then the default output connector is returned. If $id doesn't exist, then also return the default connector and record a log warning trace.
-     * @return \defaultoutput the output connector instance coresponding to the requested $id
+     * @return defaultoutput the output connector instance coresponding to the requested $id
      */
     public function getOutput($id = null) {
         if (is_null($id) or trim($id) == '' or trim($id) == 'default')
@@ -388,7 +385,7 @@ class Api extends Configurable {
     /**
      * Load the stores sections required by the Api config document
      * This method will loop throught the store section of the Api config document and try to load all the required stores connectors
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException if an error occur when instanciating store connector
      */
     private function loadStoreFactory() {
@@ -419,7 +416,7 @@ class Api extends Configurable {
     /**
      * Initiate the loaded stores sections
      * This method will loop throught the previously loaded store section and try to init each store connector
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException if an error occur when initializing store connector
      */
     private function initStoreFactory() {
@@ -441,7 +438,7 @@ class Api extends Configurable {
     /**
      * Get a store connector
      * return the store connector coresponding to the given $id. If no $id is given, or if $id = 'default', then the default store connector is returned. If $id doesn't exist, then also return the default connector and record a log warning trace.
-     * @return \defaultStore the store connector instance coresponding to the requested $id
+     * @return defaultStore the store connector instance coresponding to the requested $id
      */
     public function getStore($id = null) {
         if (is_null($id) or trim((string) $id) == '' or trim((string) $id) == 'default')
@@ -456,7 +453,7 @@ class Api extends Configurable {
     /**
      * Get a model connector
      * return the model connector coresponding to the given $id. Dynamicaly load it and cache it if not already required.
-     * @return \defaultModel the model connector instance coresponding to the requested $id
+     * @return defaultModel the model connector instance coresponding to the requested $id
      * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
      */
     public function getModel($id) {
@@ -499,20 +496,20 @@ class Api extends Configurable {
     /**
      * Get a resource connector
      * return the resource connector coresponding to the given $id. Dynamicaly load it, initialize it and cache it if not already required.
-     * @return \defaultResource the resource connector instance coresponding to the requested $id
+     * @return defaultResource the resource connector instance coresponding to the requested $id
      * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
      */
-    public function getResource($id, $config = array()) {
+    public function getResource($id, $config = array()) {       
         if (is_null($id) or trim($id) == '') {
             $this->logWarn(61, "trying to access resource with a null id.");
             throw new ApiException("you must give a resource name", 61);
         } elseif (is_array($this->resources) and array_key_exists($id, $this->resources)) {
             $this->logDebug(62, "Returning cached resource '" . $id . "'");
             if (is_array($config) and count($config) > 0)
-                $this->resources[$id] = new $id();
+                $this->resources[$id] = new $id($config);
             return $this->resources[$id];
-        } else {
-            if (class_exists($id) !== false) {
+        } else {            
+            if (class_exists($id) !== false) {                                
                 $this->logDebug(63, "Start loading and caching resource '" . $id . "'");
                 $this->resources[$id] = new $id($config);
                 $this->logDebug(64, "Initializing resource '" . $id . "'");
@@ -538,15 +535,15 @@ class Api extends Configurable {
      * - Select the requested action to perform (according to the http method)
      * - Check if ACL rules apply to this resource node and check if session context is compliant to theses ACL rules
      * - Execute the requested action of the requested resource. This resource will then perform his task and manage to output to produce
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      * @throws ApiException If resource is not acessible or controlled by ACL rules.
      */
-    public function execute() {
+    public function execute() {        
         try {
             Event::trigger('api.execute.before');
-            $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));
-            $resource = $this->getResource($config['class'], $config);
-            $actionName = 'readAction';
+            $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));            
+            $resource = $this->getResource($config['class'], $config);            
+            $actionName = 'readAction';            
             switch ($this->getInput()->getMethod()) {
                 case 'post':
                     $actionName = 'createAction';
@@ -592,11 +589,13 @@ class Api extends Configurable {
                         $doExec = true;
                     if ($doExec) {
                         $this->logInfo(80, "Succesfully pass ACL strategy. User '" . $this->getInput('user')->getId() . "' with application '" . $this->getInput('application')->getId() . "' can perform  $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config['acl'], 3);
-                        $resource->$actionName();
+                        $output = $resource->$actionName();
+                        $this->makeOutput($output);
                     }
                 } else {
                     $this->logInfo(80, "No ACL rules for $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config, 3);
-                    $resource->$actionName();
+                    $output = $resource->$actionName();
+                    $this->makeOutput($output);
                 }
             }
             Event::trigger('api.execute.after');
@@ -609,6 +608,25 @@ class Api extends Configurable {
         return $this;
     }
 
+    private function makeOutput($output) {
+        if ($output[0] === false) {
+            if (!isset($output[2]))
+                $output[2] = "";
+            if (!isset($output[3]))
+                $output[3] = array();
+            if (!isset($output[4]))
+                $output[4] = 400;
+            $this->getOutput()->renderError ($output[1], $output[2], $output[3], $output[4]);
+        }
+        else {
+            if (!isset($output[3]))
+                $output[3] = null;
+            if (!isset($output[4]))
+                $output[4] = 200;
+            $this->getOutput()->renderOk($output[1], $output[2], $output[3], $output[4]);
+        }
+    }
+    
     /**
      * Extract form the resource config the acl user autorized
      * @param mix $aclRules the 
@@ -646,7 +664,7 @@ class Api extends Configurable {
                 $applications = Toolkit::string2Array($aclRules['application']);
             }
         }
-        return $applications;
+             return $applications;
     }
 
     /**
@@ -685,11 +703,12 @@ class Api extends Configurable {
             if ($searchedPath != '') {
                 $selectedChild = null;
                 $wildcardChild = null;
-                foreach ($configtree as $child)
+                foreach ($configtree as $child) {
                     if ($child['path'] == $searchedPath)
                         $selectedChild = $child;
                     elseif ($child['path'] == '*')
-                        $wildcardChild = $child;
+                        $wildcardChild = $child;                     
+                }
                 if ($selectedChild == null and ($wildcardChild != null or $outputConfig['children'] == "*")) {
                     $elements = array();
                     unset($outputConfig['children']);
@@ -750,7 +769,7 @@ class Api extends Configurable {
      * @param string $message a message describing the information
      * @param array $data additionnals data recorded to understand the context
      * @param int $level level from 1 (important) to 5 (annecdotic) coresponding to the importance of this event. Is used to filter what to record according to the LOG_VERBOSITY constant
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      */
     public static function logInfo($code, $message = null, $data = null, $level = 2) {
         if (isset($this) && get_class($this) == __CLASS__)
@@ -769,7 +788,7 @@ class Api extends Configurable {
      * @param string $message a message describing the information
      * @param array $data additionnals data recorded to understand the context
      * @param int $level level from 1 (important) to 5 (annecdotic) coresponding to the importance of this event. Is used to filter what to record according to the LOG_VERBOSITY constant
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      */
     public static function logWarn($code, $message = null, $data = null, $level = 2) {
         if (isset($this) && get_class($this) == __CLASS__)
@@ -788,7 +807,7 @@ class Api extends Configurable {
      * @param string $message a message describing the information
      * @param array $data additionnals data recorded to understand the context
      * @param int $level level from 1 (important) to 5 (annecdotic) coresponding to the importance of this event. Is used to filter what to record according to the LOG_VERBOSITY constant
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      */
     public static function logError($code, $message = null, $data = null, $level = 1) {
         if (isset($this) && get_class($this) == __CLASS__)
@@ -807,7 +826,7 @@ class Api extends Configurable {
      * @param string $message a message describing the information
      * @param array $data additionnals data recorded to understand the context
      * @param int $level level from 1 (important) to 5 (annecdotic) coresponding to the importance of this event. Is used to filter what to record according to the LOG_VERBOSITY constant
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      */
     public static function logDebug($code, $message = null, $data = null, $level = 4) {
         if (isset($this) && get_class($this) == __CLASS__)
@@ -826,7 +845,7 @@ class Api extends Configurable {
      * @param string $message a message describing the information
      * @param array $data additionnals data recorded to understand the context
      * @param int $level level from 1 (important) to 5 (annecdotic) coresponding to the importance of this event. Is used to filter what to record according to the LOG_VERBOSITY constant
-     * @return \Api instance Api for chaining
+     * @return Api instance Api for chaining
      */
     private function log($type = 'error', $code = 0, $message = null, $data = array(), $level = 1) {
         $obj = new stdClass();

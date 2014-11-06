@@ -3,18 +3,18 @@
 /**
  * Class used to present to HTTP context. It work with the .htaccess file and extract virtual url fragments.
  * Smart side reside in the fact that this input will analyse the full HTTP context and extract the following elements:
- * <ul>
- * <li>protocol : The used protocol (could be http:// or https://) </li>
- * <li>host : The hostname</li>
- * <li>root : The root path fragment to the php script file</li>
- * <li>path : The API tree path to the resource (described as a path string)</li>
- * <li>elements : Exploded version of the path. Describe requested resources</li>
- * <li>method : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)</li>
- * <li>format : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)</li>
- * <li>data : Incomings data. According to the HTTP request, could use the request body or the GET method</li>
- * </ul>
+ * 
+ *   - protocol : The used protocol (could be http:// or https://) 
+ *   - host : The hostname
+ *   - root : The root path fragment to the php script file
+ *   - path : The API tree path to the resource (described as a path string)
+ *   - elements : Exploded version of the path. Describe requested resources
+ *   - method : the requested method used (could be GET, POST, PUT, PATCH, DELETE or TRACE)
+ *   - format : The output format guessed according to the HTTP request content type. If a format param is received, it force output param. (ex: ?format=json force json output)
+ *   - data : Incomings data. According to the HTTP request, could use the request body or the GET method
+ * 
  *
- * @package  SXAPI.Input
+ * @class    SmartInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs
@@ -23,7 +23,7 @@ class SmartInput extends DefaultInput implements IInput {
 
     /**
      * protocol used to call this webservice
-     * @var string
+     * @var is string
      */
     private $protocol;
 
@@ -133,20 +133,22 @@ class SmartInput extends DefaultInput implements IInput {
         $content_type = false;
         if (isset($_SERVER['CONTENT_TYPE']))
             $content_type = $_SERVER['CONTENT_TYPE'];
-        switch ($content_type) {
+        switch ($content_type) {            
             case "application/json":
                 $this->format = "json";
                 $body_params = json_decode($body);
                 if ($body_params)
-                    foreach ($body_params as $param_name => $param_value)
+                    foreach ($body_params as $param_name => $param_value) {
                         $parameters[$param_name] = $param_value;
+                    }
                 break;
-            case "application/x-www-form-urlencoded":
+            case "application/x-www-form-urlencoded; charset=UTF-8":
                 $this->format = "html";
                 $postvars = array();
                 parse_str($body, $postvars);
-                foreach ($postvars as $field => $value)
+                foreach ($postvars as $field => $value) {
                     $parameters[$field] = $value;
+                }
                 break;
             default:
                 $list = explode(",", $_SERVER['HTTP_ACCEPT']);
@@ -242,15 +244,16 @@ class SmartInput extends DefaultInput implements IInput {
     }
 
     /**
-     * return the value of the given request element
-     * @param type $position the position of an element
+     * return the position of the given request element
+     * @param type $element the element to track
      * @return string
      */
     public function getElementPosition($element = null) {
         $list = array_reverse($this->elements, true);
-        foreach ($list as $key => $value)
+        foreach ($list as $key => $value) {
             if ($element == $value)
                 return $key;
+        }
         return false;
     }
 
@@ -336,6 +339,10 @@ class SmartInput extends DefaultInput implements IInput {
         return $this;
     }
 
+    /**
+     * return the context
+     * @return array
+     */
     public function getContext() {
         return array(
             'method' => $this->getMethod(),

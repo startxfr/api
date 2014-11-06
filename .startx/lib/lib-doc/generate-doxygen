@@ -1,0 +1,4 @@
+#!/bin/bash
+
+dir=`dirname $0`
+doxygen $dir/DoxyfileConf &> /dev/null

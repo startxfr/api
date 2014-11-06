@@ -5,7 +5,7 @@
  * @see      defaultResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resources
  *
- * @category Resource
+ * @class ResourceException
  * @package  SXAPI.Resource
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr

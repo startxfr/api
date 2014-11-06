@@ -3,7 +3,7 @@
 /**
  * Class used to access data comming from the HTTP GET method. Wrap the $_GET global variable.
  *
- * @package  SXAPI.Input
+ * @class    GetInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs

@@ -3,7 +3,7 @@
 /**
  * Base class used for binding specific process to the API event. All plugin class should be derivated form this class or one of its descendant
  *
- * @package  SXAPI.Plugin
+ * @class    defaultPlugin
  * @author   Mallowtek <mallowtek@gmail.com>
  * @link      https://github.com/startxfr/sxapi/wiki/Plugins
  */
@@ -14,7 +14,7 @@ class defaultPlugin extends Configurable implements IPlugin {
      * @access private
      * @static
      */
-    private static $_instance = null;
+    protected static $_instance = null;
 
     /**
      * The Plugin constructor. Do not directly instanciate this object and prefer using the DefaultPlugin::getInstance() static method for creating and accessing the plugin singleton object
@@ -37,14 +37,17 @@ class defaultPlugin extends Configurable implements IPlugin {
      * @return DefaultPlugin singleton instance of DefaultPlugin Class
      */
     public static function getInstance($config = null) {
-        if (is_null(self::$_instance)) {
-            $className = $config['class'];
-            self::$_instance = new $className($config);
-        }
-        return self::$_instance;
+        $classname = static::getClass(); 
+        if(!isset(static::$_instance[$classname])) { 
+            static::$_instance[$classname] = new $classname($config); 
+        } 
+        return static::$_instance[$classname]; 
+    } 
+        
+    public static function getClass() {
+        return get_called_class();
     }
-
-
+        
     /**
      * init the rendering object
      *
