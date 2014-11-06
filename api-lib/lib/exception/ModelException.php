@@ -5,7 +5,7 @@
  * @see      DefaultModel, mysqlModel, nosqlModel
  * @link     https://github.com/startxfr/sxapi/wiki/Models
  *
- * @category Model
+ * @class ModelException
  * @package  SXAPI.Model
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr

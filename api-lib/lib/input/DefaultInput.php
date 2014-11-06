@@ -3,7 +3,7 @@
 /**
  * Base class used for exposing inputs to the API. All inputs class should be derivated form this class or one of its descendant
  *
- * @package  SXAPI.Input
+ * @class    DefaultInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs

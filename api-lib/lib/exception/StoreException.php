@@ -5,7 +5,7 @@
  * @see      defaultStore, mysqlStore, nosqlStore
  * @link     https://github.com/startxfr/sxapi/wiki/Stores
  *
- * @category Store
+ * @class StoreException
  * @package  SXAPI.Store
  * @author   Dev Team <dev@startx.fr>
  * @copyright Copyright (c) 2003-2013 startx.fr

@@ -24,16 +24,16 @@ class listaccountAnalyticsGoogleResource extends defaultGoogleResource implement
                 // recherche d'une clef en particulier
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, $api->getInput('user')->get('_id'));
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return $nextPath=" . $user[$nextPath], $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $accounts['items'][$nextPath]);
+                return array(true, $message, $accounts['items'][$nextPath]);
             } else {
                 //affichage de toutes les clefs
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($user), $api->getInput('user')->get('_id'));
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                $api->getOutput()->renderOk($message, $accounts['items']);
+                return array(true, $message, $accounts['items']);
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            $api->getOutput()->renderError($exc->getCode(), $exc->getMessage());
+            return array(false, $exc->getCode(), $exc->getMessage());
         }
         return true;
     }

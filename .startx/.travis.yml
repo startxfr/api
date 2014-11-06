@@ -1,0 +1,16 @@
+language: php
+php:
+  - 5.5
+  - 5.4
+  - hhvm
+branches:
+  except:
+    - dev
+    - dev2
+  only:
+    - master
+    
+before_install:
+ - sudo apt-get update -qq
+install: true
+script: ./startx/run_build.sh

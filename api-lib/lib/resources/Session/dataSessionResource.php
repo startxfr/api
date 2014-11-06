@@ -10,29 +10,47 @@
  */
 class dataSessionResource extends defaultSessionResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"dataSessionsResource",
+                                "desc":"access to session data",
+                                "properties":
+	[
+		{
+			"name":"exclude_data",
+			"type":"array",
+			"mandatory":"false",
+			"desc":"data not to return"
+		}
+	]
+}'
+;
+    
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
         $nextPath = $api->getInput()->getElement($sessElPosition + 1);
         $out = $api->getInput('session')->getAll();
-        if (is_array($out) and is_array($this->getConfig('excluded_data', array())))
-            foreach ($this->getConfig('excluded_data', array()) as $value)
+        if (is_array($out) and is_array($this->getConfig('excluded_data', array()))) {
+            foreach ($this->getConfig('excluded_data', array()) as $value) {
                 unset($out[$value]);
-        if (is_array($out))
-            foreach ($out as $key => $val)
+            }
+        }
+        if (is_array($out)) {
+            foreach ($out as $key => $val) {
                 if (is_object($val) and get_class($val) == 'MongoDate')
                     $out[$key] = date('Y-m-d H:i:s', (string) $val->sec);
+            }
+        }
         if ($nextPath !== null) {
             // recherche d'une clef en particulier
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out[$nextPath]);
+            return array(true, $message, $out[$nextPath]);
         } else {
             //affichage de toutes les clefs
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($out), session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out);
+            return array(true, $message, $out);
         }
         return true;
     }
@@ -56,8 +74,7 @@ class dataSessionResource extends defaultSessionResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_create', 'message service create'), implode(',', array_keys($addCount)));
         $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $addCount);
-        return true;
+        return array(true, $message, $addCount);
     }
 
     public function updateAction() {
@@ -72,8 +89,7 @@ class dataSessionResource extends defaultSessionResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_update', 'message service update'), implode(',', array_keys($updateCount)));
         $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $updateCount);
-        return true;
+        return array(true, $message, $updateCount);
     }
 
     public function deleteAction() {
@@ -90,8 +106,7 @@ class dataSessionResource extends defaultSessionResource implements IResource {
         }
         $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $key2Remove);
         $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $key2Remove);
-        return true;
+        return array(true, $message, $key2Remove);
     }
 
 }

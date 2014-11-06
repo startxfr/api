@@ -3,7 +3,7 @@
 /**
  * Class used to access data stored into the current session. If no session found, create one and use the API config to define the storage method.
  *
- * @package  SXAPI.Input
+ * @class    SessionInput
  * @author   Dev Team <dev@startx.fr>
  * @see      DefaultInput
  * @link     https://github.com/startxfr/sxapi/wiki/Inputs

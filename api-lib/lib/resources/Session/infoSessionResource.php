@@ -10,6 +10,20 @@
  */
 class infoSessionResource extends defaultSessionResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"infoSessionsResource",
+                                "desc":"access to session info",
+                                "properties":
+	[
+		{
+			"name":"exclude_data",
+			"type":"array",
+			"mandatory":"false",
+			"desc":"data not to return"
+		}
+	]
+}'
+;
+    
     public function readAction() {
         $api = Api::getInstance();
         $out = $api->getInput('session')->findOneSession(session_id());
@@ -27,12 +41,12 @@ class infoSessionResource extends defaultSessionResource implements IResource {
             // recherche d'une clef en particulier
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out[$nextPath]);
+            return array(true, $message, $out[$nextPath]);
         } else {
             //affichage de toutes les clefs
             $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($out), session_id());
             $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-            $api->getOutput()->renderOk($message, $out);
+            return array(true, $message, $out);
         }
         return true;
     }
@@ -44,7 +58,7 @@ class infoSessionResource extends defaultSessionResource implements IResource {
         $info = $api->getInput('session')->readHandler(session_id());
         $message = sprintf($this->getConfig('message_service_create', 'message service create'), session_id());
         $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, $info);
+        return array(true, $message, $info);
         return true;
     }
 
@@ -57,7 +71,7 @@ class infoSessionResource extends defaultSessionResource implements IResource {
         setcookie(session_name(), '', time() - 3600, "/");
         $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $id);
         $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        $api->getOutput()->renderOk($message, true);
+        return array(true, $message, true);
         return true;
     }
 

@@ -13,6 +13,20 @@
  */
 abstract class defaultSessionResource extends defaultResource implements IResource {
 
+    static public $ConfDesc = '{"class_name":"defaultSessionsResource",
+                                "desc":"abstract resource, access to session",
+                                "properties":
+	[
+		{
+			"name":"session_name",
+			"type":"string",
+			"mandatory":"true",
+			"desc":"id of the session"
+		}
+	]
+}'
+;
+    
     public function __construct($config) {
         parent::__construct($config);
     }
@@ -27,7 +41,7 @@ abstract class defaultSessionResource extends defaultResource implements IResour
 
     /**
      * This method is used for all GET request made to a sessionResource resource
-     * accoridng to the type, this resource can have multiple forms
+     * according to the type, this resource can have multiple forms
      * type 'info' : return the session informations (default)
      * type 'data' : return the data stored in this session
      * type 'user' : return the user data stored for this session. Could be null if anonymous

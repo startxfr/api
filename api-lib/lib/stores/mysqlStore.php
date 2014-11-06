@@ -50,8 +50,9 @@ class mysqlStore extends defaultStore implements IStorage {
             $this->lastResult = $this->connection->query($this->_getQuery(), PDO::FETCH_ASSOC);
             if ($this->lastResult !== false) {
                 $output = array();
-                foreach ($this->lastResult as $row)
+                foreach ($this->lastResult as $row) {
                     $output[] = $row;
+                }
                 Api::getInstance()->logDebug(420, "'" . __FUNCTION__ . "' '" . get_class($this) . "' '" . @count($output) . "' result", array('table' => $table, 'criteria' => $criteria, 'order' => $order, 'start' => $start, 'stop' => $stop), 4);
                 return $output;
             } else {
@@ -117,6 +118,8 @@ class mysqlStore extends defaultStore implements IStorage {
 
     public function update($table, $key, $id, $data) {
         try {
+            if (empty($data))
+                throw new StoreException("no data");
             $this->connect();
             $action = 'UPDATE';
             $top = "$action `" . $table . "` SET ";
