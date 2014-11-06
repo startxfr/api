@@ -3,18 +3,4 @@
 echo_prefix="[pre-commit hook]"
 sxcmd="/var/www/html/startx/api/.startx/sxcmd"
 
-echo -e "$echo_prefix Start pre-commit process"
-# Allows us to read user input below, assigns stdin to keyboard
-exec < /dev/tty
-while true; do
-    read -p "$echo_prefix Do you wan't to dump database(s) ? (Y/n) " yn
-    if [ "$yn" = "" ]; then
-       yn='Y'
-    fi
-    case $yn in
-	   [Yy] ) $sxcmd 1.1; exit 0;;
-       [Nn] ) exit 0;;
-       * ) echo -e "$echo_prefix Please answer y or n for yes or no.";;
-    esac
-done
-echo -e "$echo_prefix End pre-commit process"
+# no pre-commit hook for the testing branch, see master or dev branch for a workable script
