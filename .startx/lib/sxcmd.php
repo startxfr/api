@@ -89,9 +89,10 @@ function displayMenuDev() {
     echo "$EP ".$col["green"]."1. Go to dev branch\n".$col["reset"];
     echo "$EP ".$col["green"]."2. Status\n".$col["reset"];
     echo "$EP ".$col["green"]."3. Commit\n".$col["reset"];
-    echo "$EP ".$col["green"]."4. Push\n".$col["reset"];
-    echo "$EP ".$col["green"]."5. Commit & push\n".$col["reset"];
-    echo "$EP ".$col["green"]."6. Merge to master\n".$col["reset"];
+    echo "$EP ".$col["green"]."4. Commit & push\n".$col["reset"];
+    echo "$EP ".$col["green"]."5. Merge to master\n".$col["reset"];
+    echo "$EP ".$col["green"]."6. Merge from master\n".$col["reset"];
+    echo "$EP ".$col["green"]."7. Commit & Push & Merge to master\n".$col["reset"];
     echo "$EP ".$col["green"]."9. Retour menu principal\n".$col["reset"];
     echo "$EP ".$col["green"]."0. Exit\n".$col["reset"];
     echo "$EP\n";
