@@ -14,7 +14,8 @@ function exportDB()
 	$collections = array_diff($list_col, $ex_col);
 
 	foreach($collections as $col)
-		shell_exec("mongoexport -d $DB -c $col -u $USER -p $PWD -o $DB_DUMP/dump_${DB}_$col.json --jsonArray");
+		shell_exec("mongoexport -d $DB -c $col -u $USER -p $PWD -o $DB_DUMP/dump_$col.json --jsonArray");
+		shell_exec("echo \"dump_$col.json exported\" >&2");
 }
 
 function importDB()
@@ -31,8 +32,8 @@ function importDB()
 	$collections = array_diff($list_col, $ex_col);
 
 	foreach($collections as $col) {
-		shell_exec("mongoimport -d $DB -c $col -u $USER -p $PWD $DB_DUMP/dump_${DB}_$col.json --jsonArray");
-		shell_exec("echo \"dump_${DB}_$col.json imported\" >&2");
+		shell_exec("mongoimport -d $DB -c $col -u $USER -p $PWD $DB_DUMP/dump_$col.json --jsonArray");
+		shell_exec("echo \"dump_$col.json imported\" >&2");
 	}
 }
 
