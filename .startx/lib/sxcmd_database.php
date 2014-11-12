@@ -2,37 +2,29 @@
 
 function exportDB()
 {
-	global $EP, $DB_DUMP, $USER, $PWD, $DB;
-
-	echo "$EP   dumping databases\n";
+	global $EP, $config;
+        $confDb = $config['datatbases']['nosql'];
+	echo "$EP   dumping database ".$confDb['database']."\n";
 	$mongo = new MongoClient();
-	$list_col = $mongo->selectDB($DB)->getCollectionNames();
-	$ex_col = array(
-			 'startx.logs',
-			 'logs'
-	);
+	$list_col = $mongo->selectDB($confDb['database'])->getCollectionNames();
+	$ex_col = explode(",",$confDb['exclude_table']);
 	$collections = array_diff($list_col, $ex_col);
-
 	foreach($collections as $col)
-		shell_exec("mongoexport -d $DB -c $col -u $USER -p $PWD -o $DB_DUMP/dump_$col.json --jsonArray");
+		shell_exec("mongoexport -d ".$confDb['database']." -c $col -u ".$confDb['user']." -p ".$confDb['pwd']." -o ".$config['project']['path'].'/'.$confDb['dump_dir']."dump_$col.json --jsonArray");
 		shell_exec("echo \"dump_$col.json exported\" >&2");
 }
 
 function importDB()
 {
-	global $EP, $DB_DUMP, $USER, $PWD, $DB;
-
-	echo "$EP   importing databases\n";
+	global $EP, $config;
+        $confDb = $config['datatbases']['nosql'];
+	echo "$EP   importing database ".$confDb['database']."\n";
 	$mongo = new MongoClient();
-	$list_col = $mongo->selectDB($DB)->getCollectionNames();
-	$ex_col = array(
-			 'startx.logs',
-			 'logs'
-	);
+	$list_col = $mongo->selectDB($confDb['database'])->getCollectionNames();
+	$ex_col = explode(",",$confDb['exclude_table']);
 	$collections = array_diff($list_col, $ex_col);
-
 	foreach($collections as $col) {
-		shell_exec("mongoimport -d $DB -c $col -u $USER -p $PWD $DB_DUMP/dump_$col.json --jsonArray");
+		shell_exec("mongoimport -d ".$confDb['database']." -c $col -u ".$confDb['user']." -p ".$confDb['pwd']." ".$config['project']['path'].'/'.$confDb['dump_dir']."dump_$col.json --jsonArray");
 		shell_exec("echo \"dump_$col.json imported\" >&2");
 	}
 }

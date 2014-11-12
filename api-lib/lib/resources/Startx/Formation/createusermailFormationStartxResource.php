@@ -10,10 +10,11 @@
  */
 class createusermailFormationStartxResource extends linkableResource implements IResource {         
 
-    static public $ConfDesc = '{"class_name":"createusermailFormationStartxResource",
-  "desc":"processing resource use to format mail",
-  "properties":[]
-}';
+    static public $ConfDesc = '{
+        "class_name":"createusermailFormationStartxResource",
+        "desc" : "processing resource use to format mail",
+        "properties":[]
+    }';
     
     public function createAction() {
         $api = Api::getInstance();
@@ -21,7 +22,7 @@ class createusermailFormationStartxResource extends linkableResource implements 
         $prevOutput = $this->getPrevOutput();
         if ($this->getPrevBool() === false)
             return array(false, 930, $prevOutput);
-        $body = "An user was created in SXA_db with id:". $prevOutput[0][0] ."\n";        
+        $body = "A new user was created in SXA_db with id:". $prevOutput[0][0] ."\n";        
         
         if (count($prevOutput[1][0]) !== 0) {  
             $body .= "There are duplicates of the same email address in SXA_db:\n";
