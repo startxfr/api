@@ -67,25 +67,25 @@ abstract class defaultResource extends Configurable implements IResource {
 			"name":"input_include_paramfilter",
 			"type":"mixed",
 			"mandatory":"false",
-			"desc":"see io_paramfilter for details"
+			"desc":"see [io_paramfilter](io_paramfilter) for details"
 		},
                 {
 			"name":"input_exclude_paramfilter",
 			"type":"mixed",
 			"mandatory":"false",
-			"desc":"see io_paramfilter for details"
+			"desc":"see [io_paramfilter](io_paramfilter) for details"
 		},
                 {
 			"name":"output_include_paramfilter",
 			"type":"mixed",
 			"mandatory":"false",
-			"desc":"see io_paramfilter for details"
+			"desc":"see [io_paramfilter](io_paramfilter) for details"
 		},
                 {
 			"name":"output_exclude_paramfilter",
 			"type":"mixed",
 			"mandatory":"false",
-			"desc":"see io_paramfilter for details"
+			"desc":"see [io_paramfilter](io_paramfilter) for details"
 		}
 	]
 }'
