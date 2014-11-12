@@ -117,7 +117,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             throw new ResourceException(get_class($this) . " resource config should contain the 'client_secret' attribute");
         }
         $this->client->setClientSecret($this->getConfig('client_secret'));
-        $this->client->setRedirectUri("http://localhost/startx/api/formation/auth/oauth");
+        $this->client->setRedirectUri("http://localhost/startx/api/formation/auth/google");
         return $this;
     }
 
