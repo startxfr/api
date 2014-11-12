@@ -32,7 +32,17 @@ class aliasResource extends linkableResource implements IResource {
 			"mandatory":"false",
 			"desc":"optional array of config arguments not to import from resource config"
 		}
-	]
+	],
+        "example": {
+  "_id": "alias",
+  "alias_id": "contacts",
+  "class": "aliasResource",
+  "dataset": "startx.resources",
+  "find_filter": {
+    "message_service_read": false
+  },
+  "message_service_read": "returning %s contact(s) entries on %s entries found life is good with aliases"
+}
 }'
 ;
     
