@@ -43,6 +43,30 @@ function sanitizeFiles($list) {
     return $new_list;
 }
 
+function sortProperties($array)
+{
+	$i = 0;
+	$k = 0;
+	$tmp = array();
+	$len = count($array);
+	while ($i < $len) 
+	{
+		$j = $i + 1;
+		$k = $i;
+		while ($j < $len)
+		{
+			if (strcmp($array[$k]['name'], $array[$j]['name']) > 0)
+				$k = $j;
+			$j++;
+		}
+		$tmp = $array[$i];
+		$array[$i] = $array[$k];
+		$array[$k] = $tmp;
+		$i++;
+	}
+	return $array;
+}
+
 function getFamily($class) {
     if (property_exists($class, "ConfDesc") === false)
         return false;
@@ -53,12 +77,13 @@ function getFamily($class) {
 		if (property_exists($parent, "ConfDesc")) {
 			$tmp = json_decode($parent::$ConfDesc, true);
 			if (array_key_exists("properties", $tmp)) {
-				$obj["properties"] = array_merge($obj["properties"], $tmp["properties"]);
+				$obj["properties"] = array_merge($tmp["properties"], $obj["properties"]);
 			}
 		}
 		$obj["family"][] = $parent;
 		$class = $parent;
 	}
+	$obj['properties'] = sortProperties($obj['properties']);
 	return($obj);
 }
 
@@ -94,6 +119,15 @@ function createMdPage($file, $dirO) {
 	}
 	$family_ref .= "* " . $obj["class_name"];
 	$family_ref .= "\r\n";
+
+	if (isset($obj['example'])) {
+		$family_ref .= "\r\n";
+		$family_ref .= "```json\r\n";
+		$family_ref .= preg_replace("/,/", ",\n", json_encode($obj['example']));
+		$family_ref .= preg_replace("/^{/", "{\n", json_encode($obj['example']));
+		$family_ref .= preg_replace("/}$/", "\n}", json_encode($obj['example']));
+		$family_ref .= "\r\n```\r\n";
+	}
 
 	fwrite($fd, $title . $desc . $table . $family_ref);
 	fclose($fd);
