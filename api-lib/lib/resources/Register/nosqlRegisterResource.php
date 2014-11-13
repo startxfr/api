@@ -158,23 +158,22 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
     private function doNosqlRegister($data, $mode, $id_cont) {
         $api = Api::getInstance();
         $user_data = array();
-        if ($mode === 'oauth') {
-            $user_data[$this->getConfig('backend_store_id_key', "_id")] = $data['mail_cont'];
+        if ($mode === 'google') {
             $user_data['refresh_token'] = $data['refresh_token'];
+        }        
+        $login = $api->getInput()->getParam($this->getConfig('login_param', "login"));
+        $pwd_input = $api->getInput()->getParam($this->getConfig('pwd_param', 'pwd'));
+        $clean_pass = ((bool)$pwd_input !== false) ? $pwd_input : $this->_createPass();             
+        switch ($this->getConfig('pwd_encryption', 'none')) {
+            case 'sha256':
+                $pass = hash("sha256", $clean_pass);
+                break;
+            default:
+                $pass = $clean_pass;
+                break;
         }
-        else {
-            $login = $api->getInput()->getParam($this->getConfig('login_param', "login"));
-            $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pwd'));
-            switch ($this->getConfig('pwd_encryption', 'none')) {
-                case 'sha256':
-                    $pass = hash("sha256", $pass);
-                    break;
-                default:
-                    break;
-            }
-            $user_data[$this->getConfig('backend_store_id_key', "_id")] = $login;
-            $user_data[$this->getConfig('backend_store_pwd_key', 'pwd')] = $pass;
-        }
+        $user_data[$this->getConfig('backend_store_id_key', "_id")] = $login;
+        $user_data[$this->getConfig('backend_store_pwd_key', 'pwd')] = $pass;            
         $user_data['role'] = $data['role'];
         $user_data['email'] = $data['mail_cont'];
         $user_data['id_cont'] = $id_cont;
@@ -186,7 +185,10 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
         $store->create($this->getConfig('backend_store_dataset', 'user'), $user_data);         
         $api->getInput('session')->set('user', $user_data[$this->getConfig('backend_store_id_key', "_id")]);                                   
         $api->logInfo(960, "User '" . $user_data[$this->getConfig('backend_store_id_key', "_id")] . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);        
-        return $api->getInput('user')->getAll();                
+        $ret = $api->getInput('user')->getAll();
+        $ret['clean_pass'] = $clean_pass;
+        $ret['pwd_pass'] = $pwd_input;
+        return $ret;                
     }
     
     private function _changeData($data, $add_data = array()) {
@@ -202,6 +204,13 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
             $new_data['nom_cont'] = Api::getInstance()->getInput()->getParam($this->getConfig('login_param', "login"));
         return $new_data;
     }
+    
+    private function _createPass() {
+        $chars = implode("", array_merge(range('#', '}')));
+        $pass = substr(str_shuffle(str_repeat($chars, mt_rand(3, 10))), 1, 10);
+        return $pass;
+    }
+    
 }
 
 ?>
