@@ -77,7 +77,7 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
                 $start = $input->getParam($this->getConfig('startParam', 'start'), 0);
                 $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);                                                                
                 $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max);
-                $return =  $this->filterResults(iterator_to_array($data,false));            
+                $return =  $this->filterResults(iterator_to_array($data,false), "output");            
                 $countResult = $this->getStorage()->readCount($this->getConfig('dataset'), $search);            
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);

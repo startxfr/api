@@ -142,12 +142,16 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 $data = $store->readOne($this->getConfig('store_dataset'), array($this->getConfig('store_id_key') => $user['email']) );                
                 
                 if (is_array($data) and $data["_id"] == $user['email']) {
-                    $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
-                    $api->getInput('session')->set('user', $user['email']);              
-                    $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
-                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
+//                    $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
+//                    $api->getInput('session')->set('user', $user['email']);              
+//                    $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
+//                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
+//                    $app_uri = $state->local_uri;
+//                    header('Location: ' . $app_uri . '?authmsg=Successfully logged in');
+//                    exit();
+                    $message = "An account for this email is already in use";
                     $app_uri = $state->local_uri;
-                    header('Location: ' . $app_uri . '?authmsg=Successfully logged in');
+                    header('Location: ' . $app_uri . '?authmsg=' . $message);
                     exit();
                 }
                 else {

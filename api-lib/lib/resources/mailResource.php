@@ -83,7 +83,7 @@ class mailResource extends linkableResource implements IResource {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
         $default_params = $this->getConfig('default_params');        
-        $data = $this->filterParams($api->getInput()->getParams(), "input");        
+        $data = $this->filterParams($api->getInput()->getParams(), "input"); 
         $defaultBody = $default_params['body'];        
         if (count($this->getPrevOutput()) !== 0)            
             $defaultBody = implode("\n", $this->getPrevOutput());          

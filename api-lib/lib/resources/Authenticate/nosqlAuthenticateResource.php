@@ -140,9 +140,9 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
         $api = Api::getInstance();
         $store = $api->getStore($this->getConfig('store', 'nosql'));
         if ($login == '')
-            throw new ResourceException(sprintf($this->getConfig('message_service_noid'), $this->getConfig('login_param', "login")), 911);
+            throw new ResourceException($this->getConfig('message_service_badid'), 911);
         elseif ($pass == '')
-            throw new ResourceException(sprintf($this->getConfig('message_service_nopwd'), $this->getConfig('pwd_param', 'pwd')), 912);
+            throw new ResourceException($this->getConfig('message_service_badpwd'), 912);
         switch ($this->getConfig('pwd_encryption', 'none')) {
             case 'sha256':
                 $pass = hash("sha256", $pass);
@@ -151,16 +151,17 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
                 break;
         }
         $data = $store->readOne($this->getConfig('store_dataset', 'sxapi.users'), array(
-            $this->getConfig('store_id_key', "_id") => $login,
-            $this->getConfig('store_pwd_key', 'pwd') => $pass
-                ));
-        if (is_array($data) and $data[$this->getConfig('store_id_key', "_id")] == $login) {
+            $this->getConfig('store_id_key', "_id") => $login
+        ));
+        if (!is_array($data))
+            throw new ResourceException($this->getConfig('message_service_badid'));
+        else if ($data[$this->getConfig('store_pwd_key', 'pwd')] !== $pass)
+            throw new ResourceException($this->getConfig('message_service_badpwd'));
+        else {
             $api->logInfo(960, "User '" . $login . "' authenticated with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);
             $api->getInput('session')->set('user', $login);
             return $api->getInput('user')->getAll();
-        }
-        else
-            throw new ResourceException("either the login or the password you provided doesn't match an existing user");
+        }       
     }
 
 }
