@@ -11,9 +11,9 @@ function displayIntro() {
     $devbranch = $config['git']['branch_dev'];
     $projectpath = $config['project']['path'];
     echo $col['red'] . "$EP\n";
-    echo "$EP   +----------------------------------------+\n";
-    echo "$EP   | SXCMD API : Command line for formation |\n";
-    echo "$EP   +----------------------------------------+\n";
+    echo "$EP   +-----------------------------------------+\n";
+    echo "$EP   | SXCMD API : Command line for STARTX API |\n";
+    echo "$EP   +-----------------------------------------+\n";
     echo "$EP    Version sxcmd : $version\n";
     echo "$EP    Version $appname : $appversion\n";
     echo "$EP    Branche de dev : $devbranch\n";
