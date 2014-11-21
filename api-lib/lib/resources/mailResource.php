@@ -70,6 +70,7 @@ class mailResource extends linkableResource implements IResource {
         $this->mail->Username = $server['username'];
         //Password to use for SMTP authentication
         $this->mail->Password = $server['password'];
+        $this->mail->setFrom($server['username'], 'Startx');
         $api->logDebug(576, "mailer init");
         return $this;
     }

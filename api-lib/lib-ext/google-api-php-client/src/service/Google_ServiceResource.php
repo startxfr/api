@@ -67,6 +67,7 @@ class Google_ServiceResource {
    * @throws Google_Exception
    */
   public function __call($name, $arguments) {
+    //var_dump($name, $arguments);
     if (! isset($this->methods[$name])) {
       throw new Google_Exception("Unknown function: {$this->serviceName}->{$this->resourceName}->{$name}()");
     }
@@ -163,6 +164,7 @@ class Google_ServiceResource {
       }
       $httpRequest->setRequestHeaders($contentTypeHeader);
     }
+    //var_dump($httpRequest);
 
     $httpRequest = Google_Client::$auth->sign($httpRequest);
     if (Google_Client::$useBatch) {
@@ -182,7 +184,7 @@ class Google_ServiceResource {
       }
       return $httpRequest;
     }
-
+    //var_dump($httpRequest);
     return Google_REST::execute($httpRequest);
   }
 

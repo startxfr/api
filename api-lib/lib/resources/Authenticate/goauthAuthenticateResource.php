@@ -117,6 +117,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
         }
         $this->client->setClientSecret($this->getConfig('client_secret'));
         $this->client->setRedirectUri("http://localhost/startx/api/formation/auth/google");
+        $this->client->setScopes('https://www.googleapis.com/auth/calendar');
         return $this;
     }
 
@@ -142,13 +143,6 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 $data = $store->readOne($this->getConfig('store_dataset'), array($this->getConfig('store_id_key') => $user['email']) );                
                 
                 if (is_array($data) and $data["_id"] == $user['email']) {
-//                    $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
-//                    $api->getInput('session')->set('user', $user['email']);              
-//                    $message = sprintf($this->getConfig('message_service_read', 'user %s is now associated to session %s'), $user['email'], session_id());
-//                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return user info for " . $user['email'], $this->getResourceTrace(__FUNCTION__, false, array('user' => $user, 'answer' => $accessInfo)), 1);
-//                    $app_uri = $state->local_uri;
-//                    header('Location: ' . $app_uri . '?authmsg=Successfully logged in');
-//                    exit();
                     $message = "An account for this email is already in use";
                     $app_uri = $state->local_uri;
                     header('Location: ' . $app_uri . '?authmsg=' . $message);
@@ -163,14 +157,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
             } 
             else if (isset($_GET['error'])) {
                 $state = $this->retrieveStatetokenData($_GET['state']);
-                switch ($_GET['error']) {
-                    case "access_denied":
-                        $message = "No user access from google because : " . $_GET['error'];
-                        break;
-                    default:
-                        $message = "No user access from google because : " . $_GET['error'];
-                        break;
-                }
+                $message = "No user access from google because : " . $_GET['error'];
                 $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $message, $exc);
                 //return array(false, 910, $message, array(), 401);
                 $app_uri = $state->local_uri;
