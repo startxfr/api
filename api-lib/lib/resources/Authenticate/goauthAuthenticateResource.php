@@ -117,7 +117,7 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
         }
         $this->client->setClientSecret($this->getConfig('client_secret'));
         $this->client->setRedirectUri("http://localhost/startx/api/formation/auth/google");
-        $this->client->setScopes('https://www.googleapis.com/auth/calendar');
+       $this->client->setScopes('profile email https://www.googleapis.com/auth/calendar');
         return $this;
     }
 
@@ -134,11 +134,11 @@ class goauthAuthenticateResource extends defaultAuthenticateResource implements 
                 $accessInfo = json_decode($this->client->getAccessToken());
                 $api->getInput("session")->set('user_goauth_token', json_encode($accessInfo));
                 $user = $this->services['Oauth2']->userinfo->get();
+                
                 $user['email'] = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
                 $user['picture'] = filter_var($user['picture'], FILTER_VALIDATE_URL);
                 $user['google_token'] = $accessInfo;
                 $user['account_type'] = $state->account_type;
-
                 $store = $api->getStore($this->getConfig('store'));
                 $data = $store->readOne($this->getConfig('store_dataset'), array($this->getConfig('store_id_key') => $user['email']) );                
                 
