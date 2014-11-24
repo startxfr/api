@@ -67,7 +67,6 @@ class Google_ServiceResource {
    * @throws Google_Exception
    */
   public function __call($name, $arguments) {
-    //var_dump($name, $arguments);
     if (! isset($this->methods[$name])) {
       throw new Google_Exception("Unknown function: {$this->serviceName}->{$this->resourceName}->{$name}()");
     }

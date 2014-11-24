@@ -40,15 +40,7 @@ abstract class defaultAuthenticateResource extends linkableResource implements I
         if ($this->getConfig('message_service_delete', '') == '') {
             $api->logWarn(907, get_class($this) . " resource config should contain the 'message_service_delete' attribute", $this->getResourceTrace(__FUNCTION__, false));
             throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_delete' attribute");
-        }
-        if ($this->getConfig('message_service_badid', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'message_service_badid' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_badid' attribute");
-        }
-        if ($this->getConfig('message_service_badpwd', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'message_service_badpwd' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_badpwd' attribute");
-        }
+        }        
         return $this;
     }
 

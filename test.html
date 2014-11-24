@@ -109,7 +109,7 @@
                             method: "get",
                             path: "",
                             data: {format: "json"},                            
-                            next: sxtest.doShowCont
+                            next: sxtest.doTest1
                         });
                     },
 //                    doAuth: function() {
@@ -162,72 +162,27 @@
 //                            next: sxtest.doInfoContact
 //                        });
 //                    },                    
-                    doShowCont: function() {
+                    doTest1: function() {
+                        console.log("=doTest1:");
+                        var event = {start: "1416873600", end: "1417046400", title: 'new motherfuckin\' event'};
                         sxtest.do({
-                            titre: "show all user",
-                            method: "get",
-                            path: "usersbis",
-                            data: {format: "json"},
-                            next: sxtest.doCreateCont
-                            
-                        });
-                    },
-                    doCreateCont: function() {
-                        sxtest.do({
-                            titre: "create user",
+                            titre: "Test de calendar post",
                             method: "post",
-                            path: "usersbis",
-                            data: {format: "json", _id: "francis", username: "jonnhy", email: "tarz@taar.tr", role: "4"},
-                            next: sxtest.doInfoCont
-                            //next: sxtest.doEnd
-                        });
-                    },
-                    doInfoCont: function() {
-                        sxtest.do({
-                            titre: "Test de lecture des info d'un user",
-                            method: "get",
-                            path: "usersbis",
-                            data: {format: "json", email: "tarz@taar.tr"},
-                            next: sxtest.doUpdateCont
-                        });
-                    },
-                    doUpdateCont: function() {
-                        sxtest.do({
-                            titre: "update user",
-                            method: "put",
-                            path: "usersbis/francis",
-                            data: {format: "json", username: "derek", role: "6"},
-                            next: sxtest.doInfoCont2                            
-                        });
-                    },   
-                    doInfoCont2: function() {
-                        sxtest.do({
-                            titre: "Test de lecture des info d'un contact",
-                            method: "get",
-                            path: "usersbis",
-                            data: {format: "json", role: "0"},
-                            next: sxtest.doDeleteCont
-                            //next: sxtest.doEnd
-                        });
-                    },
-                    doDeleteCont: function() {
-                        sxtest.do({
-                            titre: "delete cont",
-                            method: "delete",
-                            path: "usersbis/loki",
-                            data: {format: "json"},
-                            next: sxtest.doShowCont2
-                        });
-                    },
-                    doShowCont2: function() {
-                        sxtest.do({
-                            titre: "show all user",
-                            method: "get",
-                            path: "usersbis",
-                            data: {format: "json"},
+                            path: "calendar",
+                            data: {format: "json", event: event, calId: "jr@startx.fr"},                            
                             next: sxtest.doEnd
                         });
                     },
+//                    doTest2: function() {
+//                        console.log("=doTest2:");
+//                        sxtest.do({
+//                            titre: "Test de calendar put",
+//                            method: "get",
+//                            path: "",
+//                            data: {format: "json"},                            
+//                            next: sxtest.doShowCont
+//                        });
+//                    },
                     doEnd: function() {
                         $(sxajax.messageContainer).append("<h4>Fin des test</h4>");
                     }
