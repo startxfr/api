@@ -8,44 +8,41 @@
  * @see      readonlyResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class synccalTestResource extends linkableResource implements IResource {
-
-    protected $client = null;
-    protected $services = array();
-
-    public function __construct($config) {
-        parent::__construct($config);        
-        require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'Google_Client.php';        
-        $this->client = new Google_Client();  
-    }
-
-    public function init() {
-        parent::init();
- 
-        $this->client->setApplicationName($this->getConfig('application_name')); 
-        $this->client->setClientId($this->getConfig('client_id'));       
-        $this->client->setClientSecret($this->getConfig('client_secret'));
-
-        $this->client->setRedirectUri("http://localhost/startx/api/calendar");   
-        //$this->client->setScopes('https://www.googleapis.com/auth/calendar');
-        
-
-        return $this;
-    }
+class synccalTestResource extends googlecalendarTestResource implements IResource {
 
     public function readAction() {
         $api = Api::getInstance();
+        $data = $this->filterParams($api->getInput()->getParams(), "input");
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $store = $api->getStore($this->getConfig('store'));
-            $data = $store->readOne($this->getConfig('store_dataset'), array($this->getConfig('store_id_key') => $this->getConfig('user_id')));
-            $refreshToken = $data['refresh_token'];
-            $calendar = $this->loadServices();
-//            var_dump($refreshToken);
-//            exit();
-            $this->client->refreshToken($refreshToken);
-            $calEvents = $calendar->events->listEvents($this->getConfig('session_calendar_id', "formation@startx.fr"));
-            return array(true, "Calendar testing", $calEvents); 
+            $input = $api->getInput();
+            $sessElPosition = $input->getElementPosition($this->getConfig('path'));
+            $nextPath = $input->getElement($sessElPosition + 1);
+            $calendars = ($data['calendar']) ? array($data['calendar']) : $this->getConfig('session_calendar_id');
+            if ($nextPath === 'import')
+                return $this->importCal();
+            if ($nextPath !== null) {                
+                foreach ($calendars as $cal) {
+                    try {
+                        $calEvent = $this->calendar->events->get($cal, $nextPath);
+                    } catch (Exception $exc) {
+                        $exc->getMessage();
+                    }
+                }
+                $message = sprintf($this->getConfig('message_service_read', 'Calendar testing get event-%s'), $nextPath);
+                return array(true, $message, $calEvent);
+            } 
+            else {
+                $calEvents = array(); 
+                $timeMin = ($data['start']) ? date(DateTime::ATOM, $data['start']) : null ;
+                $timeMax = ($data['end']) ? date(DateTime::ATOM, $data['end']) : null ;
+                $optParam = array("timeMin" => $timeMin, "timeMax" => $timeMax);
+                foreach ($calendars as $cal) {                    
+                    $calEvents = array_merge($calEvents, $this->calendar->events->listEvents($cal, $optParam)['items']);
+                }
+                $message = $this->getConfig('message_service_read', 'Calendar testing get all events');
+                return array(true, "Calendar testing get all events", $calEvents); 
+            }                                    
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
@@ -53,72 +50,28 @@ class synccalTestResource extends linkableResource implements IResource {
         return true;
     }
     
-//    public function readAction() {
-//        $api = Api::getInstance();
-//        $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
-//        try {
-//            if (isset($_GET['code'])) {                                                                
-//                $calendar = $this->loadServices();  
-//                $this->client->authenticate($_GET['code']);                
-//                $calEvents = $calendar->events->listEvents($this->getConfig('session_calendar_id', "formation@startx.fr"));
-//                return array(true, "Calendar testing", $calEvents);                            
-//            } 
-//            else if (isset($_GET['error'])) {
-//                throw new ResourceException("No user access from google because : " . $_GET['error']);
-//            }
-//            else {                
-//                $authUrl = $this->client->createAuthUrl();
-//                $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' start oauth request with google ", $this->getResourceTrace(__FUNCTION__, false, array('oauth_url' => $authUrl)), 1);
-//                header('Location: ' . $authUrl);
-//                exit();
-//            }
-//        } catch (Exception $exc) {
-//            $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-//            return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
-//        }
-//        return true;
-//    }
-    
     public function createAction() {
         Api::getInstance()->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        return $this->readAction();
-    }
-
-    public function updateAction() {
-        Api::getInstance()->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        return $this->readAction();
-    }
-
-    public function deleteAction() {
-        Api::getInstance()->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        return $this->readAction();
+        return $this->importCal();
     }
     
-    public function loadServices() {
-        $api = Api::getInstance();
-        $serviceName = $this->getConfig('google_service', "Google_CalendarService");
+    private function importCal() {
+        $api = Api::getInstance();        
         try {
-            $serviceClass = 'Google_' . ucfirst($serviceName) . 'Service';            
-            require_once LIBPATHEXT . 'google-api-php-client' . DS . 'src' . DS . 'contrib' . DS . $serviceClass . '.php';            
-            $this->services[$serviceName] = new $serviceClass($this->client);           
-        } catch (Exception $exc) {
-            $api->logWarn(910, "Warning on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : " . $exc->getMessage(), $exc);
+            $ret = parent::readAction();
+            if ($ret[0]) {
+                foreach ($ret[2] as $event) {
+                    
+                }
+            }
+            else
+                throw new ResourceException("No event found for given calendars");
+            return array(true, 'ok', $ret[2]);
+        } catch (Exception $ex) {
+            $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
         }
-        return $this->services[$serviceName];
     }
-
-    public function authClient() {
-        $authUrl = $this->client->createAuthUrl();
-        //Request authorization
-        print "Please visit:\n$authUrl\n\n";
-        print "Please enter the auth code:\n";
-        $authCode = trim(fgets(STDIN));
-        // Exchange authorization code for access token
-        $accessToken = $this->client->authenticate($authCode);
-        $this->client->setAccessToken($accessToken);
-        return true;
-    }
-
     
 }
 

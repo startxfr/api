@@ -37,13 +37,14 @@ class googlecalendarTestResource extends linkableResource implements IResource {
 
     public function readAction() {
         $api = Api::getInstance();
+        $data = $this->filterParams($api->getInput()->getParams(), "input");
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
-            $calendars = $this->getConfig('session_calendar_id');
-            if ($nextPath !== null) {                
+            $calendars = ($data['calendar']) ? array($data['calendar']) : $this->getConfig('session_calendar_id');
+            if ($nextPath !== null && $nextPath !== 'import') {                
                 foreach ($calendars as $cal) {
                     try {
                         $calEvent = $this->calendar->events->get($cal, $nextPath);
@@ -55,14 +56,11 @@ class googlecalendarTestResource extends linkableResource implements IResource {
                 return array(true, $message, $calEvent);
             } 
             else {
-                $calEvents = array();
-                $start = $input->getParam('start', null);
-                $end = $input->getParam('end', null);  
-                $timeMin = ($start !== null) ? date(DateTime::ATOM, $start) : null ;
-                $timeMax = ($end !== null) ? date(DateTime::ATOM, $end) : null ;
+                $calEvents = array(); 
+                $timeMin = ($data['start']) ? date(DateTime::ATOM, $data['start']) : null ;
+                $timeMax = ($data['end']) ? date(DateTime::ATOM, $data['end']) : null ;
                 $optParam = array("timeMin" => $timeMin, "timeMax" => $timeMax);
-                foreach ($calendars as $cal) {
-                    #$calEvents[] = $this->calendar->events->listEvents($cal)['items'];                    
+                foreach ($calendars as $cal) {                    
                     $calEvents = array_merge($calEvents, $this->calendar->events->listEvents($cal, $optParam)['items']);
                 }
                 $message = $this->getConfig('message_service_read', 'Calendar testing get all events');
@@ -77,18 +75,15 @@ class googlecalendarTestResource extends linkableResource implements IResource {
     
     public function createAction() {
         $api = Api::getInstance();
-        $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);      
-        $params =$api->getInput()->getParams();
+        $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);              
         try {
-            $event = new Google_Event();
-            $start = new Google_EventDateTime();
-            $end = new Google_EventDateTime();
-            $start->setDateTime(($params['event']['start']) ? date(DateTime::ATOM, $params['event']['start']) : null);
-            $end->setDateTime(($params['event']['end']) ? date(DateTime::ATOM, $params['event']['end']) : null);
-            $event->start = $start;
-            $event->end  = $end;
-            $event->summary = ($params['event']['title']) ? $params['event']['title'] : "";
-            $calId = ($params['calId']) ? $params['calId'] : null;
+            $event = new Google_Event();            
+            $data = $this->filterParams($api->getInput()->getParams(), "input");
+            $this->getGoogleDate($data, $event);
+            $event->summary = ($data['event']['summary']) ? $data['event']['summary'] : "";
+            $event->location = ($data['event']['location']) ? $data['event']['location'] : "";
+            $event->description = ($data['event']['description']) ? $data['event']['description'] : "";
+            $calId = ($data['calId']) ? $data['calId'] : null;
             $newEvent = $this->calendar->events->insert($calId, $event);
             return array(true, "Event created with id:".$newEvent['id'], $newEvent); 
         } catch (Exception $exc) {
@@ -102,9 +97,40 @@ class googlecalendarTestResource extends linkableResource implements IResource {
         $api = Api::getInstance();
         $api->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);      
         try {
+            $data = $this->filterParams($api->getInput()->getParams(), "input");
             $input = $api->getInput();
+            $sessElPosition = $input->getElementPosition($this->getConfig('path'));
+            $nextPath = $input->getElement($sessElPosition + 1);
             $calendars = $this->getConfig('session_calendar_id');
-                                                
+            if ($nextPath !== null) {                
+                foreach ($calendars as $cal) {
+                    try {
+                        $calEvent = $this->calendar->events->get($cal, $nextPath);
+                        $calId = $cal;
+                    } catch (Exception $exc) {
+                        $exc->getMessage();
+                    }
+                }
+                if ($calEvent !== null) {                               
+                    $event = new Google_Event();                     
+                    if (!$this->getGoogleDate($data, $event)) {
+                        $event->start = $calEvent['start'];
+                        $event->end  = $calEvent['end'];                     
+                    }
+                    $event->setSequence($calEvent['sequence']);
+                    $event->summary = ($data['event']['summary']) ? $data['event']['summary'] : $calEvent['summary'];
+                    $event->location = ($data['event']['location']) ? $data['event']['location'] : $calEvent['location'];
+                    $event->description = ($data['event']['description']) ? $data['event']['description'] : $calEvent['description'];                                        
+                    $res = $this->calendar->events->update($calId, $nextPath, $event);                                        
+                    $message = sprintf($this->getConfig('message_service_delete', 'Calendar testing get event-%s'), $nextPath);
+                    return array(true, $message, $res);
+                }
+                else
+                    throw new ResourceException("No Event with id:$nextPath found.");                
+            } 
+            else {
+                throw new ResourceException("Event_id of the event to update is required");
+            }                                     
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
@@ -120,7 +146,7 @@ class googlecalendarTestResource extends linkableResource implements IResource {
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
             $calendars = $this->getConfig('session_calendar_id');
-            if ($nextPath !== null) {                
+            if ($nextPath !== null) {               
                 foreach ($calendars as $cal) {
                     try {
                         $calEvent = $this->calendar->events->get($cal, $nextPath);
@@ -130,8 +156,10 @@ class googlecalendarTestResource extends linkableResource implements IResource {
                     }
                 }
                 if ($calEvent !== null)
-                    $res = $this->calendar->events->delete($calId, $calEvent);
-                $message = sprintf($this->getConfig('message_service_read', 'Calendar testing get event-%s'), $nextPath);
+                    $res = $this->calendar->events->delete($calId, $nextPath);
+                else
+                    throw new ResourceException("No Event with id:$nextPath found.");
+                $message = sprintf($this->getConfig('message_service_delete', 'Calendar testing get event-%s'), $nextPath);
                 return array(true, $message, $res);
             } 
             else {
@@ -157,6 +185,27 @@ class googlecalendarTestResource extends linkableResource implements IResource {
         return $this->services[$serviceName];
     }
    
+    private function getGoogleDate( $data, $event ) {
+        if (!$data['event']['start'] || !$data['event']['end'])
+            return false;
+        $start = new Google_EventDateTime();
+        $end = new Google_EventDateTime();
+        $tpStart = $data['event']['start'];
+        $tpEnd = $data['event']['end'];
+        $allDay = ($data['event']['allday']) ? $data['event']['allday'] : false;
+        if ($allDay) {
+            $start->setDate(date("Y-m-d", $tpStart));
+            $end->setDate(date("Y-m-d", $tpEnd + 86400));
+        }
+        else {
+            $start->setDateTime(date(DateTime::ATOM, $tpStart));
+            $end->setDateTime(date(DateTime::ATOM, $tpEnd));
+        }
+        $event->start = $start;
+        $event->end  = $end; 
+        return true;
+    }
+    
 }
 
 ?>
