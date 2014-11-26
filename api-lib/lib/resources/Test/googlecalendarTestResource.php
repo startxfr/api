@@ -44,7 +44,7 @@ class googlecalendarTestResource extends linkableResource implements IResource {
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
             $calendars = ($data['calendar']) ? array($data['calendar']) : $this->getConfig('session_calendar_id');
-            if ($nextPath !== null && $nextPath !== 'import') {                
+            if ($nextPath !== null) {                
                 foreach ($calendars as $cal) {
                     try {
                         $calEvent = $this->calendar->events->get($cal, $nextPath);

@@ -168,7 +168,7 @@
 //                        sxtest.do({
 //                            titre: "Test de calendar post",
 //                            method: "post",
-//                            path: "calendar",
+//                            path: "calendar/72src22osd60hme32rv598hhgg",
 //                            data: {format: "json", event: event, calId: "jr@startx.fr"},                            
 //                            next: sxtest.doEnd
 //                        });
@@ -178,9 +178,9 @@
                         var event = {summary: 'ahahahhaha', location: 'hell', start: "1416960000", end: "1416960000", allday: true};
                         sxtest.do({
                             titre: "Test de calendar put",
-                            method: "put",
-                            path: "calendar/72src22osd60hme32rv598hhgg",
-                            data: {format: "json", event: event},                            
+                            method: "post",
+                            path: "syncIn",
+                            data: {format: "json"},                            
                             next: sxtest.doEnd
                         });
                     },

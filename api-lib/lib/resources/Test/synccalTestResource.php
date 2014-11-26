@@ -11,38 +11,31 @@
 class synccalTestResource extends googlecalendarTestResource implements IResource {
 
     public function readAction() {
-        $api = Api::getInstance();
-        $data = $this->filterParams($api->getInput()->getParams(), "input");
+        return $this->createAction();
+        $api = Api::getInstance();        
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $input = $api->getInput();
-            $sessElPosition = $input->getElementPosition($this->getConfig('path'));
-            $nextPath = $input->getElement($sessElPosition + 1);
-            $calendars = ($data['calendar']) ? array($data['calendar']) : $this->getConfig('session_calendar_id');
-            if ($nextPath === 'import')
-                return $this->importCal();
-            if ($nextPath !== null) {                
-                foreach ($calendars as $cal) {
-                    try {
-                        $calEvent = $this->calendar->events->get($cal, $nextPath);
-                    } catch (Exception $exc) {
-                        $exc->getMessage();
+            $ret = parent::readAction();
+            if ($ret[0]) {
+                $nb_lost = 0;
+                $store = $api->getStore($this->getConfig('store', "nosql"));
+                $table = $this->getConfig('store_dataset_sessions', "formation.sessions.test");
+                $key = $this->getConfig('store_id_key', "_id");
+                $calEvents = $this->transformArray($ret[2]);                
+                $nosqlEvent = $store->read($table, array(), array(), 0, $store->readCount($table));
+                foreach ($nosqlEvent as $session) {
+                    if (($event = $calEvents[$session['calId']])) {
+                        $session['start'] = $event['start'];
+                        $session['end'] = $event['end'];
+                        $store->update($table, $key, $session['_id'], $session);
                     }
+                    else
+                        $nb_lost++;
                 }
-                $message = sprintf($this->getConfig('message_service_read', 'Calendar testing get event-%s'), $nextPath);
-                return array(true, $message, $calEvent);
-            } 
-            else {
-                $calEvents = array(); 
-                $timeMin = ($data['start']) ? date(DateTime::ATOM, $data['start']) : null ;
-                $timeMax = ($data['end']) ? date(DateTime::ATOM, $data['end']) : null ;
-                $optParam = array("timeMin" => $timeMin, "timeMax" => $timeMax);
-                foreach ($calendars as $cal) {                    
-                    $calEvents = array_merge($calEvents, $this->calendar->events->listEvents($cal, $optParam)['items']);
-                }
-                $message = $this->getConfig('message_service_read', 'Calendar testing get all events');
-                return array(true, "Calendar testing get all events", $calEvents); 
-            }                                    
+            }
+            else
+                throw new ResourceException("No event found for given calendars");   
+            return array(true, "Sync Google calendar to Api", $nb_lost);
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
@@ -51,8 +44,70 @@ class synccalTestResource extends googlecalendarTestResource implements IResourc
     }
     
     public function createAction() {
-        Api::getInstance()->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
-        return $this->importCal();
+        $api = Api::getInstance();
+        $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        try {
+            $ret = parent::readAction();
+            if ($ret[0]) {
+                $nb_lost = 0;
+                $store = $api->getStore($this->getConfig('store', "nosql"));
+                $SXAstore = $api->getStore($this->getConfig('external_store', "mysql")); 
+                $SXAstore->connect();
+                $table = $this->getConfig('store_dataset_sessions', "formation.sessions.test");               
+                $calEvents = $this->transformArray($ret[2]);                
+                $nosqlEvent = $store->read($table, array(), array(), 0, $store->readCount($table));
+                foreach ($nosqlEvent as $session) {
+                    if (($event = $calEvents[$session['calId']])) {
+                        $connect = $SXAstore->getNativeConnection();
+                        $sql = "SELECT * "
+                                . "FROM formateur "
+                                . "LEFT JOIN contact ON formateur.id_cont=contact.id_cont "
+                                //. "LEFT JOIN entreprise ON contact.id_ent=entreprise.id_ent "
+                                . "WHERE formateur.id_formateur=".$session['trainer']
+                                . "AND "
+                                . "FROM centre_formation "
+                                . "LEFT JOIN contact ON centre_formation.id_cont=contact.id_cont "
+                                . "LEFT JOIN entreprise ON contact.id_ent=entreprise.id_ent "
+                                . "WHERE centre_formation.id_centre=".$session['location']
+                                ;
+                        $sql2 = "SELECT * "                                
+                                . "FROM centre_formation "
+                                . "LEFT JOIN contact ON centre_formation.id_cont=contact.id_cont "
+                                . "LEFT JOIN entreprise ON contact.id_ent=entreprise.id_ent "
+                                . "WHERE centre_formation.id_centre=".$session['location']
+                                ;
+                        $result = $connect->query($sql2, PDO::FETCH_ASSOC);
+                        if ($result)
+                            $result = $result->fetchAll();
+                        var_dump($result);
+                        exit(0);
+                        $summary = "";
+                        $desc = "";
+                        $locus = "";
+                        $event['summary'] = $summary;
+                        $event['description']  = $desc;
+                        $event['location'] = $locus;                                                
+                    }
+                    else
+                        $nb_lost++;
+                }
+            }
+            else
+                throw new ResourceException("No event found for given calendars");   
+            return array(true, "Sync Google calendar to Api", $nb_lost);
+        } catch (Exception $exc) {
+            $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
+        }
+        return true;
+    }
+    
+    private function transformArray( $array ) {
+        $newArray = array();
+        foreach ( $array as $elem ) {
+            $newArray[$elem['id']] = $elem; 
+        }
+        return $newArray;
     }
     
     private function importCal() {
@@ -60,13 +115,22 @@ class synccalTestResource extends googlecalendarTestResource implements IResourc
         try {
             $ret = parent::readAction();
             if ($ret[0]) {
-                foreach ($ret[2] as $event) {
-                    
+                $store = $api->getStore($this->getConfig('store', "nosql"));                           
+                $new_ses = array();
+                foreach ($ret[2] as $event) {             
+                    if (preg_match('/[A-Z0-9]{2,7} : [A-Z]{2,5}/', $event['summary'])) 
+                        list($tr_code, $trainer) = explode(':', $event['summary']);
+                    else
+                        continue ;
+                    $start = $event['start'];
+                    $end = $event['end'];                                         
+                    $new_session = array('calId' => $event['id'], 'start' => $start, 'end' => $end, 'formation' => trim($tr_code), 'trainer'=> trim($trainer));                    
+                    $new_ses[] = $store->create($this->getConfig('store_dataset_sessions', "formation.sessions.test"), $new_session);
                 }
             }
             else
-                throw new ResourceException("No event found for given calendars");
-            return array(true, 'ok', $ret[2]);
+                throw new ResourceException("No event found for given calendars");   
+            return array(true, 'ok', $new_ses);
         } catch (Exception $ex) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
