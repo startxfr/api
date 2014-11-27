@@ -165,6 +165,28 @@ class mysqlStore extends defaultStore implements IStorage {
         return $this;
     }
 
+    public function execQuery($sql) {
+        try {
+            $this->connect();            
+            $this->_setQuery($sql);
+            $this->lastResult = $this->connection->query($this->_getQuery(), PDO::FETCH_ASSOC);
+            if ($this->lastResult !== false) {
+                $output = array();
+                foreach ($this->lastResult as $row) {
+                    $output[] = $row;
+                }
+                Api::getInstance()->logDebug(420, "'" . __FUNCTION__ . "' '" . get_class($this) . "' '" . @count($output) . "' result", array('table' => $table, 'criteria' => $criteria, 'order' => $order, 'start' => $start, 'stop' => $stop), 4);
+                return $output;
+            } else {
+                $error = $this->connection->errorInfo();
+                throw new StoreException($error[2]);
+            }
+        } catch (Exception $e) {
+            throw new StoreException("could not read entries from mysql storage because " . $e->getMessage());
+        }
+        return $this;
+    }
+    
     private function _setQuery($sqlQuery) {
         $this->lastQuery = $sqlQuery;
         return $this;

@@ -52,49 +52,61 @@ class synccalTestResource extends googlecalendarTestResource implements IResourc
                 $nb_lost = 0;
                 $store = $api->getStore($this->getConfig('store', "nosql"));
                 $SXAstore = $api->getStore($this->getConfig('external_store', "mysql")); 
-                $SXAstore->connect();
+                
                 $table = $this->getConfig('store_dataset_sessions', "formation.sessions.test");               
                 $calEvents = $this->transformArray($ret[2]);                
                 $nosqlEvent = $store->read($table, array(), array(), 0, $store->readCount($table));
                 foreach ($nosqlEvent as $session) {
-                    if (($event = $calEvents[$session['calId']])) {
-                        $connect = $SXAstore->getNativeConnection();
-                        $sql = "SELECT * "
+                    if (($event = $calEvents[$session['calId']])) {                                                
+                        $students = "(".implode(',', $session['students']).")";                        
+                        $sql_trainer = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont "
                                 . "FROM formateur "
-                                . "LEFT JOIN contact ON formateur.id_cont=contact.id_cont "
-                                //. "LEFT JOIN entreprise ON contact.id_ent=entreprise.id_ent "
-                                . "WHERE formateur.id_formateur=".$session['trainer']
-                                . "AND "
+                                . "LEFT JOIN contact ON formateur.id_cont = contact.id_cont "
+                                . "LEFT JOIN entreprise ON contact.entreprise_cont = entreprise.id_ent "
+                                . "WHERE formateur.id_formateur = ".$session['trainer']                                
+                                ;
+                        $sql_location = "SELECT contact.nom_cont, contact.prenom_cont, entreprise.add1_ent, entreprise.cp_ent, entreprise.ville_ent, entreprise.nom_ent "                                
                                 . "FROM centre_formation "
                                 . "LEFT JOIN contact ON centre_formation.id_cont=contact.id_cont "
-                                . "LEFT JOIN entreprise ON contact.id_ent=entreprise.id_ent "
+                                . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
                                 . "WHERE centre_formation.id_centre=".$session['location']
                                 ;
-                        $sql2 = "SELECT * "                                
-                                . "FROM centre_formation "
-                                . "LEFT JOIN contact ON centre_formation.id_cont=contact.id_cont "
-                                . "LEFT JOIN entreprise ON contact.id_ent=entreprise.id_ent "
-                                . "WHERE centre_formation.id_centre=".$session['location']
-                                ;
-                        $result = $connect->query($sql2, PDO::FETCH_ASSOC);
-                        if ($result)
-                            $result = $result->fetchAll();
-                        var_dump($result);
-                        exit(0);
-                        $summary = "";
+                        $sql_students = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont, entreprise.nom_ent "                                
+                                . "FROM etudiants "
+                                . "LEFT JOIN contact ON etudiants.id_cont = contact.id_cont "
+                                . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
+                                . "WHERE etudiants.id_etu IN ".$students
+                                ;                    
+                        $res1 = $SXAstore->execQuery($sql_trainer);
+                        $res2 = $SXAstore->execQuery($sql_location);
+                        $res3 = $SXAstore->execQuery($sql_students);                        
                         $desc = "";
-                        $locus = "";
-                        $event['summary'] = $summary;
-                        $event['description']  = $desc;
-                        $event['location'] = $locus;                                                
+                        foreach ($res3 as $student) {
+                            $desc .= $student['prenom_cont']." ".$student['nom_cont']." ".$student['nom_ent']."\r\n";
+                        }
+                        $summary = $session['formation']." : ".$res1[0]['prenom_cont']." ".$res1[0]['nom_cont'];                        
+                        $locus = $res2[0]['nom_ent']." ".$res2[0]['add1_ent']." ".$res2[0]['cp_ent']." ".$res2[0]['ville_ent'];                                                
+                        //var_dump($event);                        
+                        $new_event = new Google_Event();  
+                        $new_event->id = $session['calId'];
+                        #$new_event->etag = $event['etag'];
+                        $new_event->start = $event['start'];
+                        $new_event->end  = $event['end'];                                         
+                        #$new_event->setSequence($event['sequence']);
+                        $new_event->summary = $summary;
+                        $new_event->location = $desc;
+                        $new_event->description = $locus;       
+                        #var_dump($new_event);                         
+                        $res = $this->calendar->events->insert('jr@startx.fr', $new_event);
+                        #$res = $this->calendar->events->update('jr@startx.fr', $session['calId'], $new_event);                   
                     }
                     else
                         $nb_lost++;
-                }
+                }               
             }
             else
                 throw new ResourceException("No event found for given calendars");   
-            return array(true, "Sync Google calendar to Api", $nb_lost);
+            return array(true, "Sync Google calendar to Api", $res);
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);

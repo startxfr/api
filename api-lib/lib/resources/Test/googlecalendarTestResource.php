@@ -185,7 +185,7 @@ class googlecalendarTestResource extends linkableResource implements IResource {
         return $this->services[$serviceName];
     }
    
-    private function getGoogleDate( $data, $event ) {
+    protected function getGoogleDate( $data, $event ) {
         if (!$data['event']['start'] || !$data['event']['end'])
             return false;
         $start = new Google_EventDateTime();
