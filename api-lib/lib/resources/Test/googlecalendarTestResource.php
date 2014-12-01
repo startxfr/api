@@ -8,7 +8,7 @@
  * @see      readonlyResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class googlecalendarTestResource extends linkableResource implements IResource {
+class googlecalendarTestResource extends nosqlStoreResource implements IResource {
 
     protected $client = null;
     protected $calendar = null;
@@ -28,7 +28,7 @@ class googlecalendarTestResource extends linkableResource implements IResource {
         $this->client->setClientSecret($this->getConfig('client_secret'));
         $this->client->setRedirectUri("http://localhost/startx/api/calendar");           
         $store = $api->getStore($this->getConfig('store'));
-        $data = $store->readOne($this->getConfig('store_dataset'), array($this->getConfig('store_id_key') => $this->getConfig('user_id')));
+        $data = $store->readOne($this->getConfig('dataset_users'), array($this->getConfig('id_key') => $this->getConfig('user_id')));
         $refreshToken = $data['refresh_token'];
         $this->calendar = $this->loadServices();
         $this->client->refreshToken($refreshToken);
@@ -84,6 +84,8 @@ class googlecalendarTestResource extends linkableResource implements IResource {
             $event->location = ($data['event']['location']) ? $data['event']['location'] : "";
             $event->description = ($data['event']['description']) ? $data['event']['description'] : "";
             $calId = ($data['calId']) ? $data['calId'] : null;
+            var_dump($event);
+            exit(0);
             $newEvent = $this->calendar->events->insert($calId, $event);
             return array(true, "Event created with id:".$newEvent['id'], $newEvent); 
         } catch (Exception $exc) {
@@ -205,6 +207,36 @@ class googlecalendarTestResource extends linkableResource implements IResource {
         $event->end  = $end; 
         return true;
     }
+        
+    protected function populateSession( $store, $session ) {                                                        
+        $students = "(".implode(',', $session['students']).")";                        
+        $sql_trainer = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont "
+                . "FROM formateur "
+                . "LEFT JOIN contact ON formateur.id_cont = contact.id_cont "
+                . "LEFT JOIN entreprise ON contact.entreprise_cont = entreprise.id_ent "
+                . "WHERE formateur.id_formateur = ".$session['trainer']                                
+                ;
+        $sql_location = "SELECT contact.nom_cont, contact.prenom_cont, entreprise.add1_ent, entreprise.cp_ent, entreprise.ville_ent, entreprise.nom_ent "                                
+                . "FROM centre_formation "
+                . "LEFT JOIN contact ON centre_formation.id_cont=contact.id_cont "
+                . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
+                . "WHERE centre_formation.id_centre=".$session['location']
+                ;
+        $sql_students = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont, entreprise.nom_ent "                                
+                . "FROM etudiants "
+                . "LEFT JOIN contact ON etudiants.id_cont = contact.id_cont "
+                . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
+                . "WHERE etudiants.id_etu IN ".$students
+                ; 
+        $res = [];
+        $res['trainer'] = $store->execQuery($sql_trainer);
+        $res['trainer'] = $res['trainer'][0];
+        $res['location'] = $store->execQuery($sql_location);
+        $res['location'] = $res['location'][0];
+        $res['students'] = $store->execQuery($sql_students); 
+        return $res;
+    }
+    
     
 }
 

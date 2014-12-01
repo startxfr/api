@@ -19,8 +19,8 @@ class synccalTestResource extends googlecalendarTestResource implements IResourc
             if ($ret[0]) {
                 $nb_lost = 0;
                 $store = $api->getStore($this->getConfig('store', "nosql"));
-                $table = $this->getConfig('store_dataset_sessions', "formation.sessions.test");
-                $key = $this->getConfig('store_id_key', "_id");
+                $table = $this->getConfig('dataset', "formation.sessions.test");
+                $key = $this->getConfig('id_key', "_id");
                 $calEvents = $this->transformArray($ret[2]);                
                 $nosqlEvent = $store->read($table, array(), array(), 0, $store->readCount($table));
                 foreach ($nosqlEvent as $session) {
@@ -51,62 +51,50 @@ class synccalTestResource extends googlecalendarTestResource implements IResourc
             if ($ret[0]) {
                 $nb_lost = 0;
                 $store = $api->getStore($this->getConfig('store', "nosql"));
-                $SXAstore = $api->getStore($this->getConfig('external_store', "mysql")); 
-                
-                $table = $this->getConfig('store_dataset_sessions', "formation.sessions.test");               
+                $sqlStore = $api->getStore($this->getConfig('external_store', "mysql"));                 
+                $table = $this->getConfig('dataset', "formation.sessions.test");               
                 $calEvents = $this->transformArray($ret[2]);                
                 $nosqlEvent = $store->read($table, array(), array(), 0, $store->readCount($table));
+                $i = 0;
                 foreach ($nosqlEvent as $session) {
                     if (($event = $calEvents[$session['calId']])) {                                                
-                        $students = "(".implode(',', $session['students']).")";                        
-                        $sql_trainer = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont "
-                                . "FROM formateur "
-                                . "LEFT JOIN contact ON formateur.id_cont = contact.id_cont "
-                                . "LEFT JOIN entreprise ON contact.entreprise_cont = entreprise.id_ent "
-                                . "WHERE formateur.id_formateur = ".$session['trainer']                                
-                                ;
-                        $sql_location = "SELECT contact.nom_cont, contact.prenom_cont, entreprise.add1_ent, entreprise.cp_ent, entreprise.ville_ent, entreprise.nom_ent "                                
-                                . "FROM centre_formation "
-                                . "LEFT JOIN contact ON centre_formation.id_cont=contact.id_cont "
-                                . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
-                                . "WHERE centre_formation.id_centre=".$session['location']
-                                ;
-                        $sql_students = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont, entreprise.nom_ent "                                
-                                . "FROM etudiants "
-                                . "LEFT JOIN contact ON etudiants.id_cont = contact.id_cont "
-                                . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
-                                . "WHERE etudiants.id_etu IN ".$students
-                                ;                    
-                        $res1 = $SXAstore->execQuery($sql_trainer);
-                        $res2 = $SXAstore->execQuery($sql_location);
-                        $res3 = $SXAstore->execQuery($sql_students);                        
+                        $res = $this->populateSession($sqlStore, $session);                        
                         $desc = "";
-                        foreach ($res3 as $student) {
+                        foreach ($res['students'] as $student) {
                             $desc .= $student['prenom_cont']." ".$student['nom_cont']." ".$student['nom_ent']."\r\n";
                         }
-                        $summary = $session['formation']." : ".$res1[0]['prenom_cont']." ".$res1[0]['nom_cont'];                        
-                        $locus = $res2[0]['nom_ent']." ".$res2[0]['add1_ent']." ".$res2[0]['cp_ent']." ".$res2[0]['ville_ent'];                                                
+                        $summary = $session['formation']." : ".$res['trainer']['prenom_cont']." ".$res['trainer']['nom_cont'];                        
+                        $locus = $res['location']['nom_ent']." ".$res['location']['add1_ent']." ".$res['location']['cp_ent']." ".$res['location']['ville_ent'];                                                
                         //var_dump($event);                        
                         $new_event = new Google_Event();  
+                        $data = [];                        
+                        $data['event']['start'] = "1415873600";
+                        $data['event']['end']   = "1416960000";
+                        $this->getGoogleDate($data, $new_event);
                         $new_event->id = $session['calId'];
                         #$new_event->etag = $event['etag'];
-                        $new_event->start = $event['start'];
-                        $new_event->end  = $event['end'];                                         
+                        //$new_event->start = $event['start'];
+                        //$new_event->end  = $event['end'];                                         
                         #$new_event->setSequence($event['sequence']);
                         $new_event->summary = $summary;
                         $new_event->location = $desc;
-                        $new_event->description = $locus;       
-                        #var_dump($new_event);                         
-                        $res = $this->calendar->events->insert('jr@startx.fr', $new_event);
+                        $new_event->description = $locus;                      
+//                         var_dump($event);                       
+//                        var_dump($new_event);
+//                        exit(0);
+                        if ($i === 1)
+                            exit(0);
+                        $i++;
+                        $return = $this->calendar->events->insert('jr@startx.fr', $new_event);
                         #$res = $this->calendar->events->update('jr@startx.fr', $session['calId'], $new_event);                   
                     }
                     else
                         $nb_lost++;
-                }               
+                }      
+                return array(true, "Sync Google calendar to Api", $return);
             }
             else
-                throw new ResourceException("No event found for given calendars");   
-            return array(true, "Sync Google calendar to Api", $res);
+                throw new ResourceException("No event found for given calendars");               
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
@@ -137,13 +125,13 @@ class synccalTestResource extends googlecalendarTestResource implements IResourc
                     $start = $event['start'];
                     $end = $event['end'];                                         
                     $new_session = array('calId' => $event['id'], 'start' => $start, 'end' => $end, 'formation' => trim($tr_code), 'trainer'=> trim($trainer));                    
-                    $new_ses[] = $store->create($this->getConfig('store_dataset_sessions', "formation.sessions.test"), $new_session);
+                    $new_ses[] = $store->create($this->getConfig('dataset', "formation.sessions.test"), $new_session);
                 }
             }
             else
                 throw new ResourceException("No event found for given calendars");   
             return array(true, 'ok', $new_ses);
-        } catch (Exception $ex) {
+        } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 401);
         }
