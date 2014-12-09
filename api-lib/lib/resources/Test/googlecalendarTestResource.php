@@ -8,7 +8,7 @@
  * @see      readonlyResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class googlecalendarTestResource extends nosqlStoreResource implements IResource {
+class googlecalendarTestResource extends linkableResource implements IResource {
 
     protected $client = null;
     protected $calendar = null;
@@ -209,7 +209,9 @@ class googlecalendarTestResource extends nosqlStoreResource implements IResource
     }
         
     protected function populateSession( $store, $session ) {                                                        
-        $students = "(".implode(',', $session['students']).")";                        
+        $students = "(".implode(',', $session['students']).")";
+        $utf = "SET NAMES utf8 ; ";  
+        $store->execQuery($utf);
         $sql_trainer = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont "
                 . "FROM formateur "
                 . "LEFT JOIN contact ON formateur.id_cont = contact.id_cont "
