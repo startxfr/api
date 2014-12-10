@@ -63,7 +63,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
                     return array(true, $message, $return, count($return));
                 }
                 else {                                                      
-                    $sort = $api->getInput()->getJsonParam($this->getConfig('sortParam', 'sort'), '[]');
+                    $sort = $api->getInput()->getJsonParam($this->getConfig('sortParam', '_sort'), '[]');
                     $order = array();
                     if (is_array($sort)) {
                         foreach ($sort as $k => $val) {
@@ -72,10 +72,10 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
                     }
                     else
                         $order['id'] = 'ASC';                    
-                    $countResult = $this->getStorage()->readCount($this->getConfig('dataset'), $search);
-                    $start = $api->getInput()->getParam($this->getConfig('startParam', 'start'), 0);
-                    $max = $api->getInput()->getParam($this->getConfig('limitParam', 'limit'), $countResult);                
-                    $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max);            
+                    $countResult = $this->getStorage()->readCount($this->getConfig('dataset'));
+                    $start = (int) $api->getInput()->getParam($this->getConfig('startParam', '_start'), 0);
+                    $max = (int) $api->getInput()->getParam($this->getConfig('limitParam', '_limit'), $countResult);
+                    $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max); 
                     $return = $this->filterResults($data);
                     $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);

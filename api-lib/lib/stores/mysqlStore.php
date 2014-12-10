@@ -168,7 +168,7 @@ class mysqlStore extends defaultStore implements IStorage {
     public function execQuery($sql) {
         try {
             $this->connect();            
-            $this->_setQuery($sql);
+            $this->_setQuery($sql);           
             $this->lastResult = $this->connection->query($this->_getQuery(), PDO::FETCH_ASSOC);
             if ($this->lastResult !== false) {
                 $output = array();
