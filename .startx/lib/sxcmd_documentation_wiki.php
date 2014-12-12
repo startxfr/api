@@ -43,6 +43,42 @@ function sanitizeFiles($list) {
     return $new_list;
 }
 
+function prepExample($ConfExample)
+{
+	$conf = json_encode($ConfExample);
+	$example = "\r\n\r\n##Resource configuration example:##\r\n\r\n";
+	$example .= "```json\r\n";
+
+	$pad = 0;
+	$new_conf = "";
+	for ($i = 0 ; $i < strlen($conf) ; $i++)
+	{
+		$add = "";
+		$pos = $conf[$i];
+		if ($pos === "{" || $pos === "[") {
+			$pad++;
+			$add = $pos . "\n" . str_pad("", 2*$pad);
+		}
+		else if ($pos === "}" || $pos === "]") {
+			$pad--;
+			$add = "\n" . str_pad("", 2*$pad) . $pos;
+		}
+		else if ($pos === ",") {
+			$add = $pos . "\n" . str_pad("", 2*$pad);
+		}
+		else if ($pos === ":") {
+			$add = str_pad($pos, 3, " ", STR_PAD_BOTH);
+		}
+		else
+			$add = $pos;
+		$new_conf .= $add;
+	}
+	$example .= $new_conf;
+	$example .= "\r\n```\r\n";
+
+	return $example;
+}
+
 function sortProperties($array)
 {
 	$i = 0;
@@ -103,8 +139,9 @@ function createMdPage($file, $dirO) {
     }
     $fd = fopen($filedir . $ep . $file . ".md", "w");
 
-    $title = "##" . $obj["class_name"] . "\r\n\n";
-    $desc = $obj["desc"] . "\r\n\n";
+    $title = "#" . $obj["class_name"] . "\r\n\r\n";
+    $desc = $obj["desc"] . "\r\n\r\n";
+	$desc .= "##Resource configuration options:##\r\n\r\n";
     $table = "|name|type|mandatory|desc|\r\n|----|----|----|----|\r\n";
     foreach ($obj["properties"] as $line) {
         $table .= "|" . $line["name"] . "|" . $line["type"] . "|"
@@ -114,6 +151,7 @@ function createMdPage($file, $dirO) {
     if (isset($obj['family'])) {
         $obj['family'] = array_reverse($obj['family']);
         $right_spaces = "  ";
+		$family_ref .= "\r\n\r\n###Resource inheritance:\r\n\r\n";
         foreach ($obj["family"] as $parent) {
             $family_ref .= "* [" . $parent . "](" . $ep . $parent . ")" . "\r\n" . $right_spaces;
             $right_spaces .= "  ";
@@ -122,16 +160,12 @@ function createMdPage($file, $dirO) {
     $family_ref .= "* " . $obj["class_name"];
     $family_ref .= "\r\n";
 
+	$example = "";
 	if (isset($obj['example'])) {
-		$family_ref .= "\r\n";
-		$family_ref .= "```json\r\n";
-		$family_ref .= preg_replace("/,/", ",\n", json_encode($obj['example']));
-		$family_ref .= preg_replace("/^{/", "{\n", json_encode($obj['example']));
-		$family_ref .= preg_replace("/}$/", "\n}", json_encode($obj['example']));
-		$family_ref .= "\r\n```\r\n";
+		$example = prepExample($obj['example']);
 	}
 
-	fwrite($fd, $title . $desc . $table . $family_ref);
+	fwrite($fd, $title . $desc . $table . $example . $family_ref);
 	fclose($fd);
 	return 1;
 }
@@ -161,7 +195,7 @@ function createSidebar($dir) {
     $fdS = fopen($dir . "_Sidebar.md", "w");
     $fdI = fopen($dir . $ep . "Index_" . sanitize($dir) . ".md", "w");
     $files = glob("$dir*", GLOB_MARK);
-    $head = "[back home](Home)\r\n\r\n[back to resources](" . $ep . "Index_resources)\r\n\r\n";
+    $head = "+ **[back home](Home)**\r\n+ **[back to resources](" . $ep . "Index_resources)**\r\n\r\n";
     $title = "**" . sanitize($dir) . "**" . "\r\n";
     $file_link = "";
     $dir_link = "";

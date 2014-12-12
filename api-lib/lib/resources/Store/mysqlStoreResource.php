@@ -16,7 +16,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
   "properties":
 	[
 		{
-			"name":"store_dataset",
+			"name":"dataset",
 			"type":"string",
 			"mandatory":"true",
 			"desc":"name of the dataset in which to search"
@@ -28,9 +28,9 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
         parent::init();
         if (!is_object($this->storage) or get_class($this->storage) != 'mysqlStore')
             throw new ResourceException("Could not " . __FUNCTION__ . " " . get_class($this) . " because the provided store is not of type mysql", 908);
-        if ($this->getConfig('store_dataset', '') == '') {
-            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'store_dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'store_dataset' attribute");
+        if ($this->getConfig('dataset', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'dataset' attribute");
         }
         return $this;
     }
@@ -42,32 +42,45 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
             $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
-                // recherche d'une clef en particulier                
-                $data = $this->getStorage()->readOne($this->getConfig('store_dataset'), array($this->getConfig('id_key', "_id") => $nextPath)); 
+                // recherche d'une clef en particulier 
+                $utf = "SET NAMES utf8 ; ";  
+                $this->getStorage()->execQuery($utf);
+                $data = $this->getStorage()->readOne($this->getConfig('dataset'), array($this->getConfig('id_key', "_id") => $nextPath)); 
                 $return = $this->filterParams($data, "output");                                
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
             } else {
-                //affichage de toutes les clefs
+                //affichage de toutes les clefs  
+                $utf = "SET NAMES utf8 ; ";                  
+                $this->getStorage()->execQuery($utf);
                 $search = $this->filterParams($api->getInput()->getParams(), "input");
-                $sort = $api->getInput()->getJsonParam($this->getConfig('sortParam', 'sort'), '[]');
-                $order = array();
-                if (is_array($sort)) {
-                    foreach ($sort as $k => $val) {
-                        $order[$val['property']] = (strtoupper(trim($val['direction'])) == 'DESC') ? -1 : 1;
-                    }
+                if (array_key_exists("customQuery", $search)) {                    
+                    $data = $this->getStorage()->execQuery($search['customQuery']);            
+                    $return = $this->filterResults($data);
+                    $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return));
+                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
+                    return array(true, $message, $return, count($return));
                 }
-                else
-                    $order['id'] = 'ASC';
-                $start = $api->getInput()->getParam($this->getConfig('startParam', 'start'), 0);
-                $max = $api->getInput()->getParam($this->getConfig('limitParam', 'limit'), 30);
-                $data = $this->getStorage()->read($this->getConfig('store_dataset'), $search, $order, $start, $max);
-                $return = $this->filterResults($data);
-                $countResult = $this->getStorage()->readCount($this->getConfig('store_dataset'), $search);
-                $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
-                $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                return array(true, $message, $return, $countResult);
+                else {                                                      
+                    $sort = $api->getInput()->getJsonParam($this->getConfig('sortParam', '_sort'), '[]');
+                    $order = array();
+                    if (is_array($sort)) {
+                        foreach ($sort as $k => $val) {
+                            $order[$val['property']] = (strtoupper(trim($val['direction'])) == 'DESC') ? -1 : 1;
+                        }
+                    }
+                    else
+                        $order['id'] = 'ASC';                    
+                    $countResult = $this->getStorage()->readCount($this->getConfig('dataset'));
+                    $start = (int) $api->getInput()->getParam($this->getConfig('startParam', '_start'), 0);
+                    $max = (int) $api->getInput()->getParam($this->getConfig('limitParam', '_limit'), $countResult);
+                    $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max); 
+                    $return = $this->filterResults($data);
+                    $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
+                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
+                    return array(true, $message, $return, $countResult);
+                }
             }
         } catch (Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
@@ -80,7 +93,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $newId = $this->getStorage()->create($this->getConfig('store_dataset'), $this->filterParams($api->getInput()->getParams(), "input"));
+            $newId = $this->getStorage()->create($this->getConfig('dataset'), $this->filterParams($api->getInput()->getParams(), "input"));
             $message = sprintf($this->getConfig('message_service_create', 'message service create'), $newId);
             $api->logInfo(930, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
             return array(true, $message, $newId);
@@ -100,7 +113,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
             if ($nextPath !== null) {                
                 $data = $api->getInput()->getParams();
                 unset($data[$this->getConfig('id_key', '_id')]);
-                $return =  $this->getStorage()->update($this->getConfig('store_dataset'), $this->getConfig('id_key', "_id"), $nextPath, $this->filterParams($data, "input"));        
+                $return =  $this->getStorage()->update($this->getConfig('dataset'), $this->getConfig('id_key', "_id"), $nextPath, $this->filterParams($data, "input"));        
                 $message = sprintf($this->getConfig('message_service_update', 'message service update'), $nextPath);
                 $api->logInfo(950, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);
@@ -121,7 +134,7 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
             $sessElPosition = $api->getInput()->getElementPosition($this->getConfig('path'));
             $nextPath = $api->getInput()->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
-                $return = $this->getStorage()->delete($this->getConfig('store_dataset'), $this->getConfig('id_key', "_id"), $nextPath);
+                $return = $this->getStorage()->delete($this->getConfig('dataset'), $this->getConfig('id_key', "_id"), $nextPath);
                 $message = sprintf($this->getConfig('message_service_delete', 'message service delete'), $nextPath);
                 $api->logInfo(970, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
                 return array(true, $message, $return);

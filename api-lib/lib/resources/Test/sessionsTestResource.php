@@ -9,10 +9,10 @@
  * @see      defaultModelResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class nosqlStoreResource extends defaultStoreResource implements IResource {
+class sessionsTestResource extends googlecalendarTestResource implements IResource {
 
-    static public $ConfDesc = '{"class_name":"nosqlStoreResource",
-  "desc":"Resource to access nosql storage",
+    static public $ConfDesc = '{"class_name":"sessionsFormationStartxResource",
+  "desc":"Resource to access session in nosql storage",
   "properties":
 	[
 		{
@@ -20,44 +20,22 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
 			"type":"string",
 			"mandatory":"true",
 			"desc":"name of the dataset in which to search"
-		},
-                {
-			"name":"filter_mongoid",
-			"type":"bool",
-			"mandatory":"false",
-			"desc":"if true id_key will be converted to a MongoId object"
-		},
-                {
-			"name":"filter_mongodate",
-			"type":"string",
-			"mandatory":"false",
-			"desc":"list of parameters to be converted in MongoDate object"
 		}
 	]
 }';
       
-    public function init() {
-        parent::init();
-        if (!is_object($this->storage) or get_class($this->storage) != 'nosqlStore')
-            throw new ResourceException("Could not " . __FUNCTION__ . " " . get_class($this) . " because the provided store is not of type nosql", 908);
-        if ($this->getConfig('dataset', '') == '') {
-            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'dataset' attribute");
-        }
-        $this->prepareMongoDateFilter();
-        return $this;
-    }
-
     public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(910, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
+            $sqlStore = $api->getStore($this->getConfig('external_store', "mysql")); 
             $input = $api->getInput();
             $sessElPosition = $input->getElementPosition($this->getConfig('path'));
             $nextPath = $input->getElement($sessElPosition + 1);
             if ($nextPath !== null) {
                 // recherche d'une clef en particulier
-                $data = $this->getStorage()->readOne($this->getConfig('dataset'), array($this->getConfig('id_key', '_id') => $this->convertMongoId($nextPath)));
+                $session = $this->getStorage()->readOne($this->getConfig('dataset'), array($this->getConfig('id_key', '_id') => $this->convertMongoId($nextPath)));
+                $data = $this->populateSession($sqlStore, $session);
                 $return = $this->filterParams($data, "output");
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), 1, 1, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
@@ -75,9 +53,15 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
                 else
                     $order['_id'] = 1;
                 $start = $input->getParam($this->getConfig('startParam', 'start'), 0);
-                $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);                                                                
-                $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max);
-                $return =  $this->filterResults(iterator_to_array($data,false), "output");            
+                $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);  
+                $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max);                
+                $return =  $this->filterResults(iterator_to_array($data,false), "output");                   
+                for ($i = 0 ; $i < count($return) ; $i++) {
+                    $res = $this->populateSession($sqlStore, $return[$i]);
+                    $return[$i]['location'] = $res['location']; 
+                    $return[$i]['trainer'] = $res['trainer'];
+                    $return[$i]['students'] = $res['students'];
+                }
                 $countResult = $this->getStorage()->readCount($this->getConfig('dataset'), $search);            
                 $message = sprintf($this->getConfig('message_service_read', 'message service read'), count($return), $countResult, session_id());
                 $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
@@ -154,67 +138,6 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
             return array(false, $exc->getCode(), $exc->getMessage(), array(), 500);
         }
         return true;
-    }
-
-    protected function filterResults($results) {
-        if (is_array($results))
-            foreach ($results as $k => $v) {
-                foreach ($v as $k2 => $v2) {
-                    if ($k2 == $this->getConfig('id_key', '_id') and is_object($v2) and get_class($v2) == 'MongoId')
-                        $results[$k][$k2] = (string) $v2;
-                    elseif (is_object($v2) and get_class($v2) == 'MongoDate')
-                        $results[$k][$k2] = date('Y-m-d H:i:s', (string) $v2->sec);
-                }
-            }
-        return parent::filterResults($results);
-    }
-    
-    protected function convertMongoId($id) {
-        if ($this->getConfig("filter_mongoid", false) !== false && get_class($id) != 'MongoId') {
-            if (strlen($id) === 24 && ctype_xdigit($id))
-                return new MongoId($id);        
-            return new MongoId();
-        }
-        return $id;
-    }
-    
-    protected function convertMongoDate($params) {
-        if (($date_filter = $this->getConfig("filter_mongodate", null)) !== null) {
-            foreach ($params as $key => $val) {
-                foreach ($date_filter as $elem) {
-                    if ($key === $elem && (ctype_digit($val) || ($val = strtotime($val)) !== false))
-                        $params[$key] = new MongoDate($val);
-                }
-            }
-        }
-    }
-    
-    public function filterParams($params, $way) {
-        if ($way === "input") {
-            if (array_key_exists("_id", $params)) {
-                $params['_id'] = $this->convertMongoId($params['_id']);                
-            }
-            $this->convertMongoDate($params);
-        }
-        else if ($way === "output") {
-            foreach ($params as $k => $v) {
-                if ($k == $this->getConfig('id_key', '_id') and is_object($v) and get_class($v) == 'MongoId')
-                    $params[$k] = (string) $v;
-                elseif (is_object($v) and get_class($v) == 'MongoDate')
-                    $params[$k] = date('Y-m-d H:i:s', $v->sec);
-            }    
-        }
-        return parent::filterParams($params, $way);
-    }
-    
-    private function prepareMongoDateFilter() {
-        if (($date_filter = $this->getConfig("filter_mongodate", null)) !== null) {
-            if (is_string($date_filter)) {
-                $this->setConfig("filter_mongodate", explode(",", $date_filter));
-            }
-            else
-                $this->setConfig("filter_mongodate", null);
-        }
     }
     
 }
