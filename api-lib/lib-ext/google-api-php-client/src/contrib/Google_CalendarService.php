@@ -151,7 +151,9 @@
     public function listCalendarList($optParams = array()) {
       $params = array();
       $params = array_merge($params, $optParams);
+//      var_dump('google calendar service');
       $data = $this->__call('list', array($params));
+//      var_dump($data);
       if ($this->useObjects()) {
         return new Google_CalendarList($data);
       } else {

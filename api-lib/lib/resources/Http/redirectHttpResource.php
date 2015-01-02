@@ -31,7 +31,7 @@ class redirectHttpResource extends defaultHttpResource implements IResource {
                 try {
                     $store = $api->getStore($configRecord['store']);
                     $trace = $this->createHitTrace();
-                    $store->create($configRecord['collection'], $trace);
+                    $store->create($configRecord['dataset'], $trace);
                 } catch (Exception $exc) {
                     $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' when trying to record redirect trace : " . $exc->getMessage(), $exc);
                     if ($configRecord['fatal'] === true)

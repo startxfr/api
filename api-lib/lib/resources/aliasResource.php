@@ -21,10 +21,10 @@ class aliasResource extends linkableResource implements IResource {
 			"desc":"id of the resource to alias"
 		},
 		{
-			"name":"collection",
+			"name":"dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"collection of the store to query for the resource conf"
+			"desc":"dataset of the store to query for the resource conf"
 		},
                 {
 			"name":"find_filter",
@@ -32,7 +32,17 @@ class aliasResource extends linkableResource implements IResource {
 			"mandatory":"false",
 			"desc":"optional array of config arguments not to import from resource config"
 		}
-	]
+	],
+        "example": {
+  "_id": "alias",
+  "alias_id": "contacts",
+  "class": "aliasResource",
+  "dataset": "startx.resources",
+  "find_filter": {
+    "message_service_read": false
+  },
+  "message_service_read": "returning %s contact(s) entries on %s entries found life is good with aliases"
+}
 }'
 ;
     
@@ -45,13 +55,13 @@ class aliasResource extends linkableResource implements IResource {
             Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'alias_id' attribute", $this->getResourceTrace(__FUNCTION__, false));
             throw new ResourceException(get_class($this) . " resource config should contain the 'alias_id' attribute");
         }
-        if ($this->getConfig('collection', '') == '') {
-            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'collection' attribute");
+        if ($this->getConfig('dataset', '') == '') {
+            Api::getInstance()->logError(906, get_class($this) . " resource config should contain the 'dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'dataset' attribute");
         }        
         $criteria = array('_id' => $this->getConfig('alias_id'));
         $filter = $this->getConfig('find_filter', array());
-        $collect = $this->getConfig('collection');
+        $collect = $this->getConfig('dataset');
         $db_connect = $api->nosqlConnection;
         $alias_config = $db_connect->selectCollection($collect)->findOne($criteria, $filter);
         $alias_object = $alias_config['class'];       

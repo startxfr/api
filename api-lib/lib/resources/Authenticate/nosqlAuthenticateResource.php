@@ -32,25 +32,25 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
                                 "properties":
 	[
                 {
-			"name":"nosql_store",
+			"name":"store",
 			"type":"string",
 			"mandatory":"true",
 			"desc":"nosql store"
 		},                
                 {
-			"name":"nosql_collection",
+			"name":"store_dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"nosql collection to query"
+			"desc":"nosql dataset to query"
 		},
                 {
-			"name":"nosql_id_key",
+			"name":"store_id_key",
 			"type":"string",
 			"mandatory":"true",
 			"desc":"name of the id use in nosql"
 		},
                 {
-			"name":"nosql_pwd_key",
+			"name":"store_pwd_key",
 			"type":"string",
 			"mandatory":"true",
 			"desc":"name of the pwd key use in nosql"
@@ -80,21 +80,21 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
     public function __construct($config) {
         parent::__construct($config);
         $api = Api::getInstance();        
-        if ($this->getConfig('nosql_store', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_store' attribute");
+        if ($this->getConfig('store', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store' attribute");
         }
-        if ($this->getConfig('nosql_collection', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_collection' attribute");
+        if ($this->getConfig('store_dataset', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_dataset' attribute");
         }
-        if ($this->getConfig('nosql_id_key', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_id_key' attribute");
+        if ($this->getConfig('store_id_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_id_key' attribute");
         }
-        if ($this->getConfig('nosql_pwd_key', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_pwd_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_pwd_key' attribute");
+        if ($this->getConfig('store_pwd_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'store_pwd_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'store_pwd_key' attribute");
         }
         if ($this->getConfig('pwd_param', '') == '') {
             $api->logError(906, get_class($this) . " resource config should contain the 'pwd_param' attribute", $this->getResourceTrace(__FUNCTION__, false));
@@ -138,11 +138,11 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
 
     private function doAuthenticate($login, $pass) {
         $api = Api::getInstance();
-        $store = $api->getStore($this->getConfig('nosql_store', 'nosql'));
+        $store = $api->getStore($this->getConfig('store', 'nosql'));
         if ($login == '')
-            throw new ResourceException(sprintf($this->getConfig('message_service_noid'), $this->getConfig('login_param', "login")), 911);
+            throw new ResourceException($this->getConfig('message_service_badid'), 911);
         elseif ($pass == '')
-            throw new ResourceException(sprintf($this->getConfig('message_service_nopwd'), $this->getConfig('pwd_param', 'pwd')), 912);
+            throw new ResourceException($this->getConfig('message_service_badpwd'), 912);
         switch ($this->getConfig('pwd_encryption', 'none')) {
             case 'sha256':
                 $pass = hash("sha256", $pass);
@@ -150,17 +150,18 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
             default:
                 break;
         }
-        $data = $store->readOne($this->getConfig('nosql_collection', 'sxapi.users'), array(
-            $this->getConfig('nosql_id_key', "_id") => $login,
-            $this->getConfig('nosql_pwd_key', 'pwd') => $pass
-                ));
-        if (is_array($data) and $data[$this->getConfig('nosql_id_key', "_id")] == $login) {
+        $data = $store->readOne($this->getConfig('store_dataset', 'sxapi.users'), array(
+            $this->getConfig('store_id_key', "_id") => $login
+        ));
+        if (!is_array($data))
+            throw new ResourceException($this->getConfig('message_service_badid'));
+        else if ($data[$this->getConfig('store_pwd_key', 'pwd')] !== $pass)
+            throw new ResourceException($this->getConfig('message_service_badpwd'));
+        else {
             $api->logInfo(960, "User '" . $login . "' authenticated with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);
             $api->getInput('session')->set('user', $login);
             return $api->getInput('user')->getAll();
-        }
-        else
-            throw new ResourceException("either the login or the password you provided doesn't match an existing user");
+        }       
     }
 
 }
