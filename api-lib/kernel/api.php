@@ -397,7 +397,7 @@ class Api extends Configurable {
                 if (class_exists($storeName)) {
                     try {
                         $this->stores[$storeconf["id"]] = new $storeName($storeconf);
-                        if ($storeconf['default'] === true) {
+                        if (array_key_exists('default', $storeconf) and $storeconf['default'] === true) {
                             $this->storeDefault = $storeconf["id"];
                         }
                     } catch (Exception $e) {

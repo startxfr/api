@@ -31,6 +31,7 @@ define('LIBPATH', BASEPATH . 'lib' . DS);
  */
 define('LIBPATHEXT', BASEPATH . 'lib-ext' . DS);
 
+include_once(KERNPATH . 'compat' . EXT);
 include_once(KERNPATH . 'toolkit' . EXT);
 include_once(KERNPATH . 'interfaces' . EXT);
 include_once(KERNPATH . 'configurable' . EXT);
