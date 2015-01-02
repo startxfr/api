@@ -23,7 +23,7 @@
             "pwd": "dev",
             "database": "sxapi",
             "dump_dir": ".startx/db-dump",
-            "exclude_table": "logs,sxapi.logs,startx.logs,sxapi.session"
+            "exclude_table": "logs,sxapi.logs,startx.logs,sxapi.session,cea.logs,cea.session"
         }
     }
 }
