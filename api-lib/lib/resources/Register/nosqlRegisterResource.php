@@ -27,44 +27,44 @@
 class nosqlRegisterResource extends defaultAuthenticateResource implements IResource {
 
     static public $ConfDesc = '{"class_name":"nosqlRegisterResource",
-                                "desc":"create user in nosql and mysql databases",
+                                "desc":"create user in external store and create a link on it in backend database",
                                 "properties":
 	[
 		{
-			"name":"mysql_store",
+			"name":"external_store",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"mysql store"
+			"desc":"external store"
 		},
                 {
-			"name":"mysql_table",
+			"name":"external_store_dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"mysql table to query"
+			"desc":"external dataset to query"
 		},
                 {
-			"name":"nosql_store",
+			"name":"backend_store",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"nosql store"
+			"desc":"backend store"
 		},                
                 {
-			"name":"nosql_collection",
+			"name":"backend_store_dataset",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"nosql collection to query"
+			"desc":"backend dataset to query"
 		},
                 {
-			"name":"nosql_id_key",
+			"name":"backend_store_id_key",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"name of the id use in nosql"
+			"desc":"name of the id use in backend store"
 		},
                 {
-			"name":"nosql_pwd_key",
+			"name":"backend_store_pwd_key",
 			"type":"string",
 			"mandatory":"true",
-			"desc":"name of the pwd key use in nosql"
+			"desc":"name of the pwd key use in backend store"
 		},
                 {
 			"name":"pwd_encryption",
@@ -91,29 +91,29 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
     public function __construct($config) {
         parent::__construct($config);
         $api = Api::getInstance();
-        if ($this->getConfig('mysql_store', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_store' attribute");
+        if ($this->getConfig('external_store', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'external_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'external_store' attribute");
         }
-        if ($this->getConfig('mysql_table', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'mysql_table' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'mysql_table' attribute");
+        if ($this->getConfig('external_store_dataset', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'external_store_dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'external_store_dataset' attribute");
         }
-        if ($this->getConfig('nosql_store', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_store' attribute");
+        if ($this->getConfig('backend_store', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'backend_store' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'backend_store' attribute");
         }
-        if ($this->getConfig('nosql_collection', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_collection' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_collection' attribute");
+        if ($this->getConfig('backend_store_dataset', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'backend_store_dataset' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'backend_store_dataset' attribute");
         }
-        if ($this->getConfig('nosql_id_key', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_id_key' attribute");
+        if ($this->getConfig('backend_store_id_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'backend_store_id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'backend_store_id_key' attribute");
         }
-        if ($this->getConfig('nosql_pwd_key', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'nosql_pwd_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'nosql_pwd_key' attribute");
+        if ($this->getConfig('backend_store_pwd_key', '') == '') {
+            $api->logError(906, get_class($this) . " resource config should contain the 'backend_store_pwd_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
+            throw new ResourceException(get_class($this) . " resource config should contain the 'backend_store_pwd_key' attribute");
         }
         if ($this->getConfig('pwd_param', '') == '') {
             $api->logError(906, get_class($this) . " resource config should contain the 'pwd_param' attribute", $this->getResourceTrace(__FUNCTION__, false));
@@ -134,8 +134,8 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
             $data['nom_cont'] = strtoupper($data['nom_cont']);
             $data['prenom_cont'] = ucfirst(strtolower($data['prenom_cont']));
             $data['enterprise']['nom_ent'] = strtoupper($data['enterprise']['nom_ent']);
-            $sxa_store = $api->getStore($this->getConfig('mysql_store', "mysql"));
-            $cont = $sxa_store->read($this->getConfig('mysql_table', "contact"), array("mail_cont" => $data['mail_cont']));  
+            $sxa_store = $api->getStore($this->getConfig('external_store', "mysql"));
+            $cont = $sxa_store->read($this->getConfig('external_store_dataset', "contact"), array("mail_cont" => $data['mail_cont']));  
             $add_data = array();
             if ($data['enterprise']['nom_ent'] !== "") {
                 $ent_data = $data['enterprise'];
@@ -143,7 +143,7 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
                 $add_data['entreprise_cont'] = $id_ent;
             }            
             $cont_data = $this->_changeData($data, $add_data);
-            $id_cont = $sxa_store->create($this->getConfig('mysql_table', "contact"), $cont_data);            
+            $id_cont = $sxa_store->create($this->getConfig('external_store_dataset', "contact"), $cont_data);            
             $return_data = array(array($id_cont), array($cont));            
             $user = $this->doNosqlRegister($data, $mode, $id_cont);
             $return_data[0][] = $user;
@@ -158,35 +158,37 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
     private function doNosqlRegister($data, $mode, $id_cont) {
         $api = Api::getInstance();
         $user_data = array();
-        if ($mode === 'oauth') {
-            $user_data[$this->getConfig('nosql_id_key', "_id")] = $data['mail_cont'];
+        if ($mode === 'google') {
             $user_data['refresh_token'] = $data['refresh_token'];
+        }        
+        $login = $api->getInput()->getParam($this->getConfig('login_param', "login"));
+        $pwd_input = $api->getInput()->getParam($this->getConfig('pwd_param', 'pwd'));
+        $clean_pass = ((bool)$pwd_input !== false) ? $pwd_input : $this->_createPass();             
+        switch ($this->getConfig('pwd_encryption', 'none')) {
+            case 'sha256':
+                $pass = hash("sha256", $clean_pass);
+                break;
+            default:
+                $pass = $clean_pass;
+                break;
         }
-        else {
-            $login = $api->getInput()->getParam($this->getConfig('login_param', "login"));
-            $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pwd'));
-            switch ($this->getConfig('pwd_encryption', 'none')) {
-                case 'sha256':
-                    $pass = hash("sha256", $pass);
-                    break;
-                default:
-                    break;
-            }
-            $user_data[$this->getConfig('nosql_id_key', "_id")] = $login;
-            $user_data[$this->getConfig('nosql_pwd_key', 'pwd')] = $pass;
-        }
+        $user_data[$this->getConfig('backend_store_id_key', "_id")] = $login;
+        $user_data[$this->getConfig('backend_store_pwd_key', 'pwd')] = $pass;            
         $user_data['role'] = $data['role'];
         $user_data['email'] = $data['mail_cont'];
         $user_data['id_cont'] = $id_cont;
         $user_name = $data['prenom_cont'] . " " . $data['nom_cont'];
         if ($user_name === " ")
-            $user_name = $user_data[$this->getConfig('nosql_id_key', "_id")];
+            $user_name = $user_data[$this->getConfig('backend_store_id_key', "_id")];
         $user_data['username'] = $user_name;
-        $store = $api->getStore($this->getConfig('nosql_store', 'users'));
-        $store->create($this->getConfig('nosql_collection', 'user'), $user_data);         
-        $api->getInput('session')->set('user', $user_data[$this->getConfig('nosql_id_key', "_id")]);                                   
-        $api->logInfo(960, "User '" . $user_data[$this->getConfig('nosql_id_key', "_id")] . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);        
-        return $api->getInput('user')->getAll();                
+        $store = $api->getStore($this->getConfig('backend_store', 'users'));
+        $store->create($this->getConfig('backend_store_dataset', 'user'), $user_data);         
+        $api->getInput('session')->set('user', $user_data[$this->getConfig('backend_store_id_key', "_id")]);                                   
+        $api->logInfo(960, "User '" . $user_data[$this->getConfig('backend_store_id_key', "_id")] . "' registered with '" . get_class($this) . "'", $this->getResourceTrace(__FUNCTION__, false), 1);        
+        $ret = $api->getInput('user')->getAll();
+        $ret['clean_pass'] = $clean_pass;
+        $ret['pwd_pass'] = $pwd_input;
+        return $ret;                
     }
     
     private function _changeData($data, $add_data = array()) {
@@ -202,6 +204,13 @@ class nosqlRegisterResource extends defaultAuthenticateResource implements IReso
             $new_data['nom_cont'] = Api::getInstance()->getInput()->getParam($this->getConfig('login_param', "login"));
         return $new_data;
     }
+    
+    private function _createPass() {
+        $chars = implode("", array_merge(range('#', '}')));
+        $pass = substr(str_shuffle(str_repeat($chars, mt_rand(3, 10))), 1, 10);
+        return $pass;
+    }
+    
 }
 
 ?>

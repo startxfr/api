@@ -1,0 +1,29 @@
+{
+    "version": "0.1",
+    "main_cmd": "~/.sxcmd/bin/sxcmd",
+    "local_cmd": ".startx/sxcmd",
+    "output_prefix": "[sxcmd-api]",
+    "project": {
+        "version": "0.3",
+        "name": "sxapi"
+    },
+    "git": {
+        "branch_dev": "yourdevbranch",
+        "branch_testing": "testing",
+        "branch_production": "production"
+    },
+    "docgenerator": {
+        "docpath": "/path/to/your/docdir/",
+        "default_commit_msg": "generation de la documentation"
+    },
+    "datatbases": {
+        "nosql": {
+            "host": "localhost",
+            "user": "dev",
+            "pwd": "dev",
+            "database": "sxapi",
+            "dump_dir": ".startx/db-dump",
+            "exclude_table": "logs,sxapi.logs"
+        }
+    }
+}

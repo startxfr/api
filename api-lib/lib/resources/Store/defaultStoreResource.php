@@ -10,7 +10,7 @@
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
 abstract class defaultStoreResource extends linkableResource implements IResource {
-
+  
     static public $ConfDesc = '{"class_name":"defaultStoreResource",
                                 "desc":"Resource to access data in store",
                                 "properties":

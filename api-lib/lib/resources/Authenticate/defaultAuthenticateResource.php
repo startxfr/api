@@ -15,13 +15,13 @@ abstract class defaultAuthenticateResource extends linkableResource implements I
                                 "desc":"abstract resource, authenticate mechanism",
                                 "properties":[
                 {
-                        "name":"message_service_noid",
+                        "name":"message_service_badid",
                         "type":"string",
                         "mandatory":"true",
                         "desc":"message used when no id is given to the resource"
                 }, 
                 {
-                        "name":"message_service_nopwd",
+                        "name":"message_service_badpwd",
                         "type":"string",
                         "mandatory":"true",
                         "desc":"message used when no pwd is given to the resource"
@@ -40,15 +40,7 @@ abstract class defaultAuthenticateResource extends linkableResource implements I
         if ($this->getConfig('message_service_delete', '') == '') {
             $api->logWarn(907, get_class($this) . " resource config should contain the 'message_service_delete' attribute", $this->getResourceTrace(__FUNCTION__, false));
             throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_delete' attribute");
-        }
-        if ($this->getConfig('message_service_noid', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'message_service_noid' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_noid' attribute");
-        }
-        if ($this->getConfig('message_service_nopwd', '') == '') {
-            $api->logError(906, get_class($this) . " resource config should contain the 'message_service_nopwd' attribute", $this->getResourceTrace(__FUNCTION__, false));
-            throw new ResourceException(get_class($this) . " resource config should contain the 'message_service_nopwd' attribute");
-        }
+        }        
         return $this;
     }
 

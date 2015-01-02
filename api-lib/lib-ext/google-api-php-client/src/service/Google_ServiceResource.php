@@ -163,6 +163,7 @@ class Google_ServiceResource {
       }
       $httpRequest->setRequestHeaders($contentTypeHeader);
     }
+    //var_dump($httpRequest);
 
     $httpRequest = Google_Client::$auth->sign($httpRequest);
     if (Google_Client::$useBatch) {
@@ -182,7 +183,7 @@ class Google_ServiceResource {
       }
       return $httpRequest;
     }
-
+    //var_dump($httpRequest);
     return Google_REST::execute($httpRequest);
   }
 
