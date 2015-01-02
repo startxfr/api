@@ -32,6 +32,14 @@ define('LIBPATH', BASEPATH . 'lib' . DS);
  */
 define('LIBPATHEXT', BASEPATH . 'lib-ext' . DS);
 
+if (DEBUG) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+} else {
+    error_reporting(E_ERROR);
+    ini_set('display_errors', 0);
+}
+
 include_once(KERNPATH . 'compat' . EXT);
 include_once(KERNPATH . 'toolkit' . EXT);
 include_once(KERNPATH . 'interfaces' . EXT);
@@ -47,14 +55,14 @@ include_once(KERNPATH . 'event' . EXT);
  * @param $classname name of the class to load
  * @return boolean if ok. Throw an exception if not
  */
-function autoloader($classname) {   
+function autoloader($classname) {
     $loadingPath = "";
     $arr = preg_split('/(?=[A-Z])/', $classname);
     $suffix = array_pop($arr);
     switch ($suffix) {
         case 'Resource':
             if (count($arr) == 3)
-                $loadingPath = LIBPATH . 'resources' . DS . $arr[2] .DS . $arr[1] . DS . $classname . EXT;
+                $loadingPath = LIBPATH . 'resources' . DS . $arr[2] . DS . $arr[1] . DS . $classname . EXT;
             elseif (count($arr) == 2)
                 $loadingPath = LIBPATH . 'resources' . DS . $arr[1] . DS . $classname . EXT;
             else
@@ -80,14 +88,14 @@ function autoloader($classname) {
             break;
         default:
             break;
-    }  
-    if ((@include_once $loadingPath) == false){
-        //throw new Exception("could not load $classname Class. File " . $loadingPath . " not found");
-        return false;  
     }
-    else
+    if ((@include_once $loadingPath) == false) {
+        //throw new Exception("could not load $classname Class. File " . $loadingPath . " not found");
+        return false;
+    } else
         return true;
 }
+
 spl_autoload_register('autoloader');
 
 error_reporting(E_ALL);
