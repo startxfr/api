@@ -214,19 +214,19 @@ class googlecalendarTestResource extends linkableResource implements IResource {
         $store->execQuery($utf);
         $sql_trainer = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont "
                 . "FROM formateur "
-                . "LEFT JOIN contact ON formateur.id_cont = contact.id_cont "
+                . "LEFT JOIN contact ON formateur.id_cont_formateur = contact.id_cont "
                 . "LEFT JOIN entreprise ON contact.entreprise_cont = entreprise.id_ent "
                 . "WHERE formateur.id_formateur = ".$session['trainer']                                
                 ;
         $sql_location = "SELECT contact.nom_cont, contact.prenom_cont, entreprise.add1_ent, entreprise.cp_ent, entreprise.ville_ent, entreprise.nom_ent "                                
-                . "FROM centre_formation "
-                . "LEFT JOIN contact ON centre_formation.id_cont=contact.id_cont "
+                . "FROM formation_centre "
+                . "LEFT JOIN contact ON formation_centre.id_cont_centre = contact.id_cont "
                 . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
                 . "WHERE centre_formation.id_centre=".$session['location']
                 ;
         $sql_students = "SELECT contact.nom_cont, contact.prenom_cont, contact.tel_cont, contact.mail_cont, entreprise.nom_ent "                                
                 . "FROM etudiants "
-                . "LEFT JOIN contact ON etudiants.id_cont = contact.id_cont "
+                . "LEFT JOIN contact ON etudiants.id_cont_etu = contact.id_cont "
                 . "LEFT JOIN entreprise ON entreprise.id_ent = contact.entreprise_cont "
                 . "WHERE etudiants.id_etu IN ".$students
                 ; 
