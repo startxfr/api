@@ -4,7 +4,7 @@ date_default_timezone_set("Europe/Paris");
 /**
  * the directory separator used for this instance
  */
-define('DEBUG', true);
+define('DEBUG', false);
 define('LOG_VERBOSITY', 5);
 date_default_timezone_set("Europe/Paris");
 /**
