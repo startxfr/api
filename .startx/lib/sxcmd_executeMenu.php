@@ -65,7 +65,6 @@ function executeMenuDev($choice, $display = true) {
             gitPush($dev_branch);
             break;
         case "5": echo "$EP    Merge branch $dev_branch > master\n";
-            generatePages();
             gitMerge($dev_branch, "master");
             break;
         case "6": echo "$EP    Merge branch master > $dev_branch\n";
@@ -102,7 +101,6 @@ function executeMenuTest($choice, $display = true) {
             gitMerge("master", $testing_branch);
             break;
         case "3": echo "$EP    Merge branch $testing_branch > $production_branch\n";
-            generatePages();
             gitMerge($config['git']['branch_testing'], $config['git']['branch_production']);
             break;
         case "4": echo "$EP    Push branch $testing_branch\n";
