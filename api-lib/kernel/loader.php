@@ -31,6 +31,8 @@ define('LIBPATH', BASEPATH . 'lib' . DS);
  * the lib path for loading external projects (php-ga,google-api-php-client)
  */
 define('LIBPATHEXT', BASEPATH . 'lib-ext' . DS);
+
+include_once(KERNPATH . 'compat' . EXT);
 include_once(KERNPATH . 'toolkit' . EXT);
 include_once(KERNPATH . 'interfaces' . EXT);
 include_once(KERNPATH . 'configurable' . EXT);
