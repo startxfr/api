@@ -50,7 +50,7 @@ class Toolkit {
             }
         } elseif (is_array($string)) {
             return $string;
-        } elseif (is_null()) {
+        } elseif (is_null($string)) {
             return array();
         } else {
             return array($string);
@@ -72,4 +72,3 @@ class Toolkit {
     }
 
 }
-
