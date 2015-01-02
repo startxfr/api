@@ -8,7 +8,7 @@
         "name": "sxapi"
     },
     "git": {
-        "branch_dev": "dev2",
+        "branch_dev": "dev",
         "branch_testing": "testing",
         "branch_production": "production"
     },
@@ -23,7 +23,7 @@
             "pwd": "dev",
             "database": "sxapi",
             "dump_dir": ".startx/db-dump",
-            "exclude_table": "logs,sxapi.logs"
+            "exclude_table": "logs,sxapi.logs,startx.logs,sxapi.session"
         }
     }
 }
