@@ -106,7 +106,7 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
         }        
     }
     
-    public function createAction() {
+    public function readAction() {
         $api = Api::getInstance();
         $api->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
@@ -121,6 +121,10 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
         return true;
     }
 
+    public function createAction() {
+        Api::getInstance()->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
+    }
     public function updateAction() {
         Api::getInstance()->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
         return $this->readAction();
