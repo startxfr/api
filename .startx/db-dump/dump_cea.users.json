@@ -1,1 +1,1 @@
-[{ "_id" : "dev", "email" : "clarue@startx.fr", "id_cont" : "135585", "pwd" : "ef260e9aa3c673af240d17a2660480361a8e081d1ffeca2a5ed0e3219fc18567", "role" : "0", "username" : "Dev Team" }]
+[{ "_id" : "cea", "email" : "dev+cea@startx.fr", "id_cont" : "135585", "pwd" : "40588cd473babe123d72c89d5f7a1fce0afcb75f781d4ec73d51feea43ae7139", "role" : "0", "username" : "CEA Team" },{ "_id" : "dev", "email" : "clarue@startx.fr", "id_cont" : "135585", "pwd" : "ef260e9aa3c673af240d17a2660480361a8e081d1ffeca2a5ed0e3219fc18567", "role" : "0", "username" : "Dev Team" }]
