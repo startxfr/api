@@ -175,7 +175,7 @@ class mysqlStore extends defaultStore implements IStorage {
                 foreach ($this->lastResult as $row) {
                     $output[] = $row;
                 }
-                Api::getInstance()->logDebug(420, "'" . __FUNCTION__ . "' '" . get_class($this) . "' '" . @count($output) . "' result", array('table' => $table, 'criteria' => $criteria, 'order' => $order, 'start' => $start, 'stop' => $stop), 4);
+                Api::getInstance()->logDebug(420, "'" . __FUNCTION__ . "' '" . get_class($this) . "' '" . @count($output) . "' result", array('sql' => $sql), 4);
                 return $output;
             } else {
                 $error = $this->connection->errorInfo();
