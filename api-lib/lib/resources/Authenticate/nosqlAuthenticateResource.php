@@ -108,21 +108,6 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
     
     public function createAction() {
         $api = Api::getInstance();
-        $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
-        try {
-            $login = $api->getInput()->getParam($this->getConfig('login_param', "login"));
-            $pass = $api->getInput()->getParam($this->getConfig('pwd_param', 'pwd'));
-            $user = $this->doAuthenticate($login, $pass);
-            return array(true, sprintf($this->getConfig('message_service_create', 'message service create'), $login), $user);
-        } catch (Exception $exc) {
-            $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            return array(false, $exc->getCode(), $exc->getMessage(),array(),401);
-        }
-        return true;
-    }
-
-    public function updateAction() {
-        $api = Api::getInstance();
         $api->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
             $login = $api->getInput()->getParam($this->getConfig('login_param', "login"));
@@ -136,6 +121,16 @@ class nosqlAuthenticateResource extends defaultAuthenticateResource implements I
         return true;
     }
 
+    public function updateAction() {
+        Api::getInstance()->logDebug(950, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
+    }
+
+    public function deleteAction() {
+        Api::getInstance()->logDebug(970, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getConfigs(), 3);
+        return $this->readAction();
+    }
+    
     private function doAuthenticate($login, $pass) {
         $api = Api::getInstance();
         $store = $api->getStore($this->getConfig('store', 'nosql'));
