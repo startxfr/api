@@ -18,6 +18,7 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
 
     public function init() {
         parent::init();
+        setlocale(LC_CTYPE, 'fr_FR.utf8');
         return $this;
     }
 
@@ -34,7 +35,8 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
             } else {
                 $search = $this->filterParams($input->getParams(), "input");
                 $withImages = (array_key_exists('images', $search) and $search['images'] == "yes") ? true : false;
-                $withFtp = (array_key_exists('ftp', $search) and $search['ftp'] == "yes") ? true : false;
+                $withFtp = (array_key_exists('output', $search) and $search['output'] == "ftp") ? true : false;
+                $withString = (array_key_exists('output', $search) and $search['output'] == "string") ? true : false;
                 $destpath = $this->getConfig('workdir');
                 exec("rm -rf $destpath; mkdir $destpath");
                 // lancement du téléchargement du pack d'image pour l'ajout dans la sortie
@@ -46,20 +48,27 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
                 }
                 //affichage de toutes les clefs 
                 $dblist = $this->getDataFromStorage();
-                $csvstring = $this->generateCsvFromData($dblist, $withImages);
-                if (!$csvstring[0]) {
-                    return $csvstring;
+                $csvdata = $this->generateCsvFromData($dblist, $withImages);
+                if (!$csvdata[0]) {
+                    return array(false, 'error in produitCeaStartxResource', $csvdata[1], $csvdata[3]);
                 }
-                $this->packAddCatalogue($csvstring[1]);
+                $this->packAddCatalogue($csvdata[1]);
+                if ($withString) {
+                    $famlist = implode(', ', $csvdata[4]);
+                    $message = sprintf($this->getConfig('message_download_string', 'download catalogue as text string'), $famlist);
+                    $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
+                    $this->recordExportHistory(true, $message, false, false, strlen($csvdata[1]), $csvdata[3]);
+                    return array(true, $message, $csvdata[1], $csvdata[3]);
+                }
                 if ($withImages) {
-                    $this->packAddImg($csvstring[2]);
+                    $this->packAddImg($csvdata[2]);
                     return ($withFtp) ?
-                            $this->outputFtpWithImages($csvstring[1]) :
-                            $this->outputDownloadWithImages($csvstring[1]);
+                            $this->outputFtpWithImages($csvdata[1], $csvdata[3], $csvdata[4]) :
+                            $this->outputDownloadWithImages($csvdata[1], $csvdata[3], $csvdata[4]);
                 } else {
                     return ($withFtp) ?
-                            $this->outputFtpWithoutImages($csvstring[1]) :
-                            $this->outputDownloadWithoutImages($csvstring[1]);
+                            $this->outputFtpWithoutImages($csvdata[1], $csvdata[3], $csvdata[4]) :
+                            $this->outputDownloadWithoutImages($csvdata[1], $csvdata[3], $csvdata[4]);
                 }
             }
         } catch (Exception $exc) {
@@ -81,40 +90,45 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
         return $this->readAction();
     }
 
-    protected function outputDownloadWithImages($csvstring) {
+    protected function outputDownloadWithImages($csvstring, $nbresult, $familles) {
         $api = Api::getInstance();
         $input = $api->getInput();
+        $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
         $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadzip');
         $ctlgname = $this->getConfig('cataloguepack_filename');
         exec("cd $destpath;  zip -r $ctlgname .; cp $ctlgname " . $this->getConfig('tmpdir'));
-        $message = sprintf($this->getConfig('message_download_withimg', 'download catalogue with images'), $downloadUrl);
+        $message = sprintf($this->getConfig('message_download_withimg', 'download catalogue with images'), $famlist, $downloadUrl);
         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        return array(true, $message, $downloadUrl, count($csvstring));
+        $this->recordExportHistory(true, $message, true, false, $downloadUrl, $nbresult);
+        return array(true, $message, $downloadUrl, $nbresult);
     }
 
-    protected function outputDownloadWithoutImages($csvstring) {
+    protected function outputDownloadWithoutImages($csvstring, $nbresult, $familles) {
         $api = Api::getInstance();
         $input = $api->getInput();
+        $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
         $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadfile');
         $ctlgname = $this->getConfig('catalogue_filename');
         exec("cd $destpath;  cp $ctlgname " . $this->getConfig('tmpdir'));
-        $message = sprintf($this->getConfig('message_download_withoutimg', 'download catalogue with images'), $downloadUrl);
+        $message = sprintf($this->getConfig('message_download_withoutimg', 'download catalogue with images'), $famlist, $downloadUrl);
         $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-        return array(true, $message, $downloadUrl, count($csvstring));
+        $this->recordExportHistory(true, $message, false, false, $downloadUrl, $nbresult);
+        return array(true, $message, $downloadUrl, $nbresult);
     }
 
-    protected function outputFtpWithImages($csvstring) {
-        return $this->outputFtp($csvstring, 'message_ftp_withimg');
+    protected function outputFtpWithImages($csvstring, $nbresult, $familles) {
+        return $this->outputFtp($csvstring, 'message_ftp_withimg', true, $nbresult, $familles);
     }
 
-    protected function outputFtpWithoutImages($csvstring) {
-        return $this->outputFtp($csvstring, 'message_ftp_withoutimg');
+    protected function outputFtpWithoutImages($csvstring, $nbresult, $familles) {
+        return $this->outputFtp($csvstring, 'message_ftp_withoutimg', false, $nbresult, $familles);
     }
 
-    protected function outputFtp($csvstring, $msg_template = 'message_ftp_withoutimg') {
+    protected function outputFtp($csvstring, $msg_template = 'message_ftp_withoutimg', $withimage = false, $nbresult = 0, $familles = array()) {
         $api = Api::getInstance();
+        $famlist = implode(', ', $familles);
         $servername = $this->getConfig('ftp_server');
         $sourcepath = $this->getConfig('workdir');
         $this->ftpcx = @ftp_connect($servername);
@@ -125,22 +139,26 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
                 if ($dir_handle !== false) {
                     $this->ftp_putAll($sourcepath, $this->getConfig('ftp_dir'));
                     ftp_close($this->ftpcx);
-                    $message = sprintf($this->getConfig($msg_template, 'FTP-uploaded catalogue'), $servername, $this->getConfig('ftp_dir'));
+                    $message = sprintf($this->getConfig($msg_template, 'FTP-uploaded catalogue'), $famlist, $servername, $this->getConfig('ftp_dir'));
                     $api->logInfo(910, "'" . __FUNCTION__ . "' in '" . get_class($this) . "' return : " . $message, $this->getResourceTrace(__FUNCTION__, false), 1);
-                    return array(true, $message, true, count($csvstring));
+                    $this->recordExportHistory(true, $message, $withimage, true, true, $nbresult);
+                    return array(true, $message, true, $nbresult);
                 } else {
-                    $message = sprintf($this->getConfig('message_ftp_error_noworkdir', 'could\'t find the working directory with generated file. Please regenerate a new one'), $destpath);
-                    $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : could not find working directory $destpath", $this->getConfigs());
+                    $message = sprintf($this->getConfig('message_ftp_error_noworkdir', 'could\'t find the working directory with generated file. Please regenerate a new one'), $this->getConfig('ftp_dir'), $famlist);
+                    $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : could not find working directory " . $this->getConfig('ftp_dir'), $this->getConfigs());
+                    $this->recordExportHistory(false, $message, $withimage, true, true, $nbresult);
                     return array(false, 910, $message, null, 500);
                 }
             } else {
-                $message = sprintf($this->getConfig('message_ftp_error_auth', 'error in authenticating to the ftp server'), $servername, $this->getConfig('ftp_user'));
+                $message = sprintf($this->getConfig('message_ftp_error_auth', 'error in authenticating to the ftp server'), $servername, $this->getConfig('ftp_user'), $famlist);
                 $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : could not authenticate to the ftp server '$servername' with user " . $this->getConfig('ftp_user'), $this->getConfigs());
+                $this->recordExportHistory(false, $message, $withimage, true, true, $nbresult);
                 return array(false, 910, $message, null, 500);
             }
         } else {
-            $message = sprintf($this->getConfig('message_ftp_error_connection', 'error in connecting to the ftp server'), $servername);
+            $message = sprintf($this->getConfig('message_ftp_error_connection', 'error in connecting to the ftp server'), $servername, $famlist);
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : could not connect to the ftp server '$servername'", $this->getConfigs());
+            $this->recordExportHistory(false, $message, $withimage, true, true, $nbresult);
             return array(false, 910, $message, null, 500);
         }
     }
@@ -158,10 +176,9 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
                 } else {
                     if (ftp_put($this->ftpcx, $dst_dir . "/" . $file, $src_dir . "/" . $file, FTP_BINARY)) {
                         $api->logInfo(910, "Info on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : recorded file '$file' into directory '$dst_dir' on the FTP server ", $this->getConfigs());
-                
                     } else {
-                        $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : problem when recording file '$file' into directory '$dst_dir' on the FTP server " , $this->getConfigs());
-                 }
+                        $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : problem when recording file '$file' into directory '$dst_dir' on the FTP server ", $this->getConfigs());
+                    }
                 }
             }
         }
@@ -180,27 +197,30 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
 
     protected function packAddCatalogue($csvstring) {
         $file = fopen($this->getConfig('workdir') . "/" . $this->getConfig('catalogue_filename'), "w+");
-        fputs($file, $csvstring);
+        fputs($file, @iconv("UTF-8", "ISO-8859-1//TRANSLIT", $csvstring));
         fclose($file);
         return true;
     }
 
     protected function generateCsvFromData($datas, $withImages = true) {
-        $csvstring = $listImg = array();
+        $list = $listImg = $listFamille = array();
+        $tauxRemise = 0.205;
+        $nbresult = count($datas);
         foreach ($datas as $value) {
             $imgName = '';
             if ($withImages) {
                 $imgName = $value['catalogue'] . ".png";
                 $listImg[$imgName] = $imgName;
             }
+            $listFamille[$value['catalogue']] = $value['nom_prodfam'];
             $entry = array(
                 'Action' => "A",
                 'Référence article fournisseur' => $this->cleanCsvField($value['id'], 35),
                 'Description courte' => $this->cleanCsvField($value['nom'], 40),
-                'Description détaillée de l\'article' => $this->cleanCsvField($value['nom'], 512),
+                'Description détaillée de l\'article' => $this->cleanCsvField($value['desc'], 512),
                 'Table des matières niveau 1' => $this->cleanCsvField($value['nom_prodfam'], 132),
-                'Table des matières niveau 2' => $this->cleanCsvField("", 132),
-                'Prix' => $value['prix'],
+                'Table des matières niveau 2' => $this->cleanCsvField($value['categorie'], 132),
+                'Prix' => str_replace(array('.', ' '), array(',', ''), round($value['prix'] * (1 - $tauxRemise), 2)),
                 'Quantité de l\'unité de prix' => 1,
                 'UOM' => "PCE",
                 'Conditionnement' => "virtuel",
@@ -210,17 +230,20 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
                 'Fabriquant/Marque' => "Red Hat",
                 'Img' => $this->cleanCsvField($imgName, 50),
                 'Pdf' => "",
-                'Url' => "http://cea.startx.fr/produit.html#" . $value['id'],
-                'Groupe marchandise' => "XXXX",
+                'Url' => "https://cea.startx.fr/produit.html#" . $value['id'],
+                'Groupe marchandise' => "IDP01",
                 'Surcout' => "",
-                'Info complémentaire' => ""
+                'Info complémentaire' => $this->cleanCsvField("Support téléphonique au 01 46 69 00 00 ou sur redhat+cea@startx.fr", 156)
             );
-            $csvstring[] = $entry;
+            $list[] = $entry;
         }
+        $csvstring = $this->createCsvString($list, true, "\t");
         return array(
             true,
-            $this->createCsvString($csvstring, true, "\t"),
-            $listImg);
+            $csvstring,
+            $listImg,
+            $nbresult,
+            $listFamille);
     }
 
     protected function getDataFromStorage() {
@@ -288,7 +311,7 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
         header("Pragma: no-cache");
         header("Expires: 0");
         header("Content-Transfer-Encoding: ISO-8859-1");
-        echo mb_convert_encoding(readfile($file_url), 'utf8', 'iso-8859-1'); // do the double-download-dance (dirty but worky)
+        echo readfile($file_url);
         exit;
     }
 
@@ -319,6 +342,31 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
         $csvstring = stream_get_contents($outputBuffer);
         fclose($outputBuffer);
         return $csvstring;
+    }
+
+    protected function recordExportHistory($success, $message, $withimage, $withftp, $answer, $nbresult) {
+        $api = Api::getInstance();
+        $trace = array(
+            'success' => $success,
+            'date' => new MongoDate(),
+            'session' => $api->getInput('session')->getId(),
+            'user' => $api->getInput('user')->getId(),
+            'http_query' => Toolkit::object2Array($api->getInput()->getContext()),
+            'answer' => $answer,
+            'nbresult' => $nbresult,
+            'message' => $message,
+            'withimage' => $withimage,
+            'withftp' => $withftp
+        );
+        $store = $api->getStore($this->getConfig('history_store'));
+        $store->create($this->getConfig('history_store_dataset', 'cea.history'), Toolkit::array2Object($trace));
+        try {
+            
+        } catch (Exception $exc) {
+            $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            return false;
+        }
+        return true;
     }
 
 }

@@ -69,11 +69,12 @@ class nosqlStoreResource extends defaultStoreResource implements IResource {
                 $order = array();
                 if (is_array($sort)) {
                     foreach ($sort as $k => $val) {
-                        $order[$val['property']] = (strtoupper(trim($val['direction'])) == 'DESC') ? -1 : 1;
+                        $name = (is_array($val) and array_key_exists('property', $val)) ? $val['property'] : $val;
+                        $order[$name] = (strtoupper(trim($val['direction'])) == 'DESC') ? -1 : 1;
                     }
+                } else {
+                    $order[$this->getConfig('id_key', "_id")] = 1;
                 }
-                else
-                    $order['_id'] = 1;
                 $start = $input->getParam($this->getConfig('startParam', 'start'), 0);
                 $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);                                                                
                 $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max);
