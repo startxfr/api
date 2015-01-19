@@ -30,9 +30,9 @@ class mysqlStore extends defaultStore implements IStorage {
             $this->connect();
             $result = $this->read($table, $criteria);
             Api::getInstance()->logDebug(421, "'" . __FUNCTION__ . "' '" . get_class($this) . "' return 1 result", array('table' => $table, 'criteria' => $criteria), 4);
-            if (is_array($result[0]))
+            if (is_array($result) and count($result) > 0 and is_array($result[0])) {
                 return $result[0];
-            else
+            } else
                 return array();
         } catch (Exception $e) {
             throw new StoreException($e->getMessage());
