@@ -309,7 +309,7 @@ class SmartInput extends DefaultInput implements IInput {
         if (is_string($data) and (substr($data, 0, 1) == '[' or substr($data, 0, 1) == '{'))
             return Toolkit::object2Array(@json_decode($data));
         else
-            return $data;
+            return array($data);
     }
 
     /**

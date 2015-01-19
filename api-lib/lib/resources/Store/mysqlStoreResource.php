@@ -67,11 +67,12 @@ class mysqlStoreResource extends defaultStoreResource implements IResource {
                     $order = array();
                     if (is_array($sort)) {
                         foreach ($sort as $k => $val) {
-                            $order[$val['property']] = (strtoupper(trim($val['direction'])) == 'DESC') ? -1 : 1;
+                            $name = (is_array($val) and array_key_exists('property', $val)) ? $val['property'] : $val;
+                            $order[$name] = (strtoupper(trim($val['direction'])) == 'DESC') ? 'DESC' : 'ASC';
                         }
+                    } else {
+                        $order[$this->getConfig('id_key', "id")] = 'ASC';
                     }
-                    else
-                        $order['id'] = 'ASC';                    
                     $countResult = $this->getStorage()->readCount($this->getConfig('dataset'));
                     $start = (int) $api->getInput()->getParam($this->getConfig('startParam', '_start'), 0);
                     $max = (int) $api->getInput()->getParam($this->getConfig('limitParam', '_limit'), $countResult);
