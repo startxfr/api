@@ -118,7 +118,7 @@ class mailResource extends linkableResource implements IResource {
         $this->mail->Body = $body;        
         //send the message, check for errors
         if (!$this->mail->send()) {       
-            $api->logWarn(572, "mailer res error when sending mess " , $this->mail->ErrorInfo);
+            $api->logWarn(572, "mailer error when sending message because ".$this->mail->ErrorInfo , $this->getConfigs());
             return false;
         }
         else {
