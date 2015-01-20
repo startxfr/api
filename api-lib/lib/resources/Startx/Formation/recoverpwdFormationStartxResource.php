@@ -61,7 +61,7 @@ class recoverpwdFormationStartxResource extends nosqlStoreResource implements IR
             $it = $store->read($this->getConfig('store_dataset', 'sxapi.users'), array(
                 $key => $value
             ));       
-            $data = iterator_to_array($it, false);
+            $data = iterator_to_array($it, true);
             
             if (count($data) === 0) {
                 throw new ResourceException("no corespondance");   

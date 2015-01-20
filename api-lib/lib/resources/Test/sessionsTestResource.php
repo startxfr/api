@@ -56,7 +56,7 @@ class sessionsTestResource extends googlecalendarTestResource implements IResour
                 $start = $input->getParam($this->getConfig('startParam', 'start'), 0);
                 $max = $input->getParam($this->getConfig('limitParam', 'limit'), 30);  
                 $data = $this->getStorage()->read($this->getConfig('dataset'), $search, $order, $start, $max);                
-                $return =  $this->filterResults(iterator_to_array($data,false), "output");                   
+                $return =  $this->filterResults(iterator_to_array($data), "output");                   
                 for ($i = 0 ; $i < count($return) ; $i++) {
                     $res = $this->populateSession($sqlStore, $return[$i]);
                     $return[$i]['location'] = $res['location']; 
