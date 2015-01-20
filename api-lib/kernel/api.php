@@ -709,7 +709,7 @@ class Api extends Configurable {
                     elseif ($child['path'] == '*')
                         $wildcardChild = $child;                     
                 }
-                if ($selectedChild == null and ($wildcardChild != null or $outputConfig['children'] == "*")) {
+                if ($selectedChild == null and ($wildcardChild != null or (array_key_exists('children', $outputConfig) and $outputConfig['children'] == "*"))) {
                     $elements = array();
                     unset($outputConfig['children']);
                     unset($wildcardChild['path']);
