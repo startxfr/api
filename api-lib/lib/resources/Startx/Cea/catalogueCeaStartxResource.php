@@ -95,7 +95,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $input = $api->getInput();
         $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
-        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadzip');
+        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/'. $this->getConfig('api_subpath_downloadzip');
         $ctlgname = $this->getConfig('cataloguepack_filename');
         exec("cd $destpath;  zip -r $ctlgname .; cp $ctlgname " . $this->getConfig('tmpdir'));
         $message = sprintf($this->getConfig('message_download_withimg', 'download catalogue with images'), $famlist, $downloadUrl);
@@ -109,7 +109,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $input = $api->getInput();
         $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
-        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadfile');
+        $downloadUrl = $input->getRootUrl() . $input->getPath(). '/'. $this->getConfig('api_subpath_downloadfile');
         $ctlgname = $this->getConfig('catalogue_filename');
         exec("cd $destpath;  cp $ctlgname " . $this->getConfig('tmpdir'));
         $message = sprintf($this->getConfig('message_download_withoutimg', 'download catalogue with images'), $famlist, $downloadUrl);
