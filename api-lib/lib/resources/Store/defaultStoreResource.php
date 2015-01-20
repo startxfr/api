@@ -10,7 +10,7 @@
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
 abstract class defaultStoreResource extends linkableResource implements IResource {
-  
+
     static public $ConfDesc = '{"class_name":"defaultStoreResource",
                                 "desc":"Resource to access data in store",
                                 "properties":
@@ -29,8 +29,7 @@ abstract class defaultStoreResource extends linkableResource implements IResourc
 		}
 	]
 }'
-;
-      
+    ;
     protected $storage;
 
     public function init() {
@@ -44,7 +43,7 @@ abstract class defaultStoreResource extends linkableResource implements IResourc
             $api->logError(906, get_class($this) . " resource config should contain the 'id_key' attribute", $this->getResourceTrace(__FUNCTION__, false));
             throw new ResourceException(get_class($this) . " resource config should contain the 'id_key' attribute");
         }
-        $this->storage = $api->getStore($this->getConfig('store'));        
+        $this->storage = $api->getStore($this->getConfig('store'));
         return $this;
     }
 
@@ -54,13 +53,15 @@ abstract class defaultStoreResource extends linkableResource implements IResourc
 
     protected function filterResults($results) {
         $out = array();
-        foreach ($results as $elem) {
-            $row = $this->filterParams($elem, "output");
-            $out[] = $row;
+        if (is_array($results)) {
+            foreach ($results as $elem) {
+                $row = $this->filterParams($elem, "output");
+                $out[] = $row;
+            }
         }
         return $out;
     }
-    
+
 }
 
 ?>
