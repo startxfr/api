@@ -20,7 +20,7 @@ class Toolkit {
             $obj = get_object_vars($obj);
         }
         if (is_array($obj)) {
-            return array_map('Toolkit::object2Array', $obj);
+            return array_map(array('Toolkit','object2Array'), $obj);
         } else {
             return $obj;
         }
@@ -31,7 +31,7 @@ class Toolkit {
      */
     static function array2Object($array) {
         if (is_array($array)) {
-            return (object) array_map('Toolkit::array2Object', $array);
+            return (object) array_map(array('Toolkit','array2Object'), $array);
         } else {
             return $array;
         }
