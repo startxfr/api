@@ -296,7 +296,7 @@ class SmartInput extends DefaultInput implements IInput {
      */
     public function setParam($key, $value = null) {
         $this->data[$key] = $value;
-        return this;
+        return $this;
     }
 
     /**
