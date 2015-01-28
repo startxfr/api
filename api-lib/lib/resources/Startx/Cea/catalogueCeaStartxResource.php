@@ -95,7 +95,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $input = $api->getInput();
         $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
-        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/'. $this->getConfig('api_subpath_downloadzip');
+        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadzip');
         $ctlgname = $this->getConfig('cataloguepack_filename');
         exec("cd $destpath;  zip -r $ctlgname .; cp $ctlgname " . $this->getConfig('tmpdir'));
         $message = sprintf($this->getConfig('message_download_withimg', 'download catalogue with images'), $famlist, $downloadUrl);
@@ -109,7 +109,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $input = $api->getInput();
         $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
-        $downloadUrl = $input->getRootUrl() . $input->getPath(). '/'. $this->getConfig('api_subpath_downloadfile');
+        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadfile');
         $ctlgname = $this->getConfig('catalogue_filename');
         exec("cd $destpath;  cp $ctlgname " . $this->getConfig('tmpdir'));
         $message = sprintf($this->getConfig('message_download_withoutimg', 'download catalogue with images'), $famlist, $downloadUrl);
@@ -204,9 +204,20 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
 
     protected function generateCsvFromData($datas, $withImages = true) {
         $list = $listImg = $listFamille = array();
-        $tauxRemise = 0.205;
+        $tauxRemiseDefault = 0.205;
         $nbresult = count($datas);
         foreach ($datas as $value) {
+            $tauxRemiseFamille = ((float) $value['txrem_cea_prodfam'] > 0) ? (float) $value['txrem_cea_prodfam'] : $tauxRemiseDefault;
+            $tauxRemise = ((float) $value['txrem_cea_prod'] > 0) ? (float) $value['txrem_cea_prod'] : $tauxRemiseFamille;
+            if((float) $value['txrem_cea_prodfam'] > 0) {
+                echo "\n====".$value['txrem_cea_prodfam'];
+                echo "\n====".$value['txrem_cea_prod'];
+                echo "\n====".$tauxRemise;
+                exit;
+            }
+            
+            
+            
             $imgName = '';
             if ($withImages) {
                 $imgName = $value['catalogue'] . ".png";

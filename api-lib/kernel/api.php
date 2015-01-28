@@ -105,7 +105,7 @@ class Api extends Configurable {
         // connect nosql backend immediately to get log storage support
         try {
             Api::$nosqlApiBackend = json_decode(Api::$nosqlApiBackend);
-            $nosqlConnection = new Mongo(Api::$nosqlApiBackend->connection);
+            $nosqlConnection = @new Mongo(Api::$nosqlApiBackend->connection);
             $this->nosqlConnection = $nosqlConnection->selectDB(Api::$nosqlApiBackend->base);
         } catch (Exception $exc) {
             http_response_code(503);
