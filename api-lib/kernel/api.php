@@ -499,7 +499,7 @@ class Api extends Configurable {
      * @return defaultResource the resource connector instance coresponding to the requested $id
      * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
      */
-    public function getResource($id, $config = array()) {       
+    public function getResource($id, $config = array()) {
         if (is_null($id) or trim($id) == '') {
             $this->logWarn(61, "trying to access resource with a null id.");
             throw new ApiException("you must give a resource name", 61);
@@ -508,8 +508,8 @@ class Api extends Configurable {
             if (is_array($config) and count($config) > 0)
                 $this->resources[$id] = new $id($config);
             return $this->resources[$id];
-        } else {            
-            if (class_exists($id) !== false) {                                
+        } else {
+            if (class_exists($id) !== false) {
                 $this->logDebug(63, "Start loading and caching resource '" . $id . "'");
                 $this->resources[$id] = new $id($config);
                 $this->logDebug(64, "Initializing resource '" . $id . "'");
@@ -538,12 +538,12 @@ class Api extends Configurable {
      * @return Api instance Api for chaining
      * @throws ApiException If resource is not acessible or controlled by ACL rules.
      */
-    public function execute() {        
+    public function execute() {
         try {
             Event::trigger('api.execute.before');
-            $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));            
-            $resource = $this->getResource($config['class'], $config);            
-            $actionName = 'readAction';            
+            $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));
+            $resource = $this->getResource($config['class'], $config);
+            $actionName = 'readAction';
             switch ($this->getInput()->getMethod()) {
                 case 'post':
                     $actionName = 'createAction';
@@ -616,7 +616,7 @@ class Api extends Configurable {
                 $output[3] = array();
             if (!isset($output[4]))
                 $output[4] = 400;
-            $this->getOutput()->renderError ($output[1], $output[2], $output[3], $output[4]);
+            $this->getOutput()->renderError($output[1], $output[2], $output[3], $output[4]);
         }
         else {
             if (!isset($output[3]))
@@ -626,7 +626,7 @@ class Api extends Configurable {
             $this->getOutput()->renderOk($output[1], $output[2], $output[3], $output[4]);
         }
     }
-    
+
     /**
      * Extract form the resource config the acl user autorized
      * @param mix $aclRules the 
@@ -636,7 +636,7 @@ class Api extends Configurable {
     private function executeExtractAclUser($aclRules) {
         $users = '*';
         if (array_key_exists('user', $aclRules)) {
-            if (!is_array($aclRules['user']) and ($aclRules['user'] == '*' or $aclRules['user'] == '')) {
+            if (!is_array($aclRules['user']) and ( $aclRules['user'] == '*' or $aclRules['user'] == '')) {
                 $users = '*';
             } elseif (is_array($aclRules['user'])) {
                 $users = $aclRules['user'];
@@ -656,7 +656,7 @@ class Api extends Configurable {
     private function executeExtractAclApplication($aclRules) {
         $applications = '*';
         if (array_key_exists('application', $aclRules)) {
-            if (!is_array($aclRules['application']) and ($aclRules['application'] == '*' or $aclRules['application'] == '')) {
+            if (!is_array($aclRules['application']) and ( $aclRules['application'] == '*' or $aclRules['application'] == '')) {
                 $applications = '*';
             } elseif (is_array($aclRules['application'])) {
                 $applications = $aclRules['application'];
@@ -664,7 +664,7 @@ class Api extends Configurable {
                 $applications = Toolkit::string2Array($aclRules['application']);
             }
         }
-             return $applications;
+        return $applications;
     }
 
     /**
@@ -674,7 +674,7 @@ class Api extends Configurable {
      * @throws ApiException If tree node is malformed (missing 'resource' key) or if path and tree are not given.
      */
     private function getResourceConfig($elements, $configtree, $outputConfig = array()) {
-        if (!is_array($elements) or !is_array($configtree))
+        if (!is_array($elements) or ! is_array($configtree))
             throw new ApiException("getResourceConfig could not work if both \$elements and \$configtree are not array", 85);
         $searchedPath = trim(array_shift($elements));
         // on traite le cas de la racine
@@ -707,9 +707,9 @@ class Api extends Configurable {
                     if ($child['path'] == $searchedPath)
                         $selectedChild = $child;
                     elseif ($child['path'] == '*')
-                        $wildcardChild = $child;                     
+                        $wildcardChild = $child;
                 }
-                if ($selectedChild == null and ($wildcardChild != null or (array_key_exists('children', $outputConfig) and $outputConfig['children'] == "*"))) {
+                if ($selectedChild == null and ( $wildcardChild != null or ( array_key_exists('children', $outputConfig) and $outputConfig['children'] == "*"))) {
                     $elements = array();
                     unset($outputConfig['children']);
                     unset($wildcardChild['path']);
@@ -730,7 +730,7 @@ class Api extends Configurable {
                     }
                     $resourceCollection = $this->getConfig("resource_collection", "resources");
                     $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $addedConfig['resource']));
-                    if (is_null($configResource) or !array_key_exists('_id', $configResource) or $configResource["_id"] == '') {
+                    if (is_null($configResource) or ! array_key_exists('_id', $configResource) or $configResource["_id"] == '') {
                         throw new ApiException("Can't find the resource '" . $addedConfig['resource'] . "' in resources collection '" . $resourceCollection . "'", 87);
                     }
                     $this->logDebug(87, "Resource '" . $addedConfig['resource'] . "' found in resource backend", $configResource, 5);
@@ -739,7 +739,7 @@ class Api extends Configurable {
                         throw new ApiException(" resource '" . $addedConfig['resource'] . "' config should contain the 'class' attribute", 87);
                     }
                     $addedConfig = Toolkit::array_merge_recursive_distinct($configResource, $addedConfig);
-                    if (array_key_exists('children', $addedConfig) and !array_key_exists('children', $selectedChild))
+                    if (array_key_exists('children', $addedConfig) and ! array_key_exists('children', $selectedChild))
                         $selectedChild['children'] = $addedConfig['children'];
                     if (!array_key_exists('children', $selectedChild))
                         $selectedChild['children'] = array();
@@ -855,7 +855,7 @@ class Api extends Configurable {
         $obj->code = $code;
         $obj->message = $message;
         $obj->ip = $_SERVER['REMOTE_ADDR'];
-        if (is_array($this->inputs) and array_key_exists('session', $this->inputs) and !is_null($this->inputs['session']->getId()))
+        if (is_array($this->inputs) and array_key_exists('session', $this->inputs) and ! is_null($this->inputs['session']->getId()))
             $obj->session = $this->inputs['session']->getId();
         $obj->data = $data;
         if ($data instanceof Exception)
@@ -924,4 +924,3 @@ class Api extends Configurable {
     }
 
 }
-
