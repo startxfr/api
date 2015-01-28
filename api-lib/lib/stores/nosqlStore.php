@@ -10,6 +10,11 @@
  */
 class nosqlStore extends defaultStore implements IStorage {
 
+    public function __construct($config) {
+        $this->compatMode = (version_compare(PHP_VERSION_ID, '5.3.10', '<') or ! class_exists('MongoClient')) ? true : false;
+        parent::__construct($config);
+    }
+
     public function connect() {
         if (!$this->isconnected) {
             $server = (string) $this->getConfig('server', '127.0.0.1') . ":" . (string) $this->getConfig('port', '27017');
@@ -17,12 +22,16 @@ class nosqlStore extends defaultStore implements IStorage {
             $password = ((string) $this->getConfig('passwd', '') != '') ? ':' . (string) $this->getConfig('passwd') : '';
             $username = ((string) $this->getConfig('username', '') != '') ? (string) $this->getConfig('username') . $password . '@' : '';
             try {
-        Event::trigger('store.connect.before');
+                Event::trigger('store.connect.before');
                 parent::connect();
-                $connection = new Mongo("mongodb://" . $username . $server);
+                if ($this->compatMode) {
+                    $connection = new Mongo("mongodb://" . $username . $server);
+                } else {
+                    $connection = new MongoClient("mongodb://" . $username . $server);
+                }
                 $this->connection = $connection->selectDB($database);
                 $this->isconnected = true;
-        Event::trigger('store.connect.after');
+                Event::trigger('store.connect.after');
             } catch (Exception $e) {
                 throw new StoreException("could not connect to nosql storage because " . $e->getMessage());
             }
@@ -77,7 +86,7 @@ class nosqlStore extends defaultStore implements IStorage {
     public function update($table, $key, $id, $data, $upsert = false) {
         try {
             $this->connect();
-            if($upsert)
+            if ($upsert)
                 $this->lastResult = $this->connection->selectCollection($table)->update(array($key => $id), array('$set' => $data), array('upsert' => true));
             else
                 $this->lastResult = $this->connection->selectCollection($table)->update(array($key => $id), array('$set' => $data));
