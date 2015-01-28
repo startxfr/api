@@ -1,5 +1,12 @@
 <?php
 
+if (!defined('PHP_VERSION_ID')) {
+    $version = explode('.', PHP_VERSION);
+    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
+
+
+
 /**
  * Compatibility toolkit with older php version
  *
@@ -8,6 +15,7 @@
  * @license https://github.com/startxfr/sxapi/blob/master/licence.txt
  */
 if (!function_exists('http_response_code')) {
+
     function http_response_code($newcode = NULL) {
         static $code = 200;
         if ($newcode !== NULL) {
