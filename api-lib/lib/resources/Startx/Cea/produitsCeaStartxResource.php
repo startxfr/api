@@ -18,7 +18,6 @@ class produitsCeaStartxResource extends mysqlStoreResource implements IResource 
 
     public function init() {
         parent::init();
-        setlocale(LC_CTYPE, 'fr_FR.utf8');
         return $this;
     }
 

@@ -7,6 +7,7 @@ date_default_timezone_set("Europe/Paris");
 define('DEBUG', false);
 define('LOG_VERBOSITY', 5);
 date_default_timezone_set("Europe/Paris");
+setlocale(LC_ALL, 'fr_FR.UTF-8');
 /**
  * the directory separator used for this instance
  */

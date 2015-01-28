@@ -18,7 +18,6 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
 
     public function init() {
         parent::init();
-        setlocale(LC_CTYPE, 'fr_FR.utf8');
         return $this;
     }
 
@@ -95,7 +94,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $input = $api->getInput();
         $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
-        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/'. $this->getConfig('api_subpath_downloadzip');
+        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadzip');
         $ctlgname = $this->getConfig('cataloguepack_filename');
         exec("cd $destpath;  zip -r $ctlgname .; cp $ctlgname " . $this->getConfig('tmpdir'));
         $message = sprintf($this->getConfig('message_download_withimg', 'download catalogue with images'), $famlist, $downloadUrl);
@@ -109,7 +108,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $input = $api->getInput();
         $famlist = implode(', ', $familles);
         $destpath = $this->getConfig('workdir');
-        $downloadUrl = $input->getRootUrl() . $input->getPath(). '/'. $this->getConfig('api_subpath_downloadfile');
+        $downloadUrl = $input->getRootUrl() . $input->getPath() . '/' . $this->getConfig('api_subpath_downloadfile');
         $ctlgname = $this->getConfig('catalogue_filename');
         exec("cd $destpath;  cp $ctlgname " . $this->getConfig('tmpdir'));
         $message = sprintf($this->getConfig('message_download_withoutimg', 'download catalogue with images'), $famlist, $downloadUrl);
@@ -197,16 +196,18 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
 
     protected function packAddCatalogue($csvstring) {
         $file = fopen($this->getConfig('workdir') . "/" . $this->getConfig('catalogue_filename'), "w+");
-        fputs($file, @iconv("UTF-8", "ISO-8859-1//TRANSLIT", $csvstring));
+        fputs($file, mb_convert_encoding($csvstring, $this->getConfig('file_encoding','ISO-8859-1'), "UTF-8"));
         fclose($file);
         return true;
     }
 
     protected function generateCsvFromData($datas, $withImages = true) {
         $list = $listImg = $listFamille = array();
-        $tauxRemise = 0.205;
+        $tauxRemiseDefault = 0.205;
         $nbresult = count($datas);
         foreach ($datas as $value) {
+            $tauxRemiseFamille = (array_key_exists('txrem_cea_prodfam', $value) and (float) $value['txrem_cea_prodfam'] > 0) ? (float) $value['txrem_cea_prodfam'] : $tauxRemiseDefault;
+            $tauxRemise = (array_key_exists('txrem_cea_prod', $value) and (float) $value['txrem_cea_prod'] > 0) ? (float) $value['txrem_cea_prod'] : $tauxRemiseFamille;
             $imgName = '';
             if ($withImages) {
                 $imgName = $value['catalogue'] . ".png";
@@ -222,18 +223,18 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
                 'Table des matières niveau 2' => $this->cleanCsvField($value['categorie'], 132),
                 'Prix' => str_replace(array('.', ' '), array(',', ''), round($value['prix'] * (1 - $tauxRemise), 2)),
                 'Quantité de l\'unité de prix' => 1,
-                'UOM' => "PCE",
-                'Conditionnement' => "virtuel",
-                'Unité de vente' => "",
+                'UOM' => $this->getConfig('csv_val_uom','PCE'),
+                'Conditionnement' => $this->getConfig('csv_val_conditionnement','virtuel'),
+                'Unité de vente' => $this->getConfig('csv_val_unitevente',''),
                 'Prix valable pour une commande de' => "",
-                'Delai de livraison' => 7,
-                'Fabriquant/Marque' => "Red Hat",
+                'Delai de livraison' => $this->getConfig('csv_val_delailivraison',7),
+                'Fabriquant/Marque' => $this->getConfig('csv_val_fabriquant',"Red Hat"),
                 'Img' => $this->cleanCsvField($imgName, 50),
                 'Pdf' => "",
-                'Url' => "https://cea.startx.fr/produit.html#" . $value['id'],
-                'Groupe marchandise' => "IDP01",
-                'Surcout' => "",
-                'Info complémentaire' => $this->cleanCsvField("Support téléphonique au 01 46 69 00 00 ou sur redhat+cea@startx.fr", 156)
+                'Url' => sprintf($this->getConfig('csv_val_url',"https://cea.startx.fr/produit.html#%s"), $value['id']),
+                'Groupe marchandise' => $this->getConfig('csv_val_groupemarchandise',"IDP01"),
+                'Surcout' => $this->getConfig('csv_val_surcout',''),
+                'Info complémentaire' => $this->cleanCsvField($this->getConfig('csv_val_complement',"Support téléphonique au 01 46 69 00 00 ou sur redhat+cea@startx.fr"), 156)
             );
             $list[] = $entry;
         }
@@ -251,7 +252,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $search = $this->filterParams($api->getInput()->getParams(), "input");
         $utf = "SET NAMES utf8 ; ";
         $this->getStorage()->execQuery($utf);
-        $criteria = "stillAvailable_prod = '1'";
+        $criteria = "stillAvailable_prod = '1' AND prodredhat_prod = '1' ";
         if (array_key_exists('famille_prod', $search) and $search['famille_prod'] != "") {
             $criteria .= " AND famille_prod IN(" . $search['famille_prod'] . ")";
         }
@@ -310,14 +311,14 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         header("Pragma: no-cache");
         header("Expires: 0");
-        header("Content-Transfer-Encoding: ISO-8859-1");
+        header("Content-Transfer-Encoding: ".$this->getConfig('file_encoding','ISO-8859-1'));
         echo readfile($file_url);
         exit;
     }
 
     protected function cleanCsvField($val, $limit = 0) {
         $val1 = str_replace(array("\n", "\r", "\t"), "", $val);
-        $val2 = str_replace(array(";", ","), "-", $val1);
+        $val2 = str_replace(array(";", ",", "~"), "-", $val1);
         $val3 = str_replace('"', "'", $val2);
         if ($limit > 0) {
             $val3 = substr($val3, 0, $limit);
@@ -329,19 +330,19 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $outputBuffer = fopen("php://temp", 'w');
         if ($firstline and is_array($content[0])) {
             $keys = array_keys($content[0]);
-            fputcsv($outputBuffer, $keys, $colsep);
+            fputcsv($outputBuffer, $keys, $colsep, '~');
         }
         foreach ($content as $val) {
             if (is_array($val)) {
-                fputcsv($outputBuffer, $val, $colsep);
+                fputcsv($outputBuffer, $val, $colsep, '~');
             } else {
-                fputcsv($outputBuffer, array($val), $colsep);
+                fputcsv($outputBuffer, array($val), $colsep,'~');
             }
         }
         rewind($outputBuffer);
         $csvstring = stream_get_contents($outputBuffer);
         fclose($outputBuffer);
-        return $csvstring;
+        return str_replace('~', "", $csvstring);
     }
 
     protected function recordExportHistory($success, $message, $withimage, $withftp, $answer, $nbresult) {
