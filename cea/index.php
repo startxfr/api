@@ -4,7 +4,7 @@ require_once('../api-lib' . DIRECTORY_SEPARATOR .'kernel' . DIRECTORY_SEPARATOR 
 
 Api::$nosqlApiBackend = '{
         "connection" : "mongodb://test:test@127.0.0.1:27017",
-        "base" : "sxapi_test",
+        "base" : "sxapi",
         "api_collection" : "sxapi.api"
     }';
 $api = Api::getInstance('cea');
