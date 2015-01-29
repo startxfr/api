@@ -48,7 +48,6 @@ function executeMenuDev($choice, $display = true) {
     global $EP, $config;
     require_once('sxcmd_gitcommand.php');
     $dev_branch = $config['git']['branch_dev'];
-    $testing_branch = $config['git']['branch_testing'];
 
     switch ($choice) {
         case "1": echo "$EP    Go to branch $dev_branch\n";
@@ -85,6 +84,69 @@ function executeMenuDev($choice, $display = true) {
     if ($display) {
         displayMenuDev();
     }
+}
+
+function executeMenuDevshortcut($choice, $display = true) {
+    global $EP, $config;
+    require_once('sxcmd_gitcommand.php');
+    $dev_branch = $config['git']['branch_dev'];
+    
+    switch ($choice) {
+        case "1":
+            gitCommit($dev_branch, "$dev_branch commit", false, false);
+            break;
+        case "2":
+            executeMenuDevshortcutSeq("test", false);
+            break;
+        case "3":
+            executeMenuDevshortcutSeq("test", true);
+            break;
+        case "4":
+            executeMenuDevshortcutSeq("prod", false);
+            break;
+        case "5":
+            executeMenuDevshortcutSeq("prod", true);
+            break;
+        case "9":
+            if ($display) {
+                displayMenuPrincipal();
+            }
+            break;
+        case "0": exit;
+            break;
+    }
+    if ($display) {
+        displayMenuDev();
+    }
+}
+
+function executeMenuDevshortcutSeq($cible, $push = false) {
+    global $EP, $config;
+    require_once('sxcmd_gitcommand.php');
+    $dev_branch = $config['git']['branch_dev'];
+    $testing_branch = $config['git']['branch_testing'];
+    $production_branch = $config['git']['branch_production'];
+
+    echo "$EP    Go to branch $dev_branch\n";
+    gitCheckout($dev_branch, false, false);
+    echo "$EP    Merge $dev_branch > master\n";
+    gitMerge($dev_branch, "master", false);
+    echo "$EP    Merge master > $testing_branch\n";
+    gitMerge("master", $testing_branch, false);
+    if ($push) {
+        echo "$EP    Pushing branch $testing_branch\n";
+        gitPush($testing_branch, false);
+    }
+    if ($cible == "prod") {
+        echo "$EP    Merge $testing_branch > $production_branch\n";
+        gitMerge($testing_branch, $production_branch, false);
+        if ($push) {
+            echo "$EP    Pushing branch $production_branch\n";
+            gitPush($production_branch, false);
+        }
+    }
+    echo "$EP    Go back to branch $dev_branch\n";
+    gitCheckout($dev_branch, false, false);
 }
 
 function executeMenuTest($choice, $display = true) {
