@@ -312,7 +312,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         header("Pragma: no-cache");
         header("Expires: 0");
         header("Content-Transfer-Encoding: ".$this->getConfig('file_encoding','ISO-8859-1'));
-        echo readfile($file_url);
+        readfile($file_url);
         exit;
     }
 
