@@ -22,7 +22,7 @@ function gitStatus($branchsrc, $update = true) {
 
     gitCheckout($branchsrc, false, $update);
     $cmd_output = `(cd $rootdir ; git status)`;
-    echo $cmd_output.'XXXXXXXXXXXXXXXXXXXXXX';
+    echo $cmd_output;
 }
 
 function gitCommit($branchsrc, $commitMsg, $update = true, $verb = true) {
