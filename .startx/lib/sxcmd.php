@@ -32,6 +32,7 @@ function displayMenuPrincipal() {
     echo "$EP " . $col["green"] . "3. Developement\n" . $col["reset"];
     echo "$EP " . $col["green"] . "4. Test\n" . $col["reset"];
     echo "$EP " . $col["green"] . "5. Production\n" . $col["reset"];
+    echo "$EP " . $col["green"] . "6. Dev shortcut\n" . $col["reset"];
     echo "$EP " . $col["green"] . "0. Exit\n" . $col["reset"];
     echo "$EP\n";
     switch (ask("$EP    Votre choix : ")) {
@@ -44,6 +45,8 @@ function displayMenuPrincipal() {
         case "4": displayMenuTest();
             break;
         case "5": displayMenuProd();
+            break;
+        case "6": displayMenuDevshortcut();
             break;
         case "0": exit;
             break;
@@ -133,6 +136,23 @@ function displayMenuProd() {
     executeMenuProd(ask("$EP    Votre choix : "));
 }
 
+function displayMenuDevshortcut() {
+    global $EP, $col;
+    echo "$EP\n";
+    echo "$EP -- " . $col["blue"] . "Menu developpement rapide\n" . $col["reset"];
+    echo "$EP    Choisissez une option parmis les actions suivantes :\n";
+    echo "$EP\n";
+    echo "$EP " . $col["green"] . "1. Dev commit\n" . $col["reset"];
+    echo "$EP " . $col["green"] . "2. Dev > testing\n" . $col["reset"];
+    echo "$EP " . $col["green"] . "3. Dev > testing + push\n" . $col["reset"];
+    echo "$EP " . $col["green"] . "4. Dev > production\n" . $col["reset"];
+    echo "$EP " . $col["green"] . "5. Dev > production + push\n" . $col["reset"];
+    echo "$EP " . $col["green"] . "9. Retour menu principal\n" . $col["reset"];
+    echo "$EP " . $col["green"] . "0. Exit\n" . $col["reset"];
+    echo "$EP\n";
+    executeMenuDevshortcut(ask("$EP    Votre choix : "));
+}
+
 function displayUsage() {
     global $EP;
 
@@ -168,6 +188,8 @@ function choose_menu($opts) {
                 break;
             case "5": $menu = "executeMenuProd";
                 break;
+            case "6": $menu = "executeMenuDevshortcut";
+                break;
             default: exit;
                 break;
         }
@@ -186,6 +208,7 @@ function check_options() {
     $opts = preg_grep('/^\d\.\d(:\d)*$/', $argv);
     if (count($opts) !== $argc - 1)
         return displayUsage();
+    displayIntro();
     choose_menu($opts);
     return 0;
 }
