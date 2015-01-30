@@ -196,7 +196,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
 
     protected function packAddCatalogue($csvstring) {
         $file = fopen($this->getConfig('workdir') . "/" . $this->getConfig('catalogue_filename'), "w+");
-        fputs($file, mb_convert_encoding($csvstring, $this->getConfig('file_encoding','ISO-8859-1'), "UTF-8"));
+        fputs($file, mb_convert_encoding($csvstring, $this->getConfig('file_encoding', 'ISO-8859-1'), "UTF-8"));
         fclose($file);
         return true;
     }
@@ -223,18 +223,18 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
                 'Table des matières niveau 2' => $this->cleanCsvField($value['categorie'], 132),
                 'Prix' => str_replace(array('.', ' '), array(',', ''), round($value['prix'] * (1 - $tauxRemise), 2)),
                 'Quantité de l\'unité de prix' => 1,
-                'UOM' => $this->getConfig('csv_val_uom','PCE'),
-                'Conditionnement' => $this->getConfig('csv_val_conditionnement','virtuel'),
-                'Unité de vente' => $this->getConfig('csv_val_unitevente',''),
+                'UOM' => $this->getConfig('csv_val_uom', 'PCE'),
+                'Conditionnement' => $this->getConfig('csv_val_conditionnement', 'virtuel'),
+                'Unité de vente' => $this->getConfig('csv_val_unitevente', ''),
                 'Prix valable pour une commande de' => "",
-                'Delai de livraison' => $this->getConfig('csv_val_delailivraison',7),
-                'Fabriquant/Marque' => $this->getConfig('csv_val_fabriquant',"Red Hat"),
+                'Delai de livraison' => $this->getConfig('csv_val_delailivraison', 7),
+                'Fabriquant/Marque' => $this->getConfig('csv_val_fabriquant', "Red Hat"),
                 'Img' => $this->cleanCsvField($imgName, 50),
                 'Pdf' => "",
-                'Url' => sprintf($this->getConfig('csv_val_url',"https://cea.startx.fr/produit.html#%s"), $value['id']),
-                'Groupe marchandise' => $this->getConfig('csv_val_groupemarchandise',"IDP01"),
-                'Surcout' => $this->getConfig('csv_val_surcout',''),
-                'Info complémentaire' => $this->cleanCsvField($this->getConfig('csv_val_complement',"Support téléphonique au 01 46 69 00 00 ou sur redhat+cea@startx.fr"), 156)
+                'Url' => sprintf($this->getConfig('csv_val_url', "https://cea.startx.fr/produit.html#%s"), $value['id']),
+                'Groupe marchandise' => $this->getConfig('csv_val_groupemarchandise', "IDP01"),
+                'Surcout' => $this->getConfig('csv_val_surcout', ''),
+                'Info complémentaire' => $this->cleanCsvField($this->getConfig('csv_val_complement', "Support téléphonique au 01 46 69 00 00 ou sur redhat+cea@startx.fr"), 156)
             );
             $list[] = $entry;
         }
@@ -311,7 +311,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         header("Pragma: no-cache");
         header("Expires: 0");
-        header("Content-Transfer-Encoding: ".$this->getConfig('file_encoding','ISO-8859-1'));
+        header("Content-Transfer-Encoding: " . $this->getConfig('file_encoding', 'ISO-8859-1'));
         readfile($file_url);
         exit;
     }
@@ -336,7 +336,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
             if (is_array($val)) {
                 fputcsv($outputBuffer, $val, $colsep, '~');
             } else {
-                fputcsv($outputBuffer, array($val), $colsep,'~');
+                fputcsv($outputBuffer, array($val), $colsep, '~');
             }
         }
         rewind($outputBuffer);
@@ -359,13 +359,13 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
             'withimage' => $withimage,
             'withftp' => $withftp
         );
-        $store = $api->getStore($this->getConfig('history_store'));
-        $store->create($this->getConfig('history_store_dataset', 'cea.history'), Toolkit::array2Object($trace));
-        try {
-            
-        } catch (Exception $exc) {
-            $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            return false;
+        if ($this->getConfig('history_store') != '') {
+            try {
+                $store = $api->getStore($this->getConfig('history_store'));
+                $store->create($this->getConfig('history_store_dataset', 'cea.history'), Toolkit::array2Object($trace));
+            } catch (Exception $exc) {
+                $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
+            }
         }
         return true;
     }
