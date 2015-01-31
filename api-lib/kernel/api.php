@@ -523,6 +523,32 @@ class Api extends Configurable {
     }
 
     /**
+     * Get a resource connector
+     * return the resource connector coresponding to the given $id. Dynamicaly load it, initialize it and cache it if not already required.
+     * @return defaultResource the resource connector instance coresponding to the requested $id
+     * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
+     */
+    public function getConfiguredResource($id, $configAdd = array()) {
+        $resourceCollection = $this->getConfig("resource_collection", "resources");
+        $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $id));
+        if (is_null($configResource) or $configResource["_id"] == '')
+            throw new ApiException("Can't find the resource '" . $id . "' in resources collection '" . $resourceCollection . "'", 87);
+        $this->logDebug(87, "Resource '" . $id . "' found in resource backend", $id, 5);
+        if ($configResource['class'] == '') {
+            $this->logError(87, " resource '" . $id . "' config should contain the 'class' attribute", $id);
+            throw new ApiException(" resource '" . $id . "' config should contain the 'class' attribute", 87);
+        }
+        if (is_array($configAdd)) {
+            foreach ($configResource as $k => $v) {
+                if (!in_array($k, array('_id', 'class', 'children')) and array_key_exists($k, $configAdd)) {
+                    $configResource[$k] = $configAdd[$k];
+                }
+            }
+        }
+        return $this->getResource($configResource['class'], $configResource);
+    }
+
+    /**
      * execute the resource action, render it and exit;
      * @return void end of program. exit
      */

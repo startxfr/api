@@ -115,7 +115,7 @@ class mailResource extends linkableResource implements IResource {
         $this->mail->Subject = $subject;    
         //Replace the plain text body with one created manually
         //$this->mail->isHTML(false);
-        $this->mail->Body = $body;        
+        $this->mail->Body = $body; 
         //send the message, check for errors
         if (!$this->mail->send()) {       
             $api->logWarn(572, "mailer error when sending message because ".$this->mail->ErrorInfo , $this->getConfigs());
