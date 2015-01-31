@@ -49,6 +49,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
                 $dblist = $this->getDataFromStorage();
                 $csvdata = $this->generateCsvFromData($dblist, $withImages);
                 if (!$csvdata[0]) {
+                    $this->recordExportHistory(false, "error in generating csv from data", false, false, strlen($csvdata[1]), $csvdata[3]);
                     return array(false, 'error in produitCeaStartxResource', $csvdata[1], $csvdata[3]);
                 }
                 $this->packAddCatalogue($csvdata[1]);

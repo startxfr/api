@@ -1,5 +1,5 @@
 <?php
-            
+
 /**
  * This resource is used to interact (read - write) with nosql data, recorded in a store.
  * Data are returned to the client using the output method.
@@ -74,19 +74,8 @@ class commandeCeaStartxResource extends messageResource implements IResource {
                 $payload = (string) $xmlData['payloadid'];
                 $api->getInput()->setParam('payload', $payload);
 
-
                 // préparation de la ressource d'envoi de mail
-                $senderResourceId = $this->getConfig('resource_sendmail', 'sendmail');
-                $resourceCollection = $api->getConfig("resource_collection", "resources");
-                $configResource = $api->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $senderResourceId));
-                if (is_null($configResource) or $configResource["_id"] == '')
-                    throw new ApiException("Can't find the resource '" . $senderResourceId . "' in resources collection '" . $resourceCollection . "'", 87);
-                $api->logDebug(87, "Resource '" . $senderResourceId . "' found in resource backend", $senderResourceId, 5);
-                if ($configResource['class'] == '') {
-                    $api->logError(87, " resource '" . $senderResourceId . "' config should contain the 'class' attribute", $senderResourceId);
-                    throw new ApiException(" resource '" . $senderResourceId . "' config should contain the 'class' attribute", 87);
-                }
-                $sender = $api->getResource($configResource['class'], $configResource);
+                $sender = $api->getConfiguredResource($this->getConfig('resource_sendmail', 'sendmail'));
                 $params = $sender->getConfig('default_params');
 
                 // envoi de mail
@@ -95,7 +84,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
                 $body = $this->getConfig('sendmail_body', $params['body']) . $dataPOST;
 
                 if (!$sender->sendMail($to, $sub, $body))
-                    throw new ApiException(" resource '" . $senderResourceId . "' could not send order mail. Abort", 87);
+                    throw new ApiException(" resource '" . $this->getConfig('resource_sendmail', 'sendmail') . "' could not send order mail. Abort", 87);
 
                 // préparation de la réponse
                 $message = sprintf($this->getConfig('message_service_commandeok', 'your order %s is recorded'), $payload);
@@ -103,7 +92,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
                 return array(true, $message, "OK", null);
             }
         } catch (Exception $exc) {
-            $message = sprintf($this->getConfig('message_error_exception', "An exception occured on %s"), get_class($this), $exc->getMessage(), $exc->getCode());
+            $message = sprintf($this->getConfig('message_error_exception', "An exception occured on %s : %s"), get_class($this), $exc->getMessage(), $exc->getCode());
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             $this->recordCommandeHistory(false, $message);
             return array(false, $exc->getCode(), $message, array(), 500);
