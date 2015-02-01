@@ -110,7 +110,7 @@ class Api extends Configurable {
         } catch (Exception $exc) {
             http_response_code(503);
             $message = "Error communicating with nosql backend : " . $exc->getMessage();
-            if (array_key_exists('format', $_REQUEST) and $_REQUEST["format"] == "json") {
+            if (array_key_exists("format", $_REQUEST) and $_REQUEST["format"] == "json") {
                 header('Content-Type: text/json; charset=utf8');
                 echo json_encode(array('status' => 'error', 'success' => false, 'total' => 0, 'message' => $message, 'data' => null));
             } else {
