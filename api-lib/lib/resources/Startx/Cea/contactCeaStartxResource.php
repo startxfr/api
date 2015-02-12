@@ -58,7 +58,7 @@ class contactCeaStartxResource extends messageResource implements IResource {
             ;
 
             if (!$sender->sendMail($to, $sub, $body))
-                throw new ApiException(" resource '" . $this->getConfig('resource_sendmail', 'sendmail') . "' could not send mail. Abort", 87);
+                throw new ResourceException(" resource '" . $this->getConfig('resource_sendmail', 'sendmail') . "' could not send mail. Abort", 87);
 
             // préparation de la réponse
             $message = $this->getConfig('message_ok', 'your contact request %s is recorded');
