@@ -35,23 +35,36 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         $api = Api::getInstance();
         $api->logDebug(930, "Start executing '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->getResourceTrace(__FUNCTION__, false), 3);
         try {
-            $dataPOST = trim(file_get_contents('php://input'));
-            if ($dataPOST == "") {
+            if ($this->isConfig('authorized_ip')) {
+                $api->logInfo(910, "Activate IP control for '" . get_class($this) . "'", null);
+                $iplist = explode(',', $this->getConfig('authorized_ip', "127.0.0.1"));
+                $rip = $api->getInput('server')->get('REMOTE_ADDR');
+                if (!in_array($rip, $iplist)) {
+                    $message = sprintf($this->getConfig('message_error_badip', "You IP (%s) is not listed as an authorized IP for this action"), $rip);
+                    $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : IP $rip is not autorized", $rip);
+                    $this->recordCommandeHistory(false, $message);
+                    return array(false, 935, $message, $rip, 419);
+                }
+            } else {
+                $api->logInfo(910, "Disable IP control for '" . get_class($this) . "'", null);
+            }
+            $this->cxmldoc = trim(file_get_contents('php://input'));
+            if ($this->cxmldoc == "") {
                 $message = $this->getConfig('message_error_noinputdoc', "could not read an input document.");
-                $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : input has no XML document", $dataPOST);
+                $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : input has no XML document", $this->cxmldoc);
                 $this->recordCommandeHistory(false, $message);
-                return array(false, 935, $message, $dataPOST, 500);
+                return array(false, 935, $message, $this->cxmldoc, 415);
             }
             libxml_use_internal_errors(true);
-            $api->logDebug(931, "Start parsing xml input in '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $dataPOST, 3);
-            $xmlData = simplexml_load_string($dataPOST);
-            if (!$xmlData) {
+            $api->logDebug(931, "Start parsing xml input in '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->cxmldoc, 3);
+            $this->cxml = simplexml_load_string($this->cxmldoc);
+            if (!$this->cxml) {
                 $errors = libxml_get_errors();
                 if (count($errors) == 0) {
                     $message = $this->getConfig('message_error_emptyinputdoc', "cXML document is empty (only root node)");
                     $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' : cXML document is empty (only root node)", array());
                     $this->recordCommandeHistory(false, $message);
-                    return array(false, 935, $message, array(), 500);
+                    return array(false, 935, $message, array(), 416);
                 } else {
                     $errorMsg = array();
                     foreach ($errors as $error) {
@@ -61,33 +74,50 @@ class commandeCeaStartxResource extends messageResource implements IResource {
                     $message = sprintf($this->getConfig('message_error_xmlload', "cXml document contain %s XML error. See following : %s", count($errors), implode(", ", $errorMsg)));
                     $api->logError(930, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . implode(", ", $errorMsg), libxml_get_errors());
                     $this->recordCommandeHistory(false, $message);
-                    return array(false, 935, $message, $errorMsg, 500);
+                    return array(false, 935, $message, $errorMsg, 417);
                 }
             } else {
-                $api->logDebug(932, "XML Commande parsed in '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $dataPOST, 2);
+                $api->logDebug(932, "XML Commande parsed in '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->cxmldoc, 2);
 
+                $cmd = new stdClass();
+                $cmd->items = array();
+                if ($this->isConfig('extract_commande')) {
+                    foreach ($this->getConfig('extract_commande') as $key => $xquery) {
+                        $cmd->$key = $this->extractCxmlValue($xquery);
+                    }
+                }
+                if ($this->isConfig('extract_items_tree') and $this->isConfig('extract_item')) {
+                    foreach ($this->extractCxmlValue($this->getConfig('extract_items_tree'), 'xml') as $key => $item) {
+                        $it = new stdClass();
+                        foreach ($this->getConfig('extract_item') as $key => $xquery) {
+                            $it->$key = $this->extractCxmlValue($xquery, null, $item);
+                        }
+                        $cmd->items[] = $it;
+                    }
+                }
 
-
-
-
-                // ici pour la recuperation des info depuis $xmlData
-                $payload = (string) $xmlData['payloadid'];
-                $api->getInput()->setParam('payload', $payload);
+                $api->getInput()->setParam('payload', $cmd->payload);
 
                 // préparation de la ressource d'envoi de mail
                 $sender = $api->getConfiguredResource($this->getConfig('resource_sendmail', 'sendmail'));
                 $params = $sender->getConfig('default_params');
 
+                // récuparation d'une vue html des données pour ajouter dans le mail
+                ob_start();
+                var_dump($cmd);
+                $vardump = ob_get_contents();
+                ob_end_clean();
+                
                 // envoi de mail
                 $to = $this->getConfig('sendmail_to', $params['to']);
                 $sub = $this->getConfig('sendmail_subject', $params['subject']);
-                $body = $this->getConfig('sendmail_body', $params['body']) . $dataPOST;
-
+                $body = $this->getConfig('sendmail_body', $params['body']) . $vardump . $this->cxmldoc;
+                $sender->mail->IsHTML(true);
                 if (!$sender->sendMail($to, $sub, $body))
                     throw new ApiException(" resource '" . $this->getConfig('resource_sendmail', 'sendmail') . "' could not send order mail. Abort", 87);
 
                 // préparation de la réponse
-                $message = sprintf($this->getConfig('message_service_commandeok', 'your order %s is recorded'), $payload);
+                $message = sprintf($this->getConfig('message_service_commandeok', 'your order %s is recorded'), $cmd->payload);
                 $this->recordCommandeHistory(true, $message);
                 return array(true, $message, "OK", null);
             }
@@ -95,7 +125,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
             $message = sprintf($this->getConfig('message_error_exception', "An exception occured on %s : %s"), get_class($this), $exc->getMessage(), $exc->getCode());
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             $this->recordCommandeHistory(false, $message);
-            return array(false, $exc->getCode(), $message, array(), 500);
+            return array(false, $exc->getCode(), $message, array(), 418);
         }
         return true;
     }
@@ -106,6 +136,23 @@ class commandeCeaStartxResource extends messageResource implements IResource {
 
     public function deleteAction() {
         return $this->createAction();
+    }
+
+    private function extractCxmlValue($xpath, $output = null, $context = null) {
+        if (substr($xpath, 0, 4) === 'val:') {
+            return substr($xpath, 4);
+        }
+        $ctx = ($context !== null) ? $context : $this->cxml;
+        $val = @$ctx->xpath($xpath);
+        if ($val !== false) {
+            if ($output == 'xml') {
+                return $val;
+            } else {
+                return implode(', ', $val);
+            }
+        } else {
+            return '';
+        }
     }
 
     protected function recordCommandeHistory($success, $message, $others = array()) {
