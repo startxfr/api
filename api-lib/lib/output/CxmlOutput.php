@@ -28,7 +28,7 @@ class CxmlOutput extends XmlOutput implements IOutput {
                 $content = implode(', ', $content);
         }
         header('Content-Type: ' . $this->getConfig("content_type", "text/xml") . '; charset=utf8');
-        $payload = $api->getInput()->getParam('payload', md5(rand(0, 1000) + time()) . '@cea.startx.fr');
+        $payload = $api->getInput()->getParam('payload', md5(rand(0, 1000) + time()) . '@api.startx.fr');
         $output = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>';
         $output.= '<cXML payloadID="' . $payload . '" timestamp="' . date(DATE_W3C) . '" version="1.2.011" xml:lang="fr">';
         $output.= '<Response><Status code="' . $httpCode . '" text="' . $content . '"/></Response>';

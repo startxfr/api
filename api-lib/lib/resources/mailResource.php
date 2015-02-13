@@ -49,6 +49,7 @@ class mailResource extends linkableResource implements IResource {
         $server = $this->getConfig('server');
         //Create a new PHPMailer instance
         $this->mail = new PHPMailer;
+        $this->mail->charSet = "UTF-8";
         //Tell PHPMailer to use SMTP
         $this->mail->isSMTP();
         //Enable SMTP debugging

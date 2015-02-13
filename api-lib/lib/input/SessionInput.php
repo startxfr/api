@@ -230,7 +230,7 @@ class SessionInput extends DefaultInput implements IInput {
         $maxlifetime = null;
         $sessions = $this->sessionStorage->find(array('state' => '1'));
         foreach ($sessions as $data)
-            if ($data['time'] < time())
+            if (array_key_exists ('time', $data) and $data['time'] < time())
                 $this->sessionStorage->update(array("_id" => $id), array(
                     '$set' => array(
                         'state' => '2',
