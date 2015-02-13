@@ -56,9 +56,10 @@ class commandeCeaStartxResource extends messageResource implements IResource {
             $message = sprintf($this->getConfig('message_service_commandeok', 'your order %s is recorded'), $this->cmd->payload);
             $this->recordCommandeHistory(true, $message);
             return array(true, $message, "OK", null);
-        } catch (Exception $exc) {
+        }
+        catch(Exception $exc) {
             $api->logError($exc->getCode(), "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
-            switch ($exc->getCode()) {
+            switch($exc->getCode()) {
                 // erreur du document entrant (document POSTé)
                 case 935:
                 case 936:
@@ -88,14 +89,15 @@ class commandeCeaStartxResource extends messageResource implements IResource {
 
     private function checkSourceIP() {
         $api = Api::getInstance();
-        if ($this->isConfig('authorized_ip')) {
+        if($this->isConfig('authorized_ip')) {
             $api->logInfo(910, "Activate IP control for '" . get_class($this) . "'", null);
             $iplist = explode(',', $this->getConfig('authorized_ip', "127.0.0.1"));
             $rip = $api->getInput('server')->get('REMOTE_ADDR');
-            if (!in_array($rip, $iplist)) {
+            if(!in_array($rip, $iplist)) {
                 throw new ResourceException(sprintf($this->getConfig('message_error_badip', "You IP (%s) is not listed as an authorized IP for this action"), $rip), 936);
             }
-        } else {
+        }
+        else {
             $api->logInfo(910, "Disable IP control for '" . get_class($this) . "'", null);
         }
         return $this;
@@ -103,7 +105,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
 
     private function loadRawInput() {
         $this->cxmldoc = trim(file_get_contents('php://input'));
-        if ($this->cxmldoc == "") {
+        if($this->cxmldoc == "") {
             throw new ResourceException($this->getConfig('message_error_noinputdoc', "No input document  using POST method."), 935);
         }
         return $this;
@@ -114,20 +116,22 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         libxml_use_internal_errors(true);
         $api->logDebug(931, "Start parsing xml input in '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->cxmldoc, 3);
         $this->cxml = simplexml_load_string($this->cxmldoc);
-        if (!$this->cxml) {
+        if(!$this->cxml) {
             $errors = libxml_get_errors();
-            if (count($errors) == 0) {
+            if(count($errors) == 0) {
                 throw new ResourceException($this->getConfig('message_error_emptyinputdoc', "cXML document is empty (only root node)"), 937);
-            } else {
+            }
+            else {
                 $errorMsg = array();
-                foreach ($errors as $error) {
+                foreach($errors as $error) {
                     $errorMsg[] = $error->message . ' in file ' . $error->file . ' on line ' . $error->line . ':' . $error->column;
                 }
                 libxml_clear_errors();
                 $message = sprintf($this->getConfig('message_error_xmlload', "cXml document contain %s XML error. See following : %s", count($errors), implode(", ", $errorMsg)));
                 throw new ResourceException($message, 938);
             }
-        } else {
+        }
+        else {
             $api->logDebug(932, "XML Commande parsed in '" . __FUNCTION__ . "' on '" . get_class($this) . "' resource", $this->cxmldoc, 2);
         }
         return $this;
@@ -136,15 +140,15 @@ class commandeCeaStartxResource extends messageResource implements IResource {
     private function extractCxmlData() {
         $cmd = new stdClass();
         $cmd->items = array();
-        if ($this->isConfig('extract_commande')) {
-            foreach ($this->getConfig('extract_commande') as $key => $xquery) {
+        if($this->isConfig('extract_commande')) {
+            foreach($this->getConfig('extract_commande') as $key => $xquery) {
                 $cmd->$key = $this->extractCxmlValue($xquery);
             }
         }
-        if ($this->isConfig('extract_items_tree') and $this->isConfig('extract_item')) {
-            foreach ($this->extractCxmlValue($this->getConfig('extract_items_tree'), 'xml') as $key => $item) {
+        if($this->isConfig('extract_items_tree') and $this->isConfig('extract_item')) {
+            foreach($this->extractCxmlValue($this->getConfig('extract_items_tree'), 'xml') as $key => $item) {
                 $it = new stdClass();
-                foreach ($this->getConfig('extract_item') as $key => $xquery) {
+                foreach($this->getConfig('extract_item') as $key => $xquery) {
                     $it->$key = $this->extractCxmlValue($xquery, null, $item);
                 }
                 $cmd->items[] = $it;
@@ -154,18 +158,20 @@ class commandeCeaStartxResource extends messageResource implements IResource {
     }
 
     private function extractCxmlValue($xpath, $output = null, $context = null) {
-        if (substr($xpath, 0, 4) === 'val:') {
+        if(substr($xpath, 0, 4) === 'val:') {
             return substr($xpath, 4);
         }
         $ctx = ($context !== null) ? $context : $this->cxml;
         $val = @$ctx->xpath($xpath);
-        if ($val !== false) {
-            if ($output == 'xml') {
+        if($val !== false) {
+            if($output == 'xml') {
                 return $val;
-            } else {
+            }
+            else {
                 return implode(', ', $val);
             }
-        } else {
+        }
+        else {
             return '';
         }
     }
@@ -193,20 +199,22 @@ class commandeCeaStartxResource extends messageResource implements IResource {
             'http_body' => trim(file_get_contents('php://input')),
             'message' => $message
         );
-        if (is_array($others)) {
+        if(is_array($others)) {
             $trace = array_merge_recursive($others, $trace);
         }
-        if ($this->getConfig('history_store') != '') {
+        if($this->getConfig('history_store') != '') {
             try {
                 $store = $api->getStore($this->getConfig('history_store'));
                 $store->create($this->getConfig('history_store_dataset', 'cea.history'), Toolkit::array2Object($trace));
-            } catch (Exception $exc) {
+            }
+            catch(Exception $exc) {
                 $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             }
         }
         try {
             
-        } catch (Exception $exc) {
+        }
+        catch(Exception $exc) {
             $api->logError(910, "Error on '" . __FUNCTION__ . "' for '" . get_class($this) . "' return : " . $exc->getMessage(), $exc);
             return false;
         }
@@ -228,7 +236,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         $sub = $this->getConfig('sendmail_subject', $params['subject']);
         $body = $this->getConfig('sendmail_body', $params['body']) . $vardump . $this->cxmldoc;
         $sender->mail->IsHTML(true);
-        if (!$sender->sendMail($to, $sub, $body))
+        if(!$sender->sendMail($to, $sub, $body))
             throw new ResourceException(" resource '" . $this->getConfig('resource_sendmail', 'sendmail') . "' could not send order mail. Abort", 87);
         return $this;
     }
