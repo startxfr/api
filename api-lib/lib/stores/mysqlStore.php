@@ -11,55 +11,60 @@
 class mysqlStore extends defaultStore implements IStorage {
 
     public function connect() {
-        if (!$this->isconnected) {
+        if(!$this->isconnected) {
             try {
-        Event::trigger('store.connect.before');
+                Event::trigger('store.connect.before');
                 parent::connect();
                 $this->connection = new PDO("mysql:host=" . $this->getConfig('server', '127.0.0.1') . ";dbname=" . $this->getConfig('base', 'base'), $this->getConfig('username', ''), $this->getConfig('passwd', ''));
                 $this->isconnected = true;
-        Event::trigger('store.connect.after');
-            } catch (Exception $e) {
+                Event::trigger('store.connect.after');
+            }
+            catch(Exception $e) {
                 throw new StoreException("we could not connect to mysql storage because " . $e->getMessage());
             }
         }
         return $this;
     }
 
-    public function readOne($table, $criteria = array()) {
+    public function readOne($table, $criteria = array(), $fields = '*') {
         try {
             $this->connect();
-            $result = $this->read($table, $criteria);
+            $result = $this->read($table, $criteria, array(), 0, 1, $fields);
             Api::getInstance()->logDebug(421, "'" . __FUNCTION__ . "' '" . get_class($this) . "' return 1 result", array('table' => $table, 'criteria' => $criteria), 4);
-            if (is_array($result) and count($result) > 0 and is_array($result[0])) {
+            if(is_array($result) and count($result) > 0 and is_array($result[0])) {
                 return $result[0];
-            } else
+            }
+            else
                 return array();
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             throw new StoreException($e->getMessage());
         }
     }
 
-    public function read($table, $criteria = array(), $order = array(), $start = 0, $stop = 30) {
+    public function read($table, $criteria = array(), $order = array(), $start = 0, $stop = 30, $fields = '*') {
         try {
             $this->connect();
-            $sql = "SELECT * FROM `" . $table . "` ";
+            $sql = "SELECT " . $fields . " FROM `" . $table . "` ";
             $sql.= $this->_sqlWhere($criteria);
             $sql.= $this->_sqlOrder($order);
             $sql.= $this->_sqlLimit($start, $stop);
             $this->_setQuery($sql);
             $this->lastResult = $this->connection->query($this->_getQuery(), PDO::FETCH_ASSOC);
-            if ($this->lastResult !== false) {
+            if($this->lastResult !== false) {
                 $output = array();
-                foreach ($this->lastResult as $row) {
+                foreach($this->lastResult as $row) {
                     $output[] = $row;
                 }
                 Api::getInstance()->logDebug(420, "'" . __FUNCTION__ . "' '" . get_class($this) . "' '" . @count($output) . "' result", array('table' => $table, 'criteria' => $criteria, 'order' => $order, 'start' => $start, 'stop' => $stop), 4);
                 return $output;
-            } else {
+            }
+            else {
                 $error = $this->connection->errorInfo();
                 throw new StoreException($error[2]);
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             throw new StoreException("could not read entries from mysql storage because " . $e->getMessage());
         }
         return $this;
@@ -72,15 +77,17 @@ class mysqlStore extends defaultStore implements IStorage {
             $sql.= $this->_sqlWhere($criteria);
             $this->_setQuery($sql);
             $this->lastResult = $this->connection->query($this->_getQuery(), PDO::FETCH_ASSOC);
-            if ($this->lastResult !== false) {
+            if($this->lastResult !== false) {
                 $output = $this->lastResult->fetch();
                 Api::getInstance()->logDebug(422, "'" . __FUNCTION__ . "' '" . get_class($this) . "' return " . $output["counter"] . "' counter", array('table' => $table, 'criteria' => $criteria), 4);
                 return $output["counter"];
-            } else {
+            }
+            else {
                 $error = $this->connection->errorInfo();
                 throw new StoreException($error[2]);
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             throw new StoreException("could not count read entries from mysql storage because " . $e->getMessage());
         }
         return $this;
@@ -91,26 +98,29 @@ class mysqlStore extends defaultStore implements IStorage {
             $this->connect();
             $action = 'INSERT';
             $top = $action . " INTO `" . $table . "` ( ";
-            foreach ($data as $k => $val) {
-                if ($val == '')
-                    $bottom .= ", NULL ";
+            $h = $b = "";
+            foreach($data as $k => $val) {
+                if($val == '')
+                    $b .= ", NULL ";
                 else
-                    $bottom .= ", " . $this->_sqlQuote($val) . " ";
-                $head .= ", `" . $k . "` ";
+                    $b .= ", " . $this->_sqlQuote($val) . " ";
+                $h .= ", `" . $k . "` ";
             }
-            $head = substr($head, 1);
-            $bottom = substr($bottom, 1);
+            $head = substr($h, 1);
+            $bottom = substr($b, 1);
             $sql = $top . $head . ") VALUES (" . $bottom . ") ";
             $this->_setQuery($sql);
             $this->lastResult = $this->connection->exec($this->_getQuery());
-            if ($this->lastResult !== false) {
+            if($this->lastResult !== false) {
                 Api::getInstance()->logDebug(430, "'" . __FUNCTION__ . "' '" . get_class($this) . "' created id '" . $this->connection->lastInsertId() . "' entry", array('table' => $table, 'data' => $data), 4);
                 return $this->connection->lastInsertId();
-            } else {
+            }
+            else {
                 $error = $this->connection->errorInfo();
                 throw new StoreException($error[2]);
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             throw new StoreException("could not create entries from mysql storage because " . $e->getMessage());
         }
         return $this;
@@ -118,13 +128,13 @@ class mysqlStore extends defaultStore implements IStorage {
 
     public function update($table, $key, $id, $data) {
         try {
-            if (empty($data))
+            if(empty($data))
                 throw new StoreException("no data");
             $this->connect();
             $action = 'UPDATE';
             $top = "$action `" . $table . "` SET ";
-            foreach ($data as $k => $val) {
-                if ($val == '')
+            foreach($data as $k => $val) {
+                if($val == '')
                     $head .= " `" . $k . "` = NULL, ";
                 else
                     $head .= " `" . $k . "` = " . $this->_sqlQuote($val) . ", ";
@@ -133,14 +143,16 @@ class mysqlStore extends defaultStore implements IStorage {
             $sql = $top . $head . " WHERE `" . $key . "` = '" . $id . "' ";
             $this->_setQuery($sql);
             $this->lastResult = $this->connection->exec($this->_getQuery());
-            if ($this->lastResult !== false) {
+            if($this->lastResult !== false) {
                 Api::getInstance()->logDebug(450, "'" . __FUNCTION__ . "' '" . get_class($this) . "' updated id '" . $id . "' entry", array('table' => $table, 'key' => $key, 'id' => $id, 'data' => $data), 4);
                 return $this->lastResult;
-            } else {
+            }
+            else {
                 $error = $this->connection->errorInfo();
                 throw new StoreException($error[2]);
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             throw new StoreException("could not update entry from mysql storage because " . $e->getMessage());
         }
         return $this;
@@ -152,14 +164,16 @@ class mysqlStore extends defaultStore implements IStorage {
             $sql = "DELETE FROM `" . $table . "` WHERE `" . $key . "` = " . $this->_sqlQuote($id) . " ";
             $this->_setQuery($sql);
             $this->lastResult = $this->connection->exec($this->_getQuery());
-            if ($this->lastResult !== false) {
+            if($this->lastResult !== false) {
                 Api::getInstance()->logDebug(470, "'" . __FUNCTION__ . "' '" . get_class($this) . "' deleted id '" . $id . "' entry", array('table' => $table, 'key' => $key, 'id' => $id), 4);
                 return $this->lastResult;
-            } else {
+            }
+            else {
                 $error = $this->connection->errorInfo();
                 throw new StoreException($error[2]);
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             throw new StoreException("could not delete entry from mysql storage because " . $e->getMessage());
         }
         return $this;
@@ -167,26 +181,28 @@ class mysqlStore extends defaultStore implements IStorage {
 
     public function execQuery($sql) {
         try {
-            $this->connect();            
-            $this->_setQuery($sql);           
+            $this->connect();
+            $this->_setQuery($sql);
             $this->lastResult = $this->connection->query($this->_getQuery(), PDO::FETCH_ASSOC);
-            if ($this->lastResult !== false) {
+            if($this->lastResult !== false) {
                 $output = array();
-                foreach ($this->lastResult as $row) {
+                foreach($this->lastResult as $row) {
                     $output[] = $row;
                 }
                 Api::getInstance()->logDebug(420, "'" . __FUNCTION__ . "' '" . get_class($this) . "' '" . @count($output) . "' result", array('sql' => $sql), 4);
                 return $output;
-            } else {
+            }
+            else {
                 $error = $this->connection->errorInfo();
                 throw new StoreException($error[2]);
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             throw new StoreException("could not read entries from mysql storage because " . $e->getMessage());
         }
         return $this;
     }
-    
+
     private function _setQuery($sqlQuery) {
         $this->lastQuery = $sqlQuery;
         return $this;
@@ -197,52 +213,52 @@ class mysqlStore extends defaultStore implements IStorage {
     }
 
     private function _sqlLimit($start = 0, $limit = 30) {
-        if ($start == '')
+        if($start == '')
             $start = 0;
-        if ($limit == '')
+        if($limit == '')
             $limit = 30;
         return "LIMIT $start, $limit ";
     }
 
     private function _sqlOrder($criteria = array()) {
-        if (is_object($criteria))
+        if(is_object($criteria))
             $criteria = Tools::object2Array($criteria);
-        if (is_null($criteria))
+        if(is_null($criteria))
             $criteria = array();
-        if (!is_array($criteria))
+        if(!is_array($criteria))
             $criteria = array((string) $criteria);
         $listOrder = array();
-        foreach ($criteria as $key => $rule) {
-            if (is_array($rule)) {
+        foreach($criteria as $key => $rule) {
+            if(is_array($rule)) {
                 $dir = (strtoupper($rule['direction']) == 'DESC') ? 'DESC' : 'ASC';
-                if (strtoupper($rule['property']) != '')
+                if(strtoupper($rule['property']) != '')
                     $listOrder[$rule['property']] = $dir;
             }
-            elseif (is_string($rule)) {
-                if (strtoupper($rule) == 'ASC' or strtoupper($rule) == 'DESC')
+            elseif(is_string($rule)) {
+                if(strtoupper($rule) == 'ASC' or strtoupper($rule) == 'DESC')
                     $listOrder[$key] = strtoupper($rule);
                 else
                     $listOrder[$rule] = 'ASC';
             }
         }
         $sql = '';
-        foreach ($listOrder as $field => $sens)
+        foreach($listOrder as $field => $sens)
             $sql.= $field . ' ' . $sens . ', ';
-        if ($sql != '')
+        if($sql != '')
             $sql = ' ORDER BY ' . substr($sql, 0, -2);
         return $sql . ' ';
     }
 
     private function _sqlWhere($criteria) {
         $sql = ' ';
-        if (is_object($criteria))
+        if(is_object($criteria))
             $criteria = Tools::object2Array($criteria);
-        if (is_null($criteria))
+        if(is_null($criteria))
             $criteria = array();
-        if (!is_array($criteria))
+        if(!is_array($criteria))
             $criteria = array($criteria);
-        foreach ($criteria as $field => $crit) {
-            if (is_array($crit)) {
+        foreach($criteria as $field => $crit) {
+            if(is_array($crit)) {
                 $operator = ($crit['operator'] != '') ? $crit['operator'] : 'LIKE';
                 $value = ($crit['value'] != '') ? $crit['value'] : '%';
                 $field = ($crit['property'] != '') ? $crit['property'] : $field;
@@ -251,7 +267,7 @@ class mysqlStore extends defaultStore implements IStorage {
             else
                 $sql .= ' AND  ' . $field . ' = ' . $this->_sqlQuote($crit);
         }
-        if (strlen($sql) > 2)
+        if(strlen($sql) > 2)
             $sql = ' WHERE ' . substr($sql, 5);
         return $sql . ' ';
     }
