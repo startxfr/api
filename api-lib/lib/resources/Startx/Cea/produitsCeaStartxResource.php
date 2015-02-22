@@ -11,7 +11,8 @@
  */
 class produitsCeaStartxResource extends mysqlStoreResource implements IResource {
 
-    static public $ConfDesc = '{"class_name":"produitsCeaStartxResource",
+    static public $ConfDesc = '{
+        "class_name":"produitsCeaStartxResource",
         "desc":"get list of products available for the STARTX-CEA project",
         "properties": [  ]
       }';

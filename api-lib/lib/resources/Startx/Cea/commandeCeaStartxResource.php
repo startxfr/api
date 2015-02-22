@@ -23,6 +23,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         parent::init();
         $api = Api::getInstance();
         $api->setOutputDefault($this->getConfig('output', 'cxml'));
+        $this->additionalMessage = '';
         return $this;
     }
 
@@ -168,7 +169,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
                 return $val;
             }
             else {
-                return implode(', ', $val);
+                return trim(implode(', ', $val));
             }
         }
         else {
@@ -178,14 +179,105 @@ class commandeCeaStartxResource extends messageResource implements IResource {
 
     private function exportCommande2Sxa() {
         $api = Api::getInstance();
+        try {
+            $sxa = $this->exportCommande2SxaInitResources();
+            $affaireID = $this->exportCommande2SxaFindAffaire();
 
-
-
-
-
-
-
+            $affaire = $sxa['affaire']->getDataFromID($affaireID);
+            if(count($affaire) === 0) {
+                throw new ResourceException(" could not find affaire '" . $affaireID . "' into sxa store. This affaire is associated to the billable ID '" . $billtoID . "' ", 87);
+            }
+            $devisID = $sxa['devis']->createId($affaireID);
+            $sxa['devis']->insert(array(
+                'id_dev' => $devisID,
+                'affaire_dev' => $affaireID,
+                'status_dev' => 3,
+                'titre_dev' => 'cmd ' . $this->cmd->id,
+                'commercial_dev' => 'cl',
+                'sommeHT_dev' => $this->cmd->total,
+                'BDCclient_dev' => $this->cmd->id . ' (' . $this->cmd->agreement . ')',
+                'entreprise_dev' => $affaire['id_ent'],
+                'contact_dev' => $affaire['id_cont'],
+                'contact_achat_dev' => $affaire['id_cont'],
+                'datemodif_dev' => date('Y-m-d'),
+                'daterecord_dev' => date('Y-m-d'),
+                'nomdelivery_dev' => $affaire['nom_ent'],
+                'adressedelivery_dev' => $affaire['add1_ent'],
+                'adresse1delivery_dev' => $affaire['add2_ent'],
+                'villedelivery_dev' => $affaire['ville_ent'],
+                'cpdelivery_dev' => $affaire['cp_ent'],
+                'paysdelivery_dev' => $affaire['pays_ent'],
+                'maildelivery_dev' => $this->cmd->shipto_email,
+                'complementdelivery_dev' => $this->cmd->shipto_email,
+                'tva_dev' => $affaire['tauxTVA_ent'],
+                'commentaire_dev' => 'payload : ' . $this->cmd->payload
+            ));
+            foreach($this->cmd->items as $k => $item) {
+                $sxa['devis']->insertProduit(array(
+                    'id_devis' => $devisID,
+                    'id_produit' => $item->id_prod,
+                    'desc' => $item->desc . ' ' . $item->commentaire,
+                    'quantite' => $item->qte,
+                    'remise' => '0.00',
+                    'prix' => $item->prix
+                ));
+            }
+            // Demander l'enregistrement d'une actualité
+            
+            // Demander la generation du fichier pdf
+            
+            // Faire la creation de la commande
+            
+            $this->additionalMessage = "<b>Cette commande a été exportée vers le devis " . $devisID . "</b><br>";
+            $this->additionalMessage.= "<a href=\"https://sxa.startx.fr/draco/Devis.php?id_dev=" . $devisID . "\">voir le devis " . $devisID . " sur SXA</a><br><br>";
+            return true;
+        }
+        catch(Exception $exc) {
+            $this->additionalMessage = "<b>Cette commande n'a pas pu être exportée vers SXA car " . $exc->getMessage() . "</b><br><br>";
+            $api->logWarn($exc->getCode(), "Could not create SXA entry because : " . $exc->getMessage(), $exc);
+            return false;
+        }
         return $this;
+    }
+
+    private function exportCommande2SxaInitResources() {
+        $api = Api::getInstance();
+        if($this->isConfig('exportsxa_resources')) {
+            $resources = array();
+            foreach($this->getConfig('exportsxa_resources', array()) as $key => $resourceID) {
+                $resources[$key] = $api->getConfiguredResource($resourceID);
+            }
+            if(!array_key_exists('affaire', $resources)) {
+                throw new ResourceException(" resource '" . $this->getConfig('_id') . "' have an 'exportsxa_resources' property without key 'affaire'", 87);
+            }
+            if(!array_key_exists('devis', $resources)) {
+                throw new ResourceException(" resource '" . $this->getConfig('_id') . "' have an 'exportsxa_resources' property without key 'devis'", 87);
+            }
+            if(!array_key_exists('commande', $resources)) {
+                throw new ResourceException(" resource '" . $this->getConfig('_id') . "' have an 'exportsxa_resources' property without key 'commande'", 87);
+            }
+            return $resources;
+        }
+        else {
+            throw new ResourceException(" resource '" . $this->getConfig('_id') . "' doesn't have a 'exportsxa_resources' property", 87);
+        }
+    }
+
+    private function exportCommande2SxaFindAffaire() {
+        if($this->isConfig('exportsxa_affaires')) {
+            $billtoID = $this->cmd->billto;
+            $affMatrice = $this->getConfig('exportsxa_affaires');
+            if(array_key_exists($billtoID, $affMatrice)) {
+                $affaireID = $affMatrice[$billtoID];
+            }
+            else {
+                $affaireID = $affMatrice['default'];
+            }
+        }
+        else {
+            throw new ResourceException(" resource '" . $this->getConfig('_id') . "' doesn't have a 'exportsxa_affaires' property", 87);
+        }
+        return $affaireID;
     }
 
     private function recordCommandeHistory($success, $message, $others = array()) {
@@ -234,7 +326,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         // envoi de mail
         $to = $this->getConfig('sendmail_to', $params['to']);
         $sub = $this->getConfig('sendmail_subject', $params['subject']);
-        $body = $this->getConfig('sendmail_body', $params['body']) . $vardump . $this->cxmldoc;
+        $body = $this->additionalMessage . $this->getConfig('sendmail_body', $params['body']) . $vardump . $this->cxmldoc;
         $sender->mail->IsHTML(true);
         if(!$sender->sendMail($to, $sub, $body))
             throw new ResourceException(" resource '" . $this->getConfig('resource_sendmail', 'sendmail') . "' could not send order mail. Abort", 87);
