@@ -99,20 +99,21 @@ class mysqliStore extends defaultStore implements IStorage {
             $this->connect();
             $action = 'INSERT';
             $top = $action . " INTO `" . $table . "` ( ";
-            foreach ($data as $k => $val) {
-                if ($val == '')
-                    $bottom .= ", NULL ";
+            $h = $b = "";
+            foreach($data as $k => $val) {
+                if($val == '')
+                    $b .= ", NULL ";
                 else
-                    $bottom .= ", " . $this->_sqlQuote($val) . " ";
-                $head .= ", `" . $k . "` ";
+                    $b .= ", " . $this->_sqlQuote($val) . " ";
+                $h .= ", `" . $k . "` ";
             }
-            $head = substr($head, 1);
-            $bottom = substr($bottom, 1);
+            $head = substr($h, 1);
+            $bottom = substr($b, 1);
             $sql = $top . $head . ") VALUES (" . $bottom . ") ";
             $this->_setQuery($sql);
             $this->lastResult = $this->connection->query($this->_getQuery());
             if ($this->lastResult !== false) {
-                Api::getInstance()->logDebug(430, "'" . __FUNCTION__ . "' '" . get_class($this) . "' created id '" . $this->connection->lastInsertId() . "' entry", array('table' => $table, 'data' => $data), 4);
+                Api::getInstance()->logDebug(430, "'" . __FUNCTION__ . "' '" . get_class($this) . "' created id '" . $this->connection->insert_id . "' entry", array('table' => $table, 'data' => $data), 4);
                 return $this->lastResult;
             } else {
                 $error = $this->connection->connect_error;
