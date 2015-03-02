@@ -97,7 +97,16 @@ class devisSxaStartxResource extends defaultSxaStartxResource implements IResour
         if(!array_key_exists('id_dev', $data)) {
             throw new ResourceException(" could not insert devis because property 'id_dev' is missing", 88);
         }
-        return $this->getStorage()->create($this->getConfig('dataset'), $data);
+        $result = $this->getStorage()->create($this->getConfig('dataset'), $data);
+        $this->addActualite(array(
+            'id_dev' => $data['id_dev'],
+            'status_dev' => $data['status_dev'],
+            'user' => 'cl',
+            'type' => 'devis',
+            'titre' => 'Creation du devis '.$data['id_dev'],
+            'desc' => 'Creation du devis '.$data['id_dev']
+        ));
+        return $result;
     }
     
     
