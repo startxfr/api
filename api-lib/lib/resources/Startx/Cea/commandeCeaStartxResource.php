@@ -18,12 +18,11 @@ class commandeCeaStartxResource extends messageResource implements IResource {
     private $cmd = array();
     private $cxmldoc = "";
     private $cxml = array();
+    private $additionalMessage = '';
 
     public function init() {
         parent::init();
-        $api = Api::getInstance();
-        $api->setOutputDefault($this->getConfig('output', 'cxml'));
-        $this->additionalMessage = '';
+        Api::getInstance()->setOutputDefault($this->getConfig('output', 'cxml'));
         return $this;
     }
 
@@ -44,15 +43,14 @@ class commandeCeaStartxResource extends messageResource implements IResource {
             // Chargement des info de la commande
             $this->cmd = $this->loadRawInput()->parseInput()->extractCxmlData();
 
-            // Export de la commande dans SXA
-            $this->exportCommande2Sxa();
-
             // on transfert le payload vers le cxmlOutput
             $api->getInput()->setParam('payload', $this->cmd->payload);
 
+            // Export de la commande dans SXA
+            $this->exportCommande2Sxa();
+
             // Envoi du mail d'alerte sur la commande
             $this->sendCommandeAlertMail();
-
             // préparation de la réponse
             $message = sprintf($this->getConfig('message_service_commandeok', 'your order %s is recorded'), $this->cmd->payload);
             $this->recordCommandeHistory(true, $message);
@@ -180,59 +178,27 @@ class commandeCeaStartxResource extends messageResource implements IResource {
     private function exportCommande2Sxa() {
         $api = Api::getInstance();
         try {
-            $sxa = $this->exportCommande2SxaInitResources();
+            $this->exportCommande2SxaInitResources();
             $affaireID = $this->exportCommande2SxaFindAffaire();
 
-            $affaire = $sxa['affaire']->getDataFromID($affaireID);
+            $affaire = $this->sxa->getModule('affaire')->getDataFromID($affaireID);
             if(count($affaire) === 0) {
                 throw new ResourceException(" could not find affaire '" . $affaireID . "' into sxa store. This affaire is associated to the billable ID '" . $billtoID . "' ", 87);
             }
-            $devisID = $sxa['devis']->createId($affaireID);
-            $sxa['devis']->insert(array(
-                'id_dev' => $devisID,
-                'affaire_dev' => $affaireID,
-                'status_dev' => 3,
-                'titre_dev' => 'cmd ' . $this->cmd->id,
-                'commercial_dev' => 'cl',
-                'sommeHT_dev' => $this->cmd->total,
-                'BDCclient_dev' => $this->cmd->id . ' (' . $this->cmd->agreement . ')',
-                'entreprise_dev' => $affaire['id_ent'],
-                'contact_dev' => $affaire['id_cont'],
-                'contact_achat_dev' => $affaire['id_cont'],
-                'datemodif_dev' => date('Y-m-d'),
-                'daterecord_dev' => date('Y-m-d'),
-                'nomdelivery_dev' => $affaire['nom_ent'],
-                'adressedelivery_dev' => $affaire['add1_ent'],
-                'adresse1delivery_dev' => $affaire['add2_ent'],
-                'villedelivery_dev' => $affaire['ville_ent'],
-                'cpdelivery_dev' => $affaire['cp_ent'],
-                'paysdelivery_dev' => $affaire['pays_ent'],
-                'maildelivery_dev' => $this->cmd->shipto_email,
-                'complementdelivery_dev' => $this->cmd->shipto_email,
-                'tva_dev' => $affaire['tauxTVA_ent'],
-                'commentaire_dev' => 'payload : ' . $this->cmd->payload
-            ));
-            foreach($this->cmd->items as $k => $item) {
-                $sxa['devis']->insertProduit(array(
-                    'id_devis' => $devisID,
-                    'id_produit' => $item->id_prod,
-                    'desc' => $item->desc . ' ' . $item->commentaire,
-                    'quantite' => $item->qte,
-                    'remise' => '0.00',
-                    'prix' => $item->prix
-                ));
-            }
+            $devisID = $this->sxa->getModule('devis')->createId($affaireID);
+            $this->exportCommande2SxaInsertDevis($devisID, $affaire);
+            $this->exportCommande2SxaInsertDevisItems($devisID);
             // Demander l'enregistrement d'une actualité
-            
             // Demander la generation du fichier pdf
-            
             // Faire la creation de la commande
-            
+
             $this->additionalMessage = "<b>Cette commande a été exportée vers le devis " . $devisID . "</b><br>";
             $this->additionalMessage.= "<a href=\"https://sxa.startx.fr/draco/Devis.php?id_dev=" . $devisID . "\">voir le devis " . $devisID . " sur SXA</a><br><br>";
             return true;
         }
         catch(Exception $exc) {
+            print_r($exc);
+            exit;
             $this->additionalMessage = "<b>Cette commande n'a pas pu être exportée vers SXA car " . $exc->getMessage() . "</b><br><br>";
             $api->logWarn($exc->getCode(), "Could not create SXA entry because : " . $exc->getMessage(), $exc);
             return false;
@@ -242,24 +208,15 @@ class commandeCeaStartxResource extends messageResource implements IResource {
 
     private function exportCommande2SxaInitResources() {
         $api = Api::getInstance();
-        if($this->isConfig('exportsxa_resources')) {
-            $resources = array();
-            foreach($this->getConfig('exportsxa_resources', array()) as $key => $resourceID) {
-                $resources[$key] = $api->getConfiguredResource($resourceID);
+        if($this->isConfig('exportsxa_resource')) {
+            $this->sxa = $api->getConfiguredResource($this->getConfig('exportsxa_resource'));
+            if(!$this->sxa->hasModule('affaire,devis,commande')) {
+                throw new ResourceException(" resource '" . $this->getConfig('exportsxa_resource') . "' should have modules 'affaire,devis,commande' when used in '" . $this->getConfig('_id') . "' resource", 87);
             }
-            if(!array_key_exists('affaire', $resources)) {
-                throw new ResourceException(" resource '" . $this->getConfig('_id') . "' have an 'exportsxa_resources' property without key 'affaire'", 87);
-            }
-            if(!array_key_exists('devis', $resources)) {
-                throw new ResourceException(" resource '" . $this->getConfig('_id') . "' have an 'exportsxa_resources' property without key 'devis'", 87);
-            }
-            if(!array_key_exists('commande', $resources)) {
-                throw new ResourceException(" resource '" . $this->getConfig('_id') . "' have an 'exportsxa_resources' property without key 'commande'", 87);
-            }
-            return $resources;
+            return $this;
         }
         else {
-            throw new ResourceException(" resource '" . $this->getConfig('_id') . "' doesn't have a 'exportsxa_resources' property", 87);
+            throw new ResourceException(" resource '" . $this->getConfig('_id') . "' doesn't have a 'exportsxa_resource' property", 87);
         }
     }
 
@@ -278,6 +235,48 @@ class commandeCeaStartxResource extends messageResource implements IResource {
             throw new ResourceException(" resource '" . $this->getConfig('_id') . "' doesn't have a 'exportsxa_affaires' property", 87);
         }
         return $affaireID;
+    }
+
+    private function exportCommande2SxaInsertDevis($devisID, $affaire) {
+        $this->sxa->getModule('devis')->insert(array(
+            'id_dev' => $devisID,
+            'affaire_dev' => $affaire['id_aff'],
+            'status_dev' => 3,
+            'titre_dev' => 'cmd ' . $this->cmd->id,
+            'commercial_dev' => 'cl',
+            'sommeHT_dev' => $this->cmd->total,
+            'BDCclient_dev' => $this->cmd->id . ' (' . $this->cmd->agreement . ')',
+            'entreprise_dev' => $affaire['id_ent'],
+            'contact_dev' => $affaire['id_cont'],
+            'contact_achat_dev' => $affaire['id_cont'],
+            'datemodif_dev' => date('Y-m-d'),
+            'daterecord_dev' => date('Y-m-d'),
+            'nomdelivery_dev' => $affaire['nom_ent'],
+            'adressedelivery_dev' => $affaire['add1_ent'],
+            'adresse1delivery_dev' => $affaire['add2_ent'],
+            'villedelivery_dev' => $affaire['ville_ent'],
+            'cpdelivery_dev' => $affaire['cp_ent'],
+            'paysdelivery_dev' => $affaire['pays_ent'],
+            'maildelivery_dev' => $this->cmd->shipto_email,
+            'complementdelivery_dev' => $this->cmd->shipto_email,
+            'tva_dev' => $affaire['tauxTVA_ent'],
+            'commentaire_dev' => 'payload : ' . $this->cmd->payload
+        ));
+        return $this;
+    }
+
+    private function exportCommande2SxaInsertDevisItems($devisID) {
+        foreach($this->cmd->items as $k => $item) {
+            $this->sxa->getModule('devis')->insertProduit(array(
+                'id_devis' => $devisID,
+                'id_produit' => $item->id_prod,
+                'desc' => $item->desc . ' ' . $item->commentaire,
+                'quantite' => $item->qte,
+                'remise' => '0.00',
+                'prix' => $item->prix
+            ));
+        }
+        return $this;
     }
 
     private function recordCommandeHistory($success, $message, $others = array()) {
