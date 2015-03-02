@@ -100,20 +100,22 @@ class Api extends Configurable {
      * @return void
      */
     public function __construct($defaultApiID = null) {
-        if (!is_null($defaultApiID))
+        if(!is_null($defaultApiID))
             $this->defaultApiID = $defaultApiID;
         // connect nosql backend immediately to get log storage support
         try {
             Api::$nosqlApiBackend = json_decode(Api::$nosqlApiBackend);
             $nosqlConnection = @new Mongo(Api::$nosqlApiBackend->connection);
             $this->nosqlConnection = $nosqlConnection->selectDB(Api::$nosqlApiBackend->base);
-        } catch (Exception $exc) {
+        }
+        catch(Exception $exc) {
             http_response_code(503);
             $message = "Error communicating with nosql backend : " . $exc->getMessage();
-            if (array_key_exists("format", $_REQUEST) and $_REQUEST["format"] == "json") {
+            if(array_key_exists("format", $_REQUEST) and $_REQUEST["format"] == "json") {
                 header('Content-Type: text/json; charset=utf8');
                 echo json_encode(array('status' => 'error', 'success' => false, 'total' => 0, 'message' => $message, 'data' => null));
-            } else {
+            }
+            else {
                 header('Content-Type: text/plain; charset=utf8');
                 echo $message;
             }
@@ -129,7 +131,7 @@ class Api extends Configurable {
      * @return Api singleton instance of Api Class
      */
     public static function getInstance($defaultApiID = null) {
-        if (is_null(self::$_instance))
+        if(is_null(self::$_instance))
             self::$_instance = new Api($defaultApiID);
         return self::$_instance;
     }
@@ -156,7 +158,8 @@ class Api extends Configurable {
             Event::trigger('api.load.store');
             Event::trigger('api.load.end');
             return $this;
-        } catch (Exception $exc) {
+        }
+        catch(Exception $exc) {
             $this->exitOnError($exc->getCode(), "Error when loading api because " . $exc->getMessage(), $exc);
         }
         return $this;
@@ -170,16 +173,17 @@ class Api extends Configurable {
      */
     private function loadApi() {
         try {
-            if (array_key_exists('api', $_REQUEST) and $_REQUEST['api'] != "")
+            if(array_key_exists('api', $_REQUEST) and $_REQUEST['api'] != "")
                 $this->defaultApiID = $_REQUEST['api'];
             $api = $this->nosqlConnection->selectCollection(Api::$nosqlApiBackend->api_collection)->findOne(array("_id" => $this->defaultApiID));
-            if (is_null($api))
+            if(is_null($api))
                 $this->exitOnError(3, "could not find '" . $this->defaultApiID . "' api document in '" . Api::$nosqlApiBackend->api_collection . "' collection on '" . Api::$nosqlApiBackend->base . "' database", $this->nosqlConnection);
             else
                 $this->setConfigs($api);
             $this->logInfo(2, "Loaded version " . $this->getConfig('version', '0.0') . " of '" . $this->getConfig("_id", "_id") . "' API.");
             return $this;
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             $this->exitOnError(3, "could not get api document because noSql backend failure. " . $e->getMessage(), $e);
         }
     }
@@ -191,35 +195,39 @@ class Api extends Configurable {
      * @throws ApiException if an error occur when instanciating plugin connector
      */
     private function loadPlugins() {
-        if (is_array($this->getConfig('plugins'))) {
+        if(is_array($this->getConfig('plugins'))) {
             $this->logDebug(20, "Loading " . count($this->getConfig('plugins')) . " plugin.", null, 4);
             $listPlugins = array();
-            foreach ($this->getConfig('plugins') as $pluginconf) {
-                if ($pluginconf['id'] == '')
+            foreach($this->getConfig('plugins') as $pluginconf) {
+                if($pluginconf['id'] == '')
                     $this->logError(16, " plugin config should contain the 'id' attribute", $pluginconf);
                 else {
                     try {
                         $configPlugin = $this->nosqlConnection->selectCollection($this->getConfig("plugin_collection", "plugin"))->findOne(array("_id" => $pluginconf['id']));
-                    } catch (Exception $e) {
+                    }
+                    catch(Exception $e) {
                         $this->logWarn(13, "Could not load '" . $pluginconf["id"] . "' plugin. " . $e->getMessage(), $e->getTrace());
                     }
-                    if (is_null($configPlugin) or $configPlugin["_id"] == '')
+                    if(is_null($configPlugin) or $configPlugin["_id"] == '')
                         $this->logError(18, " plugin config could not be found in plugins instances", $pluginconf);
                     else {
                         $this->logDebug(17, "Plugin '" . $pluginconf['id'] . "' found in resource backend", $configPlugin, 5);
-                        if ($configPlugin['class'] == '') {
+                        if($configPlugin['class'] == '') {
                             $this->logError(17, " plugin '" . $pluginconf['id'] . "' config should contain the 'class' attribute", $configPlugin);
-                        } else {
+                        }
+                        else {
                             $pluginName = $configPlugin['class'];
-                            if (class_exists($pluginName)) {
+                            if(class_exists($pluginName)) {
                                 try {
                                     $configPlugin = array_merge($configPlugin, $pluginconf);
                                     call_user_func(  array($pluginName, 'getInstance') , $configPlugin);
                                     $listPlugins[] = $pluginName;
-                                } catch (Exception $e) {
+                                }
+                                catch(Exception $e) {
                                     $this->logWarn(13, "Could not load '" . $pluginconf["id"] . "' plugin. " . $e->getMessage(), $e->getTrace());
                                 }
-                            } else
+                            }
+                            else
                                 $this->logWarn(11, "Could not set '" . $pluginconf["id"] . "' plugin because class " . $pluginName . " doesn't exist");
                         }
                     }
@@ -237,23 +245,25 @@ class Api extends Configurable {
      * @throws ApiException if an error occur when instanciating input connector
      */
     private function loadInputFactory() {
-        if (is_array($this->getConfig('inputs'))) {
+        if(is_array($this->getConfig('inputs'))) {
             $this->logDebug(20, "Loading " . count($this->getConfig('inputs')) . " input connector.", null, 4);
             $this->inputs = array();
-            foreach ($this->getConfig('inputs') as $inputconf) {
+            foreach($this->getConfig('inputs') as $inputconf) {
                 $inputName = $inputconf['class'];
-                if (class_exists($inputName)) {
+                if(class_exists($inputName)) {
                     try {
                         $this->inputs[$inputconf["id"]] = new $inputName($inputconf);
-                        if (array_key_exists('default', $inputconf) and $inputconf['default'] === true) {
+                        if(array_key_exists('default', $inputconf) and $inputconf['default'] === true) {
                             $this->inputDefault = $inputconf["id"];
                         }
-                    } catch (Exception $e) {
+                    }
+                    catch(Exception $e) {
                         unset($this->inputs[$inputconf["id"]]);
                         $this->logWarn(23, "Could not load '" . $inputconf["id"] . "' input connector. " . $e->getMessage(), $e->getTrace());
                         throw new ApiException("we could not load '" . $inputconf["id"] . "' input connector. " . $e->getMessage(), 23);
                     }
-                } else
+                }
+                else
                     $this->logWarn(21, "Could not set '" . $inputconf["id"] . "' input connector. because class " . $inputName . " doesn't exist");
             }
             $this->logInfo(20, "Loaded " . count($this->inputs) . " input connector (" . implode(',', array_keys($this->inputs)) . ") and default set to '" . $this->inputDefault . "'", array_keys($this->inputs), 3);
@@ -269,20 +279,21 @@ class Api extends Configurable {
      */
     private function initInputFactory() {
         $this->logDebug(21, "initializing " . count($this->inputs) . " input connector", null, 4);
-        foreach ($this->inputs as $iid => $input) {
+        foreach($this->inputs as $iid => $input) {
             try {
                 $input->init();
-            } catch (Exception $e) {
+            }
+            catch(Exception $e) {
                 unset($this->inputs[$iid]);
                 $this->logWarn(25, "Could not init '" . $iid . "' input connector. " . $e->getMessage(), $e->getTrace());
                 throw new ApiException("we could not init '" . $iid . "' input connector. " . $e->getMessage(), 25);
             }
         }
-        if (count($this->inputs) == 0)
+        if(count($this->inputs) == 0)
             throw new ApiException("no input connector available (see logs for more detail)", 26);
-        if (!array_key_exists('application', $this->inputs))
+        if(!array_key_exists('application', $this->inputs))
             throw new ApiException("application input connector is required. Please add it to your api document", 27);
-        if (!array_key_exists('session', $this->inputs))
+        if(!array_key_exists('session', $this->inputs))
             throw new ApiException("session input connector is required. Please add it to your api document", 28);
         return $this;
     }
@@ -293,9 +304,9 @@ class Api extends Configurable {
      * @return defaultInput the input connector instance coresponding to the requested $id
      */
     public function getInput($id = null) {
-        if (is_null($id) or trim($id) == '' or trim($id) == 'default')
+        if(is_null($id) or trim($id) == '' or trim($id) == 'default')
             return $this->inputs[$this->inputDefault];
-        elseif (is_array($this->inputs) and array_key_exists($id, $this->inputs))
+        elseif(is_array($this->inputs) and array_key_exists($id, $this->inputs))
             return $this->inputs[$id];
         else {
             $this->logWarn(27, "the '" . $id . "' input connector could not be found in curently loaded input list. Check if it's declared on api config document ");
@@ -310,26 +321,28 @@ class Api extends Configurable {
      * @throws ApiException if an error occur when instanciating output connector
      */
     private function loadOutputFactory() {
-        if (is_array($this->getConfig('outputs'))) {
+        if(is_array($this->getConfig('outputs'))) {
             $this->logDebug(30, "Loading " . count($this->getConfig('outputs')) . " output connector", null, 4);
             $this->outputs = array();
-            foreach ($this->getConfig('outputs') as $outputconf) {
+            foreach($this->getConfig('outputs') as $outputconf) {
                 $outputName = $outputconf['class'];
-                if (class_exists($outputName)) {
+                if(class_exists($outputName)) {
                     try {
                         $this->outputs[$outputconf["id"]] = new $outputName($outputconf);
-                        if (array_key_exists('default', $outputconf) and $outputconf['default'] === true) {
+                        if(array_key_exists('default', $outputconf) and $outputconf['default'] === true) {
                             $this->setOutputDefault($outputconf["id"]);
                         }
-                    } catch (Exception $e) {
+                    }
+                    catch(Exception $e) {
                         unset($this->outputs[$outputconf["id"]]);
                         $this->logWarn(33, "Could not load '" . $outputconf["id"] . "' output connector. " . $e->getMessage(), $e->getTrace());
                         throw new ApiException("we could not load '" . $outputconf["id"] . "' output connector. " . $e->getMessage(), 33);
                     }
-                } else
+                }
+                else
                     $this->logWarn(31, "Could not load '" . $outputconf["id"] . "' output connector. because class " . $outputName . " doesn't exist");
             }
-            if ($this->getInput()->getOutputFormat() != '' and array_key_exists($this->getInput()->getOutputFormat(), $this->outputs)) {
+            if($this->getInput()->getOutputFormat() != '' and array_key_exists($this->getInput()->getOutputFormat(), $this->outputs)) {
                 $this->setOutputDefault($this->getInput()->getOutputFormat());
                 $this->logDebug(34, "default output connector set to '" . $this->outputDefault . "' by request input param ( ?format=" . $this->getInput()->getOutputFormat() . ' )');
             }
@@ -346,16 +359,17 @@ class Api extends Configurable {
      */
     private function initOutputFactory() {
         $this->logDebug(31, "Initalizing " . count($this->outputs) . " output connector", null, 4);
-        foreach ($this->outputs as $oid => $output) {
+        foreach($this->outputs as $oid => $output) {
             try {
                 $output->init();
-            } catch (Exception $e) {
+            }
+            catch(Exception $e) {
                 unset($this->outputs[$oid]);
                 $this->logWarn(35, "Could not init '" . $oid . "' output connector. " . $e->getMessage(), $e->getTrace());
                 throw new ApiException("we could not init '" . $oid . "' output connector. " . $e->getMessage(), 35);
             }
         }
-        if (count($this->outputs) == 0)
+        if(count($this->outputs) == 0)
             throw new ApiException("no output connector available (see logs for more detail)", 36);
         return $this;
     }
@@ -366,9 +380,9 @@ class Api extends Configurable {
      * @return defaultoutput the output connector instance coresponding to the requested $id
      */
     public function getOutput($id = null) {
-        if (is_null($id) or trim($id) == '' or trim($id) == 'default')
+        if(is_null($id) or trim($id) == '' or trim($id) == 'default')
             return $this->outputs[$this->outputDefault];
-        elseif (is_array($this->outputs) and array_key_exists($id, $this->outputs))
+        elseif(is_array($this->outputs) and array_key_exists($id, $this->outputs))
             return $this->outputs[$id];
         else
             $this->logWarn(37, "the '" . $id . "' output connector could not be found in curently loaded output list. Check if it's declared on api config document ");
@@ -376,7 +390,7 @@ class Api extends Configurable {
     }
 
     public function setOutputDefault($id = null) {
-        if (is_array($this->outputs) and array_key_exists($id, $this->outputs)) {
+        if(is_array($this->outputs) and array_key_exists($id, $this->outputs)) {
             $this->outputDefault = $id;
         }
         return $this->outputDefault;
@@ -389,23 +403,25 @@ class Api extends Configurable {
      * @throws ApiException if an error occur when instanciating store connector
      */
     private function loadStoreFactory() {
-        if (is_array($this->getConfig('stores'))) {
+        if(is_array($this->getConfig('stores'))) {
             $this->logDebug(40, "Loading " . count($this->getConfig('stores')) . " stores connector", null, 4);
             $this->stores = array();
-            foreach ($this->getConfig('stores') as $storeconf) {
+            foreach($this->getConfig('stores') as $storeconf) {
                 $storeName = $storeconf['class'];
-                if (class_exists($storeName)) {
+                if(class_exists($storeName)) {
                     try {
                         $this->stores[$storeconf["id"]] = new $storeName($storeconf);
-                        if (array_key_exists('default', $storeconf) and $storeconf['default'] === true) {
+                        if(array_key_exists('default', $storeconf) and $storeconf['default'] === true) {
                             $this->storeDefault = $storeconf["id"];
                         }
-                    } catch (Exception $e) {
+                    }
+                    catch(Exception $e) {
                         unset($this->stores[$storeconf["id"]]);
                         $this->logWarn(43, "Could not load '" . $storeconf["id"] . "' store connector. " . $e->getMessage(), $e->getTrace());
                         throw new ApiException("we could not load '" . $storeconf["id"] . "' store connector. " . $e->getMessage(), 43);
                     }
-                } else
+                }
+                else
                     $this->logWarn(42, "Could not load '" . $storeconf["id"] . "' store connector. class '$storeName' doesn't exist", $storeconf);
             }
             $this->logInfo(40, "Loaded " . count($this->stores) . " store connector (" . implode(',', array_keys($this->stores)) . ") and default set to '" . $this->storeDefault . "'", array_keys($this->stores), 3);
@@ -421,16 +437,17 @@ class Api extends Configurable {
      */
     private function initStoreFactory() {
         $this->logDebug(41, "Initializing " . count($this->stores) . " stores connector", null, 4);
-        foreach ($this->stores as $sid => $store) {
+        foreach($this->stores as $sid => $store) {
             try {
                 $store->init();
-            } catch (Exception $e) {
+            }
+            catch(Exception $e) {
                 unset($this->stores[$sid]);
                 $this->logWarn(45, "Could not init '" . $sid . "' store connector. " . $e->getMessage(), $e->getTrace());
                 throw new ApiException("we could not init '" . $sid . "' store connector. " . $e->getMessage(), 45);
             }
         }
-        if (count($this->stores) == 0)
+        if(count($this->stores) == 0)
             throw new ApiException("no store connector available (see logs for more detail)", 46);
         return $this;
     }
@@ -441,9 +458,9 @@ class Api extends Configurable {
      * @return defaultStore the store connector instance coresponding to the requested $id
      */
     public function getStore($id = null) {
-        if (is_null($id) or trim((string) $id) == '' or trim((string) $id) == 'default')
+        if(is_null($id) or trim((string) $id) == '' or trim((string) $id) == 'default')
             return $this->stores[$this->storeDefault];
-        elseif (is_array($this->outputs) and array_key_exists((string) $id, $this->stores))
+        elseif(is_array($this->outputs) and array_key_exists((string) $id, $this->stores))
             return $this->stores[(string) $id];
         else
             $this->logWarn(47, "the '" . $id . "' store connector could not be found in curently loaded stores list. Check if it's declared on api config document ");
@@ -457,36 +474,40 @@ class Api extends Configurable {
      * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
      */
     public function getModel($id) {
-        if (is_null($id) or trim($id) == '') {
+        if(is_null($id) or trim($id) == '') {
             $this->logWarn(51, "trying to access model with a null id.");
             throw new ApiException("you must give a model name", 51);
-        } elseif (is_array($this->models) and array_key_exists($id, $this->models)) {
+        }
+        elseif(is_array($this->models) and array_key_exists($id, $this->models)) {
             $this->logDebug(52, "Returning cached model '" . $id . "'");
             return $this->models[$id];
-        } else {
+        }
+        else {
             $config = $this->nosqlConnection->selectCollection($this->getConfig("model_collection", "models"))->findOne(array("_id" => $id));
-            if (is_null($config) or $config["_id"] == '')
+            if(is_null($config) or $config["_id"] == '')
                 throw new ApiException("Can't find the model config for '" . $id . "' in stored models", 50);
             $this->logDebug(53, "Model '" . $id . "' found in model backend", $config, 5);
-            if ($config['class'] == '') {
+            if($config['class'] == '') {
                 $this->logError(54, " model '$id' config should contain the 'class' attribute", $config);
                 throw new ApiException(" model '$id' config should contain the 'class' attribute");
             }
             $modelName = $config['class'];
-            if ($config['store'] == '') {
+            if($config['store'] == '') {
                 $this->logError(54, " model '$id' config should contain the 'store' attribute", $config);
                 throw new ApiException(" model '$id' config should contain the 'store' attribute");
             }
-            if (class_exists($modelName)) {
+            if(class_exists($modelName)) {
                 try {
                     $this->logDebug(55, "Adding model '" . $modelName . "'with id '" . $id . "' into api model cache.");
                     $this->models[$id] = new $modelName($config, $config['store']);
                     return $this->models[$id];
-                } catch (Exception $e) {
+                }
+                catch(Exception $e) {
                     $this->logWarn(56, "we could not load '" . $id . "' model instance. " . $e->getMessage(), $e->getTrace());
                     throw new ApiException("error when creating '$modelName' with store '" . $config['store'] . "'. See logs for more informations.", 56);
                 }
-            } else {
+            }
+            else {
                 $this->logWarn(55, "'" . $id . "' model connector could not be found in api model cache and class '" . $modelName . "' doesn't exist thus could not be created.");
                 throw new ApiException("model '" . $id . "' doesn't exist and can't be created. Please add '" . $modelName . "' model class or change your model name", 55);
             }
@@ -495,57 +516,74 @@ class Api extends Configurable {
 
     /**
      * Get a resource connector
-     * return the resource connector coresponding to the given $id. Dynamicaly load it, initialize it and cache it if not already required.
-     * @return defaultResource the resource connector instance coresponding to the requested $id
-     * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
+     * return the resource connector coresponding to the given $classname. Dynamicaly load it, initialize it and cache it if not already required.
+     * @return defaultResource the resource connector instance coresponding to the requested $classname
+     * @throws ApiException If no $classname is given, or if $classname is null. If $classname doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
      */
-    public function getResource($id, $config = array()) {
-        if (is_null($id) or trim($id) == '') {
-            $this->logWarn(61, "trying to access resource with a null id.");
-            throw new ApiException("you must give a resource name", 61);
-        } elseif (is_array($this->resources) and array_key_exists($id, $this->resources)) {
-            $this->logDebug(62, "Returning cached resource '" . $id . "'");
-            if (is_array($config) and count($config) > 0)
-                $this->resources[$id] = new $id($config);
-            return $this->resources[$id];
-        } else {
-            if (class_exists($id) !== false) {
-                $this->logDebug(63, "Start loading and caching resource '" . $id . "'");
-                $this->resources[$id] = new $id($config);
-                $this->logDebug(64, "Initializing resource '" . $id . "'");
-                $this->resources[$id]->init();
-                return $this->resources[$id];
-            } else {
-                $this->logWarn(66, "could not find resource class '$id'.");
-                throw new ApiException("Resource class '$id' doesn't exist.", 66);
+    public function getResource($resourceID, $classname = null, $config = array()) {
+        if(is_null($resourceID) or trim($resourceID) == '') {
+            $this->logWarn(61, "trying to access resource without resourceID.");
+            throw new ApiException("you must give a resourceID", 61);
+        }
+        if($this->isLoadedResource($resourceID)) {
+            $this->logDebug(62, "Returning cached $classname '" . $resourceID . "'");
+            if(is_array($config) and count($config) > 0) {
+                $this->resources[$resourceID] = new $classname($config);
+                $this->resources[$resourceID]->init();
+            }
+            return $this->resources[$resourceID];
+        }
+        else {
+            if(class_exists($classname) !== false) {
+                $this->logDebug(63, "Start loading and caching $classname '" . $resourceID . "'");
+                $this->resources[$resourceID] = new $classname($config);
+                $this->logDebug(64, "Initializing $classname '" . $resourceID . "'");
+                $this->resources[$resourceID]->init();
+                return $this->resources[$resourceID];
+            }
+            else {
+                $this->logWarn(66, "could not create $classname '$resourceID' because class $classname doesn't exist.");
+                throw new ApiException("class $classname used in resource '$resourceID' doesn't exist.", 66);
             }
         }
     }
 
     /**
-     * Get a resource connector
-     * return the resource connector coresponding to the given $id. Dynamicaly load it, initialize it and cache it if not already required.
-     * @return defaultResource the resource connector instance coresponding to the requested $id
-     * @throws ApiException If no $id is given, or if $id is null. If $id doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
+     * search if a resource is already loaded
+     * return a boolean if the given resource ID is found in loaded resource
+     * @return boolean indicate if resource is loaded
      */
-    public function getConfiguredResource($id, $configAdd = array()) {
-        $resourceCollection = $this->getConfig("resource_collection", "resources");
-        $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $id));
-        if (is_null($configResource) or $configResource["_id"] == '')
-            throw new ApiException("Can't find the resource '" . $id . "' in resources collection '" . $resourceCollection . "'", 87);
-        $this->logDebug(87, "Resource '" . $id . "' found in resource backend", $id, 5);
-        if ($configResource['class'] == '') {
-            $this->logError(87, " resource '" . $id . "' config should contain the 'class' attribute", $id);
-            throw new ApiException(" resource '" . $id . "' config should contain the 'class' attribute", 87);
+    public function isLoadedResource($resourceID) {
+        if(is_array($this->resources) and array_key_exists($resourceID, $this->resources)) {
+            return true;
         }
-        if (is_array($configAdd)) {
-            foreach ($configResource as $k => $v) {
-                if (!in_array($k, array('_id', 'class', 'children')) and array_key_exists($k, $configAdd)) {
+        return false;
+    }
+
+    /**
+     * Get a resource connector
+     * return the resource connector coresponding to the given $resourceID. Dynamicaly load it, initialize it and cache it if not already required.
+     * @return defaultResource the resource connector instance coresponding to the requested $resourceID
+     * @throws ApiException If no $resourceID is given, or if $resourceID is null. If $resourceID doesn't exist, is not well configured (no 'class' or 'store' key) or is not instanciable.
+     */
+    public function getConfiguredResource($resourceID, $configAdd = array()) {
+        $resourceCollection = $this->getConfig("resource_collection", "resources");
+        $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $resourceID));
+        if(is_null($configResource) or $configResource["_id"] == '')
+            throw new ApiException("Can't find the resource '" . $resourceID . "' in resources collection '" . $resourceCollection . "'", 87);
+        $this->logDebug(87, "Resource '" . $resourceID . "' found in resource backend", $resourceID, 5);
+        if($configResource['class'] == '') {
+            $this->logError(87, " resource '" . $resourceID . "' config should contain the 'class' attribute", $resourceID);
+            throw new ApiException(" resource '" . $resourceID . "' config should contain the 'class' attribute", 87);
+        }
+        if(is_array($configAdd)) {
+            foreach($configResource as $k => $v) {
+                if(!in_array($k, array('_id', 'class', 'children')) and array_key_exists($k, $configAdd)) {
                     $configResource[$k] = $configAdd[$k];
                 }
             }
         }
-        return $this->getResource($configResource['class'], $configResource);
+        return $this->getResource($configResource['_id'], $configResource['class'], $configResource);
     }
 
     /**
@@ -568,9 +606,9 @@ class Api extends Configurable {
         try {
             Event::trigger('api.execute.before');
             $config = $this->getResourceConfig($this->getInput()->getElements(), $this->getConfig('tree'));
-            $resource = $this->getResource($config['class'], $config);
+            $resource = $this->getResource($config['_id'], $config['class'], $config);
             $actionName = 'readAction';
-            switch ($this->getInput()->getMethod()) {
+            switch($this->getInput()->getMethod()) {
                 case 'post':
                     $actionName = 'createAction';
                     break;
@@ -587,38 +625,41 @@ class Api extends Configurable {
                     $actionName = 'readAction';
                     break;
             }
-            if (method_exists($resource, $actionName) === false) {
+            if(method_exists($resource, $actionName) === false) {
                 $actionName = 'readAction';
             }
-            if (method_exists($resource, $actionName) === false) {
+            if(method_exists($resource, $actionName) === false) {
                 $this->logWarn(84, "action $actionName is not implemented in '" . $config['class'] . "' resource.", $config);
                 throw new ApiException("action $actionName is not implemented in '" . $config['class'] . "' resource", 5);
-            } else {
-                if (array_key_exists('acl', $config) and is_array($config['acl'])) {
+            }
+            else {
+                if(array_key_exists('acl', $config) and is_array($config['acl'])) {
                     $users = $this->executeExtractAclUser($config['acl']);
                     $applications = $this->executeExtractAclApplication($config['acl']);
                     $doExec = false;
                     $returnApp = $returnUser = true;
-                    if ($users == '*' or in_array($this->getInput('user')->getId(), $users)) {
+                    if($users == '*' or in_array($this->getInput('user')->getId(), $users)) {
                         $returnUser = true;
-                    } else {
+                    }
+                    else {
                         $this->logError(81, "execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this resource", $config);
                         throw new ApiException("execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. User '" . $this->getInput('user')->getId() . "' is not allowed to access this resource", 81);
                     }
-                    if ($applications == '*' or in_array($this->getInput('application')->getId(), $applications))
+                    if($applications == '*' or in_array($this->getInput('application')->getId(), $applications))
                         $returnApp = true;
                     else {
                         $this->logError(82, "execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. Application '" . $this->getInput('application')->getId() . "' is not allowed to access this resource", $config);
                         throw new ApiException("execution of $actionName for " . $config['class'] . " '" . $config['path'] . "' is restricted by an 'ACL' rule. Application '" . $this->getInput('application')->getId() . "' is not allowed to access this resource", 82);
                     }
-                    if ($returnApp and $returnUser)
+                    if($returnApp and $returnUser)
                         $doExec = true;
-                    if ($doExec) {
+                    if($doExec) {
                         $this->logInfo(80, "Succesfully pass ACL strategy. User '" . $this->getInput('user')->getId() . "' with application '" . $this->getInput('application')->getId() . "' can perform  $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config['acl'], 3);
                         $output = $resource->$actionName();
                         $this->makeOutput($output);
                     }
-                } else {
+                }
+                else {
                     $this->logInfo(80, "No ACL rules for $actionName on " . $config['class'] . " '" . $config['path'] . "'.", $config, 3);
                     $output = $resource->$actionName();
                     $this->makeOutput($output);
@@ -628,26 +669,27 @@ class Api extends Configurable {
             Event::trigger('api.end');
             session_write_close();
             exit;
-        } catch (Exception $exc) {
+        }
+        catch(Exception $exc) {
             $this->getOutput()->renderError($exc->getCode(), "Error when executing api process because " . $exc->getMessage());
         }
         return $this;
     }
 
     private function makeOutput($output) {
-        if ($output[0] === false) {
-            if (!isset($output[2]))
+        if($output[0] === false) {
+            if(!isset($output[2]))
                 $output[2] = "";
-            if (!isset($output[3]))
+            if(!isset($output[3]))
                 $output[3] = array();
-            if (!isset($output[4]))
+            if(!isset($output[4]))
                 $output[4] = 400;
             $this->getOutput()->renderError($output[1], $output[2], $output[3], $output[4]);
         }
         else {
-            if (!isset($output[3]))
+            if(!isset($output[3]))
                 $output[3] = null;
-            if (!isset($output[4]))
+            if(!isset($output[4]))
                 $output[4] = 200;
             $this->getOutput()->renderOk($output[1], $output[2], $output[3], $output[4]);
         }
@@ -661,12 +703,14 @@ class Api extends Configurable {
      */
     private function executeExtractAclUser($aclRules) {
         $users = '*';
-        if (array_key_exists('user', $aclRules)) {
-            if (!is_array($aclRules['user']) and ( $aclRules['user'] == '*' or $aclRules['user'] == '')) {
+        if(array_key_exists('user', $aclRules)) {
+            if(!is_array($aclRules['user']) and ( $aclRules['user'] == '*' or $aclRules['user'] == '')) {
                 $users = '*';
-            } elseif (is_array($aclRules['user'])) {
+            }
+            elseif(is_array($aclRules['user'])) {
                 $users = $aclRules['user'];
-            } else {
+            }
+            else {
                 $users = Toolkit::string2Array($aclRules['user']);
             }
         }
@@ -681,12 +725,14 @@ class Api extends Configurable {
      */
     private function executeExtractAclApplication($aclRules) {
         $applications = '*';
-        if (array_key_exists('application', $aclRules)) {
-            if (!is_array($aclRules['application']) and ( $aclRules['application'] == '*' or $aclRules['application'] == '')) {
+        if(array_key_exists('application', $aclRules)) {
+            if(!is_array($aclRules['application']) and ( $aclRules['application'] == '*' or $aclRules['application'] == '')) {
                 $applications = '*';
-            } elseif (is_array($aclRules['application'])) {
+            }
+            elseif(is_array($aclRules['application'])) {
                 $applications = $aclRules['application'];
-            } else {
+            }
+            else {
                 $applications = Toolkit::string2Array($aclRules['application']);
             }
         }
@@ -700,87 +746,89 @@ class Api extends Configurable {
      * @throws ApiException If tree node is malformed (missing 'resource' key) or if path and tree are not given.
      */
     private function getResourceConfig($elements, $configtree, $outputConfig = array()) {
-        if (!is_array($elements) or ! is_array($configtree))
+        if(!is_array($elements) or ! is_array($configtree))
             throw new ApiException("getResourceConfig could not work if both \$elements and \$configtree are not array", 85);
         $searchedPath = trim(array_shift($elements));
         // on traite le cas de la racine
-        if ($searchedPath == '/' and $configtree['path'] == $searchedPath) {
+        if($searchedPath == '/' and $configtree['path'] == $searchedPath) {
             $outputConfig = $configtree;
             unset($outputConfig['children']);
-            if ($configtree['resource'] == '') {
+            if($configtree['resource'] == '') {
                 $this->logError(86, " path '" . $searchedPath . "' config should contain the 'resource' attribute", $outputConfig);
                 throw new ApiException(" path '" . $searchedPath . "' config should contain the 'resource' attribute");
             }
             $resourceCollection = $this->getConfig("resource_collection", "resources");
             $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $configtree['resource']));
-            if (is_null($configResource) or $configResource["_id"] == '')
+            if(is_null($configResource) or $configResource["_id"] == '')
                 throw new ApiException("Can't find the resource '" . $configtree['resource'] . "' in resources collection '" . $resourceCollection . "'", 87);
             $this->logDebug(87, "Resource '" . $configtree['resource'] . "' found in resource backend", $configResource, 5);
-            if ($configResource['class'] == '') {
+            if($configResource['class'] == '') {
                 $this->logError(87, " resource '" . $configtree['resource'] . "' config should contain the 'class' attribute", $configResource);
                 throw new ApiException(" resource '" . $configtree['resource'] . "' config should contain the 'class' attribute", 87);
             }
             $outputConfig = Toolkit::array_merge_recursive_distinct($configResource, $outputConfig);
-            if (count($elements) > 0)
+            if(count($elements) > 0)
                 return $this->getResourceConfig($elements, $configtree['children'], $outputConfig);
             else
                 return $outputConfig;
         } else {
-            if ($searchedPath != '') {
+            if($searchedPath != '') {
                 $selectedChild = null;
                 $wildcardChild = null;
-                foreach ($configtree as $child) {
-                    if ($child['path'] == $searchedPath)
+                foreach($configtree as $child) {
+                    if($child['path'] == $searchedPath)
                         $selectedChild = $child;
-                    elseif ($child['path'] == '*')
+                    elseif($child['path'] == '*')
                         $wildcardChild = $child;
                 }
-                if ($selectedChild == null and ( $wildcardChild != null or ( array_key_exists('children', $outputConfig) and $outputConfig['children'] == "*"))) {
+                if($selectedChild == null and ( $wildcardChild != null or ( array_key_exists('children', $outputConfig) and $outputConfig['children'] == "*"))) {
                     $elements = array();
                     unset($outputConfig['children']);
                     unset($wildcardChild['path']);
-                    if ($wildcardChild != null) {
+                    if($wildcardChild != null) {
                         $outputConfig = Toolkit::array_merge_recursive_distinct($outputConfig, $wildcardChild);
                     }
                     $this->logWarn(85, " path '" . $searchedPath . "' could not be found in api tree but wildcard node is found. Use previous resource '" . $outputConfig['class'] . "' instead", $outputConfig);
                     return $outputConfig;
                 }
-                if ($selectedChild === null) {
+                if($selectedChild === null) {
                     throw new ApiException(" path '" . $searchedPath . "'  could not be found in api tree.");
-                } else {
+                }
+                else {
                     $addedConfig = $selectedChild;
                     unset($addedConfig['children']);
-                    if (!array_key_exists('resource', $addedConfig) or $addedConfig['resource'] == '') {
+                    if(!array_key_exists('resource', $addedConfig) or $addedConfig['resource'] == '') {
                         $this->logError(86, " path '" . $searchedPath . "' config should contain the 'resource' attribute", $addedConfig);
                         throw new ApiException(" path '" . $searchedPath . "' config should contain the 'resource' attribute");
                     }
                     $resourceCollection = $this->getConfig("resource_collection", "resources");
                     $configResource = $this->nosqlConnection->selectCollection($resourceCollection)->findOne(array("_id" => $addedConfig['resource']));
-                    if (is_null($configResource) or ! array_key_exists('_id', $configResource) or $configResource["_id"] == '') {
+                    if(is_null($configResource) or ! array_key_exists('_id', $configResource) or $configResource["_id"] == '') {
                         throw new ApiException("Can't find the resource '" . $addedConfig['resource'] . "' in resources collection '" . $resourceCollection . "'", 87);
                     }
                     $this->logDebug(87, "Resource '" . $addedConfig['resource'] . "' found in resource backend", $configResource, 5);
-                    if ($configResource['class'] == '') {
+                    if($configResource['class'] == '') {
                         $this->logError(87, " resource '" . $addedConfig['resource'] . "' config should contain the 'class' attribute", $configResource);
                         throw new ApiException(" resource '" . $addedConfig['resource'] . "' config should contain the 'class' attribute", 87);
                     }
                     $addedConfig = Toolkit::array_merge_recursive_distinct($configResource, $addedConfig);
-                    if (array_key_exists('children', $addedConfig) and ! array_key_exists('children', $selectedChild))
+                    if(array_key_exists('children', $addedConfig) and ! array_key_exists('children', $selectedChild))
                         $selectedChild['children'] = $addedConfig['children'];
-                    if (!array_key_exists('children', $selectedChild))
+                    if(!array_key_exists('children', $selectedChild))
                         $selectedChild['children'] = array();
                     $outputConfig = Toolkit::array_merge_recursive_distinct($outputConfig, $addedConfig);
-                    if (count($elements) > 0) {
-                        if ($selectedChild['children'] == "*")
+                    if(count($elements) > 0) {
+                        if($selectedChild['children'] == "*")
                             return $outputConfig;
                         else
                             return $this->getResourceConfig($elements, $selectedChild['children'], $outputConfig);
-                    } else
+                    }
+                    else
                         return $outputConfig;
                 }
             }
             else {
-                if (count($elements) == 0)
+                if(count($elements) == 0)
                     return $this->getResourceConfig($elements, $configtree, $outputConfig);
                 else
                     return $outputConfig;
@@ -798,11 +846,11 @@ class Api extends Configurable {
      * @return Api instance Api for chaining
      */
     public static function logInfo($code, $message = null, $data = null, $level = 2) {
-        if (isset($this) && get_class($this) == __CLASS__)
+        if(isset($this) && get_class($this) == __CLASS__)
             $api = $this;
         else
             $api = Api::getInstance();
-        if (LOG_VERBOSITY >= $level)
+        if(LOG_VERBOSITY >= $level)
             $api->log('info', $code, $message, $data, $level);
         return $api;
     }
@@ -817,11 +865,11 @@ class Api extends Configurable {
      * @return Api instance Api for chaining
      */
     public static function logWarn($code, $message = null, $data = null, $level = 2) {
-        if (isset($this) && get_class($this) == __CLASS__)
+        if(isset($this) && get_class($this) == __CLASS__)
             $api = $this;
         else
             $api = Api::getInstance();
-        if (LOG_VERBOSITY >= $level)
+        if(LOG_VERBOSITY >= $level)
             $api->log('warn', $code, $message, $data, $level);
         return $api;
     }
@@ -836,11 +884,11 @@ class Api extends Configurable {
      * @return Api instance Api for chaining
      */
     public static function logError($code, $message = null, $data = null, $level = 1) {
-        if (isset($this) && get_class($this) == __CLASS__)
+        if(isset($this) && get_class($this) == __CLASS__)
             $api = $this;
         else
             $api = Api::getInstance();
-        if (LOG_VERBOSITY >= $level)
+        if(LOG_VERBOSITY >= $level)
             $api->log('error', $code, $message, $data, $level);
         return $api;
     }
@@ -855,11 +903,11 @@ class Api extends Configurable {
      * @return Api instance Api for chaining
      */
     public static function logDebug($code, $message = null, $data = null, $level = 4) {
-        if (isset($this) && get_class($this) == __CLASS__)
+        if(isset($this) && get_class($this) == __CLASS__)
             $api = $this;
         else
             $api = Api::getInstance();
-        if (DEBUG && LOG_VERBOSITY >= $level)
+        if(DEBUG && LOG_VERBOSITY >= $level)
             $api->log('debug', $code, $message, $data, $level);
         return $api;
     }
@@ -881,16 +929,17 @@ class Api extends Configurable {
         $obj->code = $code;
         $obj->message = $message;
         $obj->ip = $_SERVER['REMOTE_ADDR'];
-        if (is_array($this->inputs) and array_key_exists('session', $this->inputs) and ! is_null($this->inputs['session']->getId()))
+        if(is_array($this->inputs) and array_key_exists('session', $this->inputs) and ! is_null($this->inputs['session']->getId()))
             $obj->session = $this->inputs['session']->getId();
         $obj->data = $data;
-        if ($data instanceof Exception)
+        if($data instanceof Exception)
             $obj->data = $data->getTrace();
         else
             $obj->data = $data;
         try {
             $this->nosqlConnection->selectCollection($this->getConfig("logs_collection", "logs"))->insert($obj, array("w" => 0));
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
 //            var_dump($e);
             $e = null;
         }
@@ -918,30 +967,35 @@ class Api extends Configurable {
     public function exitOnError($code, $message, $data = array()) {
         $this->renderer = null;
         try {
-            if (method_exists($this->getInput(), 'getOutputFormat')) {
+            if(method_exists($this->getInput(), 'getOutputFormat')) {
                 $outputName = $this->getInput()->getOutputFormat();
-            } else {
+            }
+            else {
                 $outputName = 'html';
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             $outputName = 'html';
         }
         try {
             $outputClassName = ucfirst($outputName) . 'Output';
             $this->renderer = new $outputClassName(array());
-            if (method_exists($this->renderer, "renderError") !== false) {
+            if(method_exists($this->renderer, "renderError") !== false) {
                 $this->renderer->renderError(($code + 1000), $message, $data);
-            } elseif (method_exists($this->renderer, "render") !== false) {
+            }
+            elseif(method_exists($this->renderer, "render") !== false) {
                 $this->renderer->render($message);
-            } else {
+            }
+            else {
                 echo $message;
-                if (DEBUG) {
+                if(DEBUG) {
                     var_dump($data);
                 }
             }
-        } catch (Exception $e) {
+        }
+        catch(Exception $e) {
             echo $message;
-            if (DEBUG) {
+            if(DEBUG) {
                 var_dump($data);
             }
         }

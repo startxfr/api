@@ -338,7 +338,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
 
     protected function createCsvString($content, $firstline = true, $colsep = ";") {
         $outputBuffer = fopen("php://temp", 'w');
-        if($firstline and is_array($content[0])) {
+        if($firstline and is_array($content) and array_key_exists(0, $content) and is_array($content[0])) {
             $keys = array_keys($content[0]);
             fputcsv($outputBuffer, $keys, $colsep, '~');
         }
