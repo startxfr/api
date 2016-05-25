@@ -9,10 +9,10 @@
  * @see      defaultModelResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class mysqlsearchStoreResource extends mysqlStoreResource implements IResource {
+class mysqlsearchSqlStoreResource extends mysqlSqlStoreResource implements IResource {
 
     static public $ConfDesc = '{
-        "class_name":"mysqlsearchStoreResource",
+        "class_name":"mysqlsearchSqlStoreResource",
         "desc":"Resource to access mysql storage",
         "properties":
 	[	
@@ -21,16 +21,6 @@ class mysqlsearchStoreResource extends mysqlStoreResource implements IResource {
                     "type":"string",
                     "mandatory":"false",
                     "desc":"input param used for search filter"
-            },{
-                    "name":"startParam",
-                    "type":"string",
-                    "mandatory":"false",
-                    "desc":"input param used for pagging"
-            },{
-                    "name":"limitParam",
-                    "type":"string",
-                    "mandatory":"false",
-                    "desc":"input param used for limiting search result number"
             }
 	]
 }';

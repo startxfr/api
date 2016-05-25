@@ -262,7 +262,7 @@ class catalogueCeaStartxResource extends mysqlStoreResource implements IResource
         $search = $this->filterParams($api->getInput()->getParams(), "input");
         $utf = "SET NAMES utf8 ; ";
         $this->getStorage()->execQuery($utf);
-        $criteria = "stillAvailable_prod = '1' AND prodredhat_prod = '1' ";
+        $criteria = "stillAvailable_prod = '1' AND prodredhat_prod = '1' AND prix_prod <= 20000 ";
         if(array_key_exists('famille_prod', $search) and $search['famille_prod'] != "") {
             $criteria .= " AND famille_prod IN(" . $search['famille_prod'] . ")";
         }

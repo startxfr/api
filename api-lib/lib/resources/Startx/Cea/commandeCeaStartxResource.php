@@ -47,7 +47,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
             $api->getInput()->setParam('payload', $this->cmd->payload);
 
             // Export de la commande dans SXA
-            $this->exportCommande2Sxa();
+            $this->exportCommande();
 
             // Envoi du mail d'alerte sur la commande
             $this->sendCommandeAlertMail();
@@ -89,15 +89,16 @@ class commandeCeaStartxResource extends messageResource implements IResource {
     private function checkSourceIP() {
         $api = Api::getInstance();
         if($this->isConfig('authorized_ip')) {
-            $api->logInfo(910, "Activate IP control for '" . get_class($this) . "'", null);
+            $api->logDebug(910, "Activate IP control for '" . get_class($this) . "'", null);
             $iplist = explode(',', $this->getConfig('authorized_ip', "127.0.0.1"));
             $rip = $api->getInput('server')->get('REMOTE_ADDR');
             if(!in_array($rip, $iplist)) {
                 throw new ResourceException(sprintf($this->getConfig('message_error_badip', "You IP (%s) is not listed as an authorized IP for this action"), $rip), 936);
             }
+            $api->logInfo(910, "Source IP '" . $rip . "' is autorized to access '" . get_class($this) . "'", null);
         }
         else {
-            $api->logInfo(910, "Disable IP control for '" . get_class($this) . "'", null);
+            $api->logDebug(910, "Disable IP control for '" . get_class($this) . "'", null);
         }
         return $this;
     }
@@ -175,19 +176,20 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         }
     }
 
-    private function exportCommande2Sxa() {
+    private function exportCommande() {
         $api = Api::getInstance();
         try {
-            $this->exportCommande2SxaInitResources();
-            $affaireID = $this->exportCommande2SxaFindAffaire();
+            $this->exportCommandeInitResources();
+            $affaireID = $this->exportCommandeFindAffaire();
 
-            $affaire = $this->sxa->getModule('affaire')->getDataFromID($affaireID);
+            $affaire = $this->sxa->getModule('affaire')->getById($affaireID);
             if(count($affaire) === 0) {
                 throw new ResourceException(" could not find affaire '" . $affaireID . "' into sxa store. This affaire is associated to the billable ID '" . $billtoID . "' ", 87);
             }
-            $devisID = $this->sxa->getModule('devis')->createId($affaireID);
-            $this->exportCommande2SxaInsertDevis($devisID, $affaire);
-            $this->exportCommande2SxaInsertDevisItems($devisID);
+            $devisID = $this->sxa->getModule('devis')->generateId($affaireID);
+            
+            $this->exportCommandeInsertDevis($devisID, $affaire);
+            $this->exportCommandeInsertDevisItems($devisID);
             // Demander l'enregistrement d'une actualité
             // Demander la generation du fichier pdf
             // Faire la creation de la commande
@@ -197,8 +199,6 @@ class commandeCeaStartxResource extends messageResource implements IResource {
             return true;
         }
         catch(Exception $exc) {
-            print_r($exc);
-            exit;
             $this->additionalMessage = "<b>Cette commande n'a pas pu être exportée vers SXA car " . $exc->getMessage() . "</b><br><br>";
             $api->logWarn($exc->getCode(), "Could not create SXA entry because : " . $exc->getMessage(), $exc);
             return false;
@@ -206,7 +206,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         return $this;
     }
 
-    private function exportCommande2SxaInitResources() {
+    private function exportCommandeInitResources() {
         $api = Api::getInstance();
         if($this->isConfig('exportsxa_resource')) {
             $this->sxa = $api->getConfiguredResource($this->getConfig('exportsxa_resource'));
@@ -220,7 +220,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         }
     }
 
-    private function exportCommande2SxaFindAffaire() {
+    private function exportCommandeFindAffaire() {
         if($this->isConfig('exportsxa_affaires')) {
             $billtoID = $this->cmd->billto;
             $affMatrice = $this->getConfig('exportsxa_affaires');
@@ -237,7 +237,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         return $affaireID;
     }
 
-    private function exportCommande2SxaInsertDevis($devisID, $affaire) {
+    private function exportCommandeInsertDevis($devisID, $affaire) {
         $this->sxa->getModule('devis')->insert(array(
             'id_dev' => $devisID,
             'affaire_dev' => $affaire['id_aff'],
@@ -265,7 +265,7 @@ class commandeCeaStartxResource extends messageResource implements IResource {
         return $this;
     }
 
-    private function exportCommande2SxaInsertDevisItems($devisID) {
+    private function exportCommandeInsertDevisItems($devisID) {
         foreach($this->cmd->items as $k => $item) {
             $this->sxa->getModule('devis')->insertProduit(array(
                 'id_devis' => $devisID,
