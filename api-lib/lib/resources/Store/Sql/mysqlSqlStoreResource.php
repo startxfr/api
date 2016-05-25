@@ -9,10 +9,10 @@
  * @see      defaultModelResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class mysqlStoreResource extends defaultStoreResource implements IResource {
+class mysqlSqlStoreResource extends defaultSqlStoreResource implements IResource {
 
     static public $ConfDesc = '{
-        "class_name":"mysqlStoreResource",
+        "class_name":"mysqlSqlStoreResource",
         "desc":"Resource to access mysql storage",
         "properties":
 	[
