@@ -19,7 +19,7 @@ class actualiteSxaStartxResource extends defaultSxaStartxResource implements IRe
         ]
       }';
 
-    public function getDataFromID($id, $filter = "*") {
+    public function getById($id, $filter = "*") {
         $r = $this->getStorage()->execQuery('SELECT ' . $filter . ' FROM actualite
 		LEFT JOIN entreprise ON entreprise.id_ent = actualite.id_ent
 		LEFT JOIN contact ON contact.id_cont = actualite.id_cont

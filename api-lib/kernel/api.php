@@ -102,6 +102,7 @@ class Api extends Configurable {
     public function __construct($defaultApiID = null) {
         if(!is_null($defaultApiID))
             $this->defaultApiID = $defaultApiID;
+            $this->callID = sha1($defaultApiID.@$_SERVER['UNIQUE_ID'].time().@$_SERVER['REMOTE_ADDR'].@$_SERVER['REMOTE_PORT'].rand(0, 9999990));
         // connect nosql backend immediately to get log storage support
         try {
             Api::$nosqlApiBackend = json_decode(Api::$nosqlApiBackend);
@@ -923,6 +924,7 @@ class Api extends Configurable {
      */
     private function log($type = 'error', $code = 0, $message = null, $data = array(), $level = 1) {
         $obj = new stdClass();
+        $obj->call_id = $this->callID;
         $obj->date = new MongoDate();
         $obj->type = $type;
         $obj->level = $level;

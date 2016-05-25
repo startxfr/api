@@ -9,9 +9,9 @@
  * @see      defaultModelResource
  * @link     https://github.com/startxfr/sxapi/wiki/Resource
  */
-class nosqlStoreResource extends defaultStoreResource implements IResource {
+class mongoNosqlStoreResource extends defaultNosqlStoreResource implements IResource {
 
-    static public $ConfDesc = '{"class_name":"nosqlStoreResource",
+    static public $ConfDesc = '{"class_name":"mongoNosqlStoreResource",
   "desc":"Resource to access nosql storage",
   "properties":
 	[

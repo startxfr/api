@@ -20,7 +20,7 @@ class affaireSxaStartxResource extends defaultSxaStartxResource implements IReso
       }';
     
     
-    public function getDataFromID($id, $filter = "*") {
+    public function getById($id, $filter = "*") {
         $r = $this->getStorage()->execQuery('SELECT ' . $filter . ' FROM affaire
 			LEFT JOIN contact ON contact.id_cont = affaire.contact_aff
 			LEFT JOIN ref_statusaffaire ON affaire.status_aff = ref_statusaffaire.id_staff

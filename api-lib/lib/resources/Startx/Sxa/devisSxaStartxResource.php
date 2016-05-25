@@ -19,7 +19,7 @@ class devisSxaStartxResource extends defaultSxaStartxResource implements IResour
         ]
       }';
 
-    public function getDataFromID($id, $filter = "*") {
+    public function getById($id, $filter = "*") {
         $r = $this->getStorage()->execQuery('SELECT  FROM devis
 		SELECT ' . $filter . ', 
                     c2.id_cont AS id_achat, 
@@ -39,27 +39,24 @@ class devisSxaStartxResource extends defaultSxaStartxResource implements IResour
 		LEFT JOIN user ON user.login = devis.commercial_dev
 		LEFT JOIN commande ON commande.devis_cmd = devis.id_dev
 		LEFT JOIN facture f ON f.commande_fact = commande.id_cmd
-		WHERE id_dev = \'' . $id . '\'');
+		WHERE id_dev = \'' . trim($id) . '\'');
         if(!is_array($r)) {
             return array();
         }
-        return $r[0];
-    }
-
-    public function getProduitsFromID($id) {
-        $r = $this->getStorage()->execQuery("SELECT *,
+        $p = $this->getStorage()->execQuery("SELECT *,
 			(select prixF*(1-remiseF/100) as PFourn from produit_fournisseur where produit_id = id_prod order by PFourn ASC limit 0,1) as PF 
 			FROM devis_produit
 			LEFT JOIN produit ON produit.id_prod = devis_produit.id_produit
 			LEFT JOIN ref_prodfamille ON ref_prodfamille.id_prodfam = produit.famille_prod
 			WHERE id_devis = '" . trim($id) . "' ;");
-        if(!is_array($r)) {
-            return array();
+        if(!is_array($p)) {
+            $p = array();
         }
-        return $r;
+        $r[0]['produits'] = $p;
+        return $r[0];
     }
 
-    public function createId($id) {
+    public function generateId($id) {
         $res = $this->getStorage()->execQuery("SELECT COUNT(id_dev) AS nb FROM `devis` WHERE id_dev LIKE '%" . $id . "%' ");
         if(!is_array($res)) {
             $res[0]['nb'] = 0;
